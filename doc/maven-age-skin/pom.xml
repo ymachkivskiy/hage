@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.jage.maven.skins</groupId>
+  <artifactId>maven-jage-skin</artifactId>
+  <version>1.0.1</version>
+  <name>jAgE Maven Site Skin</name>
+  <description>jAgE Maven Site Skin</description>
+  
+  <parent>
+		<groupId>org.jage</groupId>
+		<artifactId>jage</artifactId>
+		<version>2.6.0-SNAPSHOT</version>
+		<relativePath>../../pom.xml</relativePath>
+	</parent>
+
+  <distributionManagement>
+    <repository>
+      <id>caribou-age</id>
+      <name>jAgE Caribou Maven Repository</name>
+      <url>scp://caribou.iisg.agh.edu.pl/home/proj/age/public_html/maven2/</url>
+    </repository>
+  </distributionManagement>
+
+</project>
+

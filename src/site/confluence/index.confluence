@@ -1,0 +1,9 @@
+h1. Overview of AgE Computation Platform
+
+AgE Computational Platform is developed as an open-source project at the Intelligent Information Systems Group of
+AGH-UST. AgE is a framework for development and run-time execution of distributed agent-based simulations and computations (applications), especially ones utilizing evolutionary paradigm.
+
+AgE is a free software distributed under the terms of the GPL (General Public License Version 3). More details at [License|license.html] page.
+
+For more details read [Platform overview|overview.html] page. Technical documentation is hosted at [wiki|https://age.iisg.agh.edu.pl/confluence/display/jagedocs/Home].
+

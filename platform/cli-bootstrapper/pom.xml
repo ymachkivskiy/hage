@@ -1,0 +1,42 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>cli-bootstrapper</artifactId>
+
+	<name>AgE CLI Bootstrapper</name>
+	<description>CLI-based bootstrapper for AgE nodes</description>
+	<url>http://age.iisg.agh.edu.pl/jage/platform/cli-bootstrapper/</url>
+
+	<parent>
+		<groupId>org.jage.platform</groupId>
+		<artifactId>platform</artifactId>
+		<version>2.7.0-SNAPSHOT</version>
+	</parent>
+
+	<dependencies>
+		<!-- AgE Platform dependencies -->
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>arguments</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>component</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jage.services</groupId>
+			<artifactId>lifecycle</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<!-- External libraries dependencies -->
+		<dependency>
+			<groupId>commons-cli</groupId>
+			<artifactId>commons-cli</artifactId>
+		</dependency>
+	</dependencies>
+</project>

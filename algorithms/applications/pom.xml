@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>applications</artifactId>
+	<packaging>pom</packaging>
+
+	<name>AgE algorithms applications</name>
+	<description>Various configurations combining components from AgE algorithms solutions</description>
+	<url>http://age.iisg.agh.edu.pl/jage/algorithms/applications/</url>
+
+	<parent>
+		<groupId>org.jage.algorithms</groupId>
+		<artifactId>algorithms</artifactId>
+		<version>2.7.0-SNAPSHOT</version>
+	</parent>
+
+	<modules>
+		<module>binary-genetic</module>
+		<module>vanilla-genetic</module>
+		<module>emas-app</module>
+	</modules>
+
+	<properties>
+		<age.node.conf>classpath:node.xml</age.node.conf>
+		<age.computation.conf>classpath:age.xml</age.computation.conf>
+		<age.props>classpath:age.properties</age.props>
+	</properties>
+
+	<dependencies>
+		<!-- AgE Platform modules -->
+		<dependency>
+			<groupId>org.jage.platform</groupId>
+			<artifactId>cli-bootstrapper</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jage.services</groupId>
+			<artifactId>configuration</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+
+				<configuration>
+					<mainClass>org.jage.platform.cli.CliNodeBootstrapper</mainClass>
+					<arguments>
+						<argument>-Dage.node.conf=${age.node.conf}</argument>
+						<argument>-Dage.computation.conf=${age.computation.conf}</argument>
+					</arguments>
+					<systemProperties>
+						<systemProperty>
+							<key>age.config.properties</key>
+							<value>${age.props}</value>
+						</systemProperty>
+					</systemProperties>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

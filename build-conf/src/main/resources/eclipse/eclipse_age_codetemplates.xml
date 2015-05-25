@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><templates><template autoinsert="false" context="typecomment_context" deleted="false" description="Comment for created types" enabled="true" id="org.eclipse.jdt.ui.text.codetemplates.typecomment" name="typecomment">/**
+ *
+ * @author AGH AgE Team
+ */</template><template autoinsert="false" context="overridecomment_context" deleted="false" description="Comment for overriding methods" enabled="true" id="org.eclipse.jdt.ui.text.codetemplates.overridecomment" name="overridecomment">/**
+ * {@inheritDoc}
+ * ${see_to_overridden}
+ */</template><template autoinsert="false" context="filecomment_context" deleted="false" description="Comment for created Java files" enabled="true" id="org.eclipse.jdt.ui.text.codetemplates.filecomment" name="filecomment">/**
+ * Copyright (C) 2006 - 2012
+ *   Pawel Kedzior
+ *   Tomasz Kmiecik
+ *   Kamil Pietak
+ *   Krzysztof Sikora
+ *   Adam Wos
+ *   Lukasz Faber
+ *   Daniel Krzywicki
+ *   and other students of AGH University of Science and Technology.
+ *
+ * This file is part of jAgE.
+ *
+ * AgE is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AgE is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AgE.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+ */
+/*
+ * Created: ${date}
+ * $Id$
+ */
+</template></templates>

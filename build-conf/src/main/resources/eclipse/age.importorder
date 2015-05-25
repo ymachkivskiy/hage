@@ -1,0 +1,12 @@
+#Organize Import Order
+#Tue Jul 17 12:05:16 CEST 2012
+9=\#com
+8=com
+7=\#org.jage
+6=org.jage
+5=\#org
+4=org
+3=\#javax
+2=javax
+1=\#java
+0=java

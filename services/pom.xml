@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.jage.services</groupId>
+	<artifactId>services</artifactId>
+	<packaging>pom</packaging>
+
+	<name>AgE Services</name>
+	<description>AgE services</description>
+	<url>http://age.iisg.agh.edu.pl/jage/services/</url>
+
+	<parent>
+		<groupId>org.jage</groupId>
+		<artifactId>jage</artifactId>
+		<version>2.7.0-SNAPSHOT</version>
+	</parent>
+
+	<modules>
+		<module>core</module>
+		<module>address</module>
+		<module>communication</module>
+		<module>core-integration-test</module>
+		<module>lifecycle</module>
+		<module>configuration</module>
+	</modules>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.jage.platform</groupId>
+			<artifactId>util</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
+			<version>1</version>
+		</dependency>
+	</dependencies>
+</project>

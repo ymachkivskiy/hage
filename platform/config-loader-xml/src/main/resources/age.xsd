@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns="http://age.iisg.agh.edu.pl/schema/age"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://age.iisg.agh.edu.pl/schema/age">
+	<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+
+	<!-- Top-level <configuration> element -->
+	<xsd:element name="configuration">
+		<xsd:complexType>
+			<xsd:choice minOccurs="0" maxOccurs="unbounded">
+				<xsd:group ref="MultipleDefinition" />
+			</xsd:choice>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:group name="MultipleDefinition">
+		<xsd:choice>
+			<xsd:group ref="DefinitionElement"/>
+			<xsd:group ref="CompositionElement"/>
+		</xsd:choice>
+	</xsd:group>
+
+	<!-- Composition elements -->
+
+	<xsd:group name="CompositionElement">
+		<xsd:choice>
+			<xsd:element ref="include" />
+			<xsd:element ref="block"/>
+		</xsd:choice>
+	</xsd:group>
+
+	<xsd:element name="include">
+		<xsd:complexType>
+			<xsd:choice minOccurs="0" maxOccurs="unbounded">
+				<xsd:element ref="block"/>
+			</xsd:choice>
+			<xsd:attribute name="file" type="NonEmptyString" use="required" />
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="block">
+		<xsd:complexType>
+			<xsd:group ref="MultipleDefinition" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:attribute name="name" type="NonEmptyString" use="required"/>
+			<xsd:attribute name="override" type="xsd:boolean" use="optional" default="true" />
+		</xsd:complexType>
+	</xsd:element>
+
+	<!-- Definition elements -->
+
+	<xsd:group name="DefinitionElement">
+		<xsd:choice>
+			<xsd:group ref="ComponentElement" />
+			<xsd:group ref="CollectionElement" />
+		</xsd:choice>
+	</xsd:group>
+
+	<!-- Component elements -->
+	<xsd:group name="ComponentElement">
+		<xsd:choice>
+			<xsd:element ref="agent" />
+			<xsd:element ref="strategy" />
+			<xsd:element ref="component" />
+		</xsd:choice>
+	</xsd:group>
+
+	<xsd:complexType name="GeneralComponent">
+		<xsd:choice minOccurs="0" maxOccurs="unbounded">
+			<xsd:element ref="constructor-arg" />
+			<xsd:element ref="property" />
+			<xsd:group ref="MultipleDefinition" />
+		</xsd:choice>
+		<xsd:attribute name="name" type="NonEmptyString" />
+		<xsd:attribute name="class" type="NonEmptyString" use="required" />
+	</xsd:complexType>
+	<xsd:element name="agent" type="GeneralComponent" />
+	<xsd:element name="strategy" type="GeneralComponent" />
+	<xsd:element name="component">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="GeneralComponent">
+					<xsd:attribute name="isSingleton" type="xsd:boolean" default="true"/>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:complexType name="ArgumentShortcutAble">
+		<xsd:choice minOccurs="0">
+			<xsd:group ref="DefinitionElement" />
+			<xsd:group ref="ArgumentElement" />
+		</xsd:choice>
+		<xsd:attribute name="type" type="valueType" default="String"/>
+		<xsd:attribute name="value" type="xsd:string" />
+		<xsd:attribute name="ref" type="NonEmptyString" />
+	</xsd:complexType>
+
+	<xsd:element name="constructor-arg">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="ArgumentShortcutAble">
+					<xsd:attribute name="name" type="NonEmptyString" />
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="property">
+	<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="ArgumentShortcutAble">
+					<xsd:attribute name="name" type="NonEmptyString" use="required" />
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+	<!-- Collection elements -->
+	<xsd:group name="CollectionElement">
+		<xsd:choice>
+			<xsd:element ref="array" />
+			<xsd:element ref="list" />
+			<xsd:element ref="set" />
+			<xsd:element ref="map" />
+		</xsd:choice>
+	</xsd:group>
+
+	<xsd:complexType name="GeneralCollection" abstract="true">
+		<xsd:attribute name="name" type="NonEmptyString" />
+		<xsd:attribute name="isSingleton" type="xsd:boolean" default="false"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="ListSetCollection">
+		<xsd:complexContent>
+			<xsd:extension base="GeneralCollection">
+				<xsd:choice minOccurs="0" maxOccurs="unbounded">
+					<xsd:group ref="MultipleDefinition"/>
+					<xsd:group ref="ArgumentElement"/>
+					<xsd:element ref="multiple"/>
+				</xsd:choice>
+				<xsd:attribute name="value-type" type="NonEmptyString" default="java.lang.Object"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="multiple" >
+		<xsd:complexType>
+			<xsd:choice>
+				<xsd:group ref="DefinitionElement" />
+				<xsd:group ref="ArgumentElement" />
+			</xsd:choice>
+			<xsd:attribute name="count" type="NonEmptyString" use="required"/>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="array" type="ListSetCollection" />
+	<xsd:element name="list" type="ListSetCollection" />
+	<xsd:element name="set" type="ListSetCollection" />
+
+	<xsd:element name="map">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="GeneralCollection">
+					<xsd:choice minOccurs="0" maxOccurs="unbounded">
+						<xsd:group ref="MultipleDefinition"/>
+						<xsd:element ref="entry" />
+					</xsd:choice>
+					<xsd:attribute name="value-type" type="NonEmptyString" default="java.lang.Object"/>
+					<xsd:attribute name="key-type" type="NonEmptyString" default="java.lang.Object"/>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="entry">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="key" minOccurs="0"/>
+				<xsd:choice minOccurs="0">
+					<xsd:group ref="DefinitionElement" />
+					<xsd:group ref="ArgumentElement" />
+				</xsd:choice>
+			</xsd:sequence>
+			<xsd:attribute name="key" type="xsd:string"/>
+			<xsd:attribute name="key-ref" type="NonEmptyString"/>
+			<xsd:attribute name="value" type="xsd:string"/>
+			<xsd:attribute name="value-ref" type="NonEmptyString"/>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="key">
+		<xsd:complexType>
+			<xsd:choice>
+				<xsd:group ref="DefinitionElement" />
+				<xsd:group ref="ArgumentElement" />
+			</xsd:choice>
+		</xsd:complexType>
+	</xsd:element>
+
+	<!-- Argument elements -->
+	<xsd:group name="ArgumentElement">
+		<xsd:choice>
+			<xsd:element ref="reference" />
+			<xsd:element ref="value" />
+		</xsd:choice>
+	</xsd:group>
+
+	<xsd:element name="reference">
+		<xsd:complexType>
+			<xsd:attribute name="target" type="NonEmptyString" use="required" />
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="value">
+		<xsd:complexType>
+	    	<xsd:simpleContent>
+	    		<xsd:extension base="xsd:string">
+	         		<xsd:attribute name="type" type="valueType" use="optional" default="String"/>
+	       		</xsd:extension>
+	     	</xsd:simpleContent>
+	 	</xsd:complexType>
+	 </xsd:element>
+
+	<!-- Simple internal types -->
+	<xsd:simpleType name="NonEmptyString">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1" />
+			<xsd:pattern value=".*[^\s].*" />
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="valueType">
+		<xsd:annotation>
+			<xsd:documentation></xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="String"></xsd:enumeration>
+			<xsd:enumeration value="Integer"></xsd:enumeration>
+			<xsd:enumeration value="Long"></xsd:enumeration>
+			<xsd:enumeration value="Short"></xsd:enumeration>
+			<xsd:enumeration value="Byte"></xsd:enumeration>
+			<xsd:enumeration value="Boolean"></xsd:enumeration>
+			<xsd:enumeration value="Float"></xsd:enumeration>
+			<xsd:enumeration value="Double"></xsd:enumeration>
+			<xsd:enumeration value="Class"></xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>

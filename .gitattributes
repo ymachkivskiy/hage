@@ -1,0 +1,14 @@
+*.java		text ident
+*.xml		text
+*.txt		text
+*.launch	text
+*.xsd		text
+*.css		text
+*.confluence	text
+*.properties	text
+*.uml		text
+*.tex		text
+*.cls		text
+*.jsp		text
+.gitatttibutes	text
+.gitignore	text

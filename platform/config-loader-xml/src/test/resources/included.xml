@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration xmlns="http://age.iisg.agh.edu.pl/schema/age"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://age.iisg.agh.edu.pl/schema/age http://age.iisg.agh.edu.pl/schema/age/age.xsd">
+
+	<block name="outer1">
+		<component name="outer1Component" class="java.lang.Object" />
+	</block>
+
+	<block name="outer2">
+		<component name="outer2Component" class="java.lang.Object" />
+	</block>
+
+	<block name="outer3">
+		<component name="outer3Component" class="java.lang.Object">
+			<block name="inner3">
+				<component name="inner3Component" class="java.lang.Object" />
+			</block>
+		</component>
+	</block>
+
+	<block name="outer4">
+		<component name="outer4Component" class="java.lang.Object">
+			<block name="inner4">
+				<component name="inner4Component" class="java.lang.Object" />
+			</block>
+		</component>
+	</block>
+</configuration>

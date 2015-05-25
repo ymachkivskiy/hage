@@ -1,0 +1,39 @@
+h1. An overview of Agent-based Evolutionary platform
+
+The AgE platform is designed for solving optimization and simulation problems by multi-agent systems utilizing meta-heuristics such as evolutionary algorithms.
+
+!images/overview/age-overview.png!
+
+Particular systems are built by providing a _system description file_, which includes, inter alia, computation decomposition (i.e. types of agents, their structure, types of operations that specify algorithms), problem-dependent parameters and a problem to be solved. Based on the file, a system is assembled from components chosen from available libraries, and then agents and their environments are created, configured and distributed among nodes. Afterwards, a computation is performed until it reaches a stop condition, defined also in the description file. During the execution time some agents have attached monitors responsible for collecting problem-dependent data in order to visualize the current state and the final results of the ordered task.
+
+
+h2. The decomposition of computation
+
+A computation is decomposed into agents, which are responsible for performing a part of or the whole algorithm. Agents are structured into a tree with virtual root agent shown in the figure below according to algorithm decomposition. We assume that all agents at the same level are executed in parallel. To increase performance, the top level agents (called \emph{workplaces}) along with all their children can be distributed amongst many nodes.
+
+!images/overview/agent-tree.png!
+
+The platform introduces two types of agents: thread-based and simple. The
+former are realized as separate threads so that the parallel processing
+is managed by Java Virtual Machine (similarly to _Jade_ platform). Such agents can communicate and
+interact with neighbors via asynchronous messages.
+
+However, a large number of such agents would significantly decrease the
+efficiency of a computation due to frequent context switching. Therefore, 
+the notion of simple agent was introduced.
+The concept of _simple agent_ is based on _steppable_ processing which is
+to simulate pseudo-parallel execution of agents' tasks. The following two phases are
+distinguished:
+* The execution of tasks related to computation semantics in the {{step()}} method. In the case of an aggregate agent all of it's children perform their steps sequentially. While doing so, they can register various events, which may indicate actions to perform or communication messages, in the parent aggregate.
+* The processing of events registered in an event queue. Since events may be registered only in agents that possess children, this phase concerns only aggregate agents.
+
+The described idea of processing ensures that during execution of
+computational tasks of agents co-existing at the same level in the structure
+(agents with the same parent), the hierarchy remains unmodified, thus the
+tasks may be carried out in any order. From the perspective of these agents, they are
+processed in parallel. All changes to the agent structure are made by
+aggregates during processing of the events indicating actions such as the addition
+of new agent, the migration of an agent, the killing of an already existing agent, etc.
+They are visible for agents while performing the next step.
+
+The processing of a single agent can be seen as choosing and ordering actions to be performed. Execution can be further delegated according to _Strategy_ design pattern. Strategies represent problem-dependent algorithm operators (mutation, evaluation of fitness, etc.) and may be exchanged without intruding agents' implementation. Operations can be executed by external resources, by providing proxies (according to _Proxy_ design pattern.

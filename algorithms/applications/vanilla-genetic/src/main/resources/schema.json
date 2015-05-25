@@ -1,0 +1,85 @@
+{
+"type" : "object",
+"properties":{
+  "gatherer":{
+      "type" : "array",
+      "items" : {
+            "type" : "object",
+            "properties" : {
+              "id" : {
+                "type" : "string"
+              },
+              "query" : {
+                "type" : "string"
+              },
+              "step" : {
+                "type": "integer",
+                "minimum": 0
+              },
+              "time" : {
+                "type": "integer",
+                "minimum": 0
+              },
+              "extractor" : {
+                "type": "string"
+              }
+            },
+            "minItems" : 1,
+			"required": [ "id", "query" ]
+          }
+      },
+
+      "visualization":{
+          "type":"object",
+          "properties":{
+            "server":{
+                "type":"string"
+            },
+            "node":{
+                "type":"string"
+            }
+          },
+		  "required": [ "server", "node" ]
+      },
+      
+      "noSqlDatabase":{
+          "type":"object",
+          "properties":{
+            "server":{
+                "type":"string"
+            },
+            "schema_name":{
+                "type":"string"
+            },
+            "node":{
+                "type":"string"
+            }
+          },
+		  "required": [ "server", "schema_name", "node" ]
+      },
+
+      "database":{
+          "type":"object",
+          "properties":{
+            "server":{
+                "type":"string"
+            },
+            "schema_name":{
+                "type":"string"
+            },
+            "user":{
+                "type":"string"
+            },
+            "password":{
+                "type":"string"
+            }
+        },
+		"required": [ "server", "schema_name", "user", "password" ]
+      },
+
+      "console":{
+          "type":"object"
+        }
+  },
+  "required": [ "gatherer" ]
+}

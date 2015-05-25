@@ -1,0 +1,58 @@
+h1. Tworzenie nowych projektów
+
+W typowych przypadkach nowy projekt powinien zawierać dwa moduły (analogicznie do szablonowych projektów): 
+ * solution-nazwa-projektu, w którym bedą się znajdować implementacje algorytmów (agenty, operacje, reprezentacje rozwiązań, problemy, etc.)
+ * application-nazwa-projektu, który zawierał będzie konfiguracje uruchomieniowe (pliki xml, pliki startowe .launch)
+
+ W celu utworzenia nowego projektu należy:
+  * ściągnąć z repozytorium (...) następujące projekty: projects-root, application-template, solution-template.
+  * na podstawie szablonowych projektów utworzyć nowe, np. applications-my-project, solutions-my-project
+  ** do każdego nowego projektu skopiować analogiczny plik {{pom.xml}} 
+  ** wyedytować pliki pom.xml następujący sposób
+  *** solutions-my-project:
+
+{code:XML}
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.jage</groupId>
+	<artifactId>jage-solutions-my-project</artifactId>
+	<name>Enter the module name here</name>
+	<description>Enter the module description here</description>
+{code}
+
+  *** applications-my-project
+
+{code:XML}
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.jage</groupId>
+	<artifactId>jage-applications-my-project</artifactId>
+	<name>Enter the module name here</name>
+	<description>Enter the module description here</description>
+{code}
+
+  Jeśli projekt applications-my-project będzie wykorzystywał klasy znajdujące się w projekcie solutions-my-project, należy dodać nową pozycję w tagu {{<dependencies>}}
+
+{code:XML}
+	<dependency>
+	  <groupId>org.jage</groupId>
+	  <artifactId>jage-solutions-my-project</artifactId>
+	  <version>2.2.0</version>
+	</dependency>
+{code}
+
+  *** dodać nowo stworzone projektu do modułu projects-root (plik {{projects-root/pom.xml}}):
+
+{code:XML}
+	<modules>	
+		... other modules definitions ...
+		<module>../solutions-my-project</module>
+		<module>../applications-my-project</module>
+	</modules>
+{code}
+
+  ** uruchomić polecenie mvn verify z katalogu {{projects-root}} w celu sprawdzenie poprawności konfiguracji. Udogodnienie: aby przyspieszyć proces budowania projektów można usunąc z pliku {{projects-root/pom.xml}}.
+  ** wygenerować pliki projektów Eclipse ({{.project}}, {{.classpath}}) za pomocą polecenia {{mvn eclipse:eclipse}}
+  ** zaimportować projekty z poziomu Eclipse'a
+  ** uruchomić konfigurację uruchomieniową applications-template ({{.project}}). W przypadku dobrej konfiguracji powinien uruchomić się system z domyślną konfiguracją Hello World
+
+
+

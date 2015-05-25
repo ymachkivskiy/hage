@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration xmlns="http://age.iisg.agh.edu.pl/schema/age" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://age.iisg.agh.edu.pl/schema/age http://age.iisg.agh.edu.pl/schema/age/age.xsd">
+
+	<component name="stopCondition" class="org.jage.workplace.FixedStepCountStopCondition" isSingleton="true">
+		<constructor-arg type="Long" value="20"/>
+	</component>
+
+	<component name="defaultAgentAddressSupplier" class="org.jage.address.agent.DefaultAgentAddressSupplier"/>
+	<component name="comparator" class="org.jage.action.ordering.DefaultActionComparator" isSingleton="false"/>
+
+	<component name="aggregateActionService" class="org.jage.agent.AggregateActionService" isSingleton="false"/>
+	<component name="aggregateQueryService" class="org.jage.agent.AggregateQueryService" isSingleton="false"/>
+	<component name="aggregateMessagingService" class="org.jage.agent.AggregateMessagingService" isSingleton="false"/>
+
+	<agent name="workplace1" class="org.jage.workplace.SimpleWorkplace">
+		<property name="agent" ref="scully"/>
+
+		<agent name="scully" class="org.jage.examples.messages.MessagesSimpleAgent">
+			<component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+				<constructor-arg name="nameTemplate" value="Scully"/>
+			</component>
+			<property name="message" value="The Truth is Out There"/>
+			<property name="receiver" value="Mulder"/>
+		</agent>
+	</agent>
+
+	<agent name="workplace2" class="org.jage.workplace.SimpleWorkplace">
+		<property name="agent" ref="mulder"/>
+
+		<agent name="mulder" class="org.jage.examples.messages.MessagesSimpleAgent">
+			<component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+				<constructor-arg name="nameTemplate" value="Mulder"/>
+			</component>
+			<property name="message" value="I want to believe"/>
+			<property name="receiver" value="Scully"/>
+		</agent>
+	</agent>
+
+</configuration>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration xmlns="http://age.iisg.agh.edu.pl/schema/age" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://age.iisg.agh.edu.pl/schema/age http://age.iisg.agh.edu.pl/schema/age/age.xsd">
+
+	<include file="classpath:examples/common.xml">
+		<block name="workplaces">
+			<component name="workplace" class="org.jage.workplace.SimpleWorkplace" isSingleton="false">
+				<property name="agent">
+					<agent name="rootSimpleAggregate" class="org.jage.agent.SimpleAggregate">
+						<component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+							<constructor-arg name="nameTemplate" value="TheXFiles"/>
+						</component>
+						<list name="simpleAgents">
+							<agent name="squeeze" class="org.jage.agent.SimpleAggregate">
+								<component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+									<constructor-arg name="nameTemplate" value="Squeeze"/>
+								</component>
+								<property name="agents">
+									<list name="agents">
+										<agent name="scully" class="org.jage.examples.migration.CrawlingSimpleAgent">
+											<component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+												<constructor-arg name="nameTemplate" value="Scully"/>
+											</component>
+										</agent>
+										<agent name="mulder" class="org.jage.examples.migration.CrawlingSimpleAgent">
+											<component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+												<constructor-arg name="nameTemplate" value="Mulder"/>
+											</component>
+										</agent>
+									</list>
+								</property>
+							</agent>
+
+							<agent name="shadows" class="org.jage.agent.SimpleAggregate">
+								<component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+									<constructor-arg name="nameTemplate" value="Shadows"/>
+								</component>
+
+								<property name="agents">
+									<list name="agents">
+										<agent name="skinner" class="org.jage.examples.migration.CrawlingSimpleAgent">
+											<component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+												<constructor-arg name="nameTemplate" value="Skinner"/>
+											</component>
+										</agent>
+									</list>
+								</property>
+							</agent>
+
+							<agent name="space" class="org.jage.agent.SimpleAggregate">
+								<component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+									<constructor-arg name="nameTemplate" value="Space"/>
+								</component>
+
+								<property name="agents">
+									<list name="agents">
+										<agent name="doggett" class="org.jage.examples.migration.CrawlingSimpleAgent">
+											<component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+												<constructor-arg name="nameTemplate" value="Doggett"/>
+											</component>
+										</agent>
+									</list>
+								</property>
+							</agent>
+						</list>
+						<property name="agents" ref="simpleAgents"/>
+					</agent>
+				</property>
+			</component>
+		</block>
+	</include>
+</configuration>

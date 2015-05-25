@@ -1,0 +1,3 @@
+org.jage.monitoring.observer.DatabaseObserverProvider
+org.jage.monitoring.observer.NoSqlDatabaseObserverProvider
+org.jage.monitoring.observer.VisualizationObserverProvider

@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<ruleset name="DynamicAlerts">
+    <description>Check the code and point out antipatterns</description>
+
+    <!-- Add some build-in rulesets -->
+
+    <rule ref="rulesets/favorites.xml" />
+
+    <!-- Customized rules -->
+    <rule ref="rulesets/codesize.xml/ExcessiveMethodLength" >
+        <priority>1</priority>
+        <properties>
+            <property name="minimum">
+                <value>60</value>
+            </property>
+        </properties>
+    </rule>
+
+    <rule ref="rulesets/codesize.xml/ExcessiveClassLength" >
+        <priority>1</priority>
+        <properties>
+            <property name="minimum">
+                <value>1000</value>
+            </property>
+        </properties>
+    </rule>
+
+    <rule ref="rulesets/codesize.xml/CyclomaticComplexity" >
+        <priority>1</priority>
+        <properties>
+            <property name="reportLevel">
+                <value>8</value>
+            </property>
+        </properties>
+    </rule>
+
+</ruleset>

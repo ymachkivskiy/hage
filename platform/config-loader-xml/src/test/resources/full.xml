@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration xmlns="http://age.iisg.agh.edu.pl/schema/age" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://age.iisg.agh.edu.pl/schema/age http://age.iisg.agh.edu.pl/schema/age/age.xsd">
+
+	<component name="outerComponent" class="org.jage.platform.component.definition.ClassWithProperties" isSingleton="true">
+		<constructor-arg><value>ABC</value></constructor-arg>
+		<constructor-arg type="Integer" value="123"/>
+
+		<property name="a"><value type="Integer">${a}</value></property>
+		<property name="b" type="Float" value="${b}" />
+		<property name="list"><reference target="list"/></property>
+		<property name="map" ref="map" />
+		<property name="set" ref="set" />
+		<property name="objectArray" ref="objectArray" />
+		<property name="longArray" ref="longArray" />
+
+		<include file="classpath:valid.xml"/>
+
+		<block name="collections">
+			<list name="list" isSingleton="true">
+				<reference target="innerComponent"/>
+				<reference target="innerAgent"/>
+				<multiple count="3">
+					<component name="multipleComponent" class="java.lang.Object" />
+				</multiple>
+			</list>
+
+			<map name="map" isSingleton="true">
+				<entry key="2" value-ref="innerComponent" />
+				<entry>
+					<key><value>1</value></key>
+					<reference target="innerAgent"/>
+				</entry>
+			</map>
+
+			<set name="set" isSingleton="true">
+				<reference target="innerComponent"/>
+				<value type="Integer">2</value>
+			</set>
+
+			<array name="objectArray" isSingleton="true" value-type="Object">
+				<reference target="innerComponent"/>
+				<value type="Integer">2</value>
+			</array>
+
+			<array name="longArray" isSingleton="true" value-type="Long">
+				<value type="Long">2</value>
+				<value type="Long">4</value>
+				<value type="Long">8</value>
+			</array>
+		</block>
+	</component>
+
+	<include file="classpath:included.xml">
+		<block name="outer1">
+			<list name="outer1List" />
+		</block>
+
+		<block name="outer2" override="false">
+			<list name="outer2List" />
+		</block>
+
+		<block name="outer3">
+			<list name="outer3List" />
+		</block>
+
+		<block name="outer4" override="false">
+			<list name="outer4List" />
+		</block>
+
+		<block name="inner3">
+			<list name="inner3List" />
+		</block>
+
+		<block name="inner4">
+			<list name="inner4List" />
+		</block>
+	</include>
+</configuration>

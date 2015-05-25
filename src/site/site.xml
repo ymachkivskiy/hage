@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="AgE - Agent-based Evolutionary Platform">
+	<skin>
+		<groupId>org.jage.maven.skins</groupId>
+		<artifactId>maven-jage-skin</artifactId>
+		<version>1.0.0</version>
+	</skin>
+
+	<publishDate position="navigation-bottom" format="dd-MM-yyyy" />
+	<version position="navigation-bottom" />
+
+	<poweredBy>
+		<logo name="IISG" img="images/iisg-logo.gif" href="http://www.iisg.agh.edu.pl/" />
+	</poweredBy>
+	<bannerLeft>
+		<name>jAgE - computing environment</name>
+		<href>http://age.iisg.agh.edu.pl/jage/index.html</href>
+	</bannerLeft>
+	<bannerRight>
+		<name></name>
+	</bannerRight>
+
+	<body>
+		<links></links>
+
+		<menu name="Main menu" inherit="top">
+			<item name="Home page" href="http://age.iisg.agh.edu.pl/jage/index.html" />
+			<item name="Platform overview" href="http://age.iisg.agh.edu.pl/jage/overview.html" />
+			<item name="Start-up for users and developers" href="http://age.iisg.agh.edu.pl/jage/startup.html" />
+			<item name="Evolutionary algorithms" href="http://age.iisg.agh.edu.pl" />
+		</menu>
+
+		<menu ref="parent" inherit="top"/>
+		<menu ref="modules" inherit="top"/>
+		<menu ref="reports" inherit="top"/>
+	</body>
+</project>
