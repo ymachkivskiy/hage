@@ -314,11 +314,6 @@
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>2.9.1</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-dependency-plugin</artifactId>
 					<version>2.8</version>
 				</plugin>
@@ -549,74 +544,12 @@
 					<inputEncoding>UTF-8</inputEncoding>
 					<outputEncoding>UTF-8</outputEncoding>
 
-					<reportPlugins>
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-javadoc-plugin</artifactId>
-							<version>2.9</version>
-							<reportSets>
-								<reportSet>
-									<id>aggregate</id>
-									<reports>
-										<report>aggregate</report>
-									</reports>
-								</reportSet>
-							</reportSets>
-						</plugin>
-
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-jxr-plugin</artifactId>
-							<version>2.3</version>
-							<configuration>
-								<aggregate>true</aggregate>
-							</configuration>
-						</plugin>
-
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-project-info-reports-plugin</artifactId>
-							<version>2.4</version>
-							<reportSets>
-								<reportSet>
-									<reports>
-										<report>index</report>
-										<report>modules</report>
-										<report>issue-tracking</report>
-										<report>mailing-list</report>
-										<report>scm</report>
-										<report>cim</report>
-										<report>project-team</report>
-										<report>license</report>
-										<report>dependency-convergence</report>
-										<report>plugin-management</report>
-										<report>dependency-management</report>
-										<report>summary</report>
-									</reports>
-								</reportSet>
-							</reportSets>
-						</plugin>
-					</reportPlugins>
 				</configuration>
 				<executions>
 					<execution>
 						<id>attach-descriptor</id>
 						<goals>
 							<goal>attach-descriptor</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>attach-javadocs</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>jar</goal>
 						</goals>
 					</execution>
 				</executions>

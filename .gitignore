@@ -4,3 +4,5 @@ target/
 .classpath
 bin/
 /monitoring/monitoring-consumers/graphite/src/vagrant/.vagrant
+.idea
+*.iml
