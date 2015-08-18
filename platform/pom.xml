@@ -22,7 +22,7 @@
 		<module>property</module>
 		<module>component</module>
 		<module>component-pico</module>
-		<module>config</module>
+		<module>configuration-api</module>
 		<module>config-xml</module>
 		<module>arguments</module>
 		<module>cli-bootstrapper</module>
