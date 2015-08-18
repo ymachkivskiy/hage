@@ -74,7 +74,7 @@
 
 	<profiles>
 		<profile>
-			<id>examples</id>
+			<id>master</id>
 			<build>
 				<plugins>
 					<plugin>
@@ -103,7 +103,7 @@
 		</profile>
 
 		<profile>
-			<id>distributed</id>
+			<id>slave</id>
 			<build>
 				<plugins>
 					<plugin>

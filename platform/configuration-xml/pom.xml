@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>config-xml</artifactId>
+	<artifactId>configuration-xml</artifactId>
 
 	<name>AgE XML-based Configuration Loader</name>
 	<description>The configuration loader based on XML</description>
@@ -17,7 +17,7 @@
 		<!-- AgE Platform dependencies -->
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>config</artifactId>
+			<artifactId>configuration-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 

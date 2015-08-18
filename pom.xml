@@ -66,48 +66,6 @@
 		<url>https://age.iisg.agh.edu.pl/bamboo/browse/AGE</url>
 	</ciManagement>
 
-	<developers>
-		<developer>
-			<id>kpietak</id>
-			<name>Kamil Pietak</name>
-			<email>kpietak@agh.edu.pl</email>
-			<organization>
-				AGH University of Science and Technology
-			</organization>
-			<organizationUrl>http://www.agh.edu.pl</organizationUrl>
-			<roles>
-				<role>developer</role>
-				<role>tester</role>
-			</roles>
-		</developer>
-		<developer>
-			<id>faber</id>
-			<name>Łukasz Faber</name>
-			<email>faber@agh.edu.pl</email>
-			<organization>
-				AGH University of Science and Technology
-			</organization>
-			<organizationUrl>http://www.agh.edu.pl</organizationUrl>
-			<roles>
-				<role>developer</role>
-				<role>tester</role>
-			</roles>
-		</developer>
-		<developer>
-			<id>krzywick</id>
-			<name>Daniel Krzywicki</name>
-			<email>krzywicki.daniel@gmail.com</email>
-			<organization>
-				AGH University of Science and Technology
-			</organization>
-			<organizationUrl>http://www.agh.edu.pl</organizationUrl>
-			<roles>
-				<role>developer</role>
-				<role>tester</role>
-			</roles>
-		</developer>
-	</developers>
-
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<scm.base-url>https://age.iisg.agh.edu.pl/git/age.git</scm.base-url>
@@ -182,12 +140,12 @@
 			<url>http://age.iisg.agh.edu.pl/maven2</url>
 			<releases>
 				<enabled>true</enabled>
-				<updatePolicy>daily</updatePolicy>
+				<!--<updatePolicy>daily</updatePolicy>-->
 				<checksumPolicy>warn</checksumPolicy>
 			</releases>
 			<snapshots>
 				<enabled>true</enabled>
-				<updatePolicy>daily</updatePolicy>
+				<!--<updatePolicy>daily</updatePolicy>-->
 				<checksumPolicy>fail</checksumPolicy>
 			</snapshots>
 		</repository>
@@ -349,44 +307,6 @@
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-checkstyle-plugin</artifactId>
-					<version>2.11</version>
-					<dependencies>
-						<dependency>
-							<groupId>org.jage.tools</groupId>
-							<artifactId>build-conf</artifactId>
-							<version>1.0.6</version>
-							<exclusions>
-								<exclusion>
-									<groupId>com.google.guava</groupId>
-									<artifactId>guava</artifactId>
-								</exclusion>
-								<exclusion>
-									<groupId>org.slf4j</groupId>
-									<artifactId>slf4j-api</artifactId>
-								</exclusion>
-								<exclusion>
-									<groupId>org.slf4j</groupId>
-									<artifactId>slf4j-log4j12</artifactId>
-								</exclusion>
-								<exclusion>
-									<groupId>junit</groupId>
-									<artifactId>junit</artifactId>
-								</exclusion>
-								<exclusion>
-									<groupId>org.mockito</groupId>
-									<artifactId>mockito-all</artifactId>
-								</exclusion>
-								<exclusion>
-									<groupId>org.hamcrest</groupId>
-									<artifactId>hamcrest-all</artifactId>
-								</exclusion>
-							</exclusions>
-						</dependency>
-					</dependencies>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-site-plugin</artifactId>
 					<version>3.3</version>
 				</plugin>
@@ -429,8 +349,8 @@
 				<inherited>true</inherited>
 				<configuration>
 					<fork>true</fork>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 		
@@ -504,19 +424,6 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
-
-			<!-- checkstyle -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<configuration>
-					<configLocation>checkstyle/checkstyle.xml</configLocation>
-					<headerLocation>checkstyle/age-header.txt</headerLocation>
-					<suppressionsLocation>${user.dir}/build-conf/src/main/resources/checkstyle/suppressions.xml
-					</suppressionsLocation>
-				</configuration>
-				<inherited>true</inherited>
 			</plugin>
 
 			<plugin>

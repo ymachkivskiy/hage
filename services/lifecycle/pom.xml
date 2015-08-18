@@ -34,7 +34,7 @@
 
 		<dependency>
 			<groupId>org.jage.platform</groupId>
-			<artifactId>config-loader-xml</artifactId>
+			<artifactId>configuration-xml</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 
