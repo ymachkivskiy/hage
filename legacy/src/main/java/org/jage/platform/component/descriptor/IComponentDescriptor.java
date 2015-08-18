@@ -51,29 +51,6 @@ public interface IComponentDescriptor {
 	 */
 	Class<?> getComponentType();
 
-//	/**
-//	 * Returns all properties descriptions (meta-properties) of this component.
-//	 *
-//	 * @return list of meta properties
-//	 */
-//	Collection<MetaProperty> getProperties();
-
-//	/**
-//	 * Returns required properties descriptions (meta-properties) of this component. These properties are required to
-//	 * proper component initialization.
-//	 *
-//	 * @return list of required meta properties
-//	 */
-//	Collection<MetaProperty> getRequriedProperties();
-
-//	/**
-//	 * Returns optional properties descriptions (meta-properties) of this component. These properties are not required
-//	 * for proper component initialization.
-//	 *
-//	 * @return list of optional meta properties
-//	 */
-//	Collection<MetaProperty> getOptionalProperties();
-
 	/**
 	 * Returns list containing sequences of parameters types of available constructors.
 	 *

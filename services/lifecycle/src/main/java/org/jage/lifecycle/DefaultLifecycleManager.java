@@ -152,7 +152,8 @@ public class DefaultLifecycleManager
 		instanceProvider = provider;
 	}
 
-	@Override public void onMessage(final LifecycleMessage message) {
+	@Override
+    public void onMessage(final LifecycleMessage message) {
 		final LifecycleCommand command = message.getCommand();
 		switch (command) {
 			case FAIL:
@@ -195,12 +196,14 @@ public class DefaultLifecycleManager
 		return true;
 	}
 
-	@Subscribe public void onConfigurationUpdated(@Nonnull final ConfigurationUpdatedEvent event) {
+	@Subscribe
+    public void onConfigurationUpdated(@Nonnull final ConfigurationUpdatedEvent event) {
 		log.debug("Configuration updated event: {}.", event);
 		service.fire(Event.CONFIGURE);
 	}
 
-	@Subscribe public void onCoreComponentEvent(@Nonnull final CoreComponentEvent event) {
+	@Subscribe
+    public void onCoreComponentEvent(@Nonnull final CoreComponentEvent event) {
 		log.debug("Core component Event: {}.", event);
 		switch (event.getType()) {
 			case CONFIGURED:
@@ -216,12 +219,14 @@ public class DefaultLifecycleManager
 
 	}
 
-	@Subscribe public void onStopConditionFulfilledEvent(@Nonnull final StopConditionFulfilledEvent event) {
+	@Subscribe
+    public void onStopConditionFulfilledEvent(@Nonnull final StopConditionFulfilledEvent event) {
 		log.debug("Stop condition fulfilled event: {}.", event);
 		service.fire(Event.STOP_COMMAND);
 	}
 
-	@Subscribe public void onExitRequestedEvent(@Nonnull final ExitRequestedEvent event) {
+	@Subscribe
+    public void onExitRequestedEvent(@Nonnull final ExitRequestedEvent event) {
 		log.debug("Exit requested by event: {}.", event);
 		service.fire(Event.EXIT);
 	}
@@ -237,72 +242,91 @@ public class DefaultLifecycleManager
 		@Override
 		public void run() {
 			log.debug("Initializing LifecycleManager.");
-			instanceProvider.addComponent(ConfigurationLoader.class);
 
-			final String configFilePath = argumentsService.getCustomOption(NODE_CONFIGURATION_FILE_OPTION);
-
-			if (configFilePath == null) {
-				throw new InvalidRuntimeArgumentsException(String.format(
-						"The node config file name parameter is missing. Specify the correct path " +
-								"to the configuration file using -D%s option", NODE_CONFIGURATION_FILE_OPTION));
-			}
-
-			try {
-				log.debug("Loading configuration from {}.", configFilePath);
-				final Collection<IComponentDefinition> nodeComponents =
-						instanceProvider.getInstance(IConfigurationLoader.class).loadConfiguration(configFilePath);
-
-				for (final IComponentDefinition def : nodeComponents) {
-					instanceProvider.addComponent(def);
-				}
-				instanceProvider.verify();
-			} catch (final ComponentException | ConfigurationException e) {
-				throw new LifecycleException("Cannot perform components initialization.", e);
-			}
-
-			log.debug("Initialising required components.");
-			// initialize in the whole hierarchy (see AGE-163). Can be removed when some @PostConstruct are introduced
-			// or component starting is supported at container level.
-			if (instanceProvider instanceof PicoContainer) {
-				((PicoContainer)instanceProvider).accept(new StatefulComponentInitializer());
-			} else {
-				//fallback for other potential implementations
-				instanceProvider.getInstances(IStatefulComponent.class);
-			}
-
-			final CommunicationManager communicationService = instanceProvider.getInstance(DefaultCommunicationManager.class);
-
-			if (communicationService == null) {
-				throw new LifecycleException("There is no CommunicationService in the platform.");
-			}
-			log.debug("Communication service: {}.", communicationService);
-
-			communicationChannel = communicationService.getCommunicationChannelForService(SERVICE_NAME);
-			communicationChannel.subscribe(DefaultLifecycleManager.this);
-			log.debug("Communication channel: {}.", communicationChannel);
-
-			final EventBus eventBus = instanceProvider.getInstance(EventBus.class);
-			service.setEventBus(eventBus);
-			eventBus.register(DefaultLifecycleManager.this);
-			log.debug("Event bus: {}.", eventBus);
-
-			coreComponent = instanceProvider.getInstance(CoreComponent.class);
-			if (coreComponent == null) {
-				throw new LifecycleException("Core component (CoreComponent) is missing. Cannot run the computation.");
-			}
-			log.debug("Core component: {}.", coreComponent);
+            registerConfigurationLoader();
+            initializeNodeConfiguration();
+            initializeStatefullComponents();
+            initializeCommunicationChanel();
+            initializeEventBus();
+            initializeCoreComponent();
 
 			log.debug("Node has finished initialization.");
 		}
-	}
+
+        private void registerConfigurationLoader() {
+            instanceProvider.addComponent(ConfigurationLoader.class);
+        }
+
+        private void initializeNodeConfiguration() {
+            final String configFilePath = argumentsService.getCustomOption(NODE_CONFIGURATION_FILE_OPTION);
+
+            if (configFilePath == null) {
+                throw new InvalidRuntimeArgumentsException(String.format(
+                        "The node config file name parameter is missing. Specify the correct path " +
+                                "to the configuration file using -D%s option", NODE_CONFIGURATION_FILE_OPTION));
+            }
+
+            try {
+                log.debug("Loading configuration from {}.", configFilePath);
+                final Collection<IComponentDefinition> nodeComponents =
+                        instanceProvider.getInstance(IConfigurationLoader.class).loadConfiguration(configFilePath);
+
+                for (final IComponentDefinition def : nodeComponents) {
+                    instanceProvider.addComponent(def);
+                }
+                instanceProvider.verify();
+            } catch (final ComponentException | ConfigurationException e) {
+                throw new LifecycleException("Cannot perform components initialization.", e);
+            }
+        }
+
+        private void initializeStatefullComponents() {
+            log.debug("Initialising required components.");
+            // initialize in the whole hierarchy (see AGE-163). Can be removed when some @PostConstruct are introduced
+            // or component starting is supported at container level.
+            if (instanceProvider instanceof PicoContainer) {
+                ((PicoContainer)instanceProvider).accept(new StatefulComponentInitializer());
+            } else {
+                //fallback for other potential implementations
+                instanceProvider.getInstances(IStatefulComponent.class);
+            }
+        }
+
+        private void initializeCommunicationChanel() {
+            final CommunicationManager communicationService = instanceProvider.getInstance(DefaultCommunicationManager.class);
+
+            if (communicationService == null) {
+                throw new LifecycleException("There is no CommunicationService in the platform.");
+            }
+            log.debug("Communication service: {}.", communicationService);
+
+            communicationChannel = communicationService.getCommunicationChannelForService(SERVICE_NAME);
+            communicationChannel.subscribe(DefaultLifecycleManager.this);
+
+            log.debug("Communication channel: {}.", communicationChannel);
+        }
+
+        private void initializeEventBus() {
+            final EventBus eventBus = instanceProvider.getInstance(EventBus.class);
+            service.setEventBus(eventBus);
+            eventBus.register(DefaultLifecycleManager.this);
+            log.debug("Event bus: {}.", eventBus);
+        }
+
+        private void initializeCoreComponent() {
+            coreComponent = instanceProvider.getInstance(CoreComponent.class);
+            if (coreComponent == null) {
+                throw new LifecycleException("Core component (CoreComponent) is missing. Cannot run the computation.");
+            }
+            log.debug("Core component: {}.", coreComponent);
+        }
+    }
 
 	private class ConfigurationAction implements Runnable {
 		@SuppressWarnings("unchecked") @Override
 		public void run() {
 			log.debug("Configuring the computation.");
-			// XXX
 			log.debug("Node is configured.");
-			//service.fire(Event.START_COMMAND);
 		}
 	}
 

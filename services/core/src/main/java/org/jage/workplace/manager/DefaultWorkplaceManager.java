@@ -404,7 +404,9 @@ public class DefaultWorkplaceManager implements WorkplaceManager, IMutableCompon
 		// TODO
 	}
 
-	@Nonnull @Override public Set<AgentAddress> getAddressesOfWorkplaces() {
+	@Nonnull
+    @Override
+    public Set<AgentAddress> getAddressesOfWorkplaces() {
 		final ImmutableSet.Builder<AgentAddress> builder = ImmutableSet.builder();
 		for (final Set<AgentAddress> remoteAddresses : workplacesMap.values()) {
 			builder.addAll(remoteAddresses);
@@ -460,7 +462,8 @@ public class DefaultWorkplaceManager implements WorkplaceManager, IMutableCompon
 
 	/* Distribution-awareness methods */
 
-	@Subscribe public void onConfigurationUpdated(@Nonnull final ConfigurationUpdatedEvent event) {
+	@Subscribe
+    public void onConfigurationUpdated(@Nonnull final ConfigurationUpdatedEvent event) {
 		log.debug("Event: {}.", event);
 		checkState(configuredWorkplaces == null, "The core component is already configured.");
 

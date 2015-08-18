@@ -47,18 +47,12 @@ public class ComponentDescriptor implements IComponentDescriptor {
 
 	private final List<List<Class<?>>> constructorParametersTypes;
 
-//	private Map<String, MetaProperty> requiredProperties;
-
-//	private Map<String, MetaProperty> optionalProperties;
-
 	/**
 	 * Constructor.
 	 */
 	public ComponentDescriptor() {
 		// initialize empty collections
 		constructorParametersTypes = new LinkedList<List<Class<?>>>();
-//		requiredProperties = new HashMap<String, MetaProperty>();
-//		optionalProperties = new HashMap<String, MetaProperty>();
 	}
 
 
@@ -72,28 +66,8 @@ public class ComponentDescriptor implements IComponentDescriptor {
 		return Collections.unmodifiableList(constructorParametersTypes);
 	}
 
-//	@Override
-//    public Collection<MetaProperty> getOptionalProperties() {
-//		return Collections.unmodifiableCollection(optionalProperties.values());
-//	}
-
-//	@Override
-//    public Collection<MetaProperty> getProperties() {
-//		Collection<MetaProperty> properties = new ArrayList<MetaProperty>(optionalProperties.size()
-//		        + requiredProperties.size());
-//		properties.addAll(requiredProperties.values());
-//		properties.addAll(optionalProperties.values());
-//		return Collections.unmodifiableCollection(properties);
-//	}
-
-//	@Override
-//    public Collection<MetaProperty> getRequriedProperties() {
-//		return Collections.unmodifiableCollection(requiredProperties.values());
-//	}
-
 	@Override
 	public boolean containsProperty(final String name) {
-//		return requiredProperties.containsKey(name) || optionalProperties.containsKey(name);
 		return false;
 	}
 
@@ -119,33 +93,4 @@ public class ComponentDescriptor implements IComponentDescriptor {
 	void addConstructorParametersTypes(final List<Class<?>> parametersTypes) {
 		constructorParametersTypes.add(parametersTypes);
 	}
-
-//	/**
-//	 * Adds an optional property.
-//	 *
-//	 * @param optional
-//	 *            a new optional property
-//	 * @return true if a new property didn't exist before
-//	 */
-//	boolean addOptionalProperty(final MetaProperty optional) {
-//		return addProperty(optionalProperties, optional);
-//	}
-
-//	/**
-//	 * Adds a required property.
-//	 *
-//	 * @param required
-//	 *            a new required property
-//	 * @return true if a new property didn't exist before
-//	 */
-//	boolean addRequiredProperty(final MetaProperty required) {
-//		return addProperty(requiredProperties, required);
-//	}
-
-//	private boolean addProperty(final Map<String, MetaProperty> list, final MetaProperty property) {
-//		if (list.containsKey(property.getName())) {
-//			return false;
-//		}
-//		return list.put(property.getName(), property) == null ? true : false;
-//	}
 }

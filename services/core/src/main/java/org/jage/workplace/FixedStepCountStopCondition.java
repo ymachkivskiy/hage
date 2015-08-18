@@ -68,7 +68,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  *
  * @author AGH AgE Team
  */
-public class FixedStepCountStopCondition implements IStopCondition {
+public class FixedStepCountStopCondition implements IStopCondition { //TODO : refactor and extract some base class with event posting etc.
 
 	private static Logger log = LoggerFactory.getLogger(FixedStepCountStopCondition.class);
 
@@ -111,7 +111,8 @@ public class FixedStepCountStopCondition implements IStopCondition {
 		log.info("Fixed step stop condition created with step set to: {}.", this.stepCount);
 	}
 
-	@Subscribe public void onCoreComponentEvent(@Nonnull final CoreComponentEvent event) {
+	@Subscribe
+    public void onCoreComponentEvent(@Nonnull final CoreComponentEvent event) {
 		log.debug("Event: {}.", event);
 		switch (event.getType()) {
 			case STARTING:

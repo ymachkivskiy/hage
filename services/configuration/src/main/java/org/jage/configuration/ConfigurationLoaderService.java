@@ -31,15 +31,7 @@
 
 package org.jage.configuration;
 
-import java.util.Collection;
-
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.ThreadSafe;
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import com.google.common.eventbus.Subscribe;
 import org.jage.bus.EventBus;
 import org.jage.lifecycle.LifecycleStateChangedEvent;
 import org.jage.platform.argument.RuntimeArgumentsService;
@@ -49,63 +41,90 @@ import org.jage.platform.component.definition.IComponentDefinition;
 import org.jage.platform.component.exception.ComponentException;
 import org.jage.platform.config.loader.IConfigurationLoader;
 import org.jage.services.core.LifecycleManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.google.common.eventbus.Subscribe;
+import javax.annotation.Nonnull;
+import javax.annotation.concurrent.ThreadSafe;
+import javax.inject.Inject;
+import java.util.Collection;
 
 import static com.google.common.base.Objects.toStringHelper;
 
 /**
  * Provides a way to load computation configuration from a file.</p>
- *
+ * <p/>
  * This service reacts on the "INITIALIZED" event of the lifecycle manager and loads a computation configuration
  * from file. The configuration is sent via the event bus in {@link ConfigurationLoadedEvent}.
  */
 @ThreadSafe
 public class ConfigurationLoaderService implements IStatefulComponent {
 
-	private static final Logger log = LoggerFactory.getLogger(ConfigurationLoaderService.class);
+    private static final Logger log = LoggerFactory.getLogger(ConfigurationLoaderService.class);
 
-	private static final String COMPUTATION_CONFIGURATION = "age.computation.conf";
+    private static final String COMPUTATION_CONFIGURATION = "age.computation.conf";
 
-	@Inject private RuntimeArgumentsService argumentsService;
+    @Inject
+    private RuntimeArgumentsService argumentsService;
+    @Inject
+    private IConfigurationLoader configurationLoader;
+    @Inject
+    private EventBus eventBus;
 
-	@Inject private IConfigurationLoader configurationLoader;
+    @Override
+    public void init() {
+        eventBus.register(this);
+    }
 
-	@Inject private EventBus eventBus;
+    @Override
+    public boolean finish() {
+        return true;
+    }
 
-	@Override public void init() {
-		eventBus.register(this);
-	}
+    @Subscribe
+    public void onLifecycleEvent(@Nonnull final LifecycleStateChangedEvent event) {
+        if (canLoadConfigurationOnEvent(event)) {
+            tryLoadAndPropagateConfiguration();
+        }
+    }
 
-	@Override public boolean finish() {
-		return true;
-	}
+    private boolean canLoadConfigurationOnEvent(LifecycleStateChangedEvent event) {
+        return LifecycleManager.State.INITIALIZED.equals(event.getNewState());
+    }
 
-	@Subscribe public void onLifecycleEvent(@Nonnull final LifecycleStateChangedEvent event) {
-		final LifecycleManager.State newState = event.getNewState();
+    private void tryLoadAndPropagateConfiguration() {
+        final String configFilePath = argumentsService.getCustomOption(COMPUTATION_CONFIGURATION);
+        if (configFilePath != null) {
+            loadAndPropagateConfiguration(configFilePath);
+        } else {
+            log.info("No computation configuration.");
+        }
+    }
 
-		if (LifecycleManager.State.INITIALIZED.equals(newState)) {
-			final String configFilePath = argumentsService.getCustomOption(COMPUTATION_CONFIGURATION);
+    private void loadAndPropagateConfiguration(String configFilePath) {
+        Collection<IComponentDefinition> computationComponents = getComputationComponentsDefinitions(configFilePath);
+        propagateComputationComponentsDefinitions(computationComponents);
+    }
 
-			if (configFilePath != null) {
-				log.info("Loading computation configuration from {}.", configFilePath);
-				final Collection<IComponentDefinition> computationComponents;
-				try {
-					computationComponents = configurationLoader.loadConfiguration(configFilePath);
-				} catch (final ConfigurationException e) {
-					log.error("Cannot load configuration from {}.", configFilePath, e);
-					throw new ComponentException(e);
-				}
+    private Collection<IComponentDefinition> getComputationComponentsDefinitions(String configFilePath) {
+        log.info("Loading computation configuration from {}.", configFilePath);
 
-				eventBus.post(new ConfigurationLoadedEvent(computationComponents));
-			} else {
-				log.info("No computation configuration.");
-			}
-		}
-	}
+        final Collection<IComponentDefinition> computationComponents;
+        try {
+            computationComponents = configurationLoader.loadConfiguration(configFilePath);
+        } catch (final ConfigurationException e) {
+            log.error("Cannot load configuration from {}.", configFilePath, e);
+            throw new ComponentException(e);
+        }
+        return computationComponents;
+    }
 
-	@Override
-	public String toString() {
-		return toStringHelper(this).toString();
-	}
+    private void propagateComputationComponentsDefinitions(Collection<IComponentDefinition> computationComponents) {
+        eventBus.post(new ConfigurationLoadedEvent(computationComponents));
+    }
+
+    @Override
+    public String toString() {
+        return toStringHelper(this).toString();
+    }
 }
