@@ -31,65 +31,60 @@
 
 package org.jage.address.selector;
 
-import java.util.Set;
-
-import static java.util.Objects.requireNonNull;
+import com.google.common.collect.ImmutableSet;
+import org.jage.address.Address;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
-
-import org.jage.address.Address;
-
-import com.google.common.collect.ImmutableSet;
+import java.util.Set;
 
 import static com.google.common.base.Objects.toStringHelper;
+import static java.util.Objects.requireNonNull;
 
 /**
  * The most simple address selector. Always returns the address given in the constructor.
  *
- * @param <T>
- * 		type of an address which can be selected by this selector.
- *
+ * @param <T> type of an address which can be selected by this selector.
  * @author AGH AgE Team
  */
 @Immutable
 public class UnicastSelector<T extends Address> implements ExplicitSelector<T> {
 
-	private static final long serialVersionUID = 5814016849899074368L;
+    private static final long serialVersionUID = 5814016849899074368L;
 
-	private final T address;
+    private final T address;
 
-	/**
-	 * The only constructor.
-	 *
-	 * @param address
-	 * 		address to select
-	 */
-	public UnicastSelector(final T address) {
-		this.address = requireNonNull(address);
-	}
+    /**
+     * The only constructor.
+     *
+     * @param address address to select
+     */
+    private UnicastSelector(final T address) {
+        this.address = requireNonNull(address);
+    }
 
-	/**
-	 * Constructs a new selector for the provided address.
-	 *
-	 * @param address
-	 * 		an address.
-	 */
-	public static <T extends Address> UnicastSelector<T> create(final T address) {
-		return new UnicastSelector<>(address);
-	}
+    /**
+     * Constructs a new selector for the provided address.
+     *
+     * @param address an address.
+     */
+    public static <T extends Address> UnicastSelector<T> create(final T address) {
+        return new UnicastSelector<>(address);
+    }
 
-	@Override @Nonnull
-	public Set<T> getAddresses() {
-		return ImmutableSet.of(address);
-	}
+    @Override
+    @Nonnull
+    public Set<T> getAddresses() {
+        return ImmutableSet.of(address);
+    }
 
-	@Override
-	public boolean selects(@Nonnull final T address) {
-		return this.address.equals(requireNonNull(address));
-	}
+    @Override
+    public boolean selects(@Nonnull final T address) {
+        return this.address.equals(requireNonNull(address));
+    }
 
-	@Override public String toString() {
-		return toStringHelper(this).addValue(address).toString();
-	}
+    @Override
+    public String toString() {
+        return toStringHelper(this).addValue(address).toString();
+    }
 }

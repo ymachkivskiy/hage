@@ -31,30 +31,29 @@
 
 package org.jage.address.selector;
 
-import java.util.Set;
+import org.jage.address.Address;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
-
-import org.jage.address.Address;
+import java.util.Set;
 
 /**
  * A selector that can explicitly provide a set of addresses selected by it.
- * <p/>
+ * <p>
  * The requirement for this kind of selector is that it may select only addresses that it returns via {#getAddresses}.
  *
- * @param <T>
- * 		an address type.
+ * @param <T> an address type.
  * @author AGH AgE Team
  */
 @Immutable
 public interface ExplicitSelector<T extends Address> extends AddressSelector<T> {
 
-	/**
-	 * Returns all addresses selected by this selector.
-	 *
-	 * @return a set of addresses.
-	 */
-	@Nonnull Set<T> getAddresses();
+    /**
+     * Returns all addresses selected by this selector.
+     *
+     * @return a set of addresses.
+     */
+    @Nonnull
+    Set<T> getAddresses();
 
 }

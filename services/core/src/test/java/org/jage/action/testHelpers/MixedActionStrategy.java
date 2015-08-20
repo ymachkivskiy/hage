@@ -57,7 +57,7 @@ public class MixedActionStrategy extends ClassPropertyContainer implements IPerf
 	}
 
 	@Override
-	public void perfom(IAgent target, IActionContext context) throws AgentException {
+	public void perform(IAgent target, IActionContext context) throws AgentException {
 		// Empty
 	}
 

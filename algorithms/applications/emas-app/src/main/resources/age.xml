@@ -24,7 +24,7 @@
 									<constructor-arg name="nameTemplate" value="individual*"/>
 								</component>
 								<strategy name="actionPreparator"
-								          class="org.jage.emas.action.individual.ActionPreparator">
+								          class="org.jage.emas.action.individual.ActionPreparer">
 									<list isSingleton="true">
 										<strategy class="org.jage.emas.action.individual.EncounterActionContext"/>
 										<strategy class="org.jage.emas.action.individual.MigrationActionContext"/>
@@ -71,7 +71,7 @@
 							</property>
 
 							<!-- IslandAgents strategies -->
-							<strategy name="actionPreparator" class="org.jage.emas.action.island.ActionPreparator">
+							<strategy name="actionPreparator" class="org.jage.emas.action.island.ActionPreparer">
 								<strategy name="initializationActionCtx"
 								          class="org.jage.emas.action.island.InitializationActionContext"/>
 								<list isSingleton="true">

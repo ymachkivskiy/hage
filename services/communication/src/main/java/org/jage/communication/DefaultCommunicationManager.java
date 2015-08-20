@@ -81,8 +81,8 @@ public class DefaultCommunicationManager implements IStatefulComponent, NodeAddr
 		config.setProperty("hazelcast.logging.type", "slf4j");
 
 		hazelcastInstance = Hazelcast.newHazelcastInstance(config);
-		nodeAddress = new HazelcastNodeAddress(getLocalMemberUuid());
-		log.debug("Node UUID: {}.", getLocalMemberUuid());
+		nodeAddress = new HazelcastNodeAddress(getLocalMemberUuid(hazelcastInstance));
+		log.debug("Node UUID: {}.", getLocalMemberUuid(hazelcastInstance));
 	}
 
 	@Override public void init() { /*Empty*/ }
@@ -111,10 +111,10 @@ public class DefaultCommunicationManager implements IStatefulComponent, NodeAddr
 	}
 
 	@Override public String toString() {
-		return toStringHelper(this).add("H-UUID", getLocalMemberUuid()).toString();
+		return toStringHelper(this).add("H-UUID", getLocalMemberUuid(hazelcastInstance)).toString();
 	}
 
-	@Nonnull private static String getLocalMemberUuid() {
+	@Nonnull private static String getLocalMemberUuid(HazelcastInstance hazelcastInstance) {
 		return hazelcastInstance.getCluster().getLocalMember().getUuid();
 	}
 }

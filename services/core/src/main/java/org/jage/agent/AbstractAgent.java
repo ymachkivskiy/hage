@@ -40,7 +40,6 @@ import javax.annotation.Nonnull;
 import org.jage.address.agent.AgentAddress;
 import org.jage.address.agent.AgentAddressSupplier;
 import org.jage.communication.message.Message;
-import org.jage.platform.component.exception.ComponentException;
 import org.jage.property.ClassPropertyContainer;
 import org.jage.property.IPropertyContainer;
 import org.jage.property.InvalidPropertyPathException;

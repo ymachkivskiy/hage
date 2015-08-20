@@ -62,7 +62,7 @@ public class HelperTestActionStrategy extends ClassPropertyContainer implements 
 	 * @see org.jage.action.IActionStrategy#perfomAction(org.jage.agent.IAgent, org.jage.action.IActionContext)
 	 */
 	@Override
-	public void perfom(IAgent target, IActionContext context) throws AgentException {
+	public void perform(IAgent target, IActionContext context) throws AgentException {
 
 		StrategyTestActionContext staContext = (StrategyTestActionContext)context;
 		staContext.actionRun = true;

@@ -122,12 +122,7 @@ public final class MethodPredicates {
 	 * @since 2.6
 	 */
 	public static Predicate<Method> overriddenBy(final Method child) {
-		return new Predicate<Method>() {
-			@Override
-			public boolean apply(final Method parent) {
-				return Methods.isOverridenBy(parent, child);
-			}
-		};
+		return parent -> Methods.isOverridenBy(parent, child);
 	}
 
 	private MethodPredicates() {

@@ -148,32 +148,25 @@ public class SimpleAggregate extends SimpleAgent implements ISimpleAggregate, IS
 
 	@Override
 	public boolean finish() {
-		withReadLock(new Runnable() {
-			@Override
-			public void run() {
-				for (final ISimpleAgent agent : agents.values()) {
-					try {
-						agent.finish();
-					} catch (final ComponentException e) {
-						log.error("Finalization of {} resulted in an exception.", agent, e);
-					}
-				}
-			}
-		});
+		withReadLock(() -> {
+            for (final ISimpleAgent agent : agents.values()) {
+                try {
+                    agent.finish();
+                } catch (final ComponentException e) {
+                    log.error("Finalization of {} resulted in an exception.", agent, e);
+                }
+            }
+        });
 		return super.finish();
 	}
 
 	@Override
 	public void step() {
-		withReadLock(new Runnable() {
-			@Override
-			public void run() {
-				log.debug("Step on agents {}.", agents);
-				for (final ISimpleAgent agent : agents.values()) {
-					agent.step();
-				}
-			}
-		});
+
+		withReadLock(() -> {
+            log.debug("Step on agents {}.", agents);
+            agents.values().forEach(ISimpleAgent::step);
+        });
 
 		actionService.processActions();
 		notifyMonitorsForChangedProperties();
@@ -194,45 +187,25 @@ public class SimpleAggregate extends SimpleAgent implements ISimpleAggregate, IS
 
 	@Override
 	public final Set<AgentAddress> getAgentsAddresses() {
-		return withReadLock(new Callable<Set<AgentAddress>>() {
-			@Override
-			public Set<AgentAddress> call() {
-				return ImmutableSet.copyOf(agents.keySet());
-			}
-		});
+		return withReadLock(() -> ImmutableSet.copyOf(agents.keySet()));
 	}
 
 	@Override
 	public final ISimpleAgent getAgent(final AgentAddress agentAddress) {
 		checkNotNull(agentAddress);
-		return withReadLock(new Callable<ISimpleAgent>() {
-			@Override
-			public ISimpleAgent call() {
-				return agents.get(agentAddress);
-			}
-		});
+		return withReadLock(() -> agents.get(agentAddress));
 	}
 
 	@Override
 	public final boolean containsAgent(final AgentAddress agentAddress) {
 		checkNotNull(agentAddress);
-		return withReadLock(new Callable<Boolean>() {
-			@Override
-			public Boolean call() {
-				return agents.containsKey(agentAddress);
-			}
-		});
+		return withReadLock(() -> agents.containsKey(agentAddress));
 	}
 
 	@Override
 	public final void removeAgent(final AgentAddress agentAddress) {
 		checkNotNull(agentAddress);
-		withWriteLock(new Runnable() {
-			@Override
-			public void run() {
-				removeAgentWithoutSynchronization(agentAddress);
-			}
-		});
+		withWriteLock(() -> removeAgentWithoutSynchronization(agentAddress));
 	}
 
 	/* Setter and getter for the initial agent list. */
@@ -256,39 +229,26 @@ public class SimpleAggregate extends SimpleAgent implements ISimpleAggregate, IS
 	 */
 	@PropertyGetter(propertyName = "agents")
 	public final List<ISimpleAgent> getAgents() {
-		return withReadLock(new Callable<List<ISimpleAgent>>() {
-			@Override
-			public List<ISimpleAgent> call() {
-				return ImmutableList.copyOf(agents.values());
-			}
-		});
+		return withReadLock(() -> ImmutableList.copyOf(agents.values()));
 	}
 
 	@Override
 	public final boolean add(final ISimpleAgent agent) {
 		checkNotNull(agent);
-		return withWriteLock(new Callable<Boolean>() {
-			@Override
-			public Boolean call() {
-				return addAgentWithoutSynchronization(agent);
-			}
-		});
+		return withWriteLock(() -> addAgentWithoutSynchronization(agent));
 	}
 
 	@Override
 	public final boolean addAll(@Nonnull final Collection<? extends ISimpleAgent> agentsToAdd) {
 		checkNotNull(agentsToAdd);
-		return withWriteLock(new Callable<Boolean>() {
-			@Override
-			public Boolean call() {
-				for (final ISimpleAgent agent : agentsToAdd) {
-					if (!addAgentWithoutSynchronization(agent)) {
-						return false;
-					}
-				}
-				return true;
-			}
-		});
+		return withWriteLock(() -> {
+            for (final ISimpleAgent agent : agentsToAdd) {
+                if (!addAgentWithoutSynchronization(agent)) {
+                    return false;
+                }
+            }
+            return true;
+        });
 	}
 
 	@Override
@@ -304,33 +264,18 @@ public class SimpleAggregate extends SimpleAgent implements ISimpleAggregate, IS
 	@Override
 	public final boolean contains(final Object o) {
 		checkNotNull(o);
-		return withReadLock(new Callable<Boolean>() {
-			@Override
-			public Boolean call() {
-				return agents.containsValue(o);
-			}
-		});
+		return withReadLock(() -> agents.containsValue(o));
 	}
 
 	@Override
 	public final boolean containsAll(final Collection<?> c) {
 		checkNotNull(c);
-		return withReadLock(new Callable<Boolean>() {
-			@Override
-			public Boolean call() {
-				return agents.values().containsAll(c);
-			}
-		});
+		return withReadLock(() -> agents.values().containsAll(c));
 	}
 
 	@Override
 	public final boolean isEmpty() {
-		return withReadLock(new Callable<Boolean>() {
-			@Override
-			public Boolean call() {
-				return agents.isEmpty();
-			}
-		});
+		return withReadLock(() -> agents.isEmpty());
 	}
 
 	/**
@@ -342,77 +287,42 @@ public class SimpleAggregate extends SimpleAgent implements ISimpleAggregate, IS
 	 */
 	@Override @Nonnull
 	public final Iterator<ISimpleAgent> iterator() {
-		return withReadLock(new Callable<Iterator<ISimpleAgent>>() {
-			@Override
-			public Iterator<ISimpleAgent> call() {
-				return ImmutableSet.copyOf(agents.values()).iterator();
-			}
-		});
+		return withReadLock(() -> ImmutableSet.copyOf(agents.values()).iterator());
 	}
 
 	@Override
 	public final boolean remove(final Object o) {
 		checkNotNull(o);
 		checkArgument(o instanceof ISimpleAgent);
-		return withWriteLock(new Callable<Boolean>() {
-			@Override
-			public Boolean call() {
-				return removeAgentWithoutSynchronization(((ISimpleAgent)o).getAddress());
-			}
-		});
+		return withWriteLock(() -> removeAgentWithoutSynchronization(((ISimpleAgent)o).getAddress()));
 	}
 
 	@Override
 	public final boolean removeAll(final Collection<?> c) {
 		checkNotNull(c);
-		return withWriteLock(new Callable<Boolean>() {
-			@Override
-			public Boolean call() {
-				return agents.values().removeAll(c);
-			}
-		});
+		return withWriteLock(() -> agents.values().removeAll(c));
 	}
 
 	@Override
 	public final boolean retainAll(final Collection<?> c) {
 		checkNotNull(c);
-		return withWriteLock(new Callable<Boolean>() {
-			@Override
-			public Boolean call() {
-				return agents.values().retainAll(c);
-			}
-		});
+		return withWriteLock(() -> agents.values().retainAll(c));
 	}
 
 	@Override
 	public final int size() {
-		return withReadLock(new Callable<Integer>() {
-			@Override
-			public Integer call() {
-				return agents.size();
-			}
-		});
+		return withReadLock(() -> agents.size());
 	}
 
 	@Override
 	public final Object[] toArray() {
-		return withReadLock(new Callable<Object[]>() {
-			@Override
-			public Object[] call() {
-				return agents.values().toArray();
-			}
-		});
+		return withReadLock(() -> agents.values().toArray());
 	}
 
 	@Override
 	public final <T> T[] toArray(final T[] a) {
 		checkNotNull(a);
-		return withReadLock(new Callable<T[]>() {
-			@Override
-			public T[] call() {
-				return agents.values().toArray(a);
-			}
-		});
+		return withReadLock(() -> agents.values().toArray(a));
 	}
 
 	/* Private utility methods. */

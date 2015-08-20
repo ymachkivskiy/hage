@@ -42,7 +42,7 @@ import static org.mockito.Mockito.mock;
 
 import org.jage.address.Address;
 import org.jage.address.agent.AgentAddress;
-import org.jage.communication.message.DefaultMessage;
+import org.jage.communication.message.SimpleMessage;
 import org.jage.communication.message.Header;
 import org.jage.communication.message.Message;
 
@@ -69,9 +69,9 @@ public class AbstractAgentTest {
 	public void receiveMessageTest() {
 		// given
 		final String payload = "payload";
-		final DefaultMessage<AgentAddress, String> message1 = createMessage(payload);
-		final DefaultMessage<AgentAddress, String> message2 = createMessage(payload);
-		final DefaultMessage<AgentAddress, String> message3 = createMessage(payload);
+		final SimpleMessage<AgentAddress, String> message1 = createMessage(payload);
+		final SimpleMessage<AgentAddress, String> message2 = createMessage(payload);
+		final SimpleMessage<AgentAddress, String> message3 = createMessage(payload);
 
 		// when
 		abstractAgent.deliverMessage(message1);
@@ -87,7 +87,7 @@ public class AbstractAgentTest {
 	}
 
 	@SuppressWarnings("unchecked")
-	private <A extends Address, P extends Serializable> DefaultMessage<A, P> createMessage(final P payload) {
-		return new DefaultMessage<A, P>(mock(Header.class), payload);
+	private <A extends Address, P extends Serializable> SimpleMessage<A, P> createMessage(final P payload) {
+		return SimpleMessage.create(mock(Header.class), payload);
 	}
 }

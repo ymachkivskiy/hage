@@ -35,7 +35,6 @@ package org.jage.monitoring.visualization.storage;
 
 import java.util.Collection;
 
-import org.jage.monitoring.visualization.storage.element.DescriptionElement;
 import org.jage.monitoring.visualization.storage.element.VisualDataStorage;
 
 /**

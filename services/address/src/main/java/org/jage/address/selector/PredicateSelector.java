@@ -60,7 +60,7 @@ public class PredicateSelector<T extends Address> implements AddressSelector<T> 
 	 * @param predicate
 	 * 		a predicate to use.
 	 */
-	public PredicateSelector(final Predicate<T> predicate) {
+	private PredicateSelector(final Predicate<T> predicate) {
 		checkArgument(predicate instanceof Serializable, "Predicate must be serializable.");
 		this.predicate = requireNonNull(predicate);
 	}

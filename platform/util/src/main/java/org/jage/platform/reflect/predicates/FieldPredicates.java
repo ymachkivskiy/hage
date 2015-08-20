@@ -54,12 +54,7 @@ public final class FieldPredicates {
 	 * @since 2.6
 	 */
 	public static Predicate<Field> withAnnotation(final Class<? extends Annotation> annotation) {
-		return new Predicate<Field>() {
-			@Override
-			public boolean apply(final Field input) {
-				return input.isAnnotationPresent(annotation);
-			}
-		};
+		return input -> input.isAnnotationPresent(annotation);
 	}
 
 	private FieldPredicates() {

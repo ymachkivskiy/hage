@@ -114,7 +114,7 @@ public class CommunicationChannel<T> {
 			log.debug("Message {} on the channel {}.", message, this);
 
 			final T messageObject = message.getMessageObject();
-
+//TODO : check if it can not be optimized with executing in other threads (probably not)
 			for (final MessageSubscriber<T> subscriber : subscribers) {
 				subscriber.onMessage(messageObject);
 			}

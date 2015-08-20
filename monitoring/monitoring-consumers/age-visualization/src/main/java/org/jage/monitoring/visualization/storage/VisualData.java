@@ -26,7 +26,6 @@
  */
 package org.jage.monitoring.visualization.storage;
 
-import java.text.DateFormat;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;

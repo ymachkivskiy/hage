@@ -48,7 +48,7 @@ public class ServiceHeaderWithType<T extends Enum<T>> implements ServiceHeader {
 
 	private final T type;
 
-	public ServiceHeaderWithType(final T type) {
+	private ServiceHeaderWithType(final T type) {
 		this.type = checkNotNull(type);
 	}
 

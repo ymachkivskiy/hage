@@ -39,16 +39,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.jage.action.Action;
-import org.jage.action.preparators.IActionPreparator;
+import org.jage.action.preparers.IActionPreparer;
 import org.jage.address.agent.AgentAddress;
 import org.jage.address.agent.AgentAddressSupplier;
 import org.jage.property.PropertyField;
 
 /**
- * This agent implementation relies on a {@link IActionPreparator} to provide its actual behavior.
+ * This agent implementation relies on a {@link org.jage.action.preparers.IActionPreparer} to provide its actual behavior.
  * <p>
  *
- * Given the agent's state and environment, the {@link IActionPreparator} prepares an appropriate action, which is then
+ * Given the agent's state and environment, the {@link org.jage.action.preparers.IActionPreparer} prepares an appropriate action, which is then
  * run by the agent.
  *
  * @author AGH AgE Team
@@ -82,7 +82,7 @@ public class ActionDrivenAgent extends SimpleAgent {
 	private static final Logger LOG = LoggerFactory.getLogger(ActionDrivenAgent.class);
 
 	@Inject
-	private IActionPreparator<ActionDrivenAgent> actionPreparator;
+	private IActionPreparer<ActionDrivenAgent> actionPreparator;
 
 	@PropertyField(propertyName = Properties.STEP)
 	private long step = 0;

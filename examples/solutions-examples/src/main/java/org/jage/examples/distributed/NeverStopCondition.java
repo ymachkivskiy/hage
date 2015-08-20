@@ -32,7 +32,6 @@
 package org.jage.examples.distributed;
 
 import org.jage.platform.component.exception.ComponentException;
-import org.jage.services.core.CoreComponent;
 import org.jage.workplace.IStopCondition;
 
 /**

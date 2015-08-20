@@ -77,7 +77,7 @@ public class VariationActionStrategyTest {
 		given(populationProperty.getValue()).willReturn(population);
 
 		// when
-		strategy.perfom(target, context);
+		strategy.perform(target, context);
 
 		// then
 		verify(variation).transformPopulation(population);

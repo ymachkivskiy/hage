@@ -31,37 +31,32 @@
 
 package org.jage.communication;
 
-import javax.annotation.Nonnull;
-
 import com.hazelcast.core.IMap;
+
+import javax.annotation.Nonnull;
 
 public interface CommunicationManager {
 
-	String SERVICE_NAME = CommunicationManager.class.getSimpleName();
+    String SERVICE_NAME = CommunicationManager.class.getSimpleName();
 
-	/**
-	 * Returns a communication channel for a given service name.
-	 *
-	 * @param serviceName
-	 * 		a name of the service.
-	 * @param <T>
-	 * 		a type of messages in the communication channel.
-	 *
-	 * @return a communication channel for the service.
-	 */
-	@Nonnull <T> CommunicationChannel<T> getCommunicationChannelForService(String serviceName);
+    /**
+     * Returns a communication channel for a given service name.
+     *
+     * @param serviceName a name of the service.
+     * @param <T>         a type of messages in the communication channel.
+     * @return a communication channel for the service.
+     */
+    @Nonnull
+    <T> CommunicationChannel<T> getCommunicationChannelForService(String serviceName);
 
-	/**
-	 * Returns a distributed map with a given name.
-	 *
-	 * @param mapName
-	 * 		a name of the map to return.
-	 * @param <K>
-	 * 		a type of keys in the map.
-	 * @param <V>
-	 * 		a type of values in the map.
-	 *
-	 * @return a distributed map with the given name.
-	 */
-	@Nonnull <K, V> IMap<K, V> getDistributedMap(String mapName);
+    /**
+     * Returns a distributed map with a given name.
+     *
+     * @param mapName a name of the map to return.
+     * @param <K>     a type of keys in the map.
+     * @param <V>     a type of values in the map.
+     * @return a distributed map with the given name.
+     */
+    @Nonnull
+    <K, V> IMap<K, V> getDistributedMap(String mapName);
 }

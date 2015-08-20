@@ -47,7 +47,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.jage.action.Action;
-import org.jage.action.preparators.IActionPreparator;
+import org.jage.action.preparers.IActionPreparer;
 import org.jage.address.agent.AgentAddress;
 import org.jage.property.Property;
 import org.jage.property.monitors.AbstractPropertyMonitor;
@@ -64,7 +64,7 @@ import static org.jage.agent.ActionDrivenAgent.Properties.STEP;
 public class ActionDrivenAgentTest extends BaseTest {
 
 	@Mock
-	private IActionPreparator<IAgent> preparator;
+	private IActionPreparer<IAgent> preparator;
 
 	@Mock
 	private Action action;

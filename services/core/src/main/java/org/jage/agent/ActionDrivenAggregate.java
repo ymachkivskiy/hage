@@ -39,16 +39,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.jage.action.Action;
-import org.jage.action.preparators.IActionPreparator;
+import org.jage.action.preparers.IActionPreparer;
 import org.jage.address.agent.AgentAddress;
 import org.jage.address.agent.AgentAddressSupplier;
 import org.jage.platform.component.exception.ComponentException;
 import org.jage.property.PropertyField;
 
 /**
- * This aggregate implementation relies on a {@link IActionPreparator} to provide its actual behavior.
+ * This aggregate implementation relies on a {@link org.jage.action.preparers.IActionPreparer} to provide its actual behavior.
  * <p>
- * Given the aggregate state and environment, the {@link IActionPreparator} prepares an appropriate action, which is
+ * Given the aggregate state and environment, the {@link org.jage.action.preparers.IActionPreparer} prepares an appropriate action, which is
  * then run by the aggregate.
  * <p>
  * Then, the aggregate runs the step methods of its children.
@@ -75,7 +75,7 @@ public class ActionDrivenAggregate extends SimpleAggregate {
 	private static final Logger log = LoggerFactory.getLogger(ActionDrivenAggregate.class);
 
 	@Inject
-	private IActionPreparator<ActionDrivenAggregate> actionPreparator;
+	private IActionPreparer<ActionDrivenAggregate> actionPreparator;
 
 	@PropertyField(propertyName = Properties.STEP)
 	private long step = 0;

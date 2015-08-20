@@ -32,14 +32,12 @@
 package org.jage.workplace;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
 
 import org.jage.address.agent.AgentAddress;
 import org.jage.agent.IAgent;
-import org.jage.communication.message.Message;
 import org.jage.query.AgentEnvironmentQuery;
 import org.jage.query.IQuery;
 import org.jage.workplace.manager.WorkplaceManagerMessage;

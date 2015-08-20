@@ -36,9 +36,6 @@ import java.util.Collection;
 
 import org.jage.agent.IAgent;
 import org.jage.agent.IAgentEnvironment;
-import org.jage.agent.IAggregate;
-
-import static com.google.common.base.Preconditions.checkArgument;
 
 /**
  * Query implementation that can be used with implementations of the {@link IAgentEnvironment} interface.

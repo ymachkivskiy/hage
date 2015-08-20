@@ -76,7 +76,7 @@ public interface IPerformActionStrategy {
 	 * @throws AgentException
 	 *             when action execution fails.
 	 */
-	void perfom(IAgent target, IActionContext context) throws AgentException;
+	void perform(IAgent target, IActionContext context) throws AgentException;
 
 	/**
 	 * Executes finalization phase (({@link ActionPhase#FINISH}) which is executed after performing main phase of

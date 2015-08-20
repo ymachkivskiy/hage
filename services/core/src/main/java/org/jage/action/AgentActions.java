@@ -87,15 +87,18 @@ public class AgentActions {
 	 * @return a migration action
 	 */
 	public static Action migrate(final ISimpleAgent agent, final AgentAddress destination) {
-		MoveAgentActionContext moveContext = new MoveAgentActionContext();
-		SingleAction moveAction = new SingleAction(singleAddress(destination), moveContext);
-		PassToParentActionContext parentContext = new PassToParentActionContext(agent.getAddress(), moveAction);
-		GetAgentActionContext getAgentContext = new GetAgentActionContext(moveContext);
+        ComplexAction action = new ComplexAction();
 
-		ComplexAction action = new ComplexAction();
-		action.addChild(new SingleAction(singleAddress(agent.getAddress()), getAgentContext));
-		action.addChild(new SingleAction(parentOf(agent.getAddress()), parentContext));
-		return action;
+        MoveAgentActionContext moveContext = new MoveAgentActionContext();
+        SingleAction moveAction = new SingleAction(singleAddress(destination), moveContext);
+
+        GetAgentActionContext getAgentContext = new GetAgentActionContext(moveContext);
+        action.addChild(new SingleAction(singleAddress(agent.getAddress()), getAgentContext));
+
+        PassToParentActionContext parentContext = new PassToParentActionContext(agent.getAddress(), moveAction);
+        action.addChild(new SingleAction(parentOf(agent.getAddress()), parentContext));
+
+        return action;
 	}
 
 	/**

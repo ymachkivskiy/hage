@@ -35,7 +35,6 @@ import java.util.List;
 
 import org.jage.agent.IAgent;
 import org.jage.agent.IAggregate;
-import org.jage.agent.ISimpleAggregate;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;

@@ -229,7 +229,7 @@ public class MultiElementQuery<E, Q, R> implements IQuery<Q, R> {
 		}
 
 		// Value selectors - select()
-		R result = null;
+		R result;
 
 		if (!valueSelectors.isEmpty()) {
 			List<List<Object>> list = Lists.newArrayList();

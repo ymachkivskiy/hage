@@ -110,7 +110,7 @@ public final class Locks {
 	 * @param <T>
 	 *            a type of the value returned by the callable.
 	 */
-	public static <T> T withInterruptibleLock(final Lock lock, final Callable<T> callable) throws Exception {
+	public static <T> T withInterruptableLock(final Lock lock, final Callable<T> callable) throws Exception {
 		checkNotNull(lock);
 		checkNotNull(callable);
 		
@@ -131,9 +131,9 @@ public final class Locks {
 	 * @param runnable
 	 *            the runnable to execute.
 	 */
-	public static void withInterruptibleLock(final Lock lock, final Runnable runnable) {
+	public static void withInterruptableLock(final Lock lock, final Runnable runnable) {
 		try {
-			withInterruptibleLock(lock, Executors.callable(runnable));
+			withInterruptableLock(lock, Executors.callable(runnable));
 		} catch (final Exception e) {
 			throw Throwables.propagate(e);
 		}

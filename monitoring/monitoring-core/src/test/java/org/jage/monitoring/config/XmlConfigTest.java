@@ -31,14 +31,11 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Set;
 
 import org.jage.monitoring.handler.HandlerFactoryProvider;
 import org.jage.monitoring.observer.AbstractStatefulObserver;
-import org.jage.platform.component.provider.IComponentInstanceProvider;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

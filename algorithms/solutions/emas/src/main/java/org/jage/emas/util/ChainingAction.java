@@ -57,7 +57,7 @@ import com.google.common.base.Optional;
 public abstract class ChainingAction<A extends EmasAgent> extends AbstractPerformActionStrategy {
 
 	@Override
-	public final void perfom(final IAgent target, final IActionContext context) throws AgentException {
+	public final void perform(final IAgent target, final IActionContext context) throws AgentException {
 		@SuppressWarnings("unchecked")
 		// classCastExc is appropriate here
 		final A agent = (A)target;

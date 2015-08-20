@@ -42,7 +42,7 @@ public enum ActionPhase {
 	 */
 	INIT,
 	/**
-	 * Main execvution phase.
+	 * Main execution phase.
 	 */
 	MAIN,
 	/**

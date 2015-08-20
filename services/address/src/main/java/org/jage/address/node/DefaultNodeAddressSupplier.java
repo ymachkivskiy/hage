@@ -31,12 +31,11 @@
 
 package org.jage.address.node;
 
+import javax.annotation.concurrent.Immutable;
 import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.UUID;
-
-import javax.annotation.concurrent.Immutable;
 
 /**
  * A default implementation of the node address supplier.
@@ -44,41 +43,40 @@ import javax.annotation.concurrent.Immutable;
  * This implementation generates addresses consisting of two parts: PID of JVM that runs the node and the local
  * hostname. If PID is unavailable it falls back a UUID-based string.
  *
- * @see DefaultNodeAddress
- *
  * @author AGH AgE Team
+ * @see DefaultNodeAddress
  */
 @Immutable
 public class DefaultNodeAddressSupplier implements NodeAddressSupplier {
 
-	private DefaultNodeAddress nodeAddress;
+    private DefaultNodeAddress nodeAddress;
 
-	public DefaultNodeAddressSupplier() {
-		final String localPart = getLocalPart();
-		try {
-			nodeAddress = new DefaultNodeAddress(localPart, getHostname());
-		} catch (final UnknownHostException e) {
-			nodeAddress = new DefaultNodeAddress(localPart);
-		}
-	}
+    public DefaultNodeAddressSupplier() {
+        final String localPart = getLocalPart();
+        try {
+            nodeAddress = new DefaultNodeAddress(localPart, getHostname());
+        } catch (final UnknownHostException e) {
+            nodeAddress = new DefaultNodeAddress(localPart);
+        }
+    }
 
-	@Override
-	public DefaultNodeAddress get() {
-		return nodeAddress;
-	}
+    @Override
+    public DefaultNodeAddress get() {
+        return nodeAddress;
+    }
 
-	private static String getHostname() throws UnknownHostException {
-		final InetAddress addr = InetAddress.getLocalHost();
-		return addr.getHostName();
-	}
+    private static String getHostname() throws UnknownHostException {
+        final InetAddress addr = InetAddress.getLocalHost();
+        return addr.getHostName();
+    }
 
-	// XXX: This method was only tested with Sun/Oracle JVM.
-	private static String getLocalPart() {
-		final String name = ManagementFactory.getRuntimeMXBean().getName();
-		final int pos = name.indexOf("@");
-		if (pos <= 1) { // If 0 - there is no real PID
-			return UUID.randomUUID().toString();
-		}
-		return name.substring(0, pos);
-	}
+    // XXX: This method was only tested with Sun/Oracle JVM.
+    private static String getLocalPart() {
+        final String name = ManagementFactory.getRuntimeMXBean().getName(); //TODO find out another way to obtain PID of JVM process
+        final int pos = name.indexOf("@");
+        if (pos <= 1) { // If 0 - there is no real PID
+            return UUID.randomUUID().toString();
+        }
+        return name.substring(0, pos);
+    }
 }

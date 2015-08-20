@@ -31,12 +31,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import javax.inject.Inject;
 
 import org.jage.monitoring.Monitoring;
-import org.jage.monitoring.config.ExecutorProvider;
 import org.jage.monitoring.config.RxSchedulerProvider;
-import org.jage.monitoring.config.TypeSafeConfig;
 
 import rx.Observable;
-import rx.Scheduler;
 import rx.schedulers.Timestamped;
 
 import com.google.common.base.Supplier;

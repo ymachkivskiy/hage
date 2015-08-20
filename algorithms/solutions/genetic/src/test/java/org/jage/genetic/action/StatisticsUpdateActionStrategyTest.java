@@ -67,7 +67,7 @@ public class StatisticsUpdateActionStrategyTest  {
 		given(stepProperty.getValue()).willReturn(21L);
 
 		// when
-		strategy.perfom(target, context);
+		strategy.perform(target, context);
 
 		// then
 		Mockito.verify(target).getProperty(STEP);

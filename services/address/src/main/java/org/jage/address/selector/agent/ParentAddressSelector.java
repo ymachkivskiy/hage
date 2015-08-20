@@ -62,7 +62,7 @@ public class ParentAddressSelector implements AddressSelector<AgentAddress> {
 	 * @param childAddress
 	 * 		An address of <b>the child</b>.
 	 */
-	public ParentAddressSelector(final AgentAddress childAddress) {
+	private ParentAddressSelector(final AgentAddress childAddress) {
 		this.childAddress = requireNonNull(childAddress);
 	}
 

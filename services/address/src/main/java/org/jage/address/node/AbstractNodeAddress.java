@@ -38,12 +38,13 @@ package org.jage.address.node;
  */
 public abstract class AbstractNodeAddress implements NodeAddress {
 
-	private static final long serialVersionUID = -3060430633934000296L;
+    private static final long serialVersionUID = -3060430633934000296L;
 
-	@Override
-	public final int compareTo(final NodeAddress that) {
-		return getIdentifier().compareTo(that.getIdentifier());
-	}
+    @Override
+    public final int compareTo(final NodeAddress that) {
+        return getIdentifier().compareTo(that.getIdentifier());
+    }
 
-	@Override public abstract boolean equals(final Object obj);
+    @Override
+    public abstract boolean equals(final Object obj);
 }

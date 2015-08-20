@@ -82,7 +82,7 @@ public class PreselectionActionStrategyTest {
 		given(preselection.preselect(population)).willReturn(preselectedPopulation);
 
 		// when
-		strategy.perfom(target, context);
+		strategy.perform(target, context);
 
 		// then
 		verify(populationProperty).setValue(preselectedPopulation);

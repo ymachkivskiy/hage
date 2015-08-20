@@ -238,7 +238,7 @@ public class AggregateActionService {
 				final IPerformActionStrategy actionStrategy = retrieveActionStrategyImplementation(context, actionName);
 				if (actionStrategy != null) {
 					try {
-						actionStrategy.perfom(targetAgent, context);
+						actionStrategy.perform(targetAgent, context);
 					} catch (final RuntimeException e) {
 						throw new AgentException("An exception occurred during performing action " + action, e);
 					}

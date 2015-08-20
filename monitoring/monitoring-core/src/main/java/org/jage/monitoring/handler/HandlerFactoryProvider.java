@@ -35,7 +35,6 @@ import org.jage.monitoring.observer.AbstractStatefulObserver;
 import org.jage.monitoring.observer.ObservedData;
 
 import rx.Observable;
-import rx.Scheduler;
 import rx.schedulers.Timestamped;
 
 /**

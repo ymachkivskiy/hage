@@ -47,9 +47,9 @@ import org.jage.address.agent.AgentAddressSupplier;
 import org.jage.address.selector.Selectors;
 import org.jage.agent.AgentException;
 import org.jage.agent.SimpleAgent;
-import org.jage.communication.message.DefaultHeader;
+import org.jage.communication.message.SimpleHeader;
 import org.jage.communication.message.Message;
-import org.jage.communication.message.DefaultMessage;
+import org.jage.communication.message.SimpleMessage;
 import org.jage.exception.AgeException;
 import org.jage.query.AgentEnvironmentQuery;
 
@@ -133,9 +133,9 @@ public class MessagesSimpleAgent extends SimpleAgent {
 
 	private void send() {
 		if (receiverAddress != null && messageToSend != null) {
-			final DefaultHeader<AgentAddress> header =
-					new DefaultHeader<>(getAddress(), Selectors.allAddressesMatching(new AgentAddressPredicate()));
-			final DefaultMessage<AgentAddress, String> textMessage = new DefaultMessage<>(header, messageToSend);
+			final SimpleHeader<AgentAddress> header =
+            SimpleHeader.create(getAddress(), Selectors.allAddressesMatching(new AgentAddressPredicate()));
+			final SimpleMessage<AgentAddress, String> textMessage = SimpleMessage.create(header, messageToSend);
 			try {
 				doAction(AgentActions.sendMessage(textMessage));
 				sent++;

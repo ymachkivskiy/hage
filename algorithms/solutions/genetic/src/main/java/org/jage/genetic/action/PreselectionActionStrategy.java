@@ -66,7 +66,7 @@ public final class PreselectionActionStrategy<S extends ISolution> extends Abstr
 	private IPreselection<S, Double> preselection;
 
 	@Override
-	public void perfom(final IAgent target, final IActionContext context) throws AgentException {
+	public void perform(final IAgent target, final IActionContext context) throws AgentException {
 		LOG.debug("Performing preselection on agent {} population.", target.getAddress());
 
 		final IPopulation<S, Double> originalPopulation = getPropertyValueOrThrowException(target, POPULATION);

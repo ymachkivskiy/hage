@@ -45,14 +45,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import org.jage.agent.IAgent;
-import org.jage.agent.ISimpleAggregate;
-import org.jage.agent.SimpleAgent;
-import org.jage.agent.SimpleAggregate;
-
-import static org.jage.query.ValueFilters.eq;
-import static org.jage.query.ValueFilters.not;
-
 /**
  * Tests for the {@link CollectionQuery} class.
  * 

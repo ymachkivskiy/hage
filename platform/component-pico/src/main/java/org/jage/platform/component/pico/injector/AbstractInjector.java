@@ -37,7 +37,6 @@ import java.util.concurrent.Executors;
 
 import static java.lang.String.format;
 
-import org.picocontainer.ObjectReference;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.adapters.AbstractAdapter;

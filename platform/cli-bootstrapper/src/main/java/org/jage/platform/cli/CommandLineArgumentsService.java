@@ -31,8 +31,6 @@
 
 package org.jage.platform.cli;
 
-import java.util.Arrays;
-
 import javax.annotation.CheckForNull;
 
 import org.apache.commons.cli.CommandLine;

@@ -29,7 +29,6 @@ package org.jage.monitoring.handler;
 import java.math.BigInteger;
 import java.util.List;
 
-import org.jage.monitoring.observer.AbstractStatefulObserver;
 import org.jage.monitoring.observer.ObservedData;
 
 import rx.Observable;

@@ -190,15 +190,4 @@ public final class SimpleTypeParsers {
 			}
 		}
 	}
-
-	// XXX temporary turned off vide AGE-48
-	// private static class AgentAddressParser extends ISimpleTypeParser {
-
-	// @Override
-	// public Object parse(String value) {
-	// return new AgentAddress(value);
-	// }
-	// }
-
-	// END Simple type parsers
 }

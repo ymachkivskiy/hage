@@ -31,8 +31,6 @@
 
 package org.jage.examples.distributed;
 
-import java.util.Collection;
-
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -40,7 +38,6 @@ import org.slf4j.LoggerFactory;
 
 import org.jage.address.node.NodeAddressSupplier;
 import org.jage.bus.EventBus;
-import org.jage.platform.component.definition.IComponentDefinition;
 import org.jage.platform.component.exception.ComponentException;
 import org.jage.services.core.CoreComponent;
 import org.jage.services.core.CoreComponentEvent;

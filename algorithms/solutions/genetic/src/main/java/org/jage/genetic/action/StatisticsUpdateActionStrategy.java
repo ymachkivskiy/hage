@@ -83,7 +83,7 @@ public final class StatisticsUpdateActionStrategy<S extends ISolution> extends A
 	private final TupleComparator<S> comparator = new TupleComparator<S>();
 
 	@Override
-	public void perfom(final IAgent target, final IActionContext context) throws AgentException {
+	public void perform(final IAgent target, final IActionContext context) throws AgentException {
 		final Long step = getPropertyValueOrThrowException(target, STEP);
 
 		if (step % resolution == 0) {

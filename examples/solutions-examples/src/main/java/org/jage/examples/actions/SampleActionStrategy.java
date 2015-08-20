@@ -61,7 +61,7 @@ public class SampleActionStrategy extends ClassPropertyContainer implements IPer
 	}
 
 	@Override
-	public void perfom(IAgent target, IActionContext context) throws AgentException {
+	public void perform(IAgent target, IActionContext context) throws AgentException {
 		log.info("Performing action on {}", target.getAddress());
 
 	}

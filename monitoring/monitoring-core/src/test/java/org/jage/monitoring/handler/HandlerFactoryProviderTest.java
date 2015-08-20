@@ -43,7 +43,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import rx.Observable;
-import rx.Scheduler;
 import rx.schedulers.Timestamped;
 
 public class HandlerFactoryProviderTest {

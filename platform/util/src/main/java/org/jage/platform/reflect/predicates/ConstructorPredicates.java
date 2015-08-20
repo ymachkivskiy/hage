@@ -58,12 +58,7 @@ public class ConstructorPredicates {
 	 * @since 2.6
 	 */
 	public static Predicate<Constructor<?>> matchingActualParameters(final List<Class<?>> actualParameterTypes) {
-		return new Predicate<Constructor<?>>() {
-			@Override
-			public boolean apply(final Constructor<?> input) {
-				return Constructors.isMatchingActualParameters(input, actualParameterTypes);
-			}
-		};
+		return input -> Constructors.isMatchingActualParameters(input, actualParameterTypes);
 	}
 
 	/**
@@ -76,11 +71,6 @@ public class ConstructorPredicates {
 	 * @since 2.6
 	 */
 	public static Predicate<Constructor<?>> withAnnotation(final Class<? extends Annotation> annotation) {
-		return new Predicate<Constructor<?>>() {
-			@Override
-			public boolean apply(final Constructor<?> input) {
-				return input.isAnnotationPresent(annotation);
-			}
-		};
+		return input -> input.isAnnotationPresent(annotation);
 	}
 }

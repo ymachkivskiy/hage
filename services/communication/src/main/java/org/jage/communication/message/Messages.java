@@ -35,7 +35,6 @@ import java.io.Serializable;
 
 import static java.lang.String.format;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
@@ -116,8 +115,8 @@ public final class Messages {
 	 */
 	public static <A extends Address, P extends Serializable> Message<A, P> newBroadcastMessage(
 			final A senderAddress, final P payload) {
-		final Header<A> header = new DefaultHeader<>(senderAddress, Selectors.<A>allAddresses());
-		return new DefaultMessage<>(header, payload);
+		final Header<A> header = SimpleHeader.create(senderAddress, Selectors.<A>allAddresses());
+		return SimpleMessage.create(header, payload);
 	}
 
 	/**
@@ -137,8 +136,8 @@ public final class Messages {
 	 */
 	public static <A extends Address, P extends Serializable> Message<A, P> newUnicastMessage(final A from,
 			final A to, @Nullable final P payload) {
-		final Header<A> header = new DefaultHeader<>(from, singleAddress(to));
-		return new DefaultMessage<>(header, payload);
+		final Header<A> header = SimpleHeader.create(from, singleAddress(to));
+		return SimpleMessage.create(header, payload);
 	}
 
 	/**
@@ -156,7 +155,7 @@ public final class Messages {
 	 */
 	public static <A extends AgentAddress, P extends Serializable> Message<AgentAddress, P> newMessageToParent(
 			final A from, @Nullable final P payload) {
-		final DefaultHeader<AgentAddress> header = new DefaultHeader<>(from, parentOf(from));
-		return new DefaultMessage<>(header, payload);
+		final SimpleHeader<AgentAddress> header = SimpleHeader.create(from, parentOf(from));
+		return SimpleMessage.create(header, payload);
 	}
 }

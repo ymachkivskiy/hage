@@ -57,8 +57,7 @@ public class MessagesTest {
 	public void testGetPayloadOfTypeOrThrowWithCorrectType() {
 		// given
 		String samplePayload = "payload";
-		DefaultMessage<Address, String> message =
-				new DefaultMessage<Address, String>(mock(Header.class), samplePayload);
+		SimpleMessage<Address, String> message = SimpleMessage.create(mock(Header.class), samplePayload);
 
 		// when
 		String returnedPayload = Messages.getPayloadOfTypeOrThrow(message, String.class);
@@ -72,8 +71,7 @@ public class MessagesTest {
 	public void testGetPayloadOfTypeOrThrowWithWrongType() {
 		// given
 		String samplePayload = "payload";
-		DefaultMessage<Address, Serializable>
-				message = new DefaultMessage<Address, Serializable>(mock(Header.class), samplePayload);
+		SimpleMessage<Address, Serializable> message = SimpleMessage.create(mock(Header.class), samplePayload);
 
 		// when
 		Messages.getPayloadOfTypeOrThrow(message, Integer.class);

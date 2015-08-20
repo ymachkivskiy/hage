@@ -31,7 +31,6 @@
 
 package org.jage.workplace.manager;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.junit.Before;

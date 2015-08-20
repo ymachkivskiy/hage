@@ -84,7 +84,7 @@ public final class InitializationActionStrategy<S extends ISolution> extends Abs
 	private final TupleComparator<S> comparator = new TupleComparator<S>();
 
 	@Override
-	public void perfom(final IAgent target, final IActionContext context) throws AgentException {
+	public void perform(final IAgent target, final IActionContext context) throws AgentException {
 		LOG.debug("Performing initialization on agent {}.", target.getAddress());
 
 		final IPopulation<S, Double> population = populationFactory.createPopulation();

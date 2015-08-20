@@ -64,7 +64,7 @@ public final class VariationActionStrategy<S extends ISolution> extends Abstract
 	private IVariationOperator<S> variationOperator;
 
 	@Override
-	public void perfom(final IAgent target, final IActionContext context) throws AgentException {
+	public void perform(final IAgent target, final IActionContext context) throws AgentException {
 		LOG.debug("Performing variation on agent {} population.", target.getAddress());
 
 		final IPopulation<S, ?> population = getPropertyValueOrThrowException(target, POPULATION);

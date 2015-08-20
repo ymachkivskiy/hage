@@ -28,8 +28,6 @@ package org.jage.property;
 
 import java.util.ArrayList;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.jage.event.AbstractEvent;
 import org.jage.monitor.IChangesNotifierMonitor;
 import org.jage.property.functions.PropertyFunction;

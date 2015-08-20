@@ -33,9 +33,7 @@ package org.jage.platform.fsm;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.EnumSet;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.ScheduledFuture;
@@ -68,7 +66,6 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import static com.google.common.base.Objects.toStringHelper;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Iterables.consumingIterable;
-import static com.google.common.collect.Queues.newLinkedBlockingQueue;
 import static com.google.common.collect.Queues.newPriorityBlockingQueue;
 import static com.google.common.util.concurrent.MoreExecutors.listeningDecorator;
 import static com.google.common.util.concurrent.MoreExecutors.sameThreadExecutor;

@@ -94,7 +94,7 @@ public class SelectorsTest {
 		final ExplicitSelector<Address> selector = Selectors.allAddressesFrom(addresses);
 
 		// then
-		assertThat(selector, is(instanceOf(CollectionSelector.class)));
+		assertThat(selector, is(instanceOf(MulticastSelector.class)));
 		assertThat(selector.getAddresses(), is(equalTo(addresses)));
 	}
 

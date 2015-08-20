@@ -66,7 +66,7 @@ public final class EvaluationActionStrategy<S extends ISolution, E> extends Abst
 	private IPopulationEvaluator<S, E> populationEvaluator;
 
 	@Override
-	public void perfom(final IAgent target, final IActionContext context) throws AgentException {
+	public void perform(final IAgent target, final IActionContext context) throws AgentException {
 		LOG.debug("Performing evaluation on agent {}.", target.getAddress());
 
 		final IPopulation<S, E> population = getPropertyValueOrThrowException(target, POPULATION);

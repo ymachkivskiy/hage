@@ -15,7 +15,7 @@
 
 						<!-- Action Strategies -->
 						<strategy name="geneticActionPreparator"
-						          class="org.jage.genetic.action.GeneticActionPreparator"/>
+						          class="org.jage.genetic.action.GeneticActionPreparer"/>
 						<strategy name="geneticActionComparator"
 						          class="org.jage.genetic.action.GeneticActionComparator"/>
 

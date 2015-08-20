@@ -35,7 +35,6 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
@@ -84,7 +83,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Queues;
 import com.google.common.eventbus.Subscribe;
 import com.google.common.util.concurrent.ListeningScheduledExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
@@ -98,7 +96,6 @@ import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.newLinkedList;
 import static com.google.common.collect.Maps.newHashMap;
-import static com.google.common.collect.Queues.newConcurrentLinkedQueue;
 import static com.google.common.collect.Sets.newHashSet;
 import static com.google.common.collect.Sets.newHashSetWithExpectedSize;
 
@@ -612,7 +609,7 @@ public class DefaultWorkplaceManager implements WorkplaceManager, IMutableCompon
 						(AddressSelector<AgentAddress>)migrationData.get("target");
 				final ISimpleAgent agent = (ISimpleAgent)migrationData.get("agent");
 				final Set<AgentAddress> addresses = Selectors.filter(getAddressesOfLocalWorkplaces(), targetSelector);
-				if (addresses.size() == 1) {
+				if (addresses.size() == 1) {//TODO : strange construction
 					getLocalWorkplace(addresses.iterator().next()).sendAgent(agent);
 				}
 				break;

@@ -33,7 +33,6 @@ package org.jage.platform.component.provider;
 
 import java.lang.reflect.Type;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * An interface which defines a component provider. The component provider is as implementation of Service Locator
