@@ -40,6 +40,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,6 +55,7 @@ import static org.jage.query.ValueSelectors.field;
 import com.google.common.eventbus.Subscribe;
 import com.google.common.util.concurrent.ListeningScheduledExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -68,9 +70,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  *
  * @author AGH AgE Team
  */
-public class FixedStepCountStopCondition implements IStopCondition { //TODO : refactor and extract some base class with event posting etc.
-
-	private static Logger log = LoggerFactory.getLogger(FixedStepCountStopCondition.class);
+@Slf4j
+public class FixedStepCountStopCondition implements IStopCondition { //TODO : re-implement and extract some base class with event posting etc.
 
 	private static final long DEFAULT_STEP_COUNT = 10;
 
@@ -83,14 +84,14 @@ public class FixedStepCountStopCondition implements IStopCondition { //TODO : re
 
 	private ScheduledFuture<?> future;
 
-	@Inject private EventBus eventBus;
-
-	@Inject private WorkplaceManager workplaceManager;
+	@Autowired
+    private EventBus eventBus;
+    @Autowired
+	private WorkplaceManager workplaceManager;
 
 	/**
 	 * Creates a new step counting condition with the default maximum step count.
 	 */
-	@Inject
 	public FixedStepCountStopCondition() {
 		this(DEFAULT_STEP_COUNT);
 	}
@@ -101,7 +102,6 @@ public class FixedStepCountStopCondition implements IStopCondition { //TODO : re
 	 * @param stepCount
 	 *            a number of steps before this stop condition is satisfied, must be greater than zero.
 	 */
-	@Inject
 	public FixedStepCountStopCondition(final Long stepCount) {
 		checkNotNull(stepCount);
 		checkArgument(stepCount > 0,

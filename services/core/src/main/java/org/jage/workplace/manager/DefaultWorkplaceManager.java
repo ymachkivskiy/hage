@@ -31,27 +31,15 @@
 
 package org.jage.workplace.manager;
 
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Executors;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-
-import static java.util.Objects.requireNonNull;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
-import javax.annotation.concurrent.GuardedBy;
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Maps;
+import com.google.common.eventbus.Subscribe;
+import com.google.common.util.concurrent.ListeningScheduledExecutorService;
+import com.google.common.util.concurrent.MoreExecutors;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import com.hazelcast.core.IMap;
 import org.jage.address.agent.AgentAddress;
 import org.jage.address.node.NodeAddress;
 import org.jage.address.node.NodeAddressSupplier;
@@ -69,8 +57,6 @@ import org.jage.platform.component.definition.IComponentDefinition;
 import org.jage.platform.component.exception.ComponentException;
 import org.jage.platform.component.pico.IPicoComponentInstanceProvider;
 import org.jage.platform.component.pico.PicoComponentInstanceProvider;
-import org.jage.platform.component.provider.IMutableComponentInstanceProvider;
-import org.jage.platform.component.provider.IMutableComponentInstanceProviderAware;
 import org.jage.query.AgentEnvironmentQuery;
 import org.jage.query.IQuery;
 import org.jage.services.core.CoreComponentEvent;
@@ -78,26 +64,32 @@ import org.jage.util.Locks;
 import org.jage.workplace.IStopCondition;
 import org.jage.workplace.Workplace;
 import org.jage.workplace.WorkplaceException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Maps;
-import com.google.common.eventbus.Subscribe;
-import com.google.common.util.concurrent.ListeningScheduledExecutorService;
-import com.google.common.util.concurrent.MoreExecutors;
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import com.hazelcast.core.IMap;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
+import javax.annotation.concurrent.GuardedBy;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Executors;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import static com.google.common.base.Objects.toStringHelper;
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.newLinkedList;
 import static com.google.common.collect.Maps.newHashMap;
 import static com.google.common.collect.Sets.newHashSet;
 import static com.google.common.collect.Sets.newHashSetWithExpectedSize;
+import static java.util.Objects.requireNonNull;
 
 /**
  * Default implementation of {@link WorkplaceManager}.
@@ -106,7 +98,7 @@ import static com.google.common.collect.Sets.newHashSetWithExpectedSize;
  * @author AGH AgE Team
  */
 @ParametersAreNonnullByDefault
-public class DefaultWorkplaceManager implements WorkplaceManager, IMutableComponentInstanceProviderAware,
+public class DefaultWorkplaceManager implements WorkplaceManager,
 		MessageSubscriber<WorkplaceManagerMessage> {
 
 	public static final String WORKPLACES_MAP_NAME = "workplaces";
@@ -128,18 +120,21 @@ public class DefaultWorkplaceManager implements WorkplaceManager, IMutableCompon
 
 	private IMap<AgentAddress, Map<String, Iterable<?>>> queryCache;
 
+    @Autowired
 	protected PicoComponentInstanceProvider instanceProvider;
 
-	@Inject private CommunicationManager communicationManager;
+	@Autowired
+    private CommunicationManager communicationManager;
 
 	private CommunicationChannel<WorkplaceManagerMessage> communicationChannel;
 
-	@Inject
+	@Autowired
 	private NodeAddressSupplier nodeAddressProvider;
 
 	private IPicoComponentInstanceProvider childContainer;
 
-	@Inject private EventBus eventBus;
+	@Autowired
+    private EventBus eventBus;
 
 	@Nonnull
 	private final ListeningScheduledExecutorService executorService = MoreExecutors.listeningDecorator(
@@ -270,14 +265,6 @@ public class DefaultWorkplaceManager implements WorkplaceManager, IMutableCompon
 	 */
 	public boolean isActive() {
 		return !activeWorkplaces.isEmpty();
-	}
-
-	@Override
-	public void setMutableComponentInstanceProvider(final IMutableComponentInstanceProvider provider) {
-		checkNotNull(provider);
-		checkArgument(provider instanceof PicoComponentInstanceProvider,
-				"This class requires more advanced view of the provider.");
-		instanceProvider = ((PicoComponentInstanceProvider)provider);
 	}
 
 	@Override
@@ -473,7 +460,7 @@ public class DefaultWorkplaceManager implements WorkplaceManager, IMutableCompon
 		childContainer.verify();
 
 		configuredWorkplaces = newArrayList(childContainer.getInstances(Workplace.class));
-		childContainer.getInstances(IStopCondition.class);
+//		childContainer.getInstances(IStopCondition.class);
 
 		log.info("Configured workplaces: {}.", configuredWorkplaces);
 		eventBus.post(new CoreComponentEvent(CoreComponentEvent.Type.CONFIGURED));

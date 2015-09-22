@@ -43,6 +43,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
 import javax.inject.Inject;
 
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,6 +59,8 @@ import org.jage.services.core.ConfigurationService;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.common.util.concurrent.AbstractScheduledService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 
 import static com.google.common.base.Objects.toStringHelper;
 import static com.google.common.collect.Lists.newArrayList;
@@ -72,20 +76,20 @@ import static com.google.common.util.concurrent.AbstractScheduledService.Schedul
  * @author AGH AgE Team
  */
 @ThreadSafe
+@Slf4j
 public class DefaultConfigurationService extends AbstractScheduledService implements ConfigurationService, IStatefulComponent,
 		MessageSubscriber<ConfigurationMessage> {
 
-	private static final Logger log = LoggerFactory.getLogger(DefaultConfigurationService.class);
-
 	private final AtomicReference<Collection<IComponentDefinition>> configuration = new AtomicReference<>(null);
 
-	@Inject
+	@Autowired
 	private CommunicationManager communicationManager;
+    @Autowired
+    private EventBus eventBus;
 
 	private CommunicationChannel<ConfigurationMessage> communicationChannel;
 
-	@Inject
-	private EventBus eventBus;
+
 
 	@Override
 	public void init() {

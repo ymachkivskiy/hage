@@ -131,4 +131,6 @@ public interface LifecycleManager {
 		 */
 		EXIT;
 	}
+
+    void start();
 }

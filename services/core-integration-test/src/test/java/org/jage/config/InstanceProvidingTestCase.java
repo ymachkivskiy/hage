@@ -36,7 +36,7 @@ import org.jage.platform.component.definition.IComponentDefinition;
 import org.jage.platform.component.pico.PicoComponentInstanceProviderFactory;
 import org.jage.platform.component.provider.IComponentInstanceProvider;
 import org.jage.platform.component.provider.IMutableComponentInstanceProvider;
-import org.jage.platform.config.xml.ConfigurationLoader;
+import org.jage.platform.config.xml.XmlConfigurationLoader;
 
 /**
  * An abstract test case that provides access to component instances defined in an XML configuration file.
@@ -60,7 +60,7 @@ public abstract class InstanceProvidingTestCase implements IComponentInstancePro
 
 	@Before
 	public void setUp() throws Exception {
-		ConfigurationLoader loader = new ConfigurationLoader();
+		XmlConfigurationLoader loader = new XmlConfigurationLoader();
 		List<IComponentDefinition> definitions = loader.loadConfiguration(configurationFile);
 		picoContainer = PicoComponentInstanceProviderFactory.createInstanceProvider(definitions);
 	}

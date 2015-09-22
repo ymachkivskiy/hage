@@ -61,9 +61,9 @@ import static com.google.common.base.Preconditions.checkArgument;
  *
  * @author AGH AgE Team
  */
-public final class ConfigurationLoader implements IConfigurationLoader {
+public final class XmlConfigurationLoader implements IConfigurationLoader {
 
-	private static final Logger LOG = LoggerFactory.getLogger(ConfigurationLoader.class);
+	private static final Logger LOG = LoggerFactory.getLogger(XmlConfigurationLoader.class);
 
 	private final DocumentReader reader;
 
@@ -75,7 +75,7 @@ public final class ConfigurationLoader implements IConfigurationLoader {
 	 * @throws ConfigurationException
 	 *             if something goes wrong during construction.
 	 */
-	public ConfigurationLoader() throws ConfigurationException {
+	public XmlConfigurationLoader() throws ConfigurationException {
 		this(createLoaderChain(), new DocumentReader());
 	}
 
@@ -91,7 +91,7 @@ public final class ConfigurationLoader implements IConfigurationLoader {
     		.append(new MultipleTagDuplicator());
     }
 
-	ConfigurationLoader(final DocumentLoader loader, final DocumentReader reader) {
+	XmlConfigurationLoader(final DocumentLoader loader, final DocumentReader reader) {
 		this.loader = loader;
 		this.reader = reader;
 	}

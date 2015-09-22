@@ -52,18 +52,18 @@ import org.jage.platform.config.xml.readers.DocumentReader;
  *
  * @author AGH AgE Team
  */
-public class ConfigurationLoaderTest {
+public class XmlConfigurationLoaderTest {
 
 	private DocumentLoader loader;
 
 	private DocumentReader reader;
 
-	private final ConfigurationLoader configLoader;
+	private final XmlConfigurationLoader configLoader;
 
-	public ConfigurationLoaderTest() throws ConfigurationException {
+	public XmlConfigurationLoaderTest() throws ConfigurationException {
 		loader = mock(DocumentLoader.class);
 		reader = mock(DocumentReader.class);
-		configLoader = new ConfigurationLoader(loader, reader);
+		configLoader = new XmlConfigurationLoader(loader, reader);
 	}
 
 	@Test(expected = IllegalArgumentException.class)

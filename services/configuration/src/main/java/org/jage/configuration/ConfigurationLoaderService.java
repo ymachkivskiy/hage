@@ -32,6 +32,7 @@
 package org.jage.configuration;
 
 import com.google.common.eventbus.Subscribe;
+import lombok.extern.slf4j.Slf4j;
 import org.jage.bus.EventBus;
 import org.jage.lifecycle.LifecycleStateChangedEvent;
 import org.jage.platform.argument.RuntimeArgumentsService;
@@ -41,12 +42,10 @@ import org.jage.platform.component.definition.IComponentDefinition;
 import org.jage.platform.component.exception.ComponentException;
 import org.jage.platform.config.loader.IConfigurationLoader;
 import org.jage.services.core.LifecycleManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
-import javax.inject.Inject;
 import java.util.Collection;
 
 import static com.google.common.base.Objects.toStringHelper;
@@ -58,17 +57,16 @@ import static com.google.common.base.Objects.toStringHelper;
  * from file. The configuration is sent via the event bus in {@link ConfigurationLoadedEvent}.
  */
 @ThreadSafe
+@Slf4j
 public class ConfigurationLoaderService implements IStatefulComponent {
-
-    private static final Logger log = LoggerFactory.getLogger(ConfigurationLoaderService.class);
 
     private static final String COMPUTATION_CONFIGURATION = "age.computation.conf";
 
-    @Inject
+    @Autowired
     private RuntimeArgumentsService argumentsService;
-    @Inject
+    @Autowired
     private IConfigurationLoader configurationLoader;
-    @Inject
+    @Autowired
     private EventBus eventBus;
 
     @Override

@@ -33,6 +33,12 @@
 			<version>${project.version}</version>
 		</dependency>
 
+        <dependency>
+            <groupId>org.jage.platform</groupId>
+            <artifactId>container-merge</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
 		<!-- External libraries dependencies -->
 		<dependency>
 			<groupId>commons-cli</groupId>

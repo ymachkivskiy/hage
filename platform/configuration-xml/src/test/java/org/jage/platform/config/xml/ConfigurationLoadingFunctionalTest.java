@@ -55,7 +55,7 @@ public class ConfigurationLoadingFunctionalTest {
 	    // given
 		final String source = "classpath:full.xml";
 		System.setProperty(PlaceholderResolver.AGE_PROPERTIES_INCLUDE, "classpath:full.properties");
-		final ConfigurationLoader loader = new ConfigurationLoader();
+		final XmlConfigurationLoader loader = new XmlConfigurationLoader();
 		final List<IComponentDefinition> expected = createExpectedList();
 
 		// when

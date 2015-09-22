@@ -42,7 +42,7 @@ import org.jage.platform.component.definition.ConfigurationAssert;
 import org.jage.platform.component.definition.IComponentDefinition;
 import org.jage.platform.component.pico.PicoComponentInstanceProvider;
 import org.jage.platform.component.provider.IMutableComponentInstanceProvider;
-import org.jage.platform.config.xml.ConfigurationLoader;
+import org.jage.platform.config.xml.XmlConfigurationLoader;
 
 import static org.jage.platform.component.builder.ConfigurationBuilder.Configuration;
 
@@ -59,7 +59,7 @@ public class ContainerIsolationTest {
 
 	@Test
 	public void testCreateInstance() throws Exception {
-		ConfigurationLoader loader = new ConfigurationLoader();
+		XmlConfigurationLoader loader = new XmlConfigurationLoader();
 		List<IComponentDefinition> definitions = loader.loadConfiguration("classpath:org/jage/config/containerIsolation1.xml");
 
 		IMutableComponentInstanceProvider pico = new PicoComponentInstanceProvider();
@@ -77,7 +77,7 @@ public class ContainerIsolationTest {
 
 	@Test
 	public void testCreateInstance2() throws Exception {
-		ConfigurationLoader loader = new ConfigurationLoader();
+		XmlConfigurationLoader loader = new XmlConfigurationLoader();
 		List<IComponentDefinition> definitions = loader.loadConfiguration("classpath:org/jage/config/containerIsolation2.xml");
 
 		IMutableComponentInstanceProvider pico = new PicoComponentInstanceProvider();
@@ -109,7 +109,7 @@ public class ContainerIsolationTest {
 						.Component("subobj2", ClassWithProperties.class, true)
 					)
 				.build();
-		ConfigurationLoader loader = new ConfigurationLoader();
+		XmlConfigurationLoader loader = new XmlConfigurationLoader();
 		String path = "classpath:org/jage/config/containerIsolation1.xml";
 
 		// when
@@ -134,7 +134,7 @@ public class ContainerIsolationTest {
 						.Component("subobj2", ClassWithProperties.class, true)
 					)
 				.build();
-		ConfigurationLoader loader = new ConfigurationLoader();
+		XmlConfigurationLoader loader = new XmlConfigurationLoader();
 		String path = "classpath:org/jage/config/containerIsolation2.xml";
 
 		// when

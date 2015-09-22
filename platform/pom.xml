@@ -26,5 +26,6 @@
 		<module>configuration-xml</module>
 		<module>arguments</module>
 		<module>cli-bootstrapper</module>
-	</modules>
+        <module>container-merge</module>
+    </modules>
 </project>

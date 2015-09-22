@@ -37,6 +37,7 @@ import javax.annotation.concurrent.ThreadSafe;
 import javax.inject.Inject;
 
 import org.jage.address.node.NodeAddressSupplier;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
