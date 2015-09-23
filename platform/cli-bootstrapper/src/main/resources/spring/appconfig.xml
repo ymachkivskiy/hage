@@ -9,6 +9,7 @@
 
     <import resource="classpath:spring/platform.xml"/>
     <import resource="classpath:spring/services.xml"/>
+    <import resource="classpath:spring/communication.xml"/>
 
 
 </beans>

@@ -29,7 +29,7 @@
  * $Id$
  */
 
-package org.jage.communication;
+package org.jage.communication.api;
 
 
 import org.jage.exception.AgeException;

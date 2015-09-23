@@ -1,10 +1,12 @@
-package org.jage.communication;
+package org.jage.communication.hazelcast;
 
 
 import com.hazelcast.core.ITopic;
 import com.hazelcast.core.Message;
 import com.hazelcast.core.MessageListener;
 import lombok.extern.slf4j.Slf4j;
+import org.jage.communication.api.CommunicationChannel;
+import org.jage.communication.api.MessageSubscriber;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
@@ -16,30 +18,33 @@ import static com.google.common.collect.Sets.newCopyOnWriteArraySet;
 
 @ThreadSafe
 @Slf4j
-public class CommunicationChannel<T> {
+class HazelcastCommunicationChannel<T> implements CommunicationChannel<T> {
 
     @Nonnull
     private final ITopic<T> topic;
 
     private final Set<MessageSubscriber<T>> subscribers = newCopyOnWriteArraySet();
 
-    public CommunicationChannel(@Nonnull final ITopic<T> topic) {
+    public HazelcastCommunicationChannel(@Nonnull final ITopic<T> topic) {
         this.topic = topic;
         topic.addMessageListener(new Listener());
     }
 
+    @Override
     public void publish(@Nonnull final T message) {
         log.debug("Publishing {} on the channel {}.", message, this);
 
         topic.publish(message);
     }
 
+    @Override
     public void subscribe(@Nonnull MessageSubscriber<T> listener) {
         log.debug("Subscribe {} to the channel {}.", listener, this);
 
         subscribers.add(listener);
     }
 
+    @Override
     public void unsubscribe(@Nonnull MessageSubscriber<T> listener) {
         log.debug("Unsubscribe {} from the channel {}.", listener, this);
 

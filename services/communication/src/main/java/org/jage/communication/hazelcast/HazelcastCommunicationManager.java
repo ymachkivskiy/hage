@@ -1,4 +1,4 @@
-package org.jage.communication;
+package org.jage.communication.hazelcast;
 
 
 import com.hazelcast.config.Config;
@@ -9,6 +9,7 @@ import com.hazelcast.core.ITopic;
 import org.jage.address.node.HazelcastNodeAddress;
 import org.jage.address.node.NodeAddress;
 import org.jage.address.node.NodeAddressSupplier;
+import org.jage.communication.api.CommunicationManager;
 import org.jage.platform.component.IStatefulComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +21,7 @@ import static com.google.common.base.Objects.toStringHelper;
 
 
 @ThreadSafe
-public class HazelcastCommunicationManager implements IStatefulComponent, NodeAddressSupplier, CommunicationManager {
+class HazelcastCommunicationManager implements IStatefulComponent, NodeAddressSupplier, CommunicationManager {
 
     public static final String HAZELCAST_INSTANCE_NAME = "HageInstance";
 
@@ -58,9 +59,9 @@ public class HazelcastCommunicationManager implements IStatefulComponent, NodeAd
 
     @Nonnull
     @Override
-    public <T> CommunicationChannel<T> getCommunicationChannelForService(final String serviceName) {
+    public <T> HazelcastCommunicationChannel<T> getCommunicationChannelForService(final String serviceName) {
         final ITopic<T> topic = hazelcastInstance.getTopic("service-" + serviceName);
-        return new CommunicationChannel<>(topic);
+        return new HazelcastCommunicationChannel<>(topic);
     }
 
     @Nonnull

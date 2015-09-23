@@ -1,4 +1,4 @@
-package org.jage.communication;
+package org.jage.communication.api;
 
 
 import com.hazelcast.core.IMap;

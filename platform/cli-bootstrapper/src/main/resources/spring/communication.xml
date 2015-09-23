@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="hage.platform.communication" class="org.jage.communication.hazelcast.HazelcastCommunicationManager"/>
+
+    <bean id="hage.platform.bus" class="org.jage.bus.EventBus">
+        <constructor-arg value="mainBus"/>
+    </bean>
+
+</beans>
