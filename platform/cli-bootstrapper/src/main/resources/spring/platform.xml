@@ -6,7 +6,7 @@
     <bean id="hage.platform.di.container" class="org.jage.platform.component.pico.PicoComponentInstanceProviderFactory"
           factory-method="createInstanceProvider"/>
 
-    <bean id="hage.platform.communication" class="org.jage.communication.DefaultCommunicationManager"/>
+    <bean id="hage.platform.communication" class="org.jage.communication.HazelcastCommunicationManager"/>
 
     <bean id="hage.platform.bus" class="org.jage.bus.EventBus">
         <constructor-arg value="mainBus"/>

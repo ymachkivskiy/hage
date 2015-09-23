@@ -1,34 +1,3 @@
-/**
- * Copyright (C) 2006 - 2012
- *   Pawel Kedzior
- *   Tomasz Kmiecik
- *   Kamil Pietak
- *   Krzysztof Sikora
- *   Adam Wos
- *   Lukasz Faber
- *   Daniel Krzywicki
- *   and other students of AGH University of Science and Technology.
- *
- * This file is part of AgE.
- *
- * AgE is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * AgE is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with AgE.  If not, see <http://www.gnu.org/licenses/>.
- */
-/*
- * Created: 2013-08-11
- * $Id$
- */
-
 package org.jage.communication;
 
 
@@ -50,26 +19,12 @@ import javax.annotation.concurrent.ThreadSafe;
 import static com.google.common.base.Objects.toStringHelper;
 
 
-/**
- * Communication manager is a service that provides means of communication between separate nodes.
- * <p>
- * <p>This version is based on Hazelcast and offers:
- * <ul>
- * <li>communication channels for services,</li>
- * <li>distributed map for the workplace manager.</li>
- * </ul>
- * <p>
- * <p>It also acts as NodeAddressSupplier.
- */
 @ThreadSafe
-public class DefaultCommunicationManager implements IStatefulComponent, NodeAddressSupplier, CommunicationManager {
+public class HazelcastCommunicationManager implements IStatefulComponent, NodeAddressSupplier, CommunicationManager {
 
-    /**
-     * A name of the Hazelcast instance used by this manager.
-     */
-    public static final String HAZELCAST_INSTANCE_NAME = "AgE";
+    public static final String HAZELCAST_INSTANCE_NAME = "HageInstance";
 
-    private static final Logger log = LoggerFactory.getLogger(DefaultCommunicationManager.class);
+    private static final Logger log = LoggerFactory.getLogger(HazelcastCommunicationManager.class);
 
     @Nonnull
     private static final HazelcastInstance hazelcastInstance;

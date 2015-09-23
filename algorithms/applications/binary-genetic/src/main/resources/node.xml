@@ -3,7 +3,7 @@
                xmlns="http://age.iisg.agh.edu.pl/schema/age"
                xsi:schemaLocation="http://age.iisg.agh.edu.pl/schema/age http://age.iisg.agh.edu.pl/schema/age/age.xsd">
 
-    <component class="org.jage.communication.DefaultCommunicationManager"/>
+    <component class="org.jage.communication.HazelcastCommunicationManager"/>
     <component class="org.jage.configuration.DefaultConfigurationService"/>
     <component class="org.jage.configuration.ConfigurationLoaderService"/>
     <component class="org.jage.bus.EventBus"/>
