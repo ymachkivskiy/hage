@@ -31,13 +31,6 @@
 
 package org.jage.genetic.agent;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.jage.address.agent.AgentAddress;
 import org.jage.address.agent.AgentAddressSupplier;
@@ -49,12 +42,19 @@ import org.jage.property.PropertyField;
 import org.jage.solution.ISolution;
 import org.jage.solution.ISolutionFactory;
 import org.jage.variation.IVariationOperator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.jage.population.Populations.newPopulation;
 
+
 /**
  * An agent implementation which performs genetic computation.
- *
+ * <p>
  * <br />
  * <br />
  * Deprecated. Use {@link GeneticActionDrivenAgent} instead.
@@ -64,225 +64,216 @@ import static org.jage.population.Populations.newPopulation;
 @Deprecated
 public class GeneticAgent extends SimpleAgent {
 
-	private static Logger log = LoggerFactory.getLogger(GeneticAgent.class);
+    private static final long serialVersionUID = 1L;
+    private static Logger log = LoggerFactory.getLogger(GeneticAgent.class);
 
-	private static final long serialVersionUID = 1L;
+    // BEGIN Dependencies
+    /**
+     * The number of steps after which statistics will be updated.
+     */
+    @PropertyField(propertyName = "resolution")
+    private final int resolution = 20;
+    /**
+     * The size of the population.
+     */
+    @Inject
+    @PropertyField(propertyName = "populationSize")
+    private int populationSize;
+    @Inject
+    private ISolutionFactory<ISolution> solutionFactory;
+    /**
+     * The preselection strategy.
+     */
+    @Inject
+    @PropertyField(propertyName = "preselect")
+    private IPreselection<ISolution, Double> preselect;
+    /**
+     * The variation strategy.
+     */
+    @Inject
+    @PropertyField(propertyName = "geneticOperators")
+    private IVariationOperator<ISolution> geneticOperators;
 
-	// BEGIN Dependencies
+    // END Dependencies
 
-	/**
-	 * The size of the population.
-	 */
-	@Inject
-	@PropertyField(propertyName = "populationSize")
-	private int populationSize;
+    // BEGIN Properties
+    @Inject
+    private ISolutionEvaluator<ISolution, Double> evaluator;
+    /**
+     * The actual step of computation.
+     */
+    @PropertyField(propertyName = "step")
+    private int step = 0;
+    /**
+     * The population.
+     */
+    private IPopulation<ISolution, Double> population;
 
-	@Inject
-	private ISolutionFactory<ISolution> solutionFactory;
+    /**
+     * The best solution in the current population.
+     */
+    @PropertyField(propertyName = "bestSolution")
+    private ISolution bestSolution = null;
 
-	/**
-	 * The preselection strategy.
-	 */
-	@Inject
-	@PropertyField(propertyName = "preselect")
-	private IPreselection<ISolution, Double> preselect;
+    /**
+     * The average evaluation of the current population.
+     */
+    @PropertyField(propertyName = "avgEvaluation")
+    private double avgEvaluation;
 
-	/**
-	 * The variation strategy.
-	 */
-	@Inject
-	@PropertyField(propertyName = "geneticOperators")
-	private IVariationOperator<ISolution> geneticOperators;
+    /**
+     * The best solution ever.
+     */
+    @PropertyField(propertyName = "bestSolutionEver")
+    private ISolution bestSolutionEver = null;
 
-	@Inject
-	private ISolutionEvaluator<ISolution, Double> evaluator;
+    /**
+     * The step on which the best solution ever happened.
+     */
+    @PropertyField(propertyName = "bestSolutionEverStep")
+    private int bestSolutionEverStep = 0;
 
-	// END Dependencies
+    // END Properties
 
-	// BEGIN Properties
+    // BEGIN Getters
 
-	/**
-	 * The actual step of computation.
-	 */
-	@PropertyField(propertyName = "step")
-	private int step = 0;
+    public GeneticAgent(final AgentAddress address) {
+        super(address);
+    }
 
-	/**
-	 * The number of steps after which statistics will be updated.
-	 */
-	@PropertyField(propertyName = "resolution")
-	private final int resolution = 20;
+    @Inject
+    public GeneticAgent(final AgentAddressSupplier supplier) {
+        super(supplier);
+    }
 
-	/**
-	 * The population.
-	 */
-	private IPopulation<ISolution, Double> population;
+    // END Getters
 
-	/**
-	 * The best solution in the current population.
-	 */
-	@PropertyField(propertyName = "bestSolution")
-	private ISolution bestSolution = null;
+    // BEGIN Logic
 
-	/**
-	 * The average evaluation of the current population.
-	 */
-	@PropertyField(propertyName = "avgEvaluation")
-	private double avgEvaluation;
+    /**
+     * Returns the best solution in the current population.
+     *
+     * @return The best solution
+     */
+    public ISolution getBestSolution() {
+        return bestSolution;
+    }
 
-	/**
-	 * The best solution ever.
-	 */
-	@PropertyField(propertyName = "bestSolutionEver")
-	private ISolution bestSolutionEver = null;
+    /**
+     * Returns the average evaluation of the current population.
+     *
+     * @return The average evaluation
+     */
+    public double getAvgEvaluation() {
+        return avgEvaluation;
+    }
 
-	/**
-	 * The step on which the best solution ever happened.
-	 */
-	@PropertyField(propertyName = "bestSolutionEverStep")
-	private int bestSolutionEverStep = 0;
+    @Override
+    public void init() {
+        createInitialPopulation();
+        updatePopulationStatistics();
 
-	// END Properties
+        log.debug("{}{}", getStepLog(), getPopulationLog("Initial population"));
+        log.info("Agent {} initialized", this);
+    }
 
-	// BEGIN Getters
+    private void createInitialPopulation() {
+        final List<ISolution> solutions = new ArrayList<ISolution>(populationSize);
+        final ISolution prototype = solutionFactory.createInitializedSolution();
+        for(int i = 0; i < populationSize; i++) {
+            solutions.add(solutionFactory.copySolution(prototype));
+        }
+        population = newPopulation(solutions);
+    }
 
-	/**
-	 * Returns the best solution in the current population.
-	 *
-	 * @return The best solution
-	 */
-	public ISolution getBestSolution() {
-		return bestSolution;
-	}
+    // END Logic
 
-	/**
-	 * Returns the average evaluation of the current population.
-	 *
-	 * @return The average evaluation
-	 */
-	public double getAvgEvaluation() {
-		return avgEvaluation;
-	}
+    // BEGIN Private
 
-	// END Getters
+    private void updatePopulationStatistics() {
+        bestSolution = population.iterator().next();
+        double bestEvaluation = evaluator.evaluate(bestSolution);
+        avgEvaluation = 0.0;
 
-	// BEGIN Logic
+        for(final ISolution solution : population) {
+            final double evaluation = evaluator.evaluate(solution);
+            avgEvaluation += evaluation;
 
-	public GeneticAgent(final AgentAddress address) {
-		super(address);
-	}
+            if(evaluation > bestEvaluation) {
+                bestSolution = solutionFactory.copySolution(solution);
+                bestEvaluation = evaluation;
+            }
+        }
 
-	@Inject
-	public GeneticAgent(final AgentAddressSupplier supplier) {
-		super(supplier);
-	}
+        avgEvaluation /= population.size();
 
-	@Override
-	public void init() {
-		createInitialPopulation();
-		updatePopulationStatistics();
+        if(bestSolutionEver == null) {
+            bestSolutionEver = bestSolution;
+            bestSolutionEverStep = step;
+        } else if(bestEvaluation > evaluator.evaluate(bestSolutionEver)) {
+            bestSolutionEver = solutionFactory.copySolution(bestSolution);
+            bestSolutionEverStep = step;
+        }
 
-		log.debug("{}{}", getStepLog(), getPopulationLog("Initial population"));
-		log.info("Agent {} initialized", this);
-	}
+        populationSize = population.size();
+    }
 
-	@Override
-	public void step() {
-		step++;
+    private String getStepLog() {
+        return this + " at step " + step;
+    }
 
-		preselectPopulation();
-		if (log.isDebugEnabled()) {
-			log.debug("{}{}", getStepLog(), getPopulationLog("Preselected population"));
-		}
+    private String getPopulationLog(final String msg) {
+        final StringBuilder builder = new StringBuilder("\n\t---=== " + msg + " ===---");
+        for(final ISolution solution : population) {
+            builder.append(String.format("\n\t%1$s, Evaluation = %2$g", solution, evaluator.evaluate(solution)));
 
-		transformPopulation();
-		if (log.isDebugEnabled()) {
-			log.debug("{}{}", getStepLog(), getPopulationLog("Transformed population"));
-		}
+        }
+        return builder.toString();
+    }
 
-		if (step % resolution == 0) {
-			updatePopulationStatistics();
-			log.info("{}{}", getStepLog(), getStatisticsLog());
-		}
+    @Override
+    public void step() {
+        step++;
 
-		notifyMonitorsForChangedProperties();
-	}
+        preselectPopulation();
+        if(log.isDebugEnabled()) {
+            log.debug("{}{}", getStepLog(), getPopulationLog("Preselected population"));
+        }
 
-	// END Logic
+        transformPopulation();
+        if(log.isDebugEnabled()) {
+            log.debug("{}{}", getStepLog(), getPopulationLog("Transformed population"));
+        }
 
-	// BEGIN Private
+        if(step % resolution == 0) {
+            updatePopulationStatistics();
+            log.info("{}{}", getStepLog(), getStatisticsLog());
+        }
 
-	private void createInitialPopulation() {
-		final List<ISolution> solutions = new ArrayList<ISolution>(populationSize);
-		final ISolution prototype = solutionFactory.createInitializedSolution();
-		for (int i = 0; i < populationSize; i++) {
-			solutions.add(solutionFactory.copySolution(prototype));
-		}
-		population = newPopulation(solutions);
-	}
+        notifyMonitorsForChangedProperties();
+    }
 
-	private void preselectPopulation() {
-		population = preselect.preselect(population);
-	}
+    // END Private
 
-	private void transformPopulation() {
-		geneticOperators.transformPopulation(population);
-	}
+    // BEGIN Logging
 
-	private void updatePopulationStatistics() {
-		bestSolution = population.iterator().next();
-		double bestEvaluation = evaluator.evaluate(bestSolution);
-		avgEvaluation = 0.0;
+    private void preselectPopulation() {
+        population = preselect.preselect(population);
+    }
 
-		for (final ISolution solution : population) {
-			final double evaluation = evaluator.evaluate(solution);
-			avgEvaluation += evaluation;
+    private void transformPopulation() {
+        geneticOperators.transformPopulation(population);
+    }
 
-			if (evaluation > bestEvaluation) {
-				bestSolution = solutionFactory.copySolution(solution);
-				bestEvaluation = evaluation;
-			}
-		}
+    private String getStatisticsLog() {
+        final StringBuilder builder = new StringBuilder();
+        builder.append(String.format("\n\tBest solution = %1$s, Evaluation = %2$s, Average evaluation = %3$g",
+                                     bestSolution, evaluator.evaluate(bestSolution), avgEvaluation));
+        builder.append(String.format("\n\tBest solution ever = %1$s, Evaluation = %2$s, at step = %3$d",
+                                     bestSolutionEver, evaluator.evaluate(bestSolutionEver), bestSolutionEverStep));
 
-		avgEvaluation /= population.size();
+        return builder.toString();
+    }
 
-		if (bestSolutionEver == null) {
-			bestSolutionEver = bestSolution;
-			bestSolutionEverStep = step;
-		} else if (bestEvaluation > evaluator.evaluate(bestSolutionEver)) {
-			bestSolutionEver = solutionFactory.copySolution(bestSolution);
-			bestSolutionEverStep = step;
-		}
-
-		populationSize = population.size();
-	}
-
-	// END Private
-
-	// BEGIN Logging
-
-	private String getStepLog() {
-		return this + " at step " + step;
-	}
-
-	private String getPopulationLog(final String msg) {
-		final StringBuilder builder = new StringBuilder("\n\t---=== " + msg + " ===---");
-		for (final ISolution solution : population) {
-			builder.append(String.format("\n\t%1$s, Evaluation = %2$g", solution, evaluator.evaluate(solution)));
-
-		}
-		return builder.toString();
-	}
-
-	private String getStatisticsLog() {
-		final StringBuilder builder = new StringBuilder();
-		builder.append(String.format("\n\tBest solution = %1$s, Evaluation = %2$s, Average evaluation = %3$g",
-		        bestSolution, evaluator.evaluate(bestSolution), avgEvaluation));
-		builder.append(String.format("\n\tBest solution ever = %1$s, Evaluation = %2$s, at step = %3$d",
-		        bestSolutionEver, evaluator.evaluate(bestSolutionEver), bestSolutionEverStep));
-
-		return builder.toString();
-	}
-
-	// END Logging
+    // END Logging
 }

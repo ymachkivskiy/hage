@@ -31,7 +31,14 @@
 
 package org.jage.platform.config.xml.readers;
 
+
 import org.dom4j.Element;
+import org.jage.platform.component.definition.ArrayDefinition;
+import org.jage.platform.component.definition.ConfigurationException;
+import org.jage.platform.component.definition.IArgumentDefinition;
+import org.jage.platform.component.definition.IComponentDefinition;
+import org.jage.platform.config.xml.ConfigAttributes;
+import org.jage.platform.config.xml.ConfigTags;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -39,22 +46,15 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.hamcrest.Matchers.is;
+import static org.jage.platform.config.xml.util.ElementBuilder.SOME_CLASS;
+import static org.jage.platform.config.xml.util.ElementBuilder.SOME_NAME;
+import static org.jage.platform.config.xml.util.ElementBuilder.arrayElement;
+import static org.jage.platform.config.xml.util.ElementBuilder.element;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-import org.jage.platform.component.definition.ArrayDefinition;
-import org.jage.platform.component.definition.ConfigurationException;
-import org.jage.platform.component.definition.IArgumentDefinition;
-import org.jage.platform.component.definition.IComponentDefinition;
-import org.jage.platform.config.xml.ConfigAttributes;
-import org.jage.platform.config.xml.ConfigTags;
-
-import static org.jage.platform.config.xml.util.ElementBuilder.SOME_CLASS;
-import static org.jage.platform.config.xml.util.ElementBuilder.SOME_NAME;
-import static org.jage.platform.config.xml.util.ElementBuilder.arrayElement;
-import static org.jage.platform.config.xml.util.ElementBuilder.element;
 
 /**
  * Unit tests for ArrayDefinitionReader.
@@ -62,101 +62,99 @@ import static org.jage.platform.config.xml.util.ElementBuilder.element;
  * @author AGH AgE Team
  */
 @RunWith(MockitoJUnitRunner.class)
-public class ArrayDefinitionReaderTest  {
+public class ArrayDefinitionReaderTest {
 
-	@Mock
-	@SuppressWarnings("unused")
-	private IDefinitionReader<IArgumentDefinition> argumentReader;
+    @InjectMocks
+    private final ArrayDefinitionReader reader = new ArrayDefinitionReader();
+    @Mock
+    @SuppressWarnings("unused")
+    private IDefinitionReader<IArgumentDefinition> argumentReader;
+    @Mock
+    @SuppressWarnings("unused")
+    private IDefinitionReader<IComponentDefinition> instanceReader;
 
-	@Mock
-	@SuppressWarnings("unused")
-	private IDefinitionReader<IComponentDefinition> instanceReader;
+    @Test
+    public void testValidBasicDefinition() throws ConfigurationException {
+        // given
+        final Element element = arrayElement().build();
 
-	@InjectMocks
-	private final ArrayDefinitionReader reader = new ArrayDefinitionReader();
+        // when
+        final ArrayDefinition definition = reader.read(element);
 
-	@Test
-	public void testValidBasicDefinition() throws ConfigurationException {
-		// given
-		final Element element = arrayElement().build();
+        // then
+        assertNotNull(definition);
+        assertThat(definition.getName(), is(SOME_NAME));
+        assertEquals(String[].class, definition.getType());
+        assertThat(definition.isSingleton(), is(true));
+        assertTrue(definition.getItems().isEmpty());
+    }
 
-		// when
-		final ArrayDefinition definition = reader.read(element);
+    @Test(expected = ConfigurationException.class)
+    public void testNameAttributeIsRequired() throws ConfigurationException {
+        // given
+        final Element element = element(ConfigTags.ARRAY)
+                .build();
 
-		// then
-		assertNotNull(definition);
-		assertThat(definition.getName(), is(SOME_NAME));
-		assertEquals(String[].class, definition.getType());
-		assertThat(definition.isSingleton(), is(true));
-		assertTrue(definition.getItems().isEmpty());
-	}
+        // when
+        reader.read(element);
+    }
 
-	@Test(expected = ConfigurationException.class)
-	public void testNameAttributeIsRequired() throws ConfigurationException {
-		// given
-		final Element element = element(ConfigTags.ARRAY)
-				.build();
+    @Test(expected = ConfigurationException.class)
+    public void testNameAttributeIsNotEmpty() throws ConfigurationException {
+        // given
+        final Element element = element(ConfigTags.ARRAY)
+                .withAttribute(ConfigAttributes.NAME, "")
+                .build();
 
-		// when
-		reader.read(element);
-	}
+        // when
+        reader.read(element);
+    }
 
-	@Test(expected = ConfigurationException.class)
-	public void testNameAttributeIsNotEmpty() throws ConfigurationException {
-		// given
-		final Element element = element(ConfigTags.ARRAY)
-				.withAttribute(ConfigAttributes.NAME, "")
-				.build();
+    @Test(expected = ConfigurationException.class)
+    public void testValueTypeAttributeIsRequired() throws ConfigurationException {
+        // given
+        final Element element = element(ConfigTags.ARRAY)
+                .withAttribute(ConfigAttributes.NAME, SOME_NAME)
+                .build();
 
-		// when
-		reader.read(element);
-	}
+        // when
+        reader.read(element);
+    }
 
-	@Test(expected = ConfigurationException.class)
-	public void testValueTypeAttributeIsRequired() throws ConfigurationException {
-		// given
-		final Element element = element(ConfigTags.ARRAY)
-				.withAttribute(ConfigAttributes.NAME, SOME_NAME)
-				.build();
+    @Test(expected = ConfigurationException.class)
+    public void testValueTypeAttributeIsNotEmpty() throws ConfigurationException {
+        // given
+        final Element element = element(ConfigTags.ARRAY)
+                .withAttribute(ConfigAttributes.NAME, SOME_NAME)
+                .withAttribute(ConfigAttributes.VALUE_TYPE, "")
+                .build();
 
-		// when
-		reader.read(element);
-	}
+        // when
+        reader.read(element);
+    }
 
-	@Test(expected = ConfigurationException.class)
-	public void testValueTypeAttributeIsNotEmpty() throws ConfigurationException {
-		// given
-		final Element element = element(ConfigTags.ARRAY)
-				.withAttribute(ConfigAttributes.NAME, SOME_NAME)
-				.withAttribute(ConfigAttributes.VALUE_TYPE, "")
-				.build();
+    @Test(expected = ConfigurationException.class)
+    public void testSingletonAttributeIsRequired() throws ConfigurationException {
+        // given
+        final Element element = element(ConfigTags.ARRAY)
+                .withAttribute(ConfigAttributes.NAME, SOME_NAME)
+                .withAttribute(ConfigAttributes.VALUE_TYPE, SOME_CLASS)
+                .build();
 
-		// when
-		reader.read(element);
-	}
+        // when
+        reader.read(element);
+    }
 
-	@Test(expected = ConfigurationException.class)
-	public void testSingletonAttributeIsRequired() throws ConfigurationException {
-		// given
-		final Element element = element(ConfigTags.ARRAY)
-				.withAttribute(ConfigAttributes.NAME, SOME_NAME)
-				.withAttribute(ConfigAttributes.VALUE_TYPE, SOME_CLASS)
-				.build();
+    @Test(expected = ConfigurationException.class)
+    public void testSingletonAttributeIsNotEmpty() throws ConfigurationException {
+        // given
+        final Element element = element(ConfigTags.ARRAY)
+                .withAttribute(ConfigAttributes.NAME, SOME_NAME)
+                .withAttribute(ConfigAttributes.VALUE_TYPE, SOME_CLASS)
+                .withAttribute(ConfigAttributes.IS_SINGLETON, "")
+                .build();
 
-		// when
-		reader.read(element);
-	}
-
-	@Test(expected = ConfigurationException.class)
-	public void testSingletonAttributeIsNotEmpty() throws ConfigurationException {
-		// given
-		final Element element = element(ConfigTags.ARRAY)
-				.withAttribute(ConfigAttributes.NAME, SOME_NAME)
-				.withAttribute(ConfigAttributes.VALUE_TYPE, SOME_CLASS)
-				.withAttribute(ConfigAttributes.IS_SINGLETON, "")
-				.build();
-
-		// when
-		reader.read(element);
-	}
+        // when
+        reader.read(element);
+    }
 }

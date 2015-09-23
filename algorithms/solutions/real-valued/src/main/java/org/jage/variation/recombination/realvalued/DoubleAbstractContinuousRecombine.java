@@ -31,11 +31,12 @@
 
 package org.jage.variation.recombination.realvalued;
 
-import java.util.List;
-
-import org.jage.variation.recombination.AbstractContinuousRecombine;
 
 import it.unimi.dsi.fastutil.doubles.DoubleList;
+import org.jage.variation.recombination.AbstractContinuousRecombine;
+
+import java.util.List;
+
 
 /**
  * Abstract class which efficiently unboxes Double AbstractContinuousRecombine.
@@ -44,26 +45,24 @@ import it.unimi.dsi.fastutil.doubles.DoubleList;
  */
 public abstract class DoubleAbstractContinuousRecombine extends AbstractContinuousRecombine<Double> {
 
-	@Override
-	protected void doRecombine(List<Double> representation1, List<Double> representation2, int index) {
-		DoubleList list1 = (DoubleList)representation1;
-		DoubleList list2 = (DoubleList)representation2;
+    @Override
+    protected void doRecombine(List<Double> representation1, List<Double> representation2, int index) {
+        DoubleList list1 = (DoubleList) representation1;
+        DoubleList list2 = (DoubleList) representation2;
 
-		double oldValue1 = list1.getDouble(index);
-		double oldValue2 = list2.getDouble(index);
+        double oldValue1 = list1.getDouble(index);
+        double oldValue2 = list2.getDouble(index);
 
-		list1.set(index, doRecombine(oldValue1, oldValue2));
-		list2.set(index, doRecombine(oldValue1, oldValue2));
-	}
+        list1.set(index, doRecombine(oldValue1, oldValue2));
+        list2.set(index, doRecombine(oldValue1, oldValue2));
+    }
 
-	/**
-	 * Perform the actual recombination on primitive doubles.
-	 *
-	 * @param value1
-	 *            The first value
-	 * @param value2
-	 *            The second value
-	 * @return a recombinated value
-	 */
-	protected abstract double doRecombine(double value1, double value2);
+    /**
+     * Perform the actual recombination on primitive doubles.
+     *
+     * @param value1 The first value
+     * @param value2 The second value
+     * @return a recombinated value
+     */
+    protected abstract double doRecombine(double value1, double value2);
 }

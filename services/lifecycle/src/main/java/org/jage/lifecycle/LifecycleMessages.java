@@ -31,9 +31,11 @@
 
 package org.jage.lifecycle;
 
-import javax.annotation.concurrent.ThreadSafe;
 
 import org.jage.annotation.ReturnValuesAreNonnullByDefault;
+
+import javax.annotation.concurrent.ThreadSafe;
+
 
 /**
  * Utilities for working with lifecycle messages.
@@ -43,25 +45,26 @@ import org.jage.annotation.ReturnValuesAreNonnullByDefault;
 @ReturnValuesAreNonnullByDefault
 @ThreadSafe
 public final class LifecycleMessages {
-	private LifecycleMessages() {
-		// Empty
-	}
 
-	/**
-	 * Creates an instance of the <strong>START</strong> {@link LifecycleMessage}.
-	 *
-	 * @return a new START LifecycleMessage.
-	 */
-	public static LifecycleMessage createStart() {
-		return LifecycleMessage.create(LifecycleMessage.LifecycleCommand.START);
-	}
+    private LifecycleMessages() {
+        // Empty
+    }
 
-	/**
-	 * Creates an instance of the <strong>EXIT</strong> {@link LifecycleMessage}.
-	 *
-	 * @return a new EXIT LifecycleMessage.
-	 */
-	public static LifecycleMessage createExit() {
-		return LifecycleMessage.create(LifecycleMessage.LifecycleCommand.EXIT);
-	}
+    /**
+     * Creates an instance of the <strong>START</strong> {@link LifecycleMessage}.
+     *
+     * @return a new START LifecycleMessage.
+     */
+    public static LifecycleMessage createStart() {
+        return LifecycleMessage.create(LifecycleMessage.LifecycleCommand.START);
+    }
+
+    /**
+     * Creates an instance of the <strong>EXIT</strong> {@link LifecycleMessage}.
+     *
+     * @return a new EXIT LifecycleMessage.
+     */
+    public static LifecycleMessage createExit() {
+        return LifecycleMessage.create(LifecycleMessage.LifecycleCommand.EXIT);
+    }
 }

@@ -26,18 +26,19 @@
  */
 package org.jage.monitoring.visualization.storage;
 
+
 import java.util.Collection;
 
+
 /**
- * 
- * 
  * @author AGH AgE Team
  */
 public interface StorageLoader {
 
-	/**
-	 * Returns collection of SotrageDescription which describes storages saved in concrete implementation of VisualDataStorage.
-	 * @return
-	 */
-	public Collection<StorageDescription> loadSavedStorageDescriptions();
+    /**
+     * Returns collection of SotrageDescription which describes storages saved in concrete implementation of VisualDataStorage.
+     *
+     * @return
+     */
+    public Collection<StorageDescription> loadSavedStorageDescriptions();
 }

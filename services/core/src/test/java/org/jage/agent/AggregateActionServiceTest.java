@@ -31,6 +31,16 @@
 
 package org.jage.agent;
 
+
+import org.jage.action.Action;
+import org.jage.action.SingleAction;
+import org.jage.action.context.GetAgentActionContext;
+import org.jage.action.context.IActionWithAgentReferenceContext;
+import org.jage.action.context.RemoveAgentActionContext;
+import org.jage.action.context.SendMessageActionContext;
+import org.jage.address.agent.AgentAddress;
+import org.jage.address.selector.UnicastSelector;
+import org.jage.communication.message.Message;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -44,15 +54,6 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import org.jage.action.Action;
-import org.jage.action.SingleAction;
-import org.jage.action.context.GetAgentActionContext;
-import org.jage.action.context.IActionWithAgentReferenceContext;
-import org.jage.action.context.RemoveAgentActionContext;
-import org.jage.action.context.SendMessageActionContext;
-import org.jage.address.agent.AgentAddress;
-import org.jage.address.selector.UnicastSelector;
-import org.jage.communication.message.Message;
 
 /**
  * Tests for the {@link AggregateActionService} class: other tests.
@@ -61,40 +62,40 @@ import org.jage.communication.message.Message;
  */
 public class AggregateActionServiceTest {
 
-	private final AggregateActionService actionService = new AggregateActionService();
+    private final AggregateActionService actionService = new AggregateActionService();
 
-	@SuppressWarnings("unchecked")
-	@Test
-	public void testThatAggregateConformsToDefaultActionPriorites() {
-		// Note this test can be written much better when the aggregate will be more open for testing.
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testThatAggregateConformsToDefaultActionPriorites() {
+        // Note this test can be written much better when the aggregate will be more open for testing.
 
-		// given
-		final SingleAction action1 = new SingleAction(mock(UnicastSelector.class), new GetAgentActionContext(
-		        mock(IActionWithAgentReferenceContext.class)));
-		final SingleAction action2 = new SingleAction(mock(UnicastSelector.class), new SendMessageActionContext(
-		        mock(Message.class)));
-		final SingleAction action3 = new SingleAction(mock(UnicastSelector.class), new RemoveAgentActionContext(
-		        mock(AgentAddress.class)));
+        // given
+        final SingleAction action1 = new SingleAction(mock(UnicastSelector.class), new GetAgentActionContext(
+                mock(IActionWithAgentReferenceContext.class)));
+        final SingleAction action2 = new SingleAction(mock(UnicastSelector.class), new SendMessageActionContext(
+                mock(Message.class)));
+        final SingleAction action3 = new SingleAction(mock(UnicastSelector.class), new RemoveAgentActionContext(
+                mock(AgentAddress.class)));
 
-		final AggregateActionService aggregateSpy = spy(actionService);
-		final ArgumentCaptor<Action> argument = ArgumentCaptor.forClass(Action.class);
+        final AggregateActionService aggregateSpy = spy(actionService);
+        final ArgumentCaptor<Action> argument = ArgumentCaptor.forClass(Action.class);
 
-		// add them in reverse order
-		aggregateSpy.doAction(action3);
-		aggregateSpy.doAction(action2);
-		aggregateSpy.doAction(action1);
+        // add them in reverse order
+        aggregateSpy.doAction(action3);
+        aggregateSpy.doAction(action2);
+        aggregateSpy.doAction(action1);
 
-		willDoNothing().given(aggregateSpy).processAction(any(Action.class));
+        willDoNothing().given(aggregateSpy).processAction(any(Action.class));
 
-		// when
-		aggregateSpy.processActions();
+        // when
+        aggregateSpy.processActions();
 
-		// then
-		verify(aggregateSpy, times(3)).processAction(argument.capture());
+        // then
+        verify(aggregateSpy, times(3)).processAction(argument.capture());
 
-		assertThat(argument.getAllValues().get(0), is(equalTo((Action)action1)));
-		assertThat(argument.getAllValues().get(1), is(equalTo((Action)action2)));
-		assertThat(argument.getAllValues().get(2), is(equalTo((Action)action3)));
-	}
+        assertThat(argument.getAllValues().get(0), is(equalTo((Action) action1)));
+        assertThat(argument.getAllValues().get(1), is(equalTo((Action) action2)));
+        assertThat(argument.getAllValues().get(2), is(equalTo((Action) action3)));
+    }
 
 }

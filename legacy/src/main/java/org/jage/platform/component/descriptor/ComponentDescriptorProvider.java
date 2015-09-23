@@ -31,69 +31,68 @@
 
 package org.jage.platform.component.descriptor;
 
-import java.util.HashMap;
-import java.util.Map;
 
 import org.jage.platform.component.definition.ConfigurationException;
 import org.jage.platform.component.definition.IComponentDefinition;
 import org.jage.platform.component.exception.ComponentException;
 
+import java.util.HashMap;
+import java.util.Map;
+
+
 /**
  * This class allows one to obtain a descriptor for a class declared in a given definition.
- * 
+ *
  * @author AGH AgE Team
  */
 public class ComponentDescriptorProvider {
 
-	private final Map<Class<?>, IComponentDescriptor> componentDescriptors;
+    private final Map<Class<?>, IComponentDescriptor> componentDescriptors;
 
-	private final IComponentDescriptorReader reader;
+    private final IComponentDescriptorReader reader;
 
-	/**
-	 * Constructs a new <code>ComponentDescriptorProvider</code>.
-	 */
-	public ComponentDescriptorProvider() {
-		this.componentDescriptors = new HashMap<Class<?>, IComponentDescriptor>();
-		this.reader = new ComponentDescriptorReader();
-	}
+    /**
+     * Constructs a new <code>ComponentDescriptorProvider</code>.
+     */
+    public ComponentDescriptorProvider() {
+        this.componentDescriptors = new HashMap<Class<?>, IComponentDescriptor>();
+        this.reader = new ComponentDescriptorReader();
+    }
 
-	/**
-	 * Returns a descriptor of the component defined in the given definition.
-	 * <p>
-	 * Descriptor is created on the base of the type from the definition.
-	 * 
-	 * @param definition
-	 *            A definition for which a descriptor should be created.
-	 * @return A descriptor for the given definition.
-	 * @throws ComponentException
-	 *             If the descriptor could not be found.
-	 * 
-	 * @see {@link IComponentDefinition#getType()}
-	 */
-	public IComponentDescriptor getDescriptor(IComponentDefinition definition) throws ComponentException {
-		Class<?> type = definition.getType();
-		if (!componentDescriptors.containsKey(type)) {
-			loadDescriptor(type);
-		}
-		if (componentDescriptors.containsKey(type)) {
-			return componentDescriptors.get(type);
-		}
-		throw new ComponentException(String.format("Descriptor for %s cannot be found and loaded", type));
-	}
+    /**
+     * Returns a descriptor of the component defined in the given definition.
+     * <p>
+     * Descriptor is created on the base of the type from the definition.
+     *
+     * @param definition A definition for which a descriptor should be created.
+     * @return A descriptor for the given definition.
+     * @throws ComponentException If the descriptor could not be found.
+     * @see {@link IComponentDefinition#getType()}
+     */
+    public IComponentDescriptor getDescriptor(IComponentDefinition definition) throws ComponentException {
+        Class<?> type = definition.getType();
+        if(!componentDescriptors.containsKey(type)) {
+            loadDescriptor(type);
+        }
+        if(componentDescriptors.containsKey(type)) {
+            return componentDescriptors.get(type);
+        }
+        throw new ComponentException(String.format("Descriptor for %s cannot be found and loaded", type));
+    }
 
-	private void loadDescriptor(Class<?> type) {
-		if (componentDescriptors.get(type) == null) {
-			IComponentDescriptor newDescriptor;
-			try {
-				newDescriptor = reader.readDescritptor(type);
-				componentDescriptors.put(type, newDescriptor);
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (ConfigurationException e) {
-				e.printStackTrace();
-			}
-		}
+    private void loadDescriptor(Class<?> type) {
+        if(componentDescriptors.get(type) == null) {
+            IComponentDescriptor newDescriptor;
+            try {
+                newDescriptor = reader.readDescritptor(type);
+                componentDescriptors.put(type, newDescriptor);
+            } catch(IllegalArgumentException e) {
+                e.printStackTrace();
+            } catch(ConfigurationException e) {
+                e.printStackTrace();
+            }
+        }
 
-	}
+    }
 
 }

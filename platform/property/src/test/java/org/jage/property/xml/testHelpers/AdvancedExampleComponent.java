@@ -26,132 +26,134 @@
  */
 package org.jage.property.xml.testHelpers;
 
+
+import org.jage.property.testHelpers.ChangesNotifierStub;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import org.jage.property.testHelpers.ChangesNotifierStub;
 
 public class AdvancedExampleComponent extends SimpleExampleComponent {
 
-	@SuppressWarnings("unused")
-	private static final String version = "1.0.0";
+    @SuppressWarnings("unused")
+    private static final String version = "1.0.0";
 
-	private int _intProperty = 0;
-	private String _stringProperty = "";
-	private ChangesNotifierStub _changesNotifierProperty2 = new ChangesNotifierStub();
+    private int _intProperty = 0;
+    private String _stringProperty = "";
+    private ChangesNotifierStub _changesNotifierProperty2 = new ChangesNotifierStub();
 
-	@SuppressWarnings("unused")
-	private ChangesNotifierStub _changesNotifierProperty = new ChangesNotifierStub();
+    @SuppressWarnings("unused")
+    private ChangesNotifierStub _changesNotifierProperty = new ChangesNotifierStub();
 
-	private float _floatProperty = 0.0f;
+    private float _floatProperty = 0.0f;
 
-	private Object _objectProperty = new Object();
+    private Object _objectProperty = new Object();
 
-	@SuppressWarnings("unused")
-	private Object _monitorableObjectProperty = new Object();
+    @SuppressWarnings("unused")
+    private Object _monitorableObjectProperty = new Object();
 
-	@SuppressWarnings("unused")
-	private String _monitorableStringProperty = "Monitorable string";
+    @SuppressWarnings("unused")
+    private String _monitorableStringProperty = "Monitorable string";
 
-	private List<NormalComponent> _normalList;
+    private List<NormalComponent> _normalList;
 
-	/**
-	 * 
-	 */
-	public AdvancedExampleComponent() {
-	}
+    /**
+     *
+     */
+    public AdvancedExampleComponent() {
+    }
 
-	public int getIntProperty() {
-		return _intProperty;
-	}
+    public int getIntProperty() {
+        return _intProperty;
+    }
 
-	public void setIntProperty(int value) {
-		_intProperty = value;
-	}
+    public void setIntProperty(int value) {
+        _intProperty = value;
+    }
 
-	public ChangesNotifierStub getChangesNotifier() {
-		return _changesNotifierProperty2;
-	}
+    public ChangesNotifierStub getChangesNotifier() {
+        return _changesNotifierProperty2;
+    }
 
-	public void setChangesNotifier(ChangesNotifierStub value) {
-		_changesNotifierProperty2 = value;
-	}
+    public void setChangesNotifier(ChangesNotifierStub value) {
+        _changesNotifierProperty2 = value;
+    }
 
-	public Method getIntPropertyGetter() {
-		try {
-			return AdvancedExampleComponent.class.getMethod("getIntProperty", new Class[] {});
-		} catch (NoSuchMethodException ex) {
-			return null;
-		}
-	}
+    public Method getIntPropertyGetter() {
+        try {
+            return AdvancedExampleComponent.class.getMethod("getIntProperty");
+        } catch(NoSuchMethodException ex) {
+            return null;
+        }
+    }
 
-	public Method getIntPropertySetter() {
-		try {
-			return AdvancedExampleComponent.class.getMethod("setIntProperty", new Class[] { int.class });
-		} catch (NoSuchMethodException ex) {
-			return null;
-		}
-	}
+    public Method getIntPropertySetter() {
+        try {
+            return AdvancedExampleComponent.class.getMethod("setIntProperty", int.class);
+        } catch(NoSuchMethodException ex) {
+            return null;
+        }
+    }
 
-	public String getStringProperty() {
-		return _stringProperty;
-	}
+    public String getStringProperty() {
+        return _stringProperty;
+    }
 
-	public void setStringProperty(String value) {
-		_stringProperty = value;
-	}
+    public void setStringProperty(String value) {
+        _stringProperty = value;
+    }
 
-	public Method getStringPropertyGetter() {
-		try {
-			return AdvancedExampleComponent.class.getMethod("getStringProperty", new Class[] {});
-		} catch (NoSuchMethodException ex) {
-			return null;
-		}
-	}
+    public Method getStringPropertyGetter() {
+        try {
+            return AdvancedExampleComponent.class.getMethod("getStringProperty");
+        } catch(NoSuchMethodException ex) {
+            return null;
+        }
+    }
 
-	public Method getStringPropertySetter() {
-		try {
-			return AdvancedExampleComponent.class.getMethod("setStringProperty", new Class[] { String.class });
-		} catch (NoSuchMethodException ex) {
-			return null;
-		}
-	}
+    public Method getStringPropertySetter() {
+        try {
+            return AdvancedExampleComponent.class.getMethod("setStringProperty", String.class);
+        } catch(NoSuchMethodException ex) {
+            return null;
+        }
+    }
 
-	public Field getFloatPropertyField() {
-		try {
-			return AdvancedExampleComponent.class.getDeclaredField("_floatProperty");
-		} catch (NoSuchFieldException ex) {
-			return null;
-		}
-	}
+    public Field getFloatPropertyField() {
+        try {
+            return AdvancedExampleComponent.class.getDeclaredField("_floatProperty");
+        } catch(NoSuchFieldException ex) {
+            return null;
+        }
+    }
 
-	public Field getObjectPropertyField() {
-		try {
-			return AdvancedExampleComponent.class.getDeclaredField("_objectProperty");
+    public Field getObjectPropertyField() {
+        try {
+            return AdvancedExampleComponent.class.getDeclaredField("_objectProperty");
 
-		} catch (NoSuchFieldException ex) {
-			return null;
-		}
-	}
+        } catch(NoSuchFieldException ex) {
+            return null;
+        }
+    }
 
-	public void setMonitorableObjectPropertyValue(Object newValue) {
-		_monitorableObjectProperty = newValue;
-	}
+    public void setMonitorableObjectPropertyValue(Object newValue) {
+        _monitorableObjectProperty = newValue;
+    }
 
-	public float getFloatProperty() {
-		return _floatProperty;
-	}
+    public float getFloatProperty() {
+        return _floatProperty;
+    }
 
-	public int getIntegerProperty() {
-		return _intProperty;
-	}
+    public int getIntegerProperty() {
+        return _intProperty;
+    }
 
-	public Object getObjectProperty() {
-		return _objectProperty;
-	}
+    public Object getObjectProperty() {
+        return _objectProperty;
+    }
 
-	public List<NormalComponent> getNormalList() {
-		return _normalList;
-	}
+    public List<NormalComponent> getNormalList() {
+        return _normalList;
+    }
 }

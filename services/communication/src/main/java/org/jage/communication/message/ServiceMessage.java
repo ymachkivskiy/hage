@@ -31,34 +31,35 @@
 
 package org.jage.communication.message;
 
-import java.io.Serializable;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
+import java.io.Serializable;
+
 
 /**
  * Base interface for messages that are used by services.
  * It is comprised of a header ({@link org.jage.communication.message.ServiceHeader}) and content
  * which can be any Serializable object.
  *
- * @param <T>
- *            A type of the payload transported within this message (must be Serializable).
- *
+ * @param <T> A type of the payload transported within this message (must be Serializable).
  * @author AGH AgE Team
  */
 public interface ServiceMessage<T extends Serializable> extends Serializable {
 
-	/**
-	 * Returns a message header.
-	 * 
-	 * @return A message header, never null.
-	 */
-	@Nonnull ServiceHeader getHeader();
+    /**
+     * Returns a message header.
+     *
+     * @return A message header, never null.
+     */
+    @Nonnull
+    ServiceHeader getHeader();
 
-	/**
-	 * Returns message contents.
-	 * 
-	 * @return A message contents.
-	 */
-	@CheckForNull T getPayload();
+    /**
+     * Returns message contents.
+     *
+     * @return A message contents.
+     */
+    @CheckForNull
+    T getPayload();
 }

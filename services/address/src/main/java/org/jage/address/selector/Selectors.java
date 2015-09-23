@@ -31,6 +31,7 @@
 
 package org.jage.address.selector;
 
+
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableSet;
 import org.jage.address.Address;
@@ -47,6 +48,7 @@ import static com.google.common.collect.Iterables.getLast;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.difference;
 import static java.util.Collections.shuffle;
+
 
 /**
  * Utility class for selectors.
@@ -130,6 +132,21 @@ public final class Selectors {
     /**
      * Filters all addresses from the collections using the specified selector.
      * <p>
+     * Formally it returns all addresses from {@code addresses} for which {@code selector.selects(address) == false}.
+     *
+     * @param addresses addresses that should be filtered.
+     * @param selector  a selector to use.
+     * @param <T>       an address type.
+     * @return a set of addresses.
+     */
+    public static <T extends Address> Set<T> filterUnselected(final Collection<T> addresses,
+            final AddressSelector<T> selector) {
+        return difference(ImmutableSet.copyOf(addresses), filter(addresses, selector));
+    }
+
+    /**
+     * Filters all addresses from the collections using the specified selector.
+     * <p>
      * Formally it returns all addresses from {@code addresses} for which {@code selector.selects(address) == true}.
      *
      * @param addresses addresses that should be filtered.
@@ -148,21 +165,6 @@ public final class Selectors {
     /**
      * Filters all addresses from the collections using the specified selector.
      * <p>
-     * Formally it returns all addresses from {@code addresses} for which {@code selector.selects(address) == false}.
-     *
-     * @param addresses addresses that should be filtered.
-     * @param selector  a selector to use.
-     * @param <T>       an address type.
-     * @return a set of addresses.
-     */
-    public static <T extends Address> Set<T> filterUnselected(final Collection<T> addresses,
-                                                              final AddressSelector<T> selector) {
-        return difference(ImmutableSet.copyOf(addresses), filter(addresses, selector));
-    }
-
-    /**
-     * Filters all addresses from the collections using the specified selector.
-     * <p>
      * Formally it returns all addresses from {@code selector.getAddresses()} which are not in the provided collection.
      *
      * @param addresses addresses that should be filtered.
@@ -171,7 +173,7 @@ public final class Selectors {
      * @return a set of addresses.
      */
     public static <T extends Address> Set<T> getUnknownAddresses(final Collection<T> addresses,
-                                                                 final ExplicitSelector<T> selector) {
+            final ExplicitSelector<T> selector) {
         return difference(selector.getAddresses(), ImmutableSet.copyOf(addresses));
     }
 }

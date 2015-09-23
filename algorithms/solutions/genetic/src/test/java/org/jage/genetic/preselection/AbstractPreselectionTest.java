@@ -31,20 +31,20 @@
 
 package org.jage.genetic.preselection;
 
+
+import org.jage.population.IPopulation;
+import org.jage.solution.IVectorSolution;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import static org.jage.population.Populations.emptyPopulation;
+import static org.jage.population.Populations.singletonPopulation;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.jage.population.IPopulation;
-import org.jage.solution.IVectorSolution;
-
-import static org.jage.population.Populations.emptyPopulation;
-import static org.jage.population.Populations.singletonPopulation;
 
 /**
  * Tests for AbstractPreselection.
@@ -54,56 +54,56 @@ import static org.jage.population.Populations.singletonPopulation;
 @RunWith(MockitoJUnitRunner.class)
 public class AbstractPreselectionTest {
 
-	@InjectMocks
-	private AbstractPreselection tested = new AbstractPreselection() {
+    @InjectMocks
+    private AbstractPreselection tested = new AbstractPreselection() {
 
-		@Override
-		protected int[] getPreselectedIndices(double[] values) {
-			int[] indices = new int[values.length];
-			for (int i = 0; i < indices.length; i++) {
-				indices[i] = i;
-			}
-			return indices;
-		}
-	};
+        @Override
+        protected int[] getPreselectedIndices(double[] values) {
+            int[] indices = new int[values.length];
+            for(int i = 0; i < indices.length; i++) {
+                indices[i] = i;
+            }
+            return indices;
+        }
+    };
 
-	@Test(expected = NullPointerException.class)
-	public void shouldThrowExceptionForNullPopulation() {
-		// given
-		IPopulation<IVectorSolution<Double>, Double> population = null;
+    @Test(expected = NullPointerException.class)
+    public void shouldThrowExceptionForNullPopulation() {
+        // given
+        IPopulation<IVectorSolution<Double>, Double> population = null;
 
-		// when
-		tested.preselect(population);
-	}
+        // when
+        tested.preselect(population);
+    }
 
-	@Test
-	public void shouldReturnEmptyForEmptyPopulation() {
-		// given
-		IPopulation<IVectorSolution<Double>, Double> population = emptyPopulation();
+    @Test
+    public void shouldReturnEmptyForEmptyPopulation() {
+        // given
+        IPopulation<IVectorSolution<Double>, Double> population = emptyPopulation();
 
-		// when
-		IPopulation<IVectorSolution<Double>, Double> preselectedPopulation = tested.preselect(population);
+        // when
+        IPopulation<IVectorSolution<Double>, Double> preselectedPopulation = tested.preselect(population);
 
-		// then
-		assertTrue(preselectedPopulation.isEmpty());
-	}
+        // then
+        assertTrue(preselectedPopulation.isEmpty());
+    }
 
-	@Test
-	@SuppressWarnings("unchecked")
-	public void shouldReturnSameWhenOneSolution() {
-		// given
-		IVectorSolution<Double> solution = Mockito.mock(IVectorSolution.class);
-		IPopulation<IVectorSolution<Double>, Double> population = singletonPopulation(solution);
+    @Test
+    @SuppressWarnings("unchecked")
+    public void shouldReturnSameWhenOneSolution() {
+        // given
+        IVectorSolution<Double> solution = Mockito.mock(IVectorSolution.class);
+        IPopulation<IVectorSolution<Double>, Double> population = singletonPopulation(solution);
 
-		// when
-		IPopulation<IVectorSolution<Double>, Double> preselectedPopulation = tested.preselect(population);
+        // when
+        IPopulation<IVectorSolution<Double>, Double> preselectedPopulation = tested.preselect(population);
 
-		// then
-		assertEquals(1, preselectedPopulation.size());
-		assertTrue(preselectedPopulation.contains(solution));
-	}
+        // then
+        assertEquals(1, preselectedPopulation.size());
+        assertTrue(preselectedPopulation.contains(solution));
+    }
 
-	// TODO test respect of indices
-	// TODO test factory invocation
+    // TODO test respect of indices
+    // TODO test factory invocation
 
 }

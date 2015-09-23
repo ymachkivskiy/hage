@@ -31,6 +31,11 @@
 
 package org.jage.platform.component.pico.injector;
 
+
+import org.jage.platform.component.IStatefulComponent;
+import org.jage.platform.component.definition.ComponentDefinition;
+import org.jage.platform.component.exception.ComponentException;
+import org.jage.platform.component.pico.IPicoComponentInstanceProvider;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -43,10 +48,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
-import org.jage.platform.component.IStatefulComponent;
-import org.jage.platform.component.definition.ComponentDefinition;
-import org.jage.platform.component.exception.ComponentException;
-import org.jage.platform.component.pico.IPicoComponentInstanceProvider;
+
 /**
  * Tests for StatefulComponentInjector.
  *
@@ -55,63 +57,63 @@ import org.jage.platform.component.pico.IPicoComponentInstanceProvider;
 @RunWith(MockitoJUnitRunner.class)
 public class StatefulComponentInjectorTest extends AbstractBaseInjectorTest {
 
-	@Mock
-	private IPicoComponentInstanceProvider container;
+    @Mock
+    private IPicoComponentInstanceProvider container;
 
-	@Test(expected = NullPointerException.class)
-	public void shouldThrowNPEForNullDefinition() {
-		// when
-		new StatefulComponentInjector<Object>(null);
-	}
+    @Test(expected = NullPointerException.class)
+    public void shouldThrowNPEForNullDefinition() {
+        // when
+        new StatefulComponentInjector<Object>(null);
+    }
 
-	@Test(expected = UnsupportedOperationException.class)
-	public void shouldNotSupportCreatingComponents() {
-		// given
-		final Injector<Object> injector = injectorFor(anyDefinition());
+    @Test(expected = UnsupportedOperationException.class)
+    public void shouldNotSupportCreatingComponents() {
+        // given
+        final Injector<Object> injector = injectorFor(anyDefinition());
 
-		// when
-		injector.getComponentInstance(container, null);
-	}
+        // when
+        injector.getComponentInstance(container, null);
+    }
 
-	@Test
-	public void shouldDoNothingIfNotStatefulComponent() {
-		// given
-		final Object instance = mock(Object.class);
-		final Injector<Object> injector = injectorFor(instance);
+    @Override
+    protected <T> Injector<T> injectorFor(final ComponentDefinition definition) {
+        return new StatefulComponentInjector<T>(definition);
+    }
 
-		// when
-		injector.decorateComponentInstance(container, null, instance);
+    @Test
+    public void shouldDoNothingIfNotStatefulComponent() {
+        // given
+        final Object instance = mock(Object.class);
+        final Injector<Object> injector = injectorFor(instance);
 
-		// then
-		verifyZeroInteractions(instance);
-	}
+        // when
+        injector.decorateComponentInstance(container, null, instance);
 
-	@Test
-	public void shouldCallInitOnStatefulComponent() throws ComponentException {
-		// given
-		final IStatefulComponent instance = mock(IStatefulComponent.class);
-		final Injector<IStatefulComponent> injector = injectorFor(instance);
+        // then
+        verifyZeroInteractions(instance);
+    }
 
-		// when
-		injector.decorateComponentInstance(container, null, instance);
+    @Test
+    public void shouldCallInitOnStatefulComponent() throws ComponentException {
+        // given
+        final IStatefulComponent instance = mock(IStatefulComponent.class);
+        final Injector<IStatefulComponent> injector = injectorFor(instance);
 
-		// then
-		verify(instance).init();
-	}
+        // when
+        injector.decorateComponentInstance(container, null, instance);
 
-	@Test(expected = PicoCompositionException.class)
-	public void shouldPropagateStatefulComponentExceptions() throws ComponentException {
-		// given
-		final IStatefulComponent instance = mock(IStatefulComponent.class);
-		final Injector<IStatefulComponent> injector = injectorFor(instance);
-		willThrow(ComponentException.class).given(instance).init();
+        // then
+        verify(instance).init();
+    }
 
-		// when
-		injector.decorateComponentInstance(container, null, instance);
-	}
+    @Test(expected = PicoCompositionException.class)
+    public void shouldPropagateStatefulComponentExceptions() throws ComponentException {
+        // given
+        final IStatefulComponent instance = mock(IStatefulComponent.class);
+        final Injector<IStatefulComponent> injector = injectorFor(instance);
+        willThrow(ComponentException.class).given(instance).init();
 
-	@Override
-	protected <T> Injector<T> injectorFor(final ComponentDefinition definition) {
-		return new StatefulComponentInjector<T>(definition);
-	}
+        // when
+        injector.decorateComponentInstance(container, null, instance);
+    }
 }

@@ -31,31 +31,35 @@
 
 package org.jage.configuration;
 
-import java.util.Collection;
-
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
 
 import org.jage.bus.AgeEvent;
 import org.jage.platform.component.definition.IComponentDefinition;
 
+import javax.annotation.Nonnull;
+import javax.annotation.concurrent.Immutable;
+import java.util.Collection;
+
 import static com.google.common.base.Objects.toStringHelper;
 import static com.google.common.base.Preconditions.checkNotNull;
+
 
 @Immutable
 public class ConfigurationLoadedEvent implements AgeEvent {
 
-	@Nonnull private final Collection<IComponentDefinition> loadedComponents;
+    @Nonnull
+    private final Collection<IComponentDefinition> loadedComponents;
 
-	public ConfigurationLoadedEvent(@Nonnull final Collection<IComponentDefinition> loadedComponents) {
-		this.loadedComponents = checkNotNull(loadedComponents);
-	}
+    public ConfigurationLoadedEvent(@Nonnull final Collection<IComponentDefinition> loadedComponents) {
+        this.loadedComponents = checkNotNull(loadedComponents);
+    }
 
-	@Nonnull public Collection<IComponentDefinition> getLoadedComponents() {
-		return loadedComponents;
-	}
+    @Nonnull
+    public Collection<IComponentDefinition> getLoadedComponents() {
+        return loadedComponents;
+    }
 
-	@Override public String toString() {
-		return toStringHelper(this).add("components", loadedComponents).toString();
-	}
+    @Override
+    public String toString() {
+        return toStringHelper(this).add("components", loadedComponents).toString();
+    }
 }

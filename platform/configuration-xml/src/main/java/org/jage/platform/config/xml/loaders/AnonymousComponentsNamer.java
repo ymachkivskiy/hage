@@ -31,24 +31,22 @@
 
 package org.jage.platform.config.xml.loaders;
 
-import java.util.UUID;
 
-import static java.lang.String.format;
-
+import com.google.common.base.Supplier;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.XPath;
-
-import static org.dom4j.DocumentHelper.createXPath;
-
 import org.jage.platform.component.definition.ConfigurationException;
 import org.jage.platform.config.xml.ConfigAttributes;
 import org.jage.platform.config.xml.ConfigNamespaces;
 import org.jage.platform.config.xml.ConfigTags;
 
-import com.google.common.base.Supplier;
+import java.util.UUID;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.lang.String.format;
+import static org.dom4j.DocumentHelper.createXPath;
+
 
 /**
  * This loader will decorate a document by providing random names to all anonymous definitions.
@@ -57,60 +55,62 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class AnonymousComponentsNamer extends AbstractDocumentLoader {
 
-	// Heck, no XPath 2.0 available when this was written :(
-	private static final XPath ANONYMOUS = initXpath(createXPath(format(
-				"//%1$s:%3$s[not(@%2$s)] "
-				+ "| //%1$s:%4$s[not(@%2$s)] "
-				+ "| //%1$s:%5$s[not(@%2$s)]"
-				+ "| //%1$s:%6$s[not(@%2$s)]"
-				+ "| //%1$s:%7$s[not(@%2$s)]"
-				+ "| //%1$s:%8$s[not(@%2$s)]"
-				+ "| //%1$s:%9$s[not(@%2$s)]",
-				ConfigNamespaces.DEFAULT.getPrefix(),
-		        ConfigAttributes.NAME.toString(),
-		        ConfigTags.COMPONENT.toString(),
-				ConfigTags.AGENT.toString(),
-				ConfigTags.STRATEGY.toString(),
-				ConfigTags.ARRAY.toString(),
-				ConfigTags.LIST.toString(),
-				ConfigTags.SET.toString(),
-				ConfigTags.MAP.toString())));
+    // Heck, no XPath 2.0 available when this was written :(
+    private static final XPath ANONYMOUS = initXpath(createXPath(format(
+            "//%1$s:%3$s[not(@%2$s)] "
+                    + "| //%1$s:%4$s[not(@%2$s)] "
+                    + "| //%1$s:%5$s[not(@%2$s)]"
+                    + "| //%1$s:%6$s[not(@%2$s)]"
+                    + "| //%1$s:%7$s[not(@%2$s)]"
+                    + "| //%1$s:%8$s[not(@%2$s)]"
+                    + "| //%1$s:%9$s[not(@%2$s)]",
+            ConfigNamespaces.DEFAULT.getPrefix(),
+            ConfigAttributes.NAME.toString(),
+            ConfigTags.COMPONENT.toString(),
+            ConfigTags.AGENT.toString(),
+            ConfigTags.STRATEGY.toString(),
+            ConfigTags.ARRAY.toString(),
+            ConfigTags.LIST.toString(),
+            ConfigTags.SET.toString(),
+            ConfigTags.MAP.toString())));
 
-	private final Supplier<String> nameSupplier;
+    private final Supplier<String> nameSupplier;
 
-	/**
-	 * Creates an {@link AnonymousComponentsNamer} with a random name supplier.
-	 */
-	public AnonymousComponentsNamer() {
-		this(new RandomNameSupplier());
-	}
+    /**
+     * Creates an {@link AnonymousComponentsNamer} with a random name supplier.
+     */
+    public AnonymousComponentsNamer() {
+        this(new RandomNameSupplier());
+    }
 
-	/**
-	 * Creates an {@link AnonymousComponentsNamer} with the given name supplier.
-	 * @param nameSupplier a name supplier for anonymous components
-	 */
-	public AnonymousComponentsNamer(final Supplier<String> nameSupplier) {
-		this.nameSupplier = checkNotNull(nameSupplier);
-	}
+    /**
+     * Creates an {@link AnonymousComponentsNamer} with the given name supplier.
+     *
+     * @param nameSupplier a name supplier for anonymous components
+     */
+    public AnonymousComponentsNamer(final Supplier<String> nameSupplier) {
+        this.nameSupplier = checkNotNull(nameSupplier);
+    }
 
-	@Override
-	public Document loadDocument(final String path) throws ConfigurationException {
-		final Document document = getDelegate().loadDocument(path);
-		nameAnonymousElements(document);
-		return document;
-	}
+    @Override
+    public Document loadDocument(final String path) throws ConfigurationException {
+        final Document document = getDelegate().loadDocument(path);
+        nameAnonymousElements(document);
+        return document;
+    }
 
-	private void nameAnonymousElements(final Document document) {
-		for (Element element : selectNodes(ANONYMOUS, document)) {
-			final String name = nameSupplier.get();
-			element.addAttribute(ConfigAttributes.NAME.toString(), name);
-		}
-	}
+    private void nameAnonymousElements(final Document document) {
+        for(Element element : selectNodes(ANONYMOUS, document)) {
+            final String name = nameSupplier.get();
+            element.addAttribute(ConfigAttributes.NAME.toString(), name);
+        }
+    }
 
-	private static final class RandomNameSupplier implements Supplier<String> {
-		@Override
-		public String get() {
-			return UUID.randomUUID().toString();
-		}
-	}
+    private static final class RandomNameSupplier implements Supplier<String> {
+
+        @Override
+        public String get() {
+            return UUID.randomUUID().toString();
+        }
+    }
 }

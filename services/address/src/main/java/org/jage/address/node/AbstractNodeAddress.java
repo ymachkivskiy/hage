@@ -31,6 +31,7 @@
 
 package org.jage.address.node;
 
+
 /**
  * Abstract implementation of a node address, which ensures comparison is based on identifiers.
  *

@@ -31,8 +31,10 @@
 
 package org.jage.examples.strategy;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 /**
  * An echo strategy that increments a counter of calls by a configured value.
@@ -40,20 +42,21 @@ import org.slf4j.LoggerFactory;
  * @author AGH AgE Team
  */
 public class CustomCounterEchoStrategy implements IEchoStrategy {
-	private final static Logger log = LoggerFactory.getLogger(CustomCounterEchoStrategy.class);
 
-	private int count = 0;
+    private final static Logger log = LoggerFactory.getLogger(CustomCounterEchoStrategy.class);
 
-	private int increment = 1;
+    private int count = 0;
 
-	public void setIncrement(final int val) {
-		increment = val;
-	}
+    private int increment = 1;
 
-	@Override
-	public void echo() {
-		log.info("Counter {}", count);
-		count += increment;
-	}
+    public void setIncrement(final int val) {
+        increment = val;
+    }
+
+    @Override
+    public void echo() {
+        log.info("Counter {}", count);
+        count += increment;
+    }
 
 }

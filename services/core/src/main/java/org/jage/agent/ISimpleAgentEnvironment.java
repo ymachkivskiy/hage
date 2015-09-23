@@ -31,21 +31,22 @@
 
 package org.jage.agent;
 
+
 import org.jage.action.Action;
+
 
 /**
  * An agent environment for {@link SimpleAgent} instances. It adds an ability to perform actions.
- * 
+ *
  * @author AGH AgE Team
  */
 public interface ISimpleAgentEnvironment extends IAgentEnvironment {
 
-	/**
-	 * Performs an action in the local environment.
-	 * 
-	 * @param action
-	 *            the action to perform
-	 */
-	void submitAction(Action action);
+    /**
+     * Performs an action in the local environment.
+     *
+     * @param action the action to perform
+     */
+    void submitAction(Action action);
 
 }

@@ -31,11 +31,12 @@
 
 package org.jage.evaluation.realvalued;
 
+
+import it.unimi.dsi.fastutil.doubles.DoubleList;
 import org.jage.evaluation.ISolutionEvaluator;
 import org.jage.property.ClassPropertyContainer;
 import org.jage.solution.IVectorSolution;
 
-import it.unimi.dsi.fastutil.doubles.DoubleList;
 
 /**
  * This class represents a floating-point coded Rosenbrock function. <br />
@@ -48,19 +49,19 @@ import it.unimi.dsi.fastutil.doubles.DoubleList;
  * @author AGH AgE Team
  */
 public final class RosenbrockEvaluator extends ClassPropertyContainer implements
-        ISolutionEvaluator<IVectorSolution<Double>, Double> {
+                                                                      ISolutionEvaluator<IVectorSolution<Double>, Double> {
 
-	@Override
-	public Double evaluate(IVectorSolution<Double> solution) {
-		DoubleList representation = (DoubleList)solution.getRepresentation();
+    @Override
+    public Double evaluate(IVectorSolution<Double> solution) {
+        DoubleList representation = (DoubleList) solution.getRepresentation();
 
-		double sum = 0;
-		for (int i = 0, n = representation.size(); i < n - 1; i++) {
-			double value = representation.getDouble(i);
-			double nextValue = representation.getDouble(i);
-			sum += 100.0 * Math.pow(value * value - nextValue, 2) + Math.pow(value - 1, 2);
-		}
+        double sum = 0;
+        for(int i = 0, n = representation.size(); i < n - 1; i++) {
+            double value = representation.getDouble(i);
+            double nextValue = representation.getDouble(i);
+            sum += 100.0 * Math.pow(value * value - nextValue, 2) + Math.pow(value - 1, 2);
+        }
 
-		return -sum;
-	}
+        return -sum;
+    }
 }

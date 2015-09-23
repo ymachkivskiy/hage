@@ -31,29 +31,28 @@
 
 package org.jage.property.xml;
 
+
 import org.jage.property.GetterSetterProperty;
+
 
 /**
  * <code>AbstractFieldProperty</code> implementation that uses getter and setter to read / write property value.
  *
  * @author AGH AgE Team
- *
  * @since 2.4.0
  */
 public class XMLBasedGetterSetterProperty extends GetterSetterProperty {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * Constructor.
-	 *
-	 * @param metaProperty
-	 *            meta property for this property.
-	 * @param instance
-	 *            object for which the property should be created.
-	 */
-	public XMLBasedGetterSetterProperty(XMLBasedGetterSetterMetaProperty metaProperty, Object instance) {
-		super(metaProperty, instance);
-	}
+    /**
+     * Constructor.
+     *
+     * @param metaProperty meta property for this property.
+     * @param instance     object for which the property should be created.
+     */
+    public XMLBasedGetterSetterProperty(XMLBasedGetterSetterMetaProperty metaProperty, Object instance) {
+        super(metaProperty, instance);
+    }
 
 }

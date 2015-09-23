@@ -26,23 +26,22 @@
  */
 package org.jage.monitoring.supplier.extractor;
 
-import org.jage.agent.IAgent;
 
 import com.google.common.base.Optional;
+import org.jage.agent.IAgent;
+
 
 /**
-* Extract wanted property from a given agent.
-*
-* @author AGH AgE Team
-*/
+ * Extract wanted property from a given agent.
+ *
+ * @author AGH AgE Team
+ */
 public interface ValueExtractor {
 
-	/**
-	 * 
-	 * @param agent
-	 * @param propertyName
-	 * @return Optional object which contains wanted property value or Optional with no value.
-	 * 
-	 */
-	public Optional<Object> extract(IAgent agent, String propertyName);
+    /**
+     * @param agent
+     * @param propertyName
+     * @return Optional object which contains wanted property value or Optional with no value.
+     */
+    public Optional<Object> extract(IAgent agent, String propertyName);
 }

@@ -31,14 +31,8 @@
 
 package org.jage.emas.agent;
 
-import java.util.List;
 
-import static java.lang.String.format;
-
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.google.common.collect.ImmutableList;
 import org.jage.address.agent.AgentAddress;
 import org.jage.address.agent.AgentAddressSupplier;
 import org.jage.agent.ActionDrivenAggregate;
@@ -47,11 +41,16 @@ import org.jage.platform.component.exception.ComponentException;
 import org.jage.property.PropertyField;
 import org.jage.solution.ISolution;
 import org.jage.solution.ISolutionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.ImmutableList;
+import javax.inject.Inject;
+import java.util.List;
 
 import static com.google.common.base.Objects.toStringHelper;
 import static com.google.common.collect.Iterables.filter;
+import static java.lang.String.format;
+
 
 /**
  * Default implementation of {@link IslandAgent}.
@@ -60,130 +59,130 @@ import static com.google.common.collect.Iterables.filter;
  */
 public class DefaultIslandAgent extends ActionDrivenAggregate implements IslandAgent {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private static final Logger log = LoggerFactory.getLogger(DefaultIslandAgent.class);
+    private static final Logger log = LoggerFactory.getLogger(DefaultIslandAgent.class);
 
-	@Inject
-	private ISolutionFactory<ISolution> solutionFactory;
+    @Inject
+    private ISolutionFactory<ISolution> solutionFactory;
 
-	private double avgChildEnergy;
+    private double avgChildEnergy;
 
-	private double avgChildFitness;
+    private double avgChildFitness;
 
-	private IndividualAgent bestChild;
+    private IndividualAgent bestChild;
 
-	@PropertyField(propertyName="bestSolutionEver")
-	private ISolution bestSolutionEver;
+    @PropertyField(propertyName = "bestSolutionEver")
+    private ISolution bestSolutionEver;
 
-	@PropertyField(propertyName="bestFitnessEver")
-	private double bestFitnessEver;
+    @PropertyField(propertyName = "bestFitnessEver")
+    private double bestFitnessEver;
 
-	private long agentCounter;
+    private long agentCounter;
 
-	public DefaultIslandAgent(final AgentAddress address) {
-		super(address);
-	}
+    public DefaultIslandAgent(final AgentAddress address) {
+        super(address);
+    }
 
-	@Inject
-	public DefaultIslandAgent(final AgentAddressSupplier supplier) {
-		super(supplier);
-	}
+    @Inject
+    public DefaultIslandAgent(final AgentAddressSupplier supplier) {
+        super(supplier);
+    }
 
-	public double getAvgChildEnergy() {
-		return avgChildEnergy;
-	}
+    public ISolution getBestSolutionEver() {
+        return bestSolutionEver;
+    }
 
-	public double getAvgFitness() {
-		return avgChildFitness;
-	}
+    @Override
+    public ISimpleAgentEnvironment getEnvironment() {
+        return super.getAgentEnvironment();
+    }
 
-	public IndividualAgent getBestChild() {
-		return bestChild;
-	}
+    public void updateStatistics() {
+        updateChildrenStats();
+        updateBestStats();
 
-	public ISolution getBestSolutionEver() {
-		return bestSolutionEver;
-	}
+        if(log.isDebugEnabled()) {
+            log.debug(getStatisticsLog());
+        }
+    }
 
-	public double getBestFitnessEver() {
-		return bestFitnessEver;
-	}
+    private void updateChildrenStats() {
+        final List<IndividualAgent> agents = getIndividualAgents();
+        double totalChildEnergy = 0.0;
+        double totalChildFitness = 0.0;
 
-	@Override
-	public ISimpleAgentEnvironment getEnvironment() {
-		return super.getAgentEnvironment();
-	}
+        for(final IndividualAgent agent : agents) {
+            totalChildEnergy += agent.getEnergy();
+            totalChildFitness += agent.getOriginalFitness();
+        }
 
-	public void updateStatistics() {
-		updateChildrenStats();
-		updateBestStats();
+        final int size = agents.size();
+        avgChildEnergy = totalChildEnergy / size;
+        avgChildFitness = totalChildFitness / size;
+        agentCounter += size;
+    }
 
-		if (log.isDebugEnabled()) {
-			log.debug(getStatisticsLog());
-		}
-	}
+    private void updateBestStats() {
+        for(final IndividualAgent agent : getIndividualAgents()) {
+            if(bestChild == null || agent.getOriginalFitness() > bestChild.getOriginalFitness()) {
+                bestChild = agent;
+            }
+        }
 
-	@Override
-	public boolean finish() throws ComponentException {
-		log.info(getResultLog());
-		return super.finish();
-	}
+        if(bestChild != null && (bestSolutionEver == null || bestChild.getOriginalFitness() > bestFitnessEver)) {
+            bestSolutionEver = solutionFactory.copySolution(bestChild.getSolution());
+            bestFitnessEver = bestChild.getOriginalFitness();
+        }
+    }
 
-	@Override
-	public List<IndividualAgent> getIndividualAgents() {
-		return ImmutableList.copyOf(filter(getAgents(), IndividualAgent.class));
-	}
+    public String getStatisticsLog() {
+        final StringBuilder builder = new StringBuilder();
+        builder.append(getAddress() + " at step " + (getStep() - 1) + "\n")
+                .append("\tCurrent agent count: " + getAgents().size() + "\n")
+                .append("\tAverage agent count ever: " + (double) agentCounter / getStep() + "\n")
+                .append("\tAverage agent energy: " + getAvgChildEnergy() + "\n")
+                .append("\tAverage agent fitness: " + getAvgFitness() + "\n")
+                .append("\tCurrent best fitness: " + getBestChild().getOriginalFitness() + "\n")
+                .append("\tBest fitness ever: " + getBestFitnessEver() + "\n");
+        return builder.toString();
+    }
 
-	private void updateChildrenStats() {
-		final List<IndividualAgent> agents = getIndividualAgents();
-		double totalChildEnergy = 0.0;
-		double totalChildFitness = 0.0;
+    @Override
+    public List<IndividualAgent> getIndividualAgents() {
+        return ImmutableList.copyOf(filter(getAgents(), IndividualAgent.class));
+    }
 
-		for (final IndividualAgent agent : agents) {
-			totalChildEnergy += agent.getEnergy();
-			totalChildFitness += agent.getOriginalFitness();
-		}
+    public double getAvgChildEnergy() {
+        return avgChildEnergy;
+    }
 
-		final int size = agents.size();
-		avgChildEnergy = totalChildEnergy / size;
-		avgChildFitness = totalChildFitness / size;
-		agentCounter += size;
-	}
+    public double getAvgFitness() {
+        return avgChildFitness;
+    }
 
-	private void updateBestStats() {
-		for (final IndividualAgent agent : getIndividualAgents()) {
-			if (bestChild == null || agent.getOriginalFitness() > bestChild.getOriginalFitness()) {
-				bestChild = agent;
-			}
-		}
+    public IndividualAgent getBestChild() {
+        return bestChild;
+    }
 
-		if (bestChild != null && (bestSolutionEver == null || bestChild.getOriginalFitness() > bestFitnessEver)) {
-			bestSolutionEver = solutionFactory.copySolution(bestChild.getSolution());
-			bestFitnessEver = bestChild.getOriginalFitness();
-		}
-	}
+    public double getBestFitnessEver() {
+        return bestFitnessEver;
+    }
 
-	public String getStatisticsLog() {
-		final StringBuilder builder = new StringBuilder();
-		builder.append(getAddress() + " at step " + (getStep() - 1) + "\n")
-		        .append("\tCurrent agent count: " + getAgents().size() + "\n")
-		        .append("\tAverage agent count ever: " + (double)agentCounter / getStep() + "\n")
-		        .append("\tAverage agent energy: " + getAvgChildEnergy() + "\n")
-		        .append("\tAverage agent fitness: " + getAvgFitness() + "\n")
-		        .append("\tCurrent best fitness: " + getBestChild().getOriginalFitness() + "\n")
-		        .append("\tBest fitness ever: " + getBestFitnessEver() + "\n");
-		return builder.toString();
-	}
+    @Override
+    public boolean finish() throws ComponentException {
+        log.info(getResultLog());
+        return super.finish();
+    }
 
-	private String getResultLog() {
-		final StringBuilder builder = new StringBuilder("\n\t---=== Computation finished ===---");
-		builder.append(format("\n\tBest solution ever (evaluation = %1$.2f): %2$s", bestFitnessEver, bestSolutionEver));
-		return builder.toString();
-	}
+    private String getResultLog() {
+        final StringBuilder builder = new StringBuilder("\n\t---=== Computation finished ===---");
+        builder.append(format("\n\tBest solution ever (evaluation = %1$.2f): %2$s", bestFitnessEver, bestSolutionEver));
+        return builder.toString();
+    }
 
-	@Override
-	public String toString() {
-		return toStringHelper(this).add("address", getAddress()).toString();
-	}
+    @Override
+    public String toString() {
+        return toStringHelper(this).add("address", getAddress()).toString();
+    }
 }

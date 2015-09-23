@@ -31,9 +31,10 @@
 
 package org.jage.platform.component.pico.injector.factory;
 
-import org.picocontainer.ComponentAdapter;
 
 import org.jage.platform.component.definition.IComponentDefinition;
+import org.picocontainer.ComponentAdapter;
+
 
 /**
  * This interface is used by factories that creates concrete instances of injectors.
@@ -42,14 +43,12 @@ import org.jage.platform.component.definition.IComponentDefinition;
  */
 public interface InjectorFactory<D extends IComponentDefinition> {
 
-	/**
-	 * Creates an injector for the given instance provider and definition.
-	 *
-	 * @param <T>
-	 *            the type of the injector
-	 * @param definition
-	 *            the definition
-	 * @return an injector
-	 */
-	<T> ComponentAdapter<T> createAdapter(D definition);
+    /**
+     * Creates an injector for the given instance provider and definition.
+     *
+     * @param <T>        the type of the injector
+     * @param definition the definition
+     * @return an injector
+     */
+    <T> ComponentAdapter<T> createAdapter(D definition);
 }

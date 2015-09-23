@@ -31,12 +31,14 @@
 
 package org.jage.examples.multiworkplace;
 
+
 import org.jage.agent.ISimpleAgent;
 import org.jage.query.AgentEnvironmentQuery;
 
+
 public class MultiworkplacePropertiesQuery extends AgentEnvironmentQuery<ISimpleAgent, Object> {
 
-	public MultiworkplacePropertiesQuery() {
-		select("step", "migrationCount", "sentMessagesCount");
-	}
+    public MultiworkplacePropertiesQuery() {
+        select("step", "migrationCount", "sentMessagesCount");
+    }
 }

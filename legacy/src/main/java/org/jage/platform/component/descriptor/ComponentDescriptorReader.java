@@ -31,11 +31,13 @@
 
 package org.jage.platform.component.descriptor;
 
+
+import org.jage.platform.component.definition.ConfigurationException;
+
 import java.lang.reflect.Constructor;
 import java.util.Arrays;
 import java.util.List;
 
-import org.jage.platform.component.definition.ConfigurationException;
 
 /**
  * Create a ComponentDescriptor from a class with annotations {@link Inject} and {@link Require}.
@@ -44,34 +46,34 @@ import org.jage.platform.component.definition.ConfigurationException;
  */
 public class ComponentDescriptorReader implements IComponentDescriptorReader {
 
-	@Override
+    @Override
     public IComponentDescriptor readDescritptor(final Object classType) throws ConfigurationException,
-	        IllegalArgumentException {
+                                                                               IllegalArgumentException {
 
-		if (!Class.class.isInstance(classType)) {
-			throw new ConfigurationException("Method parameter is not a Class");
-		}
+        if(!Class.class.isInstance(classType)) {
+            throw new ConfigurationException("Method parameter is not a Class");
+        }
 
-		final Class<?> classTypeclass = (Class<?>)classType;
-		ComponentDescriptor descriptor = new ComponentDescriptor();
-		descriptor.setComponentType(classTypeclass);
-		descriptor = addConstructors(descriptor, classTypeclass);
-		return descriptor;
-	}
+        final Class<?> classTypeclass = (Class<?>) classType;
+        ComponentDescriptor descriptor = new ComponentDescriptor();
+        descriptor.setComponentType(classTypeclass);
+        descriptor = addConstructors(descriptor, classTypeclass);
+        return descriptor;
+    }
 
-	private ComponentDescriptor addConstructors(ComponentDescriptor descriptor, final Class<?> classType) {
-		final Constructor<?>[] constructors = classType.getConstructors();
-		if (constructors.length == 1) {
-			final Constructor<?> constructor = constructors[0];
-			descriptor = addConstructor(descriptor, constructor);
-		}
-		return descriptor;
-	}
+    private ComponentDescriptor addConstructors(ComponentDescriptor descriptor, final Class<?> classType) {
+        final Constructor<?>[] constructors = classType.getConstructors();
+        if(constructors.length == 1) {
+            final Constructor<?> constructor = constructors[0];
+            descriptor = addConstructor(descriptor, constructor);
+        }
+        return descriptor;
+    }
 
-	private ComponentDescriptor addConstructor(final ComponentDescriptor descriptor, final Constructor<?> constructor) {
-		final Class<?>[] constructorParameters = constructor.getParameterTypes();
-		final List<Class<?>> constructorParametersList = Arrays.asList(constructorParameters);
-		descriptor.addConstructorParametersTypes(constructorParametersList);
-		return descriptor;
-	}
+    private ComponentDescriptor addConstructor(final ComponentDescriptor descriptor, final Constructor<?> constructor) {
+        final Class<?>[] constructorParameters = constructor.getParameterTypes();
+        final List<Class<?>> constructorParametersList = Arrays.asList(constructorParameters);
+        descriptor.addConstructorParametersTypes(constructorParametersList);
+        return descriptor;
+    }
 }

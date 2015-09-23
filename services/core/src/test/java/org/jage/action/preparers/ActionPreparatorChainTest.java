@@ -31,24 +31,23 @@
 
 package org.jage.action.preparers;
 
-import java.util.Collection;
-import java.util.List;
 
-import static java.util.Collections.singletonList;
-
+import com.google.common.collect.ImmutableList;
+import org.jage.action.Action;
+import org.jage.action.ComplexAction;
+import org.jage.agent.IAgent;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
+import java.util.Collection;
+import java.util.List;
+
+import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.jage.action.Action;
-import org.jage.action.ComplexAction;
-import org.jage.agent.IAgent;
-
-import com.google.common.collect.ImmutableList;
 
 /**
  * Tests for {@link ActionPreparerChain}.
@@ -57,48 +56,48 @@ import com.google.common.collect.ImmutableList;
  */
 public class ActionPreparatorChainTest extends AbstractActionPreparatorTest {
 
-	@Mock
-	private IActionPreparer<IAgent> preparator1;
+    @Mock
+    private IActionPreparer<IAgent> preparator1;
 
-	@Mock
-	private IActionPreparer<IAgent> preparator2;
+    @Mock
+    private IActionPreparer<IAgent> preparator2;
 
-	@Mock
-	private Action action1;
+    @Mock
+    private Action action1;
 
-	@Mock
-	private Action action2;
+    @Mock
+    private Action action2;
 
-	private ActionPreparerChain<IAgent> chain;
+    private ActionPreparerChain<IAgent> chain;
 
-	@SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked")
     @Override
     @Before
-	public void setUp() {
-		super.setUp();
-		Mockito.when(preparator1.prepareActions(agent)).thenReturn(singletonList(action1));
-		Mockito.when(preparator2.prepareActions(agent)).thenReturn(singletonList(action2));
+    public void setUp() {
+        super.setUp();
+        Mockito.when(preparator1.prepareActions(agent)).thenReturn(singletonList(action1));
+        Mockito.when(preparator2.prepareActions(agent)).thenReturn(singletonList(action2));
 
-		chain = new ActionPreparerChain<IAgent>();
-		chain.setActionPreparers(ImmutableList.of(preparator1, preparator2));
-	}
+        chain = new ActionPreparerChain<IAgent>();
+        chain.setActionPreparers(ImmutableList.of(preparator1, preparator2));
+    }
 
-	@Test
-	public void testDelegation() {
-		// when
-		Collection<Action> actions = chain.prepareActions(agent);
+    @Test
+    public void testDelegation() {
+        // when
+        Collection<Action> actions = chain.prepareActions(agent);
 
-		// then
-		assertEquals(1, actions.size());
-		Action action = actions.iterator().next();
-		assertTrue(action instanceof ComplexAction);
-		ComplexAction complexAction = (ComplexAction)action;
+        // then
+        assertEquals(1, actions.size());
+        Action action = actions.iterator().next();
+        assertTrue(action instanceof ComplexAction);
+        ComplexAction complexAction = (ComplexAction) action;
 
-		List<Action> children = complexAction.getChildren();
-		assertEquals(2, children.size());
+        List<Action> children = complexAction.getChildren();
+        assertEquals(2, children.size());
 
-		assertEquals(action1, children.get(0));
-		assertEquals(action2, children.get(1));
-	}
+        assertEquals(action1, children.get(0));
+        assertEquals(action2, children.get(1));
+    }
 
 }

@@ -31,7 +31,9 @@
 
 package org.jage.problem.realvalued;
 
+
 import org.jage.problem.ParallelProblem;
+
 
 /**
  * This class represents the problem domain for a floating-point coded Ackley function. <br />
@@ -42,15 +44,14 @@ import org.jage.problem.ParallelProblem;
  */
 public final class AckleyProblem extends ParallelProblem<Double> {
 
-	private static final double DEFAULT_RANGE = 32.768;
+    private static final double DEFAULT_RANGE = 32.768;
 
-	/**
-	 * Creates an AckleyProblem with a default range of [-32.768, 32.768].
-	 *
-	 * @param dimension
-	 *            The dimension of this problem
-	 */
-	public AckleyProblem(Integer dimension) {
-		super(dimension, -DEFAULT_RANGE, DEFAULT_RANGE);
-	}
+    /**
+     * Creates an AckleyProblem with a default range of [-32.768, 32.768].
+     *
+     * @param dimension The dimension of this problem
+     */
+    public AckleyProblem(Integer dimension) {
+        super(dimension, -DEFAULT_RANGE, DEFAULT_RANGE);
+    }
 }

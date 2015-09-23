@@ -31,15 +31,6 @@
 
 package org.jage.agent;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
 
 import org.jage.action.SingleAction;
 import org.jage.action.testHelpers.ActionTestException;
@@ -47,9 +38,18 @@ import org.jage.action.testHelpers.HelperTestAggregateActionService;
 import org.jage.action.testHelpers.MultipleActionContext;
 import org.jage.address.agent.AgentAddress;
 import org.jage.platform.component.provider.IComponentInstanceProvider;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
+import static org.hamcrest.Matchers.is;
 import static org.jage.address.selector.Selectors.singleAddress;
 import static org.jage.utils.AgentTestUtils.createMockAgentWithAddress;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+
 
 /**
  * Tests for the {@link AggregateActionService} class: multi-annotated contexts.
@@ -59,46 +59,44 @@ import static org.jage.utils.AgentTestUtils.createMockAgentWithAddress;
 @RunWith(MockitoJUnitRunner.class)
 public class MultiAnnotatedActionTest {
 
-	private final SimpleAggregate aggregate = new SimpleAggregate(mock(AgentAddress.class));
+    private final SimpleAggregate aggregate = new SimpleAggregate(mock(AgentAddress.class));
 
-	private final HelperTestAggregateActionService actionService = new HelperTestAggregateActionService();
+    private final HelperTestAggregateActionService actionService = new HelperTestAggregateActionService();
 
-	private final ISimpleAgent agent = createMockAgentWithAddress();
+    private final ISimpleAgent agent = createMockAgentWithAddress();
+    private final MultipleActionContext context = new MultipleActionContext();
+    @Mock
+    private IComponentInstanceProvider componentInstanceProvider;
 
-	@Mock
-	private IComponentInstanceProvider componentInstanceProvider;
+    @Before
+    public void setUp() {
+        aggregate.setInstanceProvider(componentInstanceProvider);
+        aggregate.add(agent);
+        actionService.setAggregate(aggregate);
+        actionService.setInstanceProvider(componentInstanceProvider);
+    }
 
-	private final MultipleActionContext context = new MultipleActionContext();
+    @Test(expected = ActionTestException.class)
+    public void testFailNoDefaultAction() {
+        // when
+        actionService.doAction(new SingleAction(singleAddress(agent.getAddress()), context));
+        actionService.processActions();
+    }
 
-	@Before
-	public void setUp() {
-		aggregate.setInstanceProvider(componentInstanceProvider);
-		aggregate.add(agent);
-		actionService.setAggregate(aggregate);
-		actionService.setInstanceProvider(componentInstanceProvider);
-	}
+    @Test
+    public void testExecuteSpecificAction() {
+        // when
+        actionService.doAction(new SingleAction(singleAddress(agent.getAddress()), context, "mult1Action"));
+        actionService.processActions();
 
-	@Test(expected = ActionTestException.class)
-	public void testFailNoDefaultAction() {
-		// when
-		actionService.doAction(new SingleAction(singleAddress(agent.getAddress()), context));
-		actionService.processActions();
-	}
+        // then
+        assertThat(context.actionRun, is(true));
+    }
 
-	@Test
-	public void testExecuteSpecificAction() {
-		// when
-		actionService.doAction(new SingleAction(singleAddress(agent.getAddress()), context, "mult1Action"));
-		actionService.processActions();
-
-		// then
-		assertThat(context.actionRun, is(true));
-	}
-
-	@Test(expected = ActionTestException.class)
-	public void testActionNotFoundInContext() {
-		// when
-		actionService.doAction(new SingleAction(singleAddress(agent.getAddress()), context, "mult3Action"));
-		actionService.processActions();
-	}
+    @Test(expected = ActionTestException.class)
+    public void testActionNotFoundInContext() {
+        // when
+        actionService.doAction(new SingleAction(singleAddress(agent.getAddress()), context, "mult3Action"));
+        actionService.processActions();
+    }
 }

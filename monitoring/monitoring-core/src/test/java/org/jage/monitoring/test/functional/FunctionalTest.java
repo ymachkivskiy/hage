@@ -26,11 +26,6 @@
  */
 package org.jage.monitoring.test.functional;
 
-import static org.jage.platform.component.builder.ConfigurationBuilder.Configuration;
-import static org.junit.Assert.assertEquals;
-
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.jage.monitoring.Monitoring;
 import org.jage.monitoring.config.ExecutorProvider;
@@ -47,184 +42,190 @@ import org.jage.platform.component.definition.IComponentDefinition;
 import org.jage.platform.component.pico.PicoComponentInstanceProvider;
 import org.junit.Before;
 import org.junit.Test;
-
 import rx.schedulers.TestScheduler;
+
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import static org.jage.platform.component.builder.ConfigurationBuilder.Configuration;
+import static org.junit.Assert.assertEquals;
+
 
 public class FunctionalTest {
 
-	private ComponentBuilder componentBuilder;
-	
-	@Before
-	public void setUp(){
-		componentBuilder = Configuration()
-				.Component("executorProvider", ExecutorProvider.class)
-				.Component("executorShutdownCaller", ExecutorShutdownCaller.class)
-				.Component("rxSchedulerProvider", RxTestSchedulerProvider.class)
-				.Component("random1", RandomSupplier.class, false)
-				.Component("random2", RandomSupplier.class, false)
-				.Component("observer", ObserverUnderTest.class);
-	}
+    private ComponentBuilder componentBuilder;
 
-	/**
-	 * Test with two observables and one basic handler.
-	 * 
-	 * @throws InterruptedException
-	 */
-	@Test
-	public void oneBasicHandlerWithTwoObservables() throws InterruptedException {
+    @Before
+    public void setUp() {
+        componentBuilder = Configuration()
+                .Component("executorProvider", ExecutorProvider.class)
+                .Component("executorShutdownCaller", ExecutorShutdownCaller.class)
+                .Component("rxSchedulerProvider", RxTestSchedulerProvider.class)
+                .Component("random1", RandomSupplier.class, false)
+                .Component("random2", RandomSupplier.class, false)
+                .Component("observer", ObserverUnderTest.class);
+    }
 
-		List<IComponentDefinition> components = componentBuilder
-				.Component("monitoring", Monitoring.class)
-				.withConstructorArgRef("xmlConfig")
-				.Component("xmlConfig", XmlConfig.class)
-				.withConstructorArgRef("handlerList")
-				.List("handlerList")
-				.withItemRef("handler1")
-				.Component("random1ObservableProvider",
-						ObservableProvider.class)
-				.withConstructorArgRef("random1")
-				.withConstructorArg(Long.class, "50")
-				.Component("random2ObservableProvider",
-						ObservableProvider.class)
-				.withConstructorArgRef("random2")
-				.withConstructorArg(Long.class, "50")
-				.List("observableProviderList", ObservableProvider.class)
-				.withItemRef("random1ObservableProvider")
-				.withItemRef("random2ObservableProvider")
-				.List("observersList")
-				.withItemRef("observer")
-				.Component("handler1", HandlerFactoryProvider.class)
-				.withConstructorArg(String.class, "handler1")
-				.withConstructorArgRef("observableProviderList")
-				.withConstructorArgRef("observersList")
-				.withConstructorArg(String.class,
-						"org.jage.monitoring.handler.BasicHandlerFactory")
-				.withConstructorArg(String.class, "create").build();
+    /**
+     * Test with two observables and one basic handler.
+     *
+     * @throws InterruptedException
+     */
+    @Test
+    public void oneBasicHandlerWithTwoObservables() throws InterruptedException {
 
-		PicoComponentInstanceProvider ioc = new PicoComponentInstanceProvider();
-		for (IComponentDefinition def : components) {
-			ioc.addComponent(def);
-		}
-		ioc.getComponents(IStatefulComponent.class);
+        List<IComponentDefinition> components = componentBuilder
+                .Component("monitoring", Monitoring.class)
+                .withConstructorArgRef("xmlConfig")
+                .Component("xmlConfig", XmlConfig.class)
+                .withConstructorArgRef("handlerList")
+                .List("handlerList")
+                .withItemRef("handler1")
+                .Component("random1ObservableProvider",
+                           ObservableProvider.class)
+                .withConstructorArgRef("random1")
+                .withConstructorArg(Long.class, "50")
+                .Component("random2ObservableProvider",
+                           ObservableProvider.class)
+                .withConstructorArgRef("random2")
+                .withConstructorArg(Long.class, "50")
+                .List("observableProviderList", ObservableProvider.class)
+                .withItemRef("random1ObservableProvider")
+                .withItemRef("random2ObservableProvider")
+                .List("observersList")
+                .withItemRef("observer")
+                .Component("handler1", HandlerFactoryProvider.class)
+                .withConstructorArg(String.class, "handler1")
+                .withConstructorArgRef("observableProviderList")
+                .withConstructorArgRef("observersList")
+                .withConstructorArg(String.class,
+                                    "org.jage.monitoring.handler.BasicHandlerFactory")
+                .withConstructorArg(String.class, "create").build();
 
-		TestScheduler scheduler = (TestScheduler) ioc.getComponent(RxTestSchedulerProvider.class).getScheduler();
-		scheduler.advanceTimeTo(300, TimeUnit.MILLISECONDS);
-		ioc.getComponent(Monitoring.class).finish();
-		
-		ObserverUnderTest observer = (ObserverUnderTest) ioc.getComponent("observer");
-		assertEquals(12, observer.getNextCount());
-		assertEquals(1, observer.getCompleteCount());
-		
-	}
+        PicoComponentInstanceProvider ioc = new PicoComponentInstanceProvider();
+        for(IComponentDefinition def : components) {
+            ioc.addComponent(def);
+        }
+        ioc.getComponents(IStatefulComponent.class);
 
-	/**
-	 * Test with two handlers. 
-	 * 
-	 * @throws InterruptedException
-	 */
-	@Test
-	public void twoBasicHandlersWithOneObservableEach()
-			throws InterruptedException {
+        TestScheduler scheduler = (TestScheduler) ioc.getComponent(RxTestSchedulerProvider.class).getScheduler();
+        scheduler.advanceTimeTo(300, TimeUnit.MILLISECONDS);
+        ioc.getComponent(Monitoring.class).finish();
 
-		List<IComponentDefinition> components = componentBuilder
-				.Component("monitoring", Monitoring.class)
-				.withConstructorArgRef("xmlConfig")
-				.Component("xmlConfig", XmlConfig.class)
-				.withConstructorArgRef("handlerList")
-				.List("handlerList")
-				.withItemRef("handler1")
-				.withItemRef("handler2")
-				.Component("random1ObservableProvider",
-						ObservableProvider.class)
-				.withConstructorArgRef("random1")
-				.withConstructorArg(Long.class, "50")
-				.Component("random2ObservableProvider",
-						ObservableProvider.class)
-				.withConstructorArgRef("random2")
-				.withConstructorArg(Long.class, "50")
-				.List("observableProviderList1", ObservableProvider.class)
-				.withItemRef("random1ObservableProvider")
-				.List("observableProviderList2", ObservableProvider.class)
-				.withItemRef("random2ObservableProvider")
-				.List("observersList")
-				.withItemRef("observer")
-				.Component("handler1", HandlerFactoryProvider.class)
-				.withConstructorArg(String.class, "handler1")
-				.withConstructorArgRef("observableProviderList1")
-				.withConstructorArgRef("observersList")
-				.withConstructorArg(String.class,
-						"org.jage.monitoring.handler.BasicHandlerFactory")
-				.withConstructorArg(String.class, "create")
-				.Component("handler2", HandlerFactoryProvider.class)
-				.withConstructorArg(String.class, "handler2")
-				.withConstructorArgRef("observableProviderList2")
-				.withConstructorArgRef("observersList")
-				.withConstructorArg(String.class,
-						"org.jage.monitoring.handler.BasicHandlerFactory")
-				.withConstructorArg(String.class, "create")
-				.build();
-				
-		PicoComponentInstanceProvider ioc = new PicoComponentInstanceProvider();
-		for (IComponentDefinition def : components) {
-			ioc.addComponent(def);
-		}
-		ioc.getComponents(IStatefulComponent.class);
+        ObserverUnderTest observer = (ObserverUnderTest) ioc.getComponent("observer");
+        assertEquals(12, observer.getNextCount());
+        assertEquals(1, observer.getCompleteCount());
 
-		TestScheduler scheduler = (TestScheduler) ioc.getComponent(RxTestSchedulerProvider.class).getScheduler();
-		scheduler.advanceTimeTo(300, TimeUnit.MILLISECONDS);
-		ioc.getComponent(Monitoring.class).finish();
-		ObserverUnderTest observer = (ObserverUnderTest) ioc.getComponent("observer");
-		assertEquals(12, observer.getNextCount());
-		assertEquals(1, observer.getCompleteCount());
-	}
+    }
 
-	/**
-	 * Test with avg handler. 
-	 * 
-	 * @throws InterruptedException
-	 */
-	@Test
-	public void oneAvgHandlerWithTwoObservables() throws InterruptedException {
+    /**
+     * Test with two handlers.
+     *
+     * @throws InterruptedException
+     */
+    @Test
+    public void twoBasicHandlersWithOneObservableEach()
+            throws InterruptedException {
 
-		List<IComponentDefinition> components = componentBuilder
-				.Component("monitoring", Monitoring.class)
-				.withConstructorArgRef("xmlConfig")
-				.Component("xmlConfig", XmlConfig.class)
-				.withConstructorArgRef("handlerList")
-				.List("handlerList")
-				.withItemRef("handler1")
-				.Component("random1ObservableProvider",
-						ObservableProvider.class)
-				.withConstructorArgRef("random1")
-				.withConstructorArg(Long.class, "50")
-				.Component("random2ObservableProvider",
-						ObservableProvider.class)
-				.withConstructorArgRef("random2")
-				.withConstructorArg(Long.class, "50")
-				.List("observableProviderList", ObservableProvider.class)
-				.withItemRef("random1ObservableProvider")
-				.withItemRef("random2ObservableProvider")
-				.List("observersList")
-				.withItemRef("observer")
-				.Component("handler1", HandlerFactoryProvider.class)
-				.withConstructorArg(String.class, "handler1")
-				.withConstructorArgRef("observableProviderList")
-				.withConstructorArgRef("observersList")
-				.withConstructorArg(String.class,
-						"org.jage.monitoring.handler.AvgHandlerFactory")
-				.withConstructorArg(String.class, "create").build();
+        List<IComponentDefinition> components = componentBuilder
+                .Component("monitoring", Monitoring.class)
+                .withConstructorArgRef("xmlConfig")
+                .Component("xmlConfig", XmlConfig.class)
+                .withConstructorArgRef("handlerList")
+                .List("handlerList")
+                .withItemRef("handler1")
+                .withItemRef("handler2")
+                .Component("random1ObservableProvider",
+                           ObservableProvider.class)
+                .withConstructorArgRef("random1")
+                .withConstructorArg(Long.class, "50")
+                .Component("random2ObservableProvider",
+                           ObservableProvider.class)
+                .withConstructorArgRef("random2")
+                .withConstructorArg(Long.class, "50")
+                .List("observableProviderList1", ObservableProvider.class)
+                .withItemRef("random1ObservableProvider")
+                .List("observableProviderList2", ObservableProvider.class)
+                .withItemRef("random2ObservableProvider")
+                .List("observersList")
+                .withItemRef("observer")
+                .Component("handler1", HandlerFactoryProvider.class)
+                .withConstructorArg(String.class, "handler1")
+                .withConstructorArgRef("observableProviderList1")
+                .withConstructorArgRef("observersList")
+                .withConstructorArg(String.class,
+                                    "org.jage.monitoring.handler.BasicHandlerFactory")
+                .withConstructorArg(String.class, "create")
+                .Component("handler2", HandlerFactoryProvider.class)
+                .withConstructorArg(String.class, "handler2")
+                .withConstructorArgRef("observableProviderList2")
+                .withConstructorArgRef("observersList")
+                .withConstructorArg(String.class,
+                                    "org.jage.monitoring.handler.BasicHandlerFactory")
+                .withConstructorArg(String.class, "create")
+                .build();
 
-		PicoComponentInstanceProvider ioc = new PicoComponentInstanceProvider();
-		for (IComponentDefinition def : components) {
-			ioc.addComponent(def);
-		}
-		ioc.getComponents(IStatefulComponent.class);
+        PicoComponentInstanceProvider ioc = new PicoComponentInstanceProvider();
+        for(IComponentDefinition def : components) {
+            ioc.addComponent(def);
+        }
+        ioc.getComponents(IStatefulComponent.class);
 
-		TestScheduler scheduler = (TestScheduler) ioc.getComponent(RxTestSchedulerProvider.class).getScheduler();
-		scheduler.advanceTimeTo(300, TimeUnit.MILLISECONDS);
-		ioc.getComponent(Monitoring.class).finish();
-		ObserverUnderTest observer = (ObserverUnderTest) ioc.getComponent("observer");
-		assertEquals(6, observer.getNextCount());
-		assertEquals(1, observer.getCompleteCount());
-	}
+        TestScheduler scheduler = (TestScheduler) ioc.getComponent(RxTestSchedulerProvider.class).getScheduler();
+        scheduler.advanceTimeTo(300, TimeUnit.MILLISECONDS);
+        ioc.getComponent(Monitoring.class).finish();
+        ObserverUnderTest observer = (ObserverUnderTest) ioc.getComponent("observer");
+        assertEquals(12, observer.getNextCount());
+        assertEquals(1, observer.getCompleteCount());
+    }
+
+    /**
+     * Test with avg handler.
+     *
+     * @throws InterruptedException
+     */
+    @Test
+    public void oneAvgHandlerWithTwoObservables() throws InterruptedException {
+
+        List<IComponentDefinition> components = componentBuilder
+                .Component("monitoring", Monitoring.class)
+                .withConstructorArgRef("xmlConfig")
+                .Component("xmlConfig", XmlConfig.class)
+                .withConstructorArgRef("handlerList")
+                .List("handlerList")
+                .withItemRef("handler1")
+                .Component("random1ObservableProvider",
+                           ObservableProvider.class)
+                .withConstructorArgRef("random1")
+                .withConstructorArg(Long.class, "50")
+                .Component("random2ObservableProvider",
+                           ObservableProvider.class)
+                .withConstructorArgRef("random2")
+                .withConstructorArg(Long.class, "50")
+                .List("observableProviderList", ObservableProvider.class)
+                .withItemRef("random1ObservableProvider")
+                .withItemRef("random2ObservableProvider")
+                .List("observersList")
+                .withItemRef("observer")
+                .Component("handler1", HandlerFactoryProvider.class)
+                .withConstructorArg(String.class, "handler1")
+                .withConstructorArgRef("observableProviderList")
+                .withConstructorArgRef("observersList")
+                .withConstructorArg(String.class,
+                                    "org.jage.monitoring.handler.AvgHandlerFactory")
+                .withConstructorArg(String.class, "create").build();
+
+        PicoComponentInstanceProvider ioc = new PicoComponentInstanceProvider();
+        for(IComponentDefinition def : components) {
+            ioc.addComponent(def);
+        }
+        ioc.getComponents(IStatefulComponent.class);
+
+        TestScheduler scheduler = (TestScheduler) ioc.getComponent(RxTestSchedulerProvider.class).getScheduler();
+        scheduler.advanceTimeTo(300, TimeUnit.MILLISECONDS);
+        ioc.getComponent(Monitoring.class).finish();
+        ObserverUnderTest observer = (ObserverUnderTest) ioc.getComponent("observer");
+        assertEquals(6, observer.getNextCount());
+        assertEquals(1, observer.getCompleteCount());
+    }
 }

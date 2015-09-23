@@ -28,29 +28,30 @@
 
 package org.jage.monitoring.observer;
 
+
+import com.typesafe.config.Config;
 import org.jage.monitoring.config.ExecutorProvider;
 import org.jage.platform.component.provider.IComponentInstanceProvider;
 
-import com.typesafe.config.Config;
 
 /**
  * Providers an instance of NoSqlDatabaseObserver class.
- * 
+ *
  * @author AGH AgE Team
  */
 public class NoSqlDatabaseObserverProvider implements ObserverProvider {
 
-	@Override
-	public AbstractStatefulObserver create(final Config c, final IComponentInstanceProvider provider) {
-		final String url = c.getString("url");
-		final NoSqlDatabaseObserver nsdbc = new NoSqlDatabaseObserver(
-				url, provider, provider.getInstance(ExecutorProvider.class)
-		);
-		return nsdbc;
-	}
+    @Override
+    public AbstractStatefulObserver create(final Config c, final IComponentInstanceProvider provider) {
+        final String url = c.getString("url");
+        final NoSqlDatabaseObserver nsdbc = new NoSqlDatabaseObserver(
+                url, provider, provider.getInstance(ExecutorProvider.class)
+        );
+        return nsdbc;
+    }
 
-	@Override
-	public String getType() {
-		return "nosqldatabase";
-	}
+    @Override
+    public String getType() {
+        return "nosqldatabase";
+    }
 }

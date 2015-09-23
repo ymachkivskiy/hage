@@ -26,73 +26,74 @@
  */
 package org.jage.monitoring.visualization.storage;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
+import com.google.common.base.Splitter;
 import org.jage.monitoring.MonitoringException;
 import org.jage.monitoring.visualization.rest.StoragePointer;
 import org.jage.monitoring.visualization.storage.element.ComputationInstance;
 import org.jage.monitoring.visualization.storage.element.DescriptionElement;
 import org.jage.monitoring.visualization.storage.element.VisualDataStorage;
 
-import com.google.common.base.Splitter;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
 
 public class StorageChooserServiceImpl implements StorageChooserService {
 
     private static final long serialVersionUID = -217307941099348996L;
 
-	public Collection<VisualDataStorage> getAndSaveVisualDataStorageCollectionByWildcard(StorageDescription storageDescription, String chartId, String numbersOfSelectedStorages){
-		
-		@SuppressWarnings("unchecked")
-        List<ComputationInstance> computationInstanceCollection = (List<ComputationInstance>)VisualDataStorageFactory.getComputationInstanceCollection(storageDescription);
-		List<VisualDataStorage> result = new LinkedList<VisualDataStorage>();
-		if (numbersOfSelectedStorages != null) {
-			Iterable<String> iterable = Splitter.on(',').split(numbersOfSelectedStorages);
-			Iterator<String> iterator = iterable.iterator();
-			List<ComputationInstance> selectedComputationInstanceCollection = new LinkedList<ComputationInstance>();
-			while(iterator.hasNext()) {
-				selectedComputationInstanceCollection.add(computationInstanceCollection.get(Integer.parseInt(iterator.next())-1));
+    public Collection<VisualDataStorage> getAndSaveVisualDataStorageCollection(StorageDescription storageDescription, String chartId, String numbersOfSelectedStorages) {
+        DescriptionElement<VisualDataStorage> descriptionElement = VisualDataStorageFactory.getDescriptionElement(storageDescription);
+        if(descriptionElement == null) {
+            throw new MonitoringException("No resource");
+        }
+        Collection<VisualDataStorage> computationDesc = descriptionElement.all();
+        List<VisualDataStorage> storageList = new LinkedList<VisualDataStorage>(computationDesc);
+        StoragePointer storagePointer = StoragePointer.getInstance();
+        if(numbersOfSelectedStorages != null) {
+            Iterable<String> iterable = Splitter.on(',').split(numbersOfSelectedStorages);
+            Iterator<String> iterator = iterable.iterator();
+            List<VisualDataStorage> selectedStorageList = new LinkedList<VisualDataStorage>();
+            while(iterator.hasNext()) {
+                selectedStorageList.add(storageList.get(Integer.parseInt(iterator.next()) - 1));
             }
-			for (ComputationInstance computationInstance : selectedComputationInstanceCollection) {
-		        storageDescription.setComputationInstance(computationInstance.toString());
-		        result.add((VisualDataStorage)VisualDataStorageFactory.getDescriptionElement(storageDescription));
-	        }
-		}
-		StoragePointer storagePointer = StoragePointer.getInstance();
-		storagePointer.putStorages(chartId, result);
-		return result;
-	}
-	
-	public VisualDataStorage getAndSaveVisualDataStorage(StorageDescription storageDescription, String chartId){
-		VisualDataStorage visualDataStorage = (VisualDataStorage)VisualDataStorageFactory.getDescriptionElement(storageDescription);
-		StoragePointer storagePointer = StoragePointer.getInstance();
-		LinkedList<VisualDataStorage> list = new LinkedList<VisualDataStorage>(Arrays.asList(visualDataStorage));
-		storagePointer.putStorages(chartId, list);
-		return visualDataStorage;
-	}
-	
-	public Collection<VisualDataStorage> getAndSaveVisualDataStorageCollection(StorageDescription storageDescription, String chartId, String numbersOfSelectedStorages) {
-		DescriptionElement<VisualDataStorage> descriptionElement = VisualDataStorageFactory.getDescriptionElement(storageDescription);
-		if(descriptionElement == null){
-			throw new MonitoringException("No resource");
-		}
-		Collection<VisualDataStorage> computationDesc = descriptionElement.all();
-		List<VisualDataStorage> storageList = new LinkedList<VisualDataStorage>(computationDesc);
-		StoragePointer storagePointer = StoragePointer.getInstance();
-		if (numbersOfSelectedStorages != null) {
-			Iterable<String> iterable = Splitter.on(',').split(numbersOfSelectedStorages);
-			Iterator<String> iterator = iterable.iterator();
-			List<VisualDataStorage> selectedStorageList = new LinkedList<VisualDataStorage>();
-			while(iterator.hasNext()) {
-	            selectedStorageList.add(storageList.get(Integer.parseInt(iterator.next())-1));
+            storagePointer.putStorages(chartId, selectedStorageList);
+            return selectedStorageList;
+        }
+        storagePointer.putStorages(chartId, storageList);
+        return storageList;
+    }
+
+    public VisualDataStorage getAndSaveVisualDataStorage(StorageDescription storageDescription, String chartId) {
+        VisualDataStorage visualDataStorage = (VisualDataStorage) VisualDataStorageFactory.getDescriptionElement(storageDescription);
+        StoragePointer storagePointer = StoragePointer.getInstance();
+        LinkedList<VisualDataStorage> list = new LinkedList<VisualDataStorage>(Arrays.asList(visualDataStorage));
+        storagePointer.putStorages(chartId, list);
+        return visualDataStorage;
+    }
+
+    public Collection<VisualDataStorage> getAndSaveVisualDataStorageCollectionByWildcard(StorageDescription storageDescription, String chartId, String numbersOfSelectedStorages) {
+
+        @SuppressWarnings("unchecked")
+        List<ComputationInstance> computationInstanceCollection = (List<ComputationInstance>) VisualDataStorageFactory.getComputationInstanceCollection(storageDescription);
+        List<VisualDataStorage> result = new LinkedList<VisualDataStorage>();
+        if(numbersOfSelectedStorages != null) {
+            Iterable<String> iterable = Splitter.on(',').split(numbersOfSelectedStorages);
+            Iterator<String> iterator = iterable.iterator();
+            List<ComputationInstance> selectedComputationInstanceCollection = new LinkedList<ComputationInstance>();
+            while(iterator.hasNext()) {
+                selectedComputationInstanceCollection.add(computationInstanceCollection.get(Integer.parseInt(iterator.next()) - 1));
             }
-			storagePointer.putStorages(chartId, selectedStorageList);
-			return selectedStorageList;
-		}
-		storagePointer.putStorages(chartId, storageList);
-		return storageList;
-	}
+            for(ComputationInstance computationInstance : selectedComputationInstanceCollection) {
+                storageDescription.setComputationInstance(computationInstance.toString());
+                result.add((VisualDataStorage) VisualDataStorageFactory.getDescriptionElement(storageDescription));
+            }
+        }
+        StoragePointer storagePointer = StoragePointer.getInstance();
+        storagePointer.putStorages(chartId, result);
+        return result;
+    }
 }

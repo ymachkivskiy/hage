@@ -26,16 +26,17 @@
  */
 package org.jage.property.annotations;
 
-import java.util.Set;
 
 import org.jage.property.FieldMetaProperty;
 import org.jage.property.GetterSetterMetaProperty;
-import org.jage.property.InvalidPropertyDefinitionException;
 import org.jage.property.PropertyException;
+
+import java.util.Set;
+
 
 public interface IPropertiesReader {
 
-	public Set<FieldMetaProperty> readFieldMetaProperties(Class<?> clazz) throws InvalidPropertyDefinitionException, PropertyException;
+    public Set<FieldMetaProperty> readFieldMetaProperties(Class<?> clazz) throws PropertyException;
 
-	public Set<GetterSetterMetaProperty> readGetterSetterMetaProperties(Class<?> clazz) throws InvalidPropertyDefinitionException, PropertyException;
+    public Set<GetterSetterMetaProperty> readGetterSetterMetaProperties(Class<?> clazz) throws PropertyException;
 }

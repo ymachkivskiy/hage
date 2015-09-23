@@ -31,6 +31,7 @@
 
 package org.jage.action.preparers;
 
+
 import org.jage.action.Action;
 import org.jage.action.IActionContext;
 import org.jage.action.SingleAction;
@@ -44,6 +45,7 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
 
 /**
  * A {@link IActionPreparer} that expects a list of {@link IActionContext}s and build an aggregated complex action

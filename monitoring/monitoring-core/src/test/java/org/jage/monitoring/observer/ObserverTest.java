@@ -26,53 +26,54 @@
  */
 package org.jage.monitoring.observer;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-
 import rx.Observable;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
 
 public class ObserverTest {
 
-	private Observable<ObservedData> observable;
-	private Observable<ObservedData> observable2;
-	
-	@Before
-	public void setUp(){
-		observable = Observable.from(new ObservedData[]{new ObservedData("name", 12345L, 1), new ObservedData("name", 12345L, 2), new ObservedData("name", 12345L, 3)});
-		observable2 = Observable.from(new ObservedData[]{new ObservedData("name", 12345L, 4), new ObservedData("name", 12345L, 5)});
-	}
-	
-	@Test
-	public void observerProcessesItemsFromOneObservable() throws InterruptedException{
+    private Observable<ObservedData> observable;
+    private Observable<ObservedData> observable2;
 
-		// given
-		AbstractStatefulObserver observer = mock(AbstractStatefulObserver.class);
-		
-		// when
-		observable.subscribe(observer);
-		
-		// then
-		verify(observer, times(3)).onNext(Mockito.any(ObservedData.class));
-		verify(observer).onCompleted();
-	}
-	
-	@Test
-	public void observerProcessesItemsFromMergedObservables() throws InterruptedException{
+    @Before
+    public void setUp() {
+        observable = Observable.from(new ObservedData[]{new ObservedData("name", 12345L, 1), new ObservedData("name", 12345L, 2), new ObservedData("name", 12345L, 3)});
+        observable2 = Observable.from(new ObservedData[]{new ObservedData("name", 12345L, 4), new ObservedData("name", 12345L, 5)});
+    }
 
-		// given
-		AbstractStatefulObserver observer = mock(AbstractStatefulObserver.class);
-		Observable<ObservedData> merged = Observable.merge(observable,observable2);
-		
-		// when
-		merged.subscribe(observer);
-		
-		// then
-		verify(observer, times(5)).onNext(Mockito.any(ObservedData.class));
-		verify(observer).onCompleted();
-	}
+    @Test
+    public void observerProcessesItemsFromOneObservable() throws InterruptedException {
+
+        // given
+        AbstractStatefulObserver observer = mock(AbstractStatefulObserver.class);
+
+        // when
+        observable.subscribe(observer);
+
+        // then
+        verify(observer, times(3)).onNext(Mockito.any(ObservedData.class));
+        verify(observer).onCompleted();
+    }
+
+    @Test
+    public void observerProcessesItemsFromMergedObservables() throws InterruptedException {
+
+        // given
+        AbstractStatefulObserver observer = mock(AbstractStatefulObserver.class);
+        Observable<ObservedData> merged = Observable.merge(observable, observable2);
+
+        // when
+        merged.subscribe(observer);
+
+        // then
+        verify(observer, times(5)).onNext(Mockito.any(ObservedData.class));
+        verify(observer).onCompleted();
+    }
 }

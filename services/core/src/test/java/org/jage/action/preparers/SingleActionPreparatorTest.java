@@ -31,21 +31,22 @@
 
 package org.jage.action.preparers;
 
-import java.util.Collection;
 
+import org.jage.action.Action;
+import org.jage.action.IActionContext;
+import org.jage.action.SingleAction;
+import org.jage.agent.IAgent;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.Collection;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.jage.action.Action;
-import org.jage.action.IActionContext;
-import org.jage.action.SingleAction;
-import org.jage.agent.IAgent;
 
 /**
  * Tests for {@link SingleActionPreparer}.
@@ -55,23 +56,22 @@ import org.jage.agent.IAgent;
 @RunWith(MockitoJUnitRunner.class)
 public class SingleActionPreparatorTest extends AbstractActionPreparatorTest {
 
-	@Mock
-	private IActionContext actionContext;
+    @InjectMocks
+    private final SingleActionPreparer<IAgent> preparator = new SingleActionPreparer<IAgent>();
+    @Mock
+    private IActionContext actionContext;
 
-	@InjectMocks
-	private final SingleActionPreparer<IAgent> preparator = new SingleActionPreparer<IAgent>();
+    @Test
+    public void testPrepareAction() {
+        // when
+        Collection<Action> actions = preparator.prepareActions(agent);
 
-	@Test
-	public void testPrepareAction() {
-		// when
-		Collection<Action> actions = preparator.prepareActions(agent);
-
-		// then
-		assertEquals(1, actions.size());
-		Action action = actions.iterator().next();
-		assertTrue(action instanceof SingleAction);
-		SingleAction singleAction = (SingleAction)action;
-		assertTrue(singleAction.getTarget().selects(agentAddress));
-		assertEquals(actionContext, singleAction.getContext());
-	}
+        // then
+        assertEquals(1, actions.size());
+        Action action = actions.iterator().next();
+        assertTrue(action instanceof SingleAction);
+        SingleAction singleAction = (SingleAction) action;
+        assertTrue(singleAction.getTarget().selects(agentAddress));
+        assertEquals(actionContext, singleAction.getContext());
+    }
 }

@@ -31,7 +31,7 @@
 
 /**
  * Defines the configuration loader interface.
- * 
+ *
  * @since 2.5.0
  */
 package org.jage.platform.config.loader;

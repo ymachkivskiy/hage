@@ -26,37 +26,39 @@
  */
 package org.jage.monitoring.observer;
 
+
 import org.jage.monitoring.config.ExecutorProvider;
 
 
 public class ObserverUnderTest extends AbstractStatefulObserver {
 
-	private int nextCount;
-	private int completeCount;
-	
-	public ObserverUnderTest(){
-		super();
-	}
-	
-	public ObserverUnderTest(ExecutorProvider executorProvider) {
-		this();
-		this.executorProvider = executorProvider;
-	}
-	
-	@Override
-	public void onNext(ObservedData args) {
-		nextCount++;
-	}
-	
-	@Override
-	public void onCompleted(){
-		completeCount++;
-	}
+    private int nextCount;
+    private int completeCount;
 
-	public int getNextCount() {
-		return nextCount;
-	}
-	public int getCompleteCount() {
-		return completeCount;
-	}
+    public ObserverUnderTest(ExecutorProvider executorProvider) {
+        this();
+        this.executorProvider = executorProvider;
+    }
+
+    public ObserverUnderTest() {
+        super();
+    }
+
+    @Override
+    public void onNext(ObservedData args) {
+        nextCount++;
+    }
+
+    @Override
+    public void onCompleted() {
+        completeCount++;
+    }
+
+    public int getNextCount() {
+        return nextCount;
+    }
+
+    public int getCompleteCount() {
+        return completeCount;
+    }
 }

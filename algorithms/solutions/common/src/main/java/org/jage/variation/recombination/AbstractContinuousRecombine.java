@@ -31,10 +31,12 @@
 
 package org.jage.variation.recombination;
 
-import java.util.List;
 
 import org.jage.solution.IVectorSolution;
 import org.jage.strategy.AbstractStrategy;
+
+import java.util.List;
+
 
 /**
  * Abstract implementation of a continuous recombination. That is, the recombined value is located continuously between
@@ -42,36 +44,31 @@ import org.jage.strategy.AbstractStrategy;
  * <br />
  * Concrete subclasses are supposed to provide the actual computation.
  *
- * @param <R>
- *            the representation type of the solution to be recombined
- *
+ * @param <R> the representation type of the solution to be recombined
  * @author AGH AgE Team
  */
-public abstract class AbstractContinuousRecombine<R> extends AbstractStrategy implements IRecombine<IVectorSolution<R>> {
+public abstract class AbstractContinuousRecombine<R> extends AbstractStrategy
+        implements IRecombine<IVectorSolution<R>> {
 
-	@Override
-	public final void recombine(IVectorSolution<R> solution1, IVectorSolution<R> solution2) {
-		List<R> representation1 = solution1.getRepresentation();
-		List<R> representation2 = solution2.getRepresentation();
+    @Override
+    public final void recombine(IVectorSolution<R> solution1, IVectorSolution<R> solution2) {
+        List<R> representation1 = solution1.getRepresentation();
+        List<R> representation2 = solution2.getRepresentation();
 
-		for (int i = 0, n = representation1.size(); i < n; i++) {
-			doRecombine(representation1, representation2, i);
-		}
-	}
+        for(int i = 0, n = representation1.size(); i < n; i++) {
+            doRecombine(representation1, representation2, i);
+        }
+    }
 
-	/**
-	 * Recombines the representations at the given index. <br />
-	 * <br />
-	 * This method purpose is to allow efficient unboxing in case of representations of primitives. Subclasses can then
-	 * cast the given representation in the corresponding fastutil collection.
-	 *
-	 *
-	 * @param representation1
-	 *            the first representation
-	 * @param representation2
-	 *            the second representation
-	 * @param index
-	 *            the index at which recombination should occur
-	 */
-	protected abstract void doRecombine(List<R> representation1, List<R> representation2, int index);
+    /**
+     * Recombines the representations at the given index. <br />
+     * <br />
+     * This method purpose is to allow efficient unboxing in case of representations of primitives. Subclasses can then
+     * cast the given representation in the corresponding fastutil collection.
+     *
+     * @param representation1 the first representation
+     * @param representation2 the second representation
+     * @param index           the index at which recombination should occur
+     */
+    protected abstract void doRecombine(List<R> representation1, List<R> representation2, int index);
 }

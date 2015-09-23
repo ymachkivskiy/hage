@@ -29,6 +29,7 @@
  */
 package org.jage.random;
 
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -40,6 +41,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 
+
 /**
  * Test of GaussianGenerator.
  *
@@ -48,24 +50,24 @@ import static org.mockito.BDDMockito.given;
 @RunWith(MockitoJUnitRunner.class)
 public class GaussianGeneratorTest {
 
-	@Mock
-	private INormalizedDoubleRandomGenerator rand;
+    @Mock
+    private INormalizedDoubleRandomGenerator rand;
 
-	@InjectMocks
-	private GaussianGenerator underTest = new GaussianGenerator();
+    @InjectMocks
+    private GaussianGenerator underTest = new GaussianGenerator();
 
-	@Test
-	public void testBounds() {
-		assertThat(underTest.getLowerDouble(), is(equalTo(Double.MIN_VALUE)));
-		assertThat(underTest.getUpperDouble(), is(equalTo(Double.MAX_VALUE)));
-	}
+    @Test
+    public void testBounds() {
+        assertThat(underTest.getLowerDouble(), is(equalTo(Double.MIN_VALUE)));
+        assertThat(underTest.getUpperDouble(), is(equalTo(Double.MAX_VALUE)));
+    }
 
-	@Test
-	public void testNextDouble() {
-		// given
-		given(rand.nextDouble()).willReturn(0.5);
+    @Test
+    public void testNextDouble() {
+        // given
+        given(rand.nextDouble()).willReturn(0.5);
 
-		// then
-		assertThat(underTest.nextDouble(), is(equalTo(0.0)));
-	}
+        // then
+        assertThat(underTest.nextDouble(), is(equalTo(0.0)));
+    }
 }

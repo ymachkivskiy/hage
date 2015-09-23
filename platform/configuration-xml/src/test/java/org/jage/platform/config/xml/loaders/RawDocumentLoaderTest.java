@@ -31,9 +31,10 @@
 
 package org.jage.platform.config.xml.loaders;
 
-import org.junit.Test;
 
 import org.jage.platform.component.definition.ConfigurationException;
+import org.junit.Test;
+
 
 /**
  * Unit tests for RawDocumentLoaderTest.
@@ -42,27 +43,27 @@ import org.jage.platform.component.definition.ConfigurationException;
  */
 public class RawDocumentLoaderTest {
 
-	private final RawDocumentLoader loader;
+    private final RawDocumentLoader loader;
 
-	public RawDocumentLoaderTest() throws ConfigurationException {
-		loader = new RawDocumentLoader();
+    public RawDocumentLoaderTest() throws ConfigurationException {
+        loader = new RawDocumentLoader();
     }
 
-	@Test
-	public void testValidIsParsed() throws ConfigurationException {
-		// given
-		final String path = "classpath:valid.xml";
+    @Test
+    public void testValidIsParsed() throws ConfigurationException {
+        // given
+        final String path = "classpath:valid.xml";
 
-		// when
-		loader.loadDocument(path);
-	}
+        // when
+        loader.loadDocument(path);
+    }
 
-	@Test(expected = ConfigurationException.class)
-	public void testInvalidThrowsException() throws ConfigurationException {
-		// given
-		final String path = "classpath:invalid.xml";
+    @Test(expected = ConfigurationException.class)
+    public void testInvalidThrowsException() throws ConfigurationException {
+        // given
+        final String path = "classpath:invalid.xml";
 
-		// when
-		loader.loadDocument(path);
-	}
+        // when
+        loader.loadDocument(path);
+    }
 }

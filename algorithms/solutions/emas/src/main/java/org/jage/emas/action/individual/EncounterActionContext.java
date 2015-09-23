@@ -31,8 +31,10 @@
 
 package org.jage.emas.action.individual;
 
+
 import org.jage.action.context.AgentActionContext;
 import org.jage.emas.util.ChainingContext;
+
 
 /**
  * This context defines an encounter action. To use it, you should declare a handler strategy named 'encounterAction'
@@ -42,15 +44,17 @@ import org.jage.emas.util.ChainingContext;
  */
 @AgentActionContext(EncounterActionContext.Properties.ENCOUNTER_ACTION)
 public class EncounterActionContext extends ChainingContext {
-	/**
-	 * EncounterActionContext properties.
-	 *
-	 * @author AGH AgE Team
-	 */
-	public static class Properties {
-		/**
-		 * The action name.
-		 */
-		public static final String ENCOUNTER_ACTION = "encounterAction";
-	}
+
+    /**
+     * EncounterActionContext properties.
+     *
+     * @author AGH AgE Team
+     */
+    public static class Properties {
+
+        /**
+         * The action name.
+         */
+        public static final String ENCOUNTER_ACTION = "encounterAction";
+    }
 }

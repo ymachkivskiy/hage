@@ -31,31 +31,30 @@
 
 package org.jage.examples.messages;
 
-import java.io.Serializable;
-import java.util.Collection;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import com.google.common.base.Predicate;
 import org.jage.action.AgentActions;
 import org.jage.address.agent.AgentAddress;
 import org.jage.address.agent.AgentAddressSupplier;
 import org.jage.address.selector.Selectors;
 import org.jage.agent.AgentException;
 import org.jage.agent.SimpleAgent;
-import org.jage.communication.message.SimpleHeader;
 import org.jage.communication.message.Message;
+import org.jage.communication.message.SimpleHeader;
 import org.jage.communication.message.SimpleMessage;
 import org.jage.exception.AgeException;
 import org.jage.query.AgentEnvironmentQuery;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Predicate;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
+import java.io.Serializable;
+import java.util.Collection;
 
 import static com.google.common.collect.Iterables.consumingIterable;
+
 
 /**
  * This agent sends and receives messages.
@@ -64,96 +63,99 @@ import static com.google.common.collect.Iterables.consumingIterable;
  */
 public class MessagesSimpleAgent extends SimpleAgent {
 
-	private static final long serialVersionUID = 2L;
+    private static final long serialVersionUID = 2L;
 
-	private final Logger log = LoggerFactory.getLogger(MessagesSimpleAgent.class);
+    private final Logger log = LoggerFactory.getLogger(MessagesSimpleAgent.class);
 
-	private AgentAddress receiverAddress = null;
+    private AgentAddress receiverAddress = null;
 
-	/**
-	 * DefaultMessage receiver
-	 */
-	private String receiver = null;
+    /**
+     * DefaultMessage receiver
+     */
+    private String receiver = null;
 
-	/**
-	 * Content of the message
-	 */
-	private String messageToSend = null;
+    /**
+     * Content of the message
+     */
+    private String messageToSend = null;
 
-	private int sent = 0;
-	private int received = 0;
+    private int sent = 0;
+    private int received = 0;
 
-	public MessagesSimpleAgent(final AgentAddress address) {
-		super(address);
-	}
+    public MessagesSimpleAgent(final AgentAddress address) {
+        super(address);
+    }
 
-	@Inject
-	public MessagesSimpleAgent(final AgentAddressSupplier supplier) {
-		super(supplier);
-	}
+    @Inject
+    public MessagesSimpleAgent(final AgentAddressSupplier supplier) {
+        super(supplier);
+    }
 
-	public void setReceiver(final @Nonnull String receiver) {
-		this.receiver = receiver;
-	}
+    public void setReceiver(final @Nonnull String receiver) {
+        this.receiver = receiver;
+    }
 
-	public void setMessageToSend(final @Nonnull String messageToSend) {
-		this.messageToSend = messageToSend;
-	}
+    public void setMessageToSend(final @Nonnull String messageToSend) {
+        this.messageToSend = messageToSend;
+    }
 
-	@Override
-	public void step() {
-		if (receiverAddress == null) {
-			try {
-				final AgentEnvironmentQuery<SimpleAgent, SimpleAgent> query = new AgentEnvironmentQuery<>();
-				final Collection<SimpleAgent> answer = queryEnvironment(query);
+    @Override
+    public void step() {
+        if(receiverAddress == null) {
+            try {
+                final AgentEnvironmentQuery<SimpleAgent, SimpleAgent> query = new AgentEnvironmentQuery<>();
+                final Collection<SimpleAgent> answer = queryEnvironment(query);
 
-				for (final SimpleAgent entry : answer) {
-					final AgentAddress agentAddress = (AgentAddress)entry.getProperty("address").getValue();
-					if (agentAddress.getFriendlyName().startsWith(receiver)) {
-						receiverAddress = agentAddress;
-					}
-				}
-			} catch (final AgeException e) {
-				log.error("Agent exception", e);
-			}
-		}
+                for(final SimpleAgent entry : answer) {
+                    final AgentAddress agentAddress = (AgentAddress) entry.getProperty("address").getValue();
+                    if(agentAddress.getFriendlyName().startsWith(receiver)) {
+                        receiverAddress = agentAddress;
+                    }
+                }
+            } catch(final AgeException e) {
+                log.error("Agent exception", e);
+            }
+        }
 
-		send();
+        send();
 
-		for (final Message<AgentAddress, ?> message : consumingIterable(getMessages())) {
-			read(message);
-		}
-	}
+        for(final Message<AgentAddress, ?> message : consumingIterable(getMessages())) {
+            read(message);
+        }
+    }
 
-	@Override
-	public boolean finish() {
-		log.info("Finishing {}. Sent {}. Received {}.", getAddress().getFriendlyName(), sent, received);
-		return true;
-	}
+    private void send() {
+        if(receiverAddress != null && messageToSend != null) {
+            final SimpleHeader<AgentAddress> header =
+                    SimpleHeader.create(getAddress(), Selectors.allAddressesMatching(new AgentAddressPredicate()));
+            final SimpleMessage<AgentAddress, String> textMessage = SimpleMessage.create(header, messageToSend);
+            try {
+                doAction(AgentActions.sendMessage(textMessage));
+                sent++;
+            } catch(final AgentException e) {
+                log.error("Can't send a message.", e);
+            }
+        }
+    }
 
-	private void send() {
-		if (receiverAddress != null && messageToSend != null) {
-			final SimpleHeader<AgentAddress> header =
-            SimpleHeader.create(getAddress(), Selectors.allAddressesMatching(new AgentAddressPredicate()));
-			final SimpleMessage<AgentAddress, String> textMessage = SimpleMessage.create(header, messageToSend);
-			try {
-				doAction(AgentActions.sendMessage(textMessage));
-				sent++;
-			} catch (final AgentException e) {
-				log.error("Can't send a message.", e);
-			}
-		}
-	}
+    private void read(final Message<AgentAddress, ?> message) {
+        received++;
+        log.info("Agent {} received message from {}: {}", getAddress().getFriendlyName(),
+                 message.getHeader().getSenderAddress().getFriendlyName(), message.getPayload());
+    }
 
-	private void read(final Message<AgentAddress, ?> message) {
-		received++;
-		log.info("Agent {} received message from {}: {}", getAddress().getFriendlyName(),
-				message.getHeader().getSenderAddress().getFriendlyName(), message.getPayload());
-	}
+    @Override
+    public boolean finish() {
+        log.info("Finishing {}. Sent {}. Received {}.", getAddress().getFriendlyName(), sent, received);
+        return true;
+    }
 
-	private class AgentAddressPredicate implements Predicate<AgentAddress>, Serializable {
-		@Override public boolean apply(@Nullable final AgentAddress input) {
-			return input.getFriendlyName().startsWith(receiver);
-		}
-	}
+
+    private class AgentAddressPredicate implements Predicate<AgentAddress>, Serializable {
+
+        @Override
+        public boolean apply(@Nullable final AgentAddress input) {
+            return input.getFriendlyName().startsWith(receiver);
+        }
+    }
 }

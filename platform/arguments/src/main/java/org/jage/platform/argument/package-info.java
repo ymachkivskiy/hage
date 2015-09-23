@@ -32,5 +32,4 @@
 /**
  * Provides components and interfaces to operate on arguments passed to the node from the environment.
  */
-@javax.annotation.ParametersAreNonnullByDefault
-package org.jage.platform.argument;
+@javax.annotation.ParametersAreNonnullByDefault package org.jage.platform.argument;

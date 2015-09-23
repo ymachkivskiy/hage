@@ -31,21 +31,22 @@
 
 package org.jage.address.selector;
 
+
 import org.jage.address.agent.AgentAddress;
 import org.jage.address.agent.DefaultAgentAddress;
 import org.jage.address.node.NodeAddress;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import static com.google.common.collect.Iterables.getOnlyElement;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 
-import static com.google.common.collect.Iterables.getOnlyElement;
 
 /**
  * Tests for the {@link UnicastSelector} class.
@@ -55,51 +56,51 @@ import static com.google.common.collect.Iterables.getOnlyElement;
 @RunWith(MockitoJUnitRunner.class)
 public class UnicastSelectorTest {
 
-	private AgentAddress address;
+    private AgentAddress address;
 
-	private UnicastSelector<AgentAddress> selector;
+    private UnicastSelector<AgentAddress> selector;
 
-	@Mock
-	private NodeAddress nodeAddress;
+    @Mock
+    private NodeAddress nodeAddress;
 
-	@Before
-	public void setUp() {
-		address = new DefaultAgentAddress(nodeAddress);
-	}
+    @Before
+    public void setUp() {
+        address = new DefaultAgentAddress(nodeAddress);
+    }
 
-	@Test(expected = NullPointerException.class)
-	public void initialAddressCannotBeNull() {
-		// when
-		selector = UnicastSelector.create((AgentAddress)null);
-	}
+    @Test(expected = NullPointerException.class)
+    public void initialAddressCannotBeNull() {
+        // when
+        selector = UnicastSelector.create((AgentAddress) null);
+    }
 
-	@Test
-	public void shouldCreateCorrectly() {
-		// given
-		selector = UnicastSelector.create(address);
+    @Test
+    public void shouldCreateCorrectly() {
+        // given
+        selector = UnicastSelector.create(address);
 
-		// then
-		assertThat(selector, is(notNullValue()));
-		assertThat(getOnlyElement(selector.getAddresses()), is(address));
-	}
+        // then
+        assertThat(selector, is(notNullValue()));
+        assertThat(getOnlyElement(selector.getAddresses()), is(address));
+    }
 
-	@Test
-	public void shouldSelectOnlyOneAddress() {
-		// given
-		selector = UnicastSelector.create(address);
-		final AgentAddress anotherAddress = mock(AgentAddress.class);
+    @Test
+    public void shouldSelectOnlyOneAddress() {
+        // given
+        selector = UnicastSelector.create(address);
+        final AgentAddress anotherAddress = mock(AgentAddress.class);
 
-		// then
-		assertThat(selector.selects(address), is(true));
-		assertThat(selector.selects(anotherAddress), is(false));
-	}
+        // then
+        assertThat(selector.selects(address), is(true));
+        assertThat(selector.selects(anotherAddress), is(false));
+    }
 
-	@Test(expected = NullPointerException.class)
-	public void shouldThrowWhenAddressNull() {
-		// given
-		selector = UnicastSelector.create(address);
+    @Test(expected = NullPointerException.class)
+    public void shouldThrowWhenAddressNull() {
+        // given
+        selector = UnicastSelector.create(address);
 
-		// when
-		selector.selects(null);
-	}
+        // when
+        selector.selects(null);
+    }
 }

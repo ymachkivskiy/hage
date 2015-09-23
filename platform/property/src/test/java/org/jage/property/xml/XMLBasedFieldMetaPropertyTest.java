@@ -26,41 +26,43 @@
  */
 package org.jage.property.xml;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import org.jage.property.xml.testHelpers.AdvancedExampleComponent;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+
 public class XMLBasedFieldMetaPropertyTest {
 
-	@Test
-	public void testGetField() throws Exception {
-		AdvancedExampleComponent component = new AdvancedExampleComponent();
-		XMLBasedFieldMetaProperty metaProperty = new XMLBasedFieldMetaProperty("floatProperty", component
-				.getFloatPropertyField());
-		assertEquals(component.getFloatPropertyField(), metaProperty.getPropertyField());
-	}
+    @Test
+    public void testGetField() throws Exception {
+        AdvancedExampleComponent component = new AdvancedExampleComponent();
+        XMLBasedFieldMetaProperty metaProperty = new XMLBasedFieldMetaProperty("floatProperty", component
+                .getFloatPropertyField());
+        assertEquals(component.getFloatPropertyField(), metaProperty.getPropertyField());
+    }
 
-	@Test
-	public void testPropertyName() throws Exception {
-		AdvancedExampleComponent component = new AdvancedExampleComponent();
-		XMLBasedFieldMetaProperty floatMetaProperty = new XMLBasedFieldMetaProperty("floatProperty", component
-				.getFloatPropertyField());
-		XMLBasedFieldMetaProperty objectMetaProperty = new XMLBasedFieldMetaProperty("objectProperty", component
-				.getObjectPropertyField());
-		assertEquals("floatProperty", floatMetaProperty.getName());
-		assertEquals("objectProperty", objectMetaProperty.getName());
-	}
+    @Test
+    public void testPropertyName() throws Exception {
+        AdvancedExampleComponent component = new AdvancedExampleComponent();
+        XMLBasedFieldMetaProperty floatMetaProperty = new XMLBasedFieldMetaProperty("floatProperty", component
+                .getFloatPropertyField());
+        XMLBasedFieldMetaProperty objectMetaProperty = new XMLBasedFieldMetaProperty("objectProperty", component
+                .getObjectPropertyField());
+        assertEquals("floatProperty", floatMetaProperty.getName());
+        assertEquals("objectProperty", objectMetaProperty.getName());
+    }
 
-	@Test
-	public void testPropertyClass() throws Exception {
-		AdvancedExampleComponent component = new AdvancedExampleComponent();
-		XMLBasedFieldMetaProperty floatMetaProperty = new XMLBasedFieldMetaProperty("floatProperty", component
-				.getFloatPropertyField());
-		XMLBasedFieldMetaProperty objectMetaProperty = new XMLBasedFieldMetaProperty("objectProperty", component
-				.getObjectPropertyField());
-		assertTrue(float.class.equals(floatMetaProperty.getPropertyClass()));
-		assertTrue(Object.class.equals(objectMetaProperty.getPropertyClass()));
-	}
+    @Test
+    public void testPropertyClass() throws Exception {
+        AdvancedExampleComponent component = new AdvancedExampleComponent();
+        XMLBasedFieldMetaProperty floatMetaProperty = new XMLBasedFieldMetaProperty("floatProperty", component
+                .getFloatPropertyField());
+        XMLBasedFieldMetaProperty objectMetaProperty = new XMLBasedFieldMetaProperty("objectProperty", component
+                .getObjectPropertyField());
+        assertTrue(float.class.equals(floatMetaProperty.getPropertyClass()));
+        assertTrue(Object.class.equals(objectMetaProperty.getPropertyClass()));
+    }
 }

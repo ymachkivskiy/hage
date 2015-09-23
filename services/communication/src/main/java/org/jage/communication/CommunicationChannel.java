@@ -31,93 +31,93 @@
 
 package org.jage.communication;
 
-import java.util.Set;
-
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.ThreadSafe;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.hazelcast.core.ITopic;
 import com.hazelcast.core.Message;
 import com.hazelcast.core.MessageListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.annotation.Nonnull;
+import javax.annotation.concurrent.ThreadSafe;
+import java.util.Set;
 
 import static com.google.common.base.Objects.toStringHelper;
 import static com.google.common.collect.Sets.newCopyOnWriteArraySet;
 
+
 /**
  * A Hazelcast-based communication channel for services of the same type on different nodes. It works in the
  * publish-subscribe model.
- *
+ * <p>
  * <p>It is mostly a wrapper that hides ITopic from Hazelcast with our own API.
  *
- * @param <T>
- * 		A type of messages sent through the channel.
+ * @param <T> A type of messages sent through the channel.
  */
 @ThreadSafe
 public class CommunicationChannel<T> {
 
-	private static final Logger log = LoggerFactory.getLogger(CommunicationChannel.class);
+    private static final Logger log = LoggerFactory.getLogger(CommunicationChannel.class);
 
-	@Nonnull private final ITopic<T> topic;
+    @Nonnull
+    private final ITopic<T> topic;
 
-	private final Set<MessageSubscriber<T>> subscribers = newCopyOnWriteArraySet();
+    private final Set<MessageSubscriber<T>> subscribers = newCopyOnWriteArraySet();
 
-	public CommunicationChannel(@Nonnull final ITopic<T> topic) {
-		this.topic = topic;
-		topic.addMessageListener(new Listener());
-	}
+    public CommunicationChannel(@Nonnull final ITopic<T> topic) {
+        this.topic = topic;
+        topic.addMessageListener(new Listener());
+    }
 
-	/**
-	 * Publishes a message in the channel.
-	 *
-	 * @param message
-	 * 		a message to publish.
-	 */
-	public void publish(@Nonnull final T message) {
-		log.debug("Publishing {} on the channel {}.", message, this);
+    /**
+     * Publishes a message in the channel.
+     *
+     * @param message a message to publish.
+     */
+    public void publish(@Nonnull final T message) {
+        log.debug("Publishing {} on the channel {}.", message, this);
 
-		topic.publish(message);
-	}
+        topic.publish(message);
+    }
 
-	/**
-	 * Subscribes a listener to the channel.
-	 *
-	 * @param listener
-	 * 		a listener that will receive future messages published in the channel.
-	 */
-	public void subscribe(@Nonnull MessageSubscriber<T> listener) {
-		log.debug("Subscribe {} to the channel {}.", listener, this);
+    /**
+     * Subscribes a listener to the channel.
+     *
+     * @param listener a listener that will receive future messages published in the channel.
+     */
+    public void subscribe(@Nonnull MessageSubscriber<T> listener) {
+        log.debug("Subscribe {} to the channel {}.", listener, this);
 
-		subscribers.add(listener);
-	}
+        subscribers.add(listener);
+    }
 
-	/**
-	 * Unsubscribes a listener from the channel.
-	 *
-	 * @param listener
-	 * 		a listener that should be unsubscribed.
-	 */
-	public void unsubscribe(@Nonnull MessageSubscriber<T> listener) {
-		log.debug("Unsubscribe {} from the channel {}.", listener, this);
+    /**
+     * Unsubscribes a listener from the channel.
+     *
+     * @param listener a listener that should be unsubscribed.
+     */
+    public void unsubscribe(@Nonnull MessageSubscriber<T> listener) {
+        log.debug("Unsubscribe {} from the channel {}.", listener, this);
 
-		subscribers.remove(listener);
-	}
+        subscribers.remove(listener);
+    }
 
-	@Override public String toString() {
-		return toStringHelper(this).add("name", topic.getName()).toString();
-	}
+    @Override
+    public String toString() {
+        return toStringHelper(this).add("name", topic.getName()).toString();
+    }
 
-	private class Listener implements MessageListener<T> {
-		@Override public void onMessage(@Nonnull final Message<T> message) {
-			log.debug("Message {} on the channel {}.", message, this);
+    private class Listener implements MessageListener<T> {
 
-			final T messageObject = message.getMessageObject();
+        @Override
+        public void onMessage(@Nonnull final Message<T> message) {
+            log.debug("Message {} on the channel {}.", message, this);
+
+            final T messageObject = message.getMessageObject();
 //TODO : check if it can not be optimized with executing in other threads (probably not)
-			for (final MessageSubscriber<T> subscriber : subscribers) {
-				subscriber.onMessage(messageObject);
-			}
-		}
-	}
+            for(final MessageSubscriber<T> subscriber : subscribers) {
+                subscriber.onMessage(messageObject);
+            }
+        }
+    }
 }

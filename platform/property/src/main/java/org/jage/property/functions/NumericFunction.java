@@ -26,45 +26,54 @@
  */
 package org.jage.property.functions;
 
+
 import org.jage.property.InvalidPropertyPathException;
+
 
 /**
  * Base class for all numeric functions.
- * @author Tomek
  *
+ * @author Tomek
  */
 public abstract class NumericFunction extends PropertyFunction {
-	
-	/**
-	 * Constructor.
-	 * @param functionName name of the function.
-	 * @param argumentsPattern pattern for arguments.
-	 */
-	protected NumericFunction(String functionName, String argumentsPattern) {
-		super(functionName, argumentsPattern);
-	}
-	
-	/**
-	 * Gets value of the argument converted to double value. This method
-	 * accepts arguments that are of type double, float or integer.
-	 * @param argument function's argument
-	 * @return value of function's argument converted to double.
-	 * @throws InvalidFunctionArgumentException the given function's argument is not 
-	 * valid or it's value cannot be converted to double.
-	 */
-	protected double getArgumentValue(FunctionArgument argument) 
-	throws InvalidFunctionArgumentException {
-		try {
-			Class<?> type = argument.getMetaProperty().getPropertyClass();
-			Object value = argument.getValue();
-			if (type == Double.class) return ((Double)value).doubleValue();
-			if (type == Float.class) return ((Float)value).doubleValue();
-			if (type == Integer.class) return ((Integer)value).doubleValue();
-			throw new InvalidFunctionArgumentException("Cannot compute sum for not-numerical arguments");
-		}
-		catch (InvalidPropertyPathException ex) {
-			throw new InvalidFunctionArgumentException("Invalid function argument.", ex);
-		}
-	}
+
+    /**
+     * Constructor.
+     *
+     * @param functionName     name of the function.
+     * @param argumentsPattern pattern for arguments.
+     */
+    protected NumericFunction(String functionName, String argumentsPattern) {
+        super(functionName, argumentsPattern);
+    }
+
+    /**
+     * Gets value of the argument converted to double value. This method
+     * accepts arguments that are of type double, float or integer.
+     *
+     * @param argument function's argument
+     * @return value of function's argument converted to double.
+     * @throws InvalidFunctionArgumentException the given function's argument is not
+     *                                          valid or it's value cannot be converted to double.
+     */
+    protected double getArgumentValue(FunctionArgument argument)
+            throws InvalidFunctionArgumentException {
+        try {
+            Class<?> type = argument.getMetaProperty().getPropertyClass();
+            Object value = argument.getValue();
+            if(type == Double.class) {
+                return ((Double) value).doubleValue();
+            }
+            if(type == Float.class) {
+                return ((Float) value).doubleValue();
+            }
+            if(type == Integer.class) {
+                return ((Integer) value).doubleValue();
+            }
+            throw new InvalidFunctionArgumentException("Cannot compute sum for not-numerical arguments");
+        } catch(InvalidPropertyPathException ex) {
+            throw new InvalidFunctionArgumentException("Invalid function argument.", ex);
+        }
+    }
 }
 

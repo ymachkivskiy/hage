@@ -31,6 +31,7 @@
 
 package org.jage.monitor;
 
+
 /**
  * Interface for objects that can inform about changes in their state.
  *
@@ -38,19 +39,17 @@ package org.jage.monitor;
  */
 public interface IChangesNotifier {
 
-	/**
-	 * Registers new monitor.
-	 *
-	 * @param monitor
-	 *            monitor to register.
-	 */
-	public void addMonitor(IChangesNotifierMonitor monitor);
+    /**
+     * Registers new monitor.
+     *
+     * @param monitor monitor to register.
+     */
+    public void addMonitor(IChangesNotifierMonitor monitor);
 
-	/**
-	 * Unregister monitor.
-	 *
-	 * @param monitor
-	 *            monitor to unregister.
-	 */
-	public void removeMonitor(IChangesNotifierMonitor monitor);
+    /**
+     * Unregister monitor.
+     *
+     * @param monitor monitor to unregister.
+     */
+    public void removeMonitor(IChangesNotifierMonitor monitor);
 }

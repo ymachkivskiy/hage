@@ -31,7 +31,9 @@
 
 package org.jage.address.node;
 
+
 import com.google.common.base.Supplier;
+
 
 /**
  * A supplier of {@link NodeAddress} instances.
@@ -39,4 +41,5 @@ import com.google.common.base.Supplier;
  * @author AGH AgE Team
  */
 public interface NodeAddressSupplier extends Supplier<NodeAddress> {
+
 }

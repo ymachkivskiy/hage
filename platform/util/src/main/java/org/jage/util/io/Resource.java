@@ -31,35 +31,34 @@
 
 package org.jage.util.io;
 
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+
 /**
  * The interface for common operations on many different resources.
- * 
+ *
  * @author AGH AgE Team
  */
 public interface Resource {
 
-	/**
-	 * Returns an input stream backed by this resource.
-	 * 
-	 * @return An input stream, never <code>null</code>.
-	 * @throws IOException
-	 *             If the input stream could not be obtained.
-	 */
-	InputStream getInputStream() throws IOException;
+    /**
+     * Returns an input stream backed by this resource.
+     *
+     * @return An input stream, never <code>null</code>.
+     * @throws IOException If the input stream could not be obtained.
+     */
+    InputStream getInputStream() throws IOException;
 
-	/**
-	 * Returns a URI of this resource.
-	 * 
-	 * @return A URI of this resource.
-	 * @throws URISyntaxException
-	 *             When a location of the resource could not be parsed into correct URI.
-	 * 
-	 * @see URI
-	 */
-	URI getUri() throws URISyntaxException;
+    /**
+     * Returns a URI of this resource.
+     *
+     * @return A URI of this resource.
+     * @throws URISyntaxException When a location of the resource could not be parsed into correct URI.
+     * @see URI
+     */
+    URI getUri() throws URISyntaxException;
 }

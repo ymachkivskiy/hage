@@ -31,22 +31,22 @@
 
 package org.jage.address.agent;
 
-import java.util.concurrent.atomic.AtomicLong;
+
+import org.jage.address.node.NodeAddressSupplier;
 
 import javax.annotation.concurrent.ThreadSafe;
 import javax.inject.Inject;
-
-import org.jage.address.node.NodeAddressSupplier;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.concurrent.atomic.AtomicLong;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+
 
 /**
  * A default agent address supplier.
  * <p>
  * This supplier is able to generate user friendly names on the base of a provided template. To ensure uniqueness of
  * user friendly names, the templates may contain wildcards, which will be replaced with consecutive numbers.
- *
+ * <p>
  * <p>
  * This implementation is thread-safe.
  *
@@ -55,29 +55,26 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @ThreadSafe
 public class DefaultAgentAddressSupplier implements AgentAddressSupplier {
 
-	private static final String DEFAULT_NAME_TEMPLATE = "agent*";
+    private static final String DEFAULT_NAME_TEMPLATE = "agent*";
+    private final String nameTemplate;
+    private final AtomicLong nameTemplateCounter = new AtomicLong();
+    @Inject
+    private NodeAddressSupplier nodeAddressSupplier;
 
-	@Inject
-	private NodeAddressSupplier nodeAddressSupplier;
+    public DefaultAgentAddressSupplier() {
+        this(DEFAULT_NAME_TEMPLATE);
+    }
 
-	private final String nameTemplate;
+    public DefaultAgentAddressSupplier(final String nameTemplate) {
+        this.nameTemplate = checkNotNull(nameTemplate);
+    }
 
-	private final AtomicLong nameTemplateCounter = new AtomicLong();
+    @Override
+    public DefaultAgentAddress get() {
+        return new DefaultAgentAddress(nodeAddressSupplier.get(), generateName());
+    }
 
-	public DefaultAgentAddressSupplier() {
-		this(DEFAULT_NAME_TEMPLATE);
-	}
-
-	public DefaultAgentAddressSupplier(final String nameTemplate) {
-		this.nameTemplate = checkNotNull(nameTemplate);
-	}
-
-	@Override
-	public DefaultAgentAddress get() {
-		return new DefaultAgentAddress(nodeAddressSupplier.get(), generateName());
-	}
-
-	private String generateName() {
-		return nameTemplate.replace("*", Long.toString(nameTemplateCounter.getAndIncrement()));
-	}
+    private String generateName() {
+        return nameTemplate.replace("*", Long.toString(nameTemplateCounter.getAndIncrement()));
+    }
 }

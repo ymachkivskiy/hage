@@ -31,33 +31,18 @@
 
 package org.jage.platform.config.xml.loaders;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import org.jage.platform.component.definition.ConfigurationException;
 import org.jage.platform.config.xml.ConfigTags;
 import org.jage.platform.config.xml.util.DocumentBuilder;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.jage.platform.config.xml.ConfigAttributes.KEY;
-import static org.jage.platform.config.xml.ConfigAttributes.KEY_REF;
-import static org.jage.platform.config.xml.ConfigAttributes.REF;
-import static org.jage.platform.config.xml.ConfigAttributes.TYPE;
-import static org.jage.platform.config.xml.ConfigAttributes.VALUE;
-import static org.jage.platform.config.xml.ConfigAttributes.VALUE_REF;
+import static org.jage.platform.config.xml.ConfigAttributes.*;
 import static org.jage.platform.config.xml.util.DocumentBuilder.emptyDocument;
-import static org.jage.platform.config.xml.util.ElementBuilder.SOME_CLASS;
-import static org.jage.platform.config.xml.util.ElementBuilder.SOME_NAME;
-import static org.jage.platform.config.xml.util.ElementBuilder.SOME_VALUE;
-import static org.jage.platform.config.xml.util.ElementBuilder.anyElement;
-import static org.jage.platform.config.xml.util.ElementBuilder.constructorElement;
-import static org.jage.platform.config.xml.util.ElementBuilder.element;
-import static org.jage.platform.config.xml.util.ElementBuilder.keyElement;
-import static org.jage.platform.config.xml.util.ElementBuilder.mapElement;
-import static org.jage.platform.config.xml.util.ElementBuilder.mapEntryElement;
-import static org.jage.platform.config.xml.util.ElementBuilder.propertyElement;
-import static org.jage.platform.config.xml.util.ElementBuilder.referenceElement;
-import static org.jage.platform.config.xml.util.ElementBuilder.valueElement;
+import static org.jage.platform.config.xml.util.ElementBuilder.*;
+
 
 /**
  * Tests for ArgumentShortcutExtractor.
@@ -67,306 +52,308 @@ import static org.jage.platform.config.xml.util.ElementBuilder.valueElement;
 @RunWith(MockitoJUnitRunner.class)
 public class ArgumentShortcutExtractorTest extends AbstractDocumentLoaderTest<ArgumentShortcutExtractor> {
 
-	@Override
-	public ArgumentShortcutExtractor getLoader() {
-		return new ArgumentShortcutExtractor();
-	}
+    @Override
+    public ArgumentShortcutExtractor getLoader() {
+        return new ArgumentShortcutExtractor();
+    }
 
-	@Test
-	public void shouldExtractConstPropValueAttr() throws ConfigurationException {
-		// given
-		final DocumentBuilder original = emptyDocument()
-				.add(constructorElement()
-						.withAttribute(TYPE, SOME_CLASS)
-						.withAttribute(VALUE, SOME_VALUE))
-				.add(propertyElement(SOME_NAME)
-						.withAttribute(TYPE, SOME_CLASS)
-						.withAttribute(VALUE, SOME_VALUE));
-		final DocumentBuilder expected = emptyDocument()
-				.add(constructorElement(valueElement(SOME_CLASS, SOME_VALUE)))
-				.add(propertyElement(SOME_NAME, valueElement(SOME_CLASS, SOME_VALUE)));
+    @Test
+    public void shouldExtractConstPropValueAttr() throws ConfigurationException {
+        // given
+        final DocumentBuilder original = emptyDocument()
+                .add(constructorElement()
+                             .withAttribute(TYPE, SOME_CLASS)
+                             .withAttribute(VALUE, SOME_VALUE))
+                .add(propertyElement(SOME_NAME)
+                             .withAttribute(TYPE, SOME_CLASS)
+                             .withAttribute(VALUE, SOME_VALUE));
+        final DocumentBuilder expected = emptyDocument()
+                .add(constructorElement(valueElement(SOME_CLASS, SOME_VALUE)))
+                .add(propertyElement(SOME_NAME, valueElement(SOME_CLASS, SOME_VALUE)));
 
-		// then
-		assertDocumentTransformation(original, expected);
-	}
+        // then
+        assertDocumentTransformation(original, expected);
+    }
 
-	@Test
-	public void shouldExtractConstPropRefAttr() throws ConfigurationException {
-		// given
-		final DocumentBuilder original = emptyDocument()
-				.add(constructorElement()
-						.withAttribute(REF, SOME_VALUE))
-				.add(propertyElement(SOME_NAME)
-						.withAttribute(REF, SOME_VALUE));
-		final DocumentBuilder expected = emptyDocument()
-				.add(constructorElement(referenceElement(SOME_VALUE)))
-				.add(propertyElement(SOME_NAME, referenceElement(SOME_VALUE)));
+    @Test
+    public void shouldExtractConstPropRefAttr() throws ConfigurationException {
+        // given
+        final DocumentBuilder original = emptyDocument()
+                .add(constructorElement()
+                             .withAttribute(REF, SOME_VALUE))
+                .add(propertyElement(SOME_NAME)
+                             .withAttribute(REF, SOME_VALUE));
+        final DocumentBuilder expected = emptyDocument()
+                .add(constructorElement(referenceElement(SOME_VALUE)))
+                .add(propertyElement(SOME_NAME, referenceElement(SOME_VALUE)));
 
-		// then
-		assertDocumentTransformation(original, expected);
-	}
+        // then
+        assertDocumentTransformation(original, expected);
+    }
 
-	@Test(expected = ConfigurationException.class)
-	public void shouldThrowExcIfConstPropBothAttrs() throws ConfigurationException {
-		// given
-		final DocumentBuilder original = emptyDocument()
-				.add(constructorElement()
-						.withAttribute(VALUE, SOME_VALUE)
-						.withAttribute(REF, SOME_VALUE));
-		// when
-		tryDocumentTransformation(original);
-	}
+    @Test(expected = ConfigurationException.class)
+    public void shouldThrowExcIfConstPropBothAttrs() throws ConfigurationException {
+        // given
+        final DocumentBuilder original = emptyDocument()
+                .add(constructorElement()
+                             .withAttribute(VALUE, SOME_VALUE)
+                             .withAttribute(REF, SOME_VALUE));
+        // when
+        tryDocumentTransformation(original);
+    }
 
-	@Test(expected = ConfigurationException.class)
-	public void shouldThrowExcIfConstPropValueAttrAndContent() throws ConfigurationException {
-		// given
-		final DocumentBuilder original = emptyDocument()
-				.add(constructorElement()
-						.withAttribute(TYPE, SOME_CLASS)
-						.withAttribute(VALUE, SOME_VALUE)
-						.withBody(anyElement()));
+    @Test(expected = ConfigurationException.class)
+    public void shouldThrowExcIfConstPropValueAttrAndContent() throws ConfigurationException {
+        // given
+        final DocumentBuilder original = emptyDocument()
+                .add(constructorElement()
+                             .withAttribute(TYPE, SOME_CLASS)
+                             .withAttribute(VALUE, SOME_VALUE)
+                             .withBody(anyElement()));
 
-		// when
-		tryDocumentTransformation(original);
-	}
+        // when
+        tryDocumentTransformation(original);
+    }
 
-	@Test(expected = ConfigurationException.class)
-	public void shouldThrowExcIfConstPropRefAttrAndContent() throws ConfigurationException {
-		// given
-		final DocumentBuilder original = emptyDocument()
-				.add(constructorElement()
-						.withAttribute(REF, SOME_VALUE)
-						.withBody(anyElement()));
+    @Test(expected = ConfigurationException.class)
+    public void shouldThrowExcIfConstPropRefAttrAndContent() throws ConfigurationException {
+        // given
+        final DocumentBuilder original = emptyDocument()
+                .add(constructorElement()
+                             .withAttribute(REF, SOME_VALUE)
+                             .withBody(anyElement()));
 
-		// when
-		tryDocumentTransformation(original);
-	}
+        // when
+        tryDocumentTransformation(original);
+    }
 
-	@Test(expected = ConfigurationException.class)
-	public void shouldThrowExcIfConstPropNoAttrsAndNoContent() throws ConfigurationException {
-		// given
-		final DocumentBuilder original = emptyDocument()
-				.add(constructorElement());
+    @Test(expected = ConfigurationException.class)
+    public void shouldThrowExcIfConstPropNoAttrsAndNoContent() throws ConfigurationException {
+        // given
+        final DocumentBuilder original = emptyDocument()
+                .add(constructorElement());
 
-		// when
-		tryDocumentTransformation(original);
-	}
+        // when
+        tryDocumentTransformation(original);
+    }
 
-	@Test
-	public void shouldExtractEntryKeyAttr() throws ConfigurationException {
-		// given
-		final String key = "key";
-		final String value = "value";
-		final DocumentBuilder original = emptyDocument()
-				.add(mapElement().withBody(
-					element(ConfigTags.ENTRY)
-						.withAttribute(KEY, key)
-						.withBody(valueElement(value))));
-		final DocumentBuilder expected = emptyDocument()
-				.add(mapElement().withBody(
-						mapEntryElement(valueElement(key), valueElement(value))));
+    @Test
+    public void shouldExtractEntryKeyAttr() throws ConfigurationException {
+        // given
+        final String key = "key";
+        final String value = "value";
+        final DocumentBuilder original = emptyDocument()
+                .add(mapElement().withBody(
+                        element(ConfigTags.ENTRY)
+                                .withAttribute(KEY, key)
+                                .withBody(valueElement(value))));
+        final DocumentBuilder expected = emptyDocument()
+                .add(mapElement().withBody(
+                        mapEntryElement(valueElement(key), valueElement(value))));
 
-		// then
-		assertDocumentTransformation(original, expected);
-	}
+        // then
+        assertDocumentTransformation(original, expected);
+    }
 
-	@Test
-	public void shouldExtractEntryKeyRefAttr() throws ConfigurationException {
-		// given
-		final String keyRef = "key-ref";
-		final String value = "value";
-		final DocumentBuilder original = emptyDocument()
-				.add(mapElement().withBody(
-					element(ConfigTags.ENTRY)
-						.withAttribute(KEY_REF, keyRef)
-						.withBody(valueElement(value))));
-		final DocumentBuilder expected = emptyDocument()
-				.add(mapElement().withBody(
-					mapEntryElement(referenceElement(keyRef), valueElement(value))));
+    @Test
+    public void shouldExtractEntryKeyRefAttr() throws ConfigurationException {
+        // given
+        final String keyRef = "key-ref";
+        final String value = "value";
+        final DocumentBuilder original = emptyDocument()
+                .add(mapElement().withBody(
+                        element(ConfigTags.ENTRY)
+                                .withAttribute(KEY_REF, keyRef)
+                                .withBody(valueElement(value))));
+        final DocumentBuilder expected = emptyDocument()
+                .add(mapElement().withBody(
+                        mapEntryElement(referenceElement(keyRef), valueElement(value))));
 
-		// then
-		assertDocumentTransformation(original, expected);
-	}
-	@Test
-	public void shouldExtractEntryValueAttr() throws ConfigurationException {
-		// given
-		final String key = "key";
-		final String value = "value";
-		final DocumentBuilder original = emptyDocument()
-				.add(mapElement().withBody(
-					element(ConfigTags.ENTRY)
-						.withAttribute(VALUE, value)
-						.withBody(keyElement(valueElement(key)))));
-		final DocumentBuilder expected = emptyDocument()
-				.add(mapElement().withBody(
-					mapEntryElement(valueElement(key), valueElement(value))));
+        // then
+        assertDocumentTransformation(original, expected);
+    }
 
-		// then
-		assertDocumentTransformation(original, expected);
-	}
-	@Test
-	public void shouldExtractEntryValueRefAttr() throws ConfigurationException {
-		// given
-		final String key = "key";
-		final String valueRef = "value-ref";
-		final DocumentBuilder original = emptyDocument()
-				.add(mapElement().withBody(
-					element(ConfigTags.ENTRY)
-						.withAttribute(VALUE_REF, valueRef)
-						.withBody(keyElement(valueElement(key)))));
-		final DocumentBuilder expected = emptyDocument()
-				.add(mapElement().withBody(
-					mapEntryElement(valueElement(key), referenceElement(valueRef))));
+    @Test
+    public void shouldExtractEntryValueAttr() throws ConfigurationException {
+        // given
+        final String key = "key";
+        final String value = "value";
+        final DocumentBuilder original = emptyDocument()
+                .add(mapElement().withBody(
+                        element(ConfigTags.ENTRY)
+                                .withAttribute(VALUE, value)
+                                .withBody(keyElement(valueElement(key)))));
+        final DocumentBuilder expected = emptyDocument()
+                .add(mapElement().withBody(
+                        mapEntryElement(valueElement(key), valueElement(value))));
 
-		// then
-		assertDocumentTransformation(original, expected);
-	}
+        // then
+        assertDocumentTransformation(original, expected);
+    }
 
-	@Test
-	public void shouldExtractEntryAllAttr() throws ConfigurationException {
-		// given
-		final String key = "key";
-		final String keyRef = "key-ref";
-		final String value = "value";
-		final String valueRef = "value-ref";
-		final DocumentBuilder original = emptyDocument()
-				.add(mapElement().withBody(
-					element(ConfigTags.ENTRY)
-						.withAttribute(KEY, key)
-						.withAttribute(VALUE, value),
-					element(ConfigTags.ENTRY)
-						.withAttribute(KEY, key)
-						.withAttribute(VALUE_REF, valueRef),
-					element(ConfigTags.ENTRY)
-						.withAttribute(KEY_REF, keyRef)
-						.withAttribute(VALUE, value),
-					element(ConfigTags.ENTRY)
-						.withAttribute(KEY_REF, keyRef)
-						.withAttribute(VALUE_REF, valueRef)));
-		final DocumentBuilder expected = emptyDocument()
-				.add(mapElement().withBody(
-					mapEntryElement(valueElement(key), valueElement(value)),
-					mapEntryElement(valueElement(key), referenceElement(valueRef)),
-					mapEntryElement(referenceElement(keyRef), valueElement(value)),
-					mapEntryElement(referenceElement(keyRef), referenceElement(valueRef))));
+    @Test
+    public void shouldExtractEntryValueRefAttr() throws ConfigurationException {
+        // given
+        final String key = "key";
+        final String valueRef = "value-ref";
+        final DocumentBuilder original = emptyDocument()
+                .add(mapElement().withBody(
+                        element(ConfigTags.ENTRY)
+                                .withAttribute(VALUE_REF, valueRef)
+                                .withBody(keyElement(valueElement(key)))));
+        final DocumentBuilder expected = emptyDocument()
+                .add(mapElement().withBody(
+                        mapEntryElement(valueElement(key), referenceElement(valueRef))));
 
-		// then
-		assertDocumentTransformation(original, expected);
-	}
+        // then
+        assertDocumentTransformation(original, expected);
+    }
 
-	@Test(expected=ConfigurationException.class)
-	public void shouldThrowExcIfEntryKeyBothAttrs() throws ConfigurationException {
-		// given
-		final String key = "key";
-		final String keyRef = "key-ref";
-		final DocumentBuilder original = emptyDocument()
-				.add(mapElement().withBody(
-					element(ConfigTags.ENTRY)
-						.withAttribute(KEY, key)
-						.withAttribute(KEY_REF, keyRef)));
+    @Test
+    public void shouldExtractEntryAllAttr() throws ConfigurationException {
+        // given
+        final String key = "key";
+        final String keyRef = "key-ref";
+        final String value = "value";
+        final String valueRef = "value-ref";
+        final DocumentBuilder original = emptyDocument()
+                .add(mapElement().withBody(
+                        element(ConfigTags.ENTRY)
+                                .withAttribute(KEY, key)
+                                .withAttribute(VALUE, value),
+                        element(ConfigTags.ENTRY)
+                                .withAttribute(KEY, key)
+                                .withAttribute(VALUE_REF, valueRef),
+                        element(ConfigTags.ENTRY)
+                                .withAttribute(KEY_REF, keyRef)
+                                .withAttribute(VALUE, value),
+                        element(ConfigTags.ENTRY)
+                                .withAttribute(KEY_REF, keyRef)
+                                .withAttribute(VALUE_REF, valueRef)));
+        final DocumentBuilder expected = emptyDocument()
+                .add(mapElement().withBody(
+                        mapEntryElement(valueElement(key), valueElement(value)),
+                        mapEntryElement(valueElement(key), referenceElement(valueRef)),
+                        mapEntryElement(referenceElement(keyRef), valueElement(value)),
+                        mapEntryElement(referenceElement(keyRef), referenceElement(valueRef))));
 
-		// when
-		tryDocumentTransformation(original);
-	}
+        // then
+        assertDocumentTransformation(original, expected);
+    }
 
-	@Test(expected=ConfigurationException.class)
-	public void shouldThrowExcIfEntryKeyAttrAndContent() throws ConfigurationException {
-		// given
-		final String key = "key";
-		final DocumentBuilder original = emptyDocument()
-				.add(mapElement().withBody(
-					element(ConfigTags.ENTRY)
-						.withAttribute(KEY, key)
-						.withBody(keyElement(anyElement()))));
+    @Test(expected = ConfigurationException.class)
+    public void shouldThrowExcIfEntryKeyBothAttrs() throws ConfigurationException {
+        // given
+        final String key = "key";
+        final String keyRef = "key-ref";
+        final DocumentBuilder original = emptyDocument()
+                .add(mapElement().withBody(
+                        element(ConfigTags.ENTRY)
+                                .withAttribute(KEY, key)
+                                .withAttribute(KEY_REF, keyRef)));
 
-		// when
-		tryDocumentTransformation(original);
-	}
+        // when
+        tryDocumentTransformation(original);
+    }
 
-	@Test(expected=ConfigurationException.class)
-	public void shouldThrowExcIfEntryKeyRefAttrAndContent() throws ConfigurationException {
-		// given
-		final String keyRef = "key-ref";
-		final DocumentBuilder original = emptyDocument()
-				.add(mapElement().withBody(
-					element(ConfigTags.ENTRY)
-						.withAttribute(KEY_REF, keyRef)
-						.withBody(keyElement(anyElement()))));
+    @Test(expected = ConfigurationException.class)
+    public void shouldThrowExcIfEntryKeyAttrAndContent() throws ConfigurationException {
+        // given
+        final String key = "key";
+        final DocumentBuilder original = emptyDocument()
+                .add(mapElement().withBody(
+                        element(ConfigTags.ENTRY)
+                                .withAttribute(KEY, key)
+                                .withBody(keyElement(anyElement()))));
 
-		// when
-		tryDocumentTransformation(original);
-	}
+        // when
+        tryDocumentTransformation(original);
+    }
 
-	@Test(expected=ConfigurationException.class)
-	public void shouldThrowExcIfEntryKeyNoAttrsAndNoContent() throws ConfigurationException {
-		// given
-		final DocumentBuilder original = emptyDocument()
-				.add(mapElement().withBody(
-					element(ConfigTags.ENTRY)));
+    @Test(expected = ConfigurationException.class)
+    public void shouldThrowExcIfEntryKeyRefAttrAndContent() throws ConfigurationException {
+        // given
+        final String keyRef = "key-ref";
+        final DocumentBuilder original = emptyDocument()
+                .add(mapElement().withBody(
+                        element(ConfigTags.ENTRY)
+                                .withAttribute(KEY_REF, keyRef)
+                                .withBody(keyElement(anyElement()))));
 
-		// when
-		tryDocumentTransformation(original);
-	}
+        // when
+        tryDocumentTransformation(original);
+    }
 
-	@Test(expected=ConfigurationException.class)
-	public void shouldThrowExcIfEntryValueBothAttrs() throws ConfigurationException {
-		// given
-		final String key = "key";
-		final String value = "value";
-		final String valueRef = "value-ref";
-		final DocumentBuilder original = emptyDocument()
-				.add(mapElement().withBody(
-					element(ConfigTags.ENTRY)
-						.withAttribute(KEY, key)
-						.withAttribute(VALUE, value)
-						.withAttribute(VALUE_REF, valueRef)));
+    @Test(expected = ConfigurationException.class)
+    public void shouldThrowExcIfEntryKeyNoAttrsAndNoContent() throws ConfigurationException {
+        // given
+        final DocumentBuilder original = emptyDocument()
+                .add(mapElement().withBody(
+                        element(ConfigTags.ENTRY)));
 
-		// when
-		tryDocumentTransformation(original);
-	}
+        // when
+        tryDocumentTransformation(original);
+    }
 
-	@Test(expected=ConfigurationException.class)
-	public void shouldThrowExcIfEntryValueAttrAndContent() throws ConfigurationException {
-		// given
-		final String key = "key";
-		final String value = "value";
-		final DocumentBuilder original = emptyDocument()
-				.add(mapElement().withBody(
-					element(ConfigTags.ENTRY)
-						.withAttribute(KEY, key)
-						.withAttribute(VALUE, value)
-						.withBody(anyElement())));
+    @Test(expected = ConfigurationException.class)
+    public void shouldThrowExcIfEntryValueBothAttrs() throws ConfigurationException {
+        // given
+        final String key = "key";
+        final String value = "value";
+        final String valueRef = "value-ref";
+        final DocumentBuilder original = emptyDocument()
+                .add(mapElement().withBody(
+                        element(ConfigTags.ENTRY)
+                                .withAttribute(KEY, key)
+                                .withAttribute(VALUE, value)
+                                .withAttribute(VALUE_REF, valueRef)));
 
-		// when
-		tryDocumentTransformation(original);
-	}
+        // when
+        tryDocumentTransformation(original);
+    }
 
-	@Test(expected=ConfigurationException.class)
-	public void shouldThrowExcIfEntryValueRefAttrAndContent() throws ConfigurationException {
-		// given
-		final String key = "key";
-		final String valueRef = "value-ref";
-		final DocumentBuilder original = emptyDocument()
-				.add(mapElement().withBody(
-					element(ConfigTags.ENTRY)
-						.withAttribute(KEY, key)
-						.withAttribute(VALUE_REF, valueRef)
-						.withBody(anyElement())));
+    @Test(expected = ConfigurationException.class)
+    public void shouldThrowExcIfEntryValueAttrAndContent() throws ConfigurationException {
+        // given
+        final String key = "key";
+        final String value = "value";
+        final DocumentBuilder original = emptyDocument()
+                .add(mapElement().withBody(
+                        element(ConfigTags.ENTRY)
+                                .withAttribute(KEY, key)
+                                .withAttribute(VALUE, value)
+                                .withBody(anyElement())));
 
-		// when
-		tryDocumentTransformation(original);
-	}
+        // when
+        tryDocumentTransformation(original);
+    }
 
-	@Test(expected=ConfigurationException.class)
-	public void shouldThrowExcIfEntryValueNoAttrsAndNoContent() throws ConfigurationException {
-		// given
-		final String key = "key";
-		final DocumentBuilder original = emptyDocument()
-				.add(mapElement().withBody(
-					element(ConfigTags.ENTRY)
-						.withAttribute(KEY, key)));
+    @Test(expected = ConfigurationException.class)
+    public void shouldThrowExcIfEntryValueRefAttrAndContent() throws ConfigurationException {
+        // given
+        final String key = "key";
+        final String valueRef = "value-ref";
+        final DocumentBuilder original = emptyDocument()
+                .add(mapElement().withBody(
+                        element(ConfigTags.ENTRY)
+                                .withAttribute(KEY, key)
+                                .withAttribute(VALUE_REF, valueRef)
+                                .withBody(anyElement())));
 
-		// when
-		tryDocumentTransformation(original);
-	}
+        // when
+        tryDocumentTransformation(original);
+    }
+
+    @Test(expected = ConfigurationException.class)
+    public void shouldThrowExcIfEntryValueNoAttrsAndNoContent() throws ConfigurationException {
+        // given
+        final String key = "key";
+        final DocumentBuilder original = emptyDocument()
+                .add(mapElement().withBody(
+                        element(ConfigTags.ENTRY)
+                                .withAttribute(KEY, key)));
+
+        // when
+        tryDocumentTransformation(original);
+    }
 }

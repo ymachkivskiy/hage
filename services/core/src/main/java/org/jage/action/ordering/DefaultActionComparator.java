@@ -31,6 +31,7 @@
 
 package org.jage.action.ordering;
 
+
 import org.jage.action.context.AddAgentActionContext;
 import org.jage.action.context.GetAgentActionContext;
 import org.jage.action.context.KillAgentActionContext;
@@ -38,6 +39,7 @@ import org.jage.action.context.MoveAgentActionContext;
 import org.jage.action.context.PassToParentActionContext;
 import org.jage.action.context.RemoveAgentActionContext;
 import org.jage.action.context.SendMessageActionContext;
+
 
 /**
  * This comparator defines a default ordering for all aggregate actions. The ordering is as follows:
@@ -49,7 +51,7 @@ import org.jage.action.context.SendMessageActionContext;
  * <li>{@link SendMessageActionContext}
  * <li>
  * </ol>
- *
+ * <p>
  * <li>Always executed last: {@link MoveAgentActionContext}, {@link KillAgentActionContext},
  * {@link RemoveAgentActionContext}, {@link AddAgentActionContext}
  * </ol>
@@ -60,19 +62,19 @@ import org.jage.action.context.SendMessageActionContext;
  */
 public class DefaultActionComparator extends ActionComparator {
 
-	/**
-	 * Constructs a new comparator instance.
-	 *
-	 * @see DefaultActionComparator
-	 */
-	@SuppressWarnings("unchecked")
-	public DefaultActionComparator() {
-		addContextsAsOrdered(GetAgentActionContext.class, PassToParentActionContext.class,
-		        SendMessageActionContext.class);
+    /**
+     * Constructs a new comparator instance.
+     *
+     * @see DefaultActionComparator
+     */
+    @SuppressWarnings("unchecked")
+    public DefaultActionComparator() {
+        addContextsAsOrdered(GetAgentActionContext.class, PassToParentActionContext.class,
+                             SendMessageActionContext.class);
 
-		addAlwaysLastContext(MoveAgentActionContext.class);
-		addAlwaysLastContext(AddAgentActionContext.class);
-		addAlwaysLastContext(KillAgentActionContext.class);
-		addAlwaysLastContext(RemoveAgentActionContext.class);
-	}
+        addAlwaysLastContext(MoveAgentActionContext.class);
+        addAlwaysLastContext(AddAgentActionContext.class);
+        addAlwaysLastContext(KillAgentActionContext.class);
+        addAlwaysLastContext(RemoveAgentActionContext.class);
+    }
 }

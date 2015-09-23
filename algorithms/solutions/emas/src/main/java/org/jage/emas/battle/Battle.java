@@ -31,27 +31,25 @@
 
 package org.jage.emas.battle;
 
+
 import org.jage.agent.IAgent;
 import org.jage.strategy.IStrategy;
+
 
 /**
  * Strategy for battles between agents.
  *
- * @param <A>
- *            the type of agents
- *
+ * @param <A> the type of agents
  * @author AGH AgE Team
  */
 public interface Battle<A extends IAgent> extends IStrategy {
 
-	/**
-	 * Carry out a fight between two agents.
-	 *
-	 * @param first
-	 *            the first agent
-	 * @param second
-	 *            the second agent
-	 * @return the winner
-	 */
-	A fight(A first, A second);
+    /**
+     * Carry out a fight between two agents.
+     *
+     * @param first  the first agent
+     * @param second the second agent
+     * @return the winner
+     */
+    A fight(A first, A second);
 }

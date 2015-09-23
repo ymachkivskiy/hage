@@ -31,27 +31,25 @@
 
 package org.jage.evaluation.binary;
 
+
 import org.jage.solution.ISolution;
 import org.jage.strategy.IStrategy;
+
 
 /**
  * An interface for decoding some types of solutions into others.
  *
- * @param <S>
- *            The source representation
- * @param <T>
- *            The target representation
- *
+ * @param <S> The source representation
+ * @param <T> The target representation
  * @author AGH AgE Team
  */
 public interface ISolutionDecoder<S extends ISolution, T extends ISolution> extends IStrategy {
 
-	/**
-	 * Decodes the given solution.
-	 *
-	 * @param solution
-	 *            the solution to be transformed
-	 * @return a decoded representation
-	 */
-	public T decodeSolution(S solution);
+    /**
+     * Decodes the given solution.
+     *
+     * @param solution the solution to be transformed
+     * @return a decoded representation
+     */
+    public T decodeSolution(S solution);
 }

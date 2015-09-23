@@ -31,18 +31,19 @@
 
 package org.jage.address;
 
-import javax.annotation.concurrent.Immutable;
-
-import org.jage.address.node.NodeAddress;
 
 import com.google.common.base.Objects;
+import org.jage.address.node.NodeAddress;
+
+import javax.annotation.concurrent.Immutable;
 
 import static com.google.common.base.Objects.equal;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+
 /**
  * This class provides a standard implementation of basic methods of addresses.
- *
+ * <p>
  * <p>
  * Equality is based on identifier and runtime class - that is, different address subclasses form distinct address
  * namespaces, in which identity is based on the identifier.
@@ -52,69 +53,70 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Immutable
 public abstract class AbstractAddress implements Address {
 
-	private static final long serialVersionUID = 6679668915580834792L;
+    private static final long serialVersionUID = 6679668915580834792L;
 
-	private static final String SEPARATOR = "@";
+    private static final String SEPARATOR = "@";
 
-	private final String identifier;
+    private final String identifier;
 
-	private final String friendlyName;
+    private final String friendlyName;
 
-	private final NodeAddress nodeAddress;
+    private final NodeAddress nodeAddress;
 
-	public AbstractAddress(final String identifier, final NodeAddress nodeAddress) {
-		this(identifier, nodeAddress, identifier);
-	}
+    public AbstractAddress(final String identifier, final NodeAddress nodeAddress) {
+        this(identifier, nodeAddress, identifier);
+    }
 
-	public AbstractAddress(final String identifier, final NodeAddress nodeAddress, final String friendlyName) {
-		this.identifier = checkNotNull(identifier);
-		this.friendlyName = checkNotNull(friendlyName);
-		this.nodeAddress = checkNotNull(nodeAddress);
-	}
+    public AbstractAddress(final String identifier, final NodeAddress nodeAddress, final String friendlyName) {
+        this.identifier = checkNotNull(identifier);
+        this.friendlyName = checkNotNull(friendlyName);
+        this.nodeAddress = checkNotNull(nodeAddress);
+    }
 
-	@Override
-	public final String getIdentifier() {
-		return identifier;
-	}
+    @Override
+    public final int hashCode() {
+        return Objects.hashCode(getIdentifier(), getNodeAddress());
+    }
 
-	@Override
-	public String getFriendlyName() {
-		return friendlyName;
-	}
+    @Override
+    public final String getIdentifier() {
+        return identifier;
+    }
 
-	@Override
-	public final NodeAddress getNodeAddress() {
-		return nodeAddress;
-	}
+    @Override
+    public String getFriendlyName() {
+        return friendlyName;
+    }
 
-	@Override
-	public String toString() {
-		return getFriendlyName() + SEPARATOR + getNodeAddress();
-	}
+    @Override
+    public final NodeAddress getNodeAddress() {
+        return nodeAddress;
+    }
 
-	@Override
-	public String toQualifiedString() {
-		return getIdentifier() + SEPARATOR + getNodeAddress();
-	}
+    @Override
+    public String toQualifiedString() {
+        return getIdentifier() + SEPARATOR + getNodeAddress();
+    }
 
-	@Override
-	public final int hashCode() {
-		return Objects.hashCode(getIdentifier(), getNodeAddress());
-	}
-
-	@Override
-	public final boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		/*
-		 * getClass() instead of instanceOf is used on purpose, so that no instances of distinct subclasses could ever
+    @Override
+    public final boolean equals(final Object obj) {
+        if(obj == this) {
+            return true;
+        }
+        /*
+         * getClass() instead of instanceOf is used on purpose, so that no instances of distinct subclasses could ever
 		 * be equal.
 		 */
-		if (obj == null || getClass() != obj.getClass()) {
-			return false;
-		}
-		final Address that = (Address)obj;
-		return equal(getIdentifier(), that.getIdentifier()) && equal(getNodeAddress(), that.getNodeAddress());
-	}
+        if(obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final Address that = (Address) obj;
+        return equal(getIdentifier(), that.getIdentifier()) && equal(getNodeAddress(), that.getNodeAddress());
+    }
+
+    @Override
+    public String toString() {
+        return getFriendlyName() + SEPARATOR + getNodeAddress();
+    }
+
 }

@@ -31,18 +31,19 @@
 
 package org.jage.platform.config.xml.readers;
 
-import java.util.Collections;
 
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+import org.jage.platform.component.definition.ConfigurationException;
 import org.junit.Test;
 import org.mockito.Mockito;
+
+import java.util.Collections;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 
-import org.jage.platform.component.definition.ConfigurationException;
 
 /**
  * Unit tests for MappingDefinitionReader.
@@ -51,34 +52,34 @@ import org.jage.platform.component.definition.ConfigurationException;
  */
 public class MappingDefinitionReaderTest {
 
-	private MappingDefinitionReader<Object> reader;
+    private MappingDefinitionReader<Object> reader;
 
-	@SuppressWarnings("unchecked")
-	@Test
-	public void testDelegatesToReader() throws ConfigurationException {
-		// given
-		final String name = "name";
-		final Element element = DocumentHelper.createElement(name);
-		final Object expected = new Object();
-		final IDefinitionReader<Object> mock = Mockito.mock(IDefinitionReader.class);
-		given(mock.read(element)).willReturn(expected);
-		reader = new MappingDefinitionReader<Object>(Collections.singletonMap(name, mock));
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testDelegatesToReader() throws ConfigurationException {
+        // given
+        final String name = "name";
+        final Element element = DocumentHelper.createElement(name);
+        final Object expected = new Object();
+        final IDefinitionReader<Object> mock = Mockito.mock(IDefinitionReader.class);
+        given(mock.read(element)).willReturn(expected);
+        reader = new MappingDefinitionReader<Object>(Collections.singletonMap(name, mock));
 
-		// when
-		final Object read = reader.read(element);
+        // when
+        final Object read = reader.read(element);
 
-		// then
-		assertThat(read, is(expected));
-	}
+        // then
+        assertThat(read, is(expected));
+    }
 
-	@Test(expected = ConfigurationException.class)
-	public void testThrowsExceptionIfNotFound() throws ConfigurationException {
-		// given
-		final Element element = DocumentHelper.createElement("any");
-		reader = new MappingDefinitionReader<Object>(Collections.<String, IDefinitionReader<Object>> emptyMap());
+    @Test(expected = ConfigurationException.class)
+    public void testThrowsExceptionIfNotFound() throws ConfigurationException {
+        // given
+        final Element element = DocumentHelper.createElement("any");
+        reader = new MappingDefinitionReader<Object>(Collections.<String, IDefinitionReader<Object>> emptyMap());
 
-		// when
-		reader.read(element);
-	}
+        // when
+        reader.read(element);
+    }
 
 }

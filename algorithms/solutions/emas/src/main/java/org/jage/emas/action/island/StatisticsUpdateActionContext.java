@@ -31,8 +31,10 @@
 
 package org.jage.emas.action.island;
 
+
 import org.jage.action.context.AgentActionContext;
 import org.jage.emas.util.ChainingContext;
+
 
 /**
  * This context defines a statistics update action. To use it, you should declare a handler strategy named
@@ -42,15 +44,17 @@ import org.jage.emas.util.ChainingContext;
  */
 @AgentActionContext(StatisticsUpdateActionContext.Properties.STATISTICS_UPDATE_ACTION)
 public final class StatisticsUpdateActionContext extends ChainingContext {
-	/**
-	 * StatisticsUpdateActionContext properties.
-	 *
-	 * @author AGH AgE Team
-	 */
-	public static class Properties {
-		/**
-		 * The action name.
-		 */
-		public static final String STATISTICS_UPDATE_ACTION = "statisticsUpdateAction";
-	}
+
+    /**
+     * StatisticsUpdateActionContext properties.
+     *
+     * @author AGH AgE Team
+     */
+    public static class Properties {
+
+        /**
+         * The action name.
+         */
+        public static final String STATISTICS_UPDATE_ACTION = "statisticsUpdateAction";
+    }
 }

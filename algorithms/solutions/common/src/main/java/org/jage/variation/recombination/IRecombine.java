@@ -31,26 +31,24 @@
 
 package org.jage.variation.recombination;
 
+
 import org.jage.solution.ISolution;
 import org.jage.strategy.IStrategy;
+
 
 /**
  * Strategy interface for recombining solutions.
  *
- * @param <S>
- *            the type of the solutions to be recombined
- *
+ * @param <S> the type of the solutions to be recombined
  * @author AGH AgE Team
  */
 public interface IRecombine<S extends ISolution> extends IStrategy {
 
-	/**
-	 * Recombine the given two solutions.
-	 *
-	 * @param solution1
-	 *            The first solution
-	 * @param solution2
-	 *            The second solution
-	 */
-	public void recombine(S solution1, S solution2);
+    /**
+     * Recombine the given two solutions.
+     *
+     * @param solution1 The first solution
+     * @param solution2 The second solution
+     */
+    public void recombine(S solution1, S solution2);
 }

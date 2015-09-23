@@ -31,12 +31,14 @@
 
 package org.jage.utils;
 
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
 
 import org.jage.address.agent.AgentAddress;
 import org.jage.agent.ISimpleAgent;
 import org.jage.agent.SimpleAgent;
+
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+
 
 /**
  * Test utilities related to agents.
@@ -44,28 +46,30 @@ import org.jage.agent.SimpleAgent;
  * @author AGH AgE Team
  */
 public final class AgentTestUtils {
-	private AgentTestUtils() {
-		// Empty
-	}
 
-	public static ISimpleAgent createMockAgentWithAddress() {
-		return createMockAgentWithAddress(mock(AgentAddress.class));
-	}
+    private AgentTestUtils() {
+        // Empty
+    }
 
-	public static ISimpleAgent createMockAgentWithAddress(final AgentAddress address) {
-		final ISimpleAgent simpleAgent = mock(ISimpleAgent.class);
-		given(simpleAgent.getAddress()).willReturn(address);
-		return simpleAgent;
-	}
+    public static ISimpleAgent createMockAgentWithAddress() {
+        return createMockAgentWithAddress(mock(AgentAddress.class));
+    }
 
-	public static SimpleAgent createSimpleAgentWithoutStep() {
-		return new SimpleAgent(mock(AgentAddress.class)) {
+    public static ISimpleAgent createMockAgentWithAddress(final AgentAddress address) {
+        final ISimpleAgent simpleAgent = mock(ISimpleAgent.class);
+        given(simpleAgent.getAddress()).willReturn(address);
+        return simpleAgent;
+    }
+
+    public static SimpleAgent createSimpleAgentWithoutStep() {
+        return new SimpleAgent(mock(AgentAddress.class)) {
+
             private static final long serialVersionUID = 1L;
 
-			@Override
-			public void step() {
-				// Empty
-			}
-		};
-	}
+            @Override
+            public void step() {
+                // Empty
+            }
+        };
+    }
 }

@@ -27,8 +27,10 @@
 
 package org.jage.monitoring.visualization;
 
+
 import org.jage.monitoring.visualization.storage.VisualDataStorageFactory;
 import org.springframework.stereotype.Component;
+
 
 /**
  * Bean performs some initial actions on application startup.
@@ -38,10 +40,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class StartupBean {
 
-	/**
-	 * Loads VisualDataStorage object from database.
-	 */
-	public void initStorages() {
-		VisualDataStorageFactory.loadSavedStorages();
-	}
+    /**
+     * Loads VisualDataStorage object from database.
+     */
+    public void initStorages() {
+        VisualDataStorageFactory.loadSavedStorages();
+    }
 }

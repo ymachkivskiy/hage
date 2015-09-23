@@ -31,12 +31,13 @@
 
 package org.jage.genetic.action;
 
+
+import org.jage.action.IActionContext;
 import org.junit.Assert;
 import org.junit.Test;
 
-import org.jage.action.IActionContext;
-
 import static org.jage.genetic.action.VariationActionContext.Properties.VARIATION_ACTION;
+
 
 /**
  * Test for {@link VariationActionContext}.
@@ -45,17 +46,17 @@ import static org.jage.genetic.action.VariationActionContext.Properties.VARIATIO
  */
 public class VariationActionContextTest {
 
-	@Test
-	public void shouldImplementActionContext() {
-		// given
-		VariationActionContext context = new VariationActionContext();
+    @Test
+    public void shouldImplementActionContext() {
+        // given
+        VariationActionContext context = new VariationActionContext();
 
-		// then
-		Assert.assertTrue(context instanceof IActionContext);
-	}
+        // then
+        Assert.assertTrue(context instanceof IActionContext);
+    }
 
-	@Test
-	public void testActionName() {
-		Assert.assertEquals("variationAction", VARIATION_ACTION);
-	}
+    @Test
+    public void testActionName() {
+        Assert.assertEquals("variationAction", VARIATION_ACTION);
+    }
 }

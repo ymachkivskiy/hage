@@ -26,50 +26,53 @@
  */
 package org.jage.monitoring.config;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import org.jage.monitoring.handler.HandlerFactoryProvider;
 import org.jage.monitoring.observer.AbstractStatefulObserver;
 import org.jage.platform.component.IStatefulComponent;
 import org.jage.platform.component.exception.ComponentException;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+
 /**
- * Class performs some initial methods on all handlers and observers defined in XML configuration file. 
- * 
+ * Class performs some initial methods on all handlers and observers defined in XML configuration file.
+ *
  * @author AGH AgE Team
  */
-public class XmlConfig implements IStatefulComponent{
+public class XmlConfig implements IStatefulComponent {
 
-	private List<HandlerFactoryProvider> handlerProviderList;
-	private Set<AbstractStatefulObserver> observers;
+    private List<HandlerFactoryProvider> handlerProviderList;
+    private Set<AbstractStatefulObserver> observers;
 
-	public XmlConfig(List<HandlerFactoryProvider> handlerProviderList){
-		this.handlerProviderList = handlerProviderList;
-	}
-	
-	@Override
-	public void init() throws ComponentException {
-		
-		observers = new HashSet<>();
-		
-		for (HandlerFactoryProvider handlerFactoryProvider : handlerProviderList) {
-			handlerFactoryProvider.createAndSubscribeHandlerBasedObservableOnObservers();
-			observers.addAll(handlerFactoryProvider.getObservers());
-		}
-	}
+    public XmlConfig(List<HandlerFactoryProvider> handlerProviderList) {
+        this.handlerProviderList = handlerProviderList;
+    }
 
-	@Override
-	public boolean finish() throws ComponentException {
-		return false;
-	}
+    @Override
+    public void init() throws ComponentException {
 
-	/**
-	 * Returns observers defined in the XML configuration file but only these which are used by handler(s).
-	 * @return collection of AbstractObserver
-	 */
-	public Set<AbstractStatefulObserver> getUsedObservers() {
-		return observers;
-	}
+        observers = new HashSet<>();
+
+        for(HandlerFactoryProvider handlerFactoryProvider : handlerProviderList) {
+            handlerFactoryProvider.createAndSubscribeHandlerBasedObservableOnObservers();
+            observers.addAll(handlerFactoryProvider.getObservers());
+        }
+    }
+
+    @Override
+    public boolean finish() throws ComponentException {
+        return false;
+    }
+
+    /**
+     * Returns observers defined in the XML configuration file but only these which are used by handler(s).
+     *
+     * @return collection of AbstractObserver
+     */
+    public Set<AbstractStatefulObserver> getUsedObservers() {
+        return observers;
+    }
 }

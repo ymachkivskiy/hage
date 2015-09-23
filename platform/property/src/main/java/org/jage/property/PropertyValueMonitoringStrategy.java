@@ -26,53 +26,60 @@
  */
 package org.jage.property;
 
+
 /**
  * This class is used by Property class to monitor it's value. Different strategies
  * know how to monitor different types.
+ *
  * @author Tomek
  */
 public abstract class PropertyValueMonitoringStrategy {
 
-	private Property _property;
-	private Object _oldValue;
-	
-	/**
-	 * Constructor.
-	 * @param property property that uses this strategy.
-	 */
-	public PropertyValueMonitoringStrategy(Property property) {
-		_property = property;
-		_oldValue = property.getValue();
-	}
-	
-	/**
-	 * Returns property that uses this strategy.
-	 * @return property that uses this strategy.
-	 */
-	protected Property getProperty() {
-		return _property;
-	}
-	
-	/**
-	 * Returns previously read value of the property.
-	 * @return previously read value of the property.
-	 */
-	protected Object getOldValue() {
-		return _oldValue;
-	}
-	
-	/**
-	 * Updates previously read value of the property.
-	 * @param oldValue
-	 */
-	protected void setOldValue(Object oldValue) {
-		_oldValue = oldValue;
-	}
-	
-	/**
-	 * Informs the strategy that property value has been changed.
-	 * @param oldValue old property value.
-	 * @param newValue new property value.
-	 */
-	public abstract void propertyValueChanged(Object newValue);
+    private Property _property;
+    private Object _oldValue;
+
+    /**
+     * Constructor.
+     *
+     * @param property property that uses this strategy.
+     */
+    public PropertyValueMonitoringStrategy(Property property) {
+        _property = property;
+        _oldValue = property.getValue();
+    }
+
+    /**
+     * Returns property that uses this strategy.
+     *
+     * @return property that uses this strategy.
+     */
+    protected Property getProperty() {
+        return _property;
+    }
+
+    /**
+     * Returns previously read value of the property.
+     *
+     * @return previously read value of the property.
+     */
+    protected Object getOldValue() {
+        return _oldValue;
+    }
+
+    /**
+     * Updates previously read value of the property.
+     *
+     * @param oldValue
+     */
+    protected void setOldValue(Object oldValue) {
+        _oldValue = oldValue;
+    }
+
+    /**
+     * Informs the strategy that property value has been changed.
+     *
+     * @param oldValue old property value.
+     * @param newValue new property value.
+     */
+    public abstract void propertyValueChanged(Object newValue);
 }

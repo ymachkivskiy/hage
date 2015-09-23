@@ -31,26 +31,25 @@
 
 package org.jage.evaluation;
 
+
 import org.jage.population.IPopulation;
 import org.jage.solution.ISolution;
 import org.jage.strategy.IStrategy;
 
+
 /**
  * Interface for evaluating populations.
  *
- * @param <S>
- *            The type of {@link ISolution} to be evaluated
- * @param <E>
- *            the type of evaluation
+ * @param <S> The type of {@link ISolution} to be evaluated
+ * @param <E> the type of evaluation
  * @author AGH AgE Team
  */
 public interface IPopulationEvaluator<S extends ISolution, E> extends IStrategy {
 
-	/**
-	 * Evaluates the given population.
-	 *
-	 * @param population
-	 *            the population to be evaluated
-	 */
-	public void evaluatePopulation(IPopulation<S, E> population);
+    /**
+     * Evaluates the given population.
+     *
+     * @param population the population to be evaluated
+     */
+    public void evaluatePopulation(IPopulation<S, E> population);
 }

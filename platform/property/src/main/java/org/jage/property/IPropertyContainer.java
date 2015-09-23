@@ -31,11 +31,13 @@
 
 package org.jage.property;
 
+
 import org.jage.event.AbstractEvent;
 import org.jage.monitor.IChangesNotifier;
 import org.jage.property.functions.PropertyFunction;
-import org.jage.property.monitors.IPropertyMonitorRule;
 import org.jage.property.monitors.AbstractPropertyMonitor;
+import org.jage.property.monitors.IPropertyMonitorRule;
+
 
 /**
  * Interface which defines a property container with property monitors and property functions mechanisms.
@@ -44,103 +46,84 @@ import org.jage.property.monitors.AbstractPropertyMonitor;
  */
 public interface IPropertyContainer extends IChangesNotifier {
 
-	/**
-	 * Returns property with a given path.
-	 *
-	 * @param propertyPath
-	 *            path to the property.
-	 * @return Property with a given path.
-	 * @throws InvalidPropertyPathException
-	 *             invalid path to the property.
-	 */
-	public Property getProperty(String propertyPath) throws InvalidPropertyPathException;
+    /**
+     * Returns property with a given path.
+     *
+     * @param propertyPath path to the property.
+     * @return Property with a given path.
+     * @throws InvalidPropertyPathException invalid path to the property.
+     */
+    public Property getProperty(String propertyPath) throws InvalidPropertyPathException;
 
-	/**
-	 * Adds new property function to the container.
-	 *
-	 * @param function
-	 *            function to add.
-	 * @throws DuplicatePropertyNameException
-	 *             property or function with the same name already exists in this container.
-	 */
-	public void addFunction(PropertyFunction function) throws DuplicatePropertyNameException;
+    /**
+     * Adds new property function to the container.
+     *
+     * @param function function to add.
+     * @throws DuplicatePropertyNameException property or function with the same name already exists in this container.
+     */
+    public void addFunction(PropertyFunction function) throws DuplicatePropertyNameException;
 
-	/**
-	 * Adds monitor to property with a given path.
-	 *
-	 * @param propertyPath
-	 *            path to the property.
-	 * @param monitor
-	 *            monitor to add.
-	 * @throws InvalidPropertyOperationException
-	 *             property with the given path is not monitorable.
-	 * @throws InvalidPropertyPathException
-	 *             invalid path to the property.
-	 */
-	public void addPropertyMonitor(String propertyPath, AbstractPropertyMonitor monitor)
-	        throws InvalidPropertyOperationException, InvalidPropertyPathException;
+    /**
+     * Adds monitor to property with a given path.
+     *
+     * @param propertyPath path to the property.
+     * @param monitor      monitor to add.
+     * @throws InvalidPropertyOperationException property with the given path is not monitorable.
+     * @throws InvalidPropertyPathException      invalid path to the property.
+     */
+    public void addPropertyMonitor(String propertyPath, AbstractPropertyMonitor monitor)
+            throws InvalidPropertyOperationException, InvalidPropertyPathException;
 
-	/**
-	 * Adds monitor with a rule to property with a given path.
-	 *
-	 * @param propertyPath
-	 *            path to the property.
-	 * @param monitor
-	 *            monitor to add.
-	 * @param rule
-	 *            monitor rule.
-	 * @throws InvalidPropertyOperationException
-	 *             property with the given path is not monitorable.
-	 * @throws InvalidPropertyPathException
-	 *             invlaid path to the property.
-	 */
-	public void addPropertyMonitor(String propertyPath, AbstractPropertyMonitor monitor, IPropertyMonitorRule rule)
-	        throws InvalidPropertyOperationException, InvalidPropertyPathException;
+    /**
+     * Adds monitor with a rule to property with a given path.
+     *
+     * @param propertyPath path to the property.
+     * @param monitor      monitor to add.
+     * @param rule         monitor rule.
+     * @throws InvalidPropertyOperationException property with the given path is not monitorable.
+     * @throws InvalidPropertyPathException      invlaid path to the property.
+     */
+    public void addPropertyMonitor(String propertyPath, AbstractPropertyMonitor monitor, IPropertyMonitorRule rule)
+            throws InvalidPropertyOperationException, InvalidPropertyPathException;
 
-	/**
-	 * Unregisters monitor from property with a given path.
-	 *
-	 * @param propertyPath
-	 *            path to the property.
-	 * @param monitor
-	 *            monitor to unergister.
-	 * @throws InvalidPropertyOperationException
-	 *             property with the given path is not monitorable.
-	 * @throws InvalidPropertyPathException
-	 *             invalid path to the property.
-	 */
-	public void removePropertyMonitor(String propertyPath, AbstractPropertyMonitor monitor)
-	        throws InvalidPropertyOperationException, InvalidPropertyPathException;
+    /**
+     * Unregisters monitor from property with a given path.
+     *
+     * @param propertyPath path to the property.
+     * @param monitor      monitor to unergister.
+     * @throws InvalidPropertyOperationException property with the given path is not monitorable.
+     * @throws InvalidPropertyPathException      invalid path to the property.
+     */
+    public void removePropertyMonitor(String propertyPath, AbstractPropertyMonitor monitor)
+            throws InvalidPropertyOperationException, InvalidPropertyPathException;
 
-	/**
-	 * Removes property function. If the function doesn't belong to this container, this method doesn't throw any
-	 * exception.
-	 *
-	 * @param function
-	 *            function to remove.
-	 */
-	public void removeFunction(PropertyFunction function);
+    /**
+     * Removes property function. If the function doesn't belong to this container, this method doesn't throw any
+     * exception.
+     *
+     * @param function function to remove.
+     */
+    public void removeFunction(PropertyFunction function);
 
-	/**
-	 * Returns set that stores all properties (not including subproperties).
-	 *
-	 * @return set that stores all properties.
-	 */
-	public IPropertiesSet getProperties();
+    /**
+     * Returns set that stores all properties (not including subproperties).
+     *
+     * @return set that stores all properties.
+     */
+    public IPropertiesSet getProperties();
 
-	/**
-	 * Returns set that stores all meta properties (not including subproperties).
-	 *
-	 * @return set that stores all subproperties.
-	 */
-	public MetaPropertiesSet getMetaProperties();
+    /**
+     * Returns set that stores all meta properties (not including subproperties).
+     *
+     * @return set that stores all subproperties.
+     */
+    public MetaPropertiesSet getMetaProperties();
 
-	/**
-	 * Informs the container that it has been deleted.
-	 *
-	 * @param event
-	 *            the event
-	 */
-	public void objectDeleted(AbstractEvent event);
+    /**
+     * Informs the container that it has been deleted.
+     *
+     * @param event the event
+     */
+    public void objectDeleted(AbstractEvent event);
 
 }

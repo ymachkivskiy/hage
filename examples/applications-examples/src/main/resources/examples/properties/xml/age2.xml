@@ -1,59 +1,59 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<configuration xmlns="http://age.iisg.agh.edu.pl/schema/age" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://age.iisg.agh.edu.pl/schema/age"
                xsi:schemaLocation="http://age.iisg.agh.edu.pl/schema/age http://age.iisg.agh.edu.pl/schema/age/age.xsd">
 
-	<!-- This example runs Agents which has a property of type ExampleComponent
-		which contract is read from XML file ExampleComponent.contract.xml. ExampleComponent
-		prints it's properties using printComponentInfo method. -->
+    <!-- This example runs Agents which has a property of type ExampleComponent
+        which contract is read from XML file ExampleComponent.contract.xml. ExampleComponent
+        prints it's properties using printComponentInfo method. -->
 
-	<include file="classpath:examples/common.xml">
-		<block name="workplaces">
-			<component name="workplace" class="org.jage.workplace.SimpleWorkplace" isSingleton="false">
-				<property name="agent">
-					<agent name="action" class="org.jage.agent.SimpleAggregate">
-						<component class="org.jage.address.agent.DefaultAgentAddressSupplier">
-							<constructor-arg name="nameTemplate" value="TheXFiles"/>
-						</component>
+    <include file="classpath:examples/common.xml">
+        <block name="workplaces">
+            <component name="workplace" class="org.jage.workplace.SimpleWorkplace" isSingleton="false">
+                <property name="agent">
+                    <agent name="action" class="org.jage.agent.SimpleAggregate">
+                        <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                            <constructor-arg name="nameTemplate" value="TheXFiles"/>
+                        </component>
 
-						<property name="agents">
-							<list>
-								<agent name="scully"
-								       class="org.jage.examples.properties.xml.XMLContractHelloWorldSimpleAgent">
-									<component class="org.jage.address.agent.DefaultAgentAddressSupplier">
-										<constructor-arg name="nameTemplate" value="Scully"/>
-									</component>
-									<property name="exampleComponent">
-										<agent name="exampleComponentForScully"
-										       class="org.jage.examples.properties.xml.ExampleComponent">
-											<property name="name" value="Scully's component"/>
-											<property name="version" value="1" type="Integer"/>
-											<property name="holder">
-												<component name="sampleObject" class="java.lang.Object"/>
-											</property>
-										</agent>
-									</property>
-								</agent>
-								<agent name="mulder"
-								       class="org.jage.examples.properties.xml.XMLContractHelloWorldSimpleAgent">
-									<component class="org.jage.address.agent.DefaultAgentAddressSupplier">
-										<constructor-arg name="nameTemplate" value="Mulder"/>
-									</component>
-									<property name="exampleComponent">
-										<agent name="exampleComponentForMulder"
-										       class="org.jage.examples.properties.xml.ExampleComponent">
-											<property name="name" value="Mulder's component"/>
-											<property name="version" value="777" type="Integer"/>
-											<property name="holder">
-												<component name="sampleObject" class="java.lang.Object"/>
-											</property>
-										</agent>
-									</property>
-								</agent>
-							</list>
-						</property>
-					</agent>
-				</property>
-			</component>
-		</block>
-	</include>
+                        <property name="agents">
+                            <list>
+                                <agent name="scully"
+                                       class="org.jage.examples.properties.xml.XMLContractHelloWorldSimpleAgent">
+                                    <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                                        <constructor-arg name="nameTemplate" value="Scully"/>
+                                    </component>
+                                    <property name="exampleComponent">
+                                        <agent name="exampleComponentForScully"
+                                               class="org.jage.examples.properties.xml.ExampleComponent">
+                                            <property name="name" value="Scully's component"/>
+                                            <property name="version" value="1" type="Integer"/>
+                                            <property name="holder">
+                                                <component name="sampleObject" class="java.lang.Object"/>
+                                            </property>
+                                        </agent>
+                                    </property>
+                                </agent>
+                                <agent name="mulder"
+                                       class="org.jage.examples.properties.xml.XMLContractHelloWorldSimpleAgent">
+                                    <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                                        <constructor-arg name="nameTemplate" value="Mulder"/>
+                                    </component>
+                                    <property name="exampleComponent">
+                                        <agent name="exampleComponentForMulder"
+                                               class="org.jage.examples.properties.xml.ExampleComponent">
+                                            <property name="name" value="Mulder's component"/>
+                                            <property name="version" value="777" type="Integer"/>
+                                            <property name="holder">
+                                                <component name="sampleObject" class="java.lang.Object"/>
+                                            </property>
+                                        </agent>
+                                    </property>
+                                </agent>
+                            </list>
+                        </property>
+                    </agent>
+                </property>
+            </component>
+        </block>
+    </include>
 </configuration>

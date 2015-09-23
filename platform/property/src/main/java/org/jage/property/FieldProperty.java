@@ -31,10 +31,11 @@
 
 package org.jage.property;
 
-import java.io.Serializable;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.Serializable;
 
 
 /**
@@ -44,53 +45,51 @@ import org.slf4j.LoggerFactory;
  */
 public class FieldProperty extends Property implements Serializable {
 
-	private static final long serialVersionUID = 8911682340571121747L;
+    private static final long serialVersionUID = 8911682340571121747L;
 
-	private static Logger log = LoggerFactory.getLogger(FieldProperty.class);
+    private static Logger log = LoggerFactory.getLogger(FieldProperty.class);
 
-	private Object instance;
+    private Object instance;
 
-	private FieldMetaProperty metaProperty;
+    private FieldMetaProperty metaProperty;
 
-	/**
-	 * Creates a FieldProperty using the given AbstractFieldMetaProperty and Object instance.
-	 *
-	 * @param metaProperty
-	 *            meta data for this property.
-	 * @param instance
-	 *            instance object that contains field referred to by this property.
-	 */
-	public FieldProperty(FieldMetaProperty metaProperty, Object instance) {
-		this.metaProperty = metaProperty;
-		this.instance = instance;
-		initializeMonitoringStrategy();
-	}
+    /**
+     * Creates a FieldProperty using the given AbstractFieldMetaProperty and Object instance.
+     *
+     * @param metaProperty meta data for this property.
+     * @param instance     instance object that contains field referred to by this property.
+     */
+    public FieldProperty(FieldMetaProperty metaProperty, Object instance) {
+        this.metaProperty = metaProperty;
+        this.instance = instance;
+        initializeMonitoringStrategy();
+    }
 
-	@Override
-	public final MetaProperty getMetaProperty() {
-		return metaProperty;
-	}
+    @Override
+    public final MetaProperty getMetaProperty() {
+        return metaProperty;
+    }
 
-	@Override
-	public final Object getValue() {
-		try {
-			return metaProperty.getPropertyField().get(instance);
-		} catch (Exception ex) {
-			log.error("Cannot get value of property " + metaProperty.getName() + ".", ex);
-			return null;
-		}
-	}
+    @Override
+    public final Object getValue() {
+        try {
+            return metaProperty.getPropertyField().get(instance);
+        } catch(Exception ex) {
+            log.error("Cannot get value of property " + metaProperty.getName() + ".", ex);
+            return null;
+        }
+    }
 
-	@Override
-	public final void setValue(Object value) throws InvalidPropertyOperationException {
-		try {
-			metaProperty.getPropertyField().set(instance, value);
-			if (getMetaProperty().isMonitorable()) {
-				notifyMonitors(value);
-			}
-		} catch (Exception ex) {
-			throw new InvalidPropertyOperationException("object type: " + value.getClass() + ", field type: "
-			        + metaProperty.getPropertyField().getType(), ex);
-		}
-	}
+    @Override
+    public final void setValue(Object value) throws InvalidPropertyOperationException {
+        try {
+            metaProperty.getPropertyField().set(instance, value);
+            if(getMetaProperty().isMonitorable()) {
+                notifyMonitors(value);
+            }
+        } catch(Exception ex) {
+            throw new InvalidPropertyOperationException("object type: " + value.getClass() + ", field type: "
+                                                                + metaProperty.getPropertyField().getType(), ex);
+        }
+    }
 }

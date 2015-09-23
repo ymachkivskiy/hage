@@ -31,57 +31,53 @@
 
 package org.jage.address.selector;
 
-import java.io.Serializable;
-
-import static java.util.Objects.requireNonNull;
-
-import org.jage.address.Address;
 
 import com.google.common.base.Predicate;
+import org.jage.address.Address;
+
+import java.io.Serializable;
 
 import static com.google.common.base.Objects.toStringHelper;
 import static com.google.common.base.Preconditions.checkArgument;
+import static java.util.Objects.requireNonNull;
+
 
 /**
  * A selector that selects addresses based on some predicate.
  *
- * @param <T>
- * 		type of an address which can be selects by this selector.
- *
+ * @param <T> type of an address which can be selects by this selector.
  * @author AGH AgE Team
  */
 public class PredicateSelector<T extends Address> implements AddressSelector<T> {
 
-	private final Predicate<T> predicate;
+    private final Predicate<T> predicate;
 
-	/**
-	 * Constructs a new selector for the predicate.
-	 *
-	 * @param predicate
-	 * 		a predicate to use.
-	 */
-	private PredicateSelector(final Predicate<T> predicate) {
-		checkArgument(predicate instanceof Serializable, "Predicate must be serializable.");
-		this.predicate = requireNonNull(predicate);
-	}
+    /**
+     * Constructs a new selector for the predicate.
+     *
+     * @param predicate a predicate to use.
+     */
+    private PredicateSelector(final Predicate<T> predicate) {
+        checkArgument(predicate instanceof Serializable, "Predicate must be serializable.");
+        this.predicate = requireNonNull(predicate);
+    }
 
-	/**
-	 * Constructs a new selector for the predicate.
-	 *
-	 * @param predicate
-	 * 		a predicate to use.
-	 */
-	public static <T extends Address> PredicateSelector<T> create(final Predicate<T> predicate) {
-		return new PredicateSelector<>(predicate);
-	}
+    /**
+     * Constructs a new selector for the predicate.
+     *
+     * @param predicate a predicate to use.
+     */
+    public static <T extends Address> PredicateSelector<T> create(final Predicate<T> predicate) {
+        return new PredicateSelector<>(predicate);
+    }
 
-	@Override
-	public boolean selects(final T address) {
-		return predicate.apply(address);
-	}
+    @Override
+    public boolean selects(final T address) {
+        return predicate.apply(address);
+    }
 
-	@Override
-	public String toString() {
-		return toStringHelper(this).addValue(predicate).toString();
-	}
+    @Override
+    public String toString() {
+        return toStringHelper(this).addValue(predicate).toString();
+    }
 }

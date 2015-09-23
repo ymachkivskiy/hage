@@ -31,13 +31,6 @@
 
 package org.jage.examples.migration;
 
-import java.util.Collection;
-import java.util.Random;
-
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.jage.action.AgentActions;
 import org.jage.address.agent.AgentAddress;
@@ -46,6 +39,13 @@ import org.jage.agent.AgentException;
 import org.jage.agent.SimpleAgent;
 import org.jage.property.InvalidPropertyPathException;
 import org.jage.query.EnvironmentAddressesQuery;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
+import java.util.Collection;
+import java.util.Random;
+
 
 /**
  * This agent finds environments where it can migrate to. If there is any suitable in migrates to a random one every
@@ -56,108 +56,104 @@ import org.jage.query.EnvironmentAddressesQuery;
  */
 public class CrawlingSimpleAgent extends SimpleAgent {
 
-	private final Logger log = LoggerFactory.getLogger(CrawlingSimpleAgent.class);
+    private static final long serialVersionUID = 3L;
+    private final Logger log = LoggerFactory.getLogger(CrawlingSimpleAgent.class);
+    /**
+     * Random number generator
+     */
+    private final Random random = new Random();
+    /**
+     * Steps step
+     */
+    protected int step = 0;
+    private int migrationCount = 0;
 
-	private static final long serialVersionUID = 3L;
+    public CrawlingSimpleAgent(final AgentAddress address) {
+        super(address);
+    }
 
-	/**
-	 * Random number generator
-	 */
-	private final Random random = new Random();
+    @Inject
+    public CrawlingSimpleAgent(final AgentAddressSupplier supplier) {
+        super(supplier);
+    }
 
-	public CrawlingSimpleAgent(final AgentAddress address) {
-		super(address);
-	}
+    @Override
+    public void step() {
+        step++;
+        if((step + hashCode()) % 50 == 0) {
+            considerMigration();
+        }
 
-	@Inject
-	public CrawlingSimpleAgent(final AgentAddressSupplier supplier) {
-		super(supplier);
-	}
+        try {
+            Thread.sleep(10);
+        } catch(final InterruptedException e) {
+            log.error("Interrupted", e);
+        }
+    }
 
-	/**
-	 * Steps step
-	 */
-	protected int step = 0;
+    /**
+     * Considers migration and migrates randomly.
+     */
+    protected void considerMigration() {
+        final Collection<AgentAddress> answer;
+        AgentAddress target = null;
+        try {
+            log.info("Querying parent...");
+            final EnvironmentAddressesQuery query = new EnvironmentAddressesQuery();
 
-	private int migrationCount = 0;
+            answer = queryParentEnvironment(query);
+            if(answer.size() > 1) {
+                log.info("Agent: {} can migrate from {} to following environments:", getAddress().getFriendlyName(),
+                         getParentAddress().getFriendlyName());
+                float max = 0;
+                for(final AgentAddress possibleTargetAddress : answer) {
+                    if(!possibleTargetAddress.equals(getParentAddress())) {
+                        log.info("   {}", possibleTargetAddress);
+                    }
+                    final float rand = random.nextFloat();
+                    if(max < rand) {
+                        max = rand;
+                        target = possibleTargetAddress;
+                    }
+                }
+            } else {
+                log.info("Agent: {} can not migrate anywhere from: {}", getAddress().getFriendlyName(),
+                         getParentAddress().getFriendlyName());
+            }
 
-	@Override
-	public void step() {
-		step++;
-		if ((step + hashCode()) % 50 == 0) {
-			considerMigration();
-		}
+            if(target != null) {
+                if(!target.equals(getParentAddress())) {
+                    log.info("Agent: {} decides to migrate to environment: {}", getAddress().getFriendlyName(), target);
+                    try {
+                        doAction(AgentActions.migrate(this, target));
+                        migrationCount++;
+                    } catch(final AgentException e) {
+                        log.error("Can't move to: {}.", target, e);
+                    }
+                } else {
+                    log.info("Agent: {} decides to stay in environment: {}", getAddress().getFriendlyName(), target);
+                }
+            }
+        } catch(final AgentException e) {
+            log.error("Agent exception", e);
+        } catch(final InvalidPropertyPathException e) {
+            log.error("Invalid property", e);
+        }
+    }
 
-		try {
-			Thread.sleep(10);
-		} catch (final InterruptedException e) {
-			log.error("Interrupted", e);
-		}
-	}
+    @Override
+    public boolean finish() {
+        log.info("{}: Finishing.", getAddress().getFriendlyName());
+        log.info("{}: {} steps.", getAddress().getFriendlyName(), step);
+        log.info("{}: Migrated {} times.", getAddress().getFriendlyName(), migrationCount);
+        return true;
+    }
 
-	/**
-	 * Considers migration and migrates randomly.
-	 */
-	protected void considerMigration() {
-		final Collection<AgentAddress> answer;
-		AgentAddress target = null;
-		try {
-			log.info("Querying parent...");
-			final EnvironmentAddressesQuery query = new EnvironmentAddressesQuery();
+    public int getStep() {
+        return step;
+    }
 
-			answer = queryParentEnvironment(query);
-			if (answer.size() > 1) {
-				log.info("Agent: {} can migrate from {} to following environments:", getAddress().getFriendlyName(),
-						getParentAddress().getFriendlyName());
-				float max = 0;
-				for (final AgentAddress possibleTargetAddress : answer) {
-					if (!possibleTargetAddress.equals(getParentAddress())) {
-						log.info("   {}", possibleTargetAddress);
-					}
-					final float rand = random.nextFloat();
-					if (max < rand) {
-						max = rand;
-						target = possibleTargetAddress;
-					}
-				}
-			} else {
-				log.info("Agent: {} can not migrate anywhere from: {}", getAddress().getFriendlyName(),
-						getParentAddress().getFriendlyName());
-			}
-
-			if (target != null) {
-				if (!target.equals(getParentAddress())) {
-					log.info("Agent: {} decides to migrate to environment: {}", getAddress().getFriendlyName(), target);
-					try {
-						doAction(AgentActions.migrate(this, target));
-						migrationCount++;
-					} catch (final AgentException e) {
-						log.error("Can't move to: {}.", target, e);
-					}
-				} else {
-					log.info("Agent: {} decides to stay in environment: {}", getAddress().getFriendlyName(), target);
-				}
-			}
-		} catch (final AgentException e) {
-			log.error("Agent exception", e);
-		} catch (final InvalidPropertyPathException e) {
-			log.error("Invalid property", e);
-		}
-	}
-
-	@Override
-	public boolean finish() {
-		log.info("{}: Finishing.", getAddress().getFriendlyName());
-		log.info("{}: {} steps.", getAddress().getFriendlyName(), step);
-		log.info("{}: Migrated {} times.", getAddress().getFriendlyName(), migrationCount);
-		return true;
-	}
-
-	public int getStep() {
-		return step;
-	}
-
-	public int getMigrationCount() {
-		return migrationCount;
-	}
+    public int getMigrationCount() {
+        return migrationCount;
+    }
 }

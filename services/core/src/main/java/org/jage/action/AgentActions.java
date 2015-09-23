@@ -31,6 +31,7 @@
 
 package org.jage.action;
 
+
 import org.jage.action.context.AddAgentActionContext;
 import org.jage.action.context.GetAgentActionContext;
 import org.jage.action.context.KillAgentActionContext;
@@ -45,6 +46,7 @@ import org.jage.communication.message.Message;
 import static org.jage.address.selector.Selectors.parentOf;
 import static org.jage.address.selector.Selectors.singleAddress;
 
+
 /**
  * Factory methods for agent actions.
  *
@@ -52,41 +54,36 @@ import static org.jage.address.selector.Selectors.singleAddress;
  */
 public class AgentActions {
 
-	/**
-	 * Creates an action which adds the second agent to the parent of the first one.
-	 *
-	 * @param agent
-	 *            the agent to which parent the new agent will be added
-	 * @param newAgent
-	 *            the agent to be added
-	 * @return an addToParent action
-	 */
-	public static SingleAction addToParent(final ISimpleAgent agent, final ISimpleAgent newAgent) {
-		AddAgentActionContext context = new AddAgentActionContext(newAgent);
-		return new SingleAction(Selectors.parentOf(agent.getAddress()), context);
-	}
+    /**
+     * Creates an action which adds the second agent to the parent of the first one.
+     *
+     * @param agent    the agent to which parent the new agent will be added
+     * @param newAgent the agent to be added
+     * @return an addToParent action
+     */
+    public static SingleAction addToParent(final ISimpleAgent agent, final ISimpleAgent newAgent) {
+        AddAgentActionContext context = new AddAgentActionContext(newAgent);
+        return new SingleAction(Selectors.parentOf(agent.getAddress()), context);
+    }
 
-	/**
-	 * Creates a death action.
-	 *
-	 * @param agent
-	 *            the agent to be killed
-	 * @return a death action
-	 */
-	public static SingleAction death(final ISimpleAgent agent) {
-		return new SingleAction(singleAddress(agent.getAddress()), new KillAgentActionContext());
-	}
+    /**
+     * Creates a death action.
+     *
+     * @param agent the agent to be killed
+     * @return a death action
+     */
+    public static SingleAction death(final ISimpleAgent agent) {
+        return new SingleAction(singleAddress(agent.getAddress()), new KillAgentActionContext());
+    }
 
-	/**
-	 * Creates a migration action.
-	 *
-	 * @param agent
-	 *            the agent to be migrated
-	 * @param destination
-	 *            the migration destination
-	 * @return a migration action
-	 */
-	public static Action migrate(final ISimpleAgent agent, final AgentAddress destination) {
+    /**
+     * Creates a migration action.
+     *
+     * @param agent       the agent to be migrated
+     * @param destination the migration destination
+     * @return a migration action
+     */
+    public static Action migrate(final ISimpleAgent agent, final AgentAddress destination) {
         ComplexAction action = new ComplexAction();
 
         MoveAgentActionContext moveContext = new MoveAgentActionContext();
@@ -99,16 +96,15 @@ public class AgentActions {
         action.addChild(new SingleAction(parentOf(agent.getAddress()), parentContext));
 
         return action;
-	}
+    }
 
-	/**
-	 * Creates a send message action.
-	 *
-	 * @param message
-	 *            the message to be sent
-	 * @return a send message action
-	 */
-	public static SingleAction sendMessage(final Message<AgentAddress, ?> message) {
-		return new SingleAction(message.getHeader().getReceiverSelector(), new SendMessageActionContext(message));
-	}	
+    /**
+     * Creates a send message action.
+     *
+     * @param message the message to be sent
+     * @return a send message action
+     */
+    public static SingleAction sendMessage(final Message<AgentAddress, ?> message) {
+        return new SingleAction(message.getHeader().getReceiverSelector(), new SendMessageActionContext(message));
+    }
 }

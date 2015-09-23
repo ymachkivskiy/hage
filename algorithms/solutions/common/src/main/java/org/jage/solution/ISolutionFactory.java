@@ -31,38 +31,37 @@
 
 package org.jage.solution;
 
+
 import org.jage.strategy.IStrategy;
+
 
 /**
  * Factory interface for creating {@link ISolution} instances.
  *
- * @param <S>
- *            The type of ISolution created by this factory.
- *
+ * @param <S> The type of ISolution created by this factory.
  * @author AGH AgE Team
  */
 public interface ISolutionFactory<S extends ISolution> extends IStrategy {
 
-	/**
-	 * Creates an empty solution.
-	 *
-	 * @return an empty solution
-	 */
-	public S createEmptySolution();
+    /**
+     * Creates an empty solution.
+     *
+     * @return an empty solution
+     */
+    public S createEmptySolution();
 
-	/**
-	 * Creates an initialized solution.
-	 *
-	 * @return an initialized solution
-	 */
-	public S createInitializedSolution();
+    /**
+     * Creates an initialized solution.
+     *
+     * @return an initialized solution
+     */
+    public S createInitializedSolution();
 
-	/**
-	 * Returns a new solution, identical to the given one.
-	 *
-	 * @param solution
-	 *            The solution to be copied
-	 * @return A new, copied solution
-	 */
-	public S copySolution(S solution);
+    /**
+     * Returns a new solution, identical to the given one.
+     *
+     * @param solution The solution to be copied
+     * @return A new, copied solution
+     */
+    public S copySolution(S solution);
 }

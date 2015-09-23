@@ -31,15 +31,16 @@
 
 package org.jage.platform.config.xml.loaders;
 
-import org.junit.Test;
 
 import org.jage.platform.component.definition.ConfigurationException;
 import org.jage.platform.config.xml.ConfigAttributes;
 import org.jage.platform.config.xml.ConfigTags;
 import org.jage.platform.config.xml.util.DocumentBuilder;
+import org.junit.Test;
 
 import static org.jage.platform.config.xml.util.DocumentBuilder.emptyDocument;
 import static org.jage.platform.config.xml.util.ElementBuilder.element;
+
 
 /**
  * Unit tests for ComponentsNormalizer.
@@ -48,34 +49,34 @@ import static org.jage.platform.config.xml.util.ElementBuilder.element;
  */
 public class ComponentsNormalizerTest extends AbstractDocumentLoaderTest<ComponentsNormalizer> {
 
-	@Override
-	protected ComponentsNormalizer getLoader() {
-	    return new ComponentsNormalizer();
-	}
+    @Override
+    protected ComponentsNormalizer getLoader() {
+        return new ComponentsNormalizer();
+    }
 
-	@Test
-	public void shouldReplaceAgentDefinitions() throws ConfigurationException {
-		// given
-		final DocumentBuilder original = emptyDocument()
-				.add(element(ConfigTags.AGENT));
-		final DocumentBuilder expected = emptyDocument()
-				.add(element(ConfigTags.COMPONENT)
-						.withAttribute(ConfigAttributes.IS_SINGLETON, "false"));
+    @Test
+    public void shouldReplaceAgentDefinitions() throws ConfigurationException {
+        // given
+        final DocumentBuilder original = emptyDocument()
+                .add(element(ConfigTags.AGENT));
+        final DocumentBuilder expected = emptyDocument()
+                .add(element(ConfigTags.COMPONENT)
+                             .withAttribute(ConfigAttributes.IS_SINGLETON, "false"));
 
-		// then
-		assertDocumentTransformation(original, expected);
-	}
+        // then
+        assertDocumentTransformation(original, expected);
+    }
 
-	@Test
-	public void shouldReplaceStrategyDefinitions() throws ConfigurationException {
-		// given
-		final DocumentBuilder original = emptyDocument()
-				.add(element(ConfigTags.STRATEGY));
-		final DocumentBuilder expected = emptyDocument()
-				.add(element(ConfigTags.COMPONENT)
-						.withAttribute(ConfigAttributes.IS_SINGLETON, "true"));
+    @Test
+    public void shouldReplaceStrategyDefinitions() throws ConfigurationException {
+        // given
+        final DocumentBuilder original = emptyDocument()
+                .add(element(ConfigTags.STRATEGY));
+        final DocumentBuilder expected = emptyDocument()
+                .add(element(ConfigTags.COMPONENT)
+                             .withAttribute(ConfigAttributes.IS_SINGLETON, "true"));
 
-		// then
-		assertDocumentTransformation(original, expected);
-	}
+        // then
+        assertDocumentTransformation(original, expected);
+    }
 }

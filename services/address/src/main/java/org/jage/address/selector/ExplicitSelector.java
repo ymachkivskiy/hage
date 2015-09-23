@@ -31,11 +31,13 @@
 
 package org.jage.address.selector;
 
+
 import org.jage.address.Address;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
 import java.util.Set;
+
 
 /**
  * A selector that can explicitly provide a set of addresses selected by it.

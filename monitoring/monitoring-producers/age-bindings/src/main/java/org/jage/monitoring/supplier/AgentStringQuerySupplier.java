@@ -27,13 +27,15 @@
 
 package org.jage.monitoring.supplier;
 
-import java.util.List;
 
 import org.jage.monitoring.supplier.resultprocessor.AgentStringQueryResultProcessor;
 import org.jage.monitoring.supplier.resultprocessor.DefaultAgentStringQueryResultProcessor;
 import org.jage.monitoring.supplier.stringquery.StringQuery;
 import org.jage.query.IQuery;
 import org.jage.workplace.Workplace;
+
+import java.util.List;
+
 
 /**
  * Supplier provides data fetched from agents based on given string query.
@@ -43,19 +45,18 @@ import org.jage.workplace.Workplace;
 public class AgentStringQuerySupplier extends AgentQuerySupplier {
 
     public AgentStringQuerySupplier(final String stringQuery) {
-    	super(buildQueryFrom(stringQuery, new DefaultAgentStringQueryResultProcessor()));
+        super(buildQueryFrom(stringQuery, new DefaultAgentStringQueryResultProcessor()));
     }
-    
-    
-    public AgentStringQuerySupplier(final String stringQuery, AgentStringQueryResultProcessor resultProcessor) {
-    	super(buildQueryFrom(stringQuery, resultProcessor));
-    }
-    
 
     private static IQuery<List<Workplace>, ?> buildQueryFrom(final String stringQuery, AgentStringQueryResultProcessor resultProcessor) {
-    	StringQuery result = new StringQuery(stringQuery);
-    	result.setResultProcessor(resultProcessor);
-    	return result;
+        StringQuery result = new StringQuery(stringQuery);
+        result.setResultProcessor(resultProcessor);
+        return result;
+    }
+
+
+    public AgentStringQuerySupplier(final String stringQuery, AgentStringQueryResultProcessor resultProcessor) {
+        super(buildQueryFrom(stringQuery, resultProcessor));
     }
 
 }

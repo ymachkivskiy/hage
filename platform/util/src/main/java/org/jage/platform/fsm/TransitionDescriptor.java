@@ -31,89 +31,91 @@
 
 package org.jage.platform.fsm;
 
-import static java.lang.String.format;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import static java.lang.String.format;
+
 
 /**
  * A descriptor of the transition in the transition table.
  * <p>
  * Package-protected class.
- * 
- * @param <S>
- *            a states type.
- * @param <E>
- *            an events type
- * 
+ *
+ * @param <S> a states type.
+ * @param <E> an events type
  * @author AGH AgE Team
  */
 class TransitionDescriptor<S extends Enum<S>, E extends Enum<E>> {
 
-	private static final Runnable EMPTY_ACTION = new Runnable() {
-		@Override
-		public void run() {
-			// Empty
-		}
-	};
+    @SuppressWarnings("unchecked")
+    public static final TransitionDescriptor<?, ?> NULL = new TransitionDescriptor(null, null, null, null) {
 
-	private final S initial;
+        @Override
+        boolean isNull() {
+            return true;
+        }
 
-	private final E event;
+        @Override
+        public String toString() {
+            return format("(null)");
+        }
+    };
+    private static final Runnable EMPTY_ACTION = new Runnable() {
 
-	@Nonnull private final Runnable action;
+        @Override
+        public void run() {
+            // Empty
+        }
+    };
+    private final S initial;
+    private final E event;
+    @Nonnull
+    private final Runnable action;
+    private final S target;
 
-	private final S target;
+    public TransitionDescriptor(@Nullable final S initial, @Nullable final E event, @Nullable final S target,
+            @Nullable final Runnable action) {
+        this.initial = initial;
+        this.event = event;
+        this.action = action != null ? action : EMPTY_ACTION;
+        this.target = target;
+    }
 
-	@SuppressWarnings("unchecked")
-	public static final TransitionDescriptor<?, ?> NULL = new TransitionDescriptor(null, null, null, null) {
-		@Override
-		boolean isNull() {
-			return true;
-		}
+    @SuppressWarnings("unchecked")
+    @Nonnull
+    public static <V extends Enum<V>, Z extends Enum<Z>> TransitionDescriptor<V, Z> getNull() {
+        return (TransitionDescriptor<V, Z>) NULL;
+    }
 
-		@Override
-		public String toString() {
-			return format("(null)");
-		}
-	};
+    @Nonnull
+    final Runnable getAction() {
+        return action;
+    }
 
-	public TransitionDescriptor(@Nullable final S initial, @Nullable final E event, @Nullable final S target,
-	        @Nullable final Runnable action) {
-		this.initial = initial;
-		this.event = event;
-		this.action = action != null ? action : EMPTY_ACTION;
-		this.target = target;
-	}
+    @Nullable
+    final S getTarget() {
+        return target;
+    }
 
-	@Nonnull final Runnable getAction() {
-		return action;
-	}
+    @Nullable
+    final S getInitial() {
+        return initial;
+    }
 
-	@Nullable final S getTarget() {
-		return target;
-	}
+    @Nullable
+    final E getEvent() {
+        return event;
+    }
 
-	@Nullable final S getInitial() {
-		return initial;
-	}
-
-	@Nullable final E getEvent() {
-		return event;
-	}
-
-	@SuppressWarnings("static-method")
+    @SuppressWarnings("static-method")
     boolean isNull() {
-		return false;
-	}
+        return false;
+    }
 
-	@SuppressWarnings("unchecked")
-	@Nonnull public static <V extends Enum<V>, Z extends Enum<Z>> TransitionDescriptor<V, Z> getNull() {
-		return (TransitionDescriptor<V, Z>)NULL;
-	}
-
-	@Override
-	public String toString() {
-		return format("(%s-[%s]->%s)", initial, event, target);
-	}
+    @Override
+    public String toString() {
+        return format("(%s-[%s]->%s)", initial, event, target);
+    }
 }

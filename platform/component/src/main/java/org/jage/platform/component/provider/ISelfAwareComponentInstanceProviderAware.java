@@ -31,19 +31,19 @@
 
 package org.jage.platform.component.provider;
 
+
 /**
  * To be implemented by classes requiring access to {@link ISelfAwareComponentInstanceProvider}s.
- * 
+ *
  * @author AGH AgE Team
  */
 public interface ISelfAwareComponentInstanceProviderAware {
 
-	/**
-	 * Sets an instance provider.
-	 * 
-	 * @param instanceProvider
-	 *            an instance provider
-	 */
-	void setSelfAwareComponentInstanceProvider(ISelfAwareComponentInstanceProvider instanceProvider);
+    /**
+     * Sets an instance provider.
+     *
+     * @param instanceProvider an instance provider
+     */
+    void setSelfAwareComponentInstanceProvider(ISelfAwareComponentInstanceProvider instanceProvider);
 
 }

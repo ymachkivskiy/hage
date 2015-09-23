@@ -26,10 +26,6 @@
  */
 package org.jage.monitoring.config;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Inject;
 
 import org.jage.monitoring.Monitoring;
 import org.jage.monitoring.observer.AbstractStatefulObserver;
@@ -37,54 +33,57 @@ import org.jage.platform.component.IStatefulComponent;
 import org.jage.platform.component.exception.ComponentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import rx.Observable;
 import rx.Observer;
 
-public class ExecutorShutdownCaller implements IStatefulComponent, Observer<Object>{
-	
-	private static final Logger log = LoggerFactory.getLogger(ExecutorShutdownCaller.class);
-	
-	@Inject
-	private ExecutorProvider executorProvider;
-	@Inject
-	private Monitoring monitoring;
-	
-	@Override
-	public void onCompleted() {
-		executorProvider.getExecutor().shutdown();
-	}
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
 
-	@Override
-	public void onError(Throwable e) {
-		log.error("The following error occured:", e);
-	}
 
-	@Override
-	public void onNext(Object t) {
-		// Not used
-	}
+public class ExecutorShutdownCaller implements IStatefulComponent, Observer<Object> {
 
-	@Override
-	public void init() throws ComponentException {
-		
-		List<Observable<Object>> isCompletedObservables = new ArrayList<>();
-		
-		for (AbstractStatefulObserver observer : monitoring.getAllObservers()) {
-			isCompletedObservables.add(observer.isCompleted());
-		}
-		
-		Observable.merge(isCompletedObservables).subscribe(this);
-	}
+    private static final Logger log = LoggerFactory.getLogger(ExecutorShutdownCaller.class);
 
-	@Override
-	public boolean finish() throws ComponentException {
-		return false;
-	}
+    @Inject
+    private ExecutorProvider executorProvider;
+    @Inject
+    private Monitoring monitoring;
 
-	public void setMonitoring(Monitoring monitoring) {
-		this.monitoring = monitoring;
-	}
-	
-	
+    @Override
+    public void onCompleted() {
+        executorProvider.getExecutor().shutdown();
+    }
+
+    @Override
+    public void onError(Throwable e) {
+        log.error("The following error occured:", e);
+    }
+
+    @Override
+    public void onNext(Object t) {
+        // Not used
+    }
+
+    @Override
+    public void init() throws ComponentException {
+
+        List<Observable<Object>> isCompletedObservables = new ArrayList<>();
+
+        for(AbstractStatefulObserver observer : monitoring.getAllObservers()) {
+            isCompletedObservables.add(observer.isCompleted());
+        }
+
+        Observable.merge(isCompletedObservables).subscribe(this);
+    }
+
+    @Override
+    public boolean finish() throws ComponentException {
+        return false;
+    }
+
+    public void setMonitoring(Monitoring monitoring) {
+        this.monitoring = monitoring;
+    }
+
 }

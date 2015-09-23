@@ -31,15 +31,16 @@
 
 package org.jage.platform.component.definition;
 
+
 import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.List;
 
-import static java.util.Collections.unmodifiableList;
-
 import static com.google.common.base.Objects.toStringHelper;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newLinkedList;
+import static java.util.Collections.unmodifiableList;
+
 
 /**
  * Abstract skeleton implementation of {@link IComponentDefinition}.
@@ -48,123 +49,113 @@ import static com.google.common.collect.Lists.newLinkedList;
  */
 public abstract class AbstractComponentDefinition implements IComponentDefinition {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private final String name;
+    private final String name;
 
-	private final Class<?> type;
+    private final Class<?> type;
 
-	private final boolean isSingleton;
+    private final boolean isSingleton;
 
-	private final List<IArgumentDefinition> constructorArguments = newLinkedList();
+    private final List<IArgumentDefinition> constructorArguments = newLinkedList();
 
-	private final List<IComponentDefinition> innerComponentDefinitions = newLinkedList();
+    private final List<IComponentDefinition> innerComponentDefinitions = newLinkedList();
 
-	private List<Type> typeParameters;
+    private List<Type> typeParameters;
 
-	/**
-	 * Constructs a new component definition for a given type and with a given name and with no generic type parameters.
-	 *
-	 * @param name
-	 *            A name of a component to create.
-	 * @param type
-	 *            A type of the component.
-	 * @param isSingleton
-	 *            Whether the component is in a singleton scope.
-	 */
-	public AbstractComponentDefinition(final String name, final Class<?> type, final boolean isSingleton) {
-		this(name, type, Collections.<Type> emptyList(), isSingleton);
-	}
+    /**
+     * Constructs a new component definition for a given type and with a given name and with no generic type parameters.
+     *
+     * @param name        A name of a component to create.
+     * @param type        A type of the component.
+     * @param isSingleton Whether the component is in a singleton scope.
+     */
+    public AbstractComponentDefinition(final String name, final Class<?> type, final boolean isSingleton) {
+        this(name, type, Collections.<Type> emptyList(), isSingleton);
+    }
 
-	/**
-	 * Constructs a new component definition for a given type and with a given name.
-	 *
-	 * @param name
-	 *            A name of a component to create.
-	 * @param type
-	 *            A type of the component, cannot be null.
-	 * @param isSingleton
-	 *            Whether the component is in a singleton scope.
-	 * @param typeParameters
-	 *            A list of type parameters for generic types, cannot be null.
-	 */
-	public AbstractComponentDefinition(final String name, final Class<?> type, final List<Type> typeParameters,
-	        final boolean isSingleton) {
-		this.name = checkNotNull(name);
-		this.type = checkNotNull(type);
-		this.typeParameters = checkNotNull(typeParameters);
-		this.isSingleton = checkNotNull(isSingleton);
-	}
+    /**
+     * Constructs a new component definition for a given type and with a given name.
+     *
+     * @param name           A name of a component to create.
+     * @param type           A type of the component, cannot be null.
+     * @param isSingleton    Whether the component is in a singleton scope.
+     * @param typeParameters A list of type parameters for generic types, cannot be null.
+     */
+    public AbstractComponentDefinition(final String name, final Class<?> type, final List<Type> typeParameters,
+            final boolean isSingleton) {
+        this.name = checkNotNull(name);
+        this.type = checkNotNull(type);
+        this.typeParameters = checkNotNull(typeParameters);
+        this.isSingleton = checkNotNull(isSingleton);
+    }
 
-	@Override
-	public String getName() {
-		return name;
-	}
+    /**
+     * Adds a constructor argument to this component definition.
+     *
+     * @param argument the constructor argument
+     */
+    public void addConstructorArgument(IArgumentDefinition argument) {
+        constructorArguments.add(checkNotNull(argument));
+    }
 
-	@Override
-	public Class<?> getType() {
-		return type;
-	}
+    /**
+     * Adds an inner component definition to this component definition.
+     *
+     * @param innerDefinition the inner definition
+     */
+    public void addInnerComponentDefinition(IComponentDefinition innerDefinition) {
+        innerComponentDefinitions.add(checkNotNull(innerDefinition));
+    }
 
-	@Override
-	public boolean isSingleton() {
-		return isSingleton;
-	}
+    /**
+     * Removes a given inner definition from this component definition. <br />
+     * <br />
+     * Can be used by configurators to manipulate component definitions data.
+     *
+     * @param innerDefinition the inner definition to be removed
+     * @return true if the inner definition list contained the specified definition
+     */
+    public boolean removeInnerComponentDefinition(IComponentDefinition innerDefinition) {
+        return innerComponentDefinitions.remove(innerDefinition);
+    }
 
-	@Override
-	public List<Type> getTypeParameters() {
-		return unmodifiableList(typeParameters);
-	}
+    @Override
+    public String toString() {
+        return toStringHelper(getClass())
+                .add("name", getName())
+                .add("type", getType())
+                .add("isSingleton", isSingleton())
+                .toString();
+    }
 
-	@Override
-	public List<IArgumentDefinition> getConstructorArguments() {
-		return unmodifiableList(constructorArguments);
-	}
+    @Override
+    public String getName() {
+        return name;
+    }
 
-	@Override
-	public List<IComponentDefinition> getInnerComponentDefinitions() {
-		return unmodifiableList(innerComponentDefinitions);
-	}
+    @Override
+    public Class<?> getType() {
+        return type;
+    }
 
-	/**
-	 * Adds a constructor argument to this component definition.
-	 *
-	 * @param argument
-	 *            the constructor argument
-	 */
-	public void addConstructorArgument(IArgumentDefinition argument) {
-		constructorArguments.add(checkNotNull(argument));
-	}
+    @Override
+    public List<Type> getTypeParameters() {
+        return unmodifiableList(typeParameters);
+    }
 
-	/**
-	 * Adds an inner component definition to this component definition.
-	 *
-	 * @param innerDefinition
-	 *            the inner definition
-	 */
-	public void addInnerComponentDefinition(IComponentDefinition innerDefinition) {
-		innerComponentDefinitions.add(checkNotNull(innerDefinition));
-	}
+    @Override
+    public boolean isSingleton() {
+        return isSingleton;
+    }
 
-	/**
-	 * Removes a given inner definition from this component definition. <br />
-	 * <br />
-	 * Can be used by configurators to manipulate component definitions data.
-	 *
-	 * @param innerDefinition
-	 *            the inner definition to be removed
-	 * @return true if the inner definition list contained the specified definition
-	 */
-	public boolean removeInnerComponentDefinition(IComponentDefinition innerDefinition) {
-		return innerComponentDefinitions.remove(innerDefinition);
-	}
+    @Override
+    public List<IArgumentDefinition> getConstructorArguments() {
+        return unmodifiableList(constructorArguments);
+    }
 
-	@Override
-	public String toString() {
-		return toStringHelper(getClass())
-				.add("name", getName())
-				.add("type", getType())
-		        .add("isSingleton", isSingleton())
-		        .toString();
-	}
+    @Override
+    public List<IComponentDefinition> getInnerComponentDefinitions() {
+        return unmodifiableList(innerComponentDefinitions);
+    }
 }

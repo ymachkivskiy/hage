@@ -31,21 +31,20 @@
 
 package org.jage.platform.config.xml.loaders;
 
-import java.util.List;
-
-import static java.lang.String.format;
 
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.XPath;
-
-import static org.dom4j.DocumentHelper.createXPath;
-
 import org.jage.platform.component.definition.ConfigurationException;
 import org.jage.platform.config.xml.ConfigNamespaces;
 import org.jage.platform.config.xml.ConfigTags;
 
+import java.util.List;
+
 import static com.google.common.collect.Iterables.consumingIterable;
+import static java.lang.String.format;
+import static org.dom4j.DocumentHelper.createXPath;
+
 
 /**
  * Document loader which unwraps all block elements. It assumes all inclusions and overrides have already been resolved
@@ -55,31 +54,31 @@ import static com.google.common.collect.Iterables.consumingIterable;
  */
 public class BlockUnwrapper extends AbstractDocumentLoader {
 
-	private static final XPath BLOCKS = initXpath(createXPath(format(
-				"//%s:%s",
-				ConfigNamespaces.DEFAULT.getPrefix(),
-				ConfigTags.BLOCK.toString())));
+    private static final XPath BLOCKS = initXpath(createXPath(format(
+            "//%s:%s",
+            ConfigNamespaces.DEFAULT.getPrefix(),
+            ConfigTags.BLOCK.toString())));
 
-	@Override
-	public Document loadDocument(final String path) throws ConfigurationException {
-		final Document document = getDelegate().loadDocument(path);
-		unwrapAllBlock(document);
-		return document;
-	}
+    @Override
+    public Document loadDocument(final String path) throws ConfigurationException {
+        final Document document = getDelegate().loadDocument(path);
+        unwrapAllBlock(document);
+        return document;
+    }
 
-	@SuppressWarnings("unchecked")
-	private void unwrapAllBlock(final Document document) {
-		for (Element block : selectNodes(BLOCKS, document)) {
-			final Element parent = block.getParent();
+    @SuppressWarnings("unchecked")
+    private void unwrapAllBlock(final Document document) {
+        for(Element block : selectNodes(BLOCKS, document)) {
+            final Element parent = block.getParent();
 
-			// get the index of the block element in its parent and remove it
-			int index = parent.elements().indexOf(block);
-			parent.elements().remove(index);
+            // get the index of the block element in its parent and remove it
+            int index = parent.elements().indexOf(block);
+            parent.elements().remove(index);
 
-			// move all child elements from the block to the parent, respecting relative and absolute order
-			for (Element child : consumingIterable((List<Element>)block.elements())) {
-				parent.elements().add(index++, child);
-			}
-		}
-	}
+            // move all child elements from the block to the parent, respecting relative and absolute order
+            for(Element child : consumingIterable((List<Element>) block.elements())) {
+                parent.elements().add(index++, child);
+            }
+        }
+    }
 }

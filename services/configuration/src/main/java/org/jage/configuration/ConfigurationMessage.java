@@ -31,90 +31,87 @@
 
 package org.jage.configuration;
 
-import java.io.Serializable;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
 
 import org.jage.communication.message.BaseServiceMessage;
 import org.jage.communication.message.ServiceHeaderWithType;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.annotation.concurrent.Immutable;
+import java.io.Serializable;
+
 import static com.google.common.base.Preconditions.checkNotNull;
+
 
 @Immutable
 public class ConfigurationMessage extends BaseServiceMessage<Serializable> {
 
-	/**
-	 * Constructs a new message with the given header and the payload.
-	 *
-	 * @param header
-	 * 		A header that contains metadata for this message.
-	 * @param payload
-	 * 		A payload to transport.
-	 */
-	public ConfigurationMessage(final ServiceHeaderWithType<MessageType> header,
-			@Nullable final Serializable payload) {
-		super(header, payload);
-	}
+    /**
+     * Constructs a new message with the given header and the payload.
+     *
+     * @param header  A header that contains metadata for this message.
+     * @param payload A payload to transport.
+     */
+    public ConfigurationMessage(final ServiceHeaderWithType<MessageType> header,
+            @Nullable final Serializable payload) {
+        super(header, payload);
+    }
 
-	@Override @Nonnull public ServiceHeaderWithType<MessageType> getHeader() {
-		return (ServiceHeaderWithType<MessageType>)super.getHeader();
-	}
+    @Nonnull
+    public static ConfigurationMessage create(@Nonnull final MessageType type, @Nullable final Serializable payload) {
+        return new ConfigurationMessage(ServiceHeaderWithType.create(checkNotNull(type)), payload);
+    }
 
-	/**
-	 * Returns the command that this message represents.
-	 *
-	 * @return a command.
-	 */
-	@Nonnull
-	public MessageType getType() {
-		return getHeader().getType();
-	}
+    @Nonnull
+    public static ConfigurationMessage create(@Nonnull final MessageType type) {
+        return new ConfigurationMessage(ServiceHeaderWithType.create(type), null);
+    }
 
-	@Nonnull
-	public static ConfigurationMessage create(@Nonnull final MessageType type, @Nullable final Serializable payload) {
-		return new ConfigurationMessage(ServiceHeaderWithType.create(checkNotNull(type)), payload);
-	}
+    /**
+     * Constructs a new message with the given header and with no payload.
+     *
+     * @param header A header that contains metadata for this message.
+     * @return a new message.
+     */
+    public static ConfigurationMessage create(@Nonnull final ServiceHeaderWithType<MessageType> header) {
+        return create(header, null);
+    }
 
-	@Nonnull
-	public static ConfigurationMessage create(@Nonnull final MessageType type) {
-		return new ConfigurationMessage(ServiceHeaderWithType.create(type), null);
-	}
+    /**
+     * Constructs a new message with the given header and the payload.
+     *
+     * @param header  A header that contains metadata for this message.
+     * @param payload A payload to transport.
+     * @return a new message.
+     */
+    public static ConfigurationMessage create(@Nonnull final ServiceHeaderWithType<MessageType> header,
+            @Nullable final Serializable payload) {
+        return new ConfigurationMessage(header, payload);
+    }
 
-	/**
-	 * Constructs a new message with the given header and the payload.
-	 *
-	 * @param header
-	 * 		A header that contains metadata for this message.
-	 * @param payload
-	 * 		A payload to transport.
-	 *
-	 * @return a new message.
-	 */
-	public static ConfigurationMessage create(@Nonnull final ServiceHeaderWithType<MessageType> header,
-			@Nullable final Serializable payload) {
-		return new ConfigurationMessage(header, payload);
-	}
+    /**
+     * Returns the command that this message represents.
+     *
+     * @return a command.
+     */
+    @Nonnull
+    public MessageType getType() {
+        return getHeader().getType();
+    }
 
-	/**
-	 * Constructs a new message with the given header and with no payload.
-	 *
-	 * @param header
-	 * 		A header that contains metadata for this message.
-	 *
-	 * @return a new message.
-	 */
-	public static ConfigurationMessage create(@Nonnull final ServiceHeaderWithType<MessageType> header) {
-		return create(header, null);
-	}
+    @Override
+    @Nonnull
+    public ServiceHeaderWithType<MessageType> getHeader() {
+        return (ServiceHeaderWithType<MessageType>) super.getHeader();
+    }
 
-	/**
-	 * A list of available commands (message types).
-	 *
-	 * @author AGH AgE Team
-	 */
-	public static enum MessageType {
-		REQUEST, DISTRIBUTE
-	}
+    /**
+     * A list of available commands (message types).
+     *
+     * @author AGH AgE Team
+     */
+    public static enum MessageType {
+        REQUEST,
+        DISTRIBUTE
+    }
 }

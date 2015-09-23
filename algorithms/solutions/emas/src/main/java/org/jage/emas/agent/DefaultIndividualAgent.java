@@ -31,15 +31,16 @@
 
 package org.jage.emas.agent;
 
-import static java.lang.Math.max;
-
-import javax.inject.Inject;
 
 import org.jage.address.agent.AgentAddressSupplier;
 import org.jage.agent.ActionDrivenAgent;
 import org.jage.solution.ISolution;
 
+import javax.inject.Inject;
+
 import static com.google.common.base.Objects.toStringHelper;
+import static java.lang.Math.max;
+
 
 /**
  * Default implementation of {@link IndividualAgent}.
@@ -48,74 +49,74 @@ import static com.google.common.base.Objects.toStringHelper;
  */
 public class DefaultIndividualAgent extends ActionDrivenAgent implements IndividualAgent {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private double energy;
+    private double energy;
 
-	private ISolution solution;
+    private ISolution solution;
 
-	private double originalFitness;
+    private double originalFitness;
 
-	private double effectiveFitness;
+    private double effectiveFitness;
 
-	@Inject
-	private DefaultIndividualAgent(final AgentAddressSupplier supplier) {
-	    super(supplier);
+    @Inject
+    private DefaultIndividualAgent(final AgentAddressSupplier supplier) {
+        super(supplier);
     }
 
-	@Override
-	public double getEnergy() {
-		return energy;
-	}
+    @Override
+    public IslandAgent getEnvironment() {
+        return (IslandAgent) super.getAgentEnvironment();
+    }
 
-	@Override
-	public void changeEnergyBy(final double energyChange) {
-		energy = max(energy + energyChange, 0.0);
-	}
+    @Override
+    public ISolution getSolution() {
+        return solution;
+    }
 
-	@Override
-	public ISolution getSolution() {
-		return solution;
-	}
+    @Override
+    public void setSolution(final ISolution solution) {
+        this.solution = solution;
+    }
 
-	@Override
-	public void setSolution(final ISolution solution) {
-		this.solution = solution;
-	}
+    @Override
+    public double getEnergy() {
+        return energy;
+    }
 
-	@Override
-	public double getOriginalFitness() {
-	    return originalFitness;
-	}
+    @Override
+    public void changeEnergyBy(final double energyChange) {
+        energy = max(energy + energyChange, 0.0);
+    }
+
+    @Override
+    public double getOriginalFitness() {
+        return originalFitness;
+    }
 
     @Override
     public void setOriginalFitness(final double fitness) {
-	    originalFitness = fitness;
-	    setEffectiveFitness(fitness);
+        originalFitness = fitness;
+        setEffectiveFitness(fitness);
     }
 
     @Override
     public double getEffectiveFitness() {
-	    return effectiveFitness;
+        return effectiveFitness;
     }
 
     @Override
     public void setEffectiveFitness(final double fitness) {
-	    effectiveFitness = fitness;
+        effectiveFitness = fitness;
     }
 
-	@Override
-	public IslandAgent getEnvironment() {
-		return (IslandAgent)super.getAgentEnvironment();
-	}
-
-	@Override
-	public String toString() {
-		return toStringHelper(this)
-				.add("address", getAddress())
-				.add("energy", energy)
-				.add("originalFitness", originalFitness)
-				.add("effectiveFitness", effectiveFitness)
-				.toString();
-	}
+    @Override
+    public String toString() {
+        return toStringHelper(this)
+                .add("address", getAddress())
+                .add("energy", energy)
+                .add("originalFitness", originalFitness)
+                .add("effectiveFitness", effectiveFitness)
+                .toString();
+    }
 }

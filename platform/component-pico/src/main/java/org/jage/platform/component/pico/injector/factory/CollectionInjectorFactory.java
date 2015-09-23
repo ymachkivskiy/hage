@@ -31,9 +31,11 @@
 
 package org.jage.platform.component.pico.injector.factory;
 
+
 import org.jage.platform.component.definition.CollectionDefinition;
 import org.jage.platform.component.pico.injector.CollectionInjector;
 import org.jage.platform.component.pico.injector.Injector;
+
 
 /**
  * Factory for CollectionInjectors.
@@ -41,8 +43,9 @@ import org.jage.platform.component.pico.injector.Injector;
  * @author AGH AgE Team
  */
 final class CollectionInjectorFactory implements InjectorFactory<CollectionDefinition> {
-	@Override
-	public <T> Injector<T> createAdapter(final CollectionDefinition definition) {
-		return new CollectionInjector<T>(definition);
-	}
+
+    @Override
+    public <T> Injector<T> createAdapter(final CollectionDefinition definition) {
+        return new CollectionInjector<T>(definition);
+    }
 }

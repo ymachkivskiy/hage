@@ -32,6 +32,5 @@
 /**
  * Provides agent address interface, default implementation and suppliers.
  */
-@javax.annotation.ParametersAreNonnullByDefault
-package org.jage.address.agent;
+@javax.annotation.ParametersAreNonnullByDefault package org.jage.address.agent;
 

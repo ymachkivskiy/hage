@@ -31,64 +31,61 @@
 
 package org.jage.problem;
 
+
 import org.jage.property.ClassPropertyContainer;
+
 
 /**
  * A parallel problem that is bounded by the following hypercube
- *
+ * <p>
  * <pre>
  * [min, max] x [min, max] x ... x [min, max]
  * </pre>
  *
- * @param <R>
- *            The type of the problem bounds
- *
+ * @param <R> The type of the problem bounds
  * @author AGH AgE Team
  */
 public class ParallelProblem<R> extends ClassPropertyContainer implements IVectorProblem<R> {
 
-	private int dimension;
+    private int dimension;
 
-	private R min;
+    private R min;
 
-	private R max;
+    private R max;
 
-	/**
-	 * Creates a ParallelRoblem with a range of [min, max] and a given dimension.
-	 *
-	 * @param dimension
-	 *            This problem dimension
-	 * @param min
-	 *            This problem lower bound
-	 * @param max
-	 *            This problem upper bound
-	 */
-	public ParallelProblem(int dimension, R min, R max) {
-		this.dimension = dimension;
-		this.min = min;
-		this.max = max;
-	}
+    /**
+     * Creates a ParallelRoblem with a range of [min, max] and a given dimension.
+     *
+     * @param dimension This problem dimension
+     * @param min       This problem lower bound
+     * @param max       This problem upper bound
+     */
+    public ParallelProblem(int dimension, R min, R max) {
+        this.dimension = dimension;
+        this.min = min;
+        this.max = max;
+    }
 
-	@Override
-	public final int getDimension() {
-		return dimension;
-	}
+    @Override
+    public final int getDimension() {
+        return dimension;
+    }
 
-	@Override
-	public final R lowerBound(int atDimension) {
-		checkDimension(atDimension);
-		return min;
-	}
+    @Override
+    public final R lowerBound(int atDimension) {
+        checkDimension(atDimension);
+        return min;
+    }
 
-	@Override
-	public final R upperBound(int atDimension) {
-		checkDimension(atDimension);
-		return max;
-	}
+    @Override
+    public final R upperBound(int atDimension) {
+        checkDimension(atDimension);
+        return max;
+    }
 
-	private void checkDimension(int atDimension) {
-		if (atDimension < 0 || atDimension >= this.dimension) {
-			throw new IllegalArgumentException("Dimension out of range");
-		}
-	}
+    private void checkDimension(int atDimension) {
+        if(atDimension < 0 || atDimension >= this.dimension) {
+            throw new IllegalArgumentException("Dimension out of range");
+        }
+    }
 }

@@ -31,6 +31,7 @@
 
 package org.jage.address.selector;
 
+
 import com.google.common.collect.ImmutableSet;
 import org.jage.address.Address;
 
@@ -40,6 +41,7 @@ import java.util.Set;
 
 import static com.google.common.base.Objects.toStringHelper;
 import static java.util.Objects.requireNonNull;
+
 
 /**
  * The most simple address selector. Always returns the address given in the constructor.

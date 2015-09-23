@@ -26,20 +26,21 @@
  */
 package org.jage.monitoring.supplier.resultprocessor;
 
+
 import java.util.List;
+
 
 /**
  * Processes the result of agent string query.
- * 
- * @author AGH AgE Team
  *
+ * @author AGH AgE Team
  */
 public interface AgentStringQueryResultProcessor {
 
-	/**
-	 * @param list
-	 * @return Returns processed object.
-	 */
-	public Object processResult(List<Object> list);
+    /**
+     * @param list
+     * @return Returns processed object.
+     */
+    public Object processResult(List<Object> list);
 
 }

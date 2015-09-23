@@ -26,75 +26,78 @@
  */
 package org.jage.monitoring.graphite;
 
-import static java.lang.String.format;
-
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.Socket;
 
 import org.jage.monitoring.observer.ObservedData;
 import org.jage.platform.component.IStatefulComponent;
 import org.jage.platform.component.exception.ComponentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import rx.Observer;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.Socket;
+
+import static java.lang.String.format;
+
 
 public class GraphiteObserver implements Observer<ObservedData>, IStatefulComponent {
 
-	private static final Logger log = LoggerFactory.getLogger(GraphiteObserver.class);
+    private static final Logger log = LoggerFactory.getLogger(GraphiteObserver.class);
 
-	private final String host;
+    private final String host;
 
-	private final int port;
+    private final int port;
 
-	private Socket socket;
+    private Socket socket;
 
-	private PrintWriter writer;
+    private PrintWriter writer;
 
-	public GraphiteObserver() {
-		this("localhost", 2003);
+    public GraphiteObserver() {
+        this("localhost", 2003);
     }
 
-	public GraphiteObserver(final String host, final int port) {
-	    this.host = host;
-	    this.port = port;
+    public GraphiteObserver(final String host, final int port) {
+        this.host = host;
+        this.port = port;
     }
 
-	@Override
-	public void init() throws ComponentException {
-		try {
-			socket = new Socket(host, port);
-			writer = new PrintWriter(socket.getOutputStream(), true);
-		} catch (IOException e) {
-			throw new ComponentException(format("Could not connect to carbon at %s:%d - {}", host, port), e);
-		}
-	}
+    @Override
+    public void init() throws ComponentException {
+        try {
+            socket = new Socket(host, port);
+            writer = new PrintWriter(socket.getOutputStream(), true);
+        } catch(IOException e) {
+            throw new ComponentException(format("Could not connect to carbon at %s:%d - {}", host, port), e);
+        }
+    }
 
-	@Override
-	public void onNext(ObservedData data) {
-		if (writer == null) {
-			log.warn("Pushing data to unconnected graphite consumer. Input ignored - the component has to be initialized first");
-		} else {
-			writer.println(format("%s %s %d", data.getName(), data.getData().toString(), data.getTimestamp()/1000));
-			writer.flush();
-		}
-	}
+    @Override
+    public boolean finish() throws ComponentException {
+        try {
+            writer.close();
+            socket.close();
+        } catch(IOException e) {
+            log.error("Error closing network socket", e);
+        }
+        return false;
+    }
 
-	@Override
-	public boolean finish() throws ComponentException {
-		try {
-			writer.close();
-			socket.close();
-		} catch (IOException e) {
-			log.error("Error closing network socket", e);
-		}
-		return false;
-	}
+    @Override
+    public void onCompleted() {
+    }
 
-	@Override
-	public void onCompleted() {}
+    @Override
+    public void onError(Throwable e) {
+    }
 
-	@Override
-	public void onError(Throwable e) {}
+    @Override
+    public void onNext(ObservedData data) {
+        if(writer == null) {
+            log.warn("Pushing data to unconnected graphite consumer. Input ignored - the component has to be initialized first");
+        } else {
+            writer.println(format("%s %s %d", data.getName(), data.getData().toString(), data.getTimestamp() / 1000));
+            writer.flush();
+        }
+    }
 }

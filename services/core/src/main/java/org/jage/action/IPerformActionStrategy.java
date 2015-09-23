@@ -31,7 +31,6 @@
 
 package org.jage.action;
 
-import java.util.Collection;
 
 import org.jage.address.agent.AgentAddress;
 import org.jage.address.selector.BroadcastSelector;
@@ -39,54 +38,48 @@ import org.jage.agent.AgentException;
 import org.jage.agent.IAgent;
 import org.jage.agent.ISimpleAggregate;
 
+import java.util.Collection;
+
+
 /**
  * An interface for all actions implemented as strategies.
- * 
+ *
  * @author AGH AgE Team
  */
 public interface IPerformActionStrategy {
 
-	/**
-	 * Performs initialization steps and validates addresses used in action. This method can be used to perform some
-	 * additional steps before addresses validation, i.e. a new agent can be added to aggregate so that other actions be
-	 * executed on it.
-	 * 
-	 * @param aggregate
-	 *            aggregate which executes action
-	 * @param action
-	 *            single action to validate
-	 * @return collection of agent addresses used in action, if no addresses is used (action has selectors such as
-	 *         {@link BroadcastSelector}, etc.) the empty collection is returned; <code>null</code> is returned when
-	 *         action didn't validate addresses - then a default validation is performed
-	 * @throws AgentException
-	 *             when validation fails.
-	 * 
-	 * @see ActionPhase#INIT
-	 */
-	Collection<AgentAddress> init(ISimpleAggregate aggregate, SingleAction action) throws AgentException;
+    /**
+     * Performs initialization steps and validates addresses used in action. This method can be used to perform some
+     * additional steps before addresses validation, i.e. a new agent can be added to aggregate so that other actions be
+     * executed on it.
+     *
+     * @param aggregate aggregate which executes action
+     * @param action    single action to validate
+     * @return collection of agent addresses used in action, if no addresses is used (action has selectors such as
+     * {@link BroadcastSelector}, etc.) the empty collection is returned; <code>null</code> is returned when
+     * action didn't validate addresses - then a default validation is performed
+     * @throws AgentException when validation fails.
+     * @see ActionPhase#INIT
+     */
+    Collection<AgentAddress> init(ISimpleAggregate aggregate, SingleAction action) throws AgentException;
 
-	/**
-	 * Performs main phase of action ({@link ActionPhase#MAIN}) using data in object of IActionContext type which is in
-	 * event object parameter.
-	 * 
-	 * @param target
-	 *            reference to the target agent, which action will be performed on
-	 * @param context
-	 *            action context
-	 * @throws AgentException
-	 *             when action execution fails.
-	 */
-	void perform(IAgent target, IActionContext context) throws AgentException;
+    /**
+     * Performs main phase of action ({@link ActionPhase#MAIN}) using data in object of IActionContext type which is in
+     * event object parameter.
+     *
+     * @param target  reference to the target agent, which action will be performed on
+     * @param context action context
+     * @throws AgentException when action execution fails.
+     */
+    void perform(IAgent target, IActionContext context) throws AgentException;
 
-	/**
-	 * Executes finalization phase (({@link ActionPhase#FINISH}) which is executed after performing main phase of
-	 * action.
-	 * 
-	 * @param target
-	 *            reference to the target agent, which action will be performed on
-	 * @param context
-	 *            action context
-	 */
-	void finish(IAgent target, IActionContext context);
+    /**
+     * Executes finalization phase (({@link ActionPhase#FINISH}) which is executed after performing main phase of
+     * action.
+     *
+     * @param target  reference to the target agent, which action will be performed on
+     * @param context action context
+     */
+    void finish(IAgent target, IActionContext context);
 
 }

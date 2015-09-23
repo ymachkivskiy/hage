@@ -31,23 +31,23 @@
 
 package org.jage.solution;
 
+
 import java.util.List;
+
 
 /**
  * A type of {@link ISolution} which internal representation is an vector of features.
  *
- * @param <R>
- *            The representation's type.
- *
+ * @param <R> The representation's type.
  * @author AGH AgE Team
  */
 public interface IVectorSolution<R> extends ISolution {
 
-	/**
-	 * Returns solution's internal representation.
-	 *
-	 * @return this solution's representation
-	 */
-	@Override
+    /**
+     * Returns solution's internal representation.
+     *
+     * @return this solution's representation
+     */
+    @Override
     public List<R> getRepresentation();
 }

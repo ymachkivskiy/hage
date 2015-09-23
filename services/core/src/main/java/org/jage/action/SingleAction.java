@@ -31,99 +31,90 @@
 
 package org.jage.action;
 
+
+import com.google.common.base.Objects;
 import org.jage.address.agent.AgentAddress;
 import org.jage.address.selector.AddressSelector;
 
-import com.google.common.base.Objects;
-
 import static com.google.common.base.Preconditions.checkNotNull;
+
 
 /**
  * A single action. It contains a target address selector and an action context. The selector contains addresses on
  * which action will be processed.
- * 
+ *
  * @author AGH AgE Team
- * 
  */
 public class SingleAction extends Action {
 
-	private final AddressSelector<AgentAddress> target;
+    private final AddressSelector<AgentAddress> target;
 
-	/**
-	 * An action context to be processed.
-	 */
-	private final IActionContext context;
+    /**
+     * An action context to be processed.
+     */
+    private final IActionContext context;
 
-	/**
-	 * A name of the action to be executed (appropriate only if context is annotated with more than one action name).
-	 */
-	private final String actionToExecute;
+    /**
+     * A name of the action to be executed (appropriate only if context is annotated with more than one action name).
+     */
+    private final String actionToExecute;
 
-	/**
-	 * Constructs a new single action.
-	 * 
-	 * @param target
-	 *            address selector that will choose target agents of this action.
-	 * @param context
-	 *            this action context.
-	 * 
-	 * @throws NullPointerException
-	 *             if any of {@code target} or {@code context} is null.
-	 */
-	public SingleAction(final AddressSelector<AgentAddress> target, final IActionContext context) {
-		this(target, context, null);
-	}
+    /**
+     * Constructs a new single action.
+     *
+     * @param target  address selector that will choose target agents of this action.
+     * @param context this action context.
+     * @throws NullPointerException if any of {@code target} or {@code context} is null.
+     */
+    public SingleAction(final AddressSelector<AgentAddress> target, final IActionContext context) {
+        this(target, context, null);
+    }
 
-	/**
-	 * Constructs a new single action.
-	 * 
-	 * @param target
-	 *            address selector that will choose target agents of this action.
-	 * @param context
-	 *            this action context.
-	 * @param actionToExecute
-	 *            which action should be executed.
-	 * 
-	 * @throws NullPointerException
-	 *             if any of {@code target} or {@code context} is null.
-	 */
-	public SingleAction(final AddressSelector<AgentAddress> target, final IActionContext context,
-	        final String actionToExecute) {
-		this.target = checkNotNull(target, "Cannot create an action with the null address selector.");
-		this.context = checkNotNull(context, "Context cannot be null.");
-		this.actionToExecute = actionToExecute;
-	}
+    /**
+     * Constructs a new single action.
+     *
+     * @param target          address selector that will choose target agents of this action.
+     * @param context         this action context.
+     * @param actionToExecute which action should be executed.
+     * @throws NullPointerException if any of {@code target} or {@code context} is null.
+     */
+    public SingleAction(final AddressSelector<AgentAddress> target, final IActionContext context,
+            final String actionToExecute) {
+        this.target = checkNotNull(target, "Cannot create an action with the null address selector.");
+        this.context = checkNotNull(context, "Context cannot be null.");
+        this.actionToExecute = actionToExecute;
+    }
 
-	/**
-	 * Returns the target of this action.
-	 * 
-	 * @return the target of this action.
-	 */
-	public AddressSelector<AgentAddress> getTarget() {
-		return target;
-	}
+    /**
+     * Returns the target of this action.
+     *
+     * @return the target of this action.
+     */
+    public AddressSelector<AgentAddress> getTarget() {
+        return target;
+    }
 
-	/**
-	 * Returns the context of this action.
-	 * 
-	 * @return the context of this action.
-	 */
-	public IActionContext getContext() {
-		return context;
-	}
+    /**
+     * Returns the context of this action.
+     *
+     * @return the context of this action.
+     */
+    public IActionContext getContext() {
+        return context;
+    }
 
-	/**
-	 * Returns the name of the action to execute.
-	 * 
-	 * @return the name of the action to execute (possibly {@code null}).
-	 */
-	public String getActionToExecute() {
-		return actionToExecute;
-	}
+    /**
+     * Returns the name of the action to execute.
+     *
+     * @return the name of the action to execute (possibly {@code null}).
+     */
+    public String getActionToExecute() {
+        return actionToExecute;
+    }
 
-	@Override
-	public String toString() {
-		return Objects.toStringHelper(this).add("target", target).add("context", context)
-		        .add("actionToExecute", actionToExecute).toString();
-	}
+    @Override
+    public String toString() {
+        return Objects.toStringHelper(this).add("target", target).add("context", context)
+                .add("actionToExecute", actionToExecute).toString();
+    }
 }

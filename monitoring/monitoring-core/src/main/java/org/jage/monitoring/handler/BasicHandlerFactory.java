@@ -26,29 +26,29 @@
  */
 package org.jage.monitoring.handler;
 
-import java.util.List;
 
 import org.jage.monitoring.observer.ObservedData;
-
 import rx.Observable;
 import rx.schedulers.Timestamped;
 
+import java.util.List;
+
+
 /**
  * Basic handler. Does not perform any data transformation.
- * 
- * @author AGH AgE Team
  *
+ * @author AGH AgE Team
  */
 public class BasicHandlerFactory {
 
-	/**
-	 * Method creates one merged Observable object from the passed list of Observables.
-	 * 
-	 * @param observables
-	 * @param observers
-	 * @param name The name of handler
-	 */
-	public static Observable<ObservedData> create(List<Observable<Timestamped<Object>>> observables, final String name) {
-		return Observable.merge(Handlers.toObservedData(observables, name));
-	}
+    /**
+     * Method creates one merged Observable object from the passed list of Observables.
+     *
+     * @param observables
+     * @param observers
+     * @param name        The name of handler
+     */
+    public static Observable<ObservedData> create(List<Observable<Timestamped<Object>>> observables, final String name) {
+        return Observable.merge(Handlers.toObservedData(observables, name));
+    }
 }

@@ -31,16 +31,17 @@
 
 package org.jage.examples.distributed;
 
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.jage.address.node.NodeAddressSupplier;
 import org.jage.bus.EventBus;
 import org.jage.platform.component.exception.ComponentException;
 import org.jage.services.core.CoreComponent;
 import org.jage.services.core.CoreComponentEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
+
 
 /**
  * This is an example component that uses the communication service to send and receive messages. It simply tries to
@@ -50,74 +51,75 @@ import org.jage.services.core.CoreComponentEvent;
  */
 public class CommunicatingCoreComponent implements CoreComponent {
 
-	private static final Logger log = LoggerFactory.getLogger(CommunicatingCoreComponent.class);
+    private static final Logger log = LoggerFactory.getLogger(CommunicatingCoreComponent.class);
 
-	//private ComponentAddress myAddress;
+    //private ComponentAddress myAddress;
 
-	private static final String NAME = "communicatingCoreComponent";
+    private static final String NAME = "communicatingCoreComponent";
 
-	//@Inject
-	//private CommunicationService communicationService;
+    //@Inject
+    //private CommunicationService communicationService;
 
-	@Inject
-	private NodeAddressSupplier addressProvider;
+    @Inject
+    private NodeAddressSupplier addressProvider;
 
-	@Inject private EventBus eventBus;
+    @Inject
+    private EventBus eventBus;
 
-	@Override
-	public void init() throws ComponentException {
-	//	myAddress = new DefaultComponentAddress(NAME, addressProvider.get());
-	}
+    @Override
+    public void init() throws ComponentException {
+        //	myAddress = new DefaultComponentAddress(NAME, addressProvider.get());
+    }
 
-	@Override
-	public boolean finish() throws ComponentException {
-		// Empty
-		return false;
-	}
+    @Override
+    public boolean finish() throws ComponentException {
+        // Empty
+        return false;
+    }
 
-	@Override
-	public void start() throws ComponentException {
-		eventBus.post(new CoreComponentEvent(CoreComponentEvent.Type.STARTING));
+    @Override
+    public void start() throws ComponentException {
+        eventBus.post(new CoreComponentEvent(CoreComponentEvent.Type.STARTING));
 
-		for (int i = 0; i < 10; i++) {
-	//		final Header<ComponentAddress> header = new DefaultHeader<>(myAddress,
-	//				Selectors.allAddressesOfComponents(NAME));
-	//		final Message<ComponentAddress, String> message = new DefaultMessage<>(header, "Hello world!");
+        for(int i = 0; i < 10; i++) {
+            //		final Header<ComponentAddress> header = new DefaultHeader<>(myAddress,
+            //				Selectors.allAddressesOfComponents(NAME));
+            //		final Message<ComponentAddress, String> message = new DefaultMessage<>(header, "Hello world!");
 
-	//		log.info("Sending message: {}.", message);
-	//		communicationService.send(message);
+            //		log.info("Sending message: {}.", message);
+            //		communicationService.send(message);
 
-			try {
-				Thread.sleep(2000);
-			} catch (final InterruptedException e) {
-				log.error("Interrupted.", e);
-			}
+            try {
+                Thread.sleep(2000);
+            } catch(final InterruptedException e) {
+                log.error("Interrupted.", e);
+            }
 
-	//		final Message<ComponentAddress, Serializable> receivedMessage = communicationService.receive(myAddress);
-	//		log.info("Received message: {}.", receivedMessage);
-		}
+            //		final Message<ComponentAddress, Serializable> receivedMessage = communicationService.receive(myAddress);
+            //		log.info("Received message: {}.", receivedMessage);
+        }
 
-		eventBus.post(new CoreComponentEvent(CoreComponentEvent.Type.STOPPED));
-	}
+        eventBus.post(new CoreComponentEvent(CoreComponentEvent.Type.STOPPED));
+    }
 
-	@Override
-	public void stop() {
-		// Empty
-	}
+    @Override
+    public void pause() {
+        // Empty
+    }
 
-	@Override
-	public void pause() {
-		// Empty
-	}
+    @Override
+    public void resume() {
+        // Empty
+    }
 
-	@Override
-	public void resume() {
-		// Empty
-	}
+    @Override
+    public void stop() {
+        // Empty
+    }
 
-	@Override
-	public void teardownConfiguration() {
-		// Empty
-	}
+    @Override
+    public void teardownConfiguration() {
+        // Empty
+    }
 
 }

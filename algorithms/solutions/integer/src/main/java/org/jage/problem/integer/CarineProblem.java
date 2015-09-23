@@ -31,7 +31,9 @@
 
 package org.jage.problem.integer;
 
+
 import org.jage.problem.NonParallelProblem;
+
 
 /**
  * Defines the default bound for a CarineEvaluator.
@@ -40,10 +42,10 @@ import org.jage.problem.NonParallelProblem;
  */
 public final class CarineProblem extends NonParallelProblem<Integer> {
 
-	/**
-	 * Creates an CarineProblem with default bounds of [0, 0, 1, 0, 1, 1, 0, 0]x[1, 30, 50000, 255, 48, 64, 63, 10].
-	 */
-	public CarineProblem() {
-		super(new Integer[] { 0, 0, 1, 0, 1, 1, 0, 0 }, new Integer[] { 1, 30, 50000, 255, 48, 64, 63, 10 });
-	}
+    /**
+     * Creates an CarineProblem with default bounds of [0, 0, 1, 0, 1, 1, 0, 0]x[1, 30, 50000, 255, 48, 64, 63, 10].
+     */
+    public CarineProblem() {
+        super(new Integer[]{0, 0, 1, 0, 1, 1, 0, 0}, new Integer[]{1, 30, 50000, 255, 48, 64, 63, 10});
+    }
 }

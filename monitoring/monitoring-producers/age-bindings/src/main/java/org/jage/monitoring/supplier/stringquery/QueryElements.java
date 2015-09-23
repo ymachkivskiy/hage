@@ -33,7 +33,9 @@
 
 package org.jage.monitoring.supplier.stringquery;
 
+
 import java.util.List;
+
 
 /**
  * Stores the elements of agent query as list of agent names and list of property names.
@@ -42,59 +44,61 @@ import java.util.List;
  */
 public class QueryElements {
 
-	private List<String> addressList;
-	private List<String> propertyNameList;
-	
-	public QueryElements(List<String> addressList, List<String> propertyNameList){
-		this.addressList = addressList;
-		this.propertyNameList = propertyNameList;
-	}
-	
-	public List<String> getAddressList() {
-		return addressList;
-	}
-	
-	public List<String> getPropertyNameList() {
-		return propertyNameList;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-	    return addressList.size() + propertyNameList.size();
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		QueryElements qe = (QueryElements)obj;
-	    if(addressList.equals(qe.getAddressList()) && propertyNameList.equals(qe.getPropertyNameList())){
-	    	return true;
-	    }else{
-	    	return false;
-	    }
-	}
-	
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder("/");
-		for (String address : addressList) {
-			sb.append(address).append("/");
-		}
-		sb.deleteCharAt(sb.length()-1);
-		if(!propertyNameList.isEmpty()){
-			sb.append("@");
-			for (String propertyName : propertyNameList) {
-				sb.append(propertyName).append(",");
-			}
-			sb.deleteCharAt(sb.length()-1);
-		}
-		return sb.toString();
-	}
+    private List<String> addressList;
+    private List<String> propertyNameList;
+
+    public QueryElements(List<String> addressList, List<String> propertyNameList) {
+        this.addressList = addressList;
+        this.propertyNameList = propertyNameList;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        return addressList.size() + propertyNameList.size();
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        QueryElements qe = (QueryElements) obj;
+        if(addressList.equals(qe.getAddressList()) && propertyNameList.equals(qe.getPropertyNameList())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public List<String> getAddressList() {
+        return addressList;
+    }
+
+    public List<String> getPropertyNameList() {
+        return propertyNameList;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("/");
+        for(String address : addressList) {
+            sb.append(address).append("/");
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        if(!propertyNameList.isEmpty()) {
+            sb.append("@");
+            for(String propertyName : propertyNameList) {
+                sb.append(propertyName).append(",");
+            }
+            sb.deleteCharAt(sb.length() - 1);
+        }
+        return sb.toString();
+    }
 }

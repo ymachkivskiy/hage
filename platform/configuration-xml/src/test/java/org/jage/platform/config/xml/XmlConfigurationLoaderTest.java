@@ -31,21 +31,22 @@
 
 package org.jage.platform.config.xml;
 
-import java.util.Collections;
-import java.util.List;
 
 import org.dom4j.Document;
+import org.jage.platform.component.definition.ConfigurationException;
+import org.jage.platform.component.definition.IComponentDefinition;
+import org.jage.platform.config.xml.loaders.DocumentLoader;
+import org.jage.platform.config.xml.readers.DocumentReader;
 import org.junit.Test;
+
+import java.util.Collections;
+import java.util.List;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-import org.jage.platform.component.definition.ConfigurationException;
-import org.jage.platform.component.definition.IComponentDefinition;
-import org.jage.platform.config.xml.loaders.DocumentLoader;
-import org.jage.platform.config.xml.readers.DocumentReader;
 
 /**
  * Unit tests for ConfigurationLoader.
@@ -54,40 +55,38 @@ import org.jage.platform.config.xml.readers.DocumentReader;
  */
 public class XmlConfigurationLoaderTest {
 
-	private DocumentLoader loader;
+    private final XmlConfigurationLoader configLoader;
+    private DocumentLoader loader;
+    private DocumentReader reader;
 
-	private DocumentReader reader;
+    public XmlConfigurationLoaderTest() throws ConfigurationException {
+        loader = mock(DocumentLoader.class);
+        reader = mock(DocumentReader.class);
+        configLoader = new XmlConfigurationLoader(loader, reader);
+    }
 
-	private final XmlConfigurationLoader configLoader;
+    @Test(expected = IllegalArgumentException.class)
+    public void testCheckSourceIsString() throws ConfigurationException {
+        // given
+        Object source = new Object();
 
-	public XmlConfigurationLoaderTest() throws ConfigurationException {
-		loader = mock(DocumentLoader.class);
-		reader = mock(DocumentReader.class);
-		configLoader = new XmlConfigurationLoader(loader, reader);
-	}
+        // when
+        configLoader.loadConfiguration(source);
+    }
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testCheckSourceIsString() throws ConfigurationException {
-		// given
-		Object source = new Object();
+    @Test
+    public void testWithMocks() throws ConfigurationException {
+        // given
+        String source = "somePath";
+        Document document = mock(Document.class);
+        List<IComponentDefinition> definitions = Collections.emptyList();
+        given(loader.loadDocument(source)).willReturn(document);
+        given(reader.readDocument(document)).willReturn(definitions);
 
-		// when
-		configLoader.loadConfiguration(source);
-	}
+        // when
+        List<IComponentDefinition> loaded = configLoader.loadConfiguration(source);
 
-	@Test
-	public void testWithMocks() throws ConfigurationException {
-		// given
-		String source = "somePath";
-		Document document = mock(Document.class);
-		List<IComponentDefinition> definitions = Collections.emptyList();
-		given(loader.loadDocument(source)).willReturn(document);
-		given(reader.readDocument(document)).willReturn(definitions);
-
-		// when
-		List<IComponentDefinition> loaded = configLoader.loadConfiguration(source);
-
-		// then
-		assertThat(loaded, is(definitions));
-	}
+        // then
+        assertThat(loaded, is(definitions));
+    }
 }

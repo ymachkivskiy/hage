@@ -31,11 +31,6 @@
 
 package org.jage.action.preparers;
 
-import java.util.List;
-
-import static java.util.Collections.singletonList;
-
-import javax.inject.Inject;
 
 import org.jage.action.Action;
 import org.jage.action.IActionContext;
@@ -46,33 +41,36 @@ import org.jage.address.selector.Selectors;
 import org.jage.agent.IAgent;
 import org.jage.strategy.AbstractStrategy;
 
+import javax.inject.Inject;
+import java.util.List;
+
+import static java.util.Collections.singletonList;
+
+
 /**
  * A simple {@link IActionPreparer} that expects a single {@link IActionContext} and build an action upon it.
  *
- * @param <T>
- *            a type of the agent that the preparator operates on.
- *
+ * @param <T> a type of the agent that the preparator operates on.
  * @author AGH AgE Team
  */
 public class SingleActionPreparer<T extends IAgent> extends AbstractStrategy implements IActionPreparer<T> {
 
-	@Inject
-	private IActionContext actionContext;
+    @Inject
+    private IActionContext actionContext;
 
-	@Override
-	public List<Action> prepareActions(final T agent) {
-		final AgentAddress agentAddress = agent.getAddress();
+    @Override
+    public List<Action> prepareActions(final T agent) {
+        final AgentAddress agentAddress = agent.getAddress();
         final ExplicitSelector<AgentAddress> addressSelector = Selectors.singleAddress(agentAddress);
         return singletonList(new SingleAction(addressSelector, actionContext));
-	}
+    }
 
-	/**
-	 * Sets the action context that will be used in the prepared action.
-	 *
-	 * @param actionContext
-	 *            the action context to set
-	 */
-	public void setActionContext(final IActionContext actionContext) {
-		this.actionContext = actionContext;
-	}
+    /**
+     * Sets the action context that will be used in the prepared action.
+     *
+     * @param actionContext the action context to set
+     */
+    public void setActionContext(final IActionContext actionContext) {
+        this.actionContext = actionContext;
+    }
 }

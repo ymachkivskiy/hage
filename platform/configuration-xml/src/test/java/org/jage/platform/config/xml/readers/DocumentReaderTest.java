@@ -31,23 +31,23 @@
 
 package org.jage.platform.config.xml.readers;
 
-import java.util.List;
 
 import org.dom4j.Document;
 import org.dom4j.Element;
+import org.jage.platform.component.definition.ConfigurationException;
+import org.jage.platform.component.definition.IComponentDefinition;
 import org.junit.Test;
+
+import java.util.List;
 
 import static org.dom4j.DocumentHelper.createElement;
 import static org.hamcrest.Matchers.is;
+import static org.jage.platform.config.xml.util.DocumentBuilder.emptyDocument;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-import org.jage.platform.component.definition.ConfigurationException;
-import org.jage.platform.component.definition.IComponentDefinition;
-
-import static org.jage.platform.config.xml.util.DocumentBuilder.emptyDocument;
 
 /**
  * Unit tests for DocumentReader.
@@ -56,34 +56,34 @@ import static org.jage.platform.config.xml.util.DocumentBuilder.emptyDocument;
  */
 public class DocumentReaderTest {
 
-	@Test
-	public void testDelegates() throws ConfigurationException {
-		// given
-		final Element firstElement = createElement("first");
-		final Element secondElement = createElement("second");
+    @Test
+    public void testDelegates() throws ConfigurationException {
+        // given
+        final Element firstElement = createElement("first");
+        final Element secondElement = createElement("second");
 
-		final IComponentDefinition firstDef = mock(IComponentDefinition.class);
-		final IComponentDefinition secondDef = mock(IComponentDefinition.class);
+        final IComponentDefinition firstDef = mock(IComponentDefinition.class);
+        final IComponentDefinition secondDef = mock(IComponentDefinition.class);
 
-		@SuppressWarnings("unchecked")
+        @SuppressWarnings("unchecked")
         final
-		IDefinitionReader<IComponentDefinition> mock = mock(IDefinitionReader.class);
-		given(mock.read(firstElement)).willReturn(firstDef);
-		given(mock.read(secondElement)).willReturn(secondDef);
+        IDefinitionReader<IComponentDefinition> mock = mock(IDefinitionReader.class);
+        given(mock.read(firstElement)).willReturn(firstDef);
+        given(mock.read(secondElement)).willReturn(secondDef);
 
-		final Document document = emptyDocument().build();
-		document.getRootElement().add(firstElement);
-		document.getRootElement().add(secondElement);
+        final Document document = emptyDocument().build();
+        document.getRootElement().add(firstElement);
+        document.getRootElement().add(secondElement);
 
-		final DocumentReader reader = new DocumentReader(mock);
+        final DocumentReader reader = new DocumentReader(mock);
 
-		// when
-		final List<IComponentDefinition> list = reader.readDocument(document);
+        // when
+        final List<IComponentDefinition> list = reader.readDocument(document);
 
-		// then
-		assertNotNull(list);
-		assertThat(list.size(), is(2));
-		assertThat(list.get(0), is(firstDef));
-		assertThat(list.get(1), is(secondDef));
-	}
+        // then
+        assertNotNull(list);
+        assertThat(list.size(), is(2));
+        assertThat(list.get(0), is(firstDef));
+        assertThat(list.get(1), is(secondDef));
+    }
 }

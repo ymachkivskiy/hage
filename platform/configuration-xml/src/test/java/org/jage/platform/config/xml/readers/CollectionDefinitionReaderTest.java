@@ -31,31 +31,31 @@
 
 package org.jage.platform.config.xml.readers;
 
-import java.util.ArrayList;
 
 import org.dom4j.Element;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-
 import org.jage.platform.component.definition.CollectionDefinition;
 import org.jage.platform.component.definition.ConfigurationException;
 import org.jage.platform.component.definition.IArgumentDefinition;
 import org.jage.platform.component.definition.IComponentDefinition;
 import org.jage.platform.config.xml.ConfigAttributes;
 import org.jage.platform.config.xml.ConfigTags;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.ArrayList;
+
+import static org.hamcrest.Matchers.is;
 import static org.jage.platform.config.xml.util.ElementBuilder.SOME_CLASS;
 import static org.jage.platform.config.xml.util.ElementBuilder.SOME_NAME;
 import static org.jage.platform.config.xml.util.ElementBuilder.element;
 import static org.jage.platform.config.xml.util.ElementBuilder.listElement;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+
 
 /**
  * Unit tests for CollectionDefinitionReader.
@@ -63,107 +63,104 @@ import static org.jage.platform.config.xml.util.ElementBuilder.listElement;
  * @author AGH AgE Team
  */
 @RunWith(MockitoJUnitRunner.class)
-public class CollectionDefinitionReaderTest  {
+public class CollectionDefinitionReaderTest {
 
-	@Mock
-	@SuppressWarnings("unused")
-	private IDefinitionReader<IArgumentDefinition> argumentReader;
-
-	@Mock
-	@SuppressWarnings("unused")
-	private IDefinitionReader<IComponentDefinition> instanceReader;
-
-	@SuppressWarnings("rawtypes")
+    @SuppressWarnings("rawtypes")
     private final Class<ArrayList> collectionClass = ArrayList.class;
+    @InjectMocks
+    private final CollectionDefinitionReader reader = new CollectionDefinitionReader(collectionClass);
+    @Mock
+    @SuppressWarnings("unused")
+    private IDefinitionReader<IArgumentDefinition> argumentReader;
+    @Mock
+    @SuppressWarnings("unused")
+    private IDefinitionReader<IComponentDefinition> instanceReader;
 
-	@InjectMocks
-	private final CollectionDefinitionReader reader = new CollectionDefinitionReader(collectionClass);
+    @Test
+    public void testValidDefinition() throws ConfigurationException {
+        // given
+        final Element element = listElement().build();
 
-	@Test
-	public void testValidDefinition() throws ConfigurationException {
-		// given
-		final Element element = listElement().build();
+        // when
+        final CollectionDefinition definition = reader.read(element);
 
-		// when
-		final CollectionDefinition definition = reader.read(element);
+        // then
+        assertNotNull(definition);
+        assertThat(definition.getName(), is(SOME_NAME));
+        assertEquals(collectionClass, definition.getType());
+        assertEquals(String.class, definition.getElementsType());
+        assertThat(definition.isSingleton(), is(true));
+    }
 
-		// then
-		assertNotNull(definition);
-		assertThat(definition.getName(), is(SOME_NAME));
-		assertEquals(collectionClass, definition.getType());
-		assertEquals(String.class, definition.getElementsType());
-		assertThat(definition.isSingleton(), is(true));
-	}
+    @Test(expected = ConfigurationException.class)
+    public void testNameAttributeIsRequired() throws ConfigurationException {
+        // given
+        final Element element = element(ConfigTags.LIST)
+                .build();
 
-	@Test(expected = ConfigurationException.class)
-	public void testNameAttributeIsRequired() throws ConfigurationException {
-		// given
-		final Element element = element(ConfigTags.LIST)
-				.build();
+        // when
+        reader.read(element);
+    }
 
-		// when
-		reader.read(element);
-	}
+    @Test(expected = ConfigurationException.class)
+    public void testNameAttributeIsNotEmpty() throws ConfigurationException {
+        // given
+        final Element element = element(ConfigTags.LIST)
+                .withAttribute(ConfigAttributes.NAME, "")
+                .build();
 
-	@Test(expected = ConfigurationException.class)
-	public void testNameAttributeIsNotEmpty() throws ConfigurationException {
-		// given
-		final Element element = element(ConfigTags.LIST)
-				.withAttribute(ConfigAttributes.NAME, "")
-				.build();
+        // when
+        reader.read(element);
+    }
 
-		// when
-		reader.read(element);
-	}
+    @Test(expected = ConfigurationException.class)
+    public void testValueTypeAttributeIsRequired() throws ConfigurationException {
+        // given
+        final Element element = element(ConfigTags.LIST)
+                .withAttribute(ConfigAttributes.NAME, SOME_NAME)
+                .build();
 
-	@Test(expected = ConfigurationException.class)
-	public void testValueTypeAttributeIsRequired() throws ConfigurationException {
-		// given
-		final Element element = element(ConfigTags.LIST)
-				.withAttribute(ConfigAttributes.NAME, SOME_NAME)
-				.build();
+        // when
+        final CollectionDefinition definition = reader.read(element);
 
-		// when
-		final CollectionDefinition definition = reader.read(element);
+        // then
+        assertEquals(Object.class, definition.getElementsType());
+    }
 
-		// then
-		assertEquals(Object.class, definition.getElementsType());
-	}
+    @Test(expected = ConfigurationException.class)
+    public void testValueTypeAttributeIsNotEmpty() throws ConfigurationException {
+        // given
+        final Element element = element(ConfigTags.LIST)
+                .withAttribute(ConfigAttributes.NAME, SOME_NAME)
+                .withAttribute(ConfigAttributes.VALUE_TYPE, "")
+                .build();
 
-	@Test(expected = ConfigurationException.class)
-	public void testValueTypeAttributeIsNotEmpty() throws ConfigurationException {
-		// given
-		final Element element = element(ConfigTags.LIST)
-				.withAttribute(ConfigAttributes.NAME, SOME_NAME)
-				.withAttribute(ConfigAttributes.VALUE_TYPE, "")
-				.build();
+        // when
+        reader.read(element);
+    }
 
-		// when
-		reader.read(element);
-	}
+    @Test(expected = ConfigurationException.class)
+    public void testSingletonAttributeIsRequired() throws ConfigurationException {
+        // given
+        final Element element = element(ConfigTags.LIST)
+                .withAttribute(ConfigAttributes.NAME, SOME_NAME)
+                .withAttribute(ConfigAttributes.VALUE_TYPE, SOME_CLASS)
+                .build();
 
-	@Test(expected = ConfigurationException.class)
-	public void testSingletonAttributeIsRequired() throws ConfigurationException {
-		// given
-		final Element element = element(ConfigTags.LIST)
-				.withAttribute(ConfigAttributes.NAME, SOME_NAME)
-				.withAttribute(ConfigAttributes.VALUE_TYPE, SOME_CLASS)
-				.build();
+        // when
+        reader.read(element);
+    }
 
-		// when
-		reader.read(element);
-	}
+    @Test(expected = ConfigurationException.class)
+    public void testSingletonAttributeIsNotEmpty() throws ConfigurationException {
+        // given
+        final Element element = element(ConfigTags.LIST)
+                .withAttribute(ConfigAttributes.NAME, SOME_NAME)
+                .withAttribute(ConfigAttributes.VALUE_TYPE, SOME_CLASS)
+                .withAttribute(ConfigAttributes.IS_SINGLETON, "")
+                .build();
 
-	@Test(expected = ConfigurationException.class)
-	public void testSingletonAttributeIsNotEmpty() throws ConfigurationException {
-		// given
-		final Element element = element(ConfigTags.LIST)
-				.withAttribute(ConfigAttributes.NAME, SOME_NAME)
-				.withAttribute(ConfigAttributes.VALUE_TYPE, SOME_CLASS)
-				.withAttribute(ConfigAttributes.IS_SINGLETON, "")
-				.build();
-
-		// when
-		reader.read(element);
-	}
+        // when
+        reader.read(element);
+    }
 }

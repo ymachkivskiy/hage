@@ -31,12 +31,13 @@
 
 package org.jage.genetic.action;
 
+
+import org.jage.action.IActionContext;
 import org.junit.Assert;
 import org.junit.Test;
 
-import org.jage.action.IActionContext;
-
 import static org.jage.genetic.action.PreselectionActionContext.Properties.PRESELECTION_ACTION;
+
 
 /**
  * Test for {@link PreselectionActionContext}.
@@ -45,17 +46,17 @@ import static org.jage.genetic.action.PreselectionActionContext.Properties.PRESE
  */
 public class PreselectionActionContextTest {
 
-	@Test
-	public void shouldImplementActionContext() {
-		// given
-		PreselectionActionContext context = new PreselectionActionContext();
+    @Test
+    public void shouldImplementActionContext() {
+        // given
+        PreselectionActionContext context = new PreselectionActionContext();
 
-		// then
-		Assert.assertTrue(context instanceof IActionContext);
-	}
+        // then
+        Assert.assertTrue(context instanceof IActionContext);
+    }
 
-	@Test
-	public void testActionName() {
-		Assert.assertEquals("preselectionAction", PRESELECTION_ACTION);
-	}
+    @Test
+    public void testActionName() {
+        Assert.assertEquals("preselectionAction", PRESELECTION_ACTION);
+    }
 }

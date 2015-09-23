@@ -31,12 +31,13 @@
 
 package org.jage.genetic.preselection;
 
-import javax.inject.Inject;
 
+import org.jage.random.IIntRandomGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.jage.random.IIntRandomGenerator;
+import javax.inject.Inject;
+
 
 /**
  * Preselect strategy. Tournament preselect implementation.
@@ -45,24 +46,24 @@ import org.jage.random.IIntRandomGenerator;
  */
 public final class TournamentPreselection extends AbstractPreselection {
 
-	private static final Logger LOG = LoggerFactory.getLogger(TournamentPreselection.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TournamentPreselection.class);
 
-	@Inject
-	private IIntRandomGenerator rand;
+    @Inject
+    private IIntRandomGenerator rand;
 
-	@Override
-	protected int[] getPreselectedIndices(final double[] values) {
-		final int n = values.length;
-		final int[] indices = new int[n];
+    @Override
+    protected int[] getPreselectedIndices(final double[] values) {
+        final int n = values.length;
+        final int[] indices = new int[n];
 
-		for (int i = 0; i < n; i++) {
-			final int first = rand.nextInt(n);
-			final int second = rand.nextInt(n);
-			indices[i] = values[first] > values[second] ? first : second;
-		}
+        for(int i = 0; i < n; i++) {
+            final int first = rand.nextInt(n);
+            final int second = rand.nextInt(n);
+            indices[i] = values[first] > values[second] ? first : second;
+        }
 
-		LOG.debug("Tournament resulted in indices {}", indices);
+        LOG.debug("Tournament resulted in indices {}", indices);
 
-		return indices;
-	}
+        return indices;
+    }
 }

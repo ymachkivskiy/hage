@@ -31,27 +31,27 @@
 
 package org.jage.platform.config.xml.loaders;
 
-import org.dom4j.Document;
 
+import org.dom4j.Document;
 import org.jage.platform.component.definition.ConfigurationException;
 import org.jage.util.io.ResourceLoader;
+
 
 /**
  * Interface from loading a DOM document from some resource path. It is intended to be chained as consecutive decorators
  * applying changes to the resulting tree.
  *
- * @see ResourceLoader
- *
  * @author AGH AgE Team
+ * @see ResourceLoader
  */
 public interface DocumentLoader {
 
-	/**
-	 * Loads a Document from the given resource path.
-	 *
-	 * @param path the path to the resource
-	 * @return a DOM Document
-	 * @throws ConfigurationException if an error happens during the loading
-	 */
-	Document loadDocument(String path) throws ConfigurationException;
+    /**
+     * Loads a Document from the given resource path.
+     *
+     * @param path the path to the resource
+     * @return a DOM Document
+     * @throws ConfigurationException if an error happens during the loading
+     */
+    Document loadDocument(String path) throws ConfigurationException;
 }

@@ -26,109 +26,107 @@
  */
 package org.jage.monitoring.visualization.storage.mongodb;
 
-import static com.google.common.collect.Lists.newLinkedList;
-
-import java.net.UnknownHostException;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-
-import org.jage.monitoring.visualization.storage.StorageDescription;
-import org.jage.monitoring.visualization.storage.VisualData;
-import org.jage.monitoring.visualization.storage.element.VisualDataStorage;
-import org.jage.monitoring.visualization.storage.mongodb.config.MongoDBConfig;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import org.jage.monitoring.visualization.storage.StorageDescription;
+import org.jage.monitoring.visualization.storage.VisualData;
+import org.jage.monitoring.visualization.storage.element.VisualDataStorage;
+import org.jage.monitoring.visualization.storage.mongodb.config.MongoDBConfig;
+
+import java.net.UnknownHostException;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+
+import static com.google.common.collect.Lists.newLinkedList;
+
 
 /**
- *  
- * 
  * @author AGH AgE Team
- *
  */
 public class VisualDataStorageMongo implements VisualDataStorage {
 
-	private String label;
+    private String label;
 
-	private StorageDescription storageDescription;
+    private StorageDescription storageDescription;
 
-	private String tableName;
+    private String tableName;
 
-	private DB base = null;
+    private DB base = null;
 
-	private DBCollection table = null;
+    private DBCollection table = null;
 
-	public VisualDataStorageMongo(StorageDescription storageDescription) {
-		this.label = storageDescription.toString();
-		this.storageDescription = storageDescription;
-		StringBuilder sb = new StringBuilder();
-		sb.append(storageDescription.getComputationType()).append("_")
-		        .append(storageDescription.getComputationInstance()).append("_")
-		        .append(storageDescription.getGathererId());
-		this.tableName = sb.toString();
-		try {
-			base = MongoDBConfig.getMongoBase();
-			table = base.getCollection(tableName);
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Override
-	public synchronized void save(VisualData data) {
-		BasicDBObject document = new BasicDBObject();
-		document.put("value", data.getData());
-		document.put("timestamp", data.getTimestamp());
-		table.insert(document);
-	}
-
-	
-	@Override
-	public List<VisualData> getYoungerThan(Date date) {
-		BasicDBObject query = new BasicDBObject();
-		query.put("timestamp", new BasicDBObject("$gt", date.getTime()));
-		DBCursor cursor = table.find(query);
-		List<VisualData> result = newLinkedList();
-		while (cursor.hasNext()) {
-			DBObject entry = cursor.next();
-			Double value = (Double)entry.get("value");
-			Long timestamp = (Long)entry.get("timestamp");
-			result.add(new VisualData(timestamp, value));
-		}
-		
-		return result;
-	}
-
-	@Override
-	public StorageDescription getStorageDescription() {
-		return storageDescription;
-	}
-	
-	@Override
-	public String toString() {
-		return label;
-	}
-
-	@Override
-    public Collection<VisualData> all() {
-		DBCursor cursor = table.find();
-		List<VisualData> result = newLinkedList();
-		while (cursor.hasNext()) {
-			DBObject entry = cursor.next();
-			result.add(new VisualData((Long)entry.get("timestamp"), (Double)entry.get("value")));
-		}
-		return result;
+    public VisualDataStorageMongo(StorageDescription storageDescription) {
+        this.label = storageDescription.toString();
+        this.storageDescription = storageDescription;
+        StringBuilder sb = new StringBuilder();
+        sb.append(storageDescription.getComputationType()).append("_")
+                .append(storageDescription.getComputationInstance()).append("_")
+                .append(storageDescription.getGathererId());
+        this.tableName = sb.toString();
+        try {
+            base = MongoDBConfig.getMongoBase();
+            table = base.getCollection(tableName);
+        } catch(UnknownHostException e) {
+            e.printStackTrace();
+        }
     }
 
-	@Override
+    @Override
+    public synchronized void save(VisualData data) {
+        BasicDBObject document = new BasicDBObject();
+        document.put("value", data.getData());
+        document.put("timestamp", data.getTimestamp());
+        table.insert(document);
+    }
+
+
+    @Override
+    public List<VisualData> getYoungerThan(Date date) {
+        BasicDBObject query = new BasicDBObject();
+        query.put("timestamp", new BasicDBObject("$gt", date.getTime()));
+        DBCursor cursor = table.find(query);
+        List<VisualData> result = newLinkedList();
+        while(cursor.hasNext()) {
+            DBObject entry = cursor.next();
+            Double value = (Double) entry.get("value");
+            Long timestamp = (Long) entry.get("timestamp");
+            result.add(new VisualData(timestamp, value));
+        }
+
+        return result;
+    }
+
+    @Override
+    public StorageDescription getStorageDescription() {
+        return storageDescription;
+    }
+
+    @Override
+    public String toString() {
+        return label;
+    }
+
+    @Override
+    public Collection<VisualData> all() {
+        DBCursor cursor = table.find();
+        List<VisualData> result = newLinkedList();
+        while(cursor.hasNext()) {
+            DBObject entry = cursor.next();
+            result.add(new VisualData((Long) entry.get("timestamp"), (Double) entry.get("value")));
+        }
+        return result;
+    }
+
+    @Override
     public VisualData get(String key) {
-		// TODO: consider implement this method which returns value (VisualData object)
-		// based on passed key. The key should be considered as timestamp is VisualData.
-		// But so far, we don't need it.
-	    return null;
+        // TODO: consider implement this method which returns value (VisualData object)
+        // based on passed key. The key should be considered as timestamp is VisualData.
+        // But so far, we don't need it.
+        return null;
     }
 }

@@ -31,104 +31,96 @@
 
 package org.jage.communication.message;
 
-import java.io.Serializable;
+
+import com.google.common.base.Objects.ToStringHelper;
+import org.jage.address.Address;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
-
-import org.jage.address.Address;
-
-import com.google.common.base.Objects.ToStringHelper;
+import java.io.Serializable;
 
 import static com.google.common.base.Objects.toStringHelper;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+
 /**
  * This class provides a default implementation of {@link Message}.
  *
- * @param <A>
- * 		An address type of a sender and a receiver
- * @param <T>
- * 		A type of the payload transported within this message.
+ * @param <A> An address type of a sender and a receiver
+ * @param <T> A type of the payload transported within this message.
  * @author AGH AgE Team
  */
 @Immutable
 public class SimpleMessage<A extends Address, T extends Serializable> implements Message<A, T> {
 
-	private static final long serialVersionUID = 2037459335733049533L;
+    private static final long serialVersionUID = 2037459335733049533L;
 
-	private final Header<A> header;
+    private final Header<A> header;
 
-	@Nullable
-	private final T payload;
+    @Nullable
+    private final T payload;
 
-	/**
-	 * Constructs a new message with the given header and the payload.
-	 *
-	 * @param header
-	 * 		A header that contains metadata for this message.
-	 * @param payload
-	 * 		A payload to transport.
-	 */
-	private SimpleMessage(final Header<A> header, @Nullable final T payload) {
-		this.header = checkNotNull(header);
-		this.payload = payload;
-	}
+    /**
+     * Constructs a new message with the given header and with no payload.
+     *
+     * @param header A header that contains metadata for this message.
+     */
+    private SimpleMessage(final Header<A> header) {
+        this(header, null);
+    }
 
-	/**
-	 * Constructs a new message with the given header and with no payload.
-	 *
-	 * @param header
-	 * 		A header that contains metadata for this message.
-	 */
-	private SimpleMessage(final Header<A> header) {
-		this(header, null);
-	}
+    /**
+     * Constructs a new message with the given header and the payload.
+     *
+     * @param header  A header that contains metadata for this message.
+     * @param payload A payload to transport.
+     */
+    private SimpleMessage(final Header<A> header, @Nullable final T payload) {
+        this.header = checkNotNull(header);
+        this.payload = payload;
+    }
 
-	/**
-	 * Constructs a new message with the given header and the payload.
-	 *
-	 * @param header
-	 * 		A header that contains metadata for this message.
-	 * @param payload
-	 * 		A payload to transport.
-	 * @return a new message.
-	 */
-	public static <V extends Address, Z extends Serializable> SimpleMessage<V, Z> create(final Header<V> header,
-			@Nullable final Z payload) {
-		return new SimpleMessage<>(header, payload);
-	}
+    /**
+     * Constructs a new message with the given header and the payload.
+     *
+     * @param header  A header that contains metadata for this message.
+     * @param payload A payload to transport.
+     * @return a new message.
+     */
+    public static <V extends Address, Z extends Serializable> SimpleMessage<V, Z> create(final Header<V> header,
+            @Nullable final Z payload) {
+        return new SimpleMessage<>(header, payload);
+    }
 
-	/**
-	 * Constructs a new message with the given header and with no payload.
-	 *
-	 * @param header
-	 * 		A header that contains metadata for this message.
-	 * @return a new message.
-	 */
-	public static <V extends Address, Z extends Serializable> SimpleMessage<V, Z> create(final Header<V> header) {
-		return new SimpleMessage<>(header);
-	}
+    /**
+     * Constructs a new message with the given header and with no payload.
+     *
+     * @param header A header that contains metadata for this message.
+     * @return a new message.
+     */
+    public static <V extends Address, Z extends Serializable> SimpleMessage<V, Z> create(final Header<V> header) {
+        return new SimpleMessage<>(header);
+    }
 
-	@Override
-	@Nonnull
-	public Header<A> getHeader() {
-		return header;
-	}
+    @Override
+    @Nonnull
+    public Header<A> getHeader() {
+        return header;
+    }
 
-	@Override
-	@Nullable
-	public T getPayload() {
-		return payload;
-	}
+    @Override
+    @Nullable
+    public T getPayload() {
+        return payload;
+    }
 
-	@Override
-	public String toString() {
-		final ToStringHelper helper = toStringHelper(this).add("header", header);
-		if (payload != null) {
-			helper.add("payload-class", payload.getClass().getSimpleName());
-		}
-		return helper.toString();
-	}
+    @Override
+    public String toString() {
+        final ToStringHelper helper = toStringHelper(this).add("header", header);
+        if(payload != null) {
+            helper.add("payload-class", payload.getClass().getSimpleName());
+        }
+        return helper.toString();
+    }
 }

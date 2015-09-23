@@ -39,8 +39,8 @@ package org.jage.variation.recombination.realvalued;
  */
 public final class AverageRecombine extends DoubleAbstractContinuousRecombine {
 
-	@Override
-	protected double doRecombine(double a, double b) {
-		return 0.5 * (a + b);
-	}
+    @Override
+    protected double doRecombine(double a, double b) {
+        return 0.5 * (a + b);
+    }
 }

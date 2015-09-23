@@ -31,29 +31,31 @@
 
 package org.jage.evaluation.binary;
 
+
+import it.unimi.dsi.fastutil.booleans.BooleanList;
 import org.jage.evaluation.ISolutionEvaluator;
 import org.jage.property.ClassPropertyContainer;
 import org.jage.solution.IVectorSolution;
 
-import it.unimi.dsi.fastutil.booleans.BooleanList;
 
 /**
  * CountProblem - counts set bits in solution.
  *
  * @author AGH AgE Team
  */
-public final class CountEvaluator extends ClassPropertyContainer implements ISolutionEvaluator<IVectorSolution<Boolean>, Double> {
+public final class CountEvaluator extends ClassPropertyContainer
+        implements ISolutionEvaluator<IVectorSolution<Boolean>, Double> {
 
-	@Override
-	public Double evaluate(IVectorSolution<Boolean> solution) {
-		BooleanList representation = (BooleanList)solution.getRepresentation();
+    @Override
+    public Double evaluate(IVectorSolution<Boolean> solution) {
+        BooleanList representation = (BooleanList) solution.getRepresentation();
 
-		int count = 0;
-		for (int i = 0, n = representation.size(); i < n; i++) {
-			if (representation.getBoolean(i)) {
-				count++;
-			}
-		}
-		return (double)count;
-	}
+        int count = 0;
+        for(int i = 0, n = representation.size(); i < n; i++) {
+            if(representation.getBoolean(i)) {
+                count++;
+            }
+        }
+        return (double) count;
+    }
 }

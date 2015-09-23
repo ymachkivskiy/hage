@@ -31,8 +31,8 @@
 
 package org.jage.platform.config.xml.readers;
 
-import org.dom4j.Element;
 
+import org.dom4j.Element;
 import org.jage.platform.component.definition.ConfigurationException;
 import org.jage.platform.component.definition.IArgumentDefinition;
 import org.jage.platform.component.definition.ValueDefinition;
@@ -41,6 +41,7 @@ import static org.jage.platform.config.xml.ConfigAttributes.TYPE;
 import static org.jage.platform.config.xml.ConfigUtils.getRequiredAttribute;
 import static org.jage.platform.config.xml.ConfigUtils.toClass;
 
+
 /**
  * Reader for value definitions. Intended to process {@code <value>} tags.
  *
@@ -48,10 +49,10 @@ import static org.jage.platform.config.xml.ConfigUtils.toClass;
  */
 public class ValueDefinitionReader implements IDefinitionReader<IArgumentDefinition> {
 
-	@Override
+    @Override
     public ValueDefinition read(final Element element) throws ConfigurationException {
-		final String type = getRequiredAttribute(element, TYPE);
-		final String value = element.getText();
-		return new ValueDefinition(toClass(type), value);
+        final String type = getRequiredAttribute(element, TYPE);
+        final String value = element.getText();
+        return new ValueDefinition(toClass(type), value);
     }
 }

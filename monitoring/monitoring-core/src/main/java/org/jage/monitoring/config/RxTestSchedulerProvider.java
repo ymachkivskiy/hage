@@ -26,19 +26,21 @@
  */
 package org.jage.monitoring.config;
 
+
 import rx.Scheduler;
 import rx.schedulers.Schedulers;
 
+
 public class RxTestSchedulerProvider implements RxSchedulerProvider {
 
-	private Scheduler rxSceduler;
-	
-	public RxTestSchedulerProvider(){
-		this.rxSceduler = Schedulers.test();
-	}
-	
-	@Override
-	public Scheduler getScheduler() {
-		return rxSceduler;
-	}
+    private Scheduler rxSceduler;
+
+    public RxTestSchedulerProvider() {
+        this.rxSceduler = Schedulers.test();
+    }
+
+    @Override
+    public Scheduler getScheduler() {
+        return rxSceduler;
+    }
 }

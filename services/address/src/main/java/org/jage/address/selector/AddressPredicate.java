@@ -30,20 +30,19 @@
  */
 package org.jage.address.selector;
 
-import java.io.Serializable;
-
-import org.jage.address.Address;
 
 import com.google.common.base.Predicate;
+import org.jage.address.Address;
+
+import java.io.Serializable;
+
 
 /**
  * A serializable predicate to use in address selectors.
  *
- * @param <T>
- * 		a type of the address.
- *
+ * @param <T> a type of the address.
  * @author AGH AgE Team
  */
 public interface AddressPredicate<T extends Address> extends Predicate<T>, Serializable {
-	// Empty
+    // Empty
 }

@@ -31,10 +31,14 @@
 
 package org.jage.platform.config.xml.readers;
 
-import java.util.List;
-import java.util.Map;
 
 import org.dom4j.Element;
+import org.jage.platform.component.definition.ComponentDefinition;
+import org.jage.platform.component.definition.ConfigurationException;
+import org.jage.platform.component.definition.IArgumentDefinition;
+import org.jage.platform.component.definition.IComponentDefinition;
+import org.jage.platform.config.xml.ConfigAttributes;
+import org.jage.platform.config.xml.ConfigTags;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,28 +47,17 @@ import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.List;
+import java.util.Map;
+
 import static org.hamcrest.Matchers.is;
+import static org.jage.platform.config.xml.util.ElementBuilder.*;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-import org.jage.platform.component.definition.ComponentDefinition;
-import org.jage.platform.component.definition.ConfigurationException;
-import org.jage.platform.component.definition.IArgumentDefinition;
-import org.jage.platform.component.definition.IComponentDefinition;
-import org.jage.platform.config.xml.ConfigAttributes;
-import org.jage.platform.config.xml.ConfigTags;
-
-import static org.jage.platform.config.xml.util.ElementBuilder.EMPTY_STRING;
-import static org.jage.platform.config.xml.util.ElementBuilder.SOME_CLASS;
-import static org.jage.platform.config.xml.util.ElementBuilder.SOME_NAME;
-import static org.jage.platform.config.xml.util.ElementBuilder.anyElement;
-import static org.jage.platform.config.xml.util.ElementBuilder.componentElement;
-import static org.jage.platform.config.xml.util.ElementBuilder.constructorElement;
-import static org.jage.platform.config.xml.util.ElementBuilder.element;
-import static org.jage.platform.config.xml.util.ElementBuilder.propertyElement;
 
 /**
  * Unit tests for ComponentDefinitionReader.
@@ -74,201 +67,199 @@ import static org.jage.platform.config.xml.util.ElementBuilder.propertyElement;
 @RunWith(MockitoJUnitRunner.class)
 public class ComponentDefinitionReaderTest {
 
-	@Mock
-	private IDefinitionReader<IArgumentDefinition> argumentReader;
+    @InjectMocks
+    private final ComponentDefinitionReader reader = new ComponentDefinitionReader();
+    @Mock
+    private IDefinitionReader<IArgumentDefinition> argumentReader;
+    @Mock
+    private IDefinitionReader<IComponentDefinition> instanceReader;
 
-	@Mock
-	private IDefinitionReader<IComponentDefinition> instanceReader;
-
-	@InjectMocks
-	private final ComponentDefinitionReader reader = new ComponentDefinitionReader();
-
-	@Before
-	public void setup() throws ConfigurationException {
-	    final IArgumentDefinition value = mock(IArgumentDefinition.class);
-		given(argumentReader.read(Matchers.any(Element.class))).willReturn(value);
-		final IComponentDefinition instance = mock(IComponentDefinition.class);
-		given(instanceReader.read(Matchers.any(Element.class))).willReturn(instance);
+    @Before
+    public void setup() throws ConfigurationException {
+        final IArgumentDefinition value = mock(IArgumentDefinition.class);
+        given(argumentReader.read(Matchers.any(Element.class))).willReturn(value);
+        final IComponentDefinition instance = mock(IComponentDefinition.class);
+        given(instanceReader.read(Matchers.any(Element.class))).willReturn(instance);
     }
 
-	@Test
-	public void testValidBasicDefinition() throws ConfigurationException {
-		// given
-		final Element element = componentElement().build();
+    @Test
+    public void testValidBasicDefinition() throws ConfigurationException {
+        // given
+        final Element element = componentElement().build();
 
-		// when
-		final ComponentDefinition definition = reader.read(element);
+        // when
+        final ComponentDefinition definition = reader.read(element);
 
-		// then
-		assertNotNull(definition);
-		assertThat(definition.getName(), is(SOME_NAME));
-		assertThat(definition.getType(), is(Object.class));
-		assertThat(definition.isSingleton(), is(true));
-		assertTrue(definition.getConstructorArguments().isEmpty());
-		assertTrue(definition.getPropertyArguments().isEmpty());
-		assertTrue(definition.getInnerComponentDefinitions().isEmpty());
-	}
+        // then
+        assertNotNull(definition);
+        assertThat(definition.getName(), is(SOME_NAME));
+        assertThat(definition.getType(), is(Object.class));
+        assertThat(definition.isSingleton(), is(true));
+        assertTrue(definition.getConstructorArguments().isEmpty());
+        assertTrue(definition.getPropertyArguments().isEmpty());
+        assertTrue(definition.getInnerComponentDefinitions().isEmpty());
+    }
 
-	@Test(expected = ConfigurationException.class)
-	public void testNameAttributeIsRequired() throws ConfigurationException {
-		// given
-		final Element element = element(ConfigTags.COMPONENT)
-				.build();
+    @Test(expected = ConfigurationException.class)
+    public void testNameAttributeIsRequired() throws ConfigurationException {
+        // given
+        final Element element = element(ConfigTags.COMPONENT)
+                .build();
 
-		// when
-		reader.read(element);
-	}
+        // when
+        reader.read(element);
+    }
 
-	@Test(expected = ConfigurationException.class)
-	public void testNameAttributeisNotEmpty() throws ConfigurationException {
-		// given
-		final Element element = element(ConfigTags.COMPONENT)
-				.withAttribute(ConfigAttributes.NAME, EMPTY_STRING)
-				.build();
+    @Test(expected = ConfigurationException.class)
+    public void testNameAttributeisNotEmpty() throws ConfigurationException {
+        // given
+        final Element element = element(ConfigTags.COMPONENT)
+                .withAttribute(ConfigAttributes.NAME, EMPTY_STRING)
+                .build();
 
-		// when
-		reader.read(element);
-	}
+        // when
+        reader.read(element);
+    }
 
-	@Test(expected = ConfigurationException.class)
-	public void testClassAttributeIsRequired() throws ConfigurationException {
-		// given
-		final Element element = element(ConfigTags.COMPONENT)
-				.withAttribute(ConfigAttributes.NAME, SOME_NAME)
-				.build();
+    @Test(expected = ConfigurationException.class)
+    public void testClassAttributeIsRequired() throws ConfigurationException {
+        // given
+        final Element element = element(ConfigTags.COMPONENT)
+                .withAttribute(ConfigAttributes.NAME, SOME_NAME)
+                .build();
 
-		// when
-		reader.read(element);
-	}
+        // when
+        reader.read(element);
+    }
 
-	@Test(expected = ConfigurationException.class)
-	public void testClassAttributeisNotEmpty() throws ConfigurationException {
-		// given
-		final Element element = element(ConfigTags.COMPONENT)
-				.withAttribute(ConfigAttributes.NAME, SOME_NAME)
-				.withAttribute(ConfigAttributes.CLASS, EMPTY_STRING)
-				.build();
+    @Test(expected = ConfigurationException.class)
+    public void testClassAttributeisNotEmpty() throws ConfigurationException {
+        // given
+        final Element element = element(ConfigTags.COMPONENT)
+                .withAttribute(ConfigAttributes.NAME, SOME_NAME)
+                .withAttribute(ConfigAttributes.CLASS, EMPTY_STRING)
+                .build();
 
-		// when
-		reader.read(element);
-	}
+        // when
+        reader.read(element);
+    }
 
-	@Test(expected = ConfigurationException.class)
-	public void testSingletonAttributeIsRequired() throws ConfigurationException {
-		// given
-		final Element element = element(ConfigTags.COMPONENT)
-				.withAttribute(ConfigAttributes.NAME, SOME_NAME)
-				.withAttribute(ConfigAttributes.CLASS, SOME_CLASS)
-				.build();
+    @Test(expected = ConfigurationException.class)
+    public void testSingletonAttributeIsRequired() throws ConfigurationException {
+        // given
+        final Element element = element(ConfigTags.COMPONENT)
+                .withAttribute(ConfigAttributes.NAME, SOME_NAME)
+                .withAttribute(ConfigAttributes.CLASS, SOME_CLASS)
+                .build();
 
-		// when
-		reader.read(element);
-	}
+        // when
+        reader.read(element);
+    }
 
-	@Test(expected = ConfigurationException.class)
-	public void testSingletonAttributeisNotEmpty() throws ConfigurationException {
-		// given
-		final Element element = element(ConfigTags.COMPONENT)
-				.withAttribute(ConfigAttributes.NAME, SOME_NAME)
-				.withAttribute(ConfigAttributes.CLASS, SOME_CLASS)
-				.withAttribute(ConfigAttributes.IS_SINGLETON, EMPTY_STRING)
-				.build();
+    @Test(expected = ConfigurationException.class)
+    public void testSingletonAttributeisNotEmpty() throws ConfigurationException {
+        // given
+        final Element element = element(ConfigTags.COMPONENT)
+                .withAttribute(ConfigAttributes.NAME, SOME_NAME)
+                .withAttribute(ConfigAttributes.CLASS, SOME_CLASS)
+                .withAttribute(ConfigAttributes.IS_SINGLETON, EMPTY_STRING)
+                .build();
 
-		// when
-		reader.read(element);
-	}
+        // when
+        reader.read(element);
+    }
 
-	@Test
-	public void testConstructorArgument() throws ConfigurationException {
-		// given
-		final Element element = componentElement()
-				.withBody(
-						constructorElement(anyElement()),
-						constructorElement(anyElement()))
-				.build();
+    @Test
+    public void testConstructorArgument() throws ConfigurationException {
+        // given
+        final Element element = componentElement()
+                .withBody(
+                        constructorElement(anyElement()),
+                        constructorElement(anyElement()))
+                .build();
 
-		// when
-		final ComponentDefinition definition = reader.read(element);
+        // when
+        final ComponentDefinition definition = reader.read(element);
 
-		// then
-		final List<IArgumentDefinition> constructorArgs = definition.getConstructorArguments();
-		assertThat(constructorArgs.size(), is(2));
-	}
+        // then
+        final List<IArgumentDefinition> constructorArgs = definition.getConstructorArguments();
+        assertThat(constructorArgs.size(), is(2));
+    }
 
-	@Test(expected = ConfigurationException.class)
-	public void testPropertyArgumentNameIsRequired() throws ConfigurationException {
-		// given
-		final Element element = componentElement()
-				.withBody(element(ConfigTags.PROPERTY))
-				.build();
+    @Test(expected = ConfigurationException.class)
+    public void testPropertyArgumentNameIsRequired() throws ConfigurationException {
+        // given
+        final Element element = componentElement()
+                .withBody(element(ConfigTags.PROPERTY))
+                .build();
 
-		// when
-		reader.read(element);
-	}
+        // when
+        reader.read(element);
+    }
 
-	@Test(expected = ConfigurationException.class)
-	public void testPropertyArgumentNameisNotEmpty() throws ConfigurationException {
-		// given
-		final Element element = componentElement()
-				.withBody(propertyElement("", anyElement()))
-				.build();
+    @Test(expected = ConfigurationException.class)
+    public void testPropertyArgumentNameisNotEmpty() throws ConfigurationException {
+        // given
+        final Element element = componentElement()
+                .withBody(propertyElement("", anyElement()))
+                .build();
 
-		// when
-		reader.read(element);
-	}
+        // when
+        reader.read(element);
+    }
 
-	@Test
-	public void testPropertyArgument() throws ConfigurationException {
-		// given
-		final Element element = componentElement()
-				.withBody(
-						propertyElement("someProperty1", anyElement()),
-						propertyElement("someProperty2", anyElement()))
-				.build();
+    @Test
+    public void testPropertyArgument() throws ConfigurationException {
+        // given
+        final Element element = componentElement()
+                .withBody(
+                        propertyElement("someProperty1", anyElement()),
+                        propertyElement("someProperty2", anyElement()))
+                .build();
 
-		// when
-		final ComponentDefinition definition = reader.read(element);
+        // when
+        final ComponentDefinition definition = reader.read(element);
 
-		// then
-		final Map<String, IArgumentDefinition> propertyInitializers = definition.getPropertyArguments();
-		assertThat(propertyInitializers.size(), is(2));
-		assertTrue(propertyInitializers.containsKey("someProperty1"));
-		assertTrue(propertyInitializers.containsKey("someProperty2"));
-	}
+        // then
+        final Map<String, IArgumentDefinition> propertyInitializers = definition.getPropertyArguments();
+        assertThat(propertyInitializers.size(), is(2));
+        assertTrue(propertyInitializers.containsKey("someProperty1"));
+        assertTrue(propertyInitializers.containsKey("someProperty2"));
+    }
 
-	@Test
-	public void testInnerDefinitions() throws ConfigurationException {
-		// given
-		final Element element = componentElement()
-				.withBody(
-						anyElement(),
-						anyElement(),
-						anyElement())
-				.build();
+    @Test
+    public void testInnerDefinitions() throws ConfigurationException {
+        // given
+        final Element element = componentElement()
+                .withBody(
+                        anyElement(),
+                        anyElement(),
+                        anyElement())
+                .build();
 
-		// when
-		final ComponentDefinition definition = reader.read(element);
+        // when
+        final ComponentDefinition definition = reader.read(element);
 
-		// then
-		assertThat(definition.getInnerComponentDefinitions().size(), is(3));
-	}
+        // then
+        assertThat(definition.getInnerComponentDefinitions().size(), is(3));
+    }
 
-	@Test
-	public void testPropertyAndConstructorArgumentsNotInInner() throws ConfigurationException {
-		// given
-		final Element element = componentElement()
-				.withBody(
-						anyElement(),
-						propertyElement("someProperty", anyElement()),
-						anyElement(),
-						constructorElement(anyElement()),
-						anyElement())
-				.build();
+    @Test
+    public void testPropertyAndConstructorArgumentsNotInInner() throws ConfigurationException {
+        // given
+        final Element element = componentElement()
+                .withBody(
+                        anyElement(),
+                        propertyElement("someProperty", anyElement()),
+                        anyElement(),
+                        constructorElement(anyElement()),
+                        anyElement())
+                .build();
 
-		// when
-		final ComponentDefinition definition = reader.read(element);
+        // when
+        final ComponentDefinition definition = reader.read(element);
 
-		// then
-		assertThat(definition.getInnerComponentDefinitions().size(), is(3));
-	}
+        // then
+        assertThat(definition.getInnerComponentDefinitions().size(), is(3));
+    }
 }

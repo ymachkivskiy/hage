@@ -37,6 +37,7 @@ import org.picocontainer.visitors.AbstractPicoVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 /**
  * PicoVisitor which calls finish on Stateful Components at each level of the hierarchy.
  *
@@ -44,31 +45,31 @@ import org.slf4j.LoggerFactory;
  */
 public class StatefulComponentFinisher extends AbstractPicoVisitor {
 
-	private static final Logger log = LoggerFactory.getLogger(StatefulComponentFinisher.class);
+    private static final Logger log = LoggerFactory.getLogger(StatefulComponentFinisher.class);
 
-	@Override
-	public boolean visitContainer(final PicoContainer pico) {
-		for(ComponentAdapter<IStatefulComponent> adapter : pico.getComponentAdapters(IStatefulComponent.class)) {
-			if(adapter.findAdapterOfType(Cached.class) != null) {
-				try {
-					adapter.getComponentInstance(pico, ComponentAdapter.NOTHING.class).finish();
-				} catch (final ComponentException e) {
-					log.error("Exception during component finish.", e);
-				}
-			}
-		}
-		return true;
-	}
+    @Override
+    public boolean visitContainer(final PicoContainer pico) {
+        for(ComponentAdapter<IStatefulComponent> adapter : pico.getComponentAdapters(IStatefulComponent.class)) {
+            if(adapter.findAdapterOfType(Cached.class) != null) {
+                try {
+                    adapter.getComponentInstance(pico, ComponentAdapter.NOTHING.class).finish();
+                } catch(final ComponentException e) {
+                    log.error("Exception during component finish.", e);
+                }
+            }
+        }
+        return true;
+    }
 
-	@Override
-	public void visitComponentAdapter(final ComponentAdapter<?> componentAdapter) {
-	}
+    @Override
+    public void visitComponentAdapter(final ComponentAdapter<?> componentAdapter) {
+    }
 
-	@Override
-	public void visitComponentFactory(final ComponentFactory componentFactory) {
-	}
+    @Override
+    public void visitComponentFactory(final ComponentFactory componentFactory) {
+    }
 
-	@Override
-	public void visitParameter(final Parameter parameter) {
-	}
+    @Override
+    public void visitParameter(final Parameter parameter) {
+    }
 }

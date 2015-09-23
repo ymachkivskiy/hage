@@ -31,47 +31,44 @@
 
 package org.jage.property;
 
+
 import org.jage.exception.AgeException;
+
 
 /**
  * Exception for any issues connected with property mechanism.
  *
  * @author AGH AgE Team
- *
  */
 public class PropertyException extends AgeException {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * Constructor.
-	 *
-	 * @param msg
-	 *            message
-	 */
-	public PropertyException(final String msg) {
-		super(msg);
-	}
+    /**
+     * Constructor.
+     *
+     * @param msg message
+     */
+    public PropertyException(final String msg) {
+        super(msg);
+    }
 
-	/**
-	 * Constructor.
-	 *
-	 * @param e
-	 *            cause exception
-	 */
-	public PropertyException(final Throwable e) {
-		super(e);
-	}
+    /**
+     * Constructor.
+     *
+     * @param e cause exception
+     */
+    public PropertyException(final Throwable e) {
+        super(e);
+    }
 
-	/**
-	 * Constructor.
-	 *
-	 * @param msg
-	 *            message
-	 * @param e
-	 *            cause
-	 */
-	public PropertyException(final String msg, final Throwable e) {
-		super(msg, e);
-	}
+    /**
+     * Constructor.
+     *
+     * @param msg message
+     * @param e   cause
+     */
+    public PropertyException(final String msg, final Throwable e) {
+        super(msg, e);
+    }
 }

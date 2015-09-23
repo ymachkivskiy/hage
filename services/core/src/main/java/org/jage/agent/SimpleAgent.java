@@ -31,10 +31,6 @@
 
 package org.jage.agent;
 
-import java.util.Collection;
-
-import javax.annotation.CheckForNull;
-import javax.annotation.Nullable;
 
 import org.jage.action.Action;
 import org.jage.action.IActionContext;
@@ -42,10 +38,14 @@ import org.jage.action.SingleAction;
 import org.jage.address.agent.AgentAddress;
 import org.jage.address.agent.AgentAddressSupplier;
 
-import static org.jage.address.selector.Selectors.singleAddress;
+import javax.annotation.CheckForNull;
+import javax.annotation.Nullable;
+import java.util.Collection;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
+import static org.jage.address.selector.Selectors.singleAddress;
+
 
 /**
  * Base class for agents processed in step simulation. For each step of simulation the parent of the agent executes
@@ -55,57 +55,56 @@ import static com.google.common.base.Preconditions.checkState;
  */
 public abstract class SimpleAgent extends AbstractAgent implements ISimpleAgent {
 
-	private static final long serialVersionUID = 6487323250205969364L;
+    private static final long serialVersionUID = 6487323250205969364L;
 
-	private transient ISimpleAgentEnvironment agentEnvironment;
+    private transient ISimpleAgentEnvironment agentEnvironment;
 
-	public SimpleAgent(final AgentAddress address) {
-	    super(address);
+    public SimpleAgent(final AgentAddressSupplier supplier) {
+        this(supplier.get());
     }
 
-	public SimpleAgent(final AgentAddressSupplier supplier) {
-    	this(supplier.get());
+    public SimpleAgent(final AgentAddress address) {
+        super(address);
     }
 
-	@Override
-	public void setAgentEnvironment(@CheckForNull final IAgentEnvironment agentEnvironment) {
-		checkState(getAddress() != null, "Agent has no address!");
-		if (agentEnvironment == null) {
-			this.agentEnvironment = null;
-		} else if (this.agentEnvironment == null) {
-			checkArgument(agentEnvironment instanceof ISimpleAgentEnvironment);
-			this.agentEnvironment = (ISimpleAgentEnvironment)agentEnvironment;
-		} else {
-			throw new AgentException(String.format("Environment in %s is already set.", this));
-		}
-	}
+    @Override
+    public void setAgentEnvironment(@CheckForNull final IAgentEnvironment agentEnvironment) {
+        checkState(getAddress() != null, "Agent has no address!");
+        if(agentEnvironment == null) {
+            this.agentEnvironment = null;
+        } else if(this.agentEnvironment == null) {
+            checkArgument(agentEnvironment instanceof ISimpleAgentEnvironment);
+            this.agentEnvironment = (ISimpleAgentEnvironment) agentEnvironment;
+        } else {
+            throw new AgentException(String.format("Environment in %s is already set.", this));
+        }
+    }
 
-	@Override @Nullable
-	protected ISimpleAgentEnvironment getAgentEnvironment() {
-		return agentEnvironment;
-	}
+    @Override
+    @Nullable
+    protected ISimpleAgentEnvironment getAgentEnvironment() {
+        return agentEnvironment;
+    }
 
-	/**
-	 * Submits an action to be executed in the local environment.
-	 *
-	 * @param action
-	 *            the action to be executed
-	 * @throws AgentException
-	 *             if the action is incorrect
-	 */
-	protected void doAction(final Action action) {
-		checkState(agentEnvironment != null, "Agent environment is not available.");
-		agentEnvironment.submitAction(action);
-	}
+    /**
+     * Submits an action to be executed in the local environment.
+     *
+     * @param action the action to be executed
+     * @throws AgentException if the action is incorrect
+     */
+    protected void doAction(final Action action) {
+        checkState(agentEnvironment != null, "Agent environment is not available.");
+        agentEnvironment.submitAction(action);
+    }
 
-	protected void doActions(final Collection<? extends Action> actions) {
-		checkState(agentEnvironment != null, "Agent environment is not available.");
-		for (final Action action : actions) {
-			agentEnvironment.submitAction(action);
-		}
-	}
+    protected void doActions(final Collection<? extends Action> actions) {
+        checkState(agentEnvironment != null, "Agent environment is not available.");
+        for(final Action action : actions) {
+            agentEnvironment.submitAction(action);
+        }
+    }
 
-	protected final Action onSelf(final IActionContext actionContext) {
-		return new SingleAction(singleAddress(getAddress()), actionContext);
-	}
+    protected final Action onSelf(final IActionContext actionContext) {
+        return new SingleAction(singleAddress(getAddress()), actionContext);
+    }
 }

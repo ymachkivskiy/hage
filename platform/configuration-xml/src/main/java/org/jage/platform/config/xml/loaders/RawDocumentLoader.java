@@ -31,30 +31,29 @@
 
 package org.jage.platform.config.xml.loaders;
 
-import java.io.IOException;
-import java.io.InputStream;
 
-import static java.lang.String.format;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
+import com.google.common.io.Closeables;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.io.SAXReader;
+import org.jage.platform.component.definition.ConfigurationException;
+import org.jage.util.io.IncorrectUriException;
+import org.jage.util.io.Resource;
+import org.jage.util.io.ResourceLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import org.jage.platform.component.definition.ConfigurationException;
-import org.jage.util.io.IncorrectUriException;
-import org.jage.util.io.Resource;
-import org.jage.util.io.ResourceLoader;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import java.io.IOException;
+import java.io.InputStream;
 
-import com.google.common.io.Closeables;
+import static java.lang.String.format;
+
 
 /**
  * Loads a raw DOM document from the provided resource path. Uses {@link ResourceLoader} to locate the actual resource.
@@ -64,102 +63,103 @@ import com.google.common.io.Closeables;
  */
 public final class RawDocumentLoader extends AbstractDocumentLoader {
 
-	private static final Logger LOG = LoggerFactory.getLogger(RawDocumentLoader.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RawDocumentLoader.class);
 
-	private final SAXReader reader;
+    private final SAXReader reader;
 
-	/**
-	 * Creates a {@link RawDocumentLoader}.
-	 *
-	 * @throws ConfigurationException if an error happens when configuring the SAXReader.
-	 */
-	public RawDocumentLoader() throws ConfigurationException {
-		try {
-			SAXParserFactory factory = SAXParserFactory.newInstance();
-			factory.setValidating(true);
+    /**
+     * Creates a {@link RawDocumentLoader}.
+     *
+     * @throws ConfigurationException if an error happens when configuring the SAXReader.
+     */
+    public RawDocumentLoader() throws ConfigurationException {
+        try {
+            SAXParserFactory factory = SAXParserFactory.newInstance();
+            factory.setValidating(true);
 
-			SAXParser parser = factory.newSAXParser();
-			parser.setProperty("http://java.sun.com/xml/jaxp/properties/schemaLanguage",
-			        "http://www.w3.org/2001/XMLSchema");
-			parser.setProperty("http://java.sun.com/xml/jaxp/properties/schemaSource", getClass().getClassLoader()
-			        .getResourceAsStream("age.xsd"));
+            SAXParser parser = factory.newSAXParser();
+            parser.setProperty("http://java.sun.com/xml/jaxp/properties/schemaLanguage",
+                               "http://www.w3.org/2001/XMLSchema");
+            parser.setProperty("http://java.sun.com/xml/jaxp/properties/schemaSource", getClass().getClassLoader()
+                    .getResourceAsStream("age.xsd"));
 
-			reader = new SAXReader(parser.getXMLReader());
-			reader.setValidation(true);
+            reader = new SAXReader(parser.getXMLReader());
+            reader.setValidation(true);
 
-		} catch (final ParserConfigurationException e) {
-			throw newConfigurationException(e);
-		} catch (final SAXException e) {
-			throw newConfigurationException(e);
-		}
-	}
-
-	@Override
-	public Document loadDocument(final String path) throws ConfigurationException {
-		InputStream input = null;
-		try {
-			final Resource resource = ResourceLoader.getResource(path);
-			input = resource.getInputStream();
-			reader.setErrorHandler(new AgEXmlErrorHandler(path));
-			return reader.read(input);
-		} catch (final IncorrectUriException e) {
-			throw new ConfigurationException("Could not locate resource with path " + path, e);
-		} catch (final IOException e) {
-			throw new ConfigurationException("Could not open resource with path " + path, e);
-		} catch (final DocumentException e) {
-			throw new ConfigurationException("Could not read resource with path " + path, e);
-		} finally {
-			try {
-				Closeables.close(input, true);
-			} catch (final IOException e) {
-				assert false;
-			}
-		}
-	}
-
-	private ConfigurationException newConfigurationException(final Exception e) throws ConfigurationException {
-		return new ConfigurationException("Could not instantiate loader", e);
+        } catch(final ParserConfigurationException e) {
+            throw newConfigurationException(e);
+        } catch(final SAXException e) {
+            throw newConfigurationException(e);
+        }
     }
 
-	/**
-	 * Custom error handler.
-	 *
-	 * @author AGH AgE Team
-	 */
-	private static final class AgEXmlErrorHandler implements ErrorHandler {
+    private ConfigurationException newConfigurationException(final Exception e) throws ConfigurationException {
+        return new ConfigurationException("Could not instantiate loader", e);
+    }
 
-		private final String path;
+    @Override
+    public Document loadDocument(final String path) throws ConfigurationException {
+        InputStream input = null;
+        try {
+            final Resource resource = ResourceLoader.getResource(path);
+            input = resource.getInputStream();
+            reader.setErrorHandler(new AgEXmlErrorHandler(path));
+            return reader.read(input);
+        } catch(final IncorrectUriException e) {
+            throw new ConfigurationException("Could not locate resource with path " + path, e);
+        } catch(final IOException e) {
+            throw new ConfigurationException("Could not open resource with path " + path, e);
+        } catch(final DocumentException e) {
+            throw new ConfigurationException("Could not read resource with path " + path, e);
+        } finally {
+            try {
+                Closeables.close(input, true);
+            } catch(final IOException e) {
+                assert false;
+            }
+        }
+    }
 
-		private AgEXmlErrorHandler(final String path) {
-			this.path = path;
-		}
 
-		@Override
-		public void warning(final SAXParseException e) throws SAXException {
-			LOG.warn(createLogString(e));
-			throw e;
-		}
+    /**
+     * Custom error handler.
+     *
+     * @author AGH AgE Team
+     */
+    private static final class AgEXmlErrorHandler implements ErrorHandler {
 
-		@Override
-		public void error(final SAXParseException e) throws SAXException {
-			LOG.error(createLogString(e));
-			throw e;
-		}
+        private final String path;
 
-		@Override
-		public void fatalError(final SAXParseException e) throws SAXException {
-			LOG.error(createLogString(e));
-			throw e;
-		}
+        private AgEXmlErrorHandler(final String path) {
+            this.path = path;
+        }
 
-		private String createLogString(final SAXParseException e) {
-			return format("'%s':%s:%s: %s", path, e.getLineNumber(), e.getColumnNumber(), cleanMessage(e.getMessage()));
-		}
+        @Override
+        public void warning(final SAXParseException e) throws SAXException {
+            LOG.warn(createLogString(e));
+            throw e;
+        }
 
-		private String cleanMessage(final String message) {
-			final String[] split = message.split(":");
-			final String cleanedMessage = split.length > 1 ? split[1] : split[0];
-			return cleanedMessage.trim();
-		}
-	}
+        @Override
+        public void error(final SAXParseException e) throws SAXException {
+            LOG.error(createLogString(e));
+            throw e;
+        }
+
+        @Override
+        public void fatalError(final SAXParseException e) throws SAXException {
+            LOG.error(createLogString(e));
+            throw e;
+        }
+
+        private String createLogString(final SAXParseException e) {
+            return format("'%s':%s:%s: %s", path, e.getLineNumber(), e.getColumnNumber(), cleanMessage(e.getMessage()));
+        }
+
+        private String cleanMessage(final String message) {
+            final String[] split = message.split(":");
+            final String cleanedMessage = split.length > 1 ? split[1] : split[0];
+            return cleanedMessage.trim();
+        }
+    }
 }

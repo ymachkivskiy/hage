@@ -31,23 +31,22 @@
 
 package org.jage.platform.config.xml.loaders;
 
+
 import org.dom4j.Document;
 import org.dom4j.util.NodeComparator;
+import org.jage.platform.component.definition.ConfigurationException;
+import org.jage.platform.config.xml.util.DocumentBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static org.jage.platform.config.xml.util.DocumentBuilder.emptyDocument;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.BDDMockito.given;
 
-import org.jage.platform.component.definition.ConfigurationException;
-import org.jage.platform.config.xml.util.DocumentBuilder;
-
-import static org.jage.platform.config.xml.util.DocumentBuilder.emptyDocument;
-
-import static com.google.common.base.Preconditions.checkArgument;
 
 /**
  * Abstract base class for document loaders tests.
@@ -57,47 +56,45 @@ import static com.google.common.base.Preconditions.checkArgument;
 @RunWith(MockitoJUnitRunner.class)
 public abstract class AbstractDocumentLoaderTest<T extends AbstractDocumentLoader> {
 
-	@Mock
-	protected DocumentLoader delegate;
+    protected final String path = "somePath";
+    @Mock
+    protected DocumentLoader delegate;
+    protected T loader;
 
-	protected final String path = "somePath";
+    @Before
+    public void setup() {
+        loader = getLoader();
+        loader.setDelegate(delegate);
+    }
 
-	protected T loader;
+    protected abstract T getLoader();
 
-	@Before
-	public void setup() {
-		loader = getLoader();
-		loader.setDelegate(delegate);
-	}
+    @Test
+    public void shouldIgnoresEmptyDocument() throws ConfigurationException {
+        assertDocumentTransformation(emptyDocument(), emptyDocument());
+    }
 
-	@Test
-	public void shouldIgnoresEmptyDocument() throws ConfigurationException {
-		assertDocumentTransformation(emptyDocument(), emptyDocument());
-	}
+    protected void assertDocumentTransformation(final DocumentBuilder original, final DocumentBuilder expected)
+            throws ConfigurationException {
+        assertDocumentTransformation(original.build(), expected.build());
+    }
 
-	protected abstract T getLoader();
+    protected void assertDocumentTransformation(final Document original, final Document expected)
+            throws ConfigurationException {
+        checkArgument(original != expected);
 
-	protected void tryDocumentTransformation(final DocumentBuilder original)
-	        throws ConfigurationException {
-		assertDocumentTransformation(original.build(), null);
-	}
+        // given
+        given(delegate.loadDocument(path)).willReturn(original);
 
-	protected void assertDocumentTransformation(final DocumentBuilder original, final DocumentBuilder expected)
-	        throws ConfigurationException {
-		assertDocumentTransformation(original.build(), expected.build());
-	}
+        // when
+        final Document actual = loader.loadDocument(path);
 
-	protected void assertDocumentTransformation(final Document original, final Document expected)
-	        throws ConfigurationException {
-		checkArgument(original != expected);
+        // then
+        assertEquals(0, new NodeComparator().compare(expected, actual));
+    }
 
-		// given
-		given(delegate.loadDocument(path)).willReturn(original);
-
-		// when
-		final Document actual = loader.loadDocument(path);
-
-		// then
-		assertEquals(0, new NodeComparator().compare(expected, actual));
-	}
+    protected void tryDocumentTransformation(final DocumentBuilder original)
+            throws ConfigurationException {
+        assertDocumentTransformation(original.build(), null);
+    }
 }

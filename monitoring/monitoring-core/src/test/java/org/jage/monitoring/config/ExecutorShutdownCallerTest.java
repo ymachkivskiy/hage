@@ -26,11 +26,6 @@
  */
 package org.jage.monitoring.config;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.Set;
 
 import org.jage.monitoring.Monitoring;
 import org.jage.monitoring.observer.AbstractStatefulObserver;
@@ -45,47 +40,53 @@ import org.mockito.internal.util.collections.Sets;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-
 import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
+
+import java.util.Set;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Observable.class)
 public class ExecutorShutdownCallerTest {
 
-	@Mock
-	private Monitoring monitoring;
-	
-	@Mock
-	private Observable isCmp, isCmp2;
-	
-	@Mock
-	private AbstractStatefulObserver obs, obs2;
-	
-	@Before
-	public void setUp(){
-		MockitoAnnotations.initMocks(this);
-	}
+    @Mock
+    private Monitoring monitoring;
 
-	@Test
-	@Ignore
-	public void testInit() {
-		
-		when(monitoring.getAllObservers()).thenReturn(Sets.newSet(obs, obs2));
-		when(obs.isCompleted()).thenReturn(isCmp);
-		when(obs2.isCompleted()).thenReturn(isCmp2);
-		
-		ExecutorShutdownCaller esc = new ExecutorShutdownCaller();
-		esc.setMonitoring(monitoring);
-		
-		Observable observable = mock(Observable.class);
-		PowerMockito.mockStatic(Observable.class);
-		when(Observable.merge(Matchers.any(Set.class))).thenReturn(observable);
-		when(observable.subscribe(Matchers.any(Observer.class))).thenReturn(mock(Subscription.class));
-		
-		esc.init();
-		verify(monitoring).getAllObservers();
-		
-	}
+    @Mock
+    private Observable isCmp, isCmp2;
+
+    @Mock
+    private AbstractStatefulObserver obs, obs2;
+
+    @Before
+    public void setUp() {
+        MockitoAnnotations.initMocks(this);
+    }
+
+    @Test
+    @Ignore
+    public void testInit() {
+
+        when(monitoring.getAllObservers()).thenReturn(Sets.newSet(obs, obs2));
+        when(obs.isCompleted()).thenReturn(isCmp);
+        when(obs2.isCompleted()).thenReturn(isCmp2);
+
+        ExecutorShutdownCaller esc = new ExecutorShutdownCaller();
+        esc.setMonitoring(monitoring);
+
+        Observable observable = mock(Observable.class);
+        PowerMockito.mockStatic(Observable.class);
+        when(Observable.merge(Matchers.any(Set.class))).thenReturn(observable);
+        when(observable.subscribe(Matchers.any(Observer.class))).thenReturn(mock(Subscription.class));
+
+        esc.init();
+        verify(monitoring).getAllObservers();
+
+    }
 }

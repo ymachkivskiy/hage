@@ -31,23 +31,22 @@
 
 package org.jage.platform.config.xml.loaders;
 
-import static java.lang.String.format;
 
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.XPath;
-
-import static org.dom4j.DocumentHelper.createXPath;
-
 import org.jage.platform.component.definition.ConfigurationException;
 import org.jage.platform.config.xml.ConfigAttributes;
 import org.jage.platform.config.xml.ConfigNamespaces;
 import org.jage.platform.config.xml.ConfigTags;
 
+import static java.lang.String.format;
+import static org.dom4j.DocumentHelper.createXPath;
 import static org.jage.platform.config.xml.ConfigTags.KEY;
 import static org.jage.platform.config.xml.ConfigUtils.getChildrenExcluding;
 import static org.jage.platform.config.xml.ConfigUtils.getChildrenIncluding;
+
 
 /**
  * This decorator extracts all shorcut arguments from <property>, <constructor-arg> and <entry> tags, replacing them with full
@@ -57,123 +56,123 @@ import static org.jage.platform.config.xml.ConfigUtils.getChildrenIncluding;
  */
 public class ArgumentShortcutExtractor extends AbstractDocumentLoader {
 
-	private static final XPath CONST_PROP = initXpath(createXPath(format(
-			"//%1$s:%2$s | //%1$s:%3$s",
-	        ConfigNamespaces.DEFAULT.getPrefix(),
-	        ConfigTags.CONSTRUCTOR_ARG.toString(),
-	        ConfigTags.PROPERTY.toString())));
+    private static final XPath CONST_PROP = initXpath(createXPath(format(
+            "//%1$s:%2$s | //%1$s:%3$s",
+            ConfigNamespaces.DEFAULT.getPrefix(),
+            ConfigTags.CONSTRUCTOR_ARG.toString(),
+            ConfigTags.PROPERTY.toString())));
 
-	private static final XPath ENTRIES = initXpath(createXPath(format(
-			"//%1$s:%2$s",
-	        ConfigNamespaces.DEFAULT.getPrefix(),
-	        ConfigTags.ENTRY.toString())));
+    private static final XPath ENTRIES = initXpath(createXPath(format(
+            "//%1$s:%2$s",
+            ConfigNamespaces.DEFAULT.getPrefix(),
+            ConfigTags.ENTRY.toString())));
 
-	@Override
-	public Document loadDocument(final String path) throws ConfigurationException {
-		final Document document = getDelegate().loadDocument(path);
-		extractConstrPropShortcuts(document);
-		extractEntryShortcuts(document);
-		return document;
-	}
+    @Override
+    public Document loadDocument(final String path) throws ConfigurationException {
+        final Document document = getDelegate().loadDocument(path);
+        extractConstrPropShortcuts(document);
+        extractEntryShortcuts(document);
+        return document;
+    }
 
-	private void extractConstrPropShortcuts(final Document document) throws ConfigurationException {
-		for (final Element element : selectNodes(CONST_PROP, document)) {
-			final Attribute valueAttr = element.attribute(ConfigAttributes.VALUE.toString());
-			final Attribute typeAttr = element.attribute(ConfigAttributes.TYPE.toString());
-			final Attribute refAttr = element.attribute(ConfigAttributes.REF.toString());
+    private void extractConstrPropShortcuts(final Document document) throws ConfigurationException {
+        for(final Element element : selectNodes(CONST_PROP, document)) {
+            final Attribute valueAttr = element.attribute(ConfigAttributes.VALUE.toString());
+            final Attribute typeAttr = element.attribute(ConfigAttributes.TYPE.toString());
+            final Attribute refAttr = element.attribute(ConfigAttributes.REF.toString());
 
-			if (bothNotNull(valueAttr, refAttr)) {
-				throw new ConfigurationException(element.getUniquePath() + ": Value and ref shortcut attributes can't be both set");
-			}
+            if(bothNotNull(valueAttr, refAttr)) {
+                throw new ConfigurationException(element.getUniquePath() + ": Value and ref shortcut attributes can't be both set");
+            }
 
-			if (anyNotNull(valueAttr, refAttr)) {
-				if (!element.elements().isEmpty()) {
-					throw new ConfigurationException(element.getUniquePath()
-					        + ": there can't be both a shortcut attribute and a child definition of some argument");
-				}
+            if(anyNotNull(valueAttr, refAttr)) {
+                if(!element.elements().isEmpty()) {
+                    throw new ConfigurationException(element.getUniquePath()
+                                                             + ": there can't be both a shortcut attribute and a child definition of some argument");
+                }
 
-				if (valueAttr != null) {
-					final String value = valueAttr.getValue();
-					final String type = typeAttr.getValue();
-					element.remove(typeAttr);
-					element.remove(valueAttr);
-					element.add(newValueElement(type, value));
-				} else if (refAttr != null) {
-					final String ref = refAttr.getValue();
-					element.remove(refAttr);
-					element.add(newReferenceElement(ref));
-				}
-			} else if (element.elements().isEmpty()) {
-					throw new ConfigurationException(element.getUniquePath()
-					        + ": there must be either a shortcut attribute or a child definition of some argument");
-			}
-		}
-	}
+                if(valueAttr != null) {
+                    final String value = valueAttr.getValue();
+                    final String type = typeAttr.getValue();
+                    element.remove(typeAttr);
+                    element.remove(valueAttr);
+                    element.add(newValueElement(type, value));
+                } else if(refAttr != null) {
+                    final String ref = refAttr.getValue();
+                    element.remove(refAttr);
+                    element.add(newReferenceElement(ref));
+                }
+            } else if(element.elements().isEmpty()) {
+                throw new ConfigurationException(element.getUniquePath()
+                                                         + ": there must be either a shortcut attribute or a child definition of some argument");
+            }
+        }
+    }
 
     @SuppressWarnings("unchecked")
     private void extractEntryShortcuts(final Document document) throws ConfigurationException {
-    	for (final Element element : selectNodes(ENTRIES, document)) {
-    		final Attribute keyAttr = element.attribute(ConfigAttributes.KEY.toString());
-    		final Attribute keyRefAttr = element.attribute(ConfigAttributes.KEY_REF.toString());
+        for(final Element element : selectNodes(ENTRIES, document)) {
+            final Attribute keyAttr = element.attribute(ConfigAttributes.KEY.toString());
+            final Attribute keyRefAttr = element.attribute(ConfigAttributes.KEY_REF.toString());
 
-    		if (bothNotNull(keyAttr, keyRefAttr)) {
-				throw new ConfigurationException(element.getUniquePath() + ": key and key-ref shortcut attributes can't be both set");
-			}
+            if(bothNotNull(keyAttr, keyRefAttr)) {
+                throw new ConfigurationException(element.getUniquePath() + ": key and key-ref shortcut attributes can't be both set");
+            }
 
-    		if (anyNotNull(keyAttr, keyRefAttr)) {
-    			if(!getChildrenIncluding(element, KEY).isEmpty()) {
-    				throw new ConfigurationException(element.getUniquePath()
-					        + ": there can't be both a key shortcut attribute and a child definition of some argument");
-    			}
+            if(anyNotNull(keyAttr, keyRefAttr)) {
+                if(!getChildrenIncluding(element, KEY).isEmpty()) {
+                    throw new ConfigurationException(element.getUniquePath()
+                                                             + ": there can't be both a key shortcut attribute and a child definition of some argument");
+                }
 
-	    		if(keyAttr != null) {
-	    			final String key = keyAttr.getValue();
-	    			element.remove(keyAttr);
-	    			element.elements().add(0, newKeyElement(newValueElement(key)));
-	    		} else if(keyRefAttr != null) {
-	    			final String keyRef = keyRefAttr.getValue();
-	    			element.remove(keyRefAttr);
-	    			element.elements().add(0, newKeyElement(newReferenceElement(keyRef)));
-	    		}
-    		} else if(getChildrenIncluding(element, KEY).isEmpty()) {
-				throw new ConfigurationException(element.getUniquePath()
-				        + ": there must be either a key shortcut attribute or a child definition of some argument");
-    		}
+                if(keyAttr != null) {
+                    final String key = keyAttr.getValue();
+                    element.remove(keyAttr);
+                    element.elements().add(0, newKeyElement(newValueElement(key)));
+                } else if(keyRefAttr != null) {
+                    final String keyRef = keyRefAttr.getValue();
+                    element.remove(keyRefAttr);
+                    element.elements().add(0, newKeyElement(newReferenceElement(keyRef)));
+                }
+            } else if(getChildrenIncluding(element, KEY).isEmpty()) {
+                throw new ConfigurationException(element.getUniquePath()
+                                                         + ": there must be either a key shortcut attribute or a child definition of some argument");
+            }
 
-    		final Attribute valueAttr = element.attribute(ConfigAttributes.VALUE.toString());
-    		final Attribute valueRefAttr = element.attribute(ConfigAttributes.VALUE_REF.toString());
+            final Attribute valueAttr = element.attribute(ConfigAttributes.VALUE.toString());
+            final Attribute valueRefAttr = element.attribute(ConfigAttributes.VALUE_REF.toString());
 
-    		if (bothNotNull(valueAttr, valueRefAttr)) {
-				throw new ConfigurationException(element.getUniquePath() + ": value and value-ref shortcut attributes can't be both set");
-			}
+            if(bothNotNull(valueAttr, valueRefAttr)) {
+                throw new ConfigurationException(element.getUniquePath() + ": value and value-ref shortcut attributes can't be both set");
+            }
 
-    		if(anyNotNull(valueAttr, valueRefAttr)) {
-    			if(!getChildrenExcluding(element, KEY).isEmpty()) {
-    				throw new ConfigurationException(element.getUniquePath()
-					        + ": there can't be both a value shortcut attribute and a child definition of some argument");
-    			}
+            if(anyNotNull(valueAttr, valueRefAttr)) {
+                if(!getChildrenExcluding(element, KEY).isEmpty()) {
+                    throw new ConfigurationException(element.getUniquePath()
+                                                             + ": there can't be both a value shortcut attribute and a child definition of some argument");
+                }
 
-	    		if(valueAttr != null) {
-	    			final String value = valueAttr.getValue();
-	    			element.remove(valueAttr);
-	    			element.add(newValueElement(value));
-	    		} else if(valueRefAttr != null) {
-	    			final String valueRef = valueRefAttr.getValue();
-	    			element.remove(valueRefAttr);
-	    			element.add(newReferenceElement(valueRef));
-	    		}
-    		} else if(getChildrenExcluding(element, KEY).isEmpty()) {
-				throw new ConfigurationException(element.getUniquePath()
-				        + ": there must be either a value shortcut attribute or a child definition of some argument");
-    		}
-    	}
+                if(valueAttr != null) {
+                    final String value = valueAttr.getValue();
+                    element.remove(valueAttr);
+                    element.add(newValueElement(value));
+                } else if(valueRefAttr != null) {
+                    final String valueRef = valueRefAttr.getValue();
+                    element.remove(valueRefAttr);
+                    element.add(newReferenceElement(valueRef));
+                }
+            } else if(getChildrenExcluding(element, KEY).isEmpty()) {
+                throw new ConfigurationException(element.getUniquePath()
+                                                         + ": there must be either a value shortcut attribute or a child definition of some argument");
+            }
+        }
     }
 
     private boolean bothNotNull(final Object o1, final Object o2) {
-    	return o1 != null && o2 != null;
+        return o1 != null && o2 != null;
     }
 
     private boolean anyNotNull(final Object o1, final Object o2) {
-    	return o1 != null || o2 != null;
+        return o1 != null || o2 != null;
     }
 }

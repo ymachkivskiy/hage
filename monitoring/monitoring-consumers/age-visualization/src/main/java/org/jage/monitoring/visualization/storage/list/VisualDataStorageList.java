@@ -33,75 +33,79 @@
 
 package org.jage.monitoring.visualization.storage.list;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
 
 import org.jage.monitoring.visualization.storage.StorageDescription;
 import org.jage.monitoring.visualization.storage.VisualData;
 import org.jage.monitoring.visualization.storage.element.VisualDataStorage;
 
+import java.util.Collection;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+
+
 /**
- * 
  * @author AGH AgE Team
  */
 
 public class VisualDataStorageList implements VisualDataStorage {
 
-	private LinkedList<VisualData> list;
-	private Date createdDate;
-	private String label;
-	private StorageDescription storageDescription;
-	
-	public VisualDataStorageList(StorageDescription storageDescription) {
-		list = new LinkedList<VisualData>();
-		createdDate = new Date();
-		this.label = storageDescription.toString();
-		this.storageDescription = storageDescription;
-	}
+    private LinkedList<VisualData> list;
+    private Date createdDate;
+    private String label;
+    private StorageDescription storageDescription;
 
-	@Override
-	public void save(VisualData data) {
-		list.add(data);
-	}
+    public VisualDataStorageList(StorageDescription storageDescription) {
+        list = new LinkedList<VisualData>();
+        createdDate = new Date();
+        this.label = storageDescription.toString();
+        this.storageDescription = storageDescription;
+    }
 
-	public Date getCreatedDate() {
-		return createdDate;
-	}
-	public String getLabel() {
-		return label;
-	}
-	public StorageDescription getStorageDescription() {
-		return storageDescription;
-	}
-	public void setSeriesDescription(StorageDescription storageDescription) {
-		this.storageDescription = storageDescription;
-	}
-	
-	@Override
-	public String toString() {
-	    return label;
-	}
+    @Override
+    public void save(VisualData data) {
+        list.add(data);
+    }
 
-	@Override
+    @Override
     public List<VisualData> getYoungerThan(Date date) {
-	    List<VisualData> result = new LinkedList<VisualData>();
-		for (VisualData vd : list) {
-	        if(vd.getTimestamp()>date.getTime()){
-	        	result.add(vd);
-	        }
+        List<VisualData> result = new LinkedList<VisualData>();
+        for(VisualData vd : list) {
+            if(vd.getTimestamp() > date.getTime()) {
+                result.add(vd);
+            }
         }
-	    return result;
+        return result;
     }
 
-	@Override
+    public StorageDescription getStorageDescription() {
+        return storageDescription;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setSeriesDescription(StorageDescription storageDescription) {
+        this.storageDescription = storageDescription;
+    }
+
+    @Override
+    public String toString() {
+        return label;
+    }
+
+    @Override
     public Collection<VisualData> all() {
-		 return list;
+        return list;
     }
 
-	@Override
+    @Override
     public VisualData get(String key) {
-	    return null;
+        return null;
     }
 }

@@ -31,15 +31,6 @@
 
 package org.jage.agent;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
 
 import org.jage.action.Action;
 import org.jage.action.NullInstanceProvider;
@@ -53,10 +44,19 @@ import org.jage.address.agent.AgentAddress;
 import org.jage.address.selector.ExplicitSelector;
 import org.jage.address.selector.Selectors;
 import org.jage.platform.component.provider.IComponentInstanceProvider;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
+import static org.hamcrest.Matchers.is;
 import static org.jage.address.selector.Selectors.parentOf;
 import static org.jage.address.selector.Selectors.singleAddress;
 import static org.jage.utils.AgentTestUtils.createMockAgentWithAddress;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+
 
 /**
  * Tests for the {@link AggregateActionService} class: the action validation.
@@ -66,179 +66,179 @@ import static org.jage.utils.AgentTestUtils.createMockAgentWithAddress;
 @RunWith(MockitoJUnitRunner.class)
 public class ActionValidationTest {
 
-	private final SimpleAggregate aggregate = new SimpleAggregate(mock(AgentAddress.class));
+    private final SimpleAggregate aggregate = new SimpleAggregate(mock(AgentAddress.class));
 
-	private final HelperTestAggregateActionService actionService = new HelperTestAggregateActionService();
+    private final HelperTestAggregateActionService actionService = new HelperTestAggregateActionService();
 
-	private final SimpleAggregate aggregate2 = new SimpleAggregate(mock(AgentAddress.class));
+    private final SimpleAggregate aggregate2 = new SimpleAggregate(mock(AgentAddress.class));
 
-	private final HelperTestAggregateActionService actionService2 = new HelperTestAggregateActionService();
+    private final HelperTestAggregateActionService actionService2 = new HelperTestAggregateActionService();
 
-	private final ISimpleAgent agent = createMockAgentWithAddress();
+    private final ISimpleAgent agent = createMockAgentWithAddress();
 
-	private final ISimpleAgent agent2 = createMockAgentWithAddress();
+    private final ISimpleAgent agent2 = createMockAgentWithAddress();
 
-	@Mock
-	private IComponentInstanceProvider instanceProvider;
+    @Mock
+    private IComponentInstanceProvider instanceProvider;
 
-	@Before
-	public void setUp() {
-		actionService.setAggregate(aggregate);
-		actionService.setInstanceProvider(instanceProvider);
+    @Before
+    public void setUp() {
+        actionService.setAggregate(aggregate);
+        actionService.setInstanceProvider(instanceProvider);
 
-		actionService2.setAggregate(aggregate2);
-		actionService2.setInstanceProvider(new NullInstanceProvider());
+        actionService2.setAggregate(aggregate2);
+        actionService2.setInstanceProvider(new NullInstanceProvider());
 
-		aggregate.setInstanceProvider(instanceProvider);
-		aggregate.setActionService(actionService);
-		aggregate2.setInstanceProvider(new NullInstanceProvider());
-		aggregate2.setActionService(actionService2);
+        aggregate.setInstanceProvider(instanceProvider);
+        aggregate.setActionService(actionService);
+        aggregate2.setInstanceProvider(new NullInstanceProvider());
+        aggregate2.setActionService(actionService2);
 
-		aggregate.add(agent);
-		aggregate.add(aggregate2);
-		aggregate2.add(agent2);
-	}
+        aggregate.add(agent);
+        aggregate.add(aggregate2);
+        aggregate2.add(agent2);
+    }
 
-	// FIXME
+    // FIXME
 
-	@Test(expected = ActionTestException.class)
-	public void testNoSuchAgent() {
-		// given
-		final DoNotPassToParentTestActionContext context = new DoNotPassToParentTestActionContext();
-		final ExplicitSelector<AgentAddress> random = singleAddress(mock(AgentAddress.class));
+    @Test(expected = ActionTestException.class)
+    public void testNoSuchAgent() {
+        // given
+        final DoNotPassToParentTestActionContext context = new DoNotPassToParentTestActionContext();
+        final ExplicitSelector<AgentAddress> random = singleAddress(mock(AgentAddress.class));
 
-		// when
-		actionService.doAction(new SingleAction(random, context));
-		actionService.processActions();
-	}
+        // when
+        actionService.doAction(new SingleAction(random, context));
+        actionService.processActions();
+    }
 
-	@Test
-	public void testInvokeOnSelf() {
-		// given
-		final DoNotPassToParentTestActionContext context = new DoNotPassToParentTestActionContext();
+    @Test
+    public void testInvokeOnSelf() {
+        // given
+        final DoNotPassToParentTestActionContext context = new DoNotPassToParentTestActionContext();
 
-		// when
-		actionService2.doAction(new SingleAction(singleAddress(agent2.getAddress()), context));
-		actionService2.processActions();
+        // when
+        actionService2.doAction(new SingleAction(singleAddress(agent2.getAddress()), context));
+        actionService2.processActions();
 
-		// then
-		assertThat(context.actionTarget, is(agent2));
-	}
+        // then
+        assertThat(context.actionTarget, is(agent2));
+    }
 
-	@Test
-	public void testInvokeOnOwnAggregate() {
-		// given
-		final DoNotPassToParentTestActionContext context = new DoNotPassToParentTestActionContext();
+    @Test
+    public void testInvokeOnOwnAggregate() {
+        // given
+        final DoNotPassToParentTestActionContext context = new DoNotPassToParentTestActionContext();
 
-		// when
-		actionService2.doAction(new SingleAction(parentOf(agent2.getAddress()), context));
-		actionService2.processActions();
+        // when
+        actionService2.doAction(new SingleAction(parentOf(agent2.getAddress()), context));
+        actionService2.processActions();
 
-		// then
-		assertThat(context.actionTarget, is((ISimpleAgent)aggregate2));
-	}
+        // then
+        assertThat(context.actionTarget, is((ISimpleAgent) aggregate2));
+    }
 
-	/**
-	 * This action fails because there is an attempt to invoke it on the agent in the parent aggregate, but action is
-	 * not wrapped in {@link PassToParentActionContext}. Correct usage is shown in
-	 * {@link #testPassToParentInvokeOnAgentInParent()}
-	 */
-	@Test(expected = ActionTestException.class)
-	public void testInvokeOnAgentInParent() {
-		// given
-		final DoNotPassToParentTestActionContext context = new DoNotPassToParentTestActionContext();
+    /**
+     * This action fails because there is an attempt to invoke it on the agent in the parent aggregate, but action is
+     * not wrapped in {@link PassToParentActionContext}. Correct usage is shown in
+     * {@link #testPassToParentInvokeOnAgentInParent()}
+     */
+    @Test(expected = ActionTestException.class)
+    public void testInvokeOnAgentInParent() {
+        // given
+        final DoNotPassToParentTestActionContext context = new DoNotPassToParentTestActionContext();
 
-		// when
-		actionService2.doAction(new SingleAction(singleAddress(agent.getAddress()), context));
-		actionService2.processActions();
-	}
+        // when
+        actionService2.doAction(new SingleAction(singleAddress(agent.getAddress()), context));
+        actionService2.processActions();
+    }
 
-	/**
-	 * This action fails because there is an attempt to invoke action on parent aggregate, but action is not wrapped in
-	 * {@link PassToParentActionContext} . Correct usage is shown in {@link #testPassToParentInvokeOnParentAggregate()}
-	 */
-	@Test(expected = ActionTestException.class)
-	public void testInvokeOnParentAggregate() {
-		// given
-		final DoNotPassToParentTestActionContext context = new DoNotPassToParentTestActionContext();
+    /**
+     * This action fails because there is an attempt to invoke action on parent aggregate, but action is not wrapped in
+     * {@link PassToParentActionContext} . Correct usage is shown in {@link #testPassToParentInvokeOnParentAggregate()}
+     */
+    @Test(expected = ActionTestException.class)
+    public void testInvokeOnParentAggregate() {
+        // given
+        final DoNotPassToParentTestActionContext context = new DoNotPassToParentTestActionContext();
 
-		// when
-		actionService2.doAction(new SingleAction(singleAddress(aggregate.getAddress()), context));
-		actionService2.processActions();
-	}
+        // when
+        actionService2.doAction(new SingleAction(singleAddress(aggregate.getAddress()), context));
+        actionService2.processActions();
+    }
 
-	@Test
-	public void testPassToParentInvokeOnSelf() {
-		// given
-		final PassToParentTestActionContext context = new PassToParentTestActionContext();
+    @Test
+    public void testPassToParentInvokeOnSelf() {
+        // given
+        final PassToParentTestActionContext context = new PassToParentTestActionContext();
 
-		// when
-		actionService2.doAction(new SingleAction(singleAddress(agent2.getAddress()), context));
-		actionService2.processActions();
+        // when
+        actionService2.doAction(new SingleAction(singleAddress(agent2.getAddress()), context));
+        actionService2.processActions();
 
-		// then
-		assertThat(context.actionTarget, is(agent2));
-	}
+        // then
+        assertThat(context.actionTarget, is(agent2));
+    }
 
-	@Test
-	public void testPassToParentInvokeOnOwnAggregate() {
-		// given
-		final PassToParentTestActionContext context = new PassToParentTestActionContext();
+    @Test
+    public void testPassToParentInvokeOnOwnAggregate() {
+        // given
+        final PassToParentTestActionContext context = new PassToParentTestActionContext();
 
-		// when
-		actionService2.doAction(new SingleAction(Selectors.parentOf(agent2.getAddress()), context));
-		actionService2.processActions();
+        // when
+        actionService2.doAction(new SingleAction(Selectors.parentOf(agent2.getAddress()), context));
+        actionService2.processActions();
 
-		// then
-		assertThat(context.actionTarget, is((ISimpleAgent)aggregate2));
-	}
+        // then
+        assertThat(context.actionTarget, is((ISimpleAgent) aggregate2));
+    }
 
-	@Test
-	public void testPassToParentInvokeOnAgentInParent() {
-		// given
-		final PassToParentTestActionContext context = new PassToParentTestActionContext();
-		final Action action = new SingleAction(singleAddress(agent.getAddress()), context);
-		final PassToParentActionContext outerContext = new PassToParentActionContext(agent2.getAddress(), action);
+    @Test
+    public void testPassToParentInvokeOnAgentInParent() {
+        // given
+        final PassToParentTestActionContext context = new PassToParentTestActionContext();
+        final Action action = new SingleAction(singleAddress(agent.getAddress()), context);
+        final PassToParentActionContext outerContext = new PassToParentActionContext(agent2.getAddress(), action);
 
-		// when
-		actionService2.doAction(new SingleAction(parentOf(agent2.getAddress()), outerContext));
-		actionService2.processActions();
-		actionService.processActions();
+        // when
+        actionService2.doAction(new SingleAction(parentOf(agent2.getAddress()), outerContext));
+        actionService2.processActions();
+        actionService.processActions();
 
-		// then
-		assertThat(context.actionTarget, is(agent));
-	}
+        // then
+        assertThat(context.actionTarget, is(agent));
+    }
 
-	@Test
-	public void testPassToParentInvokeOnParentAggregate() {
-		// given
-		final PassToParentTestActionContext context = new PassToParentTestActionContext();
-		final SingleAction action = new SingleAction(parentOf(aggregate2.getAddress()), context);
-		final PassToParentActionContext outerContext = new PassToParentActionContext(agent2.getAddress(), action);
+    @Test
+    public void testPassToParentInvokeOnParentAggregate() {
+        // given
+        final PassToParentTestActionContext context = new PassToParentTestActionContext();
+        final SingleAction action = new SingleAction(parentOf(aggregate2.getAddress()), context);
+        final PassToParentActionContext outerContext = new PassToParentActionContext(agent2.getAddress(), action);
 
-		// when
-		actionService2.doAction(new SingleAction(parentOf(agent2.getAddress()), outerContext));
-		actionService2.processActions();
-		actionService.processActions();
+        // when
+        actionService2.doAction(new SingleAction(parentOf(agent2.getAddress()), outerContext));
+        actionService2.processActions();
+        actionService.processActions();
 
-		// then
-		assertThat(context.actionTarget, is((ISimpleAgent)aggregate));
-	}
+        // then
+        assertThat(context.actionTarget, is((ISimpleAgent) aggregate));
+    }
 
-	/**
-	 * This action fails because there is an attempt to perform action on parent aggregate, but the aggregate has no
-	 * agent environment.
-	 */
-	@Test(expected = ActionTestException.class)
-	public void testPassToParentInvokeOnUnavailableParentAggregate() {
-		// given
-		aggregate.setAgentEnvironment(null);
-		final PassToParentTestActionContext context = new PassToParentTestActionContext();
-		final SingleAction action = new SingleAction(parentOf(agent.getAddress()), context);
-		final PassToParentActionContext outerContext = new PassToParentActionContext(agent.getAddress(), action);
+    /**
+     * This action fails because there is an attempt to perform action on parent aggregate, but the aggregate has no
+     * agent environment.
+     */
+    @Test(expected = ActionTestException.class)
+    public void testPassToParentInvokeOnUnavailableParentAggregate() {
+        // given
+        aggregate.setAgentEnvironment(null);
+        final PassToParentTestActionContext context = new PassToParentTestActionContext();
+        final SingleAction action = new SingleAction(parentOf(agent.getAddress()), context);
+        final PassToParentActionContext outerContext = new PassToParentActionContext(agent.getAddress(), action);
 
-		// when
-		actionService.doAction(new SingleAction(parentOf(agent.getAddress()), outerContext));
-		actionService.processActions();
-	}
+        // when
+        actionService.doAction(new SingleAction(parentOf(agent.getAddress()), outerContext));
+        actionService.processActions();
+    }
 }

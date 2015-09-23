@@ -1,44 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<artifactId>solutions</artifactId>
-	<packaging>pom</packaging>
+    <artifactId>solutions</artifactId>
+    <packaging>pom</packaging>
 
-	<name>AgE algorithms solutions</name>
-	<description>AgE algorithms components, such as representations, operators, etc.</description>
-	<url>http://age.iisg.agh.edu.pl/jage/algorithms/solutions/</url>
+    <name>AgE algorithms solutions</name>
+    <description>AgE algorithms components, such as representations, operators, etc.</description>
+    <url>http://age.iisg.agh.edu.pl/jage/algorithms/solutions/</url>
 
-	<parent>
-		<groupId>org.jage.algorithms</groupId>
-		<artifactId>algorithms</artifactId>
-		<version>2.7.0-SNAPSHOT</version>
-	</parent>
+    <parent>
+        <groupId>org.jage.algorithms</groupId>
+        <artifactId>algorithms</artifactId>
+        <version>2.7.0-SNAPSHOT</version>
+    </parent>
 
-	<modules>
-		<module>common</module>
-		<module>random</module>
+    <modules>
+        <module>common</module>
+        <module>random</module>
 
-		<module>binary</module>
-		<module>integer</module>
-		<module>real-valued</module>
+        <module>binary</module>
+        <module>integer</module>
+        <module>real-valued</module>
 
-		<module>genetic</module>
-		<module>emas</module>
-	</modules>
+        <module>genetic</module>
+        <module>emas</module>
+    </modules>
 
-	<dependencies>
-		<!-- AgE Platform and Services -->
-		<dependency>
-			<groupId>org.jage.platform</groupId>
-			<artifactId>component</artifactId>
-			<version>${project.version}</version>
-		</dependency>
+    <dependencies>
+        <!-- AgE Platform and Services -->
+        <dependency>
+            <groupId>org.jage.platform</groupId>
+            <artifactId>component</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
-		<dependency>
-			<groupId>org.jage.platform</groupId>
-			<artifactId>property</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>org.jage.platform</groupId>
+            <artifactId>property</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 </project>

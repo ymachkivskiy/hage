@@ -31,31 +31,31 @@
 
 package org.jage.platform.config.xml.readers;
 
-import java.util.HashMap;
-import java.util.Map;
 
 import org.dom4j.Element;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-
 import org.jage.platform.component.definition.ConfigurationException;
 import org.jage.platform.component.definition.IArgumentDefinition;
 import org.jage.platform.component.definition.IComponentDefinition;
 import org.jage.platform.component.definition.MapDefinition;
 import org.jage.platform.config.xml.ConfigAttributes;
 import org.jage.platform.config.xml.ConfigTags;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.hamcrest.Matchers.is;
 import static org.jage.platform.config.xml.util.ElementBuilder.SOME_NAME;
 import static org.jage.platform.config.xml.util.ElementBuilder.element;
 import static org.jage.platform.config.xml.util.ElementBuilder.mapElement;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+
 
 /**
  * Unit tests for MapDefinitionReader.
@@ -65,124 +65,121 @@ import static org.jage.platform.config.xml.util.ElementBuilder.mapElement;
 @RunWith(MockitoJUnitRunner.class)
 public class MapDefinitionReaderTest {
 
-	@SuppressWarnings("rawtypes")
+    @SuppressWarnings("rawtypes")
     private final Class<? extends Map> mapClass = HashMap.class;
-
-	@Mock
-	@SuppressWarnings("unused")
+    @InjectMocks
+    private final MapDefinitionReader reader = new MapDefinitionReader(mapClass);
+    @Mock
+    @SuppressWarnings("unused")
     private IDefinitionReader<IArgumentDefinition> argumentReader;
+    @Mock
+    @SuppressWarnings("unused")
+    private IDefinitionReader<IComponentDefinition> instanceReader;
 
-	@Mock
-	@SuppressWarnings("unused")
-	private IDefinitionReader<IComponentDefinition> instanceReader;
+    @Test
+    public void testValidDefinition() throws ConfigurationException {
+        // given
+        final Element element = mapElement().build();
 
-	@InjectMocks
-	private final MapDefinitionReader reader = new MapDefinitionReader(mapClass);
+        // when
+        final MapDefinition definition = reader.read(element);
 
-	@Test
-	public void testValidDefinition() throws ConfigurationException {
-		// given
-		final Element element = mapElement().build();
+        // then
+        assertNotNull(definition);
+        assertThat(definition.getName(), is(SOME_NAME));
+        assertEquals(mapClass, definition.getType());
+        assertEquals(String.class, definition.getElementsKeyType());
+        assertEquals(String.class, definition.getElementsValueType());
+        assertThat(definition.isSingleton(), is(true));
+    }
 
-		// when
-		final MapDefinition definition = reader.read(element);
+    @Test(expected = ConfigurationException.class)
+    public void testNameAttributeIsRequired() throws ConfigurationException {
+        // given
+        final Element element = element(ConfigTags.MAP)
+                .build();
 
-		// then
-		assertNotNull(definition);
-		assertThat(definition.getName(), is(SOME_NAME));
-		assertEquals(mapClass, definition.getType());
-		assertEquals(String.class, definition.getElementsKeyType());
-		assertEquals(String.class, definition.getElementsValueType());
-		assertThat(definition.isSingleton(), is(true));
-	}
+        // when
+        reader.read(element);
+    }
 
-	@Test(expected = ConfigurationException.class)
-	public void testNameAttributeIsRequired() throws ConfigurationException {
-		// given
-		final Element element = element(ConfigTags.MAP)
-				.build();
+    @Test(expected = ConfigurationException.class)
+    public void testNameAttributeIsNotEmpty() throws ConfigurationException {
+        // given
+        final Element element = element(ConfigTags.MAP)
+                .withAttribute(ConfigAttributes.NAME, "")
+                .build();
 
-		// when
-		reader.read(element);
-	}
+        // when
+        reader.read(element);
+    }
 
-	@Test(expected = ConfigurationException.class)
-	public void testNameAttributeIsNotEmpty() throws ConfigurationException {
-		// given
-		final Element element = element(ConfigTags.MAP)
-				.withAttribute(ConfigAttributes.NAME, "")
-				.build();
+    @Test(expected = ConfigurationException.class)
+    public void testKeyTypeAttributeIsRequired() throws ConfigurationException {
+        // given
+        final Element element = element(ConfigTags.MAP)
+                .withAttribute(ConfigAttributes.NAME, SOME_NAME)
+                .build();
 
-		// when
-		reader.read(element);
-	}
+        // when
+        reader.read(element);
+    }
 
-	@Test(expected = ConfigurationException.class)
-	public void testKeyTypeAttributeIsRequired() throws ConfigurationException {
-		// given
-		final Element element = element(ConfigTags.MAP)
-				.withAttribute(ConfigAttributes.NAME, SOME_NAME)
-				.build();
+    @Test(expected = ConfigurationException.class)
+    public void testKeyTypeAttributeIsNotEmpty() throws ConfigurationException {
+        // given
+        final Element element = element(ConfigTags.MAP)
+                .withAttribute(ConfigAttributes.NAME, SOME_NAME)
+                .withAttribute(ConfigAttributes.KEY_TYPE, "")
+                .build();
 
-		// when
-		reader.read(element);
-	}
+        // when
+        reader.read(element);
+    }
 
-	@Test(expected = ConfigurationException.class)
-	public void testKeyTypeAttributeIsNotEmpty() throws ConfigurationException {
-		// given
-		final Element element = element(ConfigTags.MAP)
-				.withAttribute(ConfigAttributes.NAME, SOME_NAME)
-				.withAttribute(ConfigAttributes.KEY_TYPE, "")
-				.build();
+    @Test(expected = ConfigurationException.class)
+    public void testValueTypeAttributeIsRequired() throws ConfigurationException {
+        // given
+        final Element element = element(ConfigTags.MAP)
+                .withAttribute(ConfigAttributes.NAME, SOME_NAME)
+                .build();
 
-		// when
-		reader.read(element);
-	}
+        // when
+        reader.read(element);
+    }
 
-	@Test(expected = ConfigurationException.class)
-	public void testValueTypeAttributeIsRequired() throws ConfigurationException {
-		// given
-		final Element element = element(ConfigTags.MAP)
-				.withAttribute(ConfigAttributes.NAME, SOME_NAME)
-				.build();
+    @Test(expected = ConfigurationException.class)
+    public void testValueTypeAttributeIsNotEmpty() throws ConfigurationException {
+        // given
+        final Element element = element(ConfigTags.MAP)
+                .withAttribute(ConfigAttributes.NAME, SOME_NAME)
+                .withAttribute(ConfigAttributes.VALUE_TYPE, "")
+                .build();
 
-		// when
-		reader.read(element);
-	}
+        // when
+        reader.read(element);
+    }
 
-	@Test(expected = ConfigurationException.class)
-	public void testValueTypeAttributeIsNotEmpty() throws ConfigurationException {
-		// given
-		final Element element = element(ConfigTags.MAP)
-				.withAttribute(ConfigAttributes.NAME, SOME_NAME)
-				.withAttribute(ConfigAttributes.VALUE_TYPE, "")
-				.build();
+    @Test(expected = ConfigurationException.class)
+    public void testSingletonAttributeIsRequired() throws ConfigurationException {
+        // given
+        final Element element = element(ConfigTags.MAP)
+                .withAttribute(ConfigAttributes.NAME, SOME_NAME)
+                .build();
 
-		// when
-		reader.read(element);
-	}
+        // when
+        reader.read(element);
+    }
 
-	@Test(expected = ConfigurationException.class)
-	public void testSingletonAttributeIsRequired() throws ConfigurationException {
-		// given
-		final Element element = element(ConfigTags.MAP)
-				.withAttribute(ConfigAttributes.NAME, SOME_NAME)
-				.build();
+    @Test(expected = ConfigurationException.class)
+    public void testSingletonAttributeIsNotEmpty() throws ConfigurationException {
+        // given
+        final Element element = element(ConfigTags.MAP)
+                .withAttribute(ConfigAttributes.NAME, SOME_NAME)
+                .withAttribute(ConfigAttributes.IS_SINGLETON, "")
+                .build();
 
-		// when
-		reader.read(element);
-	}
-
-	@Test(expected = ConfigurationException.class)
-	public void testSingletonAttributeIsNotEmpty() throws ConfigurationException {
-		// given
-		final Element element = element(ConfigTags.MAP)
-				.withAttribute(ConfigAttributes.NAME, SOME_NAME)
-				.withAttribute(ConfigAttributes.IS_SINGLETON, "")
-				.build();
-
-		// when
-		reader.read(element);
-	}
+        // when
+        reader.read(element);
+    }
 }

@@ -31,32 +31,32 @@
 
 package org.jage.platform.reflect.predicates;
 
+
+import com.google.common.base.Predicate;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
-import com.google.common.base.Predicate;
 
 /**
  * Utility predicates for Constructors.
  *
- * @since 2.6
  * @author AGH AgE Team
+ * @since 2.6
  */
 public final class FieldPredicates {
 
-	/**
-	 * Returns a predicate checking if fields are annotated with a given annotation.
-	 *
-	 * @param annotation
-	 *            the annotation
-	 * @return a predicate
-	 *
-	 * @since 2.6
-	 */
-	public static Predicate<Field> withAnnotation(final Class<? extends Annotation> annotation) {
-		return input -> input.isAnnotationPresent(annotation);
-	}
+    private FieldPredicates() {
+    }
 
-	private FieldPredicates() {
-	}
+    /**
+     * Returns a predicate checking if fields are annotated with a given annotation.
+     *
+     * @param annotation the annotation
+     * @return a predicate
+     * @since 2.6
+     */
+    public static Predicate<Field> withAnnotation(final Class<? extends Annotation> annotation) {
+        return input -> input.isAnnotationPresent(annotation);
+    }
 }

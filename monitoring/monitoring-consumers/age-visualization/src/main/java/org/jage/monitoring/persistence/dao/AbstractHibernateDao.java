@@ -33,22 +33,24 @@
 
 package org.jage.monitoring.persistence.dao;
 
+
 import org.hibernate.Session;
 import org.jage.monitoring.persistence.config.HibernateConfiguration;
 
+
 /**
  * Base for DAO classes.
- * 
+ *
  * @author AGH AgE Team
  */
 
 public abstract class AbstractHibernateDao {
 
-	protected HibernateConfiguration hibernateConfiguration;
-	
-	protected Session hibernateSession;
+    protected HibernateConfiguration hibernateConfiguration;
 
-	public AbstractHibernateDao(HibernateConfiguration hibernateConfiguration){
-		this.hibernateConfiguration = hibernateConfiguration;
-	}
+    protected Session hibernateSession;
+
+    public AbstractHibernateDao(HibernateConfiguration hibernateConfiguration) {
+        this.hibernateConfiguration = hibernateConfiguration;
+    }
 }

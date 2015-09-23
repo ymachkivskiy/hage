@@ -31,106 +31,109 @@
 
 package org.jage.services.core;
 
+
 /**
  * A service that manages the lifecycle of every AgE node.
- * 
+ *
  * @author AGH AgE Team
  */
 public interface LifecycleManager {
 
-	public static final String SERVICE_NAME = LifecycleManager.class.getSimpleName();
-
-	/**
-	 * States of this lifecycle manager (in other words - states of the node).
-	 *
-	 * @author AGH AgE Team
-	 */
-	public static enum State {
-		/**
-		 * Initial state of the node.
-		 */
-		OFFLINE,
-		/**
-		 * Node has been initialized.
-		 */
-		INITIALIZED,
-		/**
-		 * Computation was loaded and initialized.
-		 */
-		CONFIGURED,
-		/**
-		 * Computation is running.
-		 */
-		RUNNING,
-		/**
-		 * Computation is paused.
-		 */
-		PAUSED,
-		/**
-		 * Computation has been stopped.
-		 */
-		STOPPED,
-		/**
-		 * Node has failed.
-		 */
-		FAILED,
-		/**
-		 * Node has terminated (terminal state).
-		 */
-		TERMINATED;
-	}
-
-	/**
-	 * Events that can occur in the node.
-	 *
-	 * @author AGH AgE Team
-	 */
-	public static enum Event {
-		/**
-		 * Sent by the bootstrapper.
-		 */
-		INITIALIZE,
-		/**
-		 * Sent by the configuration service when configuration is available.
-		 */
-		CONFIGURE,
-		/**
-		 * Starts the computation.
-		 */
-		START_COMMAND,
-		/**
-		 * Notifies that the core component is starting.
-		 */
-		CORE_STARTING,
-		/**
-		 * Pauses the computation.
-		 */
-		PAUSE,
-		/**
-		 * Resumes the computation.
-		 */
-		RESUME,
-		/**
-		 * Stops the computation completely.
-		 */
-		STOP_COMMAND,
-		/**
-		 * Notifies that the core component has stopped.
-		 */
-		CORE_STOPPED,
-		/**
-		 * Clears the node from the computation configuration.
-		 */
-		CLEAR,
-		/**
-		 * Indicates that an error occurred.
-		 */
-		ERROR,
-		/**
-		 * Terminates the node.
-		 */
-		EXIT;
-	}
+    public static final String SERVICE_NAME = LifecycleManager.class.getSimpleName();
 
     void start();
+
+
+    /**
+     * States of this lifecycle manager (in other words - states of the node).
+     *
+     * @author AGH AgE Team
+     */
+    public static enum State {
+        /**
+         * Initial state of the node.
+         */
+        OFFLINE,
+        /**
+         * Node has been initialized.
+         */
+        INITIALIZED,
+        /**
+         * Computation was loaded and initialized.
+         */
+        CONFIGURED,
+        /**
+         * Computation is running.
+         */
+        RUNNING,
+        /**
+         * Computation is paused.
+         */
+        PAUSED,
+        /**
+         * Computation has been stopped.
+         */
+        STOPPED,
+        /**
+         * Node has failed.
+         */
+        FAILED,
+        /**
+         * Node has terminated (terminal state).
+         */
+        TERMINATED
+    }
+
+
+    /**
+     * Events that can occur in the node.
+     *
+     * @author AGH AgE Team
+     */
+    public static enum Event {
+        /**
+         * Sent by the bootstrapper.
+         */
+        INITIALIZE,
+        /**
+         * Sent by the configuration service when configuration is available.
+         */
+        CONFIGURE,
+        /**
+         * Starts the computation.
+         */
+        START_COMMAND,
+        /**
+         * Notifies that the core component is starting.
+         */
+        CORE_STARTING,
+        /**
+         * Pauses the computation.
+         */
+        PAUSE,
+        /**
+         * Resumes the computation.
+         */
+        RESUME,
+        /**
+         * Stops the computation completely.
+         */
+        STOP_COMMAND,
+        /**
+         * Notifies that the core component has stopped.
+         */
+        CORE_STOPPED,
+        /**
+         * Clears the node from the computation configuration.
+         */
+        CLEAR,
+        /**
+         * Indicates that an error occurred.
+         */
+        ERROR,
+        /**
+         * Terminates the node.
+         */
+        EXIT
+    }
 }

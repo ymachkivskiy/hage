@@ -31,7 +31,9 @@
 
 package org.jage.platform.component.descriptor;
 
+
 import java.util.List;
+
 
 /**
  * An interface which describes a single component. It contains information about component type, its available
@@ -44,27 +46,26 @@ import java.util.List;
  */
 public interface IComponentDescriptor {
 
-	/**
-	 * Returns the component type.
-	 *
-	 * @return class of the described component
-	 */
-	Class<?> getComponentType();
+    /**
+     * Returns the component type.
+     *
+     * @return class of the described component
+     */
+    Class<?> getComponentType();
 
-	/**
-	 * Returns list containing sequences of parameters types of available constructors.
-	 *
-	 * @return list of available constructor parameters
-	 */
-	List<List<Class<?>>> getConstructorParametersTypes();
+    /**
+     * Returns list containing sequences of parameters types of available constructors.
+     *
+     * @return list of available constructor parameters
+     */
+    List<List<Class<?>>> getConstructorParametersTypes();
 
-	/**
-	 * Checks if described component contains a property with a given name.
-	 *
-	 * @param name
-	 *            name of a property
-	 * @return true if this described component contains a needed property
-	 */
-	boolean containsProperty(String name);
+    /**
+     * Checks if described component contains a property with a given name.
+     *
+     * @param name name of a property
+     * @return true if this described component contains a needed property
+     */
+    boolean containsProperty(String name);
 
 }

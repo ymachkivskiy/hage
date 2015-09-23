@@ -31,68 +31,59 @@
 
 package org.jage.platform.reflect.attribute;
 
+
 /**
  * Common abstraction for reflection based injection. May represent a field or a method.
  *
- * @param <T>
- *            the type of this attribute
- *
- * @since 2.6
+ * @param <T> the type of this attribute
  * @author AGH AgE Team
+ * @since 2.6
  */
 public interface Attribute<T> {
 
-	/**
-	 * Returns the name of this attribute.
-	 *
-	 * @return this attribute's name
-	 * @since 2.6
-	 */
-	public String getName();
+    /**
+     * Returns the name of this attribute.
+     *
+     * @return this attribute's name
+     * @since 2.6
+     */
+    public String getName();
 
-	/**
-	 * Returns the type of this attribute.
-	 *
-	 * @return this attribute's type
-	 * @since 2.6
-	 */
-	public Class<T> getType();
+    /**
+     * Returns the type of this attribute.
+     *
+     * @return this attribute's type
+     * @since 2.6
+     */
+    public Class<T> getType();
 
-	/**
-	 * Sets this attribute on the given target to the given value.
-	 *
-	 * @param target
-	 *            the target to be set on
-	 * @param value
-	 *            the value to be set to
-	 * @throws NullPointerException
-	 *             if the target is null
-	 * @throws IllegalArgumentException
-	 *             if the value is not an instance of the attribute type or some exception happens.
-	 * @throws IllegalAccessException
-	 *             if the underlying attribute is inaccessible
-	 * @since 2.6
-	 */
-	public void setValue(Object target, T value) throws IllegalAccessException;
+    /**
+     * Sets this attribute on the given target to the given value.
+     *
+     * @param target the target to be set on
+     * @param value  the value to be set to
+     * @throws NullPointerException     if the target is null
+     * @throws IllegalArgumentException if the value is not an instance of the attribute type or some exception happens.
+     * @throws IllegalAccessException   if the underlying attribute is inaccessible
+     * @since 2.6
+     */
+    public void setValue(Object target, T value) throws IllegalAccessException;
 
-	/**
-	 * Provides a type safe generic view of this attribute. Usage:
-	 *
-	 * <pre>
-	 * Attribute<?> someAttribute = // initialize this somehow
-	 * if(String.class.equals(someAttribute.getType())){
-	 *     someAttribute.asType(String.class).setValue(bean, "Hello World");
-	 * }
-	 * </pre>
-	 *
-	 * @param <S>
-	 *            the target type
-	 * @param targetType
-	 *            the target type class
-	 * @return this attribute, casted to the supplied generic type
-	 * @throws IllegalArgumentException
-	 *             if the supplied type is not compatible with {@link #getType()}
-	 * @since 2.6
-	 */
-	public <S> Attribute<S> asType(final Class<S> targetType);
+    /**
+     * Provides a type safe generic view of this attribute. Usage:
+     * <p>
+     * <pre>
+     * Attribute<?> someAttribute = // initialize this somehow
+     * if(String.class.equals(someAttribute.getType())){
+     *     someAttribute.asType(String.class).setValue(bean, "Hello World");
+     * }
+     * </pre>
+     *
+     * @param <S>        the target type
+     * @param targetType the target type class
+     * @return this attribute, casted to the supplied generic type
+     * @throws IllegalArgumentException if the supplied type is not compatible with {@link #getType()}
+     * @since 2.6
+     */
+    public <S> Attribute<S> asType(final Class<S> targetType);
 }

@@ -26,18 +26,20 @@
  */
 package org.jage.property.xml.testHelpers;
 
+
 import org.jage.property.testHelpers.InnerClassWithProperties;
+
 
 public class SimpleExampleComponent {
 
-	@SuppressWarnings("unused")
-	private static final String version = "1.0.0";
+    @SuppressWarnings("unused")
+    private static final String version = "1.0.0";
 
-	@SuppressWarnings("unused")
-	private InnerClassWithProperties _complexProperty = new InnerClassWithProperties();
+    @SuppressWarnings("unused")
+    private InnerClassWithProperties _complexProperty = new InnerClassWithProperties();
 
-	@SuppressWarnings("unused")
-	private InnerClassWithProperties[] _complexArrayProperty = { new InnerClassWithProperties(),
-			new InnerClassWithProperties() };
+    @SuppressWarnings("unused")
+    private InnerClassWithProperties[] _complexArrayProperty = {new InnerClassWithProperties(),
+            new InnerClassWithProperties()};
 
 }

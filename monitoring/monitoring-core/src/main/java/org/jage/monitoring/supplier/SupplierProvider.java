@@ -27,30 +27,30 @@
 
 package org.jage.monitoring.supplier;
 
-import org.jage.platform.component.provider.IComponentInstanceProvider;
 
 import com.google.common.base.Supplier;
 import com.typesafe.config.Config;
+import org.jage.platform.component.provider.IComponentInstanceProvider;
+
 
 /**
  * The interface for providers of Supplier instances.
- * 
+ *
  * @author AGH AgE Team
  */
-public interface SupplierProvider{
-	
-	/**
-	 * Creates <code>Supplier</code> instance.  
-	 * @param c 
-	 * 			instance of Typesafe Config, which points on given supplier definition in Typesafe configuration file. 
-	 * @param provider
-	 * 			used to inject dependencies if would be needed.
-	 * @return supplier.
-	 */
-	Supplier<Object> create(Config c, IComponentInstanceProvider provider);
-	
-	/**
-	 * @return String representation of supplier, used in Typesafe configuration file. 
-	 */
-	String getType();
+public interface SupplierProvider {
+
+    /**
+     * Creates <code>Supplier</code> instance.
+     *
+     * @param c        instance of Typesafe Config, which points on given supplier definition in Typesafe configuration file.
+     * @param provider used to inject dependencies if would be needed.
+     * @return supplier.
+     */
+    Supplier<Object> create(Config c, IComponentInstanceProvider provider);
+
+    /**
+     * @return String representation of supplier, used in Typesafe configuration file.
+     */
+    String getType();
 }

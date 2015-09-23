@@ -26,47 +26,48 @@
  */
 package org.jage.monitoring.config;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.List;
 
 import org.jage.monitoring.MonitoringException;
 import org.jage.monitoring.observer.ObservedData;
-
 import rx.Observable;
 import rx.schedulers.Timestamped;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+
+
 /**
- * Class invokes method which creates handler. 
+ * Class invokes method which creates handler.
  *
  * @author AGH AgE Team
  */
 
 public class FactoryMethodInvoker {
 
-	/**
-	 * Invokes method which name is passed as an argument.
-	 * 
-	 * @param observables
-	 * @param observers
-	 * @param name 
-	 * @param clazz Class name of the handler.
-	 * @param method Method name which would be called.
-	 */
-	public Observable<ObservedData> invokeFactoryMethod(List<Observable<Timestamped<Object>>> observables, String name, String clazz, String method){
-		Observable<ObservedData> result = null;
-		try {
-			result = (Observable<ObservedData>) Class.forName(clazz)
-				.getMethod(method, List.class, String.class)
-				.invoke(null, observables, name);
-				return result;
-		} catch (IllegalAccessException | IllegalArgumentException
-				| InvocationTargetException | NoSuchMethodException | SecurityException | ClassNotFoundException e) {
-			throw new MonitoringException(
-					new StringBuilder().append("Error in handler " ).append(name).append(", ")
-						.append(e.getMessage()).append(" ").append(e.getClass()).toString()
-					, e);
-		}
-		
-	}
-	
+    /**
+     * Invokes method which name is passed as an argument.
+     *
+     * @param observables
+     * @param observers
+     * @param name
+     * @param clazz       Class name of the handler.
+     * @param method      Method name which would be called.
+     */
+    public Observable<ObservedData> invokeFactoryMethod(List<Observable<Timestamped<Object>>> observables, String name, String clazz, String method) {
+        Observable<ObservedData> result = null;
+        try {
+            result = (Observable<ObservedData>) Class.forName(clazz)
+                    .getMethod(method, List.class, String.class)
+                    .invoke(null, observables, name);
+            return result;
+        } catch(IllegalAccessException | IllegalArgumentException
+                | InvocationTargetException | NoSuchMethodException | SecurityException | ClassNotFoundException e) {
+            throw new MonitoringException(
+                    new StringBuilder().append("Error in handler ").append(name).append(", ")
+                            .append(e.getMessage()).append(" ").append(e.getClass()).toString()
+                    , e);
+        }
+
+    }
+
 }

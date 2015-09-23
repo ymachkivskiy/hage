@@ -31,19 +31,19 @@
 
 package org.jage.platform.config.xml.readers;
 
+
 import org.dom4j.Element;
-import org.junit.Test;
-
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-
 import org.jage.platform.component.definition.ConfigurationException;
 import org.jage.platform.component.definition.ReferenceDefinition;
 import org.jage.platform.config.xml.ConfigAttributes;
 import org.jage.platform.config.xml.ConfigTags;
+import org.junit.Test;
 
+import static org.hamcrest.Matchers.is;
 import static org.jage.platform.config.xml.util.ElementBuilder.element;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+
 
 /**
  * Unit tests for ReferenceDefinitionReader.
@@ -52,42 +52,42 @@ import static org.jage.platform.config.xml.util.ElementBuilder.element;
  */
 public class ReferenceDefinitionReaderTest {
 
-	private final ReferenceDefinitionReader reader = new ReferenceDefinitionReader();
+    private final ReferenceDefinitionReader reader = new ReferenceDefinitionReader();
 
-	@Test
-	public void testValidDefinition() throws ConfigurationException {
-		// given
-		final Element element = element(ConfigTags.REFERENCE)
-				.withAttribute(ConfigAttributes.TARGET, "targetName")
-				.withAttribute(ConfigAttributes.CLASS, "java.lang.Object")
-				.build();
+    @Test
+    public void testValidDefinition() throws ConfigurationException {
+        // given
+        final Element element = element(ConfigTags.REFERENCE)
+                .withAttribute(ConfigAttributes.TARGET, "targetName")
+                .withAttribute(ConfigAttributes.CLASS, "java.lang.Object")
+                .build();
 
-		// when
-		final ReferenceDefinition definition = reader.read(element);
+        // when
+        final ReferenceDefinition definition = reader.read(element);
 
-		// then
-		assertNotNull(definition);
-		assertThat(definition.getTargetName(), is("targetName"));
-	}
+        // then
+        assertNotNull(definition);
+        assertThat(definition.getTargetName(), is("targetName"));
+    }
 
-	@Test(expected = ConfigurationException.class)
-	public void testTargetAttributeIsRequired() throws ConfigurationException {
-		// given
-		final Element element = element(ConfigTags.REFERENCE)
-				.build();
+    @Test(expected = ConfigurationException.class)
+    public void testTargetAttributeIsRequired() throws ConfigurationException {
+        // given
+        final Element element = element(ConfigTags.REFERENCE)
+                .build();
 
-		// when
-		reader.read(element);
-	}
+        // when
+        reader.read(element);
+    }
 
-	@Test(expected = ConfigurationException.class)
-	public void testTargetAttributeIsNotEmpty() throws ConfigurationException {
-		// given
-		final Element element = element(ConfigTags.REFERENCE)
-				.withAttribute(ConfigAttributes.TARGET, "")
-				.build();
+    @Test(expected = ConfigurationException.class)
+    public void testTargetAttributeIsNotEmpty() throws ConfigurationException {
+        // given
+        final Element element = element(ConfigTags.REFERENCE)
+                .withAttribute(ConfigAttributes.TARGET, "")
+                .build();
 
-		// when
-		reader.read(element);
-	}
+        // when
+        reader.read(element);
+    }
 }

@@ -32,6 +32,5 @@
 /**
  * Provides interfaces of required and common components.
  */
-@javax.annotation.ParametersAreNonnullByDefault
-package org.jage.services.core;
+@javax.annotation.ParametersAreNonnullByDefault package org.jage.services.core;
 

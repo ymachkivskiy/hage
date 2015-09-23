@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="hage.service.commandLine.arguments" class="org.jage.platform.cli.CommandLineArgumentsService"/>
 
-    <bean id="hage.service.configuration"  class="org.jage.configuration.DefaultConfigurationService" parent="hage.component.stateful.base"/>
+    <bean id="hage.service.configuration" class="org.jage.configuration.DefaultConfigurationService"
+          parent="hage.component.stateful.base"/>
 
-    <bean id="hage.service.configurationLoader" class="org.jage.configuration.ConfigurationLoaderService" parent="hage.component.stateful.base"/>
+    <bean id="hage.service.configurationLoader" class="org.jage.configuration.ConfigurationLoaderService"
+          parent="hage.component.stateful.base"/>
 
 </beans>

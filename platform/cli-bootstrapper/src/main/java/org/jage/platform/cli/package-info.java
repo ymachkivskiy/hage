@@ -31,9 +31,8 @@
 
 /**
  * Provides a node bootstrapper that can be run from the command-line.
- * 
+ *
  * @since 2.6
  * @author AGH AgE Team
  */
-@javax.annotation.ParametersAreNonnullByDefault
-package org.jage.platform.cli;
+@javax.annotation.ParametersAreNonnullByDefault package org.jage.platform.cli;

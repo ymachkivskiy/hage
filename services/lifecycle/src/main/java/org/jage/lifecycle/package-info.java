@@ -31,10 +31,9 @@
 
 /**
  * Contains all lifecycle-related components.
- * 
+ *
  * @since 2.6
- * 
+ *
  * @author AGH AgE Team
  */
-@javax.annotation.ParametersAreNonnullByDefault
-package org.jage.lifecycle;
+@javax.annotation.ParametersAreNonnullByDefault package org.jage.lifecycle;

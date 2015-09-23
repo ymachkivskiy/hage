@@ -31,9 +31,11 @@
 
 package org.jage.platform.component.pico.injector.factory;
 
+
 import org.jage.platform.component.definition.MapDefinition;
 import org.jage.platform.component.pico.injector.Injector;
 import org.jage.platform.component.pico.injector.MapInjector;
+
 
 /**
  * Factory for MapInjectors.
@@ -41,8 +43,9 @@ import org.jage.platform.component.pico.injector.MapInjector;
  * @author AGH AgE Team
  */
 final class MapInjectorFactory implements InjectorFactory<MapDefinition> {
-	@Override
-	public <T> Injector<T> createAdapter(final MapDefinition definition) {
-		return new MapInjector<T>(definition);
-	}
+
+    @Override
+    public <T> Injector<T> createAdapter(final MapDefinition definition) {
+        return new MapInjector<T>(definition);
+    }
 }

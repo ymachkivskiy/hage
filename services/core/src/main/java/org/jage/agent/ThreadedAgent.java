@@ -31,33 +31,34 @@
 
 package org.jage.agent;
 
+
 /**
  * An agent that can be run as a thread.
- * 
+ *
  * @author AGH AgE Team
  */
 public interface ThreadedAgent extends IAgent {
 
-	/**
-	 * Checks whether the agent is running.
-	 * 
-	 * @return true, if the agent is running.
-	 */
-	boolean isRunning();
+    /**
+     * Checks whether the agent is running.
+     *
+     * @return true, if the agent is running.
+     */
+    boolean isRunning();
 
 
-	/**
-	 * Checks whether the agent is paused.
-	 * 
-	 * @return true, if the agent is paused.
-	 */
-	boolean isPaused();
+    /**
+     * Checks whether the agent is paused.
+     *
+     * @return true, if the agent is paused.
+     */
+    boolean isPaused();
 
 
-	/**
-	 * Checks whether the agent is stopped.
-	 * 
-	 * @return true, if the agent is stopped.
-	 */
-	boolean isStopped();
+    /**
+     * Checks whether the agent is stopped.
+     *
+     * @return true, if the agent is stopped.
+     */
+    boolean isStopped();
 }

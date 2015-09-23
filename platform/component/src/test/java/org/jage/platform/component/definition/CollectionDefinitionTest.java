@@ -31,49 +31,51 @@
 
 package org.jage.platform.component.definition;
 
-import java.util.LinkedList;
 
 import org.junit.Test;
+
+import java.util.LinkedList;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+
 /**
  * Tests for the {@link CollectionDefinition} class.
- * 
+ *
  * @author AGH AgE Team
  */
 public class CollectionDefinitionTest {
 
-	private static final String COLLECTION_NAME = "collection name";
+    private static final String COLLECTION_NAME = "collection name";
 
-	/**
-	 * Tests the short constructor.
-	 */
-	@Test
-	public void testCollectionDefinitionConstructor1() {
-		CollectionDefinition definition = new CollectionDefinition(COLLECTION_NAME, LinkedList.class, true);
+    /**
+     * Tests the short constructor.
+     */
+    @Test
+    public void testCollectionDefinitionConstructor1() {
+        CollectionDefinition definition = new CollectionDefinition(COLLECTION_NAME, LinkedList.class, true);
 
-		assertEquals(COLLECTION_NAME, definition.getName());
-		assertEquals(LinkedList.class, definition.getType());
-		assertTrue(definition.isSingleton());
-		assertEquals(1, definition.getTypeParameters().size());
-		assertEquals(Object.class, definition.getElementsType());
-	}
+        assertEquals(COLLECTION_NAME, definition.getName());
+        assertEquals(LinkedList.class, definition.getType());
+        assertTrue(definition.isSingleton());
+        assertEquals(1, definition.getTypeParameters().size());
+        assertEquals(Object.class, definition.getElementsType());
+    }
 
-	/**
-	 * Tests the long constructor.
-	 */
-	@Test
-	public void testCollectionDefinitionConstructor2() {
-		CollectionDefinition definition = new CollectionDefinition(COLLECTION_NAME, LinkedList.class, String.class,
-		        true);
+    /**
+     * Tests the long constructor.
+     */
+    @Test
+    public void testCollectionDefinitionConstructor2() {
+        CollectionDefinition definition = new CollectionDefinition(COLLECTION_NAME, LinkedList.class, String.class,
+                                                                   true);
 
-		assertEquals(COLLECTION_NAME, definition.getName());
-		assertEquals(LinkedList.class, definition.getType());
-		assertTrue(definition.isSingleton());
-		assertEquals(1, definition.getTypeParameters().size());
-		assertEquals(String.class, definition.getElementsType());
-	}
+        assertEquals(COLLECTION_NAME, definition.getName());
+        assertEquals(LinkedList.class, definition.getType());
+        assertTrue(definition.isSingleton());
+        assertEquals(1, definition.getTypeParameters().size());
+        assertEquals(String.class, definition.getElementsType());
+    }
 
 }

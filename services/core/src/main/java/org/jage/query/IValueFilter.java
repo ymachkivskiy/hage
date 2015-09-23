@@ -31,21 +31,20 @@
 
 package org.jage.query;
 
+
 /**
  * The interface for filters that perform matching on values of elements.
- * 
- * @param <T>
- *            A type of object that this filter can be used against.
+ *
+ * @param <T> A type of object that this filter can be used against.
  * @author AGH AgE Team
  */
 public interface IValueFilter<T> {
 
-	/**
-	 * Checks whether given object matches a condition represented by this filter.
-	 * 
-	 * @param object
-	 *            An object to test.
-	 * @return True if the given object matches a condition, false otherwise.
-	 */
-	boolean matches(T object);
+    /**
+     * Checks whether given object matches a condition represented by this filter.
+     *
+     * @param object An object to test.
+     * @return True if the given object matches a condition, false otherwise.
+     */
+    boolean matches(T object);
 }

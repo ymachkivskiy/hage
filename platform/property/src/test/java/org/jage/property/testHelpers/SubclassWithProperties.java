@@ -26,6 +26,7 @@
  */
 package org.jage.property.testHelpers;
 
+
 public class SubclassWithProperties extends ClassWithProperties {
 
 }

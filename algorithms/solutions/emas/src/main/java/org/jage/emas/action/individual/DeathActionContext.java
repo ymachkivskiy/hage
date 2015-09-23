@@ -31,8 +31,10 @@
 
 package org.jage.emas.action.individual;
 
+
 import org.jage.action.context.AgentActionContext;
 import org.jage.emas.util.ChainingContext;
+
 
 /**
  * This context defines a death action. To use it, you should declare a handler strategy named 'deathAction' in the
@@ -42,15 +44,17 @@ import org.jage.emas.util.ChainingContext;
  */
 @AgentActionContext(DeathActionContext.Properties.DEATH_ACTION)
 public class DeathActionContext extends ChainingContext {
-	/**
-	 * DeathActionContext properties.
-	 *
-	 * @author AGH AgE Team
-	 */
-	public static class Properties {
-		/**
-		 * The action name.
-		 */
-		public static final String DEATH_ACTION = "deathAction";
-	}
+
+    /**
+     * DeathActionContext properties.
+     *
+     * @author AGH AgE Team
+     */
+    public static class Properties {
+
+        /**
+         * The action name.
+         */
+        public static final String DEATH_ACTION = "deathAction";
+    }
 }

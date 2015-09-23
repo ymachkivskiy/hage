@@ -26,47 +26,52 @@
  */
 package org.jage.property;
 
+
 import java.util.HashSet;
+
 
 /**
  * Class with static methods that allows to validate property names.
+ *
  * @author Tomek
  */
 public final class PropertyNamesHelper {
-	
-	private static final HashSet<Character> _reservedCharacters = new HashSet<Character>();
-	
-	/**
-	 * Static constructor.
-	 */
-	static {
-		char[] characters = new char[] { '.', ',', '[', ']', '*', '@' };
-		for (char character : characters) {
-			_reservedCharacters.add(new Character(character));
-		}
-	}
-	
-	/**
-	 * Checks whether given string is valid property name.
-	 * @param name property name to check.
-	 * @return true, if given string is valid property name; otherwise, returns
-	 * false.
-	 */
-	public static boolean isValidPropertyName(String name) {
-		for (int i = 0; i < name.length(); i++) {
-			if (_reservedCharacters.contains(new Character(name.charAt(i)))) {
-				return false;
-			}
-		}
-		return true;
-	}
-	
-	/**
-	 * Checks whether given character is valid for property name. 
-	 * @param c character to check.
-	 * @return true, is given character is valid for property name; otherwise, returns false.
-	 */
-	public static boolean isValidPropertyNameCharacter(char c) {
-		return !_reservedCharacters.contains(new Character(c));
-	}
+
+    private static final HashSet<Character> _reservedCharacters = new HashSet<Character>();
+
+    /**
+     * Static constructor.
+     */
+    static {
+        char[] characters = new char[]{'.', ',', '[', ']', '*', '@'};
+        for(char character : characters) {
+            _reservedCharacters.add(new Character(character));
+        }
+    }
+
+    /**
+     * Checks whether given string is valid property name.
+     *
+     * @param name property name to check.
+     * @return true, if given string is valid property name; otherwise, returns
+     * false.
+     */
+    public static boolean isValidPropertyName(String name) {
+        for(int i = 0; i < name.length(); i++) {
+            if(_reservedCharacters.contains(new Character(name.charAt(i)))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Checks whether given character is valid for property name.
+     *
+     * @param c character to check.
+     * @return true, is given character is valid for property name; otherwise, returns false.
+     */
+    public static boolean isValidPropertyNameCharacter(char c) {
+        return !_reservedCharacters.contains(new Character(c));
+    }
 }

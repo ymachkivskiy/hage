@@ -26,18 +26,20 @@
  */
 package org.jage.monitoring.observer;
 
+
 import rx.Observable;
+
 
 /**
  * @author AGH AgE Team
- *
  */
 public interface ICompletable {
 
-	/**
-	 * Service which informs subscribers that the class which implements <code>Completable</code> has been completed.
-	 * @return observable which informs when the process has been completed.
-	 */
-	public Observable isCompleted();
-	
+    /**
+     * Service which informs subscribers that the class which implements <code>Completable</code> has been completed.
+     *
+     * @return observable which informs when the process has been completed.
+     */
+    public Observable isCompleted();
+
 }

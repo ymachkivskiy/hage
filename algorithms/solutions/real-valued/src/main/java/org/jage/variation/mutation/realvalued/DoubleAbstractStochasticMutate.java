@@ -31,11 +31,12 @@
 
 package org.jage.variation.mutation.realvalued;
 
-import java.util.List;
-
-import org.jage.variation.mutation.AbstractStochasticMutate;
 
 import it.unimi.dsi.fastutil.doubles.DoubleList;
+import org.jage.variation.mutation.AbstractStochasticMutate;
+
+import java.util.List;
+
 
 /**
  * Abstract class which efficiently unboxes Double AbstractStochasticMutate.
@@ -44,18 +45,17 @@ import it.unimi.dsi.fastutil.doubles.DoubleList;
  */
 public abstract class DoubleAbstractStochasticMutate extends AbstractStochasticMutate<Double> {
 
-	@Override
-	protected final void doMutate(List<Double> representation, int index) {
-		DoubleList list = (DoubleList)representation;
-		list.set(index, doMutate(list.getDouble(index)));
-	}
+    @Override
+    protected final void doMutate(List<Double> representation, int index) {
+        DoubleList list = (DoubleList) representation;
+        list.set(index, doMutate(list.getDouble(index)));
+    }
 
-	/**
-	 * Perform the actual mutation on a primitive double.
-	 *
-	 * @param value
-	 *            The old value
-	 * @return a mutated value
-	 */
-	protected abstract double doMutate(double value);
+    /**
+     * Perform the actual mutation on a primitive double.
+     *
+     * @param value The old value
+     * @return a mutated value
+     */
+    protected abstract double doMutate(double value);
 }

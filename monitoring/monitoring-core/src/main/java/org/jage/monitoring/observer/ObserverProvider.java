@@ -27,29 +27,29 @@
 
 package org.jage.monitoring.observer;
 
-import org.jage.platform.component.provider.IComponentInstanceProvider;
 
 import com.typesafe.config.Config;
+import org.jage.platform.component.provider.IComponentInstanceProvider;
+
 
 /**
  * The interface for providers of Observer instances.
- * 
+ *
  * @author AGH AgE Team
  */
 public interface ObserverProvider {
-	
-	/**
-	 * Creates <code>Observer</code> instance.  
-	 * @param c 
-	 * 			instance of Typesafe Config, which points on given observer definition in Typesafe configuration file. 
-	 * @param provider
-	 * 			used to inject dependencies if would be needed.
-	 * @return observer.
-	 */
-	AbstractStatefulObserver create(Config c, IComponentInstanceProvider provider);
-	
-	/**
-	 * @return String representation of data observer, used in Typesafe configuration file. 
-	 */
-	String getType();
+
+    /**
+     * Creates <code>Observer</code> instance.
+     *
+     * @param c        instance of Typesafe Config, which points on given observer definition in Typesafe configuration file.
+     * @param provider used to inject dependencies if would be needed.
+     * @return observer.
+     */
+    AbstractStatefulObserver create(Config c, IComponentInstanceProvider provider);
+
+    /**
+     * @return String representation of data observer, used in Typesafe configuration file.
+     */
+    String getType();
 }

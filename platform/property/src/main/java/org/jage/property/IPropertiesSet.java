@@ -26,53 +26,58 @@
  */
 package org.jage.property;
 
+
 /**
  * Interface for property sets.
+ *
  * @author Tomek
-  */
+ */
 public interface IPropertiesSet extends Iterable<Property> {
 
-	/**
-	 * Returns MetaPropertiesSet that stores metadata for all properties
-	 * from the set.
-	 */
-	public MetaPropertiesSet getMetaPropertiesSet();
-	
-	/**
-	 * Adds new property to the set.
-	 */
-	public void addProperty(Property property) throws DuplicatePropertyNameException;
-	
-	/**
-	 * Creates new property set that stores read-only, 
-	 * not-monitorable property with values read from the
-	 * original set.
-	 * @return
-	 */
-	public IPropertiesSet clonePropertyValues();
-	
-	/**
-	 * Removes property from the set.
-	 */
-	public void removeProperty(Property property);
-	
-	/**
-	 * Returns property with a given name.
-	 */
-	public Property getProperty(String name);
-	
-	/**
-	 * Checks whether property with a given name is in this set.
-	 * @param name name of the property.
-	 * @return true, if property with the given name is in this set; otherwise, returns false.
-	 */
-	public boolean containsProperty(String propertyName);
-	
-	/**
-	 * Provides instance of simple properties
-	 * @return the same set of simple properties
-	 */
-	public IPropertiesSet getSimplePropertiesSet();
+    /**
+     * Returns MetaPropertiesSet that stores metadata for all properties
+     * from the set.
+     */
+    public MetaPropertiesSet getMetaPropertiesSet();
+
+    /**
+     * Adds new property to the set.
+     */
+    public void addProperty(Property property) throws DuplicatePropertyNameException;
+
+    /**
+     * Creates new property set that stores read-only,
+     * not-monitorable property with values read from the
+     * original set.
+     *
+     * @return
+     */
+    public IPropertiesSet clonePropertyValues();
+
+    /**
+     * Removes property from the set.
+     */
+    public void removeProperty(Property property);
+
+    /**
+     * Returns property with a given name.
+     */
+    public Property getProperty(String name);
+
+    /**
+     * Checks whether property with a given name is in this set.
+     *
+     * @param name name of the property.
+     * @return true, if property with the given name is in this set; otherwise, returns false.
+     */
+    public boolean containsProperty(String propertyName);
+
+    /**
+     * Provides instance of simple properties
+     *
+     * @return the same set of simple properties
+     */
+    public IPropertiesSet getSimplePropertiesSet();
 }
 
 

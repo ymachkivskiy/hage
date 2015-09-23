@@ -31,13 +31,14 @@
 
 package org.jage.evaluation.binary;
 
-import org.jage.property.ClassPropertyContainer;
-import org.jage.solution.IVectorSolution;
-import org.jage.solution.VectorSolution;
 
 import it.unimi.dsi.fastutil.booleans.BooleanList;
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
 import it.unimi.dsi.fastutil.doubles.DoubleList;
+import org.jage.property.ClassPropertyContainer;
+import org.jage.solution.IVectorSolution;
+import org.jage.solution.VectorSolution;
+
 
 /**
  * Decodes a binary solution to a real-valued one.
@@ -45,34 +46,34 @@ import it.unimi.dsi.fastutil.doubles.DoubleList;
  * @author AGH AgE Team
  */
 public class BinaryToRvDecoder extends ClassPropertyContainer implements
-        ISolutionDecoder<IVectorSolution<Boolean>, IVectorSolution<Double>> {
+                                                              ISolutionDecoder<IVectorSolution<Boolean>, IVectorSolution<Double>> {
 
-	@Override
-	public IVectorSolution<Double> decodeSolution(IVectorSolution<Boolean> solution) {
-		DoubleList representation = transformRepresentation((BooleanList)solution.getRepresentation());
-		return new VectorSolution<Double>(representation);
-	}
+    @Override
+    public IVectorSolution<Double> decodeSolution(IVectorSolution<Boolean> solution) {
+        DoubleList representation = transformRepresentation((BooleanList) solution.getRepresentation());
+        return new VectorSolution<Double>(representation);
+    }
 
-	protected DoubleList transformRepresentation(BooleanList representation) {
-		int n = representation.size() / Double.SIZE;
-		DoubleList decoded = new DoubleArrayList(n);
-		for (int i = 0; i < n; i++) {
-			decoded.set(i, binaryToDouble(representation, i * Double.SIZE, Double.SIZE));
-		}
-		return decoded;
-	}
+    protected DoubleList transformRepresentation(BooleanList representation) {
+        int n = representation.size() / Double.SIZE;
+        DoubleList decoded = new DoubleArrayList(n);
+        for(int i = 0; i < n; i++) {
+            decoded.set(i, binaryToDouble(representation, i * Double.SIZE, Double.SIZE));
+        }
+        return decoded;
+    }
 
-	protected double binaryToDouble(BooleanList representation, int offset, int length) {
-		long longBits = binaryToLongBits(representation, offset, length);
-		return Double.longBitsToDouble(longBits);
-	}
+    protected double binaryToDouble(BooleanList representation, int offset, int length) {
+        long longBits = binaryToLongBits(representation, offset, length);
+        return Double.longBitsToDouble(longBits);
+    }
 
-	private long binaryToLongBits(BooleanList representation, int offset, int length) {
-		long longBits = 0;
-		for (int i = offset; i < offset + length; i++) {
-			longBits <<= 1;
-			longBits += representation.getBoolean(i) ? 1 : 0;
-		}
-		return longBits;
-	}
+    private long binaryToLongBits(BooleanList representation, int offset, int length) {
+        long longBits = 0;
+        for(int i = offset; i < offset + length; i++) {
+            longBits <<= 1;
+            longBits += representation.getBoolean(i) ? 1 : 0;
+        }
+        return longBits;
+    }
 }

@@ -31,16 +31,17 @@
 
 package org.jage.action.context;
 
+
 /**
  * The action of killing an agent.
- * 
+ *
  * @author AGH AgE Team
  */
 @AgentActionContext(KillAgentActionContext.ACTION_NAME)
 public class KillAgentActionContext extends AbstractAgentActionContext {
 
-	/**
-	 * The action name of this context.
-	 */
-	public static final String ACTION_NAME = "killAgent";
+    /**
+     * The action name of this context.
+     */
+    public static final String ACTION_NAME = "killAgent";
 }

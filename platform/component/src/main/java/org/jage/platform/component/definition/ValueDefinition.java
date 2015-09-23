@@ -31,10 +31,12 @@
 
 package org.jage.platform.component.definition;
 
+
 import com.google.common.base.Objects;
 
 import static com.google.common.base.Objects.toStringHelper;
 import static com.google.common.base.Preconditions.checkNotNull;
+
 
 /**
  * This argument definition creates a value-type object instance, parsing its string representation.
@@ -43,54 +45,52 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class ValueDefinition implements IArgumentDefinition {
 
-	private static final long serialVersionUID = -83586069588622618L;
+    private static final long serialVersionUID = -83586069588622618L;
 
-	private final Class<?> desiredClass;
+    private final Class<?> desiredClass;
 
-	private final String stringValue;
+    private final String stringValue;
 
-	/**
-	 * Creates a value definition providing <code>stringValue</code> parsed to the <code>desiredClass</code> class.
-	 *
-	 * @param desiredClass
-	 *            A class to which the provided value will be parsed.
-	 * @param stringValue
-	 *            A desired value as a string.
-	 */
-	public ValueDefinition(final Class<?> desiredClass, final String stringValue) {
-		this.desiredClass = checkNotNull(desiredClass);
-		this.stringValue = checkNotNull(stringValue);
-	}
+    /**
+     * Creates a value definition providing <code>stringValue</code> parsed to the <code>desiredClass</code> class.
+     *
+     * @param desiredClass A class to which the provided value will be parsed.
+     * @param stringValue  A desired value as a string.
+     */
+    public ValueDefinition(final Class<?> desiredClass, final String stringValue) {
+        this.desiredClass = checkNotNull(desiredClass);
+        this.stringValue = checkNotNull(stringValue);
+    }
 
-	public Class<?> getDesiredClass() {
-		return desiredClass;
-	}
+    public Class<?> getDesiredClass() {
+        return desiredClass;
+    }
 
-	public String getStringValue() {
-		return stringValue;
-	}
+    public String getStringValue() {
+        return stringValue;
+    }
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (obj instanceof ValueDefinition) {
-			final ValueDefinition other = (ValueDefinition)obj;
-			return Objects.equal(desiredClass, other.desiredClass)
-					&& Objects.equal(stringValue, other.stringValue);
-		} else {
-			return false;
-		}
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(desiredClass, stringValue);
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hashCode(desiredClass, stringValue);
-	}
+    @Override
+    public boolean equals(final Object obj) {
+        if(obj instanceof ValueDefinition) {
+            final ValueDefinition other = (ValueDefinition) obj;
+            return Objects.equal(desiredClass, other.desiredClass)
+                    && Objects.equal(stringValue, other.stringValue);
+        } else {
+            return false;
+        }
+    }
 
-	@Override
-	public String toString() {
-		return toStringHelper(this)
-				.add("desiredClass", desiredClass)
-				.add("stringValue", stringValue)
-				.toString();
-	}
+    @Override
+    public String toString() {
+        return toStringHelper(this)
+                .add("desiredClass", desiredClass)
+                .add("stringValue", stringValue)
+                .toString();
+    }
 }

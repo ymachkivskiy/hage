@@ -31,89 +31,88 @@
 
 package org.jage.platform.config.xml.loaders;
 
-import org.junit.Test;
-import org.mockito.Mock;
 
-import static org.mockito.BDDMockito.given;
-
+import com.google.common.base.Supplier;
 import org.jage.platform.component.definition.ConfigurationException;
 import org.jage.platform.config.xml.ConfigAttributes;
 import org.jage.platform.config.xml.ConfigTags;
 import org.jage.platform.config.xml.util.DocumentBuilder;
+import org.junit.Test;
+import org.mockito.Mock;
 
 import static org.jage.platform.config.xml.util.DocumentBuilder.emptyDocument;
 import static org.jage.platform.config.xml.util.ElementBuilder.IS_SINGLETON_VALUE;
 import static org.jage.platform.config.xml.util.ElementBuilder.SOME_CLASS;
 import static org.jage.platform.config.xml.util.ElementBuilder.element;
+import static org.mockito.BDDMockito.given;
 
-import com.google.common.base.Supplier;
 
 /**
  * Tests for AnonymousComponentsNamer.
  *
  * @author AGH AgE Team
  */
-public class AnonymousComponentsNamerTest extends AbstractDocumentLoaderTest<AnonymousComponentsNamer>{
+public class AnonymousComponentsNamerTest extends AbstractDocumentLoaderTest<AnonymousComponentsNamer> {
 
     @Mock
-	private Supplier<String> nameSupplier;
+    private Supplier<String> nameSupplier;
 
     @Override
     protected AnonymousComponentsNamer getLoader() {
         return new AnonymousComponentsNamer(nameSupplier);
     }
 
-	@Test
-	public void shouldNameAnonymousComponentElement() throws ConfigurationException {
-		shouldNameAnonymousElement(ConfigTags.COMPONENT);
-	}
+    @Test
+    public void shouldNameAnonymousComponentElement() throws ConfigurationException {
+        shouldNameAnonymousElement(ConfigTags.COMPONENT);
+    }
 
-	@Test
-	public void shouldNameAnonymousAgentElement() throws ConfigurationException {
-		shouldNameAnonymousElement(ConfigTags.AGENT);
-	}
+    private void shouldNameAnonymousElement(final ConfigTags tag) throws ConfigurationException {
+        // given
+        final String name = "anonymous";
+        given(nameSupplier.get()).willReturn(name);
 
-	@Test
-	public void shouldNameAnonymousStrategyElement() throws ConfigurationException {
-		shouldNameAnonymousElement(ConfigTags.STRATEGY);
-	}
+        final DocumentBuilder original = emptyDocument()
+                .add(element(tag)
+                             .withAttribute(ConfigAttributes.CLASS, SOME_CLASS)
+                             .withAttribute(ConfigAttributes.IS_SINGLETON, IS_SINGLETON_VALUE));
+        final DocumentBuilder expected = emptyDocument()
+                .add(element(tag)
+                             .withAttribute(ConfigAttributes.NAME, name)
+                             .withAttribute(ConfigAttributes.CLASS, SOME_CLASS)
+                             .withAttribute(ConfigAttributes.IS_SINGLETON, IS_SINGLETON_VALUE));
 
-	@Test
-	public void shouldNameAnonymousArrayElement() throws ConfigurationException {
-		shouldNameAnonymousElement(ConfigTags.ARRAY);
-	}
+        //then
+        assertDocumentTransformation(original, expected);
+    }
 
-	@Test
-	public void shouldNameAnonymousListElement() throws ConfigurationException {
-		shouldNameAnonymousElement(ConfigTags.LIST);
-	}
+    @Test
+    public void shouldNameAnonymousAgentElement() throws ConfigurationException {
+        shouldNameAnonymousElement(ConfigTags.AGENT);
+    }
 
-	@Test
-	public void shouldNameAnonymousSetElement() throws ConfigurationException {
-		shouldNameAnonymousElement(ConfigTags.SET);
-	}
+    @Test
+    public void shouldNameAnonymousStrategyElement() throws ConfigurationException {
+        shouldNameAnonymousElement(ConfigTags.STRATEGY);
+    }
 
-	@Test
-	public void shouldNameAnonymousMapElement() throws ConfigurationException {
-		shouldNameAnonymousElement(ConfigTags.MAP);
-	}
+    @Test
+    public void shouldNameAnonymousArrayElement() throws ConfigurationException {
+        shouldNameAnonymousElement(ConfigTags.ARRAY);
+    }
 
-	private void shouldNameAnonymousElement(final ConfigTags tag) throws ConfigurationException {
-		// given
-		final String name = "anonymous";
-		given(nameSupplier.get()).willReturn(name);
+    @Test
+    public void shouldNameAnonymousListElement() throws ConfigurationException {
+        shouldNameAnonymousElement(ConfigTags.LIST);
+    }
 
-		final DocumentBuilder original = emptyDocument()
-			.add(element(tag)
-					.withAttribute(ConfigAttributes.CLASS, SOME_CLASS)
-					.withAttribute(ConfigAttributes.IS_SINGLETON, IS_SINGLETON_VALUE));
-		final DocumentBuilder expected = emptyDocument()
-			.add(element(tag)
-				.withAttribute(ConfigAttributes.NAME, name)
-				.withAttribute(ConfigAttributes.CLASS, SOME_CLASS)
-				.withAttribute(ConfigAttributes.IS_SINGLETON, IS_SINGLETON_VALUE));
+    @Test
+    public void shouldNameAnonymousSetElement() throws ConfigurationException {
+        shouldNameAnonymousElement(ConfigTags.SET);
+    }
 
-		//then
-		assertDocumentTransformation(original, expected);
-	}
+    @Test
+    public void shouldNameAnonymousMapElement() throws ConfigurationException {
+        shouldNameAnonymousElement(ConfigTags.MAP);
+    }
 }

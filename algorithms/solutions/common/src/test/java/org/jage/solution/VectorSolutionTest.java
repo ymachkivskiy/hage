@@ -31,7 +31,6 @@
 
 package org.jage.solution;
 
-import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -39,9 +38,12 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.List;
+
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+
 
 /**
  * Tests for VectorSolution.
@@ -51,18 +53,18 @@ import static org.junit.Assert.assertThat;
 @RunWith(MockitoJUnitRunner.class)
 public class VectorSolutionTest {
 
-	@Mock
-	private List<Double> representation;
+    @Mock
+    private List<Double> representation;
 
-	private VectorSolution<Double> solution;
+    private VectorSolution<Double> solution;
 
-	@Before
-	public void setUp() {
-		solution = new VectorSolution<Double>(representation);
-	}
+    @Before
+    public void setUp() {
+        solution = new VectorSolution<Double>(representation);
+    }
 
-	@Test
-	public void testGetRepresentation() {
-		assertThat(solution.getRepresentation(), is(equalTo(representation)));
-	}
+    @Test
+    public void testGetRepresentation() {
+        assertThat(solution.getRepresentation(), is(equalTo(representation)));
+    }
 }

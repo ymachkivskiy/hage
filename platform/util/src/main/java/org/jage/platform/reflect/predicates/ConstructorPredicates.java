@@ -31,46 +31,43 @@
 
 package org.jage.platform.reflect.predicates;
 
+
+import com.google.common.base.Predicate;
+import org.jage.platform.reflect.Constructors;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.util.List;
 
-import org.jage.platform.reflect.Constructors;
-
-import com.google.common.base.Predicate;
 
 /**
  * Utility predicates for Constructors.
  *
- * @since 2.6
  * @author AGH AgE Team
+ * @since 2.6
  */
 public class ConstructorPredicates {
 
-	/**
-	 * Returns a predicate checking if constructors match a list of actual parameters types.
-	 *
-	 * @param actualParameterTypes
-	 *            the list of actual parameters types
-	 * @return a predicate
-	 *
-	 * @see Constructors#isMatchingActualParameters(Constructor, List)
-	 * @since 2.6
-	 */
-	public static Predicate<Constructor<?>> matchingActualParameters(final List<Class<?>> actualParameterTypes) {
-		return input -> Constructors.isMatchingActualParameters(input, actualParameterTypes);
-	}
+    /**
+     * Returns a predicate checking if constructors match a list of actual parameters types.
+     *
+     * @param actualParameterTypes the list of actual parameters types
+     * @return a predicate
+     * @see Constructors#isMatchingActualParameters(Constructor, List)
+     * @since 2.6
+     */
+    public static Predicate<Constructor<?>> matchingActualParameters(final List<Class<?>> actualParameterTypes) {
+        return input -> Constructors.isMatchingActualParameters(input, actualParameterTypes);
+    }
 
-	/**
-	 * Returns a predicate checking if constructors are annotated with a given annotation.
-	 *
-	 * @param annotation
-	 *            the annotation
-	 * @return a predicate
-	 *
-	 * @since 2.6
-	 */
-	public static Predicate<Constructor<?>> withAnnotation(final Class<? extends Annotation> annotation) {
-		return input -> input.isAnnotationPresent(annotation);
-	}
+    /**
+     * Returns a predicate checking if constructors are annotated with a given annotation.
+     *
+     * @param annotation the annotation
+     * @return a predicate
+     * @since 2.6
+     */
+    public static Predicate<Constructor<?>> withAnnotation(final Class<? extends Annotation> annotation) {
+        return input -> input.isAnnotationPresent(annotation);
+    }
 }

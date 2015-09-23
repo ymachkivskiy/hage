@@ -31,29 +31,27 @@
 
 package org.jage.platform.component.descriptor;
 
+
 import org.jage.platform.component.definition.ConfigurationException;
+
 
 /**
  * An interface representing reader which is responsible for creating {@link IComponentDescriptor} based on given
  * source.
  *
  * @author AGH AgE Team
- *
  */
 public interface IComponentDescriptorReader {
 
-	/**
-	 * Analyzes a given source and than creates its component descriptor. Source type is dependent on concrete
-	 * implementation of the reader (for instance, source can be a Class object).
-	 *
-	 * @param source
-	 *            source object which will be analyzed to create a component descriptor
-	 * @throws ConfigurationException
-	 *             when any error occurs during reading the source
-	 * @throws IllegalArgumentException
-	 *             when source has wrong type
-	 * @return component descriptor
-	 */
-	IComponentDescriptor readDescritptor(Object source) throws ConfigurationException, IllegalArgumentException;
+    /**
+     * Analyzes a given source and than creates its component descriptor. Source type is dependent on concrete
+     * implementation of the reader (for instance, source can be a Class object).
+     *
+     * @param source source object which will be analyzed to create a component descriptor
+     * @return component descriptor
+     * @throws ConfigurationException   when any error occurs during reading the source
+     * @throws IllegalArgumentException when source has wrong type
+     */
+    IComponentDescriptor readDescritptor(Object source) throws ConfigurationException, IllegalArgumentException;
 
 }

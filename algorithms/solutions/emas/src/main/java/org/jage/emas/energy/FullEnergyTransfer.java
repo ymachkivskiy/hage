@@ -31,7 +31,9 @@
 
 package org.jage.emas.energy;
 
+
 import org.jage.emas.agent.IndividualAgent;
+
 
 /**
  * A full energy transfer strategy. Transfers all source energy to the target.
@@ -40,13 +42,13 @@ import org.jage.emas.agent.IndividualAgent;
  */
 public class FullEnergyTransfer implements EnergyTransfer<IndividualAgent> {
 
-	@Override
-	public final double transferEnergy(final IndividualAgent source, final IndividualAgent target) {
-		final double delta = source.getEnergy();
+    @Override
+    public final double transferEnergy(final IndividualAgent source, final IndividualAgent target) {
+        final double delta = source.getEnergy();
 
-		source.changeEnergyBy(-delta);
-		target.changeEnergyBy(delta);
+        source.changeEnergyBy(-delta);
+        target.changeEnergyBy(delta);
 
-		return delta;
-	}
+        return delta;
+    }
 }

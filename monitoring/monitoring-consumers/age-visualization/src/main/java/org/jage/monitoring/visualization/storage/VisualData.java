@@ -26,48 +26,52 @@
  */
 package org.jage.monitoring.visualization.storage;
 
+
+import javax.xml.bind.annotation.XmlRootElement;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * 
  * @author AGH AgE Team
  */
 @XmlRootElement
-public class VisualData{
+public class VisualData {
 
 
-	private Double data;
-	private long timestamp;
+    private Double data;
+    private long timestamp;
 
-	public VisualData(long timestamp, Double data) {
-		this.data = data;
-		this.timestamp = timestamp;
-	}
+    public VisualData(long timestamp, Double data) {
+        this.data = data;
+        this.timestamp = timestamp;
+    }
 
-	public VisualData() {}
+    public VisualData() {
+    }
 
-	public Double getData() {
-		return data;
-	}
-	public void setData(Double data) {
-		this.data = data;
-	}
-	public long getTimestamp() {
-		return timestamp;
-	}
-	public void setTimestamp(long timestamp) {
-		this.timestamp = timestamp;
-	}
+    public Double getData() {
+        return data;
+    }
 
-	@Override
-	public String toString() {
-		 Date date = new Date(timestamp);
-		    Format format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss:SSS");
-		return "Value:" + data + 
-			   ", date:" +  format.format(date);
-	}
+    public void setData(Double data) {
+        this.data = data;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    @Override
+    public String toString() {
+        Date date = new Date(timestamp);
+        Format format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss:SSS");
+        return "Value:" + data +
+                ", date:" + format.format(date);
+    }
 }

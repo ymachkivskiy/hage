@@ -31,20 +31,21 @@
 
 package org.jage.communication;
 
+
 import javax.annotation.Nonnull;
+
 
 /**
  * A subscriber interface for {@link CommunicationChannel}.
  *
- * @param <E>
- * 		a message type.
+ * @param <E> a message type.
  */
 public interface MessageSubscriber<E> {
 
-	/**
-	 * Method called when a new message arrives via the channel.
-	 *
-	 * @param message an arrived message.
-	 */
-	void onMessage(@Nonnull E message);
+    /**
+     * Method called when a new message arrives via the channel.
+     *
+     * @param message an arrived message.
+     */
+    void onMessage(@Nonnull E message);
 }

@@ -1,589 +1,589 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<!-- Maven project information -->
-	<groupId>org.jage</groupId>
-	<artifactId>jage</artifactId>
-	<packaging>pom</packaging>
-	<version>2.7.0-SNAPSHOT</version>
+    <!-- Maven project information -->
+    <groupId>org.jage</groupId>
+    <artifactId>jage</artifactId>
+    <packaging>pom</packaging>
+    <version>2.7.0-SNAPSHOT</version>
 
-	<!-- basic project information -->
-	<name>AgE</name>
-	<description>
-		Agent platform for evolution algorithms - AgE
-	</description>
-	<url>http://age.iisg.agh.edu.pl/jage/</url>
-	<inceptionYear>2006</inceptionYear>
-	<organization>
-		<name>AGH University of Science and Technology</name>
-		<url>http://www.agh.edu.pl</url>
-	</organization>
+    <!-- basic project information -->
+    <name>AgE</name>
+    <description>
+        Agent platform for evolution algorithms - AgE
+    </description>
+    <url>http://age.iisg.agh.edu.pl/jage/</url>
+    <inceptionYear>2006</inceptionYear>
+    <organization>
+        <name>AGH University of Science and Technology</name>
+        <url>http://www.agh.edu.pl</url>
+    </organization>
 
-	<licenses>
-		<license>
-			<name>GNU General Public License Version 3</name>
-			<url>LICENSE.txt</url>
-		</license>
-	</licenses>
+    <licenses>
+        <license>
+            <name>GNU General Public License Version 3</name>
+            <url>LICENSE.txt</url>
+        </license>
+    </licenses>
 
-	<!-- system components -->
-	<modules>
-		<module>platform</module>
-		<module>services</module>
-		<module>monitoring</module>
-		<module>examples</module>
-		<module>algorithms</module>
-		<module>archetypes</module>
-		<module>legacy</module>
-	</modules>
+    <!-- system components -->
+    <modules>
+        <module>platform</module>
+        <module>services</module>
+        <module>monitoring</module>
+        <module>examples</module>
+        <module>algorithms</module>
+        <module>archetypes</module>
+        <module>legacy</module>
+    </modules>
 
-	<!-- minimal required Maven version set to 3.0.0 because of maven-site-plugin-3.0 requirements -->
-	<prerequisites>
-		<maven>3.0.0</maven>
-	</prerequisites>
+    <!-- minimal required Maven version set to 3.0.0 because of maven-site-plugin-3.0 requirements -->
+    <prerequisites>
+        <maven>3.0.0</maven>
+    </prerequisites>
 
-	<!-- issue/bug management system -->
-	<issueManagement>
-		<system>Jira</system>
-		<url>https://age.iisg.agh.edu.pl/jira/browse/AGE</url>
-	</issueManagement>
+    <!-- issue/bug management system -->
+    <issueManagement>
+        <system>Jira</system>
+        <url>https://age.iisg.agh.edu.pl/jira/browse/AGE</url>
+    </issueManagement>
 
-	<!-- mailing lists -->
-	<mailingLists>
-		<mailingList>
-			<name>AgE Development List</name>
-			<subscribe>https://mailman.iisg.agh.edu.pl/cgi-bin/mailman/listinfo/age-dev</subscribe>
-			<unsubscribe>https://mailman.iisg.agh.edu.pl/cgi-bin/mailman/listinfo/age-dev</unsubscribe>
-			<post>age-dev@iisg.agh.edu.pl</post>
-		</mailingList>
-	</mailingLists>
+    <!-- mailing lists -->
+    <mailingLists>
+        <mailingList>
+            <name>AgE Development List</name>
+            <subscribe>https://mailman.iisg.agh.edu.pl/cgi-bin/mailman/listinfo/age-dev</subscribe>
+            <unsubscribe>https://mailman.iisg.agh.edu.pl/cgi-bin/mailman/listinfo/age-dev</unsubscribe>
+            <post>age-dev@iisg.agh.edu.pl</post>
+        </mailingList>
+    </mailingLists>
 
-	<!-- Continuous Integration Management -->
-	<ciManagement>
-		<system>bamboo</system>
-		<url>https://age.iisg.agh.edu.pl/bamboo/browse/AGE</url>
-	</ciManagement>
+    <!-- Continuous Integration Management -->
+    <ciManagement>
+        <system>bamboo</system>
+        <url>https://age.iisg.agh.edu.pl/bamboo/browse/AGE</url>
+    </ciManagement>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<scm.base-url>https://age.iisg.agh.edu.pl/git/age.git</scm.base-url>
-		<scm.base-public-url>git://age.iisg.agh.edu.pl/age.git</scm.base-public-url>
-	</properties>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <scm.base-url>https://age.iisg.agh.edu.pl/git/age.git</scm.base-url>
+        <scm.base-public-url>git://age.iisg.agh.edu.pl/age.git</scm.base-public-url>
+    </properties>
 
-	<!-- source configuration management -->
-	<scm>
-		<connection>scm:git:${scm.base-public-url}</connection>
-		<developerConnection>scm:git:${scm.base-url}</developerConnection>
-		<url>https://age.iisg.agh.edu.pl/fisheye/browse/AgE-Git</url>
-	</scm>
+    <!-- source configuration management -->
+    <scm>
+        <connection>scm:git:${scm.base-public-url}</connection>
+        <developerConnection>scm:git:${scm.base-url}</developerConnection>
+        <url>https://age.iisg.agh.edu.pl/fisheye/browse/AgE-Git</url>
+    </scm>
 
-	<!-- libraries/tools repositories -->
-	<repositories>
-		<repository>
-			<id>dotsrc.org</id>
-			<url>http://mirrors.dotsrc.org/maven2</url>
-			<layout>default</layout>
-			<releases>
-				<enabled>true</enabled>
-				<updatePolicy>never</updatePolicy>
-				<checksumPolicy>warn</checksumPolicy>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>sunsite.dk</id>
-			<url>http://mirrors.sunsite.dk/maven2</url>
-			<layout>default</layout>
-			<releases>
-				<enabled>true</enabled>
-				<updatePolicy>never</updatePolicy>
-				<checksumPolicy>warn</checksumPolicy>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>apache.org</id>
-			<name>Maven Snapshots</name>
-			<url>https://repository.apache.org/content/repositories/snapshots</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>codehaus.org</id>
-			<name>CodeHaus Snapshots</name>
-			<url>http://snapshots.repository.codehaus.org</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>maven2-repository.dev.java.net</id>
-			<name>Java.net Repository for Maven</name>
-			<url>http://download.java.net/maven/2/</url>
-			<layout>default</layout>
-		</repository>
-		<repository>
-			<id>age</id>
-			<url>http://age.iisg.agh.edu.pl/maven2</url>
-			<releases>
-				<enabled>true</enabled>
-				<!--<updatePolicy>daily</updatePolicy>-->
-				<checksumPolicy>warn</checksumPolicy>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-				<!--<updatePolicy>daily</updatePolicy>-->
-				<checksumPolicy>fail</checksumPolicy>
-			</snapshots>
-		</repository>
-	</repositories>
+    <!-- libraries/tools repositories -->
+    <repositories>
+        <repository>
+            <id>dotsrc.org</id>
+            <url>http://mirrors.dotsrc.org/maven2</url>
+            <layout>default</layout>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>sunsite.dk</id>
+            <url>http://mirrors.sunsite.dk/maven2</url>
+            <layout>default</layout>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>apache.org</id>
+            <name>Maven Snapshots</name>
+            <url>https://repository.apache.org/content/repositories/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>codehaus.org</id>
+            <name>CodeHaus Snapshots</name>
+            <url>http://snapshots.repository.codehaus.org</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>maven2-repository.dev.java.net</id>
+            <name>Java.net Repository for Maven</name>
+            <url>http://download.java.net/maven/2/</url>
+            <layout>default</layout>
+        </repository>
+        <repository>
+            <id>age</id>
+            <url>http://age.iisg.agh.edu.pl/maven2</url>
+            <releases>
+                <enabled>true</enabled>
+                <!--<updatePolicy>daily</updatePolicy>-->
+                <checksumPolicy>warn</checksumPolicy>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <!--<updatePolicy>daily</updatePolicy>-->
+                <checksumPolicy>fail</checksumPolicy>
+            </snapshots>
+        </repository>
+    </repositories>
 
-	<!-- plugin repositories -->
-	<pluginRepositories>
-		<pluginRepository>
-			<id>dotsrc.org</id>
-			<url>http://mirrors.dotsrc.org/maven2</url>
-			<layout>default</layout>
-			<releases>
-				<enabled>true</enabled>
-				<updatePolicy>never</updatePolicy>
-				<checksumPolicy>warn</checksumPolicy>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</pluginRepository>
-		<pluginRepository>
-			<id>sunsite.dk</id>
-			<url>http://mirrors.sunsite.dk/maven2</url>
-			<layout>default</layout>
-			<releases>
-				<enabled>true</enabled>
-				<updatePolicy>never</updatePolicy>
-				<checksumPolicy>warn</checksumPolicy>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</pluginRepository>
-		<pluginRepository>
-			<id>sourceforge.net</id>
-			<url>http://maven-plugins.sourceforge.net/repository</url>
-			<layout>default</layout>
-			<releases>
-				<enabled>true</enabled>
-				<updatePolicy>never</updatePolicy>
-				<checksumPolicy>warn</checksumPolicy>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</pluginRepository>
-		<!-- maven plugins snapshot repository -->
-		<pluginRepository>
-			<id>apache.snapshot.repository</id>
-			<url>http://repository.apache.org/snapshots/</url>
-			<layout>default</layout>
-			<releases>
-				<enabled>true</enabled>
-				<updatePolicy>never</updatePolicy>
-				<checksumPolicy>warn</checksumPolicy>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</pluginRepository>
-		<pluginRepository>
-			<id>apache.org</id>
-			<name>Maven Plugin Snapshots</name>
-			<url>https://repository.apache.org/content/repositories/snapshots</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</pluginRepository>
-		<pluginRepository>
-			<id>codehaus.org</id>
-			<name>CodeHaus Plugin Snapshots</name>
-			<url>http://snapshots.repository.codehaus.org</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</pluginRepository>
-		<pluginRepository>
-			<id>age</id>
-			<url>http://age.iisg.agh.edu.pl/maven2</url>
-			<layout>default</layout>
-		</pluginRepository>
-		<pluginRepository>
-			<id>mc-release</id>
-			<name>Local Maven repository of releases</name>
-			<url>http://oss.sonatype.org/content/repositories/releases/</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</pluginRepository>
+    <!-- plugin repositories -->
+    <pluginRepositories>
+        <pluginRepository>
+            <id>dotsrc.org</id>
+            <url>http://mirrors.dotsrc.org/maven2</url>
+            <layout>default</layout>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>sunsite.dk</id>
+            <url>http://mirrors.sunsite.dk/maven2</url>
+            <layout>default</layout>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>sourceforge.net</id>
+            <url>http://maven-plugins.sourceforge.net/repository</url>
+            <layout>default</layout>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+        <!-- maven plugins snapshot repository -->
+        <pluginRepository>
+            <id>apache.snapshot.repository</id>
+            <url>http://repository.apache.org/snapshots/</url>
+            <layout>default</layout>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>apache.org</id>
+            <name>Maven Plugin Snapshots</name>
+            <url>https://repository.apache.org/content/repositories/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>codehaus.org</id>
+            <name>CodeHaus Plugin Snapshots</name>
+            <url>http://snapshots.repository.codehaus.org</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>age</id>
+            <url>http://age.iisg.agh.edu.pl/maven2</url>
+            <layout>default</layout>
+        </pluginRepository>
+        <pluginRepository>
+            <id>mc-release</id>
+            <name>Local Maven repository of releases</name>
+            <url>http://oss.sonatype.org/content/repositories/releases/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </pluginRepository>
 
-		<!-- for confluence plugin for doxia developed by AGH -->
-		<pluginRepository>
-			<id>herman dev</id>
-			<url>http://herman.iisg.agh.edu.pl/proj/dev/maven2</url>
-			<layout>default</layout>
-		</pluginRepository>
-	</pluginRepositories>
+        <!-- for confluence plugin for doxia developed by AGH -->
+        <pluginRepository>
+            <id>herman dev</id>
+            <url>http://herman.iisg.agh.edu.pl/proj/dev/maven2</url>
+            <layout>default</layout>
+        </pluginRepository>
+    </pluginRepositories>
 
-	<build>
-		<extensions>
-			<extension>
-				<groupId>org.apache.maven.wagon</groupId>
-				<artifactId>wagon-ssh</artifactId>
-				<version>2.1</version>
-			</extension>
-		</extensions>
+    <build>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ssh</artifactId>
+                <version>2.1</version>
+            </extension>
+        </extensions>
 
-		<!-- Plugins versions -->
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.16</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-dependency-plugin</artifactId>
-					<version>2.8</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-eclipse-plugin</artifactId>
-					<version>2.9</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.1</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-source-plugin</artifactId>
-					<version>2.2.1</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-release-plugin</artifactId>
-					<version>2.4.2</version>
-				</plugin>
-				<plugin>
-					<groupId>com.mycila.maven-license-plugin</groupId>
-					<artifactId>maven-license-plugin</artifactId>
-					<version>1.10.b1</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-jar-plugin</artifactId>
-					<version>2.4</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-site-plugin</artifactId>
-					<version>3.3</version>
-				</plugin>
-				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>exec-maven-plugin</artifactId>
-					<version>1.2.1</version>
-				</plugin>
-				<plugin>
-					<groupId>com.atlassian.maven.plugins</groupId>
-					<artifactId>maven-clover2-plugin</artifactId>
-					<version>3.2.0</version>
-				</plugin>
-				<plugin>
-					<groupId>org.eclipse.jetty</groupId>
-					<artifactId>jetty-maven-plugin</artifactId>
-					<version>9.1.0.v20131115</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-war-plugin</artifactId>
-					<version>2.4</version>
-				</plugin>
-			</plugins>
-		</pluginManagement>
+        <!-- Plugins versions -->
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.16</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>2.8</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-eclipse-plugin</artifactId>
+                    <version>2.9</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>2.2.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>2.4.2</version>
+                </plugin>
+                <plugin>
+                    <groupId>com.mycila.maven-license-plugin</groupId>
+                    <artifactId>maven-license-plugin</artifactId>
+                    <version>1.10.b1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>2.4</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>3.3</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <version>1.2.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>com.atlassian.maven.plugins</groupId>
+                    <artifactId>maven-clover2-plugin</artifactId>
+                    <version>3.2.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.eclipse.jetty</groupId>
+                    <artifactId>jetty-maven-plugin</artifactId>
+                    <version>9.1.0.v20131115</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>2.4</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
 
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-eclipse-plugin</artifactId>
-				<configuration>
-					<downloadSources>true</downloadSources>
-					<downloadJavadocs>true</downloadJavadocs>
-					<projectNameTemplate>[groupId]-[artifactId]</projectNameTemplate>
-				</configuration>
-			</plugin>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-eclipse-plugin</artifactId>
+                <configuration>
+                    <downloadSources>true</downloadSources>
+                    <downloadJavadocs>true</downloadJavadocs>
+                    <projectNameTemplate>[groupId]-[artifactId]</projectNameTemplate>
+                </configuration>
+            </plugin>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<inherited>true</inherited>
-				<configuration>
-					<fork>true</fork>
-					<source>1.8</source>
-					<target>1.8</target>
-				</configuration>
-			</plugin>
-		
-			<!-- unit tests -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-			</plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <inherited>true</inherited>
+                <configuration>
+                    <fork>true</fork>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
 
-			<!-- attach sources -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>jar-no-fork</goal>
-							<goal>test-jar-no-fork</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+            <!-- unit tests -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
 
-			<!-- release manager -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-release-plugin</artifactId>
-				<configuration>
-					<branchBase>${scm.base-url}/branches/releases/</branchBase>
-					<autoVersionSubmodules>true</autoVersionSubmodules>
-				</configuration>
-			</plugin>
+            <!-- attach sources -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                            <goal>test-jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
-			<!-- check license -->
-			<plugin>
-				<groupId>com.mycila.maven-license-plugin</groupId>
-				<artifactId>maven-license-plugin</artifactId>
-				<configuration>
-					<basedir>${basedir}</basedir>
-					<header>${basedir}/src/etc/license.txt</header>
-					<strictCheck>true</strictCheck>
-					<quiet>false</quiet>
-					<failIfMissing>true</failIfMissing>
-					<includes>
-						<include>src/**/*.java</include>
-						<include>src/**/*.html</include>
-					</includes>
-					<useDefaultExcludes>true</useDefaultExcludes>
-					<useDefaultMapping>true</useDefaultMapping>
-					<encoding>UTF-8</encoding>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+            <!-- release manager -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <configuration>
+                    <branchBase>${scm.base-url}/branches/releases/</branchBase>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                </configuration>
+            </plugin>
 
-			<!-- inlucde test jar into build process -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>test-jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+            <!-- check license -->
+            <plugin>
+                <groupId>com.mycila.maven-license-plugin</groupId>
+                <artifactId>maven-license-plugin</artifactId>
+                <configuration>
+                    <basedir>${basedir}</basedir>
+                    <header>${basedir}/src/etc/license.txt</header>
+                    <strictCheck>true</strictCheck>
+                    <quiet>false</quiet>
+                    <failIfMissing>true</failIfMissing>
+                    <includes>
+                        <include>src/**/*.java</include>
+                        <include>src/**/*.html</include>
+                    </includes>
+                    <useDefaultExcludes>true</useDefaultExcludes>
+                    <useDefaultMapping>true</useDefaultMapping>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
-			<plugin>
-				<groupId>com.atlassian.maven.plugins</groupId>
-				<artifactId>maven-clover2-plugin</artifactId>
-				<configuration>
-					<licenseLocation>${user.dir}/build-conf/src/main/resources/clover/license</licenseLocation>
-					<generateHtml>true</generateHtml>
-					<generateXml>true</generateXml>
-				</configuration>
-			</plugin>
+            <!-- inlucde test jar into build process -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-site-plugin</artifactId>
-				<dependencies>
-					<dependency>
-						<groupId>org.apache.maven.doxia</groupId>
-						<artifactId>doxia-module-confluence</artifactId>
-						<version>1.1.4</version>
-					</dependency>
-				</dependencies>
-				<configuration>
-					<locales>en</locales>
-					<inputEncoding>UTF-8</inputEncoding>
-					<outputEncoding>UTF-8</outputEncoding>
+            <plugin>
+                <groupId>com.atlassian.maven.plugins</groupId>
+                <artifactId>maven-clover2-plugin</artifactId>
+                <configuration>
+                    <licenseLocation>${user.dir}/build-conf/src/main/resources/clover/license</licenseLocation>
+                    <generateHtml>true</generateHtml>
+                    <generateXml>true</generateXml>
+                </configuration>
+            </plugin>
 
-				</configuration>
-				<executions>
-					<execution>
-						<id>attach-descriptor</id>
-						<goals>
-							<goal>attach-descriptor</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.maven.doxia</groupId>
+                        <artifactId>doxia-module-confluence</artifactId>
+                        <version>1.1.4</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <locales>en</locales>
+                    <inputEncoding>UTF-8</inputEncoding>
+                    <outputEncoding>UTF-8</outputEncoding>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<configuration>
-					<ignoreNonCompile>true</ignoreNonCompile>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-descriptor</id>
+                        <goals>
+                            <goal>attach-descriptor</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
-	<distributionManagement>
-		<repository>
-			<id>age</id>
-			<name>AgE IISG Maven Repository</name>
-			<url>scp://age.iisg.agh.edu.pl/home/proj/age/public_html/maven2/</url>
-		</repository>
-		<site>
-			<id>age-site</id>
-			<name>AgE IISG Website</name>
-			<url>scp://age.iisg.agh.edu.pl/home/proj/age/public_html/jage/</url>
-		</site>
-	</distributionManagement>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <configuration>
+                    <ignoreNonCompile>true</ignoreNonCompile>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
-	<dependencyManagement>
-		<dependencies>
-			<!-- utilities -->
-			<dependency>
-				<groupId>com.google.guava</groupId>
-				<artifactId>guava</artifactId>
-				<version>16.0.1</version>
-			</dependency>
-			<dependency>
-				<groupId>com.google.code.findbugs</groupId>
-				<artifactId>jsr305</artifactId>
-				<version>2.0.3</version>
-			</dependency>
-			<dependency>
-				<groupId>commons-beanutils</groupId>
-				<artifactId>commons-beanutils</artifactId>
-				<version>1.9.1</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.commons</groupId>
-				<artifactId>commons-lang3</artifactId>
-				<version>3.3.1</version>
-			</dependency>
-			<dependency>
-				<groupId>commons-cli</groupId>
-				<artifactId>commons-cli</artifactId>
-				<version>1.2</version>
-			</dependency>
-			<dependency>
-				<groupId>org.picocontainer</groupId>
-				<artifactId>picocontainer</artifactId>
-				<version>2.14.3</version>
-			</dependency>
-			<dependency>
-				<groupId>dom4j</groupId>
-				<artifactId>dom4j</artifactId>
-				<version>1.6.1</version>
-			</dependency>
-			<dependency>
-				<groupId>org.jetbrains</groupId>
-				<artifactId>annotations</artifactId>
-				<version>13.0</version>
-			</dependency>
+    <distributionManagement>
+        <repository>
+            <id>age</id>
+            <name>AgE IISG Maven Repository</name>
+            <url>scp://age.iisg.agh.edu.pl/home/proj/age/public_html/maven2/</url>
+        </repository>
+        <site>
+            <id>age-site</id>
+            <name>AgE IISG Website</name>
+            <url>scp://age.iisg.agh.edu.pl/home/proj/age/public_html/jage/</url>
+        </site>
+    </distributionManagement>
 
-			<!-- logging -->
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-api</artifactId>
-				<version>1.7.6</version>
-			</dependency>
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-log4j12</artifactId>
-				<version>1.7.6</version>
-			</dependency>
+    <dependencyManagement>
+        <dependencies>
+            <!-- utilities -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>16.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.code.findbugs</groupId>
+                <artifactId>jsr305</artifactId>
+                <version>2.0.3</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-beanutils</groupId>
+                <artifactId>commons-beanutils</artifactId>
+                <version>1.9.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.3.1</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-cli</groupId>
+                <artifactId>commons-cli</artifactId>
+                <version>1.2</version>
+            </dependency>
+            <dependency>
+                <groupId>org.picocontainer</groupId>
+                <artifactId>picocontainer</artifactId>
+                <version>2.14.3</version>
+            </dependency>
+            <dependency>
+                <groupId>dom4j</groupId>
+                <artifactId>dom4j</artifactId>
+                <version>1.6.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jetbrains</groupId>
+                <artifactId>annotations</artifactId>
+                <version>13.0</version>
+            </dependency>
 
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>jcl-over-slf4j</artifactId>
-				<version>1.7.6</version>
-			</dependency>
+            <!-- logging -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.7.6</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>1.7.6</version>
+            </dependency>
 
-			<!-- testing -->
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>4.11</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.mockito</groupId>
-				<artifactId>mockito-core</artifactId>
-				<version>1.9.5</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.hamcrest</groupId>
-				<artifactId>hamcrest-all</artifactId>
-				<version>1.3</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.hamcrest</groupId>
-				<artifactId>hamcrest-core</artifactId>
-				<version>1.3</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.powermock</groupId>
-				<artifactId>powermock-module-junit4</artifactId>
-				<version>1.5.5</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.powermock</groupId>
-				<artifactId>powermock-api-mockito</artifactId>
-				<version>1.5.5</version>
-				<scope>test</scope>
-			</dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>jcl-over-slf4j</artifactId>
+                <version>1.7.6</version>
+            </dependency>
+
+            <!-- testing -->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.11</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>1.9.5</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.hamcrest</groupId>
+                <artifactId>hamcrest-all</artifactId>
+                <version>1.3</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.hamcrest</groupId>
+                <artifactId>hamcrest-core</artifactId>
+                <version>1.3</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.powermock</groupId>
+                <artifactId>powermock-module-junit4</artifactId>
+                <version>1.5.5</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.powermock</groupId>
+                <artifactId>powermock-api-mockito</artifactId>
+                <version>1.5.5</version>
+                <scope>test</scope>
+            </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context</artifactId>
@@ -600,54 +600,53 @@
                 <version>4.2.1.RELEASE</version>
             </dependency>
         </dependencies>
-	</dependencyManagement>
+    </dependencyManagement>
 
-	<!-- Common dependencies for the entire project -->
-	<dependencies>
-		<!-- utilities -->
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.google.code.findbugs</groupId>
-			<artifactId>jsr305</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.jetbrains</groupId>
-			<artifactId>annotations</artifactId>
-		</dependency>
+    <!-- Common dependencies for the entire project -->
+    <dependencies>
+        <!-- utilities -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+        </dependency>
 
+        <!-- logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
 
-		<!-- logging -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-		</dependency>
-
-		<!-- testing -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<!-- junit-dep, because it does not contain hamcrest. -->
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<!-- mockito-core, because it does not contain hamcrest. -->
-			<artifactId>mockito-core</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.hamcrest</groupId>
-			<artifactId>hamcrest-all</artifactId>
-			<scope>test</scope>
-		</dependency>
+        <!-- testing -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <!-- junit-dep, because it does not contain hamcrest. -->
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <!-- mockito-core, because it does not contain hamcrest. -->
+            <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-all</artifactId>
+            <scope>test</scope>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>

@@ -31,7 +31,9 @@
 
 package org.jage.monitor;
 
+
 import org.jage.event.ObjectChangedEvent;
+
 
 /**
  * An interface for listeners which are notified by IChangesNotifier objects.
@@ -40,14 +42,12 @@ import org.jage.event.ObjectChangedEvent;
  */
 public interface IChangesNotifierMonitor extends IMonitor {
 
-	/**
-	 * Called when monitored object is changed.
-	 *
-	 * @param sender
-	 *            the object which generates the event
-	 * @param event
-	 *            the event
-	 */
-	public void objectChanged(Object sender, ObjectChangedEvent event);
+    /**
+     * Called when monitored object is changed.
+     *
+     * @param sender the object which generates the event
+     * @param event  the event
+     */
+    public void objectChanged(Object sender, ObjectChangedEvent event);
 
 }

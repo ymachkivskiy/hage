@@ -31,10 +31,12 @@
 
 package org.jage.solution;
 
-import java.util.List;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+
+import java.util.List;
+
 
 /**
  * Default, generic implementation of {@link IVectorSolution}, capable of having an arbitrary representation type. <br />
@@ -45,32 +47,30 @@ import org.apache.commons.lang.builder.ToStringStyle;
  * abstract representation (DoubleList in the upper example). This way we achieve a good tradeoff between efficiency and
  * API cleanness.
  *
- * @param <R>
- *            The representation's type.
+ * @param <R> The representation's type.
  * @author AGH AgE Team
  */
 public final class VectorSolution<R> implements IVectorSolution<R> {
 
-	private List<R> representation;
+    private List<R> representation;
 
-	/**
-	 * Creates a VectorSolution with a given representation.
-	 *
-	 * @param representation
-	 *            the representation of the new solution
-	 */
-	public VectorSolution(List<R> representation) {
-		this.representation = representation;
-	}
+    /**
+     * Creates a VectorSolution with a given representation.
+     *
+     * @param representation the representation of the new solution
+     */
+    public VectorSolution(List<R> representation) {
+        this.representation = representation;
+    }
 
-	@Override
-	public final List<R> getRepresentation() {
-		return representation;
-	}
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("representation", this.getRepresentation()).toString();
+    }
 
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-		        .append("representation", this.getRepresentation()).toString();
-	}
+    @Override
+    public final List<R> getRepresentation() {
+        return representation;
+    }
 }

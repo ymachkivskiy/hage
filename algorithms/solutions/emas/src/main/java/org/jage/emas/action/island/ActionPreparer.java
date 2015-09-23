@@ -31,10 +31,6 @@
 
 package org.jage.emas.action.island;
 
-import java.util.Collections;
-import java.util.List;
-
-import javax.inject.Inject;
 
 import org.jage.action.Action;
 import org.jage.action.SingleAction;
@@ -47,7 +43,12 @@ import org.jage.emas.util.ChainingContext;
 import org.jage.emas.util.ChainingContext.ChainingContextBuilder;
 import org.jage.strategy.AbstractStrategy;
 
+import javax.inject.Inject;
+import java.util.Collections;
+import java.util.List;
+
 import static com.google.common.base.Preconditions.checkNotNull;
+
 
 /**
  * Action preparator for island agents. It creates a chaining action context from the list provided in its constructor,
@@ -60,33 +61,31 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class ActionPreparer extends AbstractStrategy implements IActionPreparer<IslandAgent> {
 
-	private final ChainingContext initializationContext;
+    private final ChainingContext initializationContext;
 
-	private final List<ChainingContext> otherContexts;
+    private final List<ChainingContext> otherContexts;
 
-	/**
-	 * Create an {@link ActionPreparer} for the given initialization context and list of other contexts.
-	 *
-	 * @param initializationContext
-	 *            the initialization context
-	 * @param otherContexts
-	 *            a list of other contexts, may be empty
-	 */
-	@Inject
-	public ActionPreparer(final ChainingContext initializationContext, final List<ChainingContext> otherContexts) {
-		this.initializationContext = checkNotNull(initializationContext);
-		this.otherContexts = checkNotNull(otherContexts);
-	}
+    /**
+     * Create an {@link ActionPreparer} for the given initialization context and list of other contexts.
+     *
+     * @param initializationContext the initialization context
+     * @param otherContexts         a list of other contexts, may be empty
+     */
+    @Inject
+    public ActionPreparer(final ChainingContext initializationContext, final List<ChainingContext> otherContexts) {
+        this.initializationContext = checkNotNull(initializationContext);
+        this.otherContexts = checkNotNull(otherContexts);
+    }
 
-	@Override
-	public List<Action> prepareActions(final IslandAgent agent) {
-		final ChainingContextBuilder builder = ChainingContext.builder()
-		        .appendIf(agent.getStep() == 0, initializationContext).appendAll(otherContexts);
-		if (builder.isEmpty()) {
-			return Collections.emptyList();
-		}
+    @Override
+    public List<Action> prepareActions(final IslandAgent agent) {
+        final ChainingContextBuilder builder = ChainingContext.builder()
+                .appendIf(agent.getStep() == 0, initializationContext).appendAll(otherContexts);
+        if(builder.isEmpty()) {
+            return Collections.emptyList();
+        }
 
-		final AddressSelector<AgentAddress> target = Selectors.singleAddress(agent.getAddress());
-		return Collections.<Action> singletonList(new SingleAction(target, builder.build()));
-	}
+        final AddressSelector<AgentAddress> target = Selectors.singleAddress(agent.getAddress());
+        return Collections.<Action> singletonList(new SingleAction(target, builder.build()));
+    }
 }

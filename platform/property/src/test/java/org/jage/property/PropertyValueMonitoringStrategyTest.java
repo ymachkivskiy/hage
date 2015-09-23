@@ -26,60 +26,62 @@
  */
 package org.jage.property;
 
+
 import org.jage.monitor.IChangesNotifier;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+
 
 public abstract class PropertyValueMonitoringStrategyTest {
 
-	protected class TestProperty extends Property {
+    protected class TestProperty extends Property {
 
-		private Object _expectedNewValue;
+        private Object _expectedNewValue;
 
-		private Object _value;
+        private Object _value;
 
-		private int _notifyMonitorsInvokationCount = 0;
+        private int _notifyMonitorsInvokationCount = 0;
 
-		public TestProperty(Object value) {
-			_value = value;
-		}
+        public TestProperty(Object value) {
+            _value = value;
+        }
 
-		@Override
-		public MetaProperty getMetaProperty() {
-			try {
-				return new MetaProperty("propertyA", IChangesNotifier.class, true, true);
-			} catch (PropertyException e) {
-				throw new RuntimeException(e);
-			}
-		}
+        @Override
+        public MetaProperty getMetaProperty() {
+            try {
+                return new MetaProperty("propertyA", IChangesNotifier.class, true, true);
+            } catch(PropertyException e) {
+                throw new RuntimeException(e);
+            }
+        }
 
-		@Override
-		public Object getValue() {
-			return _value;
-		}
+        @Override
+        public void setValue(Object value) {
+            _value = value;
+        }
 
-		@Override
-		public void setValue(Object value) {
-			_value = value;
-		}
+        @Override
+        public Object getValue() {
+            return _value;
+        }
 
-		@Override
-		public void notifyMonitors(Object newValue) {
-			_notifyMonitorsInvokationCount++;
-			assertEquals(_expectedNewValue, newValue);
-		}
+        @Override
+        public void notifyMonitors(Object newValue) {
+            _notifyMonitorsInvokationCount++;
+            assertEquals(_expectedNewValue, newValue);
+        }
 
-		public void expectNotifyMonitors(Object newValue) {
-			_expectedNewValue = newValue;
-		}
+        public void expectNotifyMonitors(Object newValue) {
+            _expectedNewValue = newValue;
+        }
 
-		public int getNotifyMonitorsInvokationCount() {
-			return _notifyMonitorsInvokationCount;
-		}
+        public int getNotifyMonitorsInvokationCount() {
+            return _notifyMonitorsInvokationCount;
+        }
 
-		public void resetNotifyMonitorsInvokationCount() {
-			_notifyMonitorsInvokationCount = 0;
-		}
-	}
+        public void resetNotifyMonitorsInvokationCount() {
+            _notifyMonitorsInvokationCount = 0;
+        }
+    }
 
 }

@@ -31,7 +31,9 @@
 
 package org.jage.genetic.action;
 
+
 import org.jage.action.ordering.DefaultActionComparator;
+
 
 /**
  * This comparator defines a default ordering for genetic actions. The ordering is as follows:
@@ -42,26 +44,25 @@ import org.jage.action.ordering.DefaultActionComparator;
  * <li>{@link EvaluationActionContext}
  * <li>{@link StatisticsUpdateActionContext}
  * </ol>
- *
+ * <p>
  * <p>
  * Additionally, ordering from {@link DefaultActionComparator} is preserved.
  *
+ * @author AGH AgE Team
  * @see DefaultActionComparator
  * @since 2.6
- *
- * @author AGH AgE Team
  */
 public class GeneticActionComparator extends DefaultActionComparator {
 
-	/**
-	 * Constructs a new comparator instance.
-	 *
-	 * @see DefaultActionComparator
-	 */
-	@SuppressWarnings("unchecked")
-	public GeneticActionComparator() {
-		super();
-		addContextsAsOrdered(InitializationActionContext.class, PreselectionActionContext.class,
-				VariationActionContext.class, EvaluationActionContext.class, StatisticsUpdateActionContext.class);
-	}
+    /**
+     * Constructs a new comparator instance.
+     *
+     * @see DefaultActionComparator
+     */
+    @SuppressWarnings("unchecked")
+    public GeneticActionComparator() {
+        super();
+        addContextsAsOrdered(InitializationActionContext.class, PreselectionActionContext.class,
+                             VariationActionContext.class, EvaluationActionContext.class, StatisticsUpdateActionContext.class);
+    }
 }

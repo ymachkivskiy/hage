@@ -31,11 +31,13 @@
 
 package org.jage.platform.component.pico;
 
-import javax.inject.Inject;
 
 import org.junit.Test;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.visitors.VerifyingVisitor;
+
+import javax.inject.Inject;
+
 
 /**
  * Some verification tests.
@@ -44,63 +46,73 @@ import org.picocontainer.visitors.VerifyingVisitor;
  */
 public class VerificationTest {
 
-	@Test(expected = PicoVerificationException.class)
-	public void shouldDetectCircularMemberDependency() {
-		// given
-		final PicoComponentInstanceProvider container = new PicoComponentInstanceProvider();
-		container.addComponent(MemberA.class);
-		container.addComponent(MemberB.class);
-		container.addComponent(MemberC.class);
+    @Test(expected = PicoVerificationException.class)
+    public void shouldDetectCircularMemberDependency() {
+        // given
+        final PicoComponentInstanceProvider container = new PicoComponentInstanceProvider();
+        container.addComponent(MemberA.class);
+        container.addComponent(MemberB.class);
+        container.addComponent(MemberC.class);
 
-		// when
-		new VerifyingVisitor().traverse(container);
-	}
+        // when
+        new VerifyingVisitor().traverse(container);
+    }
 
-	public static class MemberA {
+    @Test(expected = PicoVerificationException.class)
+    public void shouldDetectCircularConstructorDependency() {
+        // given
+        final PicoComponentInstanceProvider container = new PicoComponentInstanceProvider();
+        container.addComponent(ConstructorA.class);
+        container.addComponent(ConstructorB.class);
+        container.addComponent(ConstructorC.class);
+
+        // when
+        new VerifyingVisitor().traverse(container);
+    }
+
+
+    public static class MemberA {
+
         @Inject
-		public MemberB memberB;
-	}
+        public MemberB memberB;
+    }
 
-	public static class MemberB {
-		@Inject
-		public MemberC memberC;
-	}
 
-	public static class MemberC {
-		@Inject
-		public MemberA memberA;
-	}
+    public static class MemberB {
 
-	@Test(expected = PicoVerificationException.class)
-	public void shouldDetectCircularConstructorDependency() {
-		// given
-		final PicoComponentInstanceProvider container = new PicoComponentInstanceProvider();
-		container.addComponent(ConstructorA.class);
-		container.addComponent(ConstructorB.class);
-		container.addComponent(ConstructorC.class);
+        @Inject
+        public MemberC memberC;
+    }
 
-		// when
-		new VerifyingVisitor().traverse(container);
-	}
 
-	public static class ConstructorA {
-		@Inject
+    public static class MemberC {
+
+        @Inject
+        public MemberA memberA;
+    }
+
+
+    public static class ConstructorA {
+
+        @Inject
         public ConstructorA(final ConstructorB constructorB) {
         }
-	}
+    }
 
-	public static class ConstructorB {
-		@Inject
+
+    public static class ConstructorB {
+
+        @Inject
         public ConstructorB(final ConstructorC constructorC) {
         }
-	}
+    }
 
-	public static class ConstructorC {
-		@Inject
-		public ConstructorC(final ConstructorA constructorA) {
+
+    public static class ConstructorC {
+
+        @Inject
+        public ConstructorC(final ConstructorA constructorA) {
         }
-	}
-
-
+    }
 
 }

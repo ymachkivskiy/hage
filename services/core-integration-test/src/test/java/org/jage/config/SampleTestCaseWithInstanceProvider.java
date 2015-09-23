@@ -26,51 +26,52 @@
  */
 package org.jage.config;
 
-import java.util.List;
 
 import junit.framework.Assert;
-
 import org.jage.platform.component.definition.ClassWithProperties;
 import org.junit.Test;
 
+import java.util.List;
+
+
 /**
  * A sample test case utilising the {@link InstanceProvidingTestCase}.
- * 
+ *
  * @author Adam Wos <adam.wos@gmail.com>
  */
 public class SampleTestCaseWithInstanceProvider extends InstanceProvidingTestCase {
 
-	public SampleTestCaseWithInstanceProvider() {
-		super("classpath:org/jage/config/instProvidingTC.xml");
-	}
-	
-	@Test
-	public void basicTest() {
-		ClassWithProperties o1 = (ClassWithProperties) getInstance("obj1");
-		Assert.assertNotNull(o1);
-		Assert.assertEquals(1234, o1.getA());
-		Assert.assertEquals(0.0, o1.getB(), 0.0);
-	}
-	
-	@Test
-	public void basicTest2() {
-		ClassWithProperties o2 = (ClassWithProperties) getInstance("obj2");
-		Assert.assertNotNull(o2);
-		Assert.assertEquals(0, o2.getA());
-		Assert.assertEquals(5678.0, o2.getB(), 0.0001);
-		
-		List<Object> listProperty = o2.getList();
-		Assert.assertEquals(2, listProperty.size());
-		
-		Object list0 = listProperty.get(0);
-		Assert.assertTrue(list0 instanceof ClassWithProperties);
-		ClassWithProperties cwp0 = (ClassWithProperties) list0;
-		Assert.assertEquals(123, cwp0.getA());
-		
-		Object list1 = listProperty.get(1);
-		Assert.assertTrue(list1 instanceof ClassWithProperties);
-		ClassWithProperties cwp1 = (ClassWithProperties) list1;
-		Assert.assertEquals(-94, cwp1.getA());
-		
-	}
+    public SampleTestCaseWithInstanceProvider() {
+        super("classpath:org/jage/config/instProvidingTC.xml");
+    }
+
+    @Test
+    public void basicTest() {
+        ClassWithProperties o1 = (ClassWithProperties) getInstance("obj1");
+        Assert.assertNotNull(o1);
+        Assert.assertEquals(1234, o1.getA());
+        Assert.assertEquals(0.0, o1.getB(), 0.0);
+    }
+
+    @Test
+    public void basicTest2() {
+        ClassWithProperties o2 = (ClassWithProperties) getInstance("obj2");
+        Assert.assertNotNull(o2);
+        Assert.assertEquals(0, o2.getA());
+        Assert.assertEquals(5678.0, o2.getB(), 0.0001);
+
+        List<Object> listProperty = o2.getList();
+        Assert.assertEquals(2, listProperty.size());
+
+        Object list0 = listProperty.get(0);
+        Assert.assertTrue(list0 instanceof ClassWithProperties);
+        ClassWithProperties cwp0 = (ClassWithProperties) list0;
+        Assert.assertEquals(123, cwp0.getA());
+
+        Object list1 = listProperty.get(1);
+        Assert.assertTrue(list1 instanceof ClassWithProperties);
+        ClassWithProperties cwp1 = (ClassWithProperties) list1;
+        Assert.assertEquals(-94, cwp1.getA());
+
+    }
 }

@@ -31,27 +31,31 @@
 
 package org.jage.bus;
 
-import java.util.Collection;
-
-import javax.annotation.Nonnull;
 
 import org.jage.platform.component.definition.IComponentDefinition;
 
+import javax.annotation.Nonnull;
+import java.util.Collection;
+
 import static com.google.common.base.Objects.toStringHelper;
+
 
 public class ConfigurationUpdatedEvent implements AgeEvent {
 
-	@Nonnull final private Collection<IComponentDefinition> components;
+    @Nonnull
+    final private Collection<IComponentDefinition> components;
 
-	public ConfigurationUpdatedEvent(@Nonnull final Collection<IComponentDefinition> components) {
-		this.components = components;
-	}
+    public ConfigurationUpdatedEvent(@Nonnull final Collection<IComponentDefinition> components) {
+        this.components = components;
+    }
 
-	@Nonnull public Collection<IComponentDefinition> getComponents() {
-		return components;
-	}
+    @Nonnull
+    public Collection<IComponentDefinition> getComponents() {
+        return components;
+    }
 
-	@Override public String toString() {
-		return toStringHelper(this).add("components-count", components.size()).toString();
-	}
+    @Override
+    public String toString() {
+        return toStringHelper(this).add("components-count", components.size()).toString();
+    }
 }

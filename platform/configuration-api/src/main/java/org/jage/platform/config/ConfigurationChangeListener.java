@@ -31,29 +31,29 @@
 
 package org.jage.platform.config;
 
-import java.util.Collection;
 
 import org.jage.platform.component.definition.IComponentDefinition;
 import org.jage.platform.component.exception.ComponentException;
 
+import java.util.Collection;
+
+
 /**
  * An interface for components that want to be noticed about configuration events.
  * <p>
- * 
+ * <p>
  * At the moment the only available event is "configuration update".
- * 
+ *
  * @author AGH AgE Team
  */
 public interface ConfigurationChangeListener {
 
-	/**
-	 * Called when the computation configuration was updated.
-	 * 
-	 * @param componentDefinitions
-	 *            new (updated) component definitions.
-	 * @throws ComponentException
-	 *             when the updated components are not a correct computation configuration.
-	 */
-	void computationConfigurationUpdated(Collection<IComponentDefinition> componentDefinitions)
-	        throws ComponentException;
+    /**
+     * Called when the computation configuration was updated.
+     *
+     * @param componentDefinitions new (updated) component definitions.
+     * @throws ComponentException when the updated components are not a correct computation configuration.
+     */
+    void computationConfigurationUpdated(Collection<IComponentDefinition> componentDefinitions)
+            throws ComponentException;
 }

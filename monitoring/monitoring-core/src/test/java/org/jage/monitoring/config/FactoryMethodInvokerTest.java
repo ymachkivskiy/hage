@@ -26,68 +26,71 @@
  */
 package org.jage.monitoring.config;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.util.Collections;
-import java.util.List;
 
 import org.jage.monitoring.MonitoringException;
 import org.junit.Before;
 import org.junit.Test;
-
 import rx.Observable;
 import rx.schedulers.Timestamped;
 
+import java.util.Collections;
+import java.util.List;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+
 public class FactoryMethodInvokerTest {
 
-	
-	private FactoryMethodInvoker factoryMethodInvoker;
-	
-	@Before public void setUp(){
-		factoryMethodInvoker = new FactoryMethodInvoker();
-	}
-	
-	@Test
-	public void shouldInvokeFactoryMethod(){
-		
-		// given
-		ClassWithMethodToInvoke.setWasMethodInvoked(false);
-		assertFalse(ClassWithMethodToInvoke.isWasMethodInvoked());
-		
-		// when
-		factoryMethodInvoker.invokeFactoryMethod(Collections.<Observable<Timestamped<Object>>>emptyList(), "someName", "org.jage.monitoring.config.ClassWithMethodToInvoke", "methodToInvoke");
-				
-		// then
-		assertTrue(ClassWithMethodToInvoke.isWasMethodInvoked());
-	}
-	
-	@Test(expected=MonitoringException.class)
-	public void shouldNotFindClass(){
-		factoryMethodInvoker.invokeFactoryMethod(Collections.<Observable<Timestamped<Object>>>emptyList(), "someName", "org.jage.monitoring.config.ClassWithMethodToInvoke", "methodWhichDoesntExist");
-	}
-	
-	@Test(expected=MonitoringException.class)
-	public void shouldNotFindMethod(){
-		// when
-		factoryMethodInvoker.invokeFactoryMethod(Collections.<Observable<Timestamped<Object>>>emptyList(), "someName", "org.jage.monitoring.config.ClassWhichDoesntExist", "methodToInvoke");
-	}
-	
+
+    private FactoryMethodInvoker factoryMethodInvoker;
+
+    @Before
+    public void setUp() {
+        factoryMethodInvoker = new FactoryMethodInvoker();
+    }
+
+    @Test
+    public void shouldInvokeFactoryMethod() {
+
+        // given
+        ClassWithMethodToInvoke.setWasMethodInvoked(false);
+        assertFalse(ClassWithMethodToInvoke.isWasMethodInvoked());
+
+        // when
+        factoryMethodInvoker.invokeFactoryMethod(Collections.<Observable<Timestamped<Object>>> emptyList(), "someName", "org.jage.monitoring.config.ClassWithMethodToInvoke", "methodToInvoke");
+
+        // then
+        assertTrue(ClassWithMethodToInvoke.isWasMethodInvoked());
+    }
+
+    @Test(expected = MonitoringException.class)
+    public void shouldNotFindClass() {
+        factoryMethodInvoker.invokeFactoryMethod(Collections.<Observable<Timestamped<Object>>> emptyList(), "someName", "org.jage.monitoring.config.ClassWithMethodToInvoke", "methodWhichDoesntExist");
+    }
+
+    @Test(expected = MonitoringException.class)
+    public void shouldNotFindMethod() {
+        // when
+        factoryMethodInvoker.invokeFactoryMethod(Collections.<Observable<Timestamped<Object>>> emptyList(), "someName", "org.jage.monitoring.config.ClassWhichDoesntExist", "methodToInvoke");
+    }
+
 }
+
 
 class ClassWithMethodToInvoke {
 
-	private static boolean wasMethodInvoked = false;
-	
-	public static void methodToInvoke(List<Observable<Timestamped<Object>>> observables, String string1){
-		wasMethodInvoked = true;
-	}
-	
-	public static boolean isWasMethodInvoked() {
-		return wasMethodInvoked;
-	}
+    private static boolean wasMethodInvoked = false;
 
-	public static void setWasMethodInvoked(boolean wasMethodInvoked) {
-		ClassWithMethodToInvoke.wasMethodInvoked = wasMethodInvoked;
-	}
+    public static void methodToInvoke(List<Observable<Timestamped<Object>>> observables, String string1) {
+        wasMethodInvoked = true;
+    }
+
+    public static boolean isWasMethodInvoked() {
+        return wasMethodInvoked;
+    }
+
+    public static void setWasMethodInvoked(boolean wasMethodInvoked) {
+        ClassWithMethodToInvoke.wasMethodInvoked = wasMethodInvoked;
+    }
 }

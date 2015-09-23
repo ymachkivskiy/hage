@@ -31,11 +31,13 @@
 
 package org.jage.address.node;
 
+
 import javax.annotation.concurrent.Immutable;
 import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.UUID;
+
 
 /**
  * A default implementation of the node address supplier.
@@ -55,14 +57,19 @@ public class DefaultNodeAddressSupplier implements NodeAddressSupplier {
         final String localPart = getLocalPart();
         try {
             nodeAddress = new DefaultNodeAddress(localPart, getHostname());
-        } catch (final UnknownHostException e) {
+        } catch(final UnknownHostException e) {
             nodeAddress = new DefaultNodeAddress(localPart);
         }
     }
 
-    @Override
-    public DefaultNodeAddress get() {
-        return nodeAddress;
+    // XXX: This method was only tested with Sun/Oracle JVM.
+    private static String getLocalPart() {
+        final String name = ManagementFactory.getRuntimeMXBean().getName(); //TODO find out another way to obtain PID of JVM process
+        final int pos = name.indexOf("@");
+        if(pos <= 1) { // If 0 - there is no real PID
+            return UUID.randomUUID().toString();
+        }
+        return name.substring(0, pos);
     }
 
     private static String getHostname() throws UnknownHostException {
@@ -70,13 +77,8 @@ public class DefaultNodeAddressSupplier implements NodeAddressSupplier {
         return addr.getHostName();
     }
 
-    // XXX: This method was only tested with Sun/Oracle JVM.
-    private static String getLocalPart() {
-        final String name = ManagementFactory.getRuntimeMXBean().getName(); //TODO find out another way to obtain PID of JVM process
-        final int pos = name.indexOf("@");
-        if (pos <= 1) { // If 0 - there is no real PID
-            return UUID.randomUUID().toString();
-        }
-        return name.substring(0, pos);
+    @Override
+    public DefaultNodeAddress get() {
+        return nodeAddress;
     }
 }

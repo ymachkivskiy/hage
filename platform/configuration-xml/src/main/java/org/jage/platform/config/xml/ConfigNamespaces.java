@@ -31,38 +31,39 @@
 
 package org.jage.platform.config.xml;
 
+
 /**
  * Enum for namespaces in AgE configuration files.
  *
  * @author AGH AgE Team
  */
 public enum ConfigNamespaces {
-	DEFAULT("age", "http://age.iisg.agh.edu.pl/schema/age");
+    DEFAULT("age", "http://age.iisg.agh.edu.pl/schema/age");
 
-	private final String prefix;
+    private final String prefix;
 
-	private final String uri;
+    private final String uri;
 
-	private ConfigNamespaces(final String prefix, final String uri) {
-		this.prefix = prefix;
-		this.uri = uri;
-	}
+    private ConfigNamespaces(final String prefix, final String uri) {
+        this.prefix = prefix;
+        this.uri = uri;
+    }
 
-	/**
-	 * Get the prefix of this namespace.
-	 *
-	 * @return the prefix of this namespace
-	 */
-	public String getPrefix() {
-		return prefix;
-	}
+    /**
+     * Get the prefix of this namespace.
+     *
+     * @return the prefix of this namespace
+     */
+    public String getPrefix() {
+        return prefix;
+    }
 
-	/**
-	 * Get the URI of this namespace.
-	 *
-	 * @return the URI of this namespace
-	 */
-	public String getUri() {
-		return uri;
-	}
+    /**
+     * Get the URI of this namespace.
+     *
+     * @return the URI of this namespace
+     */
+    public String getUri() {
+        return uri;
+    }
 }

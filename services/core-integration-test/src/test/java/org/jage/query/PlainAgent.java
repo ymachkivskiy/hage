@@ -31,7 +31,13 @@
 
 package org.jage.query;
 
-import java.awt.Color;
+
+import org.jage.address.agent.AgentAddress;
+import org.jage.agent.SimpleAgent;
+import org.jage.platform.component.definition.ConfigurationException;
+import org.jage.property.PropertyField;
+
+import java.awt.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.BitSet;
@@ -40,10 +46,6 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Random;
 
-import org.jage.address.agent.AgentAddress;
-import org.jage.agent.SimpleAgent;
-import org.jage.platform.component.definition.ConfigurationException;
-import org.jage.property.PropertyField;
 
 /**
  * Helper agent with lots of properties.
@@ -53,157 +55,143 @@ import org.jage.property.PropertyField;
 @SuppressWarnings("javadoc")
 public class PlainAgent extends SimpleAgent {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
+    private final Collection<BitSet> solutions;
+    private final BitSet bestCode;
+    private final Random random;
+    @PropertyField(propertyName = "width")
+    private float width;
+    @PropertyField(propertyName = "height")
+    private float height;
+    @PropertyField(propertyName = "weight")
+    private double weight;
+    @PropertyField(propertyName = "upperLimit")
+    private BigInteger upperLimit;
+    @PropertyField(propertyName = "bestValue")
+    private BigDecimal bestValue;
+    private long stepCount;
+    @PropertyField(propertyName = "staticFactor")
+    private int staticFactor;
+    @PropertyField(propertyName = "dynamicFactor")
+    private short dynamicFactor;
+    @PropertyField(propertyName = "mode")
+    private byte mode;
+    @PropertyField(propertyName = "description")
+    private String description;
+    @PropertyField(propertyName = "color")
+    private Color color;
 
-	@PropertyField(propertyName = "width")
-	private float width;
+    /**
+     * @throws ConfigurationException
+     */
+    public PlainAgent(final AgentAddress address) throws ConfigurationException {
+        super(address);
+        stepCount = 0;
+        bestValue = new BigDecimal(0);
+        bestCode = new BitSet();
+        solutions = new LinkedList<BitSet>();
+        random = new Random(Calendar.getInstance().getTimeInMillis());
+    }
 
-	@PropertyField(propertyName = "height")
-	private float height;
+    /*
+     * @see org.jage.core.Agent#step()
+     */
+    @Override
+    public void step() {
+        stepCount++;
+        bestValue = new BigDecimal(random.nextDouble() * stepCount);
+        bestCode.flip((int) (stepCount / ((random.nextLong() % stepCount) + 1)));
+        if(bestValue.doubleValue() > 5.0 && bestValue.doubleValue() < 10.0) {
+            solutions.add((BitSet) bestCode.clone());
+        }
+    }
 
-	@PropertyField(propertyName = "weight")
-	private double weight;
+    public float getWidth() {
+        return width;
+    }
 
-	@PropertyField(propertyName = "upperLimit")
-	private BigInteger upperLimit;
+    public void setWidth(final float width) {
+        this.width = width;
+    }
 
-	@PropertyField(propertyName = "bestValue")
-	private BigDecimal bestValue;
+    public String getDescription() {
+        return description;
+    }
 
-	private long stepCount;
+    public void setDescription(final String description) {
+        this.description = description;
+    }
 
-	@PropertyField(propertyName = "staticFactor")
-	private int staticFactor;
+    public float getHeight() {
+        return height;
+    }
 
-	@PropertyField(propertyName = "dynamicFactor")
-	private short dynamicFactor;
+    public void setHeight(final float height) {
+        this.height = height;
+    }
 
-	@PropertyField(propertyName = "mode")
-	private byte mode;
+    public Color getColor() {
+        return color;
+    }
 
-	@PropertyField(propertyName = "description")
-	private String description;
+    public void setColor(final Color color) {
+        this.color = color;
+    }
 
-	@PropertyField(propertyName = "color")
-	private Color color;
+    public short getDynamicFactor() {
+        return dynamicFactor;
+    }
 
-	private final Collection<BitSet> solutions;
+    public void setDynamicFactor(final short dynamicFactor) {
+        this.dynamicFactor = dynamicFactor;
+    }
 
-	private final BitSet bestCode;
+    public byte getMode() {
+        return mode;
+    }
 
-	private final Random random;
+    public void setMode(final byte mode) {
+        this.mode = mode;
+    }
 
-	/**
-	 * @throws ConfigurationException
-	 */
-	public PlainAgent(final AgentAddress address) throws ConfigurationException {
-		super(address);
-		stepCount = 0;
-		bestValue = new BigDecimal(0);
-		bestCode = new BitSet();
-		solutions = new LinkedList<BitSet>();
-		random = new Random(Calendar.getInstance().getTimeInMillis());
-	}
+    public int getStaticFactor() {
+        return staticFactor;
+    }
 
-	/*
-	 * @see org.jage.core.Agent#step()
-	 */
-	@Override
-	public void step() {
-		stepCount++;
-		bestValue = new BigDecimal(random.nextDouble() * stepCount);
-		bestCode.flip((int)(stepCount / ((random.nextLong() % stepCount) + 1)));
-		if (bestValue.doubleValue() > 5.0 && bestValue.doubleValue() < 10.0) {
-			solutions.add((BitSet)bestCode.clone());
-		}
-	}
+    public void setStaticFactor(final int staticFactor) {
+        this.staticFactor = staticFactor;
+    }
 
-	public float getWidth() {
-		return width;
-	}
+    public BigInteger getUpperLimit() {
+        return upperLimit;
+    }
 
-	public void setWidth(final float width) {
-		this.width = width;
-	}
+    public void setUpperLimit(final BigInteger upperLimit) {
+        this.upperLimit = upperLimit;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public double getWeight() {
+        return weight;
+    }
 
-	public void setDescription(final String description) {
-		this.description = description;
-	}
+    public void setWeight(final double weight) {
+        this.weight = weight;
+    }
 
-	public float getHeight() {
-		return height;
-	}
-
-	public void setHeight(final float height) {
-		this.height = height;
-	}
-
-	public Color getColor() {
-		return color;
-	}
-
-	public void setColor(final Color color) {
-		this.color = color;
-	}
-
-	public short getDynamicFactor() {
-		return dynamicFactor;
-	}
-
-	public void setDynamicFactor(final short dynamicFactor) {
-		this.dynamicFactor = dynamicFactor;
-	}
-
-	public byte getMode() {
-		return mode;
-	}
-
-	public void setMode(final byte mode) {
-		this.mode = mode;
-	}
-
-	public int getStaticFactor() {
-		return staticFactor;
-	}
-
-	public void setStaticFactor(final int staticFactor) {
-		this.staticFactor = staticFactor;
-	}
-
-	public BigInteger getUpperLimit() {
-		return upperLimit;
-	}
-
-	public void setUpperLimit(final BigInteger upperLimit) {
-		this.upperLimit = upperLimit;
-	}
-
-	public double getWeight() {
-		return weight;
-	}
-
-	public void setWeight(final double weight) {
-		this.weight = weight;
-	}
-
-	public BitSet getBestCode() {
-		return bestCode;
-	}
+    public BitSet getBestCode() {
+        return bestCode;
+    }
 
     public BigDecimal getBestValue() {
-		return bestValue;
-	}
+        return bestValue;
+    }
 
-	public Collection<BitSet> getSolutions() {
-		return solutions;
-	}
+    public Collection<BitSet> getSolutions() {
+        return solutions;
+    }
 
-	public long getStepCount() {
-		return stepCount;
-	}
+    public long getStepCount() {
+        return stepCount;
+    }
 
 }

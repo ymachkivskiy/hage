@@ -31,15 +31,6 @@
 
 package org.jage.agent.property;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.mock;
 
 import org.jage.address.agent.AgentAddress;
 import org.jage.agent.AggregateActionService;
@@ -50,8 +41,17 @@ import org.jage.platform.component.provider.IComponentInstanceProvider;
 import org.jage.property.InvalidPropertyPathException;
 import org.jage.property.Property;
 import org.jage.workplace.SimpleWorkplace;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.jage.utils.AgentTestUtils.createSimpleAgentWithoutStep;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.mock;
+
 
 /**
  * Tests for virtual properties.
@@ -61,40 +61,40 @@ import static org.jage.utils.AgentTestUtils.createSimpleAgentWithoutStep;
 @RunWith(MockitoJUnitRunner.class)
 public class VirtualPropertyTest {
 
-	private static final String VIRTUAL_PROPERTY_NAME = "address";
+    private static final String VIRTUAL_PROPERTY_NAME = "address";
 
-	private SimpleAgent agent;
+    private SimpleAgent agent;
 
-	@Mock
-	private IComponentInstanceProvider instanceProvider;
+    @Mock
+    private IComponentInstanceProvider instanceProvider;
 
-	@Before
-	public void setUp() throws Exception {
-		final SimpleWorkplace workplace = new SimpleWorkplace();
+    @Before
+    public void setUp() throws Exception {
+        final SimpleWorkplace workplace = new SimpleWorkplace();
 
-		final SimpleAggregate aggregate = new SimpleAggregate(mock(AgentAddress.class));
-		aggregate.setActionService(mock(AggregateActionService.class));
-		aggregate.setQueryService(mock(AggregateQueryService.class));
-		aggregate.setInstanceProvider(instanceProvider);
-		aggregate.init();
-		aggregate.setAgentEnvironment(workplace);
+        final SimpleAggregate aggregate = new SimpleAggregate(mock(AgentAddress.class));
+        aggregate.setActionService(mock(AggregateActionService.class));
+        aggregate.setQueryService(mock(AggregateQueryService.class));
+        aggregate.setInstanceProvider(instanceProvider);
+        aggregate.init();
+        aggregate.setAgentEnvironment(workplace);
 
-		agent = createSimpleAgentWithoutStep();
-		agent.init();
-		agent.setAgentEnvironment(aggregate);
-	}
+        agent = createSimpleAgentWithoutStep();
+        agent.init();
+        agent.setAgentEnvironment(aggregate);
+    }
 
-	@Test
-	public void testGettingVirtualProperty() throws Exception {
-		final Property property = agent.getProperty(VIRTUAL_PROPERTY_NAME);
-		assertNotNull(property);
-		assertEquals(VIRTUAL_PROPERTY_NAME, property.getMetaProperty().getName());
-		assertEquals(agent.getAddress(), property.getValue());
-	}
+    @Test
+    public void testGettingVirtualProperty() throws Exception {
+        final Property property = agent.getProperty(VIRTUAL_PROPERTY_NAME);
+        assertNotNull(property);
+        assertEquals(VIRTUAL_PROPERTY_NAME, property.getMetaProperty().getName());
+        assertEquals(agent.getAddress(), property.getValue());
+    }
 
-	@Test(expected = InvalidPropertyPathException.class)
-	public void testInvalidProperty() {
-		agent.getProperty("invalidName");
-	}
+    @Test(expected = InvalidPropertyPathException.class)
+    public void testInvalidProperty() {
+        agent.getProperty("invalidName");
+    }
 
 }

@@ -26,7 +26,6 @@
  */
 package org.jage.property.monitors;
 
-import static org.junit.Assert.assertEquals;
 
 import org.jage.property.testHelpers.PropertyMonitorStub;
 import org.junit.Test;
@@ -34,48 +33,51 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.anyObject;
+import static org.mockito.Mockito.when;
+
 
 @RunWith(MockitoJUnitRunner.class)
 public class PropertyMonitorsSetTest {
-	
-	@Mock
-	IPropertyMonitorRule ruleMock1;
-	
-	@Mock
-	IPropertyMonitorRule ruleMock2;
 
-	@Test
-	public void testMonitorsNotification() {
-		when(ruleMock1.isActive(anyObject(), anyObject())).thenReturn(true);
-		when(ruleMock2.isActive(anyObject(), anyObject())).thenReturn(true);
-		when(ruleMock1.isActive(anyObject(), anyObject())).thenReturn(true);
-		
-		PropertyMonitorStub monitor1 = new PropertyMonitorStub();
-		PropertyMonitorStub monitor2 = new PropertyMonitorStub();
+    @Mock
+    IPropertyMonitorRule ruleMock1;
 
-		PropertyMonitorsSet set = new PropertyMonitorsSet();
-		set.addMonitor(monitor1, ruleMock1);
-		set.addMonitor(monitor2, ruleMock2);
-		set.notifyMonitors(null, null);
+    @Mock
+    IPropertyMonitorRule ruleMock2;
 
-		set.removeMonitor(monitor2);
-		set.notifyMonitors(null, null);
+    @Test
+    public void testMonitorsNotification() {
+        when(ruleMock1.isActive(anyObject(), anyObject())).thenReturn(true);
+        when(ruleMock2.isActive(anyObject(), anyObject())).thenReturn(true);
+        when(ruleMock1.isActive(anyObject(), anyObject())).thenReturn(true);
 
-		assertEquals(2, monitor1.getPropertyChangedInvokationCounter());
-		assertEquals(1, monitor2.getPropertyChangedInvokationCounter());
-	}
+        PropertyMonitorStub monitor1 = new PropertyMonitorStub();
+        PropertyMonitorStub monitor2 = new PropertyMonitorStub();
 
-	@Test
-	public void testNotificationWithFalseRule() {
-		when(ruleMock1.isActive(anyObject(), anyObject())).thenReturn(false);
-		
-		PropertyMonitorStub monitor = new PropertyMonitorStub();
+        PropertyMonitorsSet set = new PropertyMonitorsSet();
+        set.addMonitor(monitor1, ruleMock1);
+        set.addMonitor(monitor2, ruleMock2);
+        set.notifyMonitors(null, null);
 
-		PropertyMonitorsSet set = new PropertyMonitorsSet();
-		set.addMonitor(monitor, ruleMock1);
-		set.notifyMonitors(null, null);
+        set.removeMonitor(monitor2);
+        set.notifyMonitors(null, null);
 
-		assertEquals(0, monitor.getPropertyChangedInvokationCounter());
-	}
+        assertEquals(2, monitor1.getPropertyChangedInvokationCounter());
+        assertEquals(1, monitor2.getPropertyChangedInvokationCounter());
+    }
+
+    @Test
+    public void testNotificationWithFalseRule() {
+        when(ruleMock1.isActive(anyObject(), anyObject())).thenReturn(false);
+
+        PropertyMonitorStub monitor = new PropertyMonitorStub();
+
+        PropertyMonitorsSet set = new PropertyMonitorsSet();
+        set.addMonitor(monitor, ruleMock1);
+        set.notifyMonitors(null, null);
+
+        assertEquals(0, monitor.getPropertyChangedInvokationCounter());
+    }
 }

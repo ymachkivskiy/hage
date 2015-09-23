@@ -31,20 +31,21 @@
 
 package org.jage.agent;
 
+
+import org.jage.address.Address;
+import org.jage.address.agent.AgentAddress;
+import org.jage.communication.message.Header;
+import org.jage.communication.message.Message;
+import org.jage.communication.message.SimpleMessage;
+import org.junit.Test;
+
 import java.io.Serializable;
 import java.util.Queue;
-
-import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 
-import org.jage.address.Address;
-import org.jage.address.agent.AgentAddress;
-import org.jage.communication.message.SimpleMessage;
-import org.jage.communication.message.Header;
-import org.jage.communication.message.Message;
 
 /**
  * Tests for the {@link AbstractAgent} class.
@@ -53,41 +54,42 @@ import org.jage.communication.message.Message;
  */
 public class AbstractAgentTest {
 
-	@SuppressWarnings("serial")
+    @SuppressWarnings("serial")
     private final AbstractAgent abstractAgent = new AbstractAgent(mock(AgentAddress.class)) {
-		@Override
-		public void setAgentEnvironment(final IAgentEnvironment agentEnvironment) {
-		}
 
-		@Override
-		protected IAgentEnvironment getAgentEnvironment() {
-			return null;
-		}
-	};
+        @Override
+        public void setAgentEnvironment(final IAgentEnvironment agentEnvironment) {
+        }
 
-	@Test
-	public void receiveMessageTest() {
-		// given
-		final String payload = "payload";
-		final SimpleMessage<AgentAddress, String> message1 = createMessage(payload);
-		final SimpleMessage<AgentAddress, String> message2 = createMessage(payload);
-		final SimpleMessage<AgentAddress, String> message3 = createMessage(payload);
+        @Override
+        protected IAgentEnvironment getAgentEnvironment() {
+            return null;
+        }
+    };
 
-		// when
-		abstractAgent.deliverMessage(message1);
-		abstractAgent.deliverMessage(message2);
-		abstractAgent.deliverMessage(message3);
+    @Test
+    public void receiveMessageTest() {
+        // given
+        final String payload = "payload";
+        final SimpleMessage<AgentAddress, String> message1 = createMessage(payload);
+        final SimpleMessage<AgentAddress, String> message2 = createMessage(payload);
+        final SimpleMessage<AgentAddress, String> message3 = createMessage(payload);
 
-		// then
-		final Queue<Message<AgentAddress, ?>> messages = abstractAgent.getMessages();
-		assertEquals(message1, messages.poll());
-		assertEquals(message2, messages.poll());
-		assertEquals(message3, messages.poll());
-		assertNull(messages.poll());
-	}
+        // when
+        abstractAgent.deliverMessage(message1);
+        abstractAgent.deliverMessage(message2);
+        abstractAgent.deliverMessage(message3);
 
-	@SuppressWarnings("unchecked")
-	private <A extends Address, P extends Serializable> SimpleMessage<A, P> createMessage(final P payload) {
-		return SimpleMessage.create(mock(Header.class), payload);
-	}
+        // then
+        final Queue<Message<AgentAddress, ?>> messages = abstractAgent.getMessages();
+        assertEquals(message1, messages.poll());
+        assertEquals(message2, messages.poll());
+        assertEquals(message3, messages.poll());
+        assertNull(messages.poll());
+    }
+
+    @SuppressWarnings("unchecked")
+    private <A extends Address, P extends Serializable> SimpleMessage<A, P> createMessage(final P payload) {
+        return SimpleMessage.create(mock(Header.class), payload);
+    }
 }

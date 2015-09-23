@@ -31,7 +31,9 @@
 
 package org.jage.platform.component.definition;
 
+
 import java.io.Serializable;
+
 
 /**
  * Marker interface for argument definitions (references or values).
@@ -41,4 +43,5 @@ import java.io.Serializable;
  * @author AGH AgE Team
  */
 public interface IArgumentDefinition extends Serializable {
+
 }

@@ -31,9 +31,11 @@
 
 package org.jage.property.monitors;
 
+
 import org.jage.event.PropertyEvent;
 import org.jage.monitor.IMonitor;
 import org.jage.property.Property;
+
 
 /**
  * Interface for property monitors.
@@ -42,51 +44,48 @@ import org.jage.property.Property;
  */
 public abstract class AbstractPropertyMonitor implements IMonitor {
 
-	private Object oldValue;
+    private Object oldValue;
 
-	/**
-	 * Constructor. It initializes the previous value (stored in this object, not in property) to null.
-	 */
-	protected AbstractPropertyMonitor() {
-		oldValue = null;
-	}
+    /**
+     * Constructor. It initializes the previous value (stored in this object, not in property) to null.
+     */
+    protected AbstractPropertyMonitor() {
+        oldValue = null;
+    }
 
-	/**
-	 * This method is called be monitored object to inform the monitor that the property has been changed.
-	 *
-	 * @param property
-	 *            property that has been changed
-	 * @param newValue
-	 *            new value of the property.
-	 */
-	public void propertyChanged(Property property, Object newValue) {
-		propertyChanged(new PropertyEvent(property, oldValue, newValue));
-		oldValue = newValue;
-	}
+    /**
+     * This method is called be monitored object to inform the monitor that the property has been changed.
+     *
+     * @param property property that has been changed
+     * @param newValue new value of the property.
+     */
+    public void propertyChanged(Property property, Object newValue) {
+        propertyChanged(new PropertyEvent(property, oldValue, newValue));
+        oldValue = newValue;
+    }
 
-	/**
-	 * This method is invoked every time the property has been changed. Implement it to provide your own action.
-	 *
-	 * @param event
-	 */
-	protected abstract void propertyChanged(PropertyEvent event);
+    /**
+     * This method is invoked every time the property has been changed. Implement it to provide your own action.
+     *
+     * @param event
+     */
+    protected abstract void propertyChanged(PropertyEvent event);
 
-	/**
-	 * Gets the previous value of the monitored property.
-	 *
-	 * @return old value of property
-	 */
-	public Object getOldValue() {
-		return oldValue;
-	}
+    /**
+     * Gets the previous value of the monitored property.
+     *
+     * @return old value of property
+     */
+    public Object getOldValue() {
+        return oldValue;
+    }
 
-	/**
-	 * Sets the previous value of the monitored property.
-	 *
-	 * @param value
-	 *            old value of property
-	 */
-	public void setOldValue(Object value) {
-		oldValue = value;
-	}
+    /**
+     * Sets the previous value of the monitored property.
+     *
+     * @param value old value of property
+     */
+    public void setOldValue(Object value) {
+        oldValue = value;
+    }
 }

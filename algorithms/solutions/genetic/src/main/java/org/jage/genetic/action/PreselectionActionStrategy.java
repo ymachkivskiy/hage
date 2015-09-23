@@ -31,10 +31,6 @@
 
 package org.jage.genetic.action;
 
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.jage.action.AbstractPerformActionStrategy;
 import org.jage.action.IActionContext;
@@ -44,38 +40,41 @@ import org.jage.genetic.preselection.IPreselection;
 import org.jage.population.IPopulation;
 import org.jage.solution.ISolution;
 import org.jage.utils.JageUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
 
 import static org.jage.genetic.agent.GeneticActionDrivenAgent.Properties.POPULATION;
 import static org.jage.utils.JageUtils.getPropertyValueOrThrowException;
 import static org.jage.utils.JageUtils.setPropertyValueOrThrowException;
 
+
 /**
  * This action handler performs a preselection on an agent's population, using a given preselection algorithm. The
  * agent's population is replaced with the preselected one.
  *
- * @param <S>
- *            the type of solutions
- *
+ * @param <S> the type of solutions
  * @author AGH AgE Team
  */
 public final class PreselectionActionStrategy<S extends ISolution> extends AbstractPerformActionStrategy {
 
-	private static final Logger LOG = LoggerFactory.getLogger(PreselectionActionStrategy.class);
+    private static final Logger LOG = LoggerFactory.getLogger(PreselectionActionStrategy.class);
 
-	@Inject
-	private IPreselection<S, Double> preselection;
+    @Inject
+    private IPreselection<S, Double> preselection;
 
-	@Override
-	public void perform(final IAgent target, final IActionContext context) throws AgentException {
-		LOG.debug("Performing preselection on agent {} population.", target.getAddress());
+    @Override
+    public void perform(final IAgent target, final IActionContext context) throws AgentException {
+        LOG.debug("Performing preselection on agent {} population.", target.getAddress());
 
-		final IPopulation<S, Double> originalPopulation = getPropertyValueOrThrowException(target, POPULATION);
-		final IPopulation<S, Double> preselectedPopulation = preselection.preselect(originalPopulation);
+        final IPopulation<S, Double> originalPopulation = getPropertyValueOrThrowException(target, POPULATION);
+        final IPopulation<S, Double> preselectedPopulation = preselection.preselect(originalPopulation);
 
-		setPropertyValueOrThrowException(target, POPULATION, preselectedPopulation);
+        setPropertyValueOrThrowException(target, POPULATION, preselectedPopulation);
 
-		if (LOG.isDebugEnabled()) {
-			LOG.debug(JageUtils.getPopulationLog(preselectedPopulation, "Preselected solutions"));
-		}
-	}
+        if(LOG.isDebugEnabled()) {
+            LOG.debug(JageUtils.getPopulationLog(preselectedPopulation, "Preselected solutions"));
+        }
+    }
 }

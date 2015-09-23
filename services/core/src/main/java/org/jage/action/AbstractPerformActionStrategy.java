@@ -31,7 +31,6 @@
 
 package org.jage.action;
 
-import java.util.Collection;
 
 import org.jage.address.agent.AgentAddress;
 import org.jage.agent.AgentException;
@@ -39,29 +38,31 @@ import org.jage.agent.IAgent;
 import org.jage.agent.ISimpleAggregate;
 import org.jage.property.ClassPropertyContainer;
 
+import java.util.Collection;
+
+
 /**
  * Abstract action strategy. Contains empty implementations of action strategy methods. Should be extended by actions
  * which define only a subset of methods.
  *
  * @author AGH AgE Team
- *
  */
 public class AbstractPerformActionStrategy extends ClassPropertyContainer implements IPerformActionStrategy {
 
-	@Override
-	public Collection<AgentAddress> init(final ISimpleAggregate aggregate, final SingleAction action)
-			throws AgentException {
-		return aggregate.validateAction(action);
-	}
+    @Override
+    public Collection<AgentAddress> init(final ISimpleAggregate aggregate, final SingleAction action)
+            throws AgentException {
+        return aggregate.validateAction(action);
+    }
 
-	@Override
-	public void perform(final IAgent target, final IActionContext context) throws AgentException {
-		// do nothing by default
-	}
+    @Override
+    public void perform(final IAgent target, final IActionContext context) throws AgentException {
+        // do nothing by default
+    }
 
-	@Override
-	public void finish(final IAgent target, final IActionContext context) {
-		// do nothing by default
-	}
+    @Override
+    public void finish(final IAgent target, final IActionContext context) {
+        // do nothing by default
+    }
 
 }

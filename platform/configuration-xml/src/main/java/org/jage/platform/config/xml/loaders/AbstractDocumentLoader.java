@@ -31,23 +31,21 @@
 
 package org.jage.platform.config.xml.loaders;
 
-import java.util.List;
-
-import static java.util.Collections.singletonMap;
 
 import org.dom4j.Element;
 import org.dom4j.Namespace;
 import org.dom4j.XPath;
-
-import static org.dom4j.DocumentHelper.createElement;
-import static org.dom4j.DocumentHelper.createNamespace;
-import static org.dom4j.DocumentHelper.createQName;
-
 import org.jage.platform.config.xml.ConfigAttributes;
 import org.jage.platform.config.xml.ConfigNamespaces;
 import org.jage.platform.config.xml.ConfigTags;
 
+import java.util.List;
+
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Collections.singletonMap;
+import static org.dom4j.DocumentHelper.createElement;
+import static org.dom4j.DocumentHelper.createNamespace;
+import static org.dom4j.DocumentHelper.createQName;
 
 
 /**
@@ -57,88 +55,86 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public abstract class AbstractDocumentLoader implements DocumentLoader {
 
-	private DocumentLoader delegate;
+    private static final Namespace NAMESPACE = createNamespace("", ConfigNamespaces.DEFAULT.getUri());
+    private DocumentLoader delegate;
 
-	/**
-	 * Set the delegate for this instance.
-	 *
-	 * @param delegate
-	 *            the delegate to set.
-	 */
-	public void setDelegate(final DocumentLoader delegate) {
-		this.delegate = checkNotNull(delegate);
-	}
+    /**
+     * Initializes the given xpath with the configuration namespace, then returns it.
+     *
+     * @param xpath a xpath to initialize
+     * @return the initialized xpath
+     */
+    protected static final XPath initXpath(final XPath xpath) {
+        final ConfigNamespaces configNamespace = ConfigNamespaces.DEFAULT;
+        xpath.setNamespaceURIs(singletonMap(configNamespace.getPrefix(), configNamespace.getUri()));
+        return xpath;
+    }
 
-	/**
-	 * Return the delegate for this instance, if present.
-	 *
-	 * @return the delegate for this instance, or null if there is none
-	 */
-	public DocumentLoader getDelegate() {
-		return delegate;
-	}
-
-	/**
-	 * Utility building method for chaining Document Loaders. This instance will become the delegate for the provided
-	 * one. This method returns the given loader, so as to be chained.
-	 * <p>
-	 * Example usage:
-	 *
-	 * <pre>
-	 * new A().append(new B()).append(new C());
-	 * </pre>
-	 *
-	 * will return a reference to C and build a chain C -> B -> A, that is a call to C will be delegated to A, which
-	 * will produce some actual document, which will be first decorated by B, then by C and finally returned to the
-	 * caller.
-	 *
-	 * @param loader
-	 *            the next loader in the chain
-	 * @return the provided loader for chaining
-	 */
-	public AbstractDocumentLoader append(final AbstractDocumentLoader loader) {
-		loader.setDelegate(this);
-		return loader;
-	}
-
-	/**
-	 * Initializes the given xpath with the configuration namespace, then returns it.
-	 * @param xpath a xpath to initialize
-	 * @return the initialized xpath
-	 */
-	protected static final XPath initXpath(final XPath xpath) {
-		final ConfigNamespaces configNamespace = ConfigNamespaces.DEFAULT;
-		xpath.setNamespaceURIs(singletonMap(configNamespace.getPrefix(), configNamespace.getUri()));
-		return xpath;
-	}
-
-	@SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked")
     protected static final List<Element> selectNodes(final XPath xpath, final Object node) {
-		return xpath.selectNodes(node);
-	}
+        return xpath.selectNodes(node);
+    }
 
-	private static final Namespace NAMESPACE = createNamespace("", ConfigNamespaces.DEFAULT.getUri());
+    protected static final Element newReferenceElement(final String name) {
+        final Element element = createElement(createQName(ConfigTags.REFERENCE.toString(), NAMESPACE));
+        element.addAttribute(ConfigAttributes.TARGET.toString(), name);
+        return element;
+    }
 
-	protected static final Element newReferenceElement(final String name) {
-		final Element element = createElement(createQName(ConfigTags.REFERENCE.toString(), NAMESPACE));
-		element.addAttribute(ConfigAttributes.TARGET.toString(), name);
-		return element;
-	}
+    protected static final Element newValueElement(final String value) {
+        return newValueElement("String", value);
+    }
 
-	protected static final Element newValueElement(final String value) {
-		return newValueElement("String", value);
-	}
+    protected static final Element newValueElement(final String type, final String value) {
+        final Element element = createElement(createQName(ConfigTags.VALUE.toString(), NAMESPACE));
+        element.addAttribute(ConfigAttributes.TYPE.toString(), type);
+        element.addText(value);
+        return element;
+    }
 
-	protected static final Element newValueElement(final String type, final String value) {
-		final Element element = createElement(createQName(ConfigTags.VALUE.toString(), NAMESPACE));
-		element.addAttribute(ConfigAttributes.TYPE.toString(), type);
-		element.addText(value);
-		return element;
-	}
+    protected static final Element newKeyElement(final Element argument) {
+        final Element element = createElement(createQName(ConfigTags.KEY.toString(), NAMESPACE));
+        element.add(argument);
+        return element;
+    }
 
-	protected static final Element newKeyElement(final Element argument) {
-		final Element element = createElement(createQName(ConfigTags.KEY.toString(), NAMESPACE));
-		element.add(argument);
-		return element;
-	}
+    /**
+     * Return the delegate for this instance, if present.
+     *
+     * @return the delegate for this instance, or null if there is none
+     */
+    public DocumentLoader getDelegate() {
+        return delegate;
+    }
+
+    /**
+     * Utility building method for chaining Document Loaders. This instance will become the delegate for the provided
+     * one. This method returns the given loader, so as to be chained.
+     * <p>
+     * Example usage:
+     * <p>
+     * <pre>
+     * new A().append(new B()).append(new C());
+     * </pre>
+     * <p>
+     * will return a reference to C and build a chain C -> B -> A, that is a call to C will be delegated to A, which
+     * will produce some actual document, which will be first decorated by B, then by C and finally returned to the
+     * caller.
+     *
+     * @param loader the next loader in the chain
+     * @return the provided loader for chaining
+     */
+    public AbstractDocumentLoader append(final AbstractDocumentLoader loader) {
+        loader.setDelegate(this);
+        return loader;
+    }
+
+    /**
+     * Set the delegate for this instance.
+     *
+     * @param delegate the delegate to set.
+     */
+    public void setDelegate(final DocumentLoader delegate) {
+        this.delegate = checkNotNull(delegate);
+    }
 }

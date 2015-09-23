@@ -30,34 +30,38 @@ package org.jage.property;
 /**
  * Exception thrown by properties set when adding property with name that is
  * the same as name of one of existing properties.
+ *
  * @author Tomek
  */
 public class DuplicatePropertyNameException extends PropertyException {
 
-	private static final long serialVersionUID = 1;
+    private static final long serialVersionUID = 1;
 
-	/**
-	 * Constructor.
-	 * @param message message for the exception.
-	 */
-	public DuplicatePropertyNameException(final String message) {
-		super(message);
-	}
+    /**
+     * Constructor.
+     *
+     * @param message message for the exception.
+     */
+    public DuplicatePropertyNameException(final String message) {
+        super(message);
+    }
 
-	/**
-	 * Constructor.
-	 * @param message message for the exception.
-	 * @param throwable inner exception.
-	 */
-	public DuplicatePropertyNameException(final String message, final Throwable throwable) {
-		super(message, throwable);
-	}
+    /**
+     * Constructor.
+     *
+     * @param message   message for the exception.
+     * @param throwable inner exception.
+     */
+    public DuplicatePropertyNameException(final String message, final Throwable throwable) {
+        super(message, throwable);
+    }
 
-	/**
-	 * Constructor.
-	 * @param throwable inner exception.
-	 */
-	public DuplicatePropertyNameException(final Throwable throwable) {
-		super(throwable);
-	}
+    /**
+     * Constructor.
+     *
+     * @param throwable inner exception.
+     */
+    public DuplicatePropertyNameException(final Throwable throwable) {
+        super(throwable);
+    }
 }

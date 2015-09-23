@@ -26,21 +26,22 @@
  */
 package org.jage.config;
 
-import java.lang.reflect.Type;
-import java.util.Collection;
-import java.util.List;
-
-import org.junit.Before;
 
 import org.jage.platform.component.definition.IComponentDefinition;
 import org.jage.platform.component.pico.PicoComponentInstanceProviderFactory;
 import org.jage.platform.component.provider.IComponentInstanceProvider;
 import org.jage.platform.component.provider.IMutableComponentInstanceProvider;
 import org.jage.platform.config.xml.XmlConfigurationLoader;
+import org.junit.Before;
+
+import java.lang.reflect.Type;
+import java.util.Collection;
+import java.util.List;
+
 
 /**
  * An abstract test case that provides access to component instances defined in an XML configuration file.
- *
+ * <p>
  * The file is passed in the constructor. The, before the test case is used, the configuration is loaded. Afterwards,
  * test cases extending this one can use {@link IComponentInstanceProvider}'s methods (only
  * {@link IComponentInstanceProvider#getInstance(Class)} and {@link IComponentInstanceProvider#getInstance(String)} to
@@ -50,53 +51,53 @@ import org.jage.platform.config.xml.XmlConfigurationLoader;
  */
 public abstract class InstanceProvidingTestCase implements IComponentInstanceProvider {
 
-	private String configurationFile;
+    private String configurationFile;
 
-	private IMutableComponentInstanceProvider picoContainer;
+    private IMutableComponentInstanceProvider picoContainer;
 
-	public InstanceProvidingTestCase(String configurationFile) {
-		this.configurationFile = configurationFile;
-	}
+    public InstanceProvidingTestCase(String configurationFile) {
+        this.configurationFile = configurationFile;
+    }
 
-	@Before
-	public void setUp() throws Exception {
-		XmlConfigurationLoader loader = new XmlConfigurationLoader();
-		List<IComponentDefinition> definitions = loader.loadConfiguration(configurationFile);
-		picoContainer = PicoComponentInstanceProviderFactory.createInstanceProvider(definitions);
-	}
+    @Before
+    public void setUp() throws Exception {
+        XmlConfigurationLoader loader = new XmlConfigurationLoader();
+        List<IComponentDefinition> definitions = loader.loadConfiguration(configurationFile);
+        picoContainer = PicoComponentInstanceProviderFactory.createInstanceProvider(definitions);
+    }
 
-	public Object getInstance() {
-		throw new UnsupportedOperationException(
-		        "Only getInstance(Class) and getInstance(String) are supported by this test case");
-	}
+    public Object getInstance() {
+        throw new UnsupportedOperationException(
+                "Only getInstance(Class) and getInstance(String) are supported by this test case");
+    }
 
-	@Override
-    public <T> T getInstance(Class<T> type) {
-		return picoContainer.getInstance(type);
-	}
-
-	@Override
+    @Override
     public Object getInstance(String name) {
-		return picoContainer.getInstance(name);
-	}
+        return picoContainer.getInstance(name);
+    }
 
-	@Override
-	public <T> Collection<T> getInstances(Class<T> type) {
-		return picoContainer.getInstances(type);
-	}
+    @Override
+    public <T> T getInstance(Class<T> type) {
+        return picoContainer.getInstance(type);
+    }
 
-	public String getName() {
-		throw new UnsupportedOperationException(
-		        "Only getInstance(Class) and getInstance(String) are supported by this test case");
-	}
-
-	@Override
-    public Class<?> getComponentType(String name) {
-		return picoContainer.getComponentType(name);
-	}
-
-	@Override
+    @Override
     public <T> T getParametrizedInstance(Class<T> type, Type[] typeParameters) {
-		return picoContainer.getParametrizedInstance(type, typeParameters);
-	}
+        return picoContainer.getParametrizedInstance(type, typeParameters);
+    }
+
+    @Override
+    public <T> Collection<T> getInstances(Class<T> type) {
+        return picoContainer.getInstances(type);
+    }
+
+    @Override
+    public Class<?> getComponentType(String name) {
+        return picoContainer.getComponentType(name);
+    }
+
+    public String getName() {
+        throw new UnsupportedOperationException(
+                "Only getInstance(Class) and getInstance(String) are supported by this test case");
+    }
 }

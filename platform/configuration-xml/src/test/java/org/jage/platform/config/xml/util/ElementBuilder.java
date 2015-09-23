@@ -31,16 +31,17 @@
 
 package org.jage.platform.config.xml.util;
 
+
 import org.dom4j.Element;
 import org.dom4j.Namespace;
+import org.jage.platform.config.xml.ConfigAttributes;
+import org.jage.platform.config.xml.ConfigNamespaces;
+import org.jage.platform.config.xml.ConfigTags;
 
 import static org.dom4j.DocumentHelper.createElement;
 import static org.dom4j.DocumentHelper.createNamespace;
 import static org.dom4j.DocumentHelper.createQName;
 
-import org.jage.platform.config.xml.ConfigAttributes;
-import org.jage.platform.config.xml.ConfigNamespaces;
-import org.jage.platform.config.xml.ConfigTags;
 
 /**
  * Static utility methods for testing configuration.
@@ -49,153 +50,152 @@ import org.jage.platform.config.xml.ConfigTags;
  */
 public final class ElementBuilder {
 
-	private final Element element;
+    public static final String EMPTY_STRING = "";
+    public static final String ANY_TAG = "any";
+    public static final String SOME_NAME = "someName";
+    public static final String SOME_VALUE = "someValue";
+    public static final String SOME_CLASS = "java.lang.String";
+    public static final String IS_SINGLETON_VALUE = "true";
+    private final Element element;
 
-	public ElementBuilder(final ConfigTags tag) {
-		this(tag.toString());
-	}
-
-	public ElementBuilder(final String elementName) {
-		final Namespace namespace = createNamespace("", ConfigNamespaces.DEFAULT.getUri());
-		element = createElement(createQName(elementName, namespace));
-	}
-
-	public ElementBuilder withAttribute(final ConfigAttributes attribute, final String attributeValue) {
-		element.addAttribute(attribute.toString(), attributeValue);
-		return this;
-	}
-
-	public ElementBuilder withContent(final String value) {
-		element.addText(value);
-		return this;
-	}
-
-	public ElementBuilder withBody(final ElementBuilder... body) {
-		for (final ElementBuilder innerElement : body) {
-			element.add(innerElement.build());
-		}
-		return this;
-	}
-
-	public Element build() {
-		return element;
-	}
-
-	public static final String EMPTY_STRING = "";
-	public static final String ANY_TAG = "any";
-	public static final String SOME_NAME = "someName";
-	public static final String SOME_VALUE = "someValue";
-	public static final String SOME_CLASS = "java.lang.String";
-	public static final String IS_SINGLETON_VALUE = "true";
-
-	public static ElementBuilder element(final ConfigTags tag) {
-		return new ElementBuilder(tag);
-	}
-
-	public static ElementBuilder anyElement() {
-		return new ElementBuilder(ANY_TAG);
-	}
-
-	public static ElementBuilder componentElement() {
-		return componentElement(SOME_NAME);
+    public ElementBuilder(final ConfigTags tag) {
+        this(tag.toString());
     }
 
-	public static ElementBuilder componentElement(final String name) {
-		return element(ConfigTags.COMPONENT)
-				.withAttribute(ConfigAttributes.NAME, name)
-				.withAttribute(ConfigAttributes.CLASS, SOME_CLASS)
-				.withAttribute(ConfigAttributes.IS_SINGLETON, IS_SINGLETON_VALUE);
+    public ElementBuilder(final String elementName) {
+        final Namespace namespace = createNamespace("", ConfigNamespaces.DEFAULT.getUri());
+        element = createElement(createQName(elementName, namespace));
     }
 
-	public static ElementBuilder arrayElement() {
-		return element(ConfigTags.ARRAY)
-				.withAttribute(ConfigAttributes.NAME, SOME_NAME)
-				.withAttribute(ConfigAttributes.VALUE_TYPE, SOME_CLASS)
-				.withAttribute(ConfigAttributes.IS_SINGLETON, IS_SINGLETON_VALUE);
-	}
+    public static ElementBuilder anyElement() {
+        return new ElementBuilder(ANY_TAG);
+    }
 
-	public static ElementBuilder listElement() {
-		return element(ConfigTags.LIST)
-				.withAttribute(ConfigAttributes.NAME, SOME_NAME)
-				.withAttribute(ConfigAttributes.VALUE_TYPE, SOME_CLASS)
-				.withAttribute(ConfigAttributes.IS_SINGLETON, IS_SINGLETON_VALUE);
-	}
+    public static ElementBuilder componentElement() {
+        return componentElement(SOME_NAME);
+    }
 
-	public static ElementBuilder setElement() {
-		return element(ConfigTags.SET)
-				.withAttribute(ConfigAttributes.NAME, SOME_NAME)
-				.withAttribute(ConfigAttributes.VALUE_TYPE, SOME_CLASS)
-				.withAttribute(ConfigAttributes.IS_SINGLETON, IS_SINGLETON_VALUE);
-	}
+    public static ElementBuilder componentElement(final String name) {
+        return element(ConfigTags.COMPONENT)
+                .withAttribute(ConfigAttributes.NAME, name)
+                .withAttribute(ConfigAttributes.CLASS, SOME_CLASS)
+                .withAttribute(ConfigAttributes.IS_SINGLETON, IS_SINGLETON_VALUE);
+    }
 
-	public static ElementBuilder multipleElement(final int count, final ElementBuilder body) {
-		return element(ConfigTags.MULTIPLE)
-				.withAttribute(ConfigAttributes.COUNT, Integer.toString(count))
-				.withBody(body);
-	}
+    public ElementBuilder withAttribute(final ConfigAttributes attribute, final String attributeValue) {
+        element.addAttribute(attribute.toString(), attributeValue);
+        return this;
+    }
 
-	public static ElementBuilder mapElement() {
-		return element(ConfigTags.MAP)
-				.withAttribute(ConfigAttributes.NAME, SOME_NAME)
-				.withAttribute(ConfigAttributes.KEY_TYPE, SOME_CLASS)
-				.withAttribute(ConfigAttributes.VALUE_TYPE, SOME_CLASS)
-				.withAttribute(ConfigAttributes.IS_SINGLETON, IS_SINGLETON_VALUE);
-	}
+    public static ElementBuilder element(final ConfigTags tag) {
+        return new ElementBuilder(tag);
+    }
 
-	public static ElementBuilder mapEntryElement(final ElementBuilder key, final ElementBuilder value) {
-		return element(ConfigTags.ENTRY).withBody(keyElement(key),value);
-	}
+    public static ElementBuilder arrayElement() {
+        return element(ConfigTags.ARRAY)
+                .withAttribute(ConfigAttributes.NAME, SOME_NAME)
+                .withAttribute(ConfigAttributes.VALUE_TYPE, SOME_CLASS)
+                .withAttribute(ConfigAttributes.IS_SINGLETON, IS_SINGLETON_VALUE);
+    }
 
-	public static ElementBuilder keyElement(final ElementBuilder argument) {
-		return element(ConfigTags.KEY).withBody(argument);
-	}
+    public static ElementBuilder listElement() {
+        return element(ConfigTags.LIST)
+                .withAttribute(ConfigAttributes.NAME, SOME_NAME)
+                .withAttribute(ConfigAttributes.VALUE_TYPE, SOME_CLASS)
+                .withAttribute(ConfigAttributes.IS_SINGLETON, IS_SINGLETON_VALUE);
+    }
 
-	public static ElementBuilder valueElement(final String value) {
-		return valueElement("String", value);
-	}
+    public static ElementBuilder setElement() {
+        return element(ConfigTags.SET)
+                .withAttribute(ConfigAttributes.NAME, SOME_NAME)
+                .withAttribute(ConfigAttributes.VALUE_TYPE, SOME_CLASS)
+                .withAttribute(ConfigAttributes.IS_SINGLETON, IS_SINGLETON_VALUE);
+    }
 
-	public static ElementBuilder valueElement(final String type, final String value) {
-		return element(ConfigTags.VALUE)
-				.withAttribute(ConfigAttributes.TYPE, type)
-				.withContent(value);
-	}
+    public static ElementBuilder multipleElement(final int count, final ElementBuilder body) {
+        return element(ConfigTags.MULTIPLE)
+                .withAttribute(ConfigAttributes.COUNT, Integer.toString(count))
+                .withBody(body);
+    }
 
-	public static ElementBuilder referenceElement(final String target) {
-		return element(ConfigTags.REFERENCE)
-				.withAttribute(ConfigAttributes.TARGET, target);
-	}
+    public ElementBuilder withBody(final ElementBuilder... body) {
+        for(final ElementBuilder innerElement : body) {
+            element.add(innerElement.build());
+        }
+        return this;
+    }
 
-	public static ElementBuilder constructorElement() {
-		return element(ConfigTags.CONSTRUCTOR_ARG);
-	}
+    public Element build() {
+        return element;
+    }
 
-	public static ElementBuilder constructorElement(final ElementBuilder body) {
-		return constructorElement().withBody(body);
-	}
+    public static ElementBuilder mapElement() {
+        return element(ConfigTags.MAP)
+                .withAttribute(ConfigAttributes.NAME, SOME_NAME)
+                .withAttribute(ConfigAttributes.KEY_TYPE, SOME_CLASS)
+                .withAttribute(ConfigAttributes.VALUE_TYPE, SOME_CLASS)
+                .withAttribute(ConfigAttributes.IS_SINGLETON, IS_SINGLETON_VALUE);
+    }
 
-	public static ElementBuilder propertyElement(final String propertyName) {
-		return element(ConfigTags.PROPERTY)
-				.withAttribute(ConfigAttributes.NAME, propertyName);
-	}
+    public static ElementBuilder mapEntryElement(final ElementBuilder key, final ElementBuilder value) {
+        return element(ConfigTags.ENTRY).withBody(keyElement(key), value);
+    }
 
-	public static ElementBuilder propertyElement(final String propertyName, final ElementBuilder body) {
-		return propertyElement(propertyName)
-				.withBody(body);
-	}
+    public static ElementBuilder keyElement(final ElementBuilder argument) {
+        return element(ConfigTags.KEY).withBody(argument);
+    }
 
-	public static ElementBuilder includeElement(final String file) {
-		return element(ConfigTags.INCLUDE)
-				.withAttribute(ConfigAttributes.FILE, file);
-	}
+    public static ElementBuilder valueElement(final String value) {
+        return valueElement("String", value);
+    }
 
-	public static ElementBuilder blockElement(final String name) {
-		return element(ConfigTags.BLOCK)
-				.withAttribute(ConfigAttributes.NAME, name);
-	}
+    public static ElementBuilder valueElement(final String type, final String value) {
+        return element(ConfigTags.VALUE)
+                .withAttribute(ConfigAttributes.TYPE, type)
+                .withContent(value);
+    }
 
-	public static ElementBuilder blockElement(final String name, final boolean override) {
-		return element(ConfigTags.BLOCK)
-				.withAttribute(ConfigAttributes.NAME, name)
-				.withAttribute(ConfigAttributes.OVERRIDE, Boolean.toString(override));
-	}
+    public ElementBuilder withContent(final String value) {
+        element.addText(value);
+        return this;
+    }
+
+    public static ElementBuilder referenceElement(final String target) {
+        return element(ConfigTags.REFERENCE)
+                .withAttribute(ConfigAttributes.TARGET, target);
+    }
+
+    public static ElementBuilder constructorElement(final ElementBuilder body) {
+        return constructorElement().withBody(body);
+    }
+
+    public static ElementBuilder constructorElement() {
+        return element(ConfigTags.CONSTRUCTOR_ARG);
+    }
+
+    public static ElementBuilder propertyElement(final String propertyName, final ElementBuilder body) {
+        return propertyElement(propertyName)
+                .withBody(body);
+    }
+
+    public static ElementBuilder propertyElement(final String propertyName) {
+        return element(ConfigTags.PROPERTY)
+                .withAttribute(ConfigAttributes.NAME, propertyName);
+    }
+
+    public static ElementBuilder includeElement(final String file) {
+        return element(ConfigTags.INCLUDE)
+                .withAttribute(ConfigAttributes.FILE, file);
+    }
+
+    public static ElementBuilder blockElement(final String name) {
+        return element(ConfigTags.BLOCK)
+                .withAttribute(ConfigAttributes.NAME, name);
+    }
+
+    public static ElementBuilder blockElement(final String name, final boolean override) {
+        return element(ConfigTags.BLOCK)
+                .withAttribute(ConfigAttributes.NAME, name)
+                .withAttribute(ConfigAttributes.OVERRIDE, Boolean.toString(override));
+    }
 }

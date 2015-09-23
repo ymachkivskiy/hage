@@ -31,6 +31,7 @@
 
 package org.jage.address.selector;
 
+
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import org.jage.address.Address;
@@ -43,6 +44,7 @@ import java.util.Set;
 import static com.google.common.base.Objects.toStringHelper;
 import static com.google.common.collect.Sets.difference;
 import static java.util.Objects.requireNonNull;
+
 
 /**
  * Selector that selects explicitly provided addresses.
@@ -65,21 +67,21 @@ public class MulticastSelector<T extends Address> implements ExplicitSelector<T>
     }
 
     /**
-     * Constructs a new selector for the collection of addresses.
-     *
-     * @param addresses a collection of addresses.
-     */
-    public static <T extends Address> MulticastSelector<T> create(final Collection<T> addresses) {
-        return new MulticastSelector<>(addresses);
-    }
-
-    /**
      * Constructs a new selector from the current by excluding all provided addresses.
      *
      * @param collection a collection of addresses.
      */
     public MulticastSelector<T> except(final Collection<T> collection) {
         return create(difference(addresses, ImmutableSet.copyOf(collection)));
+    }
+
+    /**
+     * Constructs a new selector for the collection of addresses.
+     *
+     * @param addresses a collection of addresses.
+     */
+    public static <T extends Address> MulticastSelector<T> create(final Collection<T> addresses) {
+        return new MulticastSelector<>(addresses);
     }
 
     @Override

@@ -31,95 +31,95 @@
 
 package org.jage.platform.config.xml.readers;
 
+
 import org.dom4j.Element;
-import org.junit.Test;
-
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-
 import org.jage.platform.component.definition.ConfigurationException;
 import org.jage.platform.component.definition.ValueDefinition;
 import org.jage.platform.config.xml.ConfigAttributes;
 import org.jage.platform.config.xml.ConfigTags;
+import org.junit.Test;
 
+import static org.hamcrest.Matchers.is;
 import static org.jage.platform.config.xml.util.ElementBuilder.element;
 import static org.jage.platform.config.xml.util.ElementBuilder.valueElement;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+
 
 /**
  * Unit tests for ValueDefinitionReader.
  *
  * @author AGH AgE Team
  */
-public class ValueDefinitionReaderTest  {
+public class ValueDefinitionReaderTest {
 
-	private final ValueDefinitionReader reader = new ValueDefinitionReader();
+    private final ValueDefinitionReader reader = new ValueDefinitionReader();
 
-	@Test
-	public void testValidStringDefinition() throws ConfigurationException {
-		// given
-		final Element element = valueElement("String", "abc")
-				.build();
+    @Test
+    public void testValidStringDefinition() throws ConfigurationException {
+        // given
+        final Element element = valueElement("String", "abc")
+                .build();
 
-		// when
-		final ValueDefinition definition = reader.read(element);
+        // when
+        final ValueDefinition definition = reader.read(element);
 
-		// then
-		assertNotNull(definition);
-		assertEquals(definition.getDesiredClass(), String.class);
-		assertThat(definition.getStringValue(), is("abc"));
-	}
+        // then
+        assertNotNull(definition);
+        assertEquals(definition.getDesiredClass(), String.class);
+        assertThat(definition.getStringValue(), is("abc"));
+    }
 
-	@Test
-	public void testValidIntegerDefinition() throws ConfigurationException {
-		// given
-		final Element element = valueElement("Integer", "123")
-				.build();
+    @Test
+    public void testValidIntegerDefinition() throws ConfigurationException {
+        // given
+        final Element element = valueElement("Integer", "123")
+                .build();
 
-		// when
-		final ValueDefinition definition = reader.read(element);
+        // when
+        final ValueDefinition definition = reader.read(element);
 
-		// then
-		assertNotNull(definition);
-		assertEquals(definition.getDesiredClass(), Integer.class);
-		assertThat(definition.getStringValue(), is("123"));
-	}
+        // then
+        assertNotNull(definition);
+        assertEquals(definition.getDesiredClass(), Integer.class);
+        assertThat(definition.getStringValue(), is("123"));
+    }
 
 
-	@Test
-	public void testEmptyContent() throws ConfigurationException {
-		// given
-		final Element element = element(ConfigTags.VALUE)
-				.withAttribute(ConfigAttributes.TYPE, "String")
-				.build();
+    @Test
+    public void testEmptyContent() throws ConfigurationException {
+        // given
+        final Element element = element(ConfigTags.VALUE)
+                .withAttribute(ConfigAttributes.TYPE, "String")
+                .build();
 
-		// when
-		final ValueDefinition definition = reader.read(element);
+        // when
+        final ValueDefinition definition = reader.read(element);
 
-		//then
-		assertNotNull(definition);
-		assertThat(definition.getStringValue(), is(""));
-	}
+        //then
+        assertNotNull(definition);
+        assertThat(definition.getStringValue(), is(""));
+    }
 
-	@Test(expected = ConfigurationException.class)
-	public void testTypeAttributeisRequired() throws ConfigurationException {
-		// given
-		final Element element = element(ConfigTags.VALUE)
-				.build();
+    @Test(expected = ConfigurationException.class)
+    public void testTypeAttributeisRequired() throws ConfigurationException {
+        // given
+        final Element element = element(ConfigTags.VALUE)
+                .build();
 
-		// when
-		reader.read(element);
-	}
+        // when
+        reader.read(element);
+    }
 
-	@Test(expected = ConfigurationException.class)
-	public void testTypeAttributeisNotEmpty() throws ConfigurationException {
-		// given
-		final Element element = element(ConfigTags.VALUE)
-				.withAttribute(ConfigAttributes.TYPE, "")
-				.build();
+    @Test(expected = ConfigurationException.class)
+    public void testTypeAttributeisNotEmpty() throws ConfigurationException {
+        // given
+        final Element element = element(ConfigTags.VALUE)
+                .withAttribute(ConfigAttributes.TYPE, "")
+                .build();
 
-		// when
-		reader.read(element);
-	}
+        // when
+        reader.read(element);
+    }
 }

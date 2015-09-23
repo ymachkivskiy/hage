@@ -26,29 +26,35 @@
  */
 package org.jage.monitoring.visualization.spring.controller;
 
+
 /**
  * Class represents single data series which will be visualized in Highchart.
- * 
+ *
  * @author AGH AgE Team
  */
 public class HighchartsSeries {
 
-	private String name;
-	private Object[] data;
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public Object[] getData() {
-		return data;
-	}
-	public void setData(Object[] data) {
-		this.data = data;
-	}
-	public HighchartsSeries(String name, Object[] data) {
-	    this.name = name;
-	    this.data = data;
+    private String name;
+    private Object[] data;
+
+    public HighchartsSeries(String name, Object[] data) {
+        this.name = name;
+        this.data = data;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Object[] getData() {
+        return data;
+    }
+
+    public void setData(Object[] data) {
+        this.data = data;
     }
 }

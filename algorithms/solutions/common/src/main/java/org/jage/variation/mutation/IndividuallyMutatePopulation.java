@@ -31,61 +31,61 @@
 
 package org.jage.variation.mutation;
 
-import javax.inject.Inject;
 
 import org.jage.population.IPopulation;
 import org.jage.random.INormalizedDoubleRandomGenerator;
 import org.jage.solution.ISolution;
 import org.jage.strategy.AbstractStrategy;
 
+import javax.inject.Inject;
+
+
 /**
  * An {@link IMutatePopulation} implementation which mutates each solution individually, based on a chanceToMutate
  * property to decide whether mutation should occur, and a specified {@link IMutateSolution} strategy to perform it.
  *
- * @param <S>
- *            The type of the solutions held by the population to be mutated
+ * @param <S> The type of the solutions held by the population to be mutated
  * @author AGH AgE Team
  */
 public final class IndividuallyMutatePopulation<S extends ISolution> extends AbstractStrategy implements
-        IMutatePopulation<S> {
+                                                                                              IMutatePopulation<S> {
 
-	static final double DEFAULT_CHANCE_TO_MUTATE = 0.5;
+    static final double DEFAULT_CHANCE_TO_MUTATE = 0.5;
 
-	@Inject
-	private INormalizedDoubleRandomGenerator rand;
+    @Inject
+    private INormalizedDoubleRandomGenerator rand;
 
-	@Inject
-	private IMutateSolution<S> mutate;
+    @Inject
+    private IMutateSolution<S> mutate;
 
-	private double chanceToMutate;
+    private double chanceToMutate;
 
-	/**
-	 * Creates an IndividuallyMutatePopulation with a default chance to mutate.
-	 */
-	public IndividuallyMutatePopulation() {
-		this(DEFAULT_CHANCE_TO_MUTATE);
-	}
-
-	/**
-	 * Creates an IndividuallyMutatePopulation with a given chance to mutate.
-	 *
-	 * @param chanceToMutate
-	 *            the chance to mutate
-	 */
-	public IndividuallyMutatePopulation(final double chanceToMutate) {
-		this.chanceToMutate = chanceToMutate;
-	}
-
-    public void setChanceToMutate(final double chanceToMutate) {
-	    this.chanceToMutate = chanceToMutate;
+    /**
+     * Creates an IndividuallyMutatePopulation with a default chance to mutate.
+     */
+    public IndividuallyMutatePopulation() {
+        this(DEFAULT_CHANCE_TO_MUTATE);
     }
 
-	@Override
-	public void mutatePopulation(final IPopulation<S, ?> population) {
-		for (final S solution : population) {
-			if (rand.nextDouble() < chanceToMutate) {
-				mutate.mutateSolution(solution);
-			}
-		}
-	}
+    /**
+     * Creates an IndividuallyMutatePopulation with a given chance to mutate.
+     *
+     * @param chanceToMutate the chance to mutate
+     */
+    public IndividuallyMutatePopulation(final double chanceToMutate) {
+        this.chanceToMutate = chanceToMutate;
+    }
+
+    public void setChanceToMutate(final double chanceToMutate) {
+        this.chanceToMutate = chanceToMutate;
+    }
+
+    @Override
+    public void mutatePopulation(final IPopulation<S, ?> population) {
+        for(final S solution : population) {
+            if(rand.nextDouble() < chanceToMutate) {
+                mutate.mutateSolution(solution);
+            }
+        }
+    }
 }

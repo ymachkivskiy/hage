@@ -31,7 +31,9 @@
 
 package org.jage.emas.energy;
 
+
 import org.jage.emas.agent.IndividualAgent;
+
 
 /**
  * Proportion energy transfer strategy. Always transfers a fixed proportion of the source energy to the target.
@@ -40,19 +42,19 @@ import org.jage.emas.agent.IndividualAgent;
  */
 public class ProportionEnergyTransfer implements EnergyTransfer<IndividualAgent> {
 
-	private double transferredProportion;
+    private double transferredProportion;
 
-	public void setTransferredProportion(final double transferredProportion) {
-		this.transferredProportion = transferredProportion;
-	}
+    public void setTransferredProportion(final double transferredProportion) {
+        this.transferredProportion = transferredProportion;
+    }
 
-	@Override
-	public final double transferEnergy(final IndividualAgent source, final IndividualAgent target) {
-		final double delta = source.getEnergy() * transferredProportion;
+    @Override
+    public final double transferEnergy(final IndividualAgent source, final IndividualAgent target) {
+        final double delta = source.getEnergy() * transferredProportion;
 
-		source.changeEnergyBy(-delta);
-		target.changeEnergyBy(delta);
+        source.changeEnergyBy(-delta);
+        target.changeEnergyBy(delta);
 
-		return delta;
-	}
+        return delta;
+    }
 }

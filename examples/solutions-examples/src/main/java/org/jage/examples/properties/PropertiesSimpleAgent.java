@@ -31,12 +31,6 @@
 
 package org.jage.examples.properties;
 
-import java.util.Collection;
-
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.jage.address.agent.AgentAddress;
 import org.jage.address.agent.AgentAddressSupplier;
@@ -48,6 +42,12 @@ import org.jage.property.Property;
 import org.jage.property.PropertyGetter;
 import org.jage.property.PropertySetter;
 import org.jage.query.AgentEnvironmentQuery;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
+import java.util.Collection;
+
 
 /**
  * This agent publishes some properties and watches its environment for other agents.
@@ -56,103 +56,100 @@ import org.jage.query.AgentEnvironmentQuery;
  */
 public class PropertiesSimpleAgent extends SimpleAgent {
 
-	/**
-	 * PropertiesSimpleAgent properties.
-	 *
-	 * @author AGH AgE Team
-	 */
-	public static class Properties {
+    private static final long serialVersionUID = 2L;
+    private final Logger log = LoggerFactory.getLogger(PropertiesSimpleAgent.class);
+    private String actor = null;
+    /**
+     * Steps counter
+     */
+    private transient int counter = 0;
 
-		/**
-		 * Actor property.
-		 */
-		public static final String ACTOR = "Actor";
-	}
+    public PropertiesSimpleAgent(final AgentAddress address) {
+        super(address);
+    }
 
-	private static final long serialVersionUID = 2L;
+    @Inject
+    public PropertiesSimpleAgent(final AgentAddressSupplier supplier) {
+        super(supplier);
+    }
 
-	private final Logger log = LoggerFactory.getLogger(PropertiesSimpleAgent.class);
+    @PropertySetter(propertyName = Properties.ACTOR)
+    public void setActor(final String actor) {
+        this.actor = actor;
+    }
 
-	private String actor = null;
+    @PropertyGetter(propertyName = Properties.ACTOR)
+    public String getActor() {
+        return actor;
+    }
 
-	@PropertySetter(propertyName = Properties.ACTOR)
-	public void setActor(final String actor) {
-		this.actor = actor;
-	}
+    /**
+     * Executes a step of the agent. This agent queries its environment every few steps.
+     * <p>
+     * {@inheritDoc}
+     *
+     * @see org.jage.agent.SimpleAgent#step()
+     */
+    @Override
+    public void step() {
+        counter++;
+        log.info("Agent {}: step {}", getAddress().getFriendlyName(), counter);
+        if((counter + hashCode()) % 3 == 0) {
+            watch();
+        }
 
-	@PropertyGetter(propertyName = Properties.ACTOR)
-	public String getActor() {
-		return actor;
-	}
+        try {
+            Thread.sleep(200);
+        } catch(final InterruptedException e) {
+            log.error("Interrupted", e);
+        }
+    }
 
-	/**
-	 * Steps counter
-	 */
-	private transient int counter = 0;
+    private void watch() {
+        Collection<SimpleAgent> answer;
+        try {
+            final AgentEnvironmentQuery<SimpleAgent, SimpleAgent> query = new AgentEnvironmentQuery<>();
+
+            answer = queryEnvironment(query);
+            log.info("Agent: {} can see in its environment: {} following agents:", getAddress().getFriendlyName(),
+                     getParentAddress().getFriendlyName());
+            for(final SimpleAgent entry : answer) {
+                final AgentAddress agentAddress =
+                        (AgentAddress) entry.getProperty(AbstractAgent.Properties.ADDRESS).getValue();
+                if(agentAddress != getAddress()) {
+                    log.info("    agent: {} with properties:", agentAddress);
+
+                    for(final Property property : entry.getProperties()) {
+                        log.info("        {}: {}", property.getMetaProperty().getName(), property.getValue());
+                    }
+                }
+            }
+        } catch(final AgentException e) {
+            log.error("Agent exception", e);
+        } catch(final InvalidPropertyPathException e) {
+            log.error("Invalid property", e);
+        }
+
+    }
+
+    @Override
+    public boolean finish() {
+        log.info("Finishing {}", getAddress().getFriendlyName());
+        return true;
+    }
 
 
-	public PropertiesSimpleAgent(final AgentAddress address) {
-		super(address);
-	}
+    /**
+     * PropertiesSimpleAgent properties.
+     *
+     * @author AGH AgE Team
+     */
+    public static class Properties {
 
-	@Inject
-	public PropertiesSimpleAgent(final AgentAddressSupplier supplier) {
-		super(supplier);
-	}
-
-	/**
-	 * Executes a step of the agent. This agent queries its environment every few steps.
-	 * <p>
-	 * {@inheritDoc}
-	 *
-	 * @see org.jage.agent.SimpleAgent#step()
-	 */
-	@Override
-	public void step() {
-		counter++;
-		log.info("Agent {}: step {}", getAddress().getFriendlyName(), counter);
-		if ((counter + hashCode()) % 3 == 0) {
-			watch();
-		}
-
-		try {
-			Thread.sleep(200);
-		} catch (final InterruptedException e) {
-			log.error("Interrupted", e);
-		}
-	}
-
-	private void watch() {
-		Collection<SimpleAgent> answer;
-		try {
-			final AgentEnvironmentQuery<SimpleAgent, SimpleAgent> query = new AgentEnvironmentQuery<>();
-
-			answer = queryEnvironment(query);
-			log.info("Agent: {} can see in its environment: {} following agents:", getAddress().getFriendlyName(),
-					getParentAddress().getFriendlyName());
-			for (final SimpleAgent entry : answer) {
-				final AgentAddress agentAddress =
-						(AgentAddress)entry.getProperty(AbstractAgent.Properties.ADDRESS).getValue();
-				if (agentAddress != getAddress()) {
-					log.info("    agent: {} with properties:", agentAddress);
-
-					for (final Property property : entry.getProperties()) {
-						log.info("        {}: {}", property.getMetaProperty().getName(), property.getValue());
-					}
-				}
-			}
-		} catch (final AgentException e) {
-			log.error("Agent exception", e);
-		} catch (final InvalidPropertyPathException e) {
-			log.error("Invalid property", e);
-		}
-
-	}
-
-	@Override
-	public boolean finish() {
-		log.info("Finishing {}", getAddress().getFriendlyName());
-		return true;
-	}
+        /**
+         * Actor property.
+         */
+        public static final String ACTOR = "Actor";
+    }
 
 }

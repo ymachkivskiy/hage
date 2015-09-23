@@ -32,15 +32,13 @@
 package org.jage.platform.component.provider;
 
 
-
 /**
- * To be implemented by classes requiring access to 
- * {@link IComponentInstanceProvider}s. 
- * 
- * @author Adam Wos 
+ * To be implemented by classes requiring access to
+ * {@link IComponentInstanceProvider}s.
  *
+ * @author Adam Wos
  */
 public interface IComponentInstanceProviderAware {
-	
-	public void setInstanceProvider(IComponentInstanceProvider provider);
+
+    public void setInstanceProvider(IComponentInstanceProvider provider);
 }

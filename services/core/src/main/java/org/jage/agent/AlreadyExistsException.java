@@ -31,8 +31,10 @@
 
 package org.jage.agent;
 
+
 import org.jage.address.agent.AgentAddress;
 import org.jage.exception.AgeException;
+
 
 /**
  * Exception which occurs when a unique identifier is violated.
@@ -41,51 +43,46 @@ import org.jage.exception.AgeException;
  */
 public class AlreadyExistsException extends AgeException {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * Constructor.
-	 *
-	 * @param address
-	 *            the address that already exists
-	 */
-	public AlreadyExistsException(final AgentAddress address) {
-		super("Address already exists [address: " + address.toString() + "]");
-	}
+    /**
+     * Constructor.
+     *
+     * @param address the address that already exists
+     */
+    public AlreadyExistsException(final AgentAddress address) {
+        super("Address already exists [address: " + address.toString() + "]");
+    }
 
-	/**
-	 * Constructs a new exception with the specified detail message.
-	 *
-	 * @param message
-	 *            the detail message.
-	 * @see Exception#Exception(String)
-	 */
-	public AlreadyExistsException(final String message) {
-		super(message);
-	}
+    /**
+     * Constructs a new exception with the specified detail message.
+     *
+     * @param message the detail message.
+     * @see Exception#Exception(String)
+     */
+    public AlreadyExistsException(final String message) {
+        super(message);
+    }
 
-	/**
-	 * Constructs a new exception with the specified cause and a detail message of
-	 * <tt>(cause==null ? null : cause.toString())</tt>.
-	 *
-	 * @param cause
-	 *            the cause.
-	 * @see Exception#Exception(Throwable)
-	 */
-	public AlreadyExistsException(final Throwable cause) {
-		super(cause);
-	}
+    /**
+     * Constructs a new exception with the specified cause and a detail message of
+     * <tt>(cause==null ? null : cause.toString())</tt>.
+     *
+     * @param cause the cause.
+     * @see Exception#Exception(Throwable)
+     */
+    public AlreadyExistsException(final Throwable cause) {
+        super(cause);
+    }
 
-	/**
-	 * Constructs a new exception with the specified detail message and cause.
-	 *
-	 * @param message
-	 *            the detail message.
-	 * @param cause
-	 *            the cause.
-	 * @see Exception#Exception(String, Throwable)
-	 */
-	public AlreadyExistsException(final String message, final Throwable cause) {
-		super(message, cause);
-	}
+    /**
+     * Constructs a new exception with the specified detail message and cause.
+     *
+     * @param message the detail message.
+     * @param cause   the cause.
+     * @see Exception#Exception(String, Throwable)
+     */
+    public AlreadyExistsException(final String message, final Throwable cause) {
+        super(message, cause);
+    }
 }

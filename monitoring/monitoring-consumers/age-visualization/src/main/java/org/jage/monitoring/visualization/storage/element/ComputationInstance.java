@@ -26,53 +26,52 @@
  */
 package org.jage.monitoring.visualization.storage.element;
 
+
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+
 /**
- *  
- * 
  * @author AGH AgE Team
- *
  */
-public class ComputationInstance implements DescriptionElement<VisualDataStorage>{
-	
-		String instanceKey;
-		private Map<String, VisualDataStorage> storages = new LinkedHashMap<String, VisualDataStorage>();
-		
-		public ComputationInstance(String instanceKey){
-			this.instanceKey = instanceKey;
-		}
-		
-		@Override
-		public Collection<VisualDataStorage> all() {
-			return storages.values();
-		}
+public class ComputationInstance implements DescriptionElement<VisualDataStorage> {
 
-		@Override
-		public VisualDataStorage get(String name) {
-			return storages.get(name);			
-		}
-		
-		public void put(String id, VisualDataStorage storage) {
-			storages.put(id, storage);
-		}
+    String instanceKey;
+    private Map<String, VisualDataStorage> storages = new LinkedHashMap<String, VisualDataStorage>();
 
-		public String getInstanceKey() {
-			return instanceKey;
-		}
-		
-		public boolean containsVisualDataStorage(String key){
-			if(storages.containsKey(key)){
-				return true;
-			} else {
-				return false;
-			}
-		}
-		
-		@Override
-		public String toString() {
-			return instanceKey;
-		}
-	}
+    public ComputationInstance(String instanceKey) {
+        this.instanceKey = instanceKey;
+    }
+
+    @Override
+    public Collection<VisualDataStorage> all() {
+        return storages.values();
+    }
+
+    @Override
+    public VisualDataStorage get(String name) {
+        return storages.get(name);
+    }
+
+    public void put(String id, VisualDataStorage storage) {
+        storages.put(id, storage);
+    }
+
+    public String getInstanceKey() {
+        return instanceKey;
+    }
+
+    public boolean containsVisualDataStorage(String key) {
+        if(storages.containsKey(key)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return instanceKey;
+    }
+}

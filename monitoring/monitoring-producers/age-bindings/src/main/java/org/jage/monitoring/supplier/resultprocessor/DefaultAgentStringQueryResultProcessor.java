@@ -26,25 +26,26 @@
  */
 package org.jage.monitoring.supplier.resultprocessor;
 
+
 import java.util.List;
+
 
 /**
  * Default implementation of AgentStringQueryResultProcessor.
  * If given result list contains only one element, this element is returned.
- * 
- * @author AGH AgE Team
  *
+ * @author AGH AgE Team
  */
 public class DefaultAgentStringQueryResultProcessor implements
-		AgentStringQueryResultProcessor {
+                                                    AgentStringQueryResultProcessor {
 
-	@Override
-	public Object processResult(List<Object> list) {
-		if(list.size() == 1){
-			Object object = list.get(0);
-			return object;
-		}
-		return list;
-	}
+    @Override
+    public Object processResult(List<Object> list) {
+        if(list.size() == 1) {
+            Object object = list.get(0);
+            return object;
+        }
+        return list;
+    }
 
 }

@@ -31,9 +31,11 @@
 
 package org.jage.emas.energy;
 
-import static java.lang.Math.min;
 
 import org.jage.emas.agent.IndividualAgent;
+
+import static java.lang.Math.min;
+
 
 /**
  * A constant energy transfer strategy. Always transfers the same fixed amount of energy. However, if the source have
@@ -43,19 +45,19 @@ import org.jage.emas.agent.IndividualAgent;
  */
 public class ConstantEnergyTransfer implements EnergyTransfer<IndividualAgent> {
 
-	private double transferredEnergy;
+    private double transferredEnergy;
 
     public void setTransferredEnergy(final double transferredEnergy) {
-	    this.transferredEnergy = transferredEnergy;
+        this.transferredEnergy = transferredEnergy;
     }
 
-	@Override
-	public final double transferEnergy(final IndividualAgent source, final IndividualAgent target) {
-		final double delta = min(source.getEnergy(), transferredEnergy);
+    @Override
+    public final double transferEnergy(final IndividualAgent source, final IndividualAgent target) {
+        final double delta = min(source.getEnergy(), transferredEnergy);
 
-		source.changeEnergyBy(-delta);
-		target.changeEnergyBy(delta);
+        source.changeEnergyBy(-delta);
+        target.changeEnergyBy(delta);
 
-		return delta;
-	}
+        return delta;
+    }
 }

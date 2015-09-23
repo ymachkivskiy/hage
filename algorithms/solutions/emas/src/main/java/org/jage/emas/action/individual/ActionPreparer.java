@@ -31,10 +31,6 @@
 
 package org.jage.emas.action.individual;
 
-import java.util.Collections;
-import java.util.List;
-
-import javax.inject.Inject;
 
 import org.jage.action.Action;
 import org.jage.action.SingleAction;
@@ -47,7 +43,12 @@ import org.jage.emas.util.ChainingContext;
 import org.jage.emas.util.ChainingContext.ChainingContextBuilder;
 import org.jage.strategy.AbstractStrategy;
 
+import javax.inject.Inject;
+import java.util.Collections;
+import java.util.List;
+
 import static com.google.common.base.Preconditions.checkNotNull;
+
 
 /**
  * Action preparator for individual agents. It creates a chaining action context from the list provided in its
@@ -60,28 +61,27 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class ActionPreparer extends AbstractStrategy implements IActionPreparer<IndividualAgent> {
 
-	private final List<ChainingContext> contexts;
+    private final List<ChainingContext> contexts;
 
-	/**
-	 * Create an {@link ActionPreparer} for the given list of contexts.
-	 *
-	 * @param contexts
-	 *            the contexts for this preparator, may be empty
-	 */
-	@Inject
-	public ActionPreparer(final List<ChainingContext> contexts) {
-		this.contexts = checkNotNull(contexts);
-	}
+    /**
+     * Create an {@link ActionPreparer} for the given list of contexts.
+     *
+     * @param contexts the contexts for this preparator, may be empty
+     */
+    @Inject
+    public ActionPreparer(final List<ChainingContext> contexts) {
+        this.contexts = checkNotNull(contexts);
+    }
 
-	@Override
-	public List<Action> prepareActions(final IndividualAgent agent) {
-		final boolean condition = agent.getEnvironment().getStep() != 0;
-		final ChainingContextBuilder builder = ChainingContext.builder().appendAllIf(condition, contexts);
-		if (builder.isEmpty()) {
-			return Collections.emptyList();
-		}
+    @Override
+    public List<Action> prepareActions(final IndividualAgent agent) {
+        final boolean condition = agent.getEnvironment().getStep() != 0;
+        final ChainingContextBuilder builder = ChainingContext.builder().appendAllIf(condition, contexts);
+        if(builder.isEmpty()) {
+            return Collections.emptyList();
+        }
 
-		final AddressSelector<AgentAddress> target = Selectors.singleAddress(agent.getAddress());
-		return Collections.<Action> singletonList(new SingleAction(target, builder.build()));
-	}
+        final AddressSelector<AgentAddress> target = Selectors.singleAddress(agent.getAddress());
+        return Collections.<Action> singletonList(new SingleAction(target, builder.build()));
+    }
 }

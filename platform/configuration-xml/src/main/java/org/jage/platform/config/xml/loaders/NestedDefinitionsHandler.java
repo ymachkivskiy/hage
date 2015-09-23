@@ -31,22 +31,21 @@
 
 package org.jage.platform.config.xml.loaders;
 
-import java.util.List;
-
-import static java.lang.String.format;
 
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.XPath;
-
-import static org.dom4j.DocumentHelper.createXPath;
-
 import org.jage.platform.component.definition.ConfigurationException;
 import org.jage.platform.config.xml.ConfigAttributes;
 import org.jage.platform.config.xml.ConfigNamespaces;
 import org.jage.platform.config.xml.ConfigTags;
 
+import java.util.List;
+
+import static java.lang.String.format;
+import static org.dom4j.DocumentHelper.createXPath;
 import static org.jage.platform.config.xml.ConfigUtils.getRequiredAttribute;
+
 
 /**
  * This Loader extracts components nested in {@code <property>}, {@code <constructor-arg>}, collections and maps, add
@@ -57,102 +56,102 @@ import static org.jage.platform.config.xml.ConfigUtils.getRequiredAttribute;
  */
 public final class NestedDefinitionsHandler extends AbstractDocumentLoader {
 
-	private static final XPath  CTR_PROP_XPATH = initXpath(createXPath(format(
-			"//%1$s:%2$s/*[@%4$s] | //%1$s:%3$s/*[@%4$s]",
-			ConfigNamespaces.DEFAULT.getPrefix(),
-	        ConfigTags.CONSTRUCTOR_ARG.toString(),
-	        ConfigTags.PROPERTY.toString(),
-	        ConfigAttributes.NAME.toString())));
+    private static final XPath CTR_PROP_XPATH = initXpath(createXPath(format(
+            "//%1$s:%2$s/*[@%4$s] | //%1$s:%3$s/*[@%4$s]",
+            ConfigNamespaces.DEFAULT.getPrefix(),
+            ConfigTags.CONSTRUCTOR_ARG.toString(),
+            ConfigTags.PROPERTY.toString(),
+            ConfigAttributes.NAME.toString())));
 
-	private static final XPath  COLLECTION_XPATH = initXpath(createXPath(format(
-			"//%1$s:%2$s/*[@%5$s] | //%1$s:%3$s/*[@%5$s] | //%1$s:%4$s/*[@%5$s]",
-	        ConfigNamespaces.DEFAULT.getPrefix(),
-	        ConfigTags.LIST.toString(),
-	        ConfigTags.SET.toString(),
-	        ConfigTags.ARRAY.toString(),
-	        ConfigAttributes.NAME.toString())));
+    private static final XPath COLLECTION_XPATH = initXpath(createXPath(format(
+            "//%1$s:%2$s/*[@%5$s] | //%1$s:%3$s/*[@%5$s] | //%1$s:%4$s/*[@%5$s]",
+            ConfigNamespaces.DEFAULT.getPrefix(),
+            ConfigTags.LIST.toString(),
+            ConfigTags.SET.toString(),
+            ConfigTags.ARRAY.toString(),
+            ConfigAttributes.NAME.toString())));
 
-	private static final XPath KEY_XPATH = initXpath(createXPath(format(
-			"//%s:%s/*[@%s]",
-			ConfigNamespaces.DEFAULT.getPrefix(),
-	        ConfigTags.KEY.toString(),
-	        ConfigAttributes.NAME.toString())));
+    private static final XPath KEY_XPATH = initXpath(createXPath(format(
+            "//%s:%s/*[@%s]",
+            ConfigNamespaces.DEFAULT.getPrefix(),
+            ConfigTags.KEY.toString(),
+            ConfigAttributes.NAME.toString())));
 
-	private static final XPath ENTRY_XPATH = initXpath(createXPath(format(
-			"//%s:%s/*[@%s]",
-			ConfigNamespaces.DEFAULT.getPrefix(),
-	        ConfigTags.ENTRY.toString(),
-	        ConfigAttributes.NAME.toString())));
+    private static final XPath ENTRY_XPATH = initXpath(createXPath(format(
+            "//%s:%s/*[@%s]",
+            ConfigNamespaces.DEFAULT.getPrefix(),
+            ConfigTags.ENTRY.toString(),
+            ConfigAttributes.NAME.toString())));
 
-	@Override
-	public Document loadDocument(final String path) throws ConfigurationException {
-		final Document document = getDelegate().loadDocument(path);
-		extractFromConstructorsAndProperties(document);
-		extractFromCollections(document);
-		extractFromMaps(document);
-		return document;
-	}
+    @Override
+    public Document loadDocument(final String path) throws ConfigurationException {
+        final Document document = getDelegate().loadDocument(path);
+        extractFromConstructorsAndProperties(document);
+        extractFromCollections(document);
+        extractFromMaps(document);
+        return document;
+    }
 
-	@SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked")
     private void extractFromConstructorsAndProperties(final Document document) throws ConfigurationException {
-    	for (final Element element : (List<Element>)CTR_PROP_XPATH.selectNodes(document)) {
-    		final Element ctrOrPropElement = element.getParent();
-    		final Element componentElement = ctrOrPropElement.getParent();
+        for(final Element element : (List<Element>) CTR_PROP_XPATH.selectNodes(document)) {
+            final Element ctrOrPropElement = element.getParent();
+            final Element componentElement = ctrOrPropElement.getParent();
 
-    		// first we replace the element with a reference one
-			final String nameAttribute = getRequiredAttribute(element, ConfigAttributes.NAME);
-			ctrOrPropElement.remove(element);
-			ctrOrPropElement.add(newReferenceElement(nameAttribute));
+            // first we replace the element with a reference one
+            final String nameAttribute = getRequiredAttribute(element, ConfigAttributes.NAME);
+            ctrOrPropElement.remove(element);
+            ctrOrPropElement.add(newReferenceElement(nameAttribute));
 
-			// then we append it after the parent element
-			final int index = componentElement.elements().indexOf(ctrOrPropElement);
-			componentElement.elements().add(index + 1, element);
-		}
+            // then we append it after the parent element
+            final int index = componentElement.elements().indexOf(ctrOrPropElement);
+            componentElement.elements().add(index + 1, element);
+        }
     }
 
-	@SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked")
     private void extractFromCollections(final Document document) {
-    	for (final Element element : (List<Element>)COLLECTION_XPATH.selectNodes(document)) {
-    		final Element listElement = element.getParent();
+        for(final Element element : (List<Element>) COLLECTION_XPATH.selectNodes(document)) {
+            final Element listElement = element.getParent();
 
-    		// we append to the list a reference just after the element
-    		final int index = listElement.elements().indexOf(element);
-    		final String nameAttribute = element.attributeValue(ConfigAttributes.NAME.toString());
-			listElement.elements().add(index + 1, newReferenceElement(nameAttribute));
-		}
+            // we append to the list a reference just after the element
+            final int index = listElement.elements().indexOf(element);
+            final String nameAttribute = element.attributeValue(ConfigAttributes.NAME.toString());
+            listElement.elements().add(index + 1, newReferenceElement(nameAttribute));
+        }
     }
 
-	@SuppressWarnings("unchecked")
-	private void extractFromMaps(final Document document) {
-		// We extract from keys later, so that their definitions come first, after the entry itself
+    @SuppressWarnings("unchecked")
+    private void extractFromMaps(final Document document) {
+        // We extract from keys later, so that their definitions come first, after the entry itself
 
-		for (final Element element : selectNodes(ENTRY_XPATH, document)) {
-			final Element entryElement = element.getParent();
-			final Element mapElement = entryElement.getParent();
+        for(final Element element : selectNodes(ENTRY_XPATH, document)) {
+            final Element entryElement = element.getParent();
+            final Element mapElement = entryElement.getParent();
 
-			// first we replace the element with a reference one
-			final String nameAttribute = element.attributeValue(ConfigAttributes.NAME.toString());
-			entryElement.remove(element);
-			entryElement.add(newReferenceElement(nameAttribute));
+            // first we replace the element with a reference one
+            final String nameAttribute = element.attributeValue(ConfigAttributes.NAME.toString());
+            entryElement.remove(element);
+            entryElement.add(newReferenceElement(nameAttribute));
 
-			// then we append it after the entry element
-			final int index = mapElement.elements().indexOf(entryElement);
-			mapElement.elements().add(index + 1, element);
-		}
+            // then we append it after the entry element
+            final int index = mapElement.elements().indexOf(entryElement);
+            mapElement.elements().add(index + 1, element);
+        }
 
-		for (final Element element : selectNodes(KEY_XPATH, document)) {
-			final Element keyElement = element.getParent();
-			final Element entryElement = keyElement.getParent();
-			final Element mapElement = entryElement.getParent();
+        for(final Element element : selectNodes(KEY_XPATH, document)) {
+            final Element keyElement = element.getParent();
+            final Element entryElement = keyElement.getParent();
+            final Element mapElement = entryElement.getParent();
 
-			// first we replace the element with a reference one
-			final String nameAttribute = element.attributeValue(ConfigAttributes.NAME.toString());
-			keyElement.remove(element);
-			keyElement.add(newReferenceElement(nameAttribute));
+            // first we replace the element with a reference one
+            final String nameAttribute = element.attributeValue(ConfigAttributes.NAME.toString());
+            keyElement.remove(element);
+            keyElement.add(newReferenceElement(nameAttribute));
 
-			// then we append it after the entry element
-			final int index = mapElement.elements().indexOf(entryElement);
-			mapElement.elements().add(index + 1, element);
-		}
+            // then we append it after the entry element
+            final int index = mapElement.elements().indexOf(entryElement);
+            mapElement.elements().add(index + 1, element);
+        }
     }
 }

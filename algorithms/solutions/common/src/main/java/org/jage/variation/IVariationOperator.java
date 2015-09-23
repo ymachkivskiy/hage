@@ -31,25 +31,25 @@
 
 package org.jage.variation;
 
+
 import org.jage.population.IPopulation;
 import org.jage.solution.ISolution;
 import org.jage.strategy.IStrategy;
+
 
 /**
  * A general strategy interface for transforming a population of solutions, using mutations, recombinations or any other
  * operators (or their combination).
  *
- * @param <S>
- *            The type of solutions to be transformed
+ * @param <S> The type of solutions to be transformed
  * @author AGH AgE Team
  */
 public interface IVariationOperator<S extends ISolution> extends IStrategy {
 
-	/**
-	 * Transforms a given population of solutions.
-	 *
-	 * @param population
-	 *            The population to be transformed
-	 */
-	public void transformPopulation(IPopulation<S, ?> population);
+    /**
+     * Transforms a given population of solutions.
+     *
+     * @param population The population to be transformed
+     */
+    public void transformPopulation(IPopulation<S, ?> population);
 }

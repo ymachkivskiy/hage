@@ -31,98 +31,95 @@
 
 package org.jage.communication.message;
 
-import java.io.Serializable;
+
+import com.google.common.base.Objects.ToStringHelper;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
-
-import com.google.common.base.Objects.ToStringHelper;
+import java.io.Serializable;
 
 import static com.google.common.base.Objects.toStringHelper;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+
 /**
  * This class provides a default implementation of {@link org.jage.communication.message.ServiceMessage}.
  *
- * @param <T>
- * 		A type of the payload transported within this message.
- *
+ * @param <T> A type of the payload transported within this message.
  * @author AGH AgE Team
  */
 @Immutable
 public class BaseServiceMessage<T extends Serializable> implements ServiceMessage<T> {
 
-	private static final long serialVersionUID = 2037459335733049533L;
+    private static final long serialVersionUID = 2037459335733049533L;
 
-	private final ServiceHeader header;
+    private final ServiceHeader header;
 
-	@Nullable private final T payload;
+    @Nullable
+    private final T payload;
 
-	/**
-	 * Constructs a new message with the given header and the payload.
-	 *
-	 * @param header
-	 * 		A header that contains metadata for this message.
-	 * @param payload
-	 * 		A payload to transport.
-	 */
-	public BaseServiceMessage(@Nonnull final ServiceHeader header, @Nullable final T payload) {
-		this.header = checkNotNull(header);
-		this.payload = payload;
-	}
+    /**
+     * Constructs a new message with the given header and with no payload.
+     *
+     * @param header A header that contains metadata for this message.
+     */
+    public BaseServiceMessage(@Nonnull final ServiceHeader header) {
+        this(header, null);
+    }
 
-	/**
-	 * Constructs a new message with the given header and with no payload.
-	 *
-	 * @param header
-	 * 		A header that contains metadata for this message.
-	 */
-	public BaseServiceMessage(@Nonnull final ServiceHeader header) {
-		this(header, null);
-	}
+    /**
+     * Constructs a new message with the given header and the payload.
+     *
+     * @param header  A header that contains metadata for this message.
+     * @param payload A payload to transport.
+     */
+    public BaseServiceMessage(@Nonnull final ServiceHeader header, @Nullable final T payload) {
+        this.header = checkNotNull(header);
+        this.payload = payload;
+    }
 
-	/**
-	 * Constructs a new message with the given header and the payload.
-	 *
-	 * @param header
-	 * 		A header that contains metadata for this message.
-	 * @param payload
-	 * 		A payload to transport.
-	 *
-	 * @return a new message.
-	 */
-	public static <Z extends Serializable> BaseServiceMessage<Z> create(@Nonnull final ServiceHeader header,
-			@Nullable final Z payload) {
-		return new BaseServiceMessage<>(header, payload);
-	}
+    /**
+     * Constructs a new message with the given header and with no payload.
+     *
+     * @param header A header that contains metadata for this message.
+     * @return a new message.
+     */
+    public static <Z extends Serializable> BaseServiceMessage<Z> create(@Nonnull final ServiceHeader header) {
+        return create(header, null);
+    }
 
-	/**
-	 * Constructs a new message with the given header and with no payload.
-	 *
-	 * @param header
-	 * 		A header that contains metadata for this message.
-	 *
-	 * @return a new message.
-	 */
-	public static <Z extends Serializable> BaseServiceMessage<Z> create(@Nonnull final ServiceHeader header) {
-		return create(header, null);
-	}
+    /**
+     * Constructs a new message with the given header and the payload.
+     *
+     * @param header  A header that contains metadata for this message.
+     * @param payload A payload to transport.
+     * @return a new message.
+     */
+    public static <Z extends Serializable> BaseServiceMessage<Z> create(@Nonnull final ServiceHeader header,
+            @Nullable final Z payload) {
+        return new BaseServiceMessage<>(header, payload);
+    }
 
-	@Override @Nonnull public ServiceHeader getHeader() {
-		return header;
-	}
+    @Override
+    public String toString() {
+        final ToStringHelper helper = toStringHelper(this).add("header", getHeader());
+        if(payload != null) {
+            helper.add("payload-class", payload.getClass().getSimpleName());
+        }
+        return helper.toString();
+    }
 
-	@Override @CheckForNull public T getPayload() {
-		return payload;
-	}
+    @Override
+    @Nonnull
+    public ServiceHeader getHeader() {
+        return header;
+    }
 
-	@Override public String toString() {
-		final ToStringHelper helper = toStringHelper(this).add("header", getHeader());
-		if (payload != null) {
-			helper.add("payload-class", payload.getClass().getSimpleName());
-		}
-		return helper.toString();
-	}
+    @Override
+    @CheckForNull
+    public T getPayload() {
+        return payload;
+    }
 }

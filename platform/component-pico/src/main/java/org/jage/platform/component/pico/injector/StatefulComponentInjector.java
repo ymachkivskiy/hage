@@ -31,48 +31,46 @@
 
 package org.jage.platform.component.pico.injector;
 
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.PicoContainer;
 
 import org.jage.platform.component.IStatefulComponent;
 import org.jage.platform.component.definition.ComponentDefinition;
 import org.jage.platform.component.exception.ComponentException;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+
 
 /**
  * This class provides an injector that handles the lifecycle of stateful components.
  *
- * @param <T>
- *            the type of components this injector can inject into
- *
+ * @param <T> the type of components this injector can inject into
  * @author AGH AgE Team
  */
 public final class StatefulComponentInjector<T> extends AbstractInjector<T> {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * Creates an StatefulComponentInjector using a given component definition.
-	 *
-	 * @param definition
-	 *            the component definition to use
-	 */
-	public StatefulComponentInjector(final ComponentDefinition definition) {
-		super(definition);
-	}
+    /**
+     * Creates an StatefulComponentInjector using a given component definition.
+     *
+     * @param definition the component definition to use
+     */
+    public StatefulComponentInjector(final ComponentDefinition definition) {
+        super(definition);
+    }
 
-	@Override
-	public void doInject(final PicoContainer provider, final T instance) throws PicoCompositionException {
-		if (instance instanceof IStatefulComponent) {
-			try {
-				((IStatefulComponent)instance).init();
-			} catch (final ComponentException e) {
-				throw new PicoCompositionException("Exception happenned during component initialization", e);
-			}
-		}
-	}
+    @Override
+    public void doInject(final PicoContainer provider, final T instance) throws PicoCompositionException {
+        if(instance instanceof IStatefulComponent) {
+            try {
+                ((IStatefulComponent) instance).init();
+            } catch(final ComponentException e) {
+                throw new PicoCompositionException("Exception happenned during component initialization", e);
+            }
+        }
+    }
 
-	@Override
-	public String getDescriptor() {
-		return "StatefulComponent Injector";
-	}
+    @Override
+    public String getDescriptor() {
+        return "StatefulComponent Injector";
+    }
 }

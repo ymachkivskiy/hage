@@ -31,11 +31,12 @@
 
 package org.jage.variation.recombination.binary;
 
-import java.util.List;
-
-import org.jage.variation.recombination.OnePointRecombine;
 
 import it.unimi.dsi.fastutil.booleans.BooleanList;
+import org.jage.variation.recombination.OnePointRecombine;
+
+import java.util.List;
+
 
 /**
  * Subclass which efficiently unboxes Booleans for {@link OnePointRecombine}.
@@ -44,13 +45,13 @@ import it.unimi.dsi.fastutil.booleans.BooleanList;
  */
 public class BinaryOnePointRecombine extends OnePointRecombine<Boolean> {
 
-	@Override
+    @Override
     protected void swap(List<Boolean> representation1, List<Boolean> representation2, int index) {
-		BooleanList list1 = (BooleanList)representation1;
-		BooleanList list2 = (BooleanList)representation2;
+        BooleanList list1 = (BooleanList) representation1;
+        BooleanList list2 = (BooleanList) representation2;
 
-		boolean element = list1.getBoolean(index);
-		list1.set(index, list2.getBoolean(index));
-		list2.set(index, element);
-	}
+        boolean element = list1.getBoolean(index);
+        list1.set(index, list2.getBoolean(index));
+        list2.set(index, element);
+    }
 }

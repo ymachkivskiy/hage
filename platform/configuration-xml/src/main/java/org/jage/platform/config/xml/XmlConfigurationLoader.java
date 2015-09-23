@@ -31,12 +31,8 @@
 
 package org.jage.platform.config.xml;
 
-import java.util.List;
 
 import org.dom4j.Document;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.jage.platform.component.definition.ConfigurationException;
 import org.jage.platform.component.definition.IComponentDefinition;
 import org.jage.platform.config.loader.IConfigurationLoader;
@@ -51,8 +47,13 @@ import org.jage.platform.config.xml.loaders.NestedDefinitionsHandler;
 import org.jage.platform.config.xml.loaders.PlaceholderResolver;
 import org.jage.platform.config.xml.loaders.RawDocumentLoader;
 import org.jage.platform.config.xml.readers.DocumentReader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 import static com.google.common.base.Preconditions.checkArgument;
+
 
 /**
  * Implementation of {@link IConfigurationLoader}. It uses a decorated chain of {@link DocumentLoader} to load a
@@ -63,50 +64,49 @@ import static com.google.common.base.Preconditions.checkArgument;
  */
 public final class XmlConfigurationLoader implements IConfigurationLoader {
 
-	private static final Logger LOG = LoggerFactory.getLogger(XmlConfigurationLoader.class);
+    private static final Logger LOG = LoggerFactory.getLogger(XmlConfigurationLoader.class);
 
-	private final DocumentReader reader;
+    private final DocumentReader reader;
 
-	private final DocumentLoader loader;
+    private final DocumentLoader loader;
 
-	/**
-	 * Creates a ConfigurationLoader.
-	 *
-	 * @throws ConfigurationException
-	 *             if something goes wrong during construction.
-	 */
-	public XmlConfigurationLoader() throws ConfigurationException {
-		this(createLoaderChain(), new DocumentReader());
-	}
-
-	private static DocumentLoader createLoaderChain() throws ConfigurationException {
-    	return new RawDocumentLoader()
-    		.append(new PlaceholderResolver())
-    		.append(new DocumentResolver())
-    		.append(new BlockUnwrapper())
-    		.append(new AnonymousComponentsNamer())
-    		.append(new ComponentsNormalizer())
-    		.append(new NestedDefinitionsHandler())
-    		.append(new ArgumentShortcutExtractor())
-    		.append(new MultipleTagDuplicator());
+    /**
+     * Creates a ConfigurationLoader.
+     *
+     * @throws ConfigurationException if something goes wrong during construction.
+     */
+    public XmlConfigurationLoader() throws ConfigurationException {
+        this(createLoaderChain(), new DocumentReader());
     }
 
-	XmlConfigurationLoader(final DocumentLoader loader, final DocumentReader reader) {
-		this.loader = loader;
-		this.reader = reader;
-	}
+    XmlConfigurationLoader(final DocumentLoader loader, final DocumentReader reader) {
+        this.loader = loader;
+        this.reader = reader;
+    }
 
-	@Override
-	public List<IComponentDefinition> loadConfiguration(final Object source) throws ConfigurationException {
-		checkArgument(source instanceof String);
-		final String path = (String)source;
+    private static DocumentLoader createLoaderChain() throws ConfigurationException {
+        return new RawDocumentLoader()
+                .append(new PlaceholderResolver())
+                .append(new DocumentResolver())
+                .append(new BlockUnwrapper())
+                .append(new AnonymousComponentsNamer())
+                .append(new ComponentsNormalizer())
+                .append(new NestedDefinitionsHandler())
+                .append(new ArgumentShortcutExtractor())
+                .append(new MultipleTagDuplicator());
+    }
 
-		LOG.debug("Loading document from '{}'", path);
-		final Document document = loader.loadDocument(path);
+    @Override
+    public List<IComponentDefinition> loadConfiguration(final Object source) throws ConfigurationException {
+        checkArgument(source instanceof String);
+        final String path = (String) source;
 
-		final List<IComponentDefinition> definitions = reader.readDocument(document);
-		LOG.debug("Read {} component definitions.", definitions.size());
+        LOG.debug("Loading document from '{}'", path);
+        final Document document = loader.loadDocument(path);
 
-		return definitions;
-	}
+        final List<IComponentDefinition> definitions = reader.readDocument(document);
+        LOG.debug("Read {} component definitions.", definitions.size());
+
+        return definitions;
+    }
 }

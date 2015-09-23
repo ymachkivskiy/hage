@@ -31,23 +31,22 @@
 
 package org.jage.platform.config.xml.loaders;
 
-import static java.lang.String.format;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
 import org.dom4j.XPath;
-
-import static org.dom4j.DocumentHelper.createNamespace;
-import static org.dom4j.DocumentHelper.createXPath;
-
 import org.jage.platform.component.definition.ConfigurationException;
 import org.jage.platform.config.xml.ConfigNamespaces;
 import org.jage.platform.config.xml.ConfigTags;
 
+import static java.lang.String.format;
+import static org.dom4j.DocumentHelper.createNamespace;
+import static org.dom4j.DocumentHelper.createXPath;
 import static org.jage.platform.config.xml.ConfigAttributes.IS_SINGLETON;
 import static org.jage.platform.config.xml.ConfigTags.COMPONENT;
+
 
 /**
  * This decorator transforms {@code <agent>} and {@code <strategy>} tags to {@code <component>} ones, with appropriate
@@ -57,30 +56,30 @@ import static org.jage.platform.config.xml.ConfigTags.COMPONENT;
  */
 public final class ComponentsNormalizer extends AbstractDocumentLoader {
 
-	private static final XPath AGENTS = initXpath(createXPath(format(
-			"//%s:%s",
-			ConfigNamespaces.DEFAULT.getPrefix(),
-			ConfigTags.AGENT.toString())));
+    private static final XPath AGENTS = initXpath(createXPath(format(
+            "//%s:%s",
+            ConfigNamespaces.DEFAULT.getPrefix(),
+            ConfigTags.AGENT.toString())));
 
-	private static final XPath STRATEGIES = initXpath(createXPath(format(
-			"//%s:%s",
-			ConfigNamespaces.DEFAULT.getPrefix(),
-			ConfigTags.STRATEGY.toString())));
+    private static final XPath STRATEGIES = initXpath(createXPath(format(
+            "//%s:%s",
+            ConfigNamespaces.DEFAULT.getPrefix(),
+            ConfigTags.STRATEGY.toString())));
 
 
-	@Override
-	public Document loadDocument(final String path) throws ConfigurationException {
-		final Document document = getDelegate().loadDocument(path);
+    @Override
+    public Document loadDocument(final String path) throws ConfigurationException {
+        final Document document = getDelegate().loadDocument(path);
 
-		Namespace namespace = createNamespace("", ConfigNamespaces.DEFAULT.getUri());
-		for (Element element : selectNodes(AGENTS, document)) {
-			element.setQName(DocumentHelper.createQName(COMPONENT.toString(), namespace));
-			element.addAttribute(IS_SINGLETON.toString(), "false");
-		}
-		for (Element element : selectNodes(STRATEGIES, document)) {
-			element.setQName(DocumentHelper.createQName(COMPONENT.toString(), namespace));
-			element.addAttribute(IS_SINGLETON.toString(), "true");
-		}
-		return document;
-	}
+        Namespace namespace = createNamespace("", ConfigNamespaces.DEFAULT.getUri());
+        for(Element element : selectNodes(AGENTS, document)) {
+            element.setQName(DocumentHelper.createQName(COMPONENT.toString(), namespace));
+            element.addAttribute(IS_SINGLETON.toString(), "false");
+        }
+        for(Element element : selectNodes(STRATEGIES, document)) {
+            element.setQName(DocumentHelper.createQName(COMPONENT.toString(), namespace));
+            element.addAttribute(IS_SINGLETON.toString(), "true");
+        }
+        return document;
+    }
 }

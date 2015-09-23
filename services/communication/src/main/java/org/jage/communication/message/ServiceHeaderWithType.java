@@ -31,42 +31,44 @@
 
 package org.jage.communication.message;
 
+
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
 
 import static com.google.common.base.Objects.toStringHelper;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+
 /**
  * Base implementation for the {@link ServiceHeader} which defines a type of a message.
  *
- * @param <T>
- * 		enum that lists all types of a message.
+ * @param <T> enum that lists all types of a message.
  */
 @Immutable
 public class ServiceHeaderWithType<T extends Enum<T>> implements ServiceHeader {
 
-	private final T type;
+    private final T type;
 
-	private ServiceHeaderWithType(final T type) {
-		this.type = checkNotNull(type);
-	}
+    private ServiceHeaderWithType(final T type) {
+        this.type = checkNotNull(type);
+    }
 
-	public static <V extends Enum<V>> ServiceHeaderWithType<V> create(final V type) {
-		return new ServiceHeaderWithType<>(checkNotNull(type));
-	}
+    public static <V extends Enum<V>> ServiceHeaderWithType<V> create(final V type) {
+        return new ServiceHeaderWithType<>(checkNotNull(type));
+    }
 
-	/**
-	 * Returns the type that this header represents.
-	 *
-	 * @return a type that this header represents.
-	 */
-	@Nonnull public T getType() {
-		return type;
-	}
+    /**
+     * Returns the type that this header represents.
+     *
+     * @return a type that this header represents.
+     */
+    @Nonnull
+    public T getType() {
+        return type;
+    }
 
-	@Override
-	public String toString() {
-		return toStringHelper(this).addValue(type).toString();
-	}
+    @Override
+    public String toString() {
+        return toStringHelper(this).addValue(type).toString();
+    }
 }

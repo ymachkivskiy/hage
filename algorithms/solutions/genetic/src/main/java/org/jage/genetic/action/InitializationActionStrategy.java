@@ -31,14 +31,6 @@
 
 package org.jage.genetic.action;
 
-import java.util.Comparator;
-
-import static java.util.Collections.max;
-
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.jage.action.AbstractPerformActionStrategy;
 import org.jage.action.IActionContext;
@@ -51,7 +43,13 @@ import org.jage.population.IPopulationFactory;
 import org.jage.solution.ISolution;
 import org.jage.solution.ISolutionFactory;
 import org.jage.utils.JageUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
+import java.util.Comparator;
+
+import static java.util.Collections.max;
 import static org.jage.genetic.agent.GeneticActionDrivenAgent.Properties.BEST_EVER;
 import static org.jage.genetic.agent.GeneticActionDrivenAgent.Properties.BEST_EVER_STEP;
 import static org.jage.genetic.agent.GeneticActionDrivenAgent.Properties.CURRENT_BEST;
@@ -59,61 +57,58 @@ import static org.jage.genetic.agent.GeneticActionDrivenAgent.Properties.POPULAT
 import static org.jage.population.IPopulation.Tuple.newTuple;
 import static org.jage.utils.JageUtils.setPropertyValueOrThrowException;
 
+
 /**
  * This action handler performs initialization of an agent. A initial population is created, and initial statistics
  * updated.
  *
- * @param <S>
- *            the type of solutions
- *
+ * @param <S> the type of solutions
  * @author AGH AgE Team
  */
 public final class InitializationActionStrategy<S extends ISolution> extends AbstractPerformActionStrategy {
 
-	private static final Logger LOG = LoggerFactory.getLogger(InitializationActionStrategy.class);
+    private static final Logger LOG = LoggerFactory.getLogger(InitializationActionStrategy.class);
+    private final TupleComparator<S> comparator = new TupleComparator<S>();
+    @Inject
+    private IPopulationFactory<S> populationFactory;
+    @Inject
+    private ISolutionFactory<S> solutionFactory;
+    @Inject
+    private IPopulationEvaluator<S, Double> populationEvaluator;
 
-	@Inject
-	private IPopulationFactory<S> populationFactory;
+    @Override
+    public void perform(final IAgent target, final IActionContext context) throws AgentException {
+        LOG.debug("Performing initialization on agent {}.", target.getAddress());
 
-	@Inject
-	private ISolutionFactory<S> solutionFactory;
+        final IPopulation<S, Double> population = populationFactory.createPopulation();
+        populationEvaluator.evaluatePopulation(population);
+        setPropertyValueOrThrowException(target, POPULATION, population);
 
-	@Inject
-	private IPopulationEvaluator<S, Double> populationEvaluator;
+        final Tuple<S, Double> currentBest = copyTuple(max(population.asTupleList(), comparator));
+        setPropertyValueOrThrowException(target, CURRENT_BEST, currentBest);
+        setPropertyValueOrThrowException(target, BEST_EVER, currentBest);
+        setPropertyValueOrThrowException(target, BEST_EVER_STEP, 0);
 
-	private final TupleComparator<S> comparator = new TupleComparator<S>();
+        if(LOG.isDebugEnabled()) {
+            LOG.debug(JageUtils.getPopulationLog(population, "Initial population"));
+        }
+    }
 
-	@Override
-	public void perform(final IAgent target, final IActionContext context) throws AgentException {
-		LOG.debug("Performing initialization on agent {}.", target.getAddress());
+    private Tuple<S, Double> copyTuple(final Tuple<S, Double> tuple) {
+        return newTuple(solutionFactory.copySolution(tuple.getSolution()), tuple.getEvaluation());
+    }
 
-		final IPopulation<S, Double> population = populationFactory.createPopulation();
-		populationEvaluator.evaluatePopulation(population);
-		setPropertyValueOrThrowException(target, POPULATION, population);
 
-		final Tuple<S, Double> currentBest = copyTuple(max(population.asTupleList(), comparator));
-		setPropertyValueOrThrowException(target, CURRENT_BEST, currentBest);
-		setPropertyValueOrThrowException(target, BEST_EVER, currentBest);
-		setPropertyValueOrThrowException(target, BEST_EVER_STEP, 0);
+    /**
+     * Helper Tuple<?, Double> comparator.
+     *
+     * @author AGH AgE Team
+     */
+    private static final class TupleComparator<S extends ISolution> implements Comparator<Tuple<S, Double>> {
 
-		if (LOG.isDebugEnabled()) {
-			LOG.debug(JageUtils.getPopulationLog(population, "Initial population"));
-		}
-	}
-
-	/**
-	 * Helper Tuple<?, Double> comparator.
-	 *
-	 * @author AGH AgE Team
-	 */
-	private static final class TupleComparator<S extends ISolution> implements Comparator<Tuple<S, Double>> {
-		@Override
-		public int compare(final Tuple<S, Double> t1, final Tuple<S, Double> t2) {
-			return t1.getEvaluation().compareTo(t2.getEvaluation());
-		}
-	}
-
-	private Tuple<S, Double> copyTuple(final Tuple<S, Double> tuple) {
-		return newTuple(solutionFactory.copySolution(tuple.getSolution()), tuple.getEvaluation());
-	}
+        @Override
+        public int compare(final Tuple<S, Double> t1, final Tuple<S, Double> t2) {
+            return t1.getEvaluation().compareTo(t2.getEvaluation());
+        }
+    }
 }

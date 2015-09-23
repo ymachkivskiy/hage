@@ -31,8 +31,10 @@
 
 package org.jage.examples.delegation;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 /**
  * Strategy for adding a "Hello" to a text and printing it.
@@ -41,10 +43,10 @@ import org.slf4j.LoggerFactory;
  */
 public class EchoHelloStrategy implements IEchoStrategy {
 
-	private static final Logger log = LoggerFactory.getLogger(EchoHelloStrategy.class);
+    private static final Logger log = LoggerFactory.getLogger(EchoHelloStrategy.class);
 
-	@Override
-	public void echo(final String text) {
-		log.info("Hello. " + text);
-	}
+    @Override
+    public void echo(final String text) {
+        log.info("Hello. " + text);
+    }
 }

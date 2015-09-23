@@ -31,20 +31,20 @@
 
 package org.jage.emas.predicate;
 
+
 import org.jage.agent.IAgent;
+
 
 /**
  * Always false predicate.
  *
- * @param <A>
- *            the type of agent this predicate applies to
- *
+ * @param <A> the type of agent this predicate applies to
  * @author AGH AgE Team
  */
 public class FalsePredicate<A extends IAgent> implements IPredicate<A> {
 
-	@Override
-	public boolean apply(final A agent) {
-		return false;
-	}
+    @Override
+    public boolean apply(final A agent) {
+        return false;
+    }
 }

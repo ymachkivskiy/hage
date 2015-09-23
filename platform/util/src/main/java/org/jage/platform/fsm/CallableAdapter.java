@@ -31,47 +31,45 @@
 
 package org.jage.platform.fsm;
 
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+
 /**
  * A runnable that wraps a {@link CallableWithParameters} instance.
- * 
- * @param <T>
- *            a type parameter from the {@code CallableWithParameters} instance.
- * 
+ *
+ * @param <T> a type parameter from the {@code CallableWithParameters} instance.
  * @author AGH AgE Team
  */
 public class CallableAdapter<T> implements Runnable {
 
-	@Nonnull
-	private final CallableWithParameters<T> callable;
+    @Nonnull
+    private final CallableWithParameters<T> callable;
 
-	private T parameters;
+    private T parameters;
 
-	/**
-	 * Creates a new adapter.
-	 * 
-	 * @param callable
-	 *            a callable to call.
-	 */
-	public CallableAdapter(final CallableWithParameters<T> callable) {
-		super();
-		this.callable = callable;
-	}
+    /**
+     * Creates a new adapter.
+     *
+     * @param callable a callable to call.
+     */
+    public CallableAdapter(final CallableWithParameters<T> callable) {
+        super();
+        this.callable = callable;
+    }
 
-	/**
-	 * Sets the parameters to call the callable with.
-	 * 
-	 * @param parameters
-	 *            parameters to use.
-	 */
-	public void setParameters(@Nullable final T parameters) {
-		this.parameters = parameters;
-	}
+    /**
+     * Sets the parameters to call the callable with.
+     *
+     * @param parameters parameters to use.
+     */
+    public void setParameters(@Nullable final T parameters) {
+        this.parameters = parameters;
+    }
 
-	@Override
-	public void run() {
-		callable.call(parameters);
-	}
+    @Override
+    public void run() {
+        callable.call(parameters);
+    }
 }

@@ -31,8 +31,8 @@
 
 package org.jage.platform.config.xml.readers;
 
-import org.dom4j.Element;
 
+import org.dom4j.Element;
 import org.jage.platform.component.definition.ComponentDefinition;
 import org.jage.platform.component.definition.ConfigurationException;
 import org.jage.platform.component.definition.IArgumentDefinition;
@@ -44,12 +44,8 @@ import static org.jage.platform.config.xml.ConfigAttributes.IS_SINGLETON;
 import static org.jage.platform.config.xml.ConfigAttributes.NAME;
 import static org.jage.platform.config.xml.ConfigTags.CONSTRUCTOR_ARG;
 import static org.jage.platform.config.xml.ConfigTags.PROPERTY;
-import static org.jage.platform.config.xml.ConfigUtils.getChild;
-import static org.jage.platform.config.xml.ConfigUtils.getChildrenExcluding;
-import static org.jage.platform.config.xml.ConfigUtils.getChildrenIncluding;
-import static org.jage.platform.config.xml.ConfigUtils.getRequiredAttribute;
-import static org.jage.platform.config.xml.ConfigUtils.toBoolean;
-import static org.jage.platform.config.xml.ConfigUtils.toClass;
+import static org.jage.platform.config.xml.ConfigUtils.*;
+
 
 /**
  * Reader for component definitions. Intended to process {@code <component>} tags.
@@ -58,32 +54,32 @@ import static org.jage.platform.config.xml.ConfigUtils.toClass;
  */
 public class ComponentDefinitionReader extends AbstractDefinitionReader<IComponentDefinition> {
 
-	@Override
-	public ComponentDefinition read(final Element element) throws ConfigurationException {
-		final String nameAttribute = getRequiredAttribute(element, NAME);
-		final String classAttribute = getRequiredAttribute(element, CLASS);
-		final String isSingletonAttribute = getRequiredAttribute(element, IS_SINGLETON);
+    @Override
+    public ComponentDefinition read(final Element element) throws ConfigurationException {
+        final String nameAttribute = getRequiredAttribute(element, NAME);
+        final String classAttribute = getRequiredAttribute(element, CLASS);
+        final String isSingletonAttribute = getRequiredAttribute(element, IS_SINGLETON);
 
-		final ComponentDefinition definition = new ComponentDefinition(nameAttribute,
-				toClass(classAttribute),
-		        toBoolean(isSingletonAttribute));
+        final ComponentDefinition definition = new ComponentDefinition(nameAttribute,
+                                                                       toClass(classAttribute),
+                                                                       toBoolean(isSingletonAttribute));
 
-		for (final Element constructorArg : getChildrenIncluding(element, CONSTRUCTOR_ARG)) {
-			final IArgumentDefinition argument = getArgumentReader().read(getChild(constructorArg));
-			definition.addConstructorArgument(argument);
-		}
+        for(final Element constructorArg : getChildrenIncluding(element, CONSTRUCTOR_ARG)) {
+            final IArgumentDefinition argument = getArgumentReader().read(getChild(constructorArg));
+            definition.addConstructorArgument(argument);
+        }
 
-		for (final Element propertyArg : getChildrenIncluding(element, PROPERTY)) {
-			final String propertyNameAttribute = getRequiredAttribute(propertyArg, ConfigAttributes.NAME);
-			final IArgumentDefinition argument = getArgumentReader().read(getChild(propertyArg));
-			definition.addPropertyArgument(propertyNameAttribute, argument);
-		}
+        for(final Element propertyArg : getChildrenIncluding(element, PROPERTY)) {
+            final String propertyNameAttribute = getRequiredAttribute(propertyArg, ConfigAttributes.NAME);
+            final IArgumentDefinition argument = getArgumentReader().read(getChild(propertyArg));
+            definition.addPropertyArgument(propertyNameAttribute, argument);
+        }
 
-		for (final Element innerElement : getChildrenExcluding(element, CONSTRUCTOR_ARG, PROPERTY)) {
-			final IComponentDefinition innerDefinition = getInstanceReader().read(innerElement);
-			definition.addInnerComponentDefinition(innerDefinition);
-		}
+        for(final Element innerElement : getChildrenExcluding(element, CONSTRUCTOR_ARG, PROPERTY)) {
+            final IComponentDefinition innerDefinition = getInstanceReader().read(innerElement);
+            definition.addInnerComponentDefinition(innerDefinition);
+        }
 
-		return definition;
-	}
+        return definition;
+    }
 }

@@ -26,9 +26,6 @@
  */
 package org.jage.property.xml;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import org.jage.property.InvalidPropertyOperationException;
 import org.jage.property.MetaProperty;
@@ -38,62 +35,67 @@ import org.jage.property.xml.testHelpers.AdvancedExampleComponent;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+
 public class XMLBasedPropertyTest {
 
-	private AdvancedExampleComponent component;
-	private XMLBasedPropertyContainer _propertiesObject;
+    private AdvancedExampleComponent component;
+    private XMLBasedPropertyContainer _propertiesObject;
 
-	@Before
-	public void setUp() throws Exception {
-		component = new AdvancedExampleComponent();
-		_propertiesObject = new XMLBasedPropertyContainer(XMLBasedPropertyProvider.getInstance().getMetaPropertiesSet(
-				component.getClass()), component);
-	}
+    @Before
+    public void setUp() throws Exception {
+        component = new AdvancedExampleComponent();
+        _propertiesObject = new XMLBasedPropertyContainer(XMLBasedPropertyProvider.getInstance().getMetaPropertiesSet(
+                component.getClass()), component);
+    }
 
-	private XMLBasedGetterSetterProperty getIntProperty() throws PropertyException {
-		XMLBasedGetterSetterMetaProperty metaProperty = new XMLBasedGetterSetterMetaProperty("intProperty", int.class,
-				component.getIntPropertyGetter(), component.getIntPropertySetter());
-		return new XMLBasedGetterSetterProperty(metaProperty, component);
-	}
+    @Test
+    public void testGetSetValue() throws PropertyException {
+        component.setIntProperty(0);
+        Property property = getIntProperty();
+        assertEquals(0, property.getValue());
+        property.setValue(1);
+        assertEquals(1, property.getValue());
+        assertEquals(1, component.getIntProperty());
+    }
 
-	private XMLBasedGetterSetterProperty getReadonlyIntProperty() throws PropertyException {
-		XMLBasedGetterSetterMetaProperty metaProperty = new XMLBasedGetterSetterMetaProperty("intProperty", int.class,
-				component.getIntPropertyGetter(), component.getIntPropertySetter());
-		return new XMLBasedGetterSetterProperty(metaProperty, _propertiesObject);
-	}
+    private XMLBasedGetterSetterProperty getIntProperty() throws PropertyException {
+        XMLBasedGetterSetterMetaProperty metaProperty = new XMLBasedGetterSetterMetaProperty("intProperty", int.class,
+                                                                                             component.getIntPropertyGetter(), component.getIntPropertySetter());
+        return new XMLBasedGetterSetterProperty(metaProperty, component);
+    }
 
-	@Test
-	public void testGetSetValue() throws InvalidPropertyOperationException, PropertyException {
-		component.setIntProperty(0);
-		Property property = getIntProperty();
-		assertEquals(0, property.getValue());
-		property.setValue(1);
-		assertEquals(1, property.getValue());
-		assertEquals(1, component.getIntProperty());
-	}
+    @Test
+    public void testReadOnlyProperty() throws PropertyException {
+        Property property = getReadonlyIntProperty();
+        try {
+            property.setValue(1);
+            fail();
+        } catch(InvalidPropertyOperationException ex) {
+        }
+    }
 
-	@Test
-	public void testReadOnlyProperty() throws PropertyException {
-		Property property = getReadonlyIntProperty();
-		try {
-			property.setValue(1);
-			fail();
-		} catch (InvalidPropertyOperationException ex) {
-		}
-	}
+    private XMLBasedGetterSetterProperty getReadonlyIntProperty() throws PropertyException {
+        XMLBasedGetterSetterMetaProperty metaProperty = new XMLBasedGetterSetterMetaProperty("intProperty", int.class,
+                                                                                             component.getIntPropertyGetter(), component.getIntPropertySetter());
+        return new XMLBasedGetterSetterProperty(metaProperty, _propertiesObject);
+    }
 
-	@Test
-	public void testGetMetaProperty() throws PropertyException {
-		Property property = getIntProperty();
-		MetaProperty metaProperty = property.getMetaProperty();
-		assertTrue(int.class.equals(metaProperty.getPropertyClass()));
-		// intProperty is served by XMLGetterSetterMetaProperty, which doesn't support monitoring
-		// assertTrue(metaProperty.isMonitorable());
-		assertTrue(metaProperty.isWriteable());
-	}
+    @Test
+    public void testGetMetaProperty() throws PropertyException {
+        Property property = getIntProperty();
+        MetaProperty metaProperty = property.getMetaProperty();
+        assertTrue(int.class.equals(metaProperty.getPropertyClass()));
+        // intProperty is served by XMLGetterSetterMetaProperty, which doesn't support monitoring
+        // assertTrue(metaProperty.isMonitorable());
+        assertTrue(metaProperty.isWriteable());
+    }
 
 	/*
-	 * _intProperty is served by XMLGetterSetterMetaProperty, which doesn't support monitoring
+     * _intProperty is served by XMLGetterSetterMetaProperty, which doesn't support monitoring
 	 * 
 	 * @Test public void testPropertyMonitors() throws Exception {
 	 * 
@@ -118,14 +120,14 @@ public class XMLBasedPropertyTest {
 	 * monitor2.getPropertyChangedInvokationCounter()); }
 	 */
 
-	/**
-	 * Scenario: property value is object that implements IChangesNotifier interface. It changes its internal state and
-	 * informs monitors about it. The property itself should inform its monitors about change.
-	 * 
-	 * @throws Exception
-	 */
-	/*
-	 * _changesNotifierProperty2 is served by XMLGetterSetterMetaProperty, which doesn't support monitoring
+    /**
+     * Scenario: property value is object that implements IChangesNotifier interface. It changes its internal state and
+     * informs monitors about it. The property itself should inform its monitors about change.
+     *
+     * @throws Exception
+     */
+    /*
+     * _changesNotifierProperty2 is served by XMLGetterSetterMetaProperty, which doesn't support monitoring
 	 * 
 	 * @Test public void testChangesNotifierProperty() throws Exception { PropertyMonitorStub monitor = new
 	 * PropertyMonitorStub();

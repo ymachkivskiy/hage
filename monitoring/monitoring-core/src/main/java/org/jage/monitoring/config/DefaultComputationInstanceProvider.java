@@ -27,34 +27,35 @@
 
 package org.jage.monitoring.config;
 
-import java.util.Date;
 
 import org.jage.platform.component.IStatefulComponent;
 import org.jage.platform.component.exception.ComponentException;
 
+import java.util.Date;
+
 
 /**
- * Default implementation of <code>ComputationInstanceProvider</code> interface. 
- * The value of created computation instance is equal to timestamp of calling <code>init</code> method of this component. 
- * 
+ * Default implementation of <code>ComputationInstanceProvider</code> interface.
+ * The value of created computation instance is equal to timestamp of calling <code>init</code> method of this component.
+ *
  * @author AGH AgE Team
  */
-public class DefaultComputationInstanceProvider implements ComputationInstanceProvider, IStatefulComponent{
+public class DefaultComputationInstanceProvider implements ComputationInstanceProvider, IStatefulComponent {
 
-	private String timestamp;
-	
-	@Override
-	public void init() throws ComponentException {
-		timestamp = new Long(new Date().getTime()).toString();
-	}
+    private String timestamp;
 
-	@Override
-	public boolean finish() throws ComponentException {
-		return false;
-	}
+    @Override
+    public void init() throws ComponentException {
+        timestamp = new Long(new Date().getTime()).toString();
+    }
 
-	@Override
-	public String getComputationInstance() {
-		return timestamp;
-	}
+    @Override
+    public boolean finish() throws ComponentException {
+        return false;
+    }
+
+    @Override
+    public String getComputationInstance() {
+        return timestamp;
+    }
 }

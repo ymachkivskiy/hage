@@ -31,8 +31,10 @@
 
 package org.jage.genetic.action;
 
+
 import org.jage.action.IActionContext;
 import org.jage.action.context.AgentActionContext;
+
 
 /**
  * This context defines a statistics update action. To use it, you should declare a handler bean named 'statisticsUpdateAction'
@@ -42,15 +44,17 @@ import org.jage.action.context.AgentActionContext;
  */
 @AgentActionContext(StatisticsUpdateActionContext.Properties.STATISTICS_UPDATE_ACTION)
 public final class StatisticsUpdateActionContext implements IActionContext {
-	/**
-	 * UpdateStatisticsActionContext properties.
-	 *
-	 * @author AGH AgE Team
-	 */
-	public static class Properties {
-		/**
-		 * The action name.
-		 */
-		public static final String STATISTICS_UPDATE_ACTION = "statisticsUpdateAction";
-	}
+
+    /**
+     * UpdateStatisticsActionContext properties.
+     *
+     * @author AGH AgE Team
+     */
+    public static class Properties {
+
+        /**
+         * The action name.
+         */
+        public static final String STATISTICS_UPDATE_ACTION = "statisticsUpdateAction";
+    }
 }

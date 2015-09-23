@@ -31,66 +31,64 @@
 
 package org.jage.platform.component.descriptor;
 
+
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+
 
 /**
  * Default implementation of {@link IComponentDescriptor}.
  *
  * @author AGH AgE Team
- *
  */
 public class ComponentDescriptor implements IComponentDescriptor {
 
-	private Class<?> componentType;
+    private final List<List<Class<?>>> constructorParametersTypes;
+    private Class<?> componentType;
 
-	private final List<List<Class<?>>> constructorParametersTypes;
-
-	/**
-	 * Constructor.
-	 */
-	public ComponentDescriptor() {
-		// initialize empty collections
-		constructorParametersTypes = new LinkedList<List<Class<?>>>();
-	}
+    /**
+     * Constructor.
+     */
+    public ComponentDescriptor() {
+        // initialize empty collections
+        constructorParametersTypes = new LinkedList<List<Class<?>>>();
+    }
 
 
-	@Override
+    @Override
     public Class<?> getComponentType() {
-		return componentType;
-	}
+        return componentType;
+    }
 
-	@Override
+    @Override
     public List<List<Class<?>>> getConstructorParametersTypes() {
-		return Collections.unmodifiableList(constructorParametersTypes);
-	}
+        return Collections.unmodifiableList(constructorParametersTypes);
+    }
 
-	@Override
-	public boolean containsProperty(final String name) {
-		return false;
-	}
+    @Override
+    public boolean containsProperty(final String name) {
+        return false;
+    }
 
-	/**
-	 * Sets component types.
-	 *
-	 * @param componentType
-	 *            type of component
-	 */
-	void setComponentType(final Class<?> componentType) {
-		if (componentType == null) {
-			throw new IllegalArgumentException();
-		}
-		this.componentType = componentType;
-	}
+    /**
+     * Sets component types.
+     *
+     * @param componentType type of component
+     */
+    void setComponentType(final Class<?> componentType) {
+        if(componentType == null) {
+            throw new IllegalArgumentException();
+        }
+        this.componentType = componentType;
+    }
 
-	/**
-	 * Adds a constructor description by giving a constructor parameters types list.
-	 *
-	 * @param parametersTypes
-	 *            list of parameters types in component constructor
-	 */
-	void addConstructorParametersTypes(final List<Class<?>> parametersTypes) {
-		constructorParametersTypes.add(parametersTypes);
-	}
+    /**
+     * Adds a constructor description by giving a constructor parameters types list.
+     *
+     * @param parametersTypes list of parameters types in component constructor
+     */
+    void addConstructorParametersTypes(final List<Class<?>> parametersTypes) {
+        constructorParametersTypes.add(parametersTypes);
+    }
 }

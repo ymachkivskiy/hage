@@ -31,7 +31,6 @@
 
 package org.jage.lifecycle;
 
-import javax.annotation.concurrent.Immutable;
 
 import org.jage.annotation.FieldsAreNonnullByDefault;
 import org.jage.annotation.ReturnValuesAreNonnullByDefault;
@@ -39,41 +38,37 @@ import org.jage.bus.AgeEvent;
 import org.jage.platform.fsm.StateChangedEvent;
 import org.jage.services.core.LifecycleManager;
 
+import javax.annotation.concurrent.Immutable;
+
+
 @Immutable
 @FieldsAreNonnullByDefault
 @ReturnValuesAreNonnullByDefault
 public class LifecycleStateChangedEvent extends StateChangedEvent<LifecycleManager.State, LifecycleManager.Event>
-		implements AgeEvent {
+        implements AgeEvent {
 
-	/**
-	 * Creates a new event.
-	 *
-	 * @param previousState
-	 * 		a previous state.
-	 * @param event
-	 * 		an event that caused the transition.
-	 * @param newState
-	 * 		a new state.
-	 */
-	private LifecycleStateChangedEvent(final LifecycleManager.State previousState,
-			final LifecycleManager.Event event, final LifecycleManager.State newState) {
-		super(previousState, event, newState);
-	}
+    /**
+     * Creates a new event.
+     *
+     * @param previousState a previous state.
+     * @param event         an event that caused the transition.
+     * @param newState      a new state.
+     */
+    private LifecycleStateChangedEvent(final LifecycleManager.State previousState,
+            final LifecycleManager.Event event, final LifecycleManager.State newState) {
+        super(previousState, event, newState);
+    }
 
-	/**
-	 * Creates a new event.
-	 *
-	 * @param previousState
-	 * 		a previous state.
-	 * @param event
-	 * 		an event that caused the transition.
-	 * @param newState
-	 * 		a new state.
-	 *
-	 * @return a new event.
-	 */
-	public static LifecycleStateChangedEvent create(final LifecycleManager.State previousState,
-			final LifecycleManager.Event event, final LifecycleManager.State newState) {
-		return new LifecycleStateChangedEvent(previousState, event, newState);
-	}
+    /**
+     * Creates a new event.
+     *
+     * @param previousState a previous state.
+     * @param event         an event that caused the transition.
+     * @param newState      a new state.
+     * @return a new event.
+     */
+    public static LifecycleStateChangedEvent create(final LifecycleManager.State previousState,
+            final LifecycleManager.Event event, final LifecycleManager.State newState) {
+        return new LifecycleStateChangedEvent(previousState, event, newState);
+    }
 }

@@ -26,35 +26,37 @@
  */
 package org.jage.monitoring.visualization.storage;
 
+
+import org.jage.monitoring.visualization.rest.StoragePointer;
+import org.jage.monitoring.visualization.storage.element.VisualDataStorage;
+
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.jage.monitoring.visualization.rest.StoragePointer;
-import org.jage.monitoring.visualization.storage.element.VisualDataStorage;
 
 public class DataSupplierServiceImpl implements DataSupplierService {
 
-	private static final long serialVersionUID = -7411329735802332922L;
+    private static final long serialVersionUID = -7411329735802332922L;
 
-	@Override
-	public List<LinkedList<VisualData>> get(Map<Integer, Date> lastDateMap, String chartId) {
-		List<LinkedList<VisualData>> result = new LinkedList<LinkedList<VisualData>>();
-		StoragePointer storagePointer = StoragePointer.getInstance();
-		List<VisualDataStorage> storageList = storagePointer.pointStorages(chartId);
+    @Override
+    public List<LinkedList<VisualData>> get(Map<Integer, Date> lastDateMap, String chartId) {
+        List<LinkedList<VisualData>> result = new LinkedList<LinkedList<VisualData>>();
+        StoragePointer storagePointer = StoragePointer.getInstance();
+        List<VisualDataStorage> storageList = storagePointer.pointStorages(chartId);
 
-		// pobierz magazyny i z kazdego z nich wyciagnij wszystki dane mlodsze niz data w mapie
-		int i = 0;
-		for (VisualDataStorage monitoredDataStorageList : storageList) {
+        // pobierz magazyny i z kazdego z nich wyciagnij wszystki dane mlodsze niz data w mapie
+        int i = 0;
+        for(VisualDataStorage monitoredDataStorageList : storageList) {
 //			result.add((LinkedList<VisualData>)monitoredDataStorageList.getTailFromN(n));
-			LinkedList<VisualData> youngerThan = (LinkedList<VisualData>)monitoredDataStorageList.getYoungerThan(lastDateMap.get(i));
-			if(!youngerThan.isEmpty()){
-				result.add(youngerThan);
-			}
-			i++;
-		}
-		return result;
-	}
+            LinkedList<VisualData> youngerThan = (LinkedList<VisualData>) monitoredDataStorageList.getYoungerThan(lastDateMap.get(i));
+            if(!youngerThan.isEmpty()) {
+                result.add(youngerThan);
+            }
+            i++;
+        }
+        return result;
+    }
 
 }

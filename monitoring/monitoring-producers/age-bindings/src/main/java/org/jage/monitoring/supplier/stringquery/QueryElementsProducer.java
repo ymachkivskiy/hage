@@ -27,61 +27,60 @@
 
 package org.jage.monitoring.supplier.stringquery;
 
-import static com.google.common.collect.Lists.newArrayList;
+
+import com.google.common.base.Splitter;
+import org.jage.monitoring.MonitoringException;
 
 import java.util.Iterator;
 import java.util.List;
 
-import org.jage.monitoring.MonitoringException;
+import static com.google.common.collect.Lists.newArrayList;
 
-import com.google.common.base.Splitter;
 
 /**
- * Class parses agent and property string query. 
- * 
+ * Class parses agent and property string query.
+ *
  * @author AGH AgE Team
  */
 public class QueryElementsProducer {
 
-	public static final char addressPropertySeparator = '@';
+    public static final char addressPropertySeparator = '@';
 
-	public static final String addressSeparator = "/";
+    public static final String addressSeparator = "/";
 
-	public static final char propertySeparator = ',';
+    public static final char propertySeparator = ',';
 
-	
-	/**
-	 * 
-	 * @param query
-	 * 				String representation of agent and property query.
-	 * @return <code>QueryElements</code> representation of agent and property query.
-	 */
-	public QueryElements produceQueryElements(String query) {
-		Iterable<String> addressPropertySplit = addressPropertySplitter(query);
-		Iterator<String> addressPropertyIterator = addressPropertySplit.iterator();
-		if (!addressPropertyIterator.hasNext()) {
-			throw new MonitoringException("Parameter queryList is invalid, no agent address regex");
-		}
-		List<String> addressList = addressSplitter(addressPropertyIterator.next());
-		if (!addressPropertyIterator.hasNext()) {
-			throw new MonitoringException("Parameter queryList is invalid, no property name");
-		}
-		List<String> propertyNameList = propertySplitter(addressPropertyIterator.next());
-	
-		return new QueryElements(addressList, propertyNameList);
-	}
 
-	private Iterable<String> addressPropertySplitter(String query) {
-		return Splitter.on(addressPropertySeparator).omitEmptyStrings().split(query);
-	}
+    /**
+     * @param query String representation of agent and property query.
+     * @return <code>QueryElements</code> representation of agent and property query.
+     */
+    public QueryElements produceQueryElements(String query) {
+        Iterable<String> addressPropertySplit = addressPropertySplitter(query);
+        Iterator<String> addressPropertyIterator = addressPropertySplit.iterator();
+        if(!addressPropertyIterator.hasNext()) {
+            throw new MonitoringException("Parameter queryList is invalid, no agent address regex");
+        }
+        List<String> addressList = addressSplitter(addressPropertyIterator.next());
+        if(!addressPropertyIterator.hasNext()) {
+            throw new MonitoringException("Parameter queryList is invalid, no property name");
+        }
+        List<String> propertyNameList = propertySplitter(addressPropertyIterator.next());
 
-	private List<String> addressSplitter(String addresses) {
-		Iterable<String> splitedAddress = Splitter.on(addressSeparator).omitEmptyStrings().split(addresses);
-		return newArrayList(splitedAddress);
-	}
+        return new QueryElements(addressList, propertyNameList);
+    }
 
-	private List<String> propertySplitter(String properties) {
-		Iterable<String> splitedProperties = Splitter.on(propertySeparator).omitEmptyStrings().split(properties);
-		return newArrayList(splitedProperties);
-	}
+    private Iterable<String> addressPropertySplitter(String query) {
+        return Splitter.on(addressPropertySeparator).omitEmptyStrings().split(query);
+    }
+
+    private List<String> addressSplitter(String addresses) {
+        Iterable<String> splitedAddress = Splitter.on(addressSeparator).omitEmptyStrings().split(addresses);
+        return newArrayList(splitedAddress);
+    }
+
+    private List<String> propertySplitter(String properties) {
+        Iterable<String> splitedProperties = Splitter.on(propertySeparator).omitEmptyStrings().split(properties);
+        return newArrayList(splitedProperties);
+    }
 }

@@ -31,8 +31,10 @@
 
 package org.jage.genetic.action;
 
+
 import org.jage.action.IActionContext;
 import org.jage.action.context.AgentActionContext;
+
 
 /**
  * This context defines a preselection action. To use it, you should declare a handler bean named 'preselectionAction'
@@ -42,15 +44,17 @@ import org.jage.action.context.AgentActionContext;
  */
 @AgentActionContext(PreselectionActionContext.Properties.PRESELECTION_ACTION)
 public final class PreselectionActionContext implements IActionContext {
-	/**
-	 * PreselectionActionContext properties.
-	 *
-	 * @author AGH AgE Team
-	 */
-	public static class Properties {
-		/**
-		 * The action name.
-		 */
-		public static final String PRESELECTION_ACTION = "preselectionAction";
-	}
+
+    /**
+     * PreselectionActionContext properties.
+     *
+     * @author AGH AgE Team
+     */
+    public static class Properties {
+
+        /**
+         * The action name.
+         */
+        public static final String PRESELECTION_ACTION = "preselectionAction";
+    }
 }

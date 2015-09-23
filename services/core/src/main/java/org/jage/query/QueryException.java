@@ -31,53 +31,50 @@
 
 package org.jage.query;
 
+
 /**
  * An exception thrown during runtime when query execution results in an error.
- * 
+ *
  * @author AGH AgE Team
  */
 public class QueryException extends RuntimeException {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * Constructs a new runtime exception with <code>null</code> as its detail message.
-	 */
-	public QueryException() {
-		// Empty
-	}
+    /**
+     * Constructs a new runtime exception with <code>null</code> as its detail message.
+     */
+    public QueryException() {
+        // Empty
+    }
 
-	/**
-	 * Constructs a new runtime exception with the specified detail message.
-	 * 
-	 * @param message
-	 *            the detail message.
-	 */
-	public QueryException(String message) {
-		super(message);
-	}
+    /**
+     * Constructs a new runtime exception with the specified detail message.
+     *
+     * @param message the detail message.
+     */
+    public QueryException(String message) {
+        super(message);
+    }
 
-	/**
-	 * Constructs a new runtime exception with the specified cause and a detail message of
-	 * <tt>(cause==null ? null : cause.toString())</tt>.
-	 * 
-	 * @param cause
-	 *            the cause.
-	 */
-	public QueryException(Throwable cause) {
-		super(cause);
-	}
+    /**
+     * Constructs a new runtime exception with the specified cause and a detail message of
+     * <tt>(cause==null ? null : cause.toString())</tt>.
+     *
+     * @param cause the cause.
+     */
+    public QueryException(Throwable cause) {
+        super(cause);
+    }
 
-	/**
-	 * Constructs a new runtime exception with the specified detail message and cause.
-	 * 
-	 * @param message
-	 *            the detail message.
-	 * @param cause
-	 *            the cause.
-	 */
-	public QueryException(String message, Throwable cause) {
-		super(message, cause);
-	}
+    /**
+     * Constructs a new runtime exception with the specified detail message and cause.
+     *
+     * @param message the detail message.
+     * @param cause   the cause.
+     */
+    public QueryException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
 }

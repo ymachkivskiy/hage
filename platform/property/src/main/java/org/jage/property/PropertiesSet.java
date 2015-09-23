@@ -26,11 +26,13 @@
  */
 package org.jage.property;
 
+
+import org.jage.event.AbstractEvent;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import org.jage.event.AbstractEvent;
 
 /**
  * Set that store properties.
@@ -39,163 +41,165 @@ import org.jage.event.AbstractEvent;
  */
 public class PropertiesSet implements IPropertiesSet, Serializable {
 
-	/** Required be Serializable interface */
-	public static final long serialVersionUID = 2L;
+    /**
+     * Required be Serializable interface
+     */
+    public static final long serialVersionUID = 2L;
 
-	/**
-	 * All properties
-	 */
-	private final HashMap<String, Property> _properties;
+    /**
+     * All properties
+     */
+    private final HashMap<String, Property> _properties;
 
-	/**
-	 * Constructor.
-	 */
-	public PropertiesSet() {
-		_properties = new HashMap<String, Property>();
-	}
+    /**
+     * Constructor.
+     */
+    public PropertiesSet() {
+        _properties = new HashMap<String, Property>();
+    }
 
-	/**
-	 * Copy constructor.
-	 *
-	 * @param source
-	 *            properties set from all items will be copied to the new set.
-	 */
-	public PropertiesSet(IPropertiesSet source) {
-		_properties = new HashMap<String, Property>();
+    /**
+     * Copy constructor.
+     *
+     * @param source properties set from all items will be copied to the new set.
+     */
+    public PropertiesSet(IPropertiesSet source) {
+        _properties = new HashMap<String, Property>();
 
-		for (MetaProperty metaProperty : source.getMetaPropertiesSet()) {
-			Property property = source.getProperty(metaProperty.getName());
-			_properties.put(metaProperty.getName(), property);
-		}
-	}
+        for(MetaProperty metaProperty : source.getMetaPropertiesSet()) {
+            Property property = source.getProperty(metaProperty.getName());
+            _properties.put(metaProperty.getName(), property);
+        }
+    }
 
-	/**
-	 * Returns MetaPropertyContainer that stores metadata for all properties
-	 * from the set.
-	 */
-	public MetaPropertiesSet getMetaPropertiesSet() {
-		MetaPropertiesSet result = new MetaPropertiesSet();
-		for (Property property : _properties.values()) {
-			result.addMetaProperty(property.getMetaProperty());
-		}
-		return result;
-	}
+    /**
+     * Returns MetaPropertyContainer that stores metadata for all properties
+     * from the set.
+     */
+    public MetaPropertiesSet getMetaPropertiesSet() {
+        MetaPropertiesSet result = new MetaPropertiesSet();
+        for(Property property : _properties.values()) {
+            result.addMetaProperty(property.getMetaProperty());
+        }
+        return result;
+    }
 
-	/**
-	 * Adds new property to the set.
-	 */
-	public void addProperty(Property property)
-			throws DuplicatePropertyNameException {
-		String propertyName = property.getMetaProperty().getName();
-		if (_properties.containsKey(propertyName)) {
-			throw new DuplicatePropertyNameException("Property with name "
-					+ propertyName + " already exists in this set.");
-		}
-		_properties.put(property.getMetaProperty().getName(), property);
-	}
+    /**
+     * Adds new property to the set.
+     */
+    public void addProperty(Property property)
+            throws DuplicatePropertyNameException {
+        String propertyName = property.getMetaProperty().getName();
+        if(_properties.containsKey(propertyName)) {
+            throw new DuplicatePropertyNameException("Property with name "
+                                                             + propertyName + " already exists in this set.");
+        }
+        _properties.put(property.getMetaProperty().getName(), property);
+    }
 
-	/**
-	 * Creates new property set that stores read-only, not-monitorable property
-	 * with values read from the original set.
-	 */
-	public IPropertiesSet clonePropertyValues() {
-		PropertiesSet result = new PropertiesSet();
-		for (Property property : _properties.values()) {
-			MetaProperty metaProperty;
+    /**
+     * Creates new property set that stores read-only, not-monitorable property
+     * with values read from the original set.
+     */
+    public IPropertiesSet clonePropertyValues() {
+        PropertiesSet result = new PropertiesSet();
+        for(Property property : _properties.values()) {
+            MetaProperty metaProperty;
             try { // XXX: Copy generics!
-	            metaProperty = new MetaProperty(property
-	            		.getMetaProperty().getName(), property.getMetaProperty()
-	            		.getPropertyClass(), false, false);
-	            SimpleProperty copy = new SimpleProperty(metaProperty, property
-						.getValue());
-				result._properties.put(metaProperty.getName(), copy);
-            } catch (PropertyException e) {
-	            // TODO Auto-generated catch block
-	            e.printStackTrace();
+                metaProperty = new MetaProperty(property
+                                                        .getMetaProperty().getName(), property.getMetaProperty()
+                                                        .getPropertyClass(), false, false);
+                SimpleProperty copy = new SimpleProperty(metaProperty, property
+                        .getValue());
+                result._properties.put(metaProperty.getName(), copy);
+            } catch(PropertyException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
 
-		}
-		return result;
-	}
+        }
+        return result;
+    }
 
-	/**
-	 * Removes property from the set.
-	 */
-	public void removeProperty(Property property) {
-		_properties.remove(property.getMetaProperty().getName());
-	}
+    /**
+     * Removes property from the set.
+     */
+    public void removeProperty(Property property) {
+        _properties.remove(property.getMetaProperty().getName());
+    }
 
-	/**
-	 * Checks whether property with a given name is in this set.
-	 */
-	public boolean containsProperty(String propertyName) {
-		return _properties.containsKey(propertyName);
-	}
+    /**
+     * Returns property with a given name.
+     */
+    public Property getProperty(String name) {
+        return _properties.get(name);
+    }
 
-	/**
-	 * Returns property with a given name.
-	 */
-	public Property getProperty(String name) {
-		return _properties.get(name);
-	}
+    /**
+     * Checks whether property with a given name is in this set.
+     */
+    public boolean containsProperty(String propertyName) {
+        return _properties.containsKey(propertyName);
+    }
 
-	/**
-	 * Required by Iterable<Property> interface. Returns iterator that can be
-	 * used to iterate through all items.
-	 */
-	public Iterator<Property> iterator() {
-		return _properties.values().iterator();
-	}
+    /**
+     * @see org.jage.property.IPropertiesSet#getSimplePropertiesSet()
+     */
+    public IPropertiesSet getSimplePropertiesSet() {
+        PropertiesSet result = new PropertiesSet();
+        for(Property property : _properties.values()) {
+            SimpleProperty simple = property.getSimpleProperty();
+            try {
+                result.addProperty(simple);
+            } catch(DuplicatePropertyNameException e) {
+                // not possible
+            }
+        }
+        return result;
+    }
 
-	/**
-	 * Method invoked when the object is no longer needed.
-	 *
-	 * @param event
-	 */
-	public void objectDeleted(AbstractEvent event) {
-		for (Property property : _properties.values()) {
-			property.objectDeleted(event);
-		}
-	}
+    /**
+     * Required by Iterable<Property> interface. Returns iterator that can be
+     * used to iterate through all items.
+     */
+    public Iterator<Property> iterator() {
+        return _properties.values().iterator();
+    }
 
-	/**
-	 * Returns number of elements in the set.
-	 *
-	 * @return number of elements in the set.
-	 */
-	public int size() {
-		return _properties.size();
-	}
+    /**
+     * Method invoked when the object is no longer needed.
+     *
+     * @param event
+     */
+    public void objectDeleted(AbstractEvent event) {
+        for(Property property : _properties.values()) {
+            property.objectDeleted(event);
+        }
+    }
 
-	/**
-	 * Whether this set is empty
-	 * @return true if the set is empty.
-	 */
-	public boolean isEmpty() {
-		return size() == 0;
-	}
+    /**
+     * Whether this set is empty
+     *
+     * @return true if the set is empty.
+     */
+    public boolean isEmpty() {
+        return size() == 0;
+    }
 
-	/**
-	 * @see org.jage.property.IPropertiesSet#getSimplePropertiesSet()
-	 */
-	public IPropertiesSet getSimplePropertiesSet() {
-		PropertiesSet result = new PropertiesSet();
-		for (Property property : _properties.values()) {
-			SimpleProperty simple = property.getSimpleProperty();
-			try {
-				result.addProperty(simple);
-			} catch (DuplicatePropertyNameException e) {
-				// not possible
-			}
-		}
-		return result;
-	}
+    /**
+     * Returns number of elements in the set.
+     *
+     * @return number of elements in the set.
+     */
+    public int size() {
+        return _properties.size();
+    }
 
-	/**
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "[ PropertiesSet " + _properties.toString() + " ]";
-	}
+    /**
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return "[ PropertiesSet " + _properties.toString() + " ]";
+    }
 }

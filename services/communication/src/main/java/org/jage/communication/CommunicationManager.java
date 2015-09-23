@@ -31,9 +31,11 @@
 
 package org.jage.communication;
 
+
 import com.hazelcast.core.IMap;
 
 import javax.annotation.Nonnull;
+
 
 public interface CommunicationManager {
 

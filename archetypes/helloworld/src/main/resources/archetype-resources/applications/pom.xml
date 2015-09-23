@@ -1,67 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<artifactId>${artifactId}</artifactId>
+    <artifactId>${artifactId}</artifactId>
 
-	<name>AgE helloworld applications</name>
-	<description>Simple helloworld examples</description>
+    <name>AgE helloworld applications</name>
+    <description>Simple helloworld examples</description>
 
-	<parent>
-		<groupId>${groupId}</groupId>
-		<artifactId>${rootArtifactId}</artifactId>
-		<version>${version}</version>
-	</parent>
+    <parent>
+        <groupId>${groupId}</groupId>
+        <artifactId>${rootArtifactId}</artifactId>
+        <version>${version}</version>
+    </parent>
 
-	<properties>
-		<age.node.conf>classpath:node.xml</age.node.conf>
-		<age.computation.conf>classpath:helloworld.xml</age.computation.conf>
-	</properties>
+    <properties>
+        <age.node.conf>classpath:node.xml</age.node.conf>
+        <age.computation.conf>classpath:helloworld.xml</age.computation.conf>
+    </properties>
 
-	<dependencies>
-		<!-- AgE Modules -->
-		<dependency>
-			<groupId>org.jage.platform</groupId>
-			<artifactId>cli-bootstrapper</artifactId>
-			<version>${jage.version}</version>
-		</dependency>
+    <dependencies>
+        <!-- AgE Modules -->
+        <dependency>
+            <groupId>org.jage.platform</groupId>
+            <artifactId>cli-bootstrapper</artifactId>
+            <version>${jage.version}</version>
+        </dependency>
 
-		<!-- Solution Module -->
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>solutions</artifactId>
-			<version>${project.version}</version>
-		</dependency>
+        <!-- Solution Module -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>solutions</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
-		<dependency>
-			<groupId>org.jage.services</groupId>
-			<artifactId>configuration</artifactId>
-			<version>${jage.version}</version>
-		</dependency>
+        <dependency>
+            <groupId>org.jage.services</groupId>
+            <artifactId>configuration</artifactId>
+            <version>${jage.version}</version>
+        </dependency>
 
-		<!-- logging -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.7.7</version>
-		</dependency>
-	</dependencies>
+        <!-- logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.7</version>
+        </dependency>
+    </dependencies>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<version>1.1</version>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.1</version>
 
-				<configuration>
-					<mainClass>org.jage.platform.cli.CliNodeBootstrapper</mainClass>
-					<arguments>
-						<argument>-Dage.node.conf=${age.node.conf}</argument>
-						<argument>-Dage.computation.conf=${age.computation.conf}</argument>
-					</arguments>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+                <configuration>
+                    <mainClass>org.jage.platform.cli.CliNodeBootstrapper</mainClass>
+                    <arguments>
+                        <argument>-Dage.node.conf=${age.node.conf}</argument>
+                        <argument>-Dage.computation.conf=${age.computation.conf}</argument>
+                    </arguments>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

@@ -31,11 +31,13 @@
 
 package org.jage.query;
 
+
+import com.google.common.collect.ImmutableSet;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 
-import com.google.common.collect.ImmutableSet;
 
 /**
  * Common implementations of {@link IQueryFunction}.
@@ -43,111 +45,111 @@ import com.google.common.collect.ImmutableSet;
  * @author AGH AgE Team
  */
 public final class QueryFunctions {
-	/**
-	 * Creates a function that chooses the max element using the natural ordering.
-	 *
-	 * @param <T>
-	 *            A type of elements in the collection.
-	 * @return A new query function.
-	 */
-	public static <T extends Comparable<? super T>> IQueryFunction<Collection<T>> max() {
-		return new IQueryFunction<Collection<T>>() {
 
-			@Override
-			public Collection<T> execute(Collection<T> result) {
-				return Collections.singleton(Collections.max(result));
-			}
-		};
-	}
+    private QueryFunctions() {
+        // Empty
+    }
 
-	/**
-	 * Creates a function that chooses the max element using the ordering defined by a provided comparator.
-	 *
-	 * @param comparator
-	 *            A comparator to use.
-	 * @param <T>
-	 *            A type of elements in the collection.
-	 * @return A new query function.
-	 */
-	public static <T> IQueryFunction<Collection<T>> max(final Comparator<T> comparator) {
-		return new IQueryFunction<Collection<T>>() {
+    /**
+     * Creates a function that chooses the max element using the natural ordering.
+     *
+     * @param <T> A type of elements in the collection.
+     * @return A new query function.
+     */
+    public static <T extends Comparable<? super T>> IQueryFunction<Collection<T>> max() {
+        return new IQueryFunction<Collection<T>>() {
 
-			@Override
-			public Collection<T> execute(Collection<T> result) {
-				return Collections.singleton(Collections.max(result, comparator));
-			}
-		};
-	}
+            @Override
+            public Collection<T> execute(Collection<T> result) {
+                return Collections.singleton(Collections.max(result));
+            }
+        };
+    }
 
-	/**
-	 * Creates a function that sums values in a collection. This function operates only on doubles.
-	 *
-	 * @return A new query function.
-	 */
-	public static IQueryFunction<Collection<Double>> sum() {
-		return new IQueryFunction<Collection<Double>>() {
-			@Override
-			public Collection<Double> execute(Collection<Double> result) {
-				double summed = 0.0;
-				for (double element : result) {
-					summed += element;
-				}
-				return Collections.singleton(summed);
-			}
-		};
-	}
+    /**
+     * Creates a function that chooses the max element using the ordering defined by a provided comparator.
+     *
+     * @param comparator A comparator to use.
+     * @param <T>        A type of elements in the collection.
+     * @return A new query function.
+     */
+    public static <T> IQueryFunction<Collection<T>> max(final Comparator<T> comparator) {
+        return new IQueryFunction<Collection<T>>() {
 
-	/**
-	 * Creates a function that computes an average of values in a collection. This function operates only on doubles.
-	 *
-	 * @return A new query function.
-	 */
-	public static IQueryFunction<Collection<Double>> average() {
-		return new IQueryFunction<Collection<Double>>() {
-			@Override
-			public Collection<Double> execute(Collection<Double> result) {
-				double summed = 0.0;
-				for (double element : result) {
-					summed += element;
-				}
-				return Collections.singleton(summed / result.size());
-			}
-		};
-	}
+            @Override
+            public Collection<T> execute(Collection<T> result) {
+                return Collections.singleton(Collections.max(result, comparator));
+            }
+        };
+    }
 
-	public static <T> IQueryFunction<Collection<T>> flatten() {
-		return new IQueryFunction<Collection<T>>() {
-			@Override
-			public Collection<T> execute(Collection<T> result) {
-				final ImmutableSet.Builder<T> builder = ImmutableSet.builder();
-				for (Object r : result) {
-					if (r instanceof Iterable) {
-						builder.addAll((Iterable<T>)r);
-					}
-				}
-				return builder.build();
-			}
-		};
-	}
+    /**
+     * Creates a function that sums values in a collection. This function operates only on doubles.
+     *
+     * @return A new query function.
+     */
+    public static IQueryFunction<Collection<Double>> sum() {
+        return new IQueryFunction<Collection<Double>>() {
 
-	/**
-	 * Creates a no-operation functions that simply returns received results.
-	 *
-	 * @param <T>
-	 *            A type of results.
-	 * @return A new query function.
-	 */
-	public static <T> IQueryFunction<T> noOperation() {
-		return new IQueryFunction<T>() {
+            @Override
+            public Collection<Double> execute(Collection<Double> result) {
+                double summed = 0.0;
+                for(double element : result) {
+                    summed += element;
+                }
+                return Collections.singleton(summed);
+            }
+        };
+    }
 
-			@Override
-			public T execute(T result) {
-				return result;
-			}
-		};
-	}
+    /**
+     * Creates a function that computes an average of values in a collection. This function operates only on doubles.
+     *
+     * @return A new query function.
+     */
+    public static IQueryFunction<Collection<Double>> average() {
+        return new IQueryFunction<Collection<Double>>() {
 
-	private QueryFunctions() {
-		// Empty
-	}
+            @Override
+            public Collection<Double> execute(Collection<Double> result) {
+                double summed = 0.0;
+                for(double element : result) {
+                    summed += element;
+                }
+                return Collections.singleton(summed / result.size());
+            }
+        };
+    }
+
+    public static <T> IQueryFunction<Collection<T>> flatten() {
+        return new IQueryFunction<Collection<T>>() {
+
+            @Override
+            public Collection<T> execute(Collection<T> result) {
+                final ImmutableSet.Builder<T> builder = ImmutableSet.builder();
+                for(Object r : result) {
+                    if(r instanceof Iterable) {
+                        builder.addAll((Iterable<T>) r);
+                    }
+                }
+                return builder.build();
+            }
+        };
+    }
+
+    /**
+     * Creates a no-operation functions that simply returns received results.
+     *
+     * @param <T> A type of results.
+     * @return A new query function.
+     */
+    public static <T> IQueryFunction<T> noOperation() {
+        return new IQueryFunction<T>() {
+
+            @Override
+            public T execute(T result) {
+                return result;
+            }
+        };
+    }
 }

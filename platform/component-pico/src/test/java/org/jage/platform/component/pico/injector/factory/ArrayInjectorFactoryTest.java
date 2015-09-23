@@ -31,6 +31,9 @@
 
 package org.jage.platform.component.pico.injector.factory;
 
+
+import org.jage.platform.component.definition.ArrayDefinition;
+import org.jage.platform.component.pico.injector.ArrayInjector;
 import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
 
@@ -38,8 +41,6 @@ import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
-import org.jage.platform.component.definition.ArrayDefinition;
-import org.jage.platform.component.pico.injector.ArrayInjector;
 
 /**
  * Tests for ArrayInjectorFactory.
@@ -48,23 +49,23 @@ import org.jage.platform.component.pico.injector.ArrayInjector;
  */
 public class ArrayInjectorFactoryTest {
 
-	private final ArrayInjectorFactory factory = new ArrayInjectorFactory();
+    private final ArrayInjectorFactory factory = new ArrayInjectorFactory();
 
-	@Test(expected = NullPointerException.class)
-	public void shouldThrowNPEForNullDefinition() {
-		// when
-		factory.createAdapter(null);
-	}
+    @Test(expected = NullPointerException.class)
+    public void shouldThrowNPEForNullDefinition() {
+        // when
+        factory.createAdapter(null);
+    }
 
-	@Test
-	public void shouldCreateArrayInjectors() {
-		// given
-		final ArrayDefinition definition = new ArrayDefinition("any", Object.class, false);
+    @Test
+    public void shouldCreateArrayInjectors() {
+        // given
+        final ArrayDefinition definition = new ArrayDefinition("any", Object.class, false);
 
-		// when
-		final ComponentAdapter<Object> adapter = factory.createAdapter(definition);
+        // when
+        final ComponentAdapter<Object> adapter = factory.createAdapter(definition);
 
-		// then
-		assertThat(adapter, is(instanceOf(ArrayInjector.class)));
-	}
+        // then
+        assertThat(adapter, is(instanceOf(ArrayInjector.class)));
+    }
 }

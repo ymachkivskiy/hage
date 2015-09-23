@@ -31,7 +31,9 @@
 
 package org.jage.problem;
 
+
 import org.jage.strategy.IStrategy;
+
 
 /**
  * General problem interface.
@@ -39,4 +41,5 @@ import org.jage.strategy.IStrategy;
  * @author AGH AgE Team
  */
 public interface IProblem extends IStrategy {
+
 }

@@ -31,8 +31,10 @@
 
 package org.jage.emas.agent;
 
+
 import org.jage.agent.ISimpleAgent;
 import org.jage.solution.ISolution;
+
 
 /**
  * EMAS individual agent interface.
@@ -41,46 +43,46 @@ import org.jage.solution.ISolution;
  */
 public interface IndividualAgent extends ISimpleAgent, EmasAgent {
 
-	@Override
-	IslandAgent getEnvironment();
+    @Override
+    IslandAgent getEnvironment();
 
-	/**
-	 * Get this agent's current solution.
-	 */
-	ISolution getSolution();
+    /**
+     * Get this agent's current solution.
+     */
+    ISolution getSolution();
 
-	/**
-	 * Set this agent's current solution.
-	 */
-	void setSolution(ISolution solution);
+    /**
+     * Set this agent's current solution.
+     */
+    void setSolution(ISolution solution);
 
-	/**
-	 * Get this agent's current energy.
-	 */
-	double getEnergy();
+    /**
+     * Get this agent's current energy.
+     */
+    double getEnergy();
 
-	/**
-	 * Change this agent's energy by the given amount. The agent energy will however not drop below 0.
-	 */
-	void changeEnergyBy(double energyChange);
+    /**
+     * Change this agent's energy by the given amount. The agent energy will however not drop below 0.
+     */
+    void changeEnergyBy(double energyChange);
 
-	/**
-	 * Get the original fitness of this agent, i.e. the one related to its solution.
-	 */
-	double getOriginalFitness();
+    /**
+     * Get the original fitness of this agent, i.e. the one related to its solution.
+     */
+    double getOriginalFitness();
 
-	/**
-	 * Set the original fitness of this agent, i.e. the one related to its solution.
-	 */
-	void setOriginalFitness(double fitness);
+    /**
+     * Set the original fitness of this agent, i.e. the one related to its solution.
+     */
+    void setOriginalFitness(double fitness);
 
-	/**
-	 * Get the effective fitness of this agent, i.e. the one related to its solution and environment.
-	 */
-	double getEffectiveFitness();
+    /**
+     * Get the effective fitness of this agent, i.e. the one related to its solution and environment.
+     */
+    double getEffectiveFitness();
 
-	/**
-	 * Set the effective fitness of this agent, i.e. the one related to its solution and environment.
-	 */
-	void setEffectiveFitness(double fitness);
+    /**
+     * Set the effective fitness of this agent, i.e. the one related to its solution and environment.
+     */
+    void setEffectiveFitness(double fitness);
 }

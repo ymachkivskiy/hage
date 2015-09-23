@@ -31,9 +31,11 @@
 
 package org.jage.utils;
 
+
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+
 
 /**
  * Tests for {@link CumulativeDistribution}.
@@ -42,43 +44,43 @@ import static org.junit.Assert.assertEquals;
  */
 public class CumulativeDistributionTest {
 
-	@Test
-	public void behavesProperlyOnSingleData() {
-		// given
-		double[] data = new double[] { 1.0 };
-		CumulativeDistribution distribution = new CumulativeDistribution(data);
+    @Test
+    public void behavesProperlyOnSingleData() {
+        // given
+        double[] data = new double[]{1.0};
+        CumulativeDistribution distribution = new CumulativeDistribution(data);
 
-		// then
-		assertEquals(0, distribution.getValueFor(0.0));
-		assertEquals(0, distribution.getValueFor(0.5));
-		assertEquals(0, distribution.getValueFor(1.0));
-	}
+        // then
+        assertEquals(0, distribution.getValueFor(0.0));
+        assertEquals(0, distribution.getValueFor(0.5));
+        assertEquals(0, distribution.getValueFor(1.0));
+    }
 
-	@Test
-	public void behavesProperlyOnMultipleData() {
-		// given
-		double[] data = new double[] { 0.0, 0.5, 1.0 };
-		CumulativeDistribution distribution = new CumulativeDistribution(data);
+    @Test
+    public void behavesProperlyOnMultipleData() {
+        // given
+        double[] data = new double[]{0.0, 0.5, 1.0};
+        CumulativeDistribution distribution = new CumulativeDistribution(data);
 
-		// then
-		assertEquals(0, distribution.getValueFor(0.0));
-		assertEquals(1, distribution.getValueFor(0.25));
-		assertEquals(1, distribution.getValueFor(0.5));
-		assertEquals(2, distribution.getValueFor(0.75));
-		assertEquals(2, distribution.getValueFor(1.0));
-	}
+        // then
+        assertEquals(0, distribution.getValueFor(0.0));
+        assertEquals(1, distribution.getValueFor(0.25));
+        assertEquals(1, distribution.getValueFor(0.5));
+        assertEquals(2, distribution.getValueFor(0.75));
+        assertEquals(2, distribution.getValueFor(1.0));
+    }
 
-	@Test
-	public void behavesProperlyWhenDataDoesNotStartOnZero() {
-		// given
-		double[] data = new double[] { 0.5, 1.0 };
-		CumulativeDistribution distribution = new CumulativeDistribution(data);
+    @Test
+    public void behavesProperlyWhenDataDoesNotStartOnZero() {
+        // given
+        double[] data = new double[]{0.5, 1.0};
+        CumulativeDistribution distribution = new CumulativeDistribution(data);
 
-		// then
-		assertEquals(0, distribution.getValueFor(0.0));
-		assertEquals(0, distribution.getValueFor(0.25));
-		assertEquals(0, distribution.getValueFor(0.5));
-		assertEquals(1, distribution.getValueFor(0.75));
-		assertEquals(1, distribution.getValueFor(1.0));
-	}
+        // then
+        assertEquals(0, distribution.getValueFor(0.0));
+        assertEquals(0, distribution.getValueFor(0.25));
+        assertEquals(0, distribution.getValueFor(0.5));
+        assertEquals(1, distribution.getValueFor(0.75));
+        assertEquals(1, distribution.getValueFor(1.0));
+    }
 }

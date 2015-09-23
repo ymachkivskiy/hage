@@ -31,7 +31,6 @@
 
 package org.jage.genetic.action;
 
-import java.util.List;
 
 import org.jage.action.Action;
 import org.jage.action.SingleAction;
@@ -42,12 +41,15 @@ import org.jage.address.selector.Selectors;
 import org.jage.agent.IAgent;
 import org.jage.strategy.AbstractStrategy;
 
+import java.util.List;
+
 import static com.google.common.collect.Lists.newArrayListWithCapacity;
+
 
 /**
  * This preparator sets up agent behavior for a genetic algorithm.
  * <p>
- * 
+ * <p>
  * The steps are:
  * <ul>
  * <li>preselect the population</li>
@@ -55,43 +57,41 @@ import static com.google.common.collect.Lists.newArrayListWithCapacity;
  * <li>update agent statistics</li>
  * </ul>
  * Additionally, at the first run, some initialization is performed.
- * 
- * @param <T>
- *            a type of the agent that the preparator operates on.
- * 
+ *
+ * @param <T> a type of the agent that the preparator operates on.
  * @author AGH AgE Team
  */
 public final class GeneticActionPreparer<T extends IAgent> extends AbstractStrategy implements IActionPreparer<T> {
 
-	private InitializationActionContext initializationActionContext = new InitializationActionContext();
+    private InitializationActionContext initializationActionContext = new InitializationActionContext();
 
-	private PreselectionActionContext preselectionActionContext = new PreselectionActionContext();
+    private PreselectionActionContext preselectionActionContext = new PreselectionActionContext();
 
-	private VariationActionContext variationActionContext = new VariationActionContext();
+    private VariationActionContext variationActionContext = new VariationActionContext();
 
-	private EvaluationActionContext evaluationActionContext = new EvaluationActionContext();
+    private EvaluationActionContext evaluationActionContext = new EvaluationActionContext();
 
-	private StatisticsUpdateActionContext statisticsUpdateActionContext = new StatisticsUpdateActionContext();
+    private StatisticsUpdateActionContext statisticsUpdateActionContext = new StatisticsUpdateActionContext();
 
-	private boolean notYetInitialized = true;
+    private boolean notYetInitialized = true;
 
-	@Override
-	public List<Action> prepareActions(IAgent agent) {
-		AgentAddress agentAddress = agent.getAddress();
-		AddressSelector<AgentAddress> target = Selectors.singleAddress(agentAddress);
+    @Override
+    public List<Action> prepareActions(IAgent agent) {
+        AgentAddress agentAddress = agent.getAddress();
+        AddressSelector<AgentAddress> target = Selectors.singleAddress(agentAddress);
 
-		List<Action> actions = newArrayListWithCapacity(5);
+        List<Action> actions = newArrayListWithCapacity(5);
 
-		if (notYetInitialized) {
-			actions.add(new SingleAction(target, initializationActionContext));
-			notYetInitialized = false;
-		}
+        if(notYetInitialized) {
+            actions.add(new SingleAction(target, initializationActionContext));
+            notYetInitialized = false;
+        }
 
-		actions.add(new SingleAction(target, preselectionActionContext));
-		actions.add(new SingleAction(target, variationActionContext));
-		actions.add(new SingleAction(target, evaluationActionContext));
-		actions.add(new SingleAction(target, statisticsUpdateActionContext));
+        actions.add(new SingleAction(target, preselectionActionContext));
+        actions.add(new SingleAction(target, variationActionContext));
+        actions.add(new SingleAction(target, evaluationActionContext));
+        actions.add(new SingleAction(target, statisticsUpdateActionContext));
 
-		return actions;
-	}
+        return actions;
+    }
 }

@@ -31,12 +31,6 @@
 
 package org.jage.examples.configuration;
 
-import java.util.List;
-
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.jage.address.agent.AgentAddress;
 import org.jage.address.agent.AgentAddressSupplier;
@@ -44,6 +38,12 @@ import org.jage.agent.SimpleAgent;
 import org.jage.platform.component.exception.ComponentException;
 import org.jage.platform.component.provider.IComponentInstanceProvider;
 import org.jage.platform.component.provider.IComponentInstanceProviderAware;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
+import java.util.List;
+
 
 /**
  * This class provides a simple agent that presents how to obtain and handle lists from the instance provider.
@@ -52,57 +52,58 @@ import org.jage.platform.component.provider.IComponentInstanceProviderAware;
  */
 public class ListAgent extends SimpleAgent implements IComponentInstanceProviderAware {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private final Logger log = LoggerFactory.getLogger(ListAgent.class);
+    private final Logger log = LoggerFactory.getLogger(ListAgent.class);
 
-	@Inject
-	private List<ExampleClass> injectedList;
-	private IComponentInstanceProvider instanceProvider;
+    @Inject
+    private List<ExampleClass> injectedList;
+    private IComponentInstanceProvider instanceProvider;
 
-	public ListAgent(final AgentAddress address) {
-		super(address);
-	}
+    public ListAgent(final AgentAddress address) {
+        super(address);
+    }
 
-	@Inject
-	public ListAgent(final AgentAddressSupplier supplier) {
-		super(supplier);
-	}
+    @Inject
+    public ListAgent(final AgentAddressSupplier supplier) {
+        super(supplier);
+    }
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public void init() throws ComponentException {
-		super.init();
-		log.info("Initializing List Simple Agent: {}", getAddress());
+    @SuppressWarnings("unchecked")
+    @Override
+    public void init() throws ComponentException {
+        super.init();
+        log.info("Initializing List Simple Agent: {}", getAddress());
 
-		// Print the injected list
-		log.info("The instance was injected: {}", injectedList);
-		log.info("Values:");
-		for (final ExampleClass element : injectedList) {
-			log.info("Instance: {}", element);
-		}
+        // Print the injected list
+        log.info("The instance was injected: {}", injectedList);
+        log.info("Values:");
+        for(final ExampleClass element : injectedList) {
+            log.info("Instance: {}", element);
+        }
 
-		// Retrieve and print the "object-example" list
-		final List<ExampleClass> list = (List<ExampleClass>)instanceProvider.getInstance("object-example");
-		log.info("Obtained an instance of object-example: {}", list);
-		log.info("Values:");
-		for (final ExampleClass element : list) {
-			log.info("Instance: {}", element);
-		}
-	}
+        // Retrieve and print the "object-example" list
+        final List<ExampleClass> list = (List<ExampleClass>) instanceProvider.getInstance("object-example");
+        log.info("Obtained an instance of object-example: {}", list);
+        log.info("Values:");
+        for(final ExampleClass element : list) {
+            log.info("Instance: {}", element);
+        }
+    }
 
-	@Override
-	public void step() {
-		// Empty
-	}
+    @Override
+    public boolean finish() {
+        log.info("Finishing List Agent: {}", getAddress());
+        return true;
+    }
 
-	@Override
-	public boolean finish() {
-		log.info("Finishing List Agent: {}", getAddress());
-		return true;
-	}
+    @Override
+    public void step() {
+        // Empty
+    }
 
-	@Override public void setInstanceProvider(final IComponentInstanceProvider provider) {
-		this.instanceProvider = provider;
-	}
+    @Override
+    public void setInstanceProvider(final IComponentInstanceProvider provider) {
+        this.instanceProvider = provider;
+    }
 }

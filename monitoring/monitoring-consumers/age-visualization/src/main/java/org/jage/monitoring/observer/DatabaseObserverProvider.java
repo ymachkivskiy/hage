@@ -27,31 +27,32 @@
 
 package org.jage.monitoring.observer;
 
+
+import com.typesafe.config.Config;
 import org.jage.monitoring.config.ExecutorProvider;
 import org.jage.platform.component.provider.IComponentInstanceProvider;
 
-import com.typesafe.config.Config;
 
 /**
  * Providers an instance of DatabaseObserver class.
- * 
+ *
  * @author AGH AgE Team
  */
 public class DatabaseObserverProvider implements ObserverProvider {
 
-	@Override
-	public AbstractStatefulObserver create(final Config c, final IComponentInstanceProvider provider) {
-		final String url = c.getString("url");
-		final String user = c.getString("user");
-		final String password = c.getString("password");
-		final DatabaseObserver dc = new DatabaseObserver(
-				url, user, password, provider, provider.getInstance(ExecutorProvider.class)
-		);
-		return dc;
-	}
+    @Override
+    public AbstractStatefulObserver create(final Config c, final IComponentInstanceProvider provider) {
+        final String url = c.getString("url");
+        final String user = c.getString("user");
+        final String password = c.getString("password");
+        final DatabaseObserver dc = new DatabaseObserver(
+                url, user, password, provider, provider.getInstance(ExecutorProvider.class)
+        );
+        return dc;
+    }
 
-	@Override
-	public String getType() {
-		return "database";
-	}
+    @Override
+    public String getType() {
+        return "database";
+    }
 }

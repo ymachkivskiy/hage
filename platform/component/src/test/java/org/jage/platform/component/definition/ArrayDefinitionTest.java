@@ -31,6 +31,8 @@
 
 package org.jage.platform.component.definition;
 
+
+import org.jage.platform.component.provider.IMutableComponentInstanceProvider;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -39,42 +41,41 @@ import org.mockito.runners.MockitoJUnitRunner;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.jage.platform.component.provider.IMutableComponentInstanceProvider;
 
 /**
  * Tests for the {@link ArrayDefinition} class.
- * 
+ *
  * @author AGH AgE Team
  */
 @RunWith(MockitoJUnitRunner.class)
 public class ArrayDefinitionTest {
 
-	@Mock
-	private IMutableComponentInstanceProvider instanceProvider;
+    @Mock
+    private IMutableComponentInstanceProvider instanceProvider;
 
-	@Test
-	public void constructorTest() {
-		// when
-		ArrayDefinition definition = new ArrayDefinition("an array", Object.class, true);
+    @Test
+    public void constructorTest() {
+        // when
+        ArrayDefinition definition = new ArrayDefinition("an array", Object.class, true);
 
-		// then
-		assertEquals("an array", definition.getName());
-		assertEquals(Object.class, definition.getType());
-		assertTrue(definition.isSingleton());
-	}
+        // then
+        assertEquals("an array", definition.getName());
+        assertEquals(Object.class, definition.getType());
+        assertTrue(definition.isSingleton());
+    }
 
-	@Test
-	public void innerDefinitionTest() {
-		// given
-		ArrayDefinition definition = new ArrayDefinition("an array", Object.class, true);
-		ArrayDefinition innerDefinition = new ArrayDefinition("inner", Object.class, false);
+    @Test
+    public void innerDefinitionTest() {
+        // given
+        ArrayDefinition definition = new ArrayDefinition("an array", Object.class, true);
+        ArrayDefinition innerDefinition = new ArrayDefinition("inner", Object.class, false);
 
-		// when
-		definition.addInnerComponentDefinition(innerDefinition);
+        // when
+        definition.addInnerComponentDefinition(innerDefinition);
 
-		// then
-		assertEquals(1, definition.getInnerComponentDefinitions().size());
-		assertEquals(innerDefinition, definition.getInnerComponentDefinitions().get(0));
-	}
+        // then
+        assertEquals(1, definition.getInnerComponentDefinitions().size());
+        assertEquals(innerDefinition, definition.getInnerComponentDefinitions().get(0));
+    }
 
 }

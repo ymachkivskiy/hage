@@ -31,63 +31,64 @@
 
 package org.jage.query;
 
+
 /**
  * Common implementations of {@link IInitialSelector}.
- * 
+ *
  * @author AGH AgE Team
  */
 public final class InitialSelectors {
 
-	/**
-	 * Returns an initial selector that chooses a specified number of elements from the beginning of collection (if it
-	 * is order, if it is not a selection is dependent on the iterator implementation).
-	 * 
-	 * @param number
-	 *            A number of elements to choose.
-	 * @return A new initial selector.
-	 */
-	public static IInitialSelector first(final int number) {
-		return new IInitialSelector() {
+    private InitialSelectors() {
+        // Empty
+    }
 
-			private int left = 0;
+    /**
+     * Returns an initial selector that chooses a specified number of elements from the beginning of collection (if it
+     * is order, if it is not a selection is dependent on the iterator implementation).
+     *
+     * @param number A number of elements to choose.
+     * @return A new initial selector.
+     */
+    public static IInitialSelector first(final int number) {
+        return new IInitialSelector() {
 
-			@Override
-			public void initialise(long elementsCount) {
-				left = number;
-			}
+            private int left = 0;
 
-			@Override
-			public boolean include() {
-				if (left > 0) {
-					left--;
-					return true;
-				}
-				return false;
-			}
+            @Override
+            public void initialise(long elementsCount) {
+                left = number;
+            }
 
-		};
-	}
+            @Override
+            public boolean include() {
+                if(left > 0) {
+                    left--;
+                    return true;
+                }
+                return false;
+            }
 
-	/**
-	 * Returns an initial selector that chooses all elements.
-	 * 
-	 * @return A new initial selector.
-	 */
-	public static IInitialSelector all() {
-		return new IInitialSelector() {
-			@Override
-			public void initialise(long elementsCount) {
-				// Empty
-			}
+        };
+    }
 
-			@Override
-			public boolean include() {
-				return true;
-			}
-		};
-	}
+    /**
+     * Returns an initial selector that chooses all elements.
+     *
+     * @return A new initial selector.
+     */
+    public static IInitialSelector all() {
+        return new IInitialSelector() {
 
-	private InitialSelectors() {
-		// Empty
-	}
+            @Override
+            public void initialise(long elementsCount) {
+                // Empty
+            }
+
+            @Override
+            public boolean include() {
+                return true;
+            }
+        };
+    }
 }

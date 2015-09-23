@@ -26,22 +26,24 @@
  */
 package org.jage.monitoring.visualization.spring.controller.commandobject;
 
+
 import java.util.Collection;
+
 
 /**
  * Command object which holds numbers of checked checkboxes.
- * 
+ *
  * @author AGH AgE Team
  */
 public class StatisticCommandObject {
-	
-	private Collection<Integer> checkboxNumber;
 
-	public Collection<Integer> getCheckboxNumber() {
-		return checkboxNumber;
-	}
+    private Collection<Integer> checkboxNumber;
 
-	public void setCheckboxNumber(Collection<Integer> checkboxNumber) {
-		this.checkboxNumber = checkboxNumber;
-	}
+    public Collection<Integer> getCheckboxNumber() {
+        return checkboxNumber;
+    }
+
+    public void setCheckboxNumber(Collection<Integer> checkboxNumber) {
+        this.checkboxNumber = checkboxNumber;
+    }
 }

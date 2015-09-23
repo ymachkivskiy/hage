@@ -31,6 +31,11 @@
 
 package org.jage.variation;
 
+
+import org.jage.population.IPopulation;
+import org.jage.solution.ISolution;
+import org.jage.variation.mutation.IMutatePopulation;
+import org.jage.variation.recombination.IRecombinePopulation;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -38,12 +43,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import org.jage.population.IPopulation;
-import org.jage.solution.ISolution;
-import org.jage.variation.mutation.IMutatePopulation;
-import org.jage.variation.recombination.IRecombinePopulation;
-
 import static org.jage.population.Populations.emptyPopulation;
+
 
 /**
  * Tests for VariationOperator.
@@ -53,25 +54,25 @@ import static org.jage.population.Populations.emptyPopulation;
 @RunWith(MockitoJUnitRunner.class)
 public class VariationOperatorTest {
 
-	@Mock
-	private IRecombinePopulation<ISolution> recombine;
+    @Mock
+    private IRecombinePopulation<ISolution> recombine;
 
-	@Mock
-	private IMutatePopulation<ISolution> mutate;
+    @Mock
+    private IMutatePopulation<ISolution> mutate;
 
-	@InjectMocks
-	private VariationOperator<ISolution> operator = new VariationOperator<ISolution>();
+    @InjectMocks
+    private VariationOperator<ISolution> operator = new VariationOperator<ISolution>();
 
-	@Test
-	public void shouldTransformPopulation() {
-		// given
-		IPopulation<ISolution, Object> population = emptyPopulation();
+    @Test
+    public void shouldTransformPopulation() {
+        // given
+        IPopulation<ISolution, Object> population = emptyPopulation();
 
-		// when
-		operator.transformPopulation(population);
+        // when
+        operator.transformPopulation(population);
 
-		// then
-		Mockito.verify(recombine).recombinePopulation(population);
-		Mockito.verify(mutate).mutatePopulation(population);
-	}
+        // then
+        Mockito.verify(recombine).recombinePopulation(population);
+        Mockito.verify(mutate).mutatePopulation(population);
+    }
 }

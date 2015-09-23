@@ -26,41 +26,44 @@
  */
 package org.jage.property.testHelpers;
 
-import java.util.ArrayList;
 
 import org.jage.event.ObjectChangedEvent;
 import org.jage.monitor.IChangesNotifier;
 import org.jage.monitor.IChangesNotifierMonitor;
 
-public class ChangesNotifierStub implements IChangesNotifier {
-	private ArrayList<IChangesNotifierMonitor> _monitors;
-		
-	public ChangesNotifierStub() {
-		_monitors = new ArrayList<IChangesNotifierMonitor>();
-	}
-	
-	public int getNumberOfAttachedMonitors() {
-		return _monitors.size();
-	}
-	
-	public void notifyMonitorsAboutChange() {
-		for (IChangesNotifierMonitor monitor : _monitors) {
-			monitor.objectChanged(this, new ObjectChangedEvent(this));
-		}
-	}
-	
-	public void notifyMonitorsAboutDeletion() {
-		ArrayList<IChangesNotifierMonitor> monitorsCopy = new ArrayList<IChangesNotifierMonitor>(_monitors);
-		for (IChangesNotifierMonitor monitor : monitorsCopy) {
-			monitor.ownerDeleted(null);
-		}
-	}
-	
-	public void addMonitor(IChangesNotifierMonitor monitor) {
-		_monitors.add(monitor);
-	}
+import java.util.ArrayList;
 
-	public void removeMonitor(IChangesNotifierMonitor monitor) {
-		_monitors.remove(monitor);
-	}
+
+public class ChangesNotifierStub implements IChangesNotifier {
+
+    private ArrayList<IChangesNotifierMonitor> _monitors;
+
+    public ChangesNotifierStub() {
+        _monitors = new ArrayList<IChangesNotifierMonitor>();
+    }
+
+    public int getNumberOfAttachedMonitors() {
+        return _monitors.size();
+    }
+
+    public void notifyMonitorsAboutChange() {
+        for(IChangesNotifierMonitor monitor : _monitors) {
+            monitor.objectChanged(this, new ObjectChangedEvent(this));
+        }
+    }
+
+    public void notifyMonitorsAboutDeletion() {
+        ArrayList<IChangesNotifierMonitor> monitorsCopy = new ArrayList<IChangesNotifierMonitor>(_monitors);
+        for(IChangesNotifierMonitor monitor : monitorsCopy) {
+            monitor.ownerDeleted(null);
+        }
+    }
+
+    public void addMonitor(IChangesNotifierMonitor monitor) {
+        _monitors.add(monitor);
+    }
+
+    public void removeMonitor(IChangesNotifierMonitor monitor) {
+        _monitors.remove(monitor);
+    }
 }

@@ -31,18 +31,14 @@
 
 package org.jage.platform.config.xml.loaders;
 
-import org.junit.Test;
 
 import org.jage.platform.component.definition.ConfigurationException;
 import org.jage.platform.config.xml.util.DocumentBuilder;
+import org.junit.Test;
 
 import static org.jage.platform.config.xml.util.DocumentBuilder.emptyDocument;
-import static org.jage.platform.config.xml.util.ElementBuilder.SOME_NAME;
-import static org.jage.platform.config.xml.util.ElementBuilder.arrayElement;
-import static org.jage.platform.config.xml.util.ElementBuilder.blockElement;
-import static org.jage.platform.config.xml.util.ElementBuilder.componentElement;
-import static org.jage.platform.config.xml.util.ElementBuilder.listElement;
-import static org.jage.platform.config.xml.util.ElementBuilder.mapElement;
+import static org.jage.platform.config.xml.util.ElementBuilder.*;
+
 
 /**
  * Tests for BlockUnwrapper.
@@ -56,28 +52,28 @@ public class BlockUnwrapperTest extends AbstractDocumentLoaderTest<BlockUnwrappe
         return new BlockUnwrapper();
     }
 
-	@Test
-	public void shouldUnwrapAllBlocks() throws ConfigurationException {
-		// given
-		final DocumentBuilder original = emptyDocument()
-				.add(blockElement(SOME_NAME)
-					.withBody(
-						componentElement(),
-						listElement(),
-						blockElement(SOME_NAME)
-							.withBody(arrayElement())))
-				.add(componentElement()
-					.withBody(
-						blockElement(SOME_NAME)
-							.withBody(mapElement())));
-		final DocumentBuilder expected = emptyDocument()
-				.add(componentElement())
-				.add(listElement())
-				.add(arrayElement())
-				.add(componentElement()
-						.withBody(mapElement()));
+    @Test
+    public void shouldUnwrapAllBlocks() throws ConfigurationException {
+        // given
+        final DocumentBuilder original = emptyDocument()
+                .add(blockElement(SOME_NAME)
+                             .withBody(
+                                     componentElement(),
+                                     listElement(),
+                                     blockElement(SOME_NAME)
+                                             .withBody(arrayElement())))
+                .add(componentElement()
+                             .withBody(
+                                     blockElement(SOME_NAME)
+                                             .withBody(mapElement())));
+        final DocumentBuilder expected = emptyDocument()
+                .add(componentElement())
+                .add(listElement())
+                .add(arrayElement())
+                .add(componentElement()
+                             .withBody(mapElement()));
 
-		// then
-		assertDocumentTransformation(original, expected);
-	}
+        // then
+        assertDocumentTransformation(original, expected);
+    }
 }

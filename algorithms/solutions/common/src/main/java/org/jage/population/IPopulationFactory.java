@@ -31,8 +31,10 @@
 
 package org.jage.population;
 
+
 import org.jage.solution.ISolution;
 import org.jage.strategy.IStrategy;
+
 
 /**
  * A factory interface for creating {@link IPopulation} instances. <br />
@@ -40,19 +42,16 @@ import org.jage.strategy.IStrategy;
  * This strategy allows to delegate the process of creating an initial population in an evolutionary algorithm. Various
  * implementation can then provide different initial conditions types.
  *
- * @param <S>
- *            The type of solutions created by this factory
+ * @param <S> The type of solutions created by this factory
  * @author AGH AgE Team
  */
 public interface IPopulationFactory<S extends ISolution> extends IStrategy {
 
-	/**
-	 * Creates a population of solutions.
-	 *
-	 * @param <E>
-	 *            the type of evaluation
-	 *
-	 * @return a population of solutions
-	 */
-	public <E> IPopulation<S, E> createPopulation();
+    /**
+     * Creates a population of solutions.
+     *
+     * @param <E> the type of evaluation
+     * @return a population of solutions
+     */
+    public <E> IPopulation<S, E> createPopulation();
 }

@@ -26,12 +26,6 @@
  */
 package org.jage.monitoring.handler;
 
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
-import java.util.Arrays;
-import java.util.List;
 
 import org.jage.monitoring.observer.AbstractStatefulObserver;
 import org.jage.monitoring.observer.ObservedData;
@@ -40,90 +34,97 @@ import org.junit.Test;
 import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import rx.Observable;
 import rx.schedulers.Timestamped;
 
+import java.util.Arrays;
+import java.util.List;
+
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
+
 public class BasicHandlerTest {
 
-	@Mock
-	AbstractStatefulObserver observer;
-	
-	@Before
-	public void setUp(){
-		MockitoAnnotations.initMocks(this);
-	}
+    @Mock
+    AbstractStatefulObserver observer;
 
-	@Test
-	public void notCallOnNext() throws InterruptedException{
+    @Before
+    public void setUp() {
+        MockitoAnnotations.initMocks(this);
+    }
 
-		//given
-		List<Observable<Timestamped<Object>>> observableList = Arrays.asList(
-				Observable.from(new Object[]{}).timestamp(), 
-				Observable.from(new Object[]{}).timestamp()
-		);
-		
-		//when
-		Observable<ObservedData> observable = BasicHandlerFactory.create(observableList, "name");
-		observable.subscribe(observer);
+    @Test
+    public void notCallOnNext() throws InterruptedException {
 
-		//then
-		verify(observer, never()).onNext(Matchers.any(ObservedData.class));
-		verify(observer).onCompleted();
-	}
-	
-	@Test
-	public void callThreeTimesOnNextAlsoFromEmptyObservable() throws InterruptedException{
+        //given
+        List<Observable<Timestamped<Object>>> observableList = Arrays.asList(
+                Observable.from(new Object[]{}).timestamp(),
+                Observable.from(new Object[]{}).timestamp()
+        );
 
-		//given
-		List<Observable<Timestamped<Object>>> observableList = Arrays.asList(
-				Observable.from(new Object[]{}).timestamp(), 
-				Observable.from(new Object[]{10L,20L,30L}).timestamp()
-		);
-		
-		//when
-		Observable<ObservedData> observable = BasicHandlerFactory.create(observableList, "name");
-		observable.subscribe(observer);
+        //when
+        Observable<ObservedData> observable = BasicHandlerFactory.create(observableList, "name");
+        observable.subscribe(observer);
 
-		//then
-		verify(observer, times(3)).onNext(Matchers.any(ObservedData.class));
-		verify(observer).onCompleted();
-	}
-	
-	@Test
-	public void callSixTimesOnNext() throws InterruptedException{
+        //then
+        verify(observer, never()).onNext(Matchers.any(ObservedData.class));
+        verify(observer).onCompleted();
+    }
 
-		//given
-		List<Observable<Timestamped<Object>>> observableList = Arrays.asList(
-				Observable.from(new Object[]{1L,2L,3L}).timestamp(), 
-				Observable.from(new Object[]{10L,20L,30L}).timestamp()
-		);
-		
-		//when
-		Observable<ObservedData> observable = BasicHandlerFactory.create(observableList, "name");
-		observable.subscribe(observer);
+    @Test
+    public void callThreeTimesOnNextAlsoFromEmptyObservable() throws InterruptedException {
 
-		//then
-		verify(observer, times(6)).onNext(Matchers.any(ObservedData.class));
-		verify(observer).onCompleted();
-		
-	}
-	
-	@Test
-	public void callEightTimesOnNextFromDifferentLengthObservables() throws InterruptedException{
+        //given
+        List<Observable<Timestamped<Object>>> observableList = Arrays.asList(
+                Observable.from(new Object[]{}).timestamp(),
+                Observable.from(new Object[]{10L, 20L, 30L}).timestamp()
+        );
 
-		//given
-		List<Observable<Timestamped<Object>>> observableList = Arrays.asList(
-				Observable.from(new Object[]{1L,2L,3L,4L,5L }).timestamp(), 
-				Observable.from(new Object[]{10L,20L,30L}).timestamp()
-		);
-		
-		//when
-		Observable<ObservedData> observable = BasicHandlerFactory.create(observableList, "name");
-		observable.subscribe(observer);
+        //when
+        Observable<ObservedData> observable = BasicHandlerFactory.create(observableList, "name");
+        observable.subscribe(observer);
 
-		//then
-		verify(observer, times(8)).onNext(Matchers.any(ObservedData.class));
-		verify(observer).onCompleted();
-	}	
+        //then
+        verify(observer, times(3)).onNext(Matchers.any(ObservedData.class));
+        verify(observer).onCompleted();
+    }
+
+    @Test
+    public void callSixTimesOnNext() throws InterruptedException {
+
+        //given
+        List<Observable<Timestamped<Object>>> observableList = Arrays.asList(
+                Observable.from(new Object[]{1L, 2L, 3L}).timestamp(),
+                Observable.from(new Object[]{10L, 20L, 30L}).timestamp()
+        );
+
+        //when
+        Observable<ObservedData> observable = BasicHandlerFactory.create(observableList, "name");
+        observable.subscribe(observer);
+
+        //then
+        verify(observer, times(6)).onNext(Matchers.any(ObservedData.class));
+        verify(observer).onCompleted();
+
+    }
+
+    @Test
+    public void callEightTimesOnNextFromDifferentLengthObservables() throws InterruptedException {
+
+        //given
+        List<Observable<Timestamped<Object>>> observableList = Arrays.asList(
+                Observable.from(new Object[]{1L, 2L, 3L, 4L, 5L}).timestamp(),
+                Observable.from(new Object[]{10L, 20L, 30L}).timestamp()
+        );
+
+        //when
+        Observable<ObservedData> observable = BasicHandlerFactory.create(observableList, "name");
+        observable.subscribe(observer);
+
+        //then
+        verify(observer, times(8)).onNext(Matchers.any(ObservedData.class));
+        verify(observer).onCompleted();
+    }
 }

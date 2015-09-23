@@ -31,6 +31,7 @@
 
 package org.jage.platform.config.xml;
 
+
 /**
  * Enum for tag names in AgE configuration files.
  *
@@ -38,32 +39,32 @@ package org.jage.platform.config.xml;
  */
 public enum ConfigTags {
 
-	CONFIGURATION("configuration"),
-	COMPONENT("component"),
-	AGENT("agent"),
-	STRATEGY("strategy"),
-	ARRAY("array"),
-	LIST("list"),
-	SET("set"),
-	MAP("map"),
-	CONSTRUCTOR_ARG("constructor-arg"),
-	PROPERTY("property"),
-	VALUE("value"),
-	REFERENCE("reference"),
-	ENTRY("entry"),
-	KEY("key"),
-	INCLUDE("include"),
-	MULTIPLE("multiple"),
-	BLOCK("block");
+    CONFIGURATION("configuration"),
+    COMPONENT("component"),
+    AGENT("agent"),
+    STRATEGY("strategy"),
+    ARRAY("array"),
+    LIST("list"),
+    SET("set"),
+    MAP("map"),
+    CONSTRUCTOR_ARG("constructor-arg"),
+    PROPERTY("property"),
+    VALUE("value"),
+    REFERENCE("reference"),
+    ENTRY("entry"),
+    KEY("key"),
+    INCLUDE("include"),
+    MULTIPLE("multiple"),
+    BLOCK("block");
 
-	private final String value;
+    private final String value;
 
-	private ConfigTags(final String value) {
-		this.value = value;
-	}
+    private ConfigTags(final String value) {
+        this.value = value;
+    }
 
-	@Override
-	public String toString() {
-		return value;
-	}
+    @Override
+    public String toString() {
+        return value;
+    }
 }

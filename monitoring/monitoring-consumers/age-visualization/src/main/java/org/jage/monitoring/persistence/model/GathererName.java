@@ -26,6 +26,7 @@
  */
 package org.jage.monitoring.persistence.model;
 
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,53 +35,60 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+
 /**
  * Data model object represents gatherer name.
- * 
+ *
  * @author AGH AgE Team
  */
 @Entity
 @Table(name = "gatherername")
 public class GathererName {
-	@Column(name="gatherername_id")
-	@Id
-	@SequenceGenerator(name="gatherername_seq", sequenceName="gatherername_seq")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="gatherername_seq")
-	private long id;
-	
-	private String name;
 
-	public GathererName(){}
-	
-	public GathererName(String name) {
-		this.name = name;
-	}
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
+    @Column(name = "gatherername_id")
+    @Id
+    @SequenceGenerator(name = "gatherername_seq", sequenceName = "gatherername_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gatherername_seq")
+    private long id;
 
-	@Override
-	public boolean equals(Object obj) {
-		if (!(obj instanceof GathererName)) {
-			return false;
-		}
-		if (this == obj) {
-			return true;
-		}
-		GathererName o = (GathererName)obj;
-		if (this.name.equals(o.getName())) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+    private String name;
+
+    public GathererName() {
+    }
+
+    public GathererName(String name) {
+        this.name = name;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof GathererName)) {
+            return false;
+        }
+        if(this == obj) {
+            return true;
+        }
+        GathererName o = (GathererName) obj;
+        if(this.name.equals(o.getName())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public String getName() {
+        return name;
+    }
 }

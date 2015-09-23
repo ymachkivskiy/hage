@@ -33,8 +33,6 @@
 
 package org.jage.platform.component.pico.visitor;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 
 import org.jage.platform.component.definition.ComponentDefinition;
 import org.jage.platform.component.pico.IPicoComponentInstanceProvider;
@@ -44,64 +42,68 @@ import org.jage.platform.component.pico.visitor.StatefulComponentInitializerTest
 import org.junit.Test;
 import org.picocontainer.PicoVisitor;
 
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+
+
 /**
  * Tests for StatefulComponentFinisher.
  *
  * @author AGH AgE Team
  */
 public class StatefulComponentFinisherTest {
-	
-	@Test
-	public void shouldCallFinishOnSingletons() {
-		// given
-		final PicoComponentInstanceProvider provider = new PicoComponentInstanceProvider();
-		final StatefulRegistry registry = new StatefulRegistry();
-		provider.addComponentInstance(registry);
-		provider.addComponent(new ComponentDefinition("singleton", Stateful.class, true));
-		final PicoVisitor visitor = new StatefulComponentFinisher();
-		
-		provider.getComponent("singleton");
-		registry.inits.clear();
-		
-		// when
-		provider.accept(visitor);
-		
-		// then
-		assertThat(registry.inits.size(), is(0));
-		assertThat(registry.finishes.size(), is(1));
-	}
-	
-	@Test
-	public void shouldNotCallFinishOnNonSingletons() {
-		// given
-		final PicoComponentInstanceProvider provider = new PicoComponentInstanceProvider();
-		final StatefulRegistry registry = new StatefulRegistry();
-		provider.addComponentInstance(registry);
-		provider.addComponent(new ComponentDefinition("nonsingleton", Stateful.class, false));
-		final PicoVisitor visitor = new StatefulComponentFinisher();
-		
-		// when
-		provider.accept(visitor);
-		
-		// then
-		assertThat(registry.inits.size(), is(0));
-		assertThat(registry.finishes.size(), is(0));
-	}
-	
-	@Test
-	public void shouldLookupInNestedContainer() {
-		// given
-		final StatefulRegistry registry = new StatefulRegistry();
-		final PicoComponentInstanceProvider parent = new PicoComponentInstanceProvider();
-		final IPicoComponentInstanceProvider child = parent.makeChildContainer();
-		parent.addComponentInstance(registry);
-		child.addComponent(new ComponentDefinition("singleton", Stateful.class, true));
-		final PicoVisitor visitor = new StatefulComponentFinisher();
 
-		// when
-		parent.accept(visitor);
+    @Test
+    public void shouldCallFinishOnSingletons() {
+        // given
+        final PicoComponentInstanceProvider provider = new PicoComponentInstanceProvider();
+        final StatefulRegistry registry = new StatefulRegistry();
+        provider.addComponentInstance(registry);
+        provider.addComponent(new ComponentDefinition("singleton", Stateful.class, true));
+        final PicoVisitor visitor = new StatefulComponentFinisher();
 
-		// then
-		assertThat(registry.finishes.size(), is(1));
-	}
+        provider.getComponent("singleton");
+        registry.inits.clear();
+
+        // when
+        provider.accept(visitor);
+
+        // then
+        assertThat(registry.inits.size(), is(0));
+        assertThat(registry.finishes.size(), is(1));
+    }
+
+    @Test
+    public void shouldNotCallFinishOnNonSingletons() {
+        // given
+        final PicoComponentInstanceProvider provider = new PicoComponentInstanceProvider();
+        final StatefulRegistry registry = new StatefulRegistry();
+        provider.addComponentInstance(registry);
+        provider.addComponent(new ComponentDefinition("nonsingleton", Stateful.class, false));
+        final PicoVisitor visitor = new StatefulComponentFinisher();
+
+        // when
+        provider.accept(visitor);
+
+        // then
+        assertThat(registry.inits.size(), is(0));
+        assertThat(registry.finishes.size(), is(0));
+    }
+
+    @Test
+    public void shouldLookupInNestedContainer() {
+        // given
+        final StatefulRegistry registry = new StatefulRegistry();
+        final PicoComponentInstanceProvider parent = new PicoComponentInstanceProvider();
+        final IPicoComponentInstanceProvider child = parent.makeChildContainer();
+        parent.addComponentInstance(registry);
+        child.addComponent(new ComponentDefinition("singleton", Stateful.class, true));
+        final PicoVisitor visitor = new StatefulComponentFinisher();
+
+        // when
+        parent.accept(visitor);
+
+        // then
+        assertThat(registry.finishes.size(), is(1));
+    }
 }

@@ -31,6 +31,7 @@
 
 package org.jage.workplace.manager;
 
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
@@ -91,6 +92,7 @@ import static com.google.common.collect.Sets.newHashSet;
 import static com.google.common.collect.Sets.newHashSetWithExpectedSize;
 import static java.util.Objects.requireNonNull;
 
+
 /**
  * Default implementation of {@link WorkplaceManager}.
  * <p>
@@ -99,514 +101,505 @@ import static java.util.Objects.requireNonNull;
  */
 @ParametersAreNonnullByDefault
 public class DefaultWorkplaceManager implements WorkplaceManager,
-		MessageSubscriber<WorkplaceManagerMessage> {
+                                                MessageSubscriber<WorkplaceManagerMessage> {
 
-	public static final String WORKPLACES_MAP_NAME = "workplaces";
+    public static final String WORKPLACES_MAP_NAME = "workplaces";
 
-	private static final Logger log = LoggerFactory.getLogger(DefaultWorkplaceManager.class);
-
-	@Nullable private List<Workplace> configuredWorkplaces;
-
-	@GuardedBy("workplacesLock") @Nonnull
-	private final Map<AgentAddress, Workplace> initializedWorkplaces = newHashMap();
-
-	@Nonnull
-	private final List<Workplace> activeWorkplaces = newLinkedList();
-
-	@Nonnull
-	private final ReadWriteLock workplacesLock = new ReentrantReadWriteLock(true);
-
-	private IMap<NodeAddress, Set<AgentAddress>> workplacesMap;
-
-	private IMap<AgentAddress, Map<String, Iterable<?>>> queryCache;
-
+    private static final Logger log = LoggerFactory.getLogger(DefaultWorkplaceManager.class);
+    @GuardedBy("workplacesLock")
+    @Nonnull
+    private final Map<AgentAddress, Workplace> initializedWorkplaces = newHashMap();
+    @Nonnull
+    private final List<Workplace> activeWorkplaces = newLinkedList();
+    @Nonnull
+    private final ReadWriteLock workplacesLock = new ReentrantReadWriteLock(true);
+    @Nonnull
+    private final ListeningScheduledExecutorService executorService = MoreExecutors.listeningDecorator(
+            Executors.newSingleThreadScheduledExecutor(
+                    (new ThreadFactoryBuilder()).setNameFormat("wp-mgr-%d").build()));
     @Autowired
-	protected PicoComponentInstanceProvider instanceProvider;
-
-	@Autowired
+    protected PicoComponentInstanceProvider instanceProvider;
+    @Nullable
+    private List<Workplace> configuredWorkplaces;
+    private IMap<NodeAddress, Set<AgentAddress>> workplacesMap;
+    private IMap<AgentAddress, Map<String, Iterable<?>>> queryCache;
+    @Autowired
     private CommunicationManager communicationManager;
-
-	private CommunicationChannel<WorkplaceManagerMessage> communicationChannel;
-
-	@Autowired
-	private NodeAddressSupplier nodeAddressProvider;
-
-	private IPicoComponentInstanceProvider childContainer;
-
-	@Autowired
+    private CommunicationChannel<WorkplaceManagerMessage> communicationChannel;
+    @Autowired
+    private NodeAddressSupplier nodeAddressProvider;
+    private IPicoComponentInstanceProvider childContainer;
+    @Autowired
     private EventBus eventBus;
 
-	@Nonnull
-	private final ListeningScheduledExecutorService executorService = MoreExecutors.listeningDecorator(
-			Executors.newSingleThreadScheduledExecutor(
-					(new ThreadFactoryBuilder()).setNameFormat("wp-mgr-%d").build()));
+    // Lifecycle methods
 
-	// Lifecycle methods
+    @Override
+    public void init() {
+        communicationChannel = communicationManager.getCommunicationChannelForService(SERVICE_NAME);
+        communicationChannel.subscribe(this);
+        eventBus.register(this);
+        workplacesMap = communicationManager.getDistributedMap(WORKPLACES_MAP_NAME);
+        queryCache = communicationManager.getDistributedMap("queryCache");
+    }
 
-	@Override
-	public void init() {
-		communicationChannel = communicationManager.getCommunicationChannelForService(SERVICE_NAME);
-		communicationChannel.subscribe(this);
-		eventBus.register(this);
-		workplacesMap = communicationManager.getDistributedMap(WORKPLACES_MAP_NAME);
-		queryCache = communicationManager.getDistributedMap("queryCache");
-	}
+    @Override
+    public boolean finish() {
+        withReadLock(new Runnable() {
 
-	@Override
-	public void start() {
-		checkState(configuredWorkplaces != null, "There are no workplaces configured.");
-		initializeWorkplaces();
+            @Override
+            public void run() {
+                for(final Workplace workplace : initializedWorkplaces.values()) {
+                    synchronized(workplace) {
+                        if(workplace.isStopped()) {
+                            workplace.terminate();
+                            log.info("Workplace {} finished", workplace);
+                        } else {
+                            log.error("Cannot terminate still running workplace: {}.", workplace);
+                        }
+                    }
+                }
+            }
+        });
+        executorService.shutdown();
+        return true;
+    }
 
-		childContainer.getInstance(IStopCondition.class);
+    /**
+     * Executes the provided {@link Runnable} with locked workplaces' lock. The lock is locked before execution and
+     * guaranteed to be unlocked after finishing the call.
+     * <p>
+     * <p>
+     * This method locks on a <em>read</em> lock of the {@link ReadWriteLock}.
+     *
+     * @param action the runnable to execute.
+     * @see #withReadLockAndRuntimeExceptions(Callable) for a rationale of behaviour for exceptions.
+     * @see Locks#withReadLock(ReadWriteLock, Runnable)
+     */
+    protected final void withReadLock(final Runnable action) {
+        withReadLockAndRuntimeExceptions(Executors.callable(action));
+    }
 
-		// notify all listeners
-		eventBus.post(new CoreComponentEvent(CoreComponentEvent.Type.STARTING));
+    /**
+     * Executes the provided {@link Callable} with locked workplaces' lock. The lock is locked before execution and
+     * guaranteed to be unlocked after finishing the call.
+     * <p>
+     * <p>
+     * This method locks on a <em>read</em> lock of the {@link ReadWriteLock}. Interrupted exception is logged and the
+     * interrupted status is set. All other exceptions are logged and rethrown as runtime exceptions. (The rationale
+     * behind this is that this method should be used only for locking all operations on workplaces' collection and it
+     * does not throw exceptions.)
+     *
+     * @param action the callable to execute.
+     * @param <V>    a type of the value returned by the callable.
+     * @return an object returned by the callable.
+     * @see Locks#withReadLock(ReadWriteLock, Callable)
+     */
+    protected final <V> V withReadLockAndRuntimeExceptions(final Callable<V> action) {
+        assert (action != null);
+        return Locks.withReadLockAndRuntimeExceptions(workplacesLock, action);
+    }
 
-		// start all workplaces
-		withReadLock(new Runnable() {
-			@Override
-			public void run() {
-				checkState(!initializedWorkplaces.isEmpty(), "There is no workplace to run.");
+    @Override
+    public void start() {
+        checkState(configuredWorkplaces != null, "There are no workplaces configured.");
+        initializeWorkplaces();
 
-				for (final Workplace workplace : initializedWorkplaces.values()) {
-					workplace.start();
-					activeWorkplaces.add(workplace);
-					log.info("Workplace {} started.", workplace);
-				}
-				updateWorkplacesCache();
-			}
-		});
-	}
+        childContainer.getInstance(IStopCondition.class);
 
-	@Override
-	public void pause() {
-		log.debug("Workplace manager is pausing computation.");
-		withReadLock(new Runnable() {
-			@Override
-			public void run() {
-				for (final Workplace workplace : initializedWorkplaces.values()) {
-					synchronized (workplace) {
-						if (workplace.isRunning()) {
-							workplace.pause();
-						} else {
-							log.warn("Trying to pause not running workplace: {}.", workplace);
-						}
-					}
-				}
-			}
-		});
-	}
+        // notify all listeners
+        eventBus.post(new CoreComponentEvent(CoreComponentEvent.Type.STARTING));
 
-	@Override
-	public void resume() {
-		log.debug("Workplace manager is resuming computation.");
-		withReadLock(new Runnable() {
-			@Override
-			public void run() {
-				for (final Workplace workplace : initializedWorkplaces.values()) {
-					synchronized (workplace) {
-						if (workplace.isPaused()) {
-							workplace.resume();
-						} else {
-							log.warn("Trying to resume not paused workplace: {}.", workplace);
-						}
-					}
-				}
-			}
-		});
-	}
+        // start all workplaces
+        withReadLock(new Runnable() {
 
-	@Override
-	public void stop() {
-		log.debug("Workplace manager is stopping.");
-		withReadLock(new Runnable() {
-			@Override
-			public void run() {
-				for (final Workplace workplace : initializedWorkplaces.values()) {
-					synchronized (workplace) {
-						if (workplace.isRunning() || workplace.isPaused()) {
-							workplace.stop();
-						} else {
-							log.warn("Trying to stop not running workplace: {}.", workplace);
-						}
-					}
-				}
-				updateWorkplacesCache();
-			}
-		});
-		log.debug("Workplace manager stopped.");
-	}
+            @Override
+            public void run() {
+                checkState(!initializedWorkplaces.isEmpty(), "There is no workplace to run.");
 
-	@Override
-	public boolean finish() {
-		withReadLock(new Runnable() {
-			@Override
-			public void run() {
-				for (final Workplace workplace : initializedWorkplaces.values()) {
-					synchronized (workplace) {
-						if (workplace.isStopped()) {
-							workplace.terminate();
-							log.info("Workplace {} finished", workplace);
-						} else {
-							log.error("Cannot terminate still running workplace: {}.", workplace);
-						}
-					}
-				}
-			}
-		});
-		executorService.shutdown();
-		return true;
-	}
+                for(final Workplace workplace : initializedWorkplaces.values()) {
+                    workplace.start();
+                    activeWorkplaces.add(workplace);
+                    log.info("Workplace {} started.", workplace);
+                }
+                updateWorkplacesCache();
+            }
+        });
+    }
 
-	/**
-	 * Indicates if the workplace manager is active, i.e. it contains at least on active workplace.
-	 *
-	 * @return true if the manager is active
-	 */
-	public boolean isActive() {
-		return !activeWorkplaces.isEmpty();
-	}
+    @Override
+    public void pause() {
+        log.debug("Workplace manager is pausing computation.");
+        withReadLock(new Runnable() {
 
-	@Override
-	public void onWorkplaceStop(@Nonnull final Workplace workplace) {
-		log.debug("Get stopped notification from {}", workplace.getAddress());
-		if (activeWorkplaces.contains(workplace)) {
-			activeWorkplaces.remove(workplace);
-		} else {
-			log.error("Received event notify stopped from workplace {} which is already stopped",
-					workplace.getAddress());
-		}
+            @Override
+            public void run() {
+                for(final Workplace workplace : initializedWorkplaces.values()) {
+                    synchronized(workplace) {
+                        if(workplace.isRunning()) {
+                            workplace.pause();
+                        } else {
+                            log.warn("Trying to pause not running workplace: {}.", workplace);
+                        }
+                    }
+                }
+            }
+        });
+    }
 
-		if (activeWorkplaces.isEmpty()) {
-			eventBus.post(new CoreComponentEvent(CoreComponentEvent.Type.STOPPED));
-		}
-	}
+    @Override
+    public void resume() {
+        log.debug("Workplace manager is resuming computation.");
+        withReadLock(new Runnable() {
+
+            @Override
+            public void run() {
+                for(final Workplace workplace : initializedWorkplaces.values()) {
+                    synchronized(workplace) {
+                        if(workplace.isPaused()) {
+                            workplace.resume();
+                        } else {
+                            log.warn("Trying to resume not paused workplace: {}.", workplace);
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void stop() {
+        log.debug("Workplace manager is stopping.");
+        withReadLock(new Runnable() {
+
+            @Override
+            public void run() {
+                for(final Workplace workplace : initializedWorkplaces.values()) {
+                    synchronized(workplace) {
+                        if(workplace.isRunning() || workplace.isPaused()) {
+                            workplace.stop();
+                        } else {
+                            log.warn("Trying to stop not running workplace: {}.", workplace);
+                        }
+                    }
+                }
+                updateWorkplacesCache();
+            }
+        });
+        log.debug("Workplace manager stopped.");
+    }
 
 	/* Workplace management methods */
 
-	/**
-	 * Attaches a given workplace to this manager.
-	 *
-	 * @param workplace
-	 * 		workplace to attache
-	 *
-	 * @throws WorkplaceException
-	 * 		when a given workplace is already attached to this manager or workplace's address exists already in
-	 * 		the manager
-	 */
-	public void addWorkplace(final Workplace workplace) {
-		withWriteLock(new Runnable() {
-			@SuppressWarnings("unchecked") @Override
-			public void run() {
-				final AgentAddress agentAddress = workplace.getAddress();
-				if (!initializedWorkplaces.containsKey(agentAddress)) {
-					initializedWorkplaces.put(agentAddress, workplace);
-					if (workplace.isRunning() && !activeWorkplaces.contains(workplace)) {
-						workplace.setEnvironment(DefaultWorkplaceManager.this);
-						activeWorkplaces.add(workplace);
-					}
-					log.info("Workplace added: {}", workplace.getAddress());
-					updateWorkplacesCache();
-				} else {
-					throw new WorkplaceException(String.format("%s already exists in the manager.", agentAddress));
-				}
-			}
-		});
-	}
+    @Override
+    public void teardownConfiguration() {
+        checkState(childContainer != null, "No configuration to destroy.");
+        checkState(!isActive(), "Cannot destroy configuration of an active manager.");
 
-	@Override @Nullable
-	public Workplace getLocalWorkplace(@Nonnull final AgentAddress workplaceAddress) {
-		return withReadLockAndRuntimeExceptions(new Callable<Workplace>() {
-			@Override
-			public Workplace call() {
-				return initializedWorkplaces.get(workplaceAddress);
-			}
-		});
-	}
+        instanceProvider.removeChildContainer(childContainer);
+        configuredWorkplaces = null;
+    }
 
-	@Override @Nonnull
-	public List<Workplace> getLocalWorkplaces() {
-		return withReadLockAndRuntimeExceptions(new Callable<List<Workplace>>() {
-			@Override
-			public List<Workplace> call() {
-				return ImmutableList.copyOf(initializedWorkplaces.values());
-			}
-		});
-	}
+    /**
+     * Indicates if the workplace manager is active, i.e. it contains at least on active workplace.
+     *
+     * @return true if the manager is active
+     */
+    public boolean isActive() {
+        return !activeWorkplaces.isEmpty();
+    }
 
-	private void initializeWorkplaces() {
-		if (configuredWorkplaces == null || configuredWorkplaces.isEmpty()) {
-			throw new ComponentException("There is no workplace defined. Cannot run the computation.");
-		}
+    private void initializeWorkplaces() {
+        if(configuredWorkplaces == null || configuredWorkplaces.isEmpty()) {
+            throw new ComponentException("There is no workplace defined. Cannot run the computation.");
+        }
 
-		log.info("Created {} workplace(s).", configuredWorkplaces.size());
+        log.info("Created {} workplace(s).", configuredWorkplaces.size());
 
-		withWriteLock(new Runnable() {
-			@Override
-			public void run() {
-				for (final Workplace workplace : configuredWorkplaces) {
-					final AgentAddress agentAddress = workplace.getAddress();
+        withWriteLock(new Runnable() {
 
-					// We call setEnvironment() relying on the fact, that all agents and workplaces were
-					// initialized before the workplace manager by the container.
-					try {
-						initializedWorkplaces.put(agentAddress, workplace);
-						workplace.setEnvironment(DefaultWorkplaceManager.this);
-						log.info("Workplace {} initialized.", agentAddress);
-					} catch (final WorkplaceException e) {
-						initializedWorkplaces.remove(
-								agentAddress); // Do not leave not configured workplace in the manager
-						throw new ComponentException(
-								String.format("Cannot set workplace environment for: %s.", agentAddress), e);
-					}
-				}
-			}
-		});
-	}
+            @Override
+            public void run() {
+                for(final Workplace workplace : configuredWorkplaces) {
+                    final AgentAddress agentAddress = workplace.getAddress();
+
+                    // We call setEnvironment() relying on the fact, that all agents and workplaces were
+                    // initialized before the workplace manager by the container.
+                    try {
+                        initializedWorkplaces.put(agentAddress, workplace);
+                        workplace.setEnvironment(DefaultWorkplaceManager.this);
+                        log.info("Workplace {} initialized.", agentAddress);
+                    } catch(final WorkplaceException e) {
+                        initializedWorkplaces.remove(
+                                agentAddress); // Do not leave not configured workplace in the manager
+                        throw new ComponentException(
+                                String.format("Cannot set workplace environment for: %s.", agentAddress), e);
+                    }
+                }
+            }
+        });
+    }
+
+    private void updateWorkplacesCache() {
+        log.debug("Updating workplaces in global map {} - {}.", nodeAddressProvider.get(),
+                  getAddressesOfLocalWorkplaces());
+        workplacesMap.put(nodeAddressProvider.get(), getAddressesOfLocalWorkplaces());
+    }
 
 	/* Workplace environment methods. */
 
-	@SuppressWarnings("unchecked") @Override @Nonnull
-	public <E extends IAgent, T> Collection<T> queryWorkplaces(final AgentEnvironmentQuery<E, T> query) {
-		final Set<Object> results = newHashSet();
-		for (final Map<String, Iterable<?>> value : queryCache.values()) {
-			Iterables.addAll(results, value.get(query.getClass().getCanonicalName()));
-		}
-		log.debug("Global query {} -> {}.", query, results);
-		log.debug("Map: {}.", queryCache.entrySet());
-		return (Collection<T>)results;
-	}
+    /**
+     * Executes the provided {@link Runnable} with locked workplaces' lock. The lock is locked before execution and
+     * guaranteed to be unlocked after finishing the call.
+     * <p>
+     * <p>
+     * This method locks on a <em>write</em> lock of the {@link ReadWriteLock}.
+     *
+     * @param action the runnable to execute.
+     * @see #withReadLockAndRuntimeExceptions(Callable) for a rationale of behaviour for exceptions.
+     * @see Locks#withWriteLock(ReadWriteLock, Runnable)
+     */
+    protected final void withWriteLock(final Runnable action) {
+        withWriteLockAndRuntimeExceptions(Executors.callable(action));
+    }
 
-	@Override
-	public void sendMessage(@Nonnull final WorkplaceManagerMessage message) {
-		requireNonNull(message);
-		log.debug("Sending message {}.", message);
-		communicationChannel.publish(message);
-	}
+    @Nonnull
+    protected Set<AgentAddress> getAddressesOfLocalWorkplaces() {
+        final Set<AgentAddress> addresses = newHashSetWithExpectedSize(getLocalWorkplaces().size());
 
-	@Override public void requestRemoval(@Nonnull final AgentAddress agentAddress) {
-		// TODO
-	}
+        for(final Workplace workplace : getLocalWorkplaces()) {
+            addresses.add(workplace.getAddress());
+        }
+        return addresses;
+    }
 
-	@Nonnull
+    /**
+     * Executes the provided {@link Callable} with locked workplaces' lock. The lock is locked before execution and
+     * guaranteed to be unlocked after finishing the call.
+     * <p>
+     * <p>
+     * This method locks on a <em>write</em> lock of the {@link ReadWriteLock}.
+     *
+     * @param action the callable to execute.
+     * @param <V>    a type of the value returned by the callable.
+     * @return an object returned by the callable.
+     * @see #withReadLockAndRuntimeExceptions(Callable) for a rationale of behaviour for exceptions.
+     * @see Locks#withWriteLock(ReadWriteLock, Callable)
+     */
+    protected final <V> V withWriteLockAndRuntimeExceptions(final Callable<V> action) {
+        assert (action != null);
+        return Locks.withWriteLockAndRuntimeExceptions(workplacesLock, action);
+    }
+
     @Override
-    public Set<AgentAddress> getAddressesOfWorkplaces() {
-		final ImmutableSet.Builder<AgentAddress> builder = ImmutableSet.builder();
-		for (final Set<AgentAddress> remoteAddresses : workplacesMap.values()) {
-			builder.addAll(remoteAddresses);
-		}
-		return builder.build();
-	}
+    public void onWorkplaceStop(@Nonnull final Workplace workplace) {
+        log.debug("Get stopped notification from {}", workplace.getAddress());
+        if(activeWorkplaces.contains(workplace)) {
+            activeWorkplaces.remove(workplace);
+        } else {
+            log.error("Received event notify stopped from workplace {} which is already stopped",
+                      workplace.getAddress());
+        }
 
-	@Override
-	public void cacheQueryResults(@Nonnull final AgentAddress address, @Nonnull final IQuery<?, ?> query,
-			final Iterable<?> results) {
+        if(activeWorkplaces.isEmpty()) {
+            eventBus.post(new CoreComponentEvent(CoreComponentEvent.Type.STOPPED));
+        }
+    }
 
-		log.debug("Caching {} for {} with {}.", query, address, results);
-		try {
-			queryCache.lock(address);
-			log.debug("{} lock acquired.", address);
-			if (!queryCache.containsKey(address)) {
-				queryCache.set(address, Maps.<String, Iterable<?>>newHashMap());
-			}
-			final Map<String, Iterable<?>> map = queryCache.get(address);
-			assert map != null;
-			map.put(query.getClass().getCanonicalName(), results);
-			queryCache.set(address, map);
-		} finally {
-			log.debug("*Map: {}.", queryCache.entrySet());
-			queryCache.unlock(address);
-			log.debug("{} lock released.", address);
-		}
-	}
+    @SuppressWarnings("unchecked")
+    @Override
+    @Nonnull
+    public <E extends IAgent, T> Collection<T> queryWorkplaces(final AgentEnvironmentQuery<E, T> query) {
+        final Set<Object> results = newHashSet();
+        for(final Map<String, Iterable<?>> value : queryCache.values()) {
+            Iterables.addAll(results, value.get(query.getClass().getCanonicalName()));
+        }
+        log.debug("Global query {} -> {}.", query, results);
+        log.debug("Map: {}.", queryCache.entrySet());
+        return (Collection<T>) results;
+    }
 
-	private void deliverMessageToWorkplace(@Nonnull final Message<AgentAddress, ?> message) {
-		withReadLock(new Runnable() {
-			@Override
-			public void run() {
-				final AddressSelector<AgentAddress> receiverSelector = message.getHeader().getReceiverSelector();
-				final Set<AgentAddress> addresses = Selectors.filter(getAddressesOfLocalWorkplaces(), receiverSelector);
-				for (final AgentAddress agentAddress : addresses) {
-					log.debug("Delivering to {}.", agentAddress);
-					getLocalWorkplace(agentAddress).deliverMessage(message);
-				}
-			}
-		});
-	}
+    @Override
+    public void sendMessage(@Nonnull final WorkplaceManagerMessage message) {
+        requireNonNull(message);
+        log.debug("Sending message {}.", message);
+        communicationChannel.publish(message);
+    }
 
-	@Nonnull
-	protected Set<AgentAddress> getAddressesOfLocalWorkplaces() {
-		final Set<AgentAddress> addresses = newHashSetWithExpectedSize(getLocalWorkplaces().size());
-
-		for (final Workplace workplace : getLocalWorkplaces()) {
-			addresses.add(workplace.getAddress());
-		}
-		return addresses;
-	}
+    @Override
+    public void requestRemoval(@Nonnull final AgentAddress agentAddress) {
+        // TODO
+    }
 
 	/* Distribution-awareness methods */
 
-	@Subscribe
-    public void onConfigurationUpdated(@Nonnull final ConfigurationUpdatedEvent event) {
-		log.debug("Event: {}.", event);
-		checkState(configuredWorkplaces == null, "The core component is already configured.");
+    @Nonnull
+    @Override
+    public Set<AgentAddress> getAddressesOfWorkplaces() {
+        final ImmutableSet.Builder<AgentAddress> builder = ImmutableSet.builder();
+        for(final Set<AgentAddress> remoteAddresses : workplacesMap.values()) {
+            builder.addAll(remoteAddresses);
+        }
+        return builder.build();
+    }
 
-		final Collection<IComponentDefinition> componentDefinitions = event.getComponents();
+    @Override
+    public void cacheQueryResults(@Nonnull final AgentAddress address, @Nonnull final IQuery<?, ?> query,
+            final Iterable<?> results) {
 
-		childContainer = instanceProvider.makeChildContainer();
-		for (final IComponentDefinition def : componentDefinitions) {
-			childContainer.addComponent(def);
-		}
-		childContainer.verify();
-
-		configuredWorkplaces = newArrayList(childContainer.getInstances(Workplace.class));
-//		childContainer.getInstances(IStopCondition.class);
-
-		log.info("Configured workplaces: {}.", configuredWorkplaces);
-		eventBus.post(new CoreComponentEvent(CoreComponentEvent.Type.CONFIGURED));
-	}
-
-	@Override
-	public void teardownConfiguration() {
-		checkState(childContainer != null, "No configuration to destroy.");
-		checkState(!isActive(), "Cannot destroy configuration of an active manager.");
-
-		instanceProvider.removeChildContainer(childContainer);
-		configuredWorkplaces = null;
-	}
+        log.debug("Caching {} for {} with {}.", query, address, results);
+        try {
+            queryCache.lock(address);
+            log.debug("{} lock acquired.", address);
+            if(!queryCache.containsKey(address)) {
+                queryCache.set(address, Maps.<String, Iterable<?>> newHashMap());
+            }
+            final Map<String, Iterable<?>> map = queryCache.get(address);
+            assert map != null;
+            map.put(query.getClass().getCanonicalName(), results);
+            queryCache.set(address, map);
+        } finally {
+            log.debug("*Map: {}.", queryCache.entrySet());
+            queryCache.unlock(address);
+            log.debug("{} lock released.", address);
+        }
+    }
 
 	/* Lock utilities. */
 
-	/**
-	 * Executes the provided {@link Runnable} with locked workplaces' lock. The lock is locked before execution and
-	 * guaranteed to be unlocked after finishing the call.
-	 *
-	 * <p>
-	 * This method locks on a <em>read</em> lock of the {@link ReadWriteLock}.
-	 *
-	 * @param action
-	 * 		the runnable to execute.
-	 *
-	 * @see #withReadLockAndRuntimeExceptions(Callable) for a rationale of behaviour for exceptions.
-	 * @see Locks#withReadLock(ReadWriteLock, Runnable)
-	 */
-	protected final void withReadLock(final Runnable action) {
-		withReadLockAndRuntimeExceptions(Executors.callable(action));
-	}
+    /**
+     * Attaches a given workplace to this manager.
+     *
+     * @param workplace workplace to attache
+     * @throws WorkplaceException when a given workplace is already attached to this manager or workplace's address exists already in
+     *                            the manager
+     */
+    public void addWorkplace(final Workplace workplace) {
+        withWriteLock(new Runnable() {
 
-	/**
-	 * Executes the provided {@link Callable} with locked workplaces' lock. The lock is locked before execution and
-	 * guaranteed to be unlocked after finishing the call.
-	 *
-	 * <p>
-	 * This method locks on a <em>read</em> lock of the {@link ReadWriteLock}. Interrupted exception is logged and the
-	 * interrupted status is set. All other exceptions are logged and rethrown as runtime exceptions. (The rationale
-	 * behind this is that this method should be used only for locking all operations on workplaces' collection and it
-	 * does not throw exceptions.)
-	 *
-	 * @param action
-	 * 		the callable to execute.
-	 * @param <V>
-	 * 		a type of the value returned by the callable.
-	 *
-	 * @return an object returned by the callable.
-	 *
-	 * @see Locks#withReadLock(ReadWriteLock, Callable)
-	 */
-	protected final <V> V withReadLockAndRuntimeExceptions(final Callable<V> action) {
-		assert (action != null);
-		return Locks.withReadLockAndRuntimeExceptions(workplacesLock, action);
-	}
+            @SuppressWarnings("unchecked")
+            @Override
+            public void run() {
+                final AgentAddress agentAddress = workplace.getAddress();
+                if(!initializedWorkplaces.containsKey(agentAddress)) {
+                    initializedWorkplaces.put(agentAddress, workplace);
+                    if(workplace.isRunning() && !activeWorkplaces.contains(workplace)) {
+                        workplace.setEnvironment(DefaultWorkplaceManager.this);
+                        activeWorkplaces.add(workplace);
+                    }
+                    log.info("Workplace added: {}", workplace.getAddress());
+                    updateWorkplacesCache();
+                } else {
+                    throw new WorkplaceException(String.format("%s already exists in the manager.", agentAddress));
+                }
+            }
+        });
+    }
 
-	/**
-	 * Executes the provided {@link Runnable} with locked workplaces' lock. The lock is locked before execution and
-	 * guaranteed to be unlocked after finishing the call.
-	 *
-	 * <p>
-	 * This method locks on a <em>write</em> lock of the {@link ReadWriteLock}.
-	 *
-	 * @param action
-	 * 		the runnable to execute.
-	 *
-	 * @see #withReadLockAndRuntimeExceptions(Callable) for a rationale of behaviour for exceptions.
-	 * @see Locks#withWriteLock(ReadWriteLock, Runnable)
-	 */
-	protected final void withWriteLock(final Runnable action) {
-		withWriteLockAndRuntimeExceptions(Executors.callable(action));
-	}
+    @Override
+    @Nullable
+    public Workplace getLocalWorkplace(@Nonnull final AgentAddress workplaceAddress) {
+        return withReadLockAndRuntimeExceptions(new Callable<Workplace>() {
 
-	/**
-	 * Executes the provided {@link Callable} with locked workplaces' lock. The lock is locked before execution and
-	 * guaranteed to be unlocked after finishing the call.
-	 *
-	 * <p>
-	 * This method locks on a <em>write</em> lock of the {@link ReadWriteLock}.
-	 *
-	 * @param action
-	 * 		the callable to execute.
-	 * @param <V>
-	 * 		a type of the value returned by the callable.
-	 *
-	 * @return an object returned by the callable.
-	 *
-	 * @see #withReadLockAndRuntimeExceptions(Callable) for a rationale of behaviour for exceptions.
-	 * @see Locks#withWriteLock(ReadWriteLock, Callable)
-	 */
-	protected final <V> V withWriteLockAndRuntimeExceptions(final Callable<V> action) {
-		assert (action != null);
-		return Locks.withWriteLockAndRuntimeExceptions(workplacesLock, action);
-	}
+            @Override
+            public Workplace call() {
+                return initializedWorkplaces.get(workplaceAddress);
+            }
+        });
+    }
 
-	protected final <V, E extends Exception> V withWriteLockThrowing(final Callable<V> action,
-			final Class<E> exceptionClass) throws E {
-		assert (action != null && exceptionClass != null);
-		return Locks.withWriteLockThrowing(workplacesLock, action, exceptionClass);
-	}
+    @Override
+    @Nonnull
+    public List<Workplace> getLocalWorkplaces() {
+        return withReadLockAndRuntimeExceptions(new Callable<List<Workplace>>() {
 
-	protected final <V, E extends Exception> V withReadLockThrowing(final Callable<V> action,
-			final Class<E> exceptionClass) throws E {
-		assert (action != null && exceptionClass != null);
-		return Locks.withReadLockThrowing(workplacesLock, action, exceptionClass);
-	}
+            @Override
+            public List<Workplace> call() {
+                return ImmutableList.copyOf(initializedWorkplaces.values());
+            }
+        });
+    }
 
-	@Override
-	public String toString() {
-		return toStringHelper(this).toString();
-	}
+    private void deliverMessageToWorkplace(@Nonnull final Message<AgentAddress, ?> message) {
+        withReadLock(new Runnable() {
 
-	@Override public void onMessage(@Nonnull final WorkplaceManagerMessage message) {
-		final Serializable payload = message.getPayload();
-		switch (message.getType()) {
-			case AGENT_MESSAGE:
-				if (!(payload instanceof Message)) {
-					log.error("Unrecognizable payload {}.", payload);
-					return;
-				}
-				final Message<AgentAddress, Serializable> agentMessage = (Message<AgentAddress, Serializable>)payload;
-				deliverMessageToWorkplace(agentMessage);
-				break;
+            @Override
+            public void run() {
+                final AddressSelector<AgentAddress> receiverSelector = message.getHeader().getReceiverSelector();
+                final Set<AgentAddress> addresses = Selectors.filter(getAddressesOfLocalWorkplaces(), receiverSelector);
+                for(final AgentAddress agentAddress : addresses) {
+                    log.debug("Delivering to {}.", agentAddress);
+                    getLocalWorkplace(agentAddress).deliverMessage(message);
+                }
+            }
+        });
+    }
 
-			case MIGRATE_AGENT:
-				if (!(payload instanceof Map)) {
-					log.error("Unrecognizable payload {}.", payload);
-					return;
-				}
-				final Map<String, Serializable> migrationData = (Map<String, Serializable>)payload;
-				final AddressSelector<AgentAddress> targetSelector =
-						(AddressSelector<AgentAddress>)migrationData.get("target");
-				final ISimpleAgent agent = (ISimpleAgent)migrationData.get("agent");
-				final Set<AgentAddress> addresses = Selectors.filter(getAddressesOfLocalWorkplaces(), targetSelector);
-				if (addresses.size() == 1) {//TODO : strange construction
-					getLocalWorkplace(addresses.iterator().next()).sendAgent(agent);
-				}
-				break;
-		}
+    @Subscribe
+    public void onConfigurationUpdated(@Nonnull final ConfigurationUpdatedEvent event) {
+        log.debug("Event: {}.", event);
+        checkState(configuredWorkplaces == null, "The core component is already configured.");
 
-	}
+        final Collection<IComponentDefinition> componentDefinitions = event.getComponents();
 
-	private void updateWorkplacesCache() {
-		log.debug("Updating workplaces in global map {} - {}.", nodeAddressProvider.get(),
-				getAddressesOfLocalWorkplaces());
-		workplacesMap.put(nodeAddressProvider.get(), getAddressesOfLocalWorkplaces());
-	}
+        childContainer = instanceProvider.makeChildContainer();
+        for(final IComponentDefinition def : componentDefinitions) {
+            childContainer.addComponent(def);
+        }
+        childContainer.verify();
+
+        configuredWorkplaces = newArrayList(childContainer.getInstances(Workplace.class));
+//		childContainer.getInstances(IStopCondition.class);
+
+        log.info("Configured workplaces: {}.", configuredWorkplaces);
+        eventBus.post(new CoreComponentEvent(CoreComponentEvent.Type.CONFIGURED));
+    }
+
+    protected final <V, E extends Exception> V withWriteLockThrowing(final Callable<V> action,
+            final Class<E> exceptionClass) throws E {
+        assert (action != null && exceptionClass != null);
+        return Locks.withWriteLockThrowing(workplacesLock, action, exceptionClass);
+    }
+
+    protected final <V, E extends Exception> V withReadLockThrowing(final Callable<V> action,
+            final Class<E> exceptionClass) throws E {
+        assert (action != null && exceptionClass != null);
+        return Locks.withReadLockThrowing(workplacesLock, action, exceptionClass);
+    }
+
+    @Override
+    public String toString() {
+        return toStringHelper(this).toString();
+    }
+
+    @Override
+    public void onMessage(@Nonnull final WorkplaceManagerMessage message) {
+        final Serializable payload = message.getPayload();
+        switch(message.getType()) {
+            case AGENT_MESSAGE:
+                if(!(payload instanceof Message)) {
+                    log.error("Unrecognizable payload {}.", payload);
+                    return;
+                }
+                final Message<AgentAddress, Serializable> agentMessage = (Message<AgentAddress, Serializable>) payload;
+                deliverMessageToWorkplace(agentMessage);
+                break;
+
+            case MIGRATE_AGENT:
+                if(!(payload instanceof Map)) {
+                    log.error("Unrecognizable payload {}.", payload);
+                    return;
+                }
+                final Map<String, Serializable> migrationData = (Map<String, Serializable>) payload;
+                final AddressSelector<AgentAddress> targetSelector =
+                        (AddressSelector<AgentAddress>) migrationData.get("target");
+                final ISimpleAgent agent = (ISimpleAgent) migrationData.get("agent");
+                final Set<AgentAddress> addresses = Selectors.filter(getAddressesOfLocalWorkplaces(), targetSelector);
+                if(addresses.size() == 1) {//TODO : strange construction
+                    getLocalWorkplace(addresses.iterator().next()).sendAgent(agent);
+                }
+                break;
+        }
+
+    }
 }

@@ -1,5 +1,6 @@
 package org.jage.platform.argument;
 
+
 public interface RuntimeArgumentsService {
 
     void parse(String bootClassName, String arguments[]);

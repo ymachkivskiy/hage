@@ -31,15 +31,16 @@
 
 package org.jage.platform.component.definition;
 
+
 import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import static java.util.Collections.unmodifiableList;
-
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newLinkedList;
+import static java.util.Collections.unmodifiableList;
+
 
 /**
  * The definition of a collection component.
@@ -48,67 +49,59 @@ import static com.google.common.collect.Lists.newLinkedList;
  */
 public class CollectionDefinition extends AbstractComponentDefinition {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private final List<IArgumentDefinition> items = newLinkedList();
+    private final List<IArgumentDefinition> items = newLinkedList();
 
-	/**
-	 * Creates a new collection definition with a given name, collection type and elements type.
-	 *
-	 * @param name
-	 *            the name of the component
-	 * @param type
-	 *            the collection type of the component
-	 * @param elementsType
-	 *            the elements type of the component
-	 * @param isSingleton
-	 *            whether the component has a singleton scope
-	 */
-	public CollectionDefinition(String name, @SuppressWarnings("rawtypes") Class<? extends Collection> type,
-	        Type elementsType, boolean isSingleton) {
-		super(name, type, Collections.singletonList(elementsType), isSingleton);
-	}
+    /**
+     * Creates a new collection definition with a given name, collection type and default element type.
+     *
+     * @param name        the name of the component
+     * @param type        the collection type of the component
+     * @param isSingleton whether the component has a singleton scope
+     */
+    public CollectionDefinition(String name, @SuppressWarnings("rawtypes") Class<? extends Collection> type,
+            boolean isSingleton) {
+        this(name, type, Object.class, isSingleton);
+    }
 
-	/**
-	 * Creates a new collection definition with a given name, collection type and default element type.
-	 *
-	 * @param name
-	 *            the name of the component
-	 * @param type
-	 *            the collection type of the component
-	 * @param isSingleton
-	 *            whether the component has a singleton scope
-	 */
-	public CollectionDefinition(String name, @SuppressWarnings("rawtypes") Class<? extends Collection> type,
-	        boolean isSingleton) {
-		this(name, type, Object.class, isSingleton);
-	}
+    /**
+     * Creates a new collection definition with a given name, collection type and elements type.
+     *
+     * @param name         the name of the component
+     * @param type         the collection type of the component
+     * @param elementsType the elements type of the component
+     * @param isSingleton  whether the component has a singleton scope
+     */
+    public CollectionDefinition(String name, @SuppressWarnings("rawtypes") Class<? extends Collection> type,
+            Type elementsType, boolean isSingleton) {
+        super(name, type, Collections.singletonList(elementsType), isSingleton);
+    }
 
-	/**
-	 * Returns the elements type of this collection definition.
-	 *
-	 * @return the elements type of this collection definition
-	 */
-	public Type getElementsType() {
-		return getTypeParameters().get(0);
-	}
+    /**
+     * Returns the elements type of this collection definition.
+     *
+     * @return the elements type of this collection definition
+     */
+    public Type getElementsType() {
+        return getTypeParameters().get(0);
+    }
 
-	/**
-	 * Adds an item to this collection definition.
-	 *
-	 * @param item
-	 *            an item
-	 */
-	public void addItem(IArgumentDefinition item) {
-		items.add(checkNotNull(item));
-	}
+    /**
+     * Adds an item to this collection definition.
+     *
+     * @param item an item
+     */
+    public void addItem(IArgumentDefinition item) {
+        items.add(checkNotNull(item));
+    }
 
-	/**
-	 * Returns a read only view of this collection definition's items.
-	 *
-	 * @return this collection definition's items
-	 */
-	public List<IArgumentDefinition> getItems() {
-		return unmodifiableList(items);
-	}
+    /**
+     * Returns a read only view of this collection definition's items.
+     *
+     * @return this collection definition's items
+     */
+    public List<IArgumentDefinition> getItems() {
+        return unmodifiableList(items);
+    }
 }

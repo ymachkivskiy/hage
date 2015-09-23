@@ -1,10 +1,12 @@
 package org.jage.platform.containermerge;
 
+
 import org.jage.platform.component.provider.IMutableComponentInstanceProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
+
 
 public class ContainerComponentShare {
 
@@ -18,7 +20,7 @@ public class ContainerComponentShare {
         this.componentsForSharing = componentsForSharing;
     }
 
-    public void shareComponents(){
+    public void shareComponents() {
         componentsForSharing.forEach(container::addComponentInstance);
     }
 

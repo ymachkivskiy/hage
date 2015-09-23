@@ -26,24 +26,26 @@
  */
 package org.jage.property.xml;
 
-import static org.junit.Assert.assertEquals;
 
 import org.jage.property.xml.testHelpers.AdvancedExampleComponent;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+
+
 public class XMLBasedMetaPropertyTest {
 
-	@Test
-	public void testGetterSetter() throws Exception {
-		AdvancedExampleComponent component = new AdvancedExampleComponent();
-		XMLBasedGetterSetterMetaProperty metaProperty = new XMLBasedGetterSetterMetaProperty("_intProperty", int.class,
-				component.getIntPropertyGetter(), component.getIntPropertySetter());
-		assertEquals(component.getIntPropertyGetter(), metaProperty.getGetter());
-		assertEquals(component.getIntPropertySetter(), metaProperty.getSetter());
-	}
+    @Test
+    public void testGetterSetter() throws Exception {
+        AdvancedExampleComponent component = new AdvancedExampleComponent();
+        XMLBasedGetterSetterMetaProperty metaProperty = new XMLBasedGetterSetterMetaProperty("_intProperty", int.class,
+                                                                                             component.getIntPropertyGetter(), component.getIntPropertySetter());
+        assertEquals(component.getIntPropertyGetter(), metaProperty.getGetter());
+        assertEquals(component.getIntPropertySetter(), metaProperty.getSetter());
+    }
 
 	/*
-	 * XMLGetterSetterProperties are non-monitorable by definition, because it requires special operations in setter
+     * XMLGetterSetterProperties are non-monitorable by definition, because it requires special operations in setter
 	 * methods of component, which we cannot change.
 	 * 
 	 * @Test public void testIsMonitorable() throws Exception { ClassWithProperties propertiesObject = new
@@ -54,22 +56,22 @@ public class XMLBasedMetaPropertyTest {
 	 * assertFalse(notMonitorableMetaProperty.isMonitorable()); }
 	 */
 
-	@Test
-	public void testPropertyName() throws Exception {
-		AdvancedExampleComponent component = new AdvancedExampleComponent();
-		XMLBasedGetterSetterMetaProperty intMetaProperty = new XMLBasedGetterSetterMetaProperty("_intProperty",
-				int.class, component.getIntPropertyGetter(), component.getIntPropertySetter());
-		XMLBasedGetterSetterMetaProperty stringMetaProperty = new XMLBasedGetterSetterMetaProperty("_stringProperty",
-				int.class, component.getStringPropertyGetter(), component.getStringPropertySetter());
-		assertEquals("_intProperty", intMetaProperty.getName());
-		assertEquals("_stringProperty", stringMetaProperty.getName());
-	}
+    @Test
+    public void testPropertyName() throws Exception {
+        AdvancedExampleComponent component = new AdvancedExampleComponent();
+        XMLBasedGetterSetterMetaProperty intMetaProperty = new XMLBasedGetterSetterMetaProperty("_intProperty",
+                                                                                                int.class, component.getIntPropertyGetter(), component.getIntPropertySetter());
+        XMLBasedGetterSetterMetaProperty stringMetaProperty = new XMLBasedGetterSetterMetaProperty("_stringProperty",
+                                                                                                   int.class, component.getStringPropertyGetter(), component.getStringPropertySetter());
+        assertEquals("_intProperty", intMetaProperty.getName());
+        assertEquals("_stringProperty", stringMetaProperty.getName());
+    }
 
-	@Test
-	public void testPropertyClass() throws Exception {
-		AdvancedExampleComponent component = new AdvancedExampleComponent();
-		XMLBasedGetterSetterMetaProperty metaProperty = new XMLBasedGetterSetterMetaProperty("_intProperty", int.class,
-				component.getIntPropertyGetter(), component.getIntPropertySetter());
-		assertEquals(int.class, metaProperty.getPropertyClass());
-	}
+    @Test
+    public void testPropertyClass() throws Exception {
+        AdvancedExampleComponent component = new AdvancedExampleComponent();
+        XMLBasedGetterSetterMetaProperty metaProperty = new XMLBasedGetterSetterMetaProperty("_intProperty", int.class,
+                                                                                             component.getIntPropertyGetter(), component.getIntPropertySetter());
+        assertEquals(int.class, metaProperty.getPropertyClass());
+    }
 }

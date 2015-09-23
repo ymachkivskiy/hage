@@ -35,25 +35,24 @@ package org.jage.platform.component.definition;
 import org.junit.Before;
 import org.junit.Test;
 
+
 public class SingletonTest {
 
-	@Before
-	public void setUp() throws Exception {
-		
-	}
-	
-	@Test
-	public void testSingletonFromConfig() throws Exception {
-		// test if singletons injected from the container are 
-		// really singletons
-	}
-	
-	@Test
-	public void testSingletonProviderAware() throws Exception {
-		// test if IComponentProviderAware objects get real singletons
-		// when using getInstance()
-	}
-	
-	
+    @Before
+    public void setUp() throws Exception {
+
+    }
+
+    @Test
+    public void testSingletonFromConfig() throws Exception {
+        // test if singletons injected from the container are
+        // really singletons
+    }
+
+    @Test
+    public void testSingletonProviderAware() throws Exception {
+        // test if IComponentProviderAware objects get real singletons
+        // when using getInstance()
+    }
 
 }

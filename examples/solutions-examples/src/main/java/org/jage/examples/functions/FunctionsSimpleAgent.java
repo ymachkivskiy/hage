@@ -31,12 +31,6 @@
 
 package org.jage.examples.functions;
 
-import java.util.Random;
-
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.jage.address.agent.AgentAddress;
 import org.jage.address.agent.AgentAddressSupplier;
@@ -45,42 +39,48 @@ import org.jage.property.InvalidPropertyOperationException;
 import org.jage.property.InvalidPropertyPathException;
 import org.jage.property.Property;
 import org.jage.property.PropertyField;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
+import java.util.Random;
+
 
 public class FunctionsSimpleAgent extends SimpleAgent {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private static final Logger log = LoggerFactory.getLogger(FunctionsSimpleAgent.class);
+    private static final Logger log = LoggerFactory.getLogger(FunctionsSimpleAgent.class);
+    private static final Random RAND = new Random();
+    @PropertyField(propertyName = Properties.VALUE)
+    private Double value;
 
-	public static class Properties {
-		public static final String VALUE = "value";
-	}
+    public FunctionsSimpleAgent(final AgentAddress address) {
+        super(address);
+    }
 
-	private static final Random RAND = new Random();
+    @Inject
+    public FunctionsSimpleAgent(final AgentAddressSupplier supplier) {
+        super(supplier);
+    }
 
-	@PropertyField(propertyName = Properties.VALUE)
-	private Double value;
+    @Override
+    public void step() {
+        try {
+            final Property property = getProperty(Properties.VALUE);
+            property.setValue(RAND.nextDouble());
+        } catch(final InvalidPropertyPathException e) {
+            log.error("Can't access value property", e);
+        } catch(final InvalidPropertyOperationException e) {
+            log.error("Can't set value property", e);
+        }
 
-	public FunctionsSimpleAgent(final AgentAddress address) {
-		super(address);
-	}
+        log.info("{}: value is {}", this, value);
+    }
 
-	@Inject
-	public FunctionsSimpleAgent(final AgentAddressSupplier supplier) {
-		super(supplier);
-	}
 
-	@Override
-	public void step() {
-		try {
-			final Property property = getProperty(Properties.VALUE);
-			property.setValue(RAND.nextDouble());
-		} catch (final InvalidPropertyPathException e) {
-			log.error("Can't access value property", e);
-		} catch (final InvalidPropertyOperationException e) {
-			log.error("Can't set value property", e);
-		}
+    public static class Properties {
 
-		log.info("{}: value is {}", this, value);
-	}
+        public static final String VALUE = "value";
+    }
 }

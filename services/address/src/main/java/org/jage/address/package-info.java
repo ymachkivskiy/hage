@@ -32,5 +32,4 @@
 /**
  * Provides base interfaces and abstract implementations for the addressing scheme.
  */
-@javax.annotation.ParametersAreNonnullByDefault
-package org.jage.address;
+@javax.annotation.ParametersAreNonnullByDefault package org.jage.address;

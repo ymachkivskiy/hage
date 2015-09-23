@@ -26,40 +26,45 @@
  */
 package org.jage.property.functions;
 
+
 import org.jage.property.PropertyException;
+
 
 /**
  * Exception thrown when invalid argument was passed to a function (for example,
  * string argument for numeric function).
- * @author Tomek
  *
+ * @author Tomek
  */
 public class InvalidFunctionArgumentException extends PropertyException {
 
-	private static final long serialVersionUID = 1;
+    private static final long serialVersionUID = 1;
 
-	/**
-	 * Constructor.
-	 * @param message message for the exception.
-	 */
-	public InvalidFunctionArgumentException(final String message) {
-		super(message);
-	}
+    /**
+     * Constructor.
+     *
+     * @param message message for the exception.
+     */
+    public InvalidFunctionArgumentException(final String message) {
+        super(message);
+    }
 
-	/**
-	 * Constructor.
-	 * @param message message for the exception.
-	 * @param throwable inner exception.
-	 */
-	public InvalidFunctionArgumentException(final String message, final Throwable throwable) {
-		super(message, throwable);
-	}
+    /**
+     * Constructor.
+     *
+     * @param message   message for the exception.
+     * @param throwable inner exception.
+     */
+    public InvalidFunctionArgumentException(final String message, final Throwable throwable) {
+        super(message, throwable);
+    }
 
-	/**
-	 * Constructor.
-	 * @param throwable inner exception.
-	 */
-	public InvalidFunctionArgumentException(final Throwable throwable) {
-		super(throwable);
-	}
+    /**
+     * Constructor.
+     *
+     * @param throwable inner exception.
+     */
+    public InvalidFunctionArgumentException(final Throwable throwable) {
+        super(throwable);
+    }
 }

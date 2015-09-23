@@ -31,6 +31,10 @@
 
 package org.jage.action.preparers;
 
+
+import org.jage.address.agent.AgentAddress;
+import org.jage.agent.IAgent;
+import org.jage.agent.IAgentEnvironment;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -38,29 +42,26 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.mockito.Mockito.when;
 
-import org.jage.address.agent.AgentAddress;
-import org.jage.agent.IAgent;
-import org.jage.agent.IAgentEnvironment;
 
 /**
  * Base class for {@link IActionPreparer} Tests.
- * 
+ *
  * @author AGH AgE Team
  */
 @RunWith(MockitoJUnitRunner.class)
 public abstract class AbstractActionPreparatorTest {
 
-	@Mock
-	protected IAgent agent;
+    @Mock
+    protected IAgent agent;
 
-	@Mock
-	protected IAgentEnvironment environment;
+    @Mock
+    protected IAgentEnvironment environment;
 
-	@Mock
-	protected AgentAddress agentAddress;
+    @Mock
+    protected AgentAddress agentAddress;
 
-	@Before
-	public void setUp() {
-		when(agent.getAddress()).thenReturn(agentAddress);
-	}
+    @Before
+    public void setUp() {
+        when(agent.getAddress()).thenReturn(agentAddress);
+    }
 }

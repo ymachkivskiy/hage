@@ -31,16 +31,17 @@
 
 package org.jage.examples.delegation;
 
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.jage.address.agent.AgentAddress;
 import org.jage.address.agent.AgentAddressSupplier;
 import org.jage.agent.SimpleAgent;
 import org.jage.platform.component.provider.IComponentInstanceProvider;
 import org.jage.platform.component.provider.IComponentInstanceProviderAware;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
+
 
 /**
  * This agent presents an example delegation of strategies. It is a leaf of tree of agents. It can accept an echo
@@ -49,58 +50,59 @@ import org.jage.platform.component.provider.IComponentInstanceProviderAware;
  * @author AGH AgE Team
  */
 public class DelegationSimpleLeaf extends SimpleAgent implements IEchoStrategyAcceptingAgent,
-		IComponentInstanceProviderAware {
+                                                                 IComponentInstanceProviderAware {
 
-	private static final long serialVersionUID = 2L;
+    private static final long serialVersionUID = 2L;
 
-	private static final Logger log = LoggerFactory.getLogger(DelegationSimpleLeaf.class);
+    private static final Logger log = LoggerFactory.getLogger(DelegationSimpleLeaf.class);
 
-	private IEchoStrategy echoStrategy;
-	private IComponentInstanceProvider instanceProvider;
+    private IEchoStrategy echoStrategy;
+    private IComponentInstanceProvider instanceProvider;
 
 
-	public DelegationSimpleLeaf(final AgentAddress address) {
-	    super(address);
+    public DelegationSimpleLeaf(final AgentAddress address) {
+        super(address);
     }
 
-	@Inject
-	public DelegationSimpleLeaf(final AgentAddressSupplier supplier) {
-	    super(supplier);
+    @Inject
+    public DelegationSimpleLeaf(final AgentAddressSupplier supplier) {
+        super(supplier);
     }
 
-	/**
-	 * Executes a step of the agent. This agent delegates its execution to the <em>echo strategy</em> and then sleeps
-	 * for a while. {@inheritDoc}
-	 *
-	 * @see org.jage.agent.SimpleAgent#step()
-	 */
-	@Override
-	public void step() {
-		log.info("{} says Hello World from {}", getAddress().getFriendlyName(), getParentAddress().getFriendlyName());
+    /**
+     * Executes a step of the agent. This agent delegates its execution to the <em>echo strategy</em> and then sleeps
+     * for a while. {@inheritDoc}
+     *
+     * @see org.jage.agent.SimpleAgent#step()
+     */
+    @Override
+    public void step() {
+        log.info("{} says Hello World from {}", getAddress().getFriendlyName(), getParentAddress().getFriendlyName());
 
-		echoStrategy.echo(getParentAddress().toString());
+        echoStrategy.echo(getParentAddress().toString());
 
-		try {
-			Thread.sleep(200);
-		} catch (final InterruptedException e) {
-			log.error("Interrupted", e);
-		}
-	}
+        try {
+            Thread.sleep(200);
+        } catch(final InterruptedException e) {
+            log.error("Interrupted", e);
+        }
+    }
 
-	@Override
-	public boolean finish() {
-		log.info("Finishing Delegation Simple Leaf: {}", getAddress().getFriendlyName());
-		return true;
-	}
+    @Override
+    public boolean finish() {
+        log.info("Finishing Delegation Simple Leaf: {}", getAddress().getFriendlyName());
+        return true;
+    }
 
-	@Override
-	public void acceptEchoStrategy(final String echoStrategyName) {
-		log.info("{} asked to accept a strategy {}", getAddress().getFriendlyName(), echoStrategyName);
+    @Override
+    public void acceptEchoStrategy(final String echoStrategyName) {
+        log.info("{} asked to accept a strategy {}", getAddress().getFriendlyName(), echoStrategyName);
 
-		echoStrategy = (IEchoStrategy)instanceProvider.getInstance(echoStrategyName);
-	}
+        echoStrategy = (IEchoStrategy) instanceProvider.getInstance(echoStrategyName);
+    }
 
-	@Override public void setInstanceProvider(final IComponentInstanceProvider provider) {
-		this.instanceProvider = provider;
-	}
+    @Override
+    public void setInstanceProvider(final IComponentInstanceProvider provider) {
+        this.instanceProvider = provider;
+    }
 }

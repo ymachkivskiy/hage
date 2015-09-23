@@ -26,11 +26,6 @@
  */
 package org.jage.monitoring.visualization.spring.controller;
 
-import static com.google.common.collect.Lists.newArrayList;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 import org.jage.monitoring.MonitoringException;
 import org.jage.monitoring.visualization.spring.controller.commandobject.StatisticCommandObject;
@@ -44,84 +39,91 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
+import static com.google.common.collect.Lists.newArrayList;
+
+
 /**
  * Controller responsible for handling <code>list</code> command.
- * 
+ *
  * @author AGH AgE Team
  */
 @SuppressWarnings("rawtypes")
 @Controller
 public class ListController {
 
-	@RequestMapping(value = "/list/{computationType}/{computationInstance}/{gathererId}", method = RequestMethod.GET)
-	public String listData(@PathVariable String computationType, @PathVariable String computationInstance, @PathVariable String gathererId, @ModelAttribute("checkedStatistics") StatisticCommandObject statisticCommandObject, ModelMap model){
-		StorageDescription storageDescription = new StorageDescription(computationType, computationInstance, gathererId);
-		if(computationInstance.equals("*")){
-			Collection<? extends DescriptionElement> computationDesc;
-			try{
-				computationDesc = VisualDataStorageFactory.getComputationInstanceCollection(storageDescription);
-			}catch(MonitoringException e){
-				return "404";
-			}
-			List<DescriptionElement> computationDescList = newArrayList(computationDesc);
-			Collections.reverse((List<? extends DescriptionElement>)computationDescList);
-			model.addAttribute("cdColl", computationDescList);
-			model.addAttribute("computationType", computationType);
-			model.addAttribute("gathererId", gathererId);
-			return "list/listInstancesSpecial";
-		} else {
-			Collection<? extends DescriptionElement> computationDesc;
-			try {
-				computationDesc = VisualDataStorageFactory.getComputationElementCollection(storageDescription);
-			}catch(MonitoringException e){
-				return "404";
-			}
-			List<DescriptionElement> computationDescList = newArrayList(computationDesc);
-			model.addAttribute("cdColl", computationDescList);
-			return "list/listValues";
-		}
-	}
-	
-	@RequestMapping(value = "/list/{computationType}/{computationInstance}", method = RequestMethod.GET)
-	public String listAllGathererId(@PathVariable String computationType, @PathVariable String computationInstance, @ModelAttribute("checkedStatistics") StatisticCommandObject statisticCommandObject, ModelMap model){
-		StorageDescription storageDescription = new StorageDescription(computationType, computationInstance, null);
-		Collection<? extends DescriptionElement> computationDesc;
-		try {
-			computationDesc = VisualDataStorageFactory.getComputationElementCollection(storageDescription);
-		}catch(MonitoringException e){
-			return "404";
-		}
-		model.addAttribute("computationType",computationType);
-		model.addAttribute("computationInstance", computationInstance);
-		model.addAttribute("cdColl", computationDesc); 
-		return "list/listGatherers";
-	}
-	
+    @RequestMapping(value = "/list/{computationType}/{computationInstance}/{gathererId}", method = RequestMethod.GET)
+    public String listData(@PathVariable String computationType, @PathVariable String computationInstance, @PathVariable String gathererId, @ModelAttribute("checkedStatistics") StatisticCommandObject statisticCommandObject, ModelMap model) {
+        StorageDescription storageDescription = new StorageDescription(computationType, computationInstance, gathererId);
+        if(computationInstance.equals("*")) {
+            Collection<? extends DescriptionElement> computationDesc;
+            try {
+                computationDesc = VisualDataStorageFactory.getComputationInstanceCollection(storageDescription);
+            } catch(MonitoringException e) {
+                return "404";
+            }
+            List<DescriptionElement> computationDescList = newArrayList(computationDesc);
+            Collections.reverse(computationDescList);
+            model.addAttribute("cdColl", computationDescList);
+            model.addAttribute("computationType", computationType);
+            model.addAttribute("gathererId", gathererId);
+            return "list/listInstancesSpecial";
+        } else {
+            Collection<? extends DescriptionElement> computationDesc;
+            try {
+                computationDesc = VisualDataStorageFactory.getComputationElementCollection(storageDescription);
+            } catch(MonitoringException e) {
+                return "404";
+            }
+            List<DescriptionElement> computationDescList = newArrayList(computationDesc);
+            model.addAttribute("cdColl", computationDescList);
+            return "list/listValues";
+        }
+    }
+
+    @RequestMapping(value = "/list/{computationType}/{computationInstance}", method = RequestMethod.GET)
+    public String listAllGathererId(@PathVariable String computationType, @PathVariable String computationInstance, @ModelAttribute("checkedStatistics") StatisticCommandObject statisticCommandObject, ModelMap model) {
+        StorageDescription storageDescription = new StorageDescription(computationType, computationInstance, null);
+        Collection<? extends DescriptionElement> computationDesc;
+        try {
+            computationDesc = VisualDataStorageFactory.getComputationElementCollection(storageDescription);
+        } catch(MonitoringException e) {
+            return "404";
+        }
+        model.addAttribute("computationType", computationType);
+        model.addAttribute("computationInstance", computationInstance);
+        model.addAttribute("cdColl", computationDesc);
+        return "list/listGatherers";
+    }
+
     @RequestMapping(value = "/list/{computationType}", method = RequestMethod.GET)
-	public String listAllComputationInstance(@PathVariable String computationType, ModelMap model){
-    	StorageDescription storageDescription = new StorageDescription(computationType, null, null);
-		Collection<? extends DescriptionElement> computationDesc;
-		try {
-			computationDesc = VisualDataStorageFactory.getComputationElementCollection(storageDescription);
-		}catch(MonitoringException e){
-			return "404";
-		}
-		List<DescriptionElement> computationDescList = newArrayList(computationDesc);
-		Collections.reverse(computationDescList);
-		model.addAttribute("cdColl", computationDescList);
-		return "list/listInstances";
-	}
-	
-	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public String listAllComputationType(ModelMap model){
-		Collection<? extends DescriptionElement> computationDesc;
-		try {
-			computationDesc = VisualDataStorageFactory.getComputationElementCollection(new StorageDescription());
-		}catch(MonitoringException e){
-			return "404";
-		}
-		model.addAttribute("cdColl", computationDesc);
-		return "list/listTypes" ;
-	}
-	
+    public String listAllComputationInstance(@PathVariable String computationType, ModelMap model) {
+        StorageDescription storageDescription = new StorageDescription(computationType, null, null);
+        Collection<? extends DescriptionElement> computationDesc;
+        try {
+            computationDesc = VisualDataStorageFactory.getComputationElementCollection(storageDescription);
+        } catch(MonitoringException e) {
+            return "404";
+        }
+        List<DescriptionElement> computationDescList = newArrayList(computationDesc);
+        Collections.reverse(computationDescList);
+        model.addAttribute("cdColl", computationDescList);
+        return "list/listInstances";
+    }
+
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public String listAllComputationType(ModelMap model) {
+        Collection<? extends DescriptionElement> computationDesc;
+        try {
+            computationDesc = VisualDataStorageFactory.getComputationElementCollection(new StorageDescription());
+        } catch(MonitoringException e) {
+            return "404";
+        }
+        model.addAttribute("cdColl", computationDesc);
+        return "list/listTypes";
+    }
+
 }

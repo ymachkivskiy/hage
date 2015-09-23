@@ -26,55 +26,57 @@
  */
 package org.jage.property;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.lang.reflect.Field;
 
 import org.jage.property.testHelpers.ClassWithProperties;
 import org.junit.Test;
 
+import java.lang.reflect.Field;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+
 public class ClassFieldMetaPropertyTest {
 
-	@Test
-	public void testGetField() throws Exception {
-		ClassWithProperties propertiesObject = new ClassWithProperties();
-		Field field = propertiesObject.getFloatPropertyField();
-		PropertyField annotation = field.getAnnotation(PropertyField.class);
-		FieldMetaProperty metaProperty = new FieldMetaProperty(annotation.propertyName(), field, annotation.isMonitorable());
-		assertEquals(propertiesObject.getFloatPropertyField(), metaProperty
-				.getPropertyField());
-	}
+    @Test
+    public void testGetField() throws Exception {
+        ClassWithProperties propertiesObject = new ClassWithProperties();
+        Field field = propertiesObject.getFloatPropertyField();
+        PropertyField annotation = field.getAnnotation(PropertyField.class);
+        FieldMetaProperty metaProperty = new FieldMetaProperty(annotation.propertyName(), field, annotation.isMonitorable());
+        assertEquals(propertiesObject.getFloatPropertyField(), metaProperty
+                .getPropertyField());
+    }
 
-	@Test
-	public void testPropertyName() throws Exception {
-		ClassWithProperties propertiesObject = new ClassWithProperties();
+    @Test
+    public void testPropertyName() throws Exception {
+        ClassWithProperties propertiesObject = new ClassWithProperties();
 
-		Field floatField = propertiesObject.getFloatPropertyField();
-		PropertyField floatAnnotation = floatField.getAnnotation(PropertyField.class);
-		FieldMetaProperty floatMetaProperty = new FieldMetaProperty(floatAnnotation.propertyName(), floatField, floatAnnotation.isMonitorable());
+        Field floatField = propertiesObject.getFloatPropertyField();
+        PropertyField floatAnnotation = floatField.getAnnotation(PropertyField.class);
+        FieldMetaProperty floatMetaProperty = new FieldMetaProperty(floatAnnotation.propertyName(), floatField, floatAnnotation.isMonitorable());
 
-		Field objectField = propertiesObject.getObjectPropertyField();
-		PropertyField objectAnnotation = objectField.getAnnotation(PropertyField.class);
-		FieldMetaProperty objectMetaProperty = new FieldMetaProperty(objectAnnotation.propertyName(), objectField, objectAnnotation.isMonitorable());
+        Field objectField = propertiesObject.getObjectPropertyField();
+        PropertyField objectAnnotation = objectField.getAnnotation(PropertyField.class);
+        FieldMetaProperty objectMetaProperty = new FieldMetaProperty(objectAnnotation.propertyName(), objectField, objectAnnotation.isMonitorable());
 
-		assertEquals("floatProperty", floatMetaProperty.getName());
-		assertEquals("objectProperty", objectMetaProperty.getName());
-	}
+        assertEquals("floatProperty", floatMetaProperty.getName());
+        assertEquals("objectProperty", objectMetaProperty.getName());
+    }
 
-	@Test
-	public void testPropertyClass() throws Exception {
-		ClassWithProperties propertiesObject = new ClassWithProperties();
+    @Test
+    public void testPropertyClass() throws Exception {
+        ClassWithProperties propertiesObject = new ClassWithProperties();
 
-		Field floatField = propertiesObject.getFloatPropertyField();
-		PropertyField floatAnnotation = floatField.getAnnotation(PropertyField.class);
-		FieldMetaProperty floatMetaProperty = new FieldMetaProperty(floatAnnotation.propertyName(), floatField, floatAnnotation.isMonitorable());
+        Field floatField = propertiesObject.getFloatPropertyField();
+        PropertyField floatAnnotation = floatField.getAnnotation(PropertyField.class);
+        FieldMetaProperty floatMetaProperty = new FieldMetaProperty(floatAnnotation.propertyName(), floatField, floatAnnotation.isMonitorable());
 
-		Field objectField = propertiesObject.getObjectPropertyField();
-		PropertyField objectAnnotation = objectField.getAnnotation(PropertyField.class);
-		FieldMetaProperty objectMetaProperty = new FieldMetaProperty(objectAnnotation.propertyName(), objectField, objectAnnotation.isMonitorable());
+        Field objectField = propertiesObject.getObjectPropertyField();
+        PropertyField objectAnnotation = objectField.getAnnotation(PropertyField.class);
+        FieldMetaProperty objectMetaProperty = new FieldMetaProperty(objectAnnotation.propertyName(), objectField, objectAnnotation.isMonitorable());
 
-		assertTrue(float.class.equals(floatMetaProperty.getPropertyClass()));
-		assertTrue(Object.class.equals(objectMetaProperty.getPropertyClass()));
-	}
+        assertTrue(float.class.equals(floatMetaProperty.getPropertyClass()));
+        assertTrue(Object.class.equals(objectMetaProperty.getPropertyClass()));
+    }
 }

@@ -31,14 +31,15 @@
 
 package org.jage.platform.component.definition;
 
-import java.util.Map;
-
-import static java.util.Collections.unmodifiableMap;
 
 import com.google.common.base.Preconditions;
 
+import java.util.Map;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Maps.newLinkedHashMap;
+import static java.util.Collections.unmodifiableMap;
+
 
 /**
  * Default implementation of {@link IComponentDefinition} which describes a custom component.
@@ -49,41 +50,35 @@ import static com.google.common.collect.Maps.newLinkedHashMap;
  */
 public class ComponentDefinition extends AbstractComponentDefinition {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private final Map<String, IArgumentDefinition> propertyArguments = newLinkedHashMap();
+    private final Map<String, IArgumentDefinition> propertyArguments = newLinkedHashMap();
 
-	/**
-	 * Creates a new component definition with a given name and of a given type.
-	 *
-	 * @param name
-	 *            the name of the component
-	 * @param type
-	 *            the array type of the component
-	 * @param isSingleton
-	 *            whether the component has a singleton scope
-	 */
-	public ComponentDefinition(final String name, final Class<?> type, final boolean isSingleton) {
-		super(name, type, isSingleton);
-	}
+    /**
+     * Creates a new component definition with a given name and of a given type.
+     *
+     * @param name        the name of the component
+     * @param type        the array type of the component
+     * @param isSingleton whether the component has a singleton scope
+     */
+    public ComponentDefinition(final String name, final Class<?> type, final boolean isSingleton) {
+        super(name, type, isSingleton);
+    }
 
-	/**
-	 * Adds a new property argument to this definition.
-	 *
-	 * @param propertyName
-	 *            the name of the property
-	 * @param argument
-	 *            the argument for that property
-	 * @throws IllegalArgumentException
-	 *             if an argument was already defined for a property with the given name
-	 */
-	public void addPropertyArgument(String propertyName, IArgumentDefinition argument) {
-		Preconditions.checkArgument(!propertyArguments.containsKey(propertyName),
-		        "This definition already contains an argument for property %s", propertyName);
-		propertyArguments.put(checkNotNull(propertyName), checkNotNull(argument));
-	}
+    /**
+     * Adds a new property argument to this definition.
+     *
+     * @param propertyName the name of the property
+     * @param argument     the argument for that property
+     * @throws IllegalArgumentException if an argument was already defined for a property with the given name
+     */
+    public void addPropertyArgument(String propertyName, IArgumentDefinition argument) {
+        Preconditions.checkArgument(!propertyArguments.containsKey(propertyName),
+                                    "This definition already contains an argument for property %s", propertyName);
+        propertyArguments.put(checkNotNull(propertyName), checkNotNull(argument));
+    }
 
-	public Map<String, IArgumentDefinition> getPropertyArguments() {
-		return unmodifiableMap(propertyArguments);
-	}
+    public Map<String, IArgumentDefinition> getPropertyArguments() {
+        return unmodifiableMap(propertyArguments);
+    }
 }

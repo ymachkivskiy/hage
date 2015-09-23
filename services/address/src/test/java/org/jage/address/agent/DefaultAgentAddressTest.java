@@ -31,6 +31,8 @@
 
 package org.jage.address.agent;
 
+
+import org.jage.address.node.UnspecifiedNodeAddress;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.instanceOf;
@@ -38,7 +40,6 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 
-import org.jage.address.node.UnspecifiedNodeAddress;
 
 /**
  * Tests for DefaultAgentAddress.
@@ -47,35 +48,35 @@ import org.jage.address.node.UnspecifiedNodeAddress;
  */
 public class DefaultAgentAddressTest {
 
-	@Test
-	public void shouldUseUnspecifiedNodeAddressIfNotProvided() {
-		// when
-		final DefaultAgentAddress address1 = new DefaultAgentAddress();
-		final DefaultAgentAddress address2 = new DefaultAgentAddress("");
+    @Test
+    public void shouldUseUnspecifiedNodeAddressIfNotProvided() {
+        // when
+        final DefaultAgentAddress address1 = new DefaultAgentAddress();
+        final DefaultAgentAddress address2 = new DefaultAgentAddress("");
 
-		// then
-		assertThat(address1.getNodeAddress(), instanceOf(UnspecifiedNodeAddress.class));
-		assertThat(address2.getNodeAddress(), instanceOf(UnspecifiedNodeAddress.class));
-	}
+        // then
+        assertThat(address1.getNodeAddress(), instanceOf(UnspecifiedNodeAddress.class));
+        assertThat(address2.getNodeAddress(), instanceOf(UnspecifiedNodeAddress.class));
+    }
 
-	@Test
-	public void twoInstancesShouldHaveDifferentIdentifiers() {
-		// when
-		final DefaultAgentAddress address1 = new DefaultAgentAddress();
-		final DefaultAgentAddress address2 = new DefaultAgentAddress();
+    @Test
+    public void twoInstancesShouldHaveDifferentIdentifiers() {
+        // when
+        final DefaultAgentAddress address1 = new DefaultAgentAddress();
+        final DefaultAgentAddress address2 = new DefaultAgentAddress();
 
-		// then
-		assertThat(address1.getIdentifier(), is(not(address2.getIdentifier())));
-	}
+        // then
+        assertThat(address1.getIdentifier(), is(not(address2.getIdentifier())));
+    }
 
-	@Test
-	public void twoInstancesShouldNotBeEqual() {
-		// when
-		final DefaultAgentAddress address1 = new DefaultAgentAddress();
-		final DefaultAgentAddress address2 = new DefaultAgentAddress();
+    @Test
+    public void twoInstancesShouldNotBeEqual() {
+        // when
+        final DefaultAgentAddress address1 = new DefaultAgentAddress();
+        final DefaultAgentAddress address2 = new DefaultAgentAddress();
 
-		// then
-		assertThat(address1, is(not(address2)));
-	}
+        // then
+        assertThat(address1, is(not(address2)));
+    }
 
 }

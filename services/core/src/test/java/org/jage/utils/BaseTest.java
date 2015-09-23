@@ -31,21 +31,23 @@
 
 package org.jage.utils;
 
+
 import org.junit.Before;
 import org.mockito.MockitoAnnotations;
 
+
 /**
  * A base class for tests.
- * 
+ *
  * @author AGH AgE Team
  */
 public abstract class BaseTest {
 
-	/**
-	 * Initializes mockito mocks.
-	 */
-	@Before
-	public void initMocks() {
-		MockitoAnnotations.initMocks(this);
-	}
+    /**
+     * Initializes mockito mocks.
+     */
+    @Before
+    public void initMocks() {
+        MockitoAnnotations.initMocks(this);
+    }
 }

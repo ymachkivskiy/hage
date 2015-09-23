@@ -31,93 +31,96 @@
 
 package org.jage.lifecycle;
 
-import java.io.Serializable;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
 
 import org.jage.annotation.ReturnValuesAreNonnullByDefault;
 import org.jage.communication.message.BaseServiceMessage;
 import org.jage.communication.message.ServiceHeaderWithType;
 import org.jage.services.core.LifecycleManager;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.annotation.concurrent.Immutable;
+import java.io.Serializable;
+
 import static com.google.common.base.Preconditions.checkNotNull;
+
 
 /**
  * A message type used by {@link LifecycleManager}.
- * 
+ *
  * @author AGH AgE Team
  */
 @ReturnValuesAreNonnullByDefault
 @Immutable
 public final class LifecycleMessage extends BaseServiceMessage<Serializable> {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * Creates a new LifecycleMessage.
-	 * 
-	 * @param header
-	 *            A header that contains metadata for this message.
-	 * @param payload
-	 *            A payload to transport.
-	 */
-	public LifecycleMessage(final ServiceHeaderWithType<LifecycleCommand> header, @Nullable final Serializable payload) {
-		super(header, payload);
-	}
+    /**
+     * Creates a new LifecycleMessage.
+     *
+     * @param header  A header that contains metadata for this message.
+     * @param payload A payload to transport.
+     */
+    public LifecycleMessage(final ServiceHeaderWithType<LifecycleCommand> header, @Nullable final Serializable payload) {
+        super(header, payload);
+    }
 
-	@Override @Nonnull public ServiceHeaderWithType<LifecycleCommand> getHeader() {
-		return (ServiceHeaderWithType<LifecycleCommand>)super.getHeader();
-	}
+    @Nonnull
+    public static LifecycleMessage create(@Nonnull final LifecycleCommand type,
+            @Nullable final Serializable payload) {
+        return new LifecycleMessage(ServiceHeaderWithType.create(checkNotNull(type)), payload);
+    }
 
-	/**
-	 * Returns the command that this message represents.
-	 * 
-	 * @return a command.
-	 */
-	public LifecycleCommand getCommand() {
-		return getHeader().getType();
-	}
+    @Nonnull
+    public static LifecycleMessage create(@Nonnull final LifecycleCommand type) {
+        return new LifecycleMessage(ServiceHeaderWithType.create(type), null);
+    }
 
-	@Nonnull public static LifecycleMessage create(@Nonnull final LifecycleCommand type,
-			@Nullable final Serializable payload) {
-		return new LifecycleMessage(ServiceHeaderWithType.create(checkNotNull(type)), payload);
-	}
+    /**
+     * Returns the command that this message represents.
+     *
+     * @return a command.
+     */
+    public LifecycleCommand getCommand() {
+        return getHeader().getType();
+    }
 
-	@Nonnull public static LifecycleMessage create(@Nonnull final LifecycleCommand type) {
-		return new LifecycleMessage(ServiceHeaderWithType.create(type), null);
-	}
+    @Override
+    @Nonnull
+    public ServiceHeaderWithType<LifecycleCommand> getHeader() {
+        return (ServiceHeaderWithType<LifecycleCommand>) super.getHeader();
+    }
 
-	/**
-	 * A list of available commands (message types).
-	 *
-	 * @author AGH AgE Team
-	 */
-	public static enum LifecycleCommand {
-		/**
-		 * Start the computation.
-		 */
-		START,
-		/**
-		 * Pause the computation.
-		 */
-		PAUSE,
-		/**
-		 * Stop the computation.
-		 */
-		STOP,
-		/**
-		 * Node failure.
-		 */
-		FAIL,
-		/**
-		 * Notifications.
-		 */
-		NOTIFY,
-		/**
-		 * Shutdown the environment.
-		 */
-		EXIT,
-	}
+    /**
+     * A list of available commands (message types).
+     *
+     * @author AGH AgE Team
+     */
+    public static enum LifecycleCommand {
+        /**
+         * Start the computation.
+         */
+        START,
+        /**
+         * Pause the computation.
+         */
+        PAUSE,
+        /**
+         * Stop the computation.
+         */
+        STOP,
+        /**
+         * Node failure.
+         */
+        FAIL,
+        /**
+         * Notifications.
+         */
+        NOTIFY,
+        /**
+         * Shutdown the environment.
+         */
+        EXIT,
+    }
 }

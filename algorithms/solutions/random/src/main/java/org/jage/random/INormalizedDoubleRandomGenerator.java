@@ -31,10 +31,11 @@
 
 package org.jage.random;
 
+
 /**
  * This interface introduces additional semantics to the {@link IDoubleRandomGenerator} one. <br />
  * <br />
- *
+ * <p>
  * It is designed for generators which value is contained in the range [0, 1), i.e. <code>getLowerDouble()</code> should
  * return 0 and <code>getUpperDouble()</code> should return 1, and <code>nextDouble()</code> is guaranteed to be in the
  * range [0, 1).
@@ -43,27 +44,27 @@ package org.jage.random;
  */
 public interface INormalizedDoubleRandomGenerator extends IDoubleRandomGenerator {
 
-	/**
-	 * Returns a random double value arbitrarily distributed in the range [0, 1).
-	 *
-	 * @return A random value.
-	 */
-	@Override
-	public double nextDouble();
+    /**
+     * Returns a random double value arbitrarily distributed in the range [0, 1).
+     *
+     * @return A random value.
+     */
+    @Override
+    public double nextDouble();
 
-	/**
-	 * Specifies the lower bound of the values that can be returned by <code>nextDouble()</code>.
-	 *
-	 * @return 0
-	 */
-	@Override
-	public double getLowerDouble();
+    /**
+     * Specifies the lower bound of the values that can be returned by <code>nextDouble()</code>.
+     *
+     * @return 0
+     */
+    @Override
+    public double getLowerDouble();
 
-	/**
-	 * Specifies the upper bound of the values that can be returned by <code>nextDouble()</code>.
-	 *
-	 * @return 1
-	 */
-	@Override
-	public double getUpperDouble();
+    /**
+     * Specifies the upper bound of the values that can be returned by <code>nextDouble()</code>.
+     *
+     * @return 1
+     */
+    @Override
+    public double getUpperDouble();
 }

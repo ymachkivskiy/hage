@@ -31,14 +31,8 @@
 
 package org.jage.emas.migration;
 
-import java.util.Collection;
-import java.util.List;
 
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import com.google.common.base.Predicate;
 import org.jage.action.AgentActions;
 import org.jage.agent.AgentException;
 import org.jage.agent.IAgent;
@@ -46,11 +40,16 @@ import org.jage.agent.IAgentEnvironment;
 import org.jage.emas.agent.IndividualAgent;
 import org.jage.query.AgentEnvironmentQuery;
 import org.jage.random.IIntRandomGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Predicate;
+import javax.inject.Inject;
+import java.util.Collection;
+import java.util.List;
 
 import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Lists.newArrayList;
+
 
 /**
  * Random destination migration strategy. Chooses a destination at random from the agent's parent's siblings.
@@ -59,33 +58,34 @@ import static com.google.common.collect.Lists.newArrayList;
  */
 public class RandomDestinationMigration implements Migration<IndividualAgent> {
 
-	private static final Logger log = LoggerFactory.getLogger(RandomDestinationMigration.class);
+    private static final Logger log = LoggerFactory.getLogger(RandomDestinationMigration.class);
 
-	@Inject
-	private IIntRandomGenerator rand;
+    @Inject
+    private IIntRandomGenerator rand;
 
-	@Override
-	public void migrate(final IndividualAgent agent) throws AgentException {
-		final List<IAgent> islands = getSurroundingIslands(agent.getEnvironment());
-		if (!islands.isEmpty()) {
-			final IAgent destination = islands.get(rand.nextInt(islands.size()));
-			doMigrate(agent, destination);
-			log.debug("Migrating {} to {}", agent, destination);
-		}
-	}
+    @Override
+    public void migrate(final IndividualAgent agent) throws AgentException {
+        final List<IAgent> islands = getSurroundingIslands(agent.getEnvironment());
+        if(!islands.isEmpty()) {
+            final IAgent destination = islands.get(rand.nextInt(islands.size()));
+            doMigrate(agent, destination);
+            log.debug("Migrating {} to {}", agent, destination);
+        }
+    }
 
-	private List<IAgent> getSurroundingIslands(final IAgentEnvironment environment) {
-		final Collection<IAgent> islands = environment.queryParent(new AgentEnvironmentQuery<IAgent, IAgent>());
-		final Predicate<IAgent> predicate = new Predicate<IAgent>() {
-			@Override
-			public boolean apply(final IAgent input) {
-				return !input.getAddress().equals(environment.getAddress());
-			}
-		};
-		return newArrayList(filter(islands, predicate));
-	}
+    private List<IAgent> getSurroundingIslands(final IAgentEnvironment environment) {
+        final Collection<IAgent> islands = environment.queryParent(new AgentEnvironmentQuery<IAgent, IAgent>());
+        final Predicate<IAgent> predicate = new Predicate<IAgent>() {
+
+            @Override
+            public boolean apply(final IAgent input) {
+                return !input.getAddress().equals(environment.getAddress());
+            }
+        };
+        return newArrayList(filter(islands, predicate));
+    }
 
     private void doMigrate(final IndividualAgent agent, final IAgent destination) throws AgentException {
-    	agent.getEnvironment().submitAction(AgentActions.migrate(agent, destination.getAddress()));
+        agent.getEnvironment().submitAction(AgentActions.migrate(agent, destination.getAddress()));
     }
 }

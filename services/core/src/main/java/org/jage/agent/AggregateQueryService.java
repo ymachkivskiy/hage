@@ -31,45 +31,43 @@
 
 package org.jage.agent;
 
-import java.util.Collection;
 
+import org.jage.query.AgentEnvironmentQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.jage.query.AgentEnvironmentQuery;
+import java.util.Collection;
+
 
 /**
  * The query service for the default {@link SimpleAggregate}.
- * 
- * @since 2.6
+ *
  * @author AGH AgE Team
+ * @since 2.6
  */
 public class AggregateQueryService {
 
-	private static final Logger log = LoggerFactory.getLogger(AggregateQueryService.class);
+    private static final Logger log = LoggerFactory.getLogger(AggregateQueryService.class);
 
-	private SimpleAggregate aggregate;
+    private SimpleAggregate aggregate;
 
-	/**
-	 * Executes a query in the parent environment.
-	 * 
-	 * @param query
-	 *            the query to execute.
-	 * @return results of the query.
-	 * @throws AgentException
-	 *             if the environment is not available.
-	 */
-	public <E extends IAgent, T> Collection<T> queryParent(final AgentEnvironmentQuery<E, T> query) {
-		return aggregate.queryEnvironment(query);
-	}
+    /**
+     * Executes a query in the parent environment.
+     *
+     * @param query the query to execute.
+     * @return results of the query.
+     * @throws AgentException if the environment is not available.
+     */
+    public <E extends IAgent, T> Collection<T> queryParent(final AgentEnvironmentQuery<E, T> query) {
+        return aggregate.queryEnvironment(query);
+    }
 
-	/**
-	 * Sets the aggregate that owns this service instance.
-	 * 
-	 * @param aggregate
-	 *            the owner.
-	 */
-	public void setAggregate(final SimpleAggregate aggregate) {
-		this.aggregate = aggregate;
-	}
+    /**
+     * Sets the aggregate that owns this service instance.
+     *
+     * @param aggregate the owner.
+     */
+    public void setAggregate(final SimpleAggregate aggregate) {
+        this.aggregate = aggregate;
+    }
 }

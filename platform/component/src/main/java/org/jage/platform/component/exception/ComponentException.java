@@ -31,7 +31,9 @@
 
 package org.jage.platform.component.exception;
 
+
 import org.jage.exception.AgeException;
+
 
 /**
  * An exception thrown by an AgE component if it cannot be created or cannot work properly.
@@ -40,44 +42,37 @@ import org.jage.exception.AgeException;
  */
 public class ComponentException extends AgeException {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/***
-	 * Constructs a new exception with the specified detail message.
-	 *
-	 * @param message
-	 *            the detail message.
-	 *
-	 * @see Exception#Exception(String)
-	 */
-	public ComponentException(final String message) {
-		super(message);
-	}
+    /**
+     * Constructs a new exception with the specified detail message.
+     *
+     * @param message the detail message.
+     * @see Exception#Exception(String)
+     */
+    public ComponentException(final String message) {
+        super(message);
+    }
 
-	/**
-	 * Constructs a new exception with the specified detail message.
-	 *
-	 * @param cause
-	 *            the cause.
-	 *
-	 * @see Exception#Exception(String)
-	 */
-	public ComponentException(final Throwable cause) {
-		super(cause);
-	}
+    /**
+     * Constructs a new exception with the specified detail message.
+     *
+     * @param cause the cause.
+     * @see Exception#Exception(String)
+     */
+    public ComponentException(final Throwable cause) {
+        super(cause);
+    }
 
-	/**
-	 * Constructs a new exception with the specified cause and a detail message of
-	 * <tt>(cause==null ? null : cause.toString())</tt>.
-	 *
-	 * @param message
-	 *            the detail message.
-	 * @param cause
-	 *            the cause.
-	 *
-	 * @see Exception#Exception(String, Throwable)
-	 */
-	public ComponentException(final String message, final Throwable cause) {
-		super(message, cause);
-	}
+    /**
+     * Constructs a new exception with the specified cause and a detail message of
+     * <tt>(cause==null ? null : cause.toString())</tt>.
+     *
+     * @param message the detail message.
+     * @param cause   the cause.
+     * @see Exception#Exception(String, Throwable)
+     */
+    public ComponentException(final String message, final Throwable cause) {
+        super(message, cause);
+    }
 }

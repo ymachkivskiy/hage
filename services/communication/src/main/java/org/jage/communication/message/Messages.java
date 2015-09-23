@@ -31,22 +31,21 @@
 
 package org.jage.communication.message;
 
-import java.io.Serializable;
-
-import static java.lang.String.format;
-
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
 
 import org.jage.address.Address;
 import org.jage.address.agent.AgentAddress;
 import org.jage.address.selector.Selectors;
 
-import static org.jage.address.selector.Selectors.parentOf;
-import static org.jage.address.selector.Selectors.singleAddress;
+import javax.annotation.Nullable;
+import javax.annotation.concurrent.Immutable;
+import java.io.Serializable;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.lang.String.format;
+import static org.jage.address.selector.Selectors.parentOf;
+import static org.jage.address.selector.Selectors.singleAddress;
+
 
 /**
  * DefaultMessage-related utilities.
@@ -56,106 +55,87 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Immutable
 public final class Messages {
 
-	private Messages() {
-	}
+    private Messages() {
+    }
 
-	/**
-	 * Returns the address of the sender of the provided message.
-	 *
-	 * @param message
-	 * 		a message to extract receiver from.
-	 * @param <A>
-	 * 		a type of addresses.
-	 * @return An extracted sender.
-	 */
-	public static <A extends Address> A getSenderAddress(final Message<A, ?> message) {
-		return checkNotNull(message).getHeader().getSenderAddress();
-	}
+    /**
+     * Returns the address of the sender of the provided message.
+     *
+     * @param message a message to extract receiver from.
+     * @param <A>     a type of addresses.
+     * @return An extracted sender.
+     */
+    public static <A extends Address> A getSenderAddress(final Message<A, ?> message) {
+        return checkNotNull(message).getHeader().getSenderAddress();
+    }
 
-	/**
-	 * Returns the payload carried by a message if it is of a given type. Otherwise, it throws an exception.
-	 *
-	 * @param message
-	 * 		a message.
-	 * @param klass
-	 * 		a supposed class of the payload.
-	 * @param <T>
-	 * 		a type of the payload.
-	 * @return the message payload.
-	 * @throws IllegalArgumentException
-	 * 		if the payload is of incorrect type.
-	 */
-	public static <T extends Serializable> T getPayloadOfTypeOrThrow(
-			final Message<? extends Address, ? super T> message, final Class<T> klass) {
-		checkNotNull(message);
-		checkNotNull(klass);
+    /**
+     * Returns the payload carried by a message if it is of a given type. Otherwise, it throws an exception.
+     *
+     * @param message a message.
+     * @param klass   a supposed class of the payload.
+     * @param <T>     a type of the payload.
+     * @return the message payload.
+     * @throws IllegalArgumentException if the payload is of incorrect type.
+     */
+    public static <T extends Serializable> T getPayloadOfTypeOrThrow(
+            final Message<? extends Address, ? super T> message, final Class<T> klass) {
+        checkNotNull(message);
+        checkNotNull(klass);
 
-		final Serializable payload = checkNotNull(message.getPayload(), "Payload is null.");
+        final Serializable payload = checkNotNull(message.getPayload(), "Payload is null.");
 
-		checkArgument(
-				klass.isAssignableFrom(payload.getClass()),
-				format("DefaultMessage payload has incorrect type. %s was expected but %s was received.", klass.getClass(),
-						payload.getClass()));
-		return klass.cast(payload);
-	}
+        checkArgument(
+                klass.isAssignableFrom(payload.getClass()),
+                format("DefaultMessage payload has incorrect type. %s was expected but %s was received.", klass.getClass(),
+                       payload.getClass()));
+        return klass.cast(payload);
+    }
 
-	/**
-	 * Creates a new message that selects all components with the same name as provided from the distributed
-	 * environment.
-	 *
-	 * @param senderAddress
-	 * 		the address of the sender.
-	 * @param payload
-	 * 		the payload.
-	 * @param <A>
-	 * 		a type of the address.
-	 * @param <P>
-	 * 		a type of the payload.
-	 * @return a new message.
-	 */
-	public static <A extends Address, P extends Serializable> Message<A, P> newBroadcastMessage(
-			final A senderAddress, final P payload) {
-		final Header<A> header = SimpleHeader.create(senderAddress, Selectors.<A>allAddresses());
-		return SimpleMessage.create(header, payload);
-	}
+    /**
+     * Creates a new message that selects all components with the same name as provided from the distributed
+     * environment.
+     *
+     * @param senderAddress the address of the sender.
+     * @param payload       the payload.
+     * @param <A>           a type of the address.
+     * @param <P>           a type of the payload.
+     * @return a new message.
+     */
+    public static <A extends Address, P extends Serializable> Message<A, P> newBroadcastMessage(
+            final A senderAddress, final P payload) {
+        final Header<A> header = SimpleHeader.create(senderAddress, Selectors.<A> allAddresses());
+        return SimpleMessage.create(header, payload);
+    }
 
-	/**
-	 * Creates a new unicast message.
-	 *
-	 * @param from
-	 * 		the address of the sender.
-	 * @param to
-	 * 		the address of the receiver.
-	 * @param payload
-	 * 		the payload.
-	 * @param <A>
-	 * 		a type of the address.
-	 * @param <P>
-	 * 		a type of the payload.
-	 * @return a new message.
-	 */
-	public static <A extends Address, P extends Serializable> Message<A, P> newUnicastMessage(final A from,
-			final A to, @Nullable final P payload) {
-		final Header<A> header = SimpleHeader.create(from, singleAddress(to));
-		return SimpleMessage.create(header, payload);
-	}
+    /**
+     * Creates a new unicast message.
+     *
+     * @param from    the address of the sender.
+     * @param to      the address of the receiver.
+     * @param payload the payload.
+     * @param <A>     a type of the address.
+     * @param <P>     a type of the payload.
+     * @return a new message.
+     */
+    public static <A extends Address, P extends Serializable> Message<A, P> newUnicastMessage(final A from,
+            final A to, @Nullable final P payload) {
+        final Header<A> header = SimpleHeader.create(from, singleAddress(to));
+        return SimpleMessage.create(header, payload);
+    }
 
-	/**
-	 * Creates a new unicast message.
-	 *
-	 * @param from
-	 * 		the address of the sender.
-	 * @param payload
-	 * 		the payload.
-	 * @param <A>
-	 * 		a type of the address.
-	 * @param <P>
-	 * 		a type of the payload.
-	 * @return a new message.
-	 */
-	public static <A extends AgentAddress, P extends Serializable> Message<AgentAddress, P> newMessageToParent(
-			final A from, @Nullable final P payload) {
-		final SimpleHeader<AgentAddress> header = SimpleHeader.create(from, parentOf(from));
-		return SimpleMessage.create(header, payload);
-	}
+    /**
+     * Creates a new unicast message.
+     *
+     * @param from    the address of the sender.
+     * @param payload the payload.
+     * @param <A>     a type of the address.
+     * @param <P>     a type of the payload.
+     * @return a new message.
+     */
+    public static <A extends AgentAddress, P extends Serializable> Message<AgentAddress, P> newMessageToParent(
+            final A from, @Nullable final P payload) {
+        final SimpleHeader<AgentAddress> header = SimpleHeader.create(from, parentOf(from));
+        return SimpleMessage.create(header, payload);
+    }
 }

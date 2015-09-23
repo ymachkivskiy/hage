@@ -31,9 +31,11 @@
 
 package org.jage.communication;
 
-import javax.annotation.concurrent.Immutable;
 
 import org.jage.exception.AgeException;
+
+import javax.annotation.concurrent.Immutable;
+
 
 /**
  * {@code CommunicationException} is thrown whenever there is problem with communication between different nodes.
@@ -43,38 +45,34 @@ import org.jage.exception.AgeException;
 @Immutable
 public class CommunicationException extends AgeException {
 
-	private static final long serialVersionUID = -2313554547438876828L;
+    private static final long serialVersionUID = -2313554547438876828L;
 
-	/**
-	 * Constructs a new communication exception.
-	 *
-	 * @param message
-	 *            the detail message.
-	 * @param cause
-	 *            the cause of this exception.
-	 */
-	public CommunicationException(final String message, final Throwable cause) {
-		super(message, cause);
-	}
+    /**
+     * Constructs a new communication exception.
+     *
+     * @param message the detail message.
+     * @param cause   the cause of this exception.
+     */
+    public CommunicationException(final String message, final Throwable cause) {
+        super(message, cause);
+    }
 
-	/**
-	 * Constructs a new communication exception.
-	 *
-	 * @param message
-	 *            the detail message.
-	 */
-	public CommunicationException(final String message) {
-		super(message);
-	}
+    /**
+     * Constructs a new communication exception.
+     *
+     * @param message the detail message.
+     */
+    public CommunicationException(final String message) {
+        super(message);
+    }
 
-	/**
-	 * Constructs a new communication exception with {@code null} as its detail message.
-	 *
-	 * @param cause
-	 *            the cause of this exception.
-	 */
-	public CommunicationException(final Throwable cause) {
-		super(cause);
-	}
+    /**
+     * Constructs a new communication exception with {@code null} as its detail message.
+     *
+     * @param cause the cause of this exception.
+     */
+    public CommunicationException(final Throwable cause) {
+        super(cause);
+    }
 
 }

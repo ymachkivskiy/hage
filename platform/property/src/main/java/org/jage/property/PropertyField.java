@@ -26,22 +26,25 @@
  */
 package org.jage.property;
 
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+
 /**
  * This annotation is for fields that are properties.
- * 
+ *
  * @author Tomek
  */
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface PropertyField {
-	String propertyName();
 
-	boolean isMonitorable() default true;
+    String propertyName();
+
+    boolean isMonitorable() default true;
 }

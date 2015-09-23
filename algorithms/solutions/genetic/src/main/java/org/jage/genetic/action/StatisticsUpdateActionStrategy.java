@@ -31,14 +31,6 @@
 
 package org.jage.genetic.action;
 
-import java.util.Comparator;
-
-import static java.util.Collections.max;
-
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.jage.action.AbstractPerformActionStrategy;
 import org.jage.action.IActionContext;
@@ -48,7 +40,13 @@ import org.jage.population.IPopulation;
 import org.jage.population.IPopulation.Tuple;
 import org.jage.solution.ISolution;
 import org.jage.solution.ISolutionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
+import java.util.Comparator;
+
+import static java.util.Collections.max;
 import static org.jage.agent.ActionDrivenAgent.Properties.STEP;
 import static org.jage.genetic.agent.GeneticActionDrivenAgent.Properties.BEST_EVER;
 import static org.jage.genetic.agent.GeneticActionDrivenAgent.Properties.BEST_EVER_STEP;
@@ -58,63 +56,61 @@ import static org.jage.population.IPopulation.Tuple.newTuple;
 import static org.jage.utils.JageUtils.getPropertyValueOrThrowException;
 import static org.jage.utils.JageUtils.setPropertyValueOrThrowException;
 
+
 /**
  * This action handler performs a transformation on an agent's population, using a given variation operator algorithm.
  * The agent's population is replaced with the transformed one.
  *
- * @param <S>
- *            the type of solutions
- *
+ * @param <S> the type of solutions
  * @author AGH AgE Team
  */
 public final class StatisticsUpdateActionStrategy<S extends ISolution> extends AbstractPerformActionStrategy {
 
-	private static final Logger LOG = LoggerFactory.getLogger(StatisticsUpdateActionStrategy.class);
-
-	@Inject
-	private ISolutionFactory<S> solutionFactory;
-
-	private int resolution = 20;
+    private static final Logger LOG = LoggerFactory.getLogger(StatisticsUpdateActionStrategy.class);
+    private final TupleComparator<S> comparator = new TupleComparator<S>();
+    @Inject
+    private ISolutionFactory<S> solutionFactory;
+    private int resolution = 20;
 
     public void setResolution(final int resolution) {
-	    this.resolution = resolution;
+        this.resolution = resolution;
     }
 
-	private final TupleComparator<S> comparator = new TupleComparator<S>();
+    @Override
+    public void perform(final IAgent target, final IActionContext context) throws AgentException {
+        final Long step = getPropertyValueOrThrowException(target, STEP);
 
-	@Override
-	public void perform(final IAgent target, final IActionContext context) throws AgentException {
-		final Long step = getPropertyValueOrThrowException(target, STEP);
+        if(step % resolution == 0) {
+            LOG.debug("Updating statistics of agent {}", target.getAddress());
 
-		if (step % resolution == 0) {
-			LOG.debug("Updating statistics of agent {}", target.getAddress());
+            final IPopulation<S, Double> population = getPropertyValueOrThrowException(target, POPULATION);
 
-			final IPopulation<S, Double> population = getPropertyValueOrThrowException(target, POPULATION);
+            final Tuple<S, Double> currentBest = copyTuple(max(population.asTupleList(), comparator));
+            setPropertyValueOrThrowException(target, CURRENT_BEST, currentBest);
 
-			final Tuple<S, Double> currentBest = copyTuple(max(population.asTupleList(), comparator));
-			setPropertyValueOrThrowException(target, CURRENT_BEST, currentBest);
+            final Tuple<S, Double> bestEver = getPropertyValueOrThrowException(target, BEST_EVER);
+            if(comparator.compare(currentBest, bestEver) > 0) {
+                setPropertyValueOrThrowException(target, BEST_EVER, currentBest);
+                setPropertyValueOrThrowException(target, BEST_EVER_STEP, step);
+            }
+        }
+    }
 
-			final Tuple<S, Double> bestEver = getPropertyValueOrThrowException(target, BEST_EVER);
-			if (comparator.compare(currentBest, bestEver) > 0) {
-				setPropertyValueOrThrowException(target, BEST_EVER, currentBest);
-				setPropertyValueOrThrowException(target, BEST_EVER_STEP, step);
-			}
-		}
-	}
+    private Tuple<S, Double> copyTuple(final Tuple<S, Double> tuple) {
+        return newTuple(solutionFactory.copySolution(tuple.getSolution()), tuple.getEvaluation());
+    }
 
-	/**
-	 * Helper Tuple<?, Double> comparator.
-	 *
-	 * @author AGH AgE Team
-	 */
-	private static final class TupleComparator<S extends ISolution> implements Comparator<Tuple<S, Double>> {
-		@Override
-		public int compare(final Tuple<S, Double> t1, final Tuple<S, Double> t2) {
-			return t1.getEvaluation().compareTo(t2.getEvaluation());
-		}
-	}
 
-	private Tuple<S, Double> copyTuple(final Tuple<S, Double> tuple) {
-		return newTuple(solutionFactory.copySolution(tuple.getSolution()), tuple.getEvaluation());
-	}
+    /**
+     * Helper Tuple<?, Double> comparator.
+     *
+     * @author AGH AgE Team
+     */
+    private static final class TupleComparator<S extends ISolution> implements Comparator<Tuple<S, Double>> {
+
+        @Override
+        public int compare(final Tuple<S, Double> t1, final Tuple<S, Double> t2) {
+            return t1.getEvaluation().compareTo(t2.getEvaluation());
+        }
+    }
 }

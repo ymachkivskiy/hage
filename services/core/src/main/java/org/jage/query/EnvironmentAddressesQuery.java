@@ -31,14 +31,16 @@
 
 package org.jage.query;
 
+
 import org.jage.address.agent.AgentAddress;
 import org.jage.agent.IAgent;
 
 import static org.jage.query.ValueSelectors.agentAddress;
 
+
 public class EnvironmentAddressesQuery extends AgentEnvironmentQuery<IAgent, AgentAddress> {
 
-	public EnvironmentAddressesQuery() {
-		select(agentAddress()).process(QueryFunctions.<AgentAddress> flatten());
-	}
+    public EnvironmentAddressesQuery() {
+        select(agentAddress()).process(QueryFunctions.<AgentAddress> flatten());
+    }
 }

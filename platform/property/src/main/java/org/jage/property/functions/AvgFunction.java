@@ -26,55 +26,59 @@
  */
 package org.jage.property.functions;
 
+
 import java.util.List;
+
 
 /**
  * Average property function.
- * @author Tomek
  *
+ * @author Tomek
  */
 public class AvgFunction extends NumericFunction {
 
-	private double _defaultValue;
-	
-	/**
-	 * Constructor.
-	 * @param functionName name of the function.
-	 * @param argumentsPattern pattern for arguments.
-	 * @param defaultValue default value, used when pattern is'n resolved to any arguments.
-	 */
-	public AvgFunction(String functionName, String argumentsPattern, double defaultValue) {
-		super(functionName, argumentsPattern);
-		_defaultValue = defaultValue;
-	}
-	
-	/**
-	 * Computes function's value. It returns average of all it's arguments.
-	 */
-	@Override
-	protected Object computeValue(List<FunctionArgument> arguments) 
-	throws InvalidFunctionArgumentException {
-		int count = 0;
-		double sum = 0.0;
-		
-		for (FunctionArgument argument : arguments) {
-			sum += getArgumentValue(argument);
-			count++;
-		}
-		
-		if (count == 0)
-			return _defaultValue;
-		
-		return new Double(sum / count);
-	}
+    private double _defaultValue;
 
-	/**
-	 * Returns Double.class.
-	 */
-	@Override
-	protected Class<?> getReturnType() {
-		return Double.class;
-	}
+    /**
+     * Constructor.
+     *
+     * @param functionName     name of the function.
+     * @param argumentsPattern pattern for arguments.
+     * @param defaultValue     default value, used when pattern is'n resolved to any arguments.
+     */
+    public AvgFunction(String functionName, String argumentsPattern, double defaultValue) {
+        super(functionName, argumentsPattern);
+        _defaultValue = defaultValue;
+    }
+
+    /**
+     * Computes function's value. It returns average of all it's arguments.
+     */
+    @Override
+    protected Object computeValue(List<FunctionArgument> arguments)
+            throws InvalidFunctionArgumentException {
+        int count = 0;
+        double sum = 0.0;
+
+        for(FunctionArgument argument : arguments) {
+            sum += getArgumentValue(argument);
+            count++;
+        }
+
+        if(count == 0) {
+            return _defaultValue;
+        }
+
+        return new Double(sum / count);
+    }
+
+    /**
+     * Returns Double.class.
+     */
+    @Override
+    protected Class<?> getReturnType() {
+        return Double.class;
+    }
 
 }
 

@@ -26,67 +26,68 @@
  */
 package org.jage.property;
 
-import org.jage.property.ChangesNotifierArrayMonitoringStrategy;
+
 import org.jage.property.testHelpers.ChangesNotifierStub;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+
 
 /**
  * Tests for the ChangesNotifierArrayMonitoringStrategy class.
- * 
+ *
  * @author Tomek
  */
 public class ChangesNotifierArrayMonitoringStrategyTest extends
-		PropertyValueMonitoringStrategyTest {
+                                                        PropertyValueMonitoringStrategyTest {
 
-	private ChangesNotifierArrayMonitoringStrategy _strategy;
-	private ChangesNotifierStub[] _changesNotifiers;
-	private TestProperty _propertyMock;
+    private ChangesNotifierArrayMonitoringStrategy _strategy;
+    private ChangesNotifierStub[] _changesNotifiers;
+    private TestProperty _propertyMock;
 
-	@Before
-	public void setUp() {
-		_changesNotifiers = new ChangesNotifierStub[] {
-				new ChangesNotifierStub(), new ChangesNotifierStub(),
-				new ChangesNotifierStub() };
-		_propertyMock = new TestProperty(_changesNotifiers);
-		_strategy = new ChangesNotifierArrayMonitoringStrategy(_propertyMock);
-	}
+    @Before
+    public void setUp() {
+        _changesNotifiers = new ChangesNotifierStub[]{
+                new ChangesNotifierStub(), new ChangesNotifierStub(),
+                new ChangesNotifierStub()};
+        _propertyMock = new TestProperty(_changesNotifiers);
+        _strategy = new ChangesNotifierArrayMonitoringStrategy(_propertyMock);
+    }
 
-	@Test
-	public void testArrayElementInternalStateChanged() {
-		_propertyMock.expectNotifyMonitors(_changesNotifiers);
-		_changesNotifiers[1].notifyMonitorsAboutChange();
-		assertEquals(1, _propertyMock.getNotifyMonitorsInvokationCount());
-	}
+    @Test
+    public void testArrayElementInternalStateChanged() {
+        _propertyMock.expectNotifyMonitors(_changesNotifiers);
+        _changesNotifiers[1].notifyMonitorsAboutChange();
+        assertEquals(1, _propertyMock.getNotifyMonitorsInvokationCount());
+    }
 
-	@Test
-	public void testArrayElementDeleted() {
-		_changesNotifiers[2].notifyMonitorsAboutDeletion();
-		_changesNotifiers[2].notifyMonitorsAboutChange();
-		assertEquals(0, _propertyMock.getNotifyMonitorsInvokationCount());
+    @Test
+    public void testArrayElementDeleted() {
+        _changesNotifiers[2].notifyMonitorsAboutDeletion();
+        _changesNotifiers[2].notifyMonitorsAboutChange();
+        assertEquals(0, _propertyMock.getNotifyMonitorsInvokationCount());
 
-		_propertyMock.expectNotifyMonitors(_changesNotifiers);
-		_changesNotifiers[1].notifyMonitorsAboutChange();
-		assertEquals(1, _propertyMock.getNotifyMonitorsInvokationCount());
-	}
+        _propertyMock.expectNotifyMonitors(_changesNotifiers);
+        _changesNotifiers[1].notifyMonitorsAboutChange();
+        assertEquals(1, _propertyMock.getNotifyMonitorsInvokationCount());
+    }
 
-	@Test
-	public void testPropertyValueChanged() {
-		ChangesNotifierStub[] newValue = { new ChangesNotifierStub(),
-				new ChangesNotifierStub() };
-		_strategy.propertyValueChanged(newValue);
-		assertEquals(0, _changesNotifiers[0].getNumberOfAttachedMonitors());
-		assertEquals(1, newValue[0].getNumberOfAttachedMonitors());
+    @Test
+    public void testPropertyValueChanged() {
+        ChangesNotifierStub[] newValue = {new ChangesNotifierStub(),
+                new ChangesNotifierStub()};
+        _strategy.propertyValueChanged(newValue);
+        assertEquals(0, _changesNotifiers[0].getNumberOfAttachedMonitors());
+        assertEquals(1, newValue[0].getNumberOfAttachedMonitors());
 
-		_propertyMock.resetNotifyMonitorsInvokationCount();
-		_changesNotifiers[1].notifyMonitorsAboutChange();
-		assertEquals(0, _propertyMock.getNotifyMonitorsInvokationCount());
+        _propertyMock.resetNotifyMonitorsInvokationCount();
+        _changesNotifiers[1].notifyMonitorsAboutChange();
+        assertEquals(0, _propertyMock.getNotifyMonitorsInvokationCount());
 
-		_propertyMock.expectNotifyMonitors(newValue);
-		_propertyMock.setValue(newValue);
-		newValue[0].notifyMonitorsAboutChange();
-		assertEquals(1, _propertyMock.getNotifyMonitorsInvokationCount());
-	}
+        _propertyMock.expectNotifyMonitors(newValue);
+        _propertyMock.setValue(newValue);
+        newValue[0].notifyMonitorsAboutChange();
+        assertEquals(1, _propertyMock.getNotifyMonitorsInvokationCount());
+    }
 }

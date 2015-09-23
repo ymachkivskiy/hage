@@ -31,8 +31,10 @@
 
 package org.jage.query;
 
+
 import org.jage.address.agent.AgentAddress;
 import org.jage.agent.SimpleAggregate;
+
 
 /**
  * Helper aggregate.
@@ -41,9 +43,9 @@ import org.jage.agent.SimpleAggregate;
  */
 public class PlainAggregate extends SimpleAggregate {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public PlainAggregate(final AgentAddress address) {
-	    super(address);
+    public PlainAggregate(final AgentAddress address) {
+        super(address);
     }
 }

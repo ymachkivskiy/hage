@@ -31,62 +31,63 @@
 
 package org.jage.agent;
 
-import java.util.Iterator;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.jage.action.IActionContext;
 import org.jage.action.SingleAction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Iterator;
+import java.util.List;
 
 import static com.google.common.collect.Iterables.consumingIterable;
 import static com.google.common.collect.Iterators.consumingIterator;
 import static com.google.common.collect.Lists.newLinkedList;
 
+
 /**
  * The action service for the {@link ActionDrivenAggregate}. It guarantees that add and kill actions will be executed
  * at the very end of the step.
  *
- * @since 2.6
  * @author AGH AgE Team
+ * @since 2.6
  */
 public class ActionDrivenAggregateActionService extends AggregateActionService {
 
-	private static final Logger log = LoggerFactory.getLogger(ActionDrivenAggregateActionService.class);
+    private static final Logger log = LoggerFactory.getLogger(ActionDrivenAggregateActionService.class);
 
-	private final List<SingleAction> addAgentActions = newLinkedList();
+    private final List<SingleAction> addAgentActions = newLinkedList();
 
-	private final List<ISimpleAgent> killAgentActionTargets = newLinkedList();
+    private final List<ISimpleAgent> killAgentActionTargets = newLinkedList();
 
-	private final List<IActionContext> killAgentActionContexts = newLinkedList();
+    private final List<IActionContext> killAgentActionContexts = newLinkedList();
 
-	@Override
-	protected void performAddAgentAction(final SingleAction action) {
-		addAgentActions.add(action);
-	}
+    @Override
+    protected void performAddAgentAction(final SingleAction action) {
+        addAgentActions.add(action);
+    }
 
-	@Override
-	protected void performKillAgentAction(final ISimpleAgent target, final IActionContext context) {
-		killAgentActionTargets.add(target);
-		killAgentActionContexts.add(context);
-	}
+    @Override
+    protected void performKillAgentAction(final ISimpleAgent target, final IActionContext context) {
+        killAgentActionTargets.add(target);
+        killAgentActionContexts.add(context);
+    }
 
-	/**
-	 * Executes all postponed (add and kill) actions.
-	 */
-	public void performPostponedActions() {
-		log.debug("Performing postponed actions of {}", this);
-		// Execute all postponed actions. Don't forget to remove them from the collections.
+    /**
+     * Executes all postponed (add and kill) actions.
+     */
+    public void performPostponedActions() {
+        log.debug("Performing postponed actions of {}", this);
+        // Execute all postponed actions. Don't forget to remove them from the collections.
 
-		for (final SingleAction action : consumingIterable(addAgentActions)) {
-			super.performAddAgentAction(action);
-		}
+        for(final SingleAction action : consumingIterable(addAgentActions)) {
+            super.performAddAgentAction(action);
+        }
 
-		final Iterator<ISimpleAgent> targets = consumingIterator(killAgentActionTargets.iterator());
-		final Iterator<IActionContext> contexts = consumingIterator(killAgentActionContexts.iterator());
-		while (targets.hasNext() && contexts.hasNext()) {
-			super.performKillAgentAction(targets.next(), contexts.next());
-		}
-	}
+        final Iterator<ISimpleAgent> targets = consumingIterator(killAgentActionTargets.iterator());
+        final Iterator<IActionContext> contexts = consumingIterator(killAgentActionContexts.iterator());
+        while(targets.hasNext() && contexts.hasNext()) {
+            super.performKillAgentAction(targets.next(), contexts.next());
+        }
+    }
 }

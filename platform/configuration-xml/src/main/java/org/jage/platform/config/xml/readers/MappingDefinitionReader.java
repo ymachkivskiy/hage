@@ -31,42 +31,40 @@
 
 package org.jage.platform.config.xml.readers;
 
-import java.util.Map;
-
-import org.dom4j.Element;
-
-import org.jage.platform.component.definition.ConfigurationException;
 
 import com.google.common.collect.ImmutableMap;
+import org.dom4j.Element;
+import org.jage.platform.component.definition.ConfigurationException;
+
+import java.util.Map;
+
 
 /**
  * Reader which delegates to configured readers, based on an element name.
  *
- * @param <T>
- *            the type of object returned by delegate readers.
+ * @param <T> the type of object returned by delegate readers.
  * @author AGH AgE Team
  */
 public class MappingDefinitionReader<T> implements IDefinitionReader<T> {
 
-	private final Map<String, IDefinitionReader<T>> readers;
+    private final Map<String, IDefinitionReader<T>> readers;
 
-	/**
-	 * creates a MappingDefinitionReader.
-	 *
-	 * @param readers
-	 *            a map of delegate readers.
-	 */
-	public MappingDefinitionReader(final Map<String, IDefinitionReader<T>> readers) {
-		this.readers = ImmutableMap.copyOf(readers);
-	}
+    /**
+     * creates a MappingDefinitionReader.
+     *
+     * @param readers a map of delegate readers.
+     */
+    public MappingDefinitionReader(final Map<String, IDefinitionReader<T>> readers) {
+        this.readers = ImmutableMap.copyOf(readers);
+    }
 
-	@Override
-	public T read(final Element element) throws ConfigurationException {
-		final String elementName = element.getName();
-		final IDefinitionReader<T> reader = readers.get(elementName);
-		if (reader == null) {
-			throw new ConfigurationException("Invalid element type: " + elementName);
-		}
-		return reader.read(element);
-	}
+    @Override
+    public T read(final Element element) throws ConfigurationException {
+        final String elementName = element.getName();
+        final IDefinitionReader<T> reader = readers.get(elementName);
+        if(reader == null) {
+            throw new ConfigurationException("Invalid element type: " + elementName);
+        }
+        return reader.read(element);
+    }
 }

@@ -31,37 +31,37 @@
 
 package org.jage.communication.message;
 
-import java.io.Serializable;
+
+import org.jage.address.Address;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
+import java.io.Serializable;
 
-import org.jage.address.Address;
 
 /**
  * Base interface for messages that are used by the system. It is comprised of a header ({@link Header}) and content
  * which can be any object.
- * 
- * @param <A>
- *            An address type of a sender and a receiver
- * @param <T>
- *            A type of the payload transported within this message.
- * 
+ *
+ * @param <A> An address type of a sender and a receiver
+ * @param <T> A type of the payload transported within this message.
  * @author AGH AgE Team
  */
 public interface Message<A extends Address, T extends Serializable> extends Serializable {
 
-	/**
-	 * Returns a message header.
-	 * 
-	 * @return A message header, never null.
-	 */
-	@Nonnull Header<A> getHeader();
+    /**
+     * Returns a message header.
+     *
+     * @return A message header, never null.
+     */
+    @Nonnull
+    Header<A> getHeader();
 
-	/**
-	 * Returns message contents.
-	 * 
-	 * @return A message contents.
-	 */
-	@CheckForNull T getPayload();
+    /**
+     * Returns message contents.
+     *
+     * @return A message contents.
+     */
+    @CheckForNull
+    T getPayload();
 }

@@ -31,7 +31,9 @@
 
 package org.jage.emas.battle;
 
+
 import org.jage.emas.agent.IndividualAgent;
+
 
 /**
  * Deterministic battle strategy based on fitness. The agent with the higher fitness wins.
@@ -40,8 +42,8 @@ import org.jage.emas.agent.IndividualAgent;
  */
 public class DeterministicFitnessBattle implements Battle<IndividualAgent> {
 
-	@Override
-	public IndividualAgent fight(final IndividualAgent first, final IndividualAgent second) {
-		return Double.compare(first.getEffectiveFitness(), second.getEffectiveFitness()) >= 0 ? first : second;
-	}
+    @Override
+    public IndividualAgent fight(final IndividualAgent first, final IndividualAgent second) {
+        return Double.compare(first.getEffectiveFitness(), second.getEffectiveFitness()) >= 0 ? first : second;
+    }
 }

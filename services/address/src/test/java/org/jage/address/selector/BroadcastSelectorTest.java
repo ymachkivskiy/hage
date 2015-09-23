@@ -31,17 +31,18 @@
 
 package org.jage.address.selector;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import org.jage.address.Address;
 import org.jage.address.agent.AgentAddress;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
+
 
 /**
  * Tests for the {@link BroadcastSelector} class.
@@ -51,36 +52,36 @@ import static org.mockito.Mockito.mock;
 @RunWith(MockitoJUnitRunner.class)
 public class BroadcastSelectorTest {
 
-	private BroadcastSelector<Address> selector;
+    private BroadcastSelector<Address> selector;
 
-	@Test
-	public void shouldCreateCorrectly() {
-		// given
-		selector = BroadcastSelector.create();
+    @Test
+    public void shouldCreateCorrectly() {
+        // given
+        selector = BroadcastSelector.create();
 
-		// then
-		assertThat(selector, is(notNullValue()));
-	}
+        // then
+        assertThat(selector, is(notNullValue()));
+    }
 
-	@Test
-	public void shouldSelectEverything() {
-		// given
-		selector = BroadcastSelector.create();
-		final AgentAddress address1 = mock(AgentAddress.class);
-		final AgentAddress address2 = mock(AgentAddress.class);
+    @Test
+    public void shouldSelectEverything() {
+        // given
+        selector = BroadcastSelector.create();
+        final AgentAddress address1 = mock(AgentAddress.class);
+        final AgentAddress address2 = mock(AgentAddress.class);
 
-		// then
-		assertThat(selector.selects(address1), is(true));
-		assertThat(selector.selects(address2), is(true));
-	}
+        // then
+        assertThat(selector.selects(address1), is(true));
+        assertThat(selector.selects(address2), is(true));
+    }
 
-	@Test(expected = NullPointerException.class)
-	public void shouldThrowWhenAddressNull() {
-		// given
-		selector = BroadcastSelector.create();
+    @Test(expected = NullPointerException.class)
+    public void shouldThrowWhenAddressNull() {
+        // given
+        selector = BroadcastSelector.create();
 
-		// when
-		selector.selects(null);
-	}
+        // when
+        selector.selects(null);
+    }
 
 }

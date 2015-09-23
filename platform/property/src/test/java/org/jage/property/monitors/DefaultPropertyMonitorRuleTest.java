@@ -26,18 +26,20 @@
  */
 package org.jage.property.monitors;
 
+
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+
 
 public class DefaultPropertyMonitorRuleTest {
 
-	@Test
-	public void testDefaultPropertyMonitorRule() {
-		DefaultPropertyMonitorRule rule = new DefaultPropertyMonitorRule();
-		assertTrue(rule.isActive(1, 2));
-		assertTrue(rule.isActive("aa", "bb"));
-		assertTrue(rule.isActive(new Object(), new Object()));
-		assertTrue(rule.isActive("same", "same"));
-	}
+    @Test
+    public void testDefaultPropertyMonitorRule() {
+        DefaultPropertyMonitorRule rule = new DefaultPropertyMonitorRule();
+        assertTrue(rule.isActive(1, 2));
+        assertTrue(rule.isActive("aa", "bb"));
+        assertTrue(rule.isActive(new Object(), new Object()));
+        assertTrue(rule.isActive("same", "same"));
+    }
 }

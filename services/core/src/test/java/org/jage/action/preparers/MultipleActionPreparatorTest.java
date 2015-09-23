@@ -31,21 +31,21 @@
 
 package org.jage.action.preparers;
 
-import java.util.Collection;
-import java.util.List;
 
-import org.junit.Test;
-import org.mockito.Mock;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
+import com.google.common.collect.ImmutableList;
 import org.jage.action.Action;
 import org.jage.action.IActionContext;
 import org.jage.action.SingleAction;
 import org.jage.agent.IAgent;
+import org.junit.Test;
+import org.mockito.Mock;
 
-import com.google.common.collect.ImmutableList;
+import java.util.Collection;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 
 /**
  * Tests for {@link MultipleActionPreparatorTest}.
@@ -54,31 +54,29 @@ import com.google.common.collect.ImmutableList;
  */
 public class MultipleActionPreparatorTest extends AbstractActionPreparatorTest {
 
-	@Mock
-	private IActionContext actionContext1;
+    private final MultipleActionPreparer<IAgent> preparator = new MultipleActionPreparer<IAgent>();
+    @Mock
+    private IActionContext actionContext1;
+    @Mock
+    private IActionContext actionContext2;
 
-	@Mock
-	private IActionContext actionContext2;
+    @Test
+    public void testPrepareAction() {
+        // given
+        List<IActionContext> list = ImmutableList.of(actionContext1, actionContext2);
+        preparator.setActionContexts(list);
 
-	private final MultipleActionPreparer<IAgent> preparator = new MultipleActionPreparer<IAgent>();
+        // when
+        Collection<Action> actions = preparator.prepareActions(agent);
 
-	@Test
-	public void testPrepareAction() {
-		// given
-		List<IActionContext> list = ImmutableList.of(actionContext1, actionContext2);
-		preparator.setActionContexts(list);
+        // then
+        assertEquals(2, actions.size());
 
-		// when
-		Collection<Action> actions = preparator.prepareActions(agent);
-
-		// then
-		assertEquals(2, actions.size());
-
-		for (Action action : actions) {
-			assertTrue(action instanceof SingleAction);
-			SingleAction singleAction = (SingleAction)action;
-			assertTrue(singleAction.getTarget().selects(agentAddress));
-			assertTrue(list.contains(singleAction.getContext()));
-		}
-	}
+        for(Action action : actions) {
+            assertTrue(action instanceof SingleAction);
+            SingleAction singleAction = (SingleAction) action;
+            assertTrue(singleAction.getTarget().selects(agentAddress));
+            assertTrue(list.contains(singleAction.getContext()));
+        }
+    }
 }

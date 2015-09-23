@@ -31,10 +31,12 @@
 
 package org.jage.emas.battle;
 
-import javax.inject.Inject;
 
 import org.jage.emas.agent.IndividualAgent;
 import org.jage.random.INormalizedDoubleRandomGenerator;
+
+import javax.inject.Inject;
+
 
 /**
  * Probabilistic battle strategy based on fitness. Each agent can win, with a probability proportional to their relative
@@ -44,15 +46,15 @@ import org.jage.random.INormalizedDoubleRandomGenerator;
  */
 public class ProbabilisticFitnessBattle implements Battle<IndividualAgent> {
 
-	@Inject
-	private INormalizedDoubleRandomGenerator rand;
+    @Inject
+    private INormalizedDoubleRandomGenerator rand;
 
-	@Override
-	public IndividualAgent fight(final IndividualAgent first, final IndividualAgent second) {
-		final double firstValue = first.getEffectiveFitness();
-		final double secondValue = second.getEffectiveFitness();
-		// FIXME
-		final double threshold = 1 - firstValue / (firstValue + secondValue);
-		return rand.nextDouble() <= threshold ? first : second;
-	}
+    @Override
+    public IndividualAgent fight(final IndividualAgent first, final IndividualAgent second) {
+        final double firstValue = first.getEffectiveFitness();
+        final double secondValue = second.getEffectiveFitness();
+        // FIXME
+        final double threshold = 1 - firstValue / (firstValue + secondValue);
+        return rand.nextDouble() <= threshold ? first : second;
+    }
 }

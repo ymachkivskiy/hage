@@ -31,20 +31,23 @@
 
 package org.jage.strategy;
 
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+
 /**
  * Annotation definition. It specifies possible ancestor class which can aggregate annotated object.
- * 
+ *
  * @author AGH AgE Team
  */
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface PossibleAncestor {
-	Class<?>[] value();
+
+    Class<?>[] value();
 }

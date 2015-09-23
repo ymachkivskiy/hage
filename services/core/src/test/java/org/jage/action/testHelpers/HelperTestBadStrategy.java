@@ -31,7 +31,9 @@
 
 package org.jage.action.testHelpers;
 
+
 import org.jage.property.ClassPropertyContainer;
+
 
 /**
  * Helper for bad strategy.
@@ -39,5 +41,5 @@ import org.jage.property.ClassPropertyContainer;
  * @author AGH AgE Team
  */
 public class HelperTestBadStrategy extends ClassPropertyContainer {
-	// Empty
+    // Empty
 }

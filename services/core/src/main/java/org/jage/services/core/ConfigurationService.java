@@ -31,13 +31,14 @@
 
 package org.jage.services.core;
 
+
 /**
- * A service responsible for providing a computation configuration to the node (from any source).   
+ * A service responsible for providing a computation configuration to the node (from any source).
  *
  * @author AGH AgE Team
  */
 public interface ConfigurationService {
 
-	String SERVICE_NAME = ConfigurationService.class.getSimpleName();
+    String SERVICE_NAME = ConfigurationService.class.getSimpleName();
 
 }

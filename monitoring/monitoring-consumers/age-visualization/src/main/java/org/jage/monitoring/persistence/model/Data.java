@@ -27,6 +27,7 @@
 
 package org.jage.monitoring.persistence.model;
 
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -35,27 +36,29 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+
 /**
  * Data model object represents data.
- * 
+ *
  * @author AGH AgE Team
  */
 @Entity
 @Table(name = "data")
 public class Data {
-	
-	@Column(name="data_id")
-	@Id
-	@SequenceGenerator(name="data_seq", sequenceName="data_seq")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="data_seq")
-	private long id;
-	private int columnNo;
-	private String val;
-	
-	public Data(){}
-	
-	public Data(int columnNo, String val) {
-		this.columnNo = columnNo;
-		this.val = val;
-	}
+
+    @Column(name = "data_id")
+    @Id
+    @SequenceGenerator(name = "data_seq", sequenceName = "data_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "data_seq")
+    private long id;
+    private int columnNo;
+    private String val;
+
+    public Data() {
+    }
+
+    public Data(int columnNo, String val) {
+        this.columnNo = columnNo;
+        this.val = val;
+    }
 }

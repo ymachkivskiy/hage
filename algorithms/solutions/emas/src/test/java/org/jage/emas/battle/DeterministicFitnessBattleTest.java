@@ -31,6 +31,8 @@
 
 package org.jage.emas.battle;
 
+
+import org.jage.emas.agent.IndividualAgent;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -40,7 +42,6 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 
-import org.jage.emas.agent.IndividualAgent;
 
 /**
  * Tests for DeterministicFitnessBattle.
@@ -50,50 +51,48 @@ import org.jage.emas.agent.IndividualAgent;
 @RunWith(MockitoJUnitRunner.class)
 public class DeterministicFitnessBattleTest {
 
-	@Mock
-	IndividualAgent first;
+    private final Battle<IndividualAgent> battle = new DeterministicFitnessBattle();
+    @Mock
+    IndividualAgent first;
+    @Mock
+    IndividualAgent second;
 
-	@Mock
-	IndividualAgent second;
+    @Test
+    public void shouldChooseFirst() {
+        // given
+        given(first.getEffectiveFitness()).willReturn(10.0);
+        given(second.getEffectiveFitness()).willReturn(5.0);
 
-	private final Battle<IndividualAgent> battle = new DeterministicFitnessBattle();
+        // when
+        IndividualAgent winner = battle.fight(first, second);
 
-	@Test
-	public void shouldChooseFirst() {
-		// given
-		given(first.getEffectiveFitness()).willReturn(10.0);
-		given(second.getEffectiveFitness()).willReturn(5.0);
+        // then
+        assertThat(winner, is(first));
+    }
 
-		// when
-		IndividualAgent winner = battle.fight(first, second);
+    @Test
+    public void shouldChooseSecond() {
+        // given
+        given(first.getEffectiveFitness()).willReturn(5.0);
+        given(second.getEffectiveFitness()).willReturn(10.0);
 
-		// then
-		assertThat(winner, is(first));
-	}
+        // when
+        IndividualAgent winner = battle.fight(first, second);
 
-	@Test
-	public void shouldChooseSecond() {
-		// given
-		given(first.getEffectiveFitness()).willReturn(5.0);
-		given(second.getEffectiveFitness()).willReturn(10.0);
+        // then
+        assertThat(winner, is(second));
+    }
 
-		// when
-		IndividualAgent winner = battle.fight(first, second);
+    @Test
+    public void shouldChooseFirstOnDraw() {
+        // given
+        given(first.getEffectiveFitness()).willReturn(5.0);
+        given(second.getEffectiveFitness()).willReturn(5.0);
 
-		// then
-		assertThat(winner, is(second));
-	}
+        // when
+        IndividualAgent winner = battle.fight(first, second);
 
-	@Test
-	public void shouldChooseFirstOnDraw() {
-		// given
-		given(first.getEffectiveFitness()).willReturn(5.0);
-		given(second.getEffectiveFitness()).willReturn(5.0);
-
-		// when
-		IndividualAgent winner = battle.fight(first, second);
-
-		// then
-		assertThat(winner, is(first));
-	}
+        // then
+        assertThat(winner, is(first));
+    }
 }

@@ -31,25 +31,22 @@
 
 package org.jage.platform.config.xml.readers;
 
-import java.lang.reflect.Array;
 
 import org.dom4j.Element;
-
 import org.jage.platform.component.definition.ArrayDefinition;
 import org.jage.platform.component.definition.ConfigurationException;
 import org.jage.platform.component.definition.IArgumentDefinition;
 import org.jage.platform.component.definition.IComponentDefinition;
+
+import java.lang.reflect.Array;
 
 import static org.jage.platform.config.xml.ConfigAttributes.IS_SINGLETON;
 import static org.jage.platform.config.xml.ConfigAttributes.NAME;
 import static org.jage.platform.config.xml.ConfigAttributes.VALUE_TYPE;
 import static org.jage.platform.config.xml.ConfigTags.REFERENCE;
 import static org.jage.platform.config.xml.ConfigTags.VALUE;
-import static org.jage.platform.config.xml.ConfigUtils.getChildrenExcluding;
-import static org.jage.platform.config.xml.ConfigUtils.getChildrenIncluding;
-import static org.jage.platform.config.xml.ConfigUtils.getRequiredAttribute;
-import static org.jage.platform.config.xml.ConfigUtils.toBoolean;
-import static org.jage.platform.config.xml.ConfigUtils.toClass;
+import static org.jage.platform.config.xml.ConfigUtils.*;
+
 
 /**
  * Reader for array definitions. Intended to process {@code <array>} tags.
@@ -58,30 +55,30 @@ import static org.jage.platform.config.xml.ConfigUtils.toClass;
  */
 public final class ArrayDefinitionReader extends AbstractDefinitionReader<IComponentDefinition> {
 
-	@Override
-	public ArrayDefinition read(final Element element) throws ConfigurationException {
-		final String nameAttribute = getRequiredAttribute(element, NAME);
-		final String valueTypeAttribute = getRequiredAttribute(element, VALUE_TYPE);
-		final String isSingletonAttribute = getRequiredAttribute(element, IS_SINGLETON);
+    @Override
+    public ArrayDefinition read(final Element element) throws ConfigurationException {
+        final String nameAttribute = getRequiredAttribute(element, NAME);
+        final String valueTypeAttribute = getRequiredAttribute(element, VALUE_TYPE);
+        final String isSingletonAttribute = getRequiredAttribute(element, IS_SINGLETON);
 
-		final ArrayDefinition definition = new ArrayDefinition(nameAttribute,
-				toArrayClass(toClass(valueTypeAttribute)),
-		        toBoolean(isSingletonAttribute));
+        final ArrayDefinition definition = new ArrayDefinition(nameAttribute,
+                                                               toArrayClass(toClass(valueTypeAttribute)),
+                                                               toBoolean(isSingletonAttribute));
 
-		for (final Element child : getChildrenIncluding(element, REFERENCE, VALUE)) {
-			final IArgumentDefinition value = getArgumentReader().read(child);
-			definition.addItem(value);
-		}
+        for(final Element child : getChildrenIncluding(element, REFERENCE, VALUE)) {
+            final IArgumentDefinition value = getArgumentReader().read(child);
+            definition.addItem(value);
+        }
 
-		for (final Element child : getChildrenExcluding(element, REFERENCE, VALUE)) {
-			final IComponentDefinition innerDefinition = getInstanceReader().read(child);
-			definition.addInnerComponentDefinition(innerDefinition);
-		}
+        for(final Element child : getChildrenExcluding(element, REFERENCE, VALUE)) {
+            final IComponentDefinition innerDefinition = getInstanceReader().read(child);
+            definition.addInnerComponentDefinition(innerDefinition);
+        }
 
-		return definition;
-	}
+        return definition;
+    }
 
-	private Class<? extends Object> toArrayClass(final Class<?> componentType) {
-		return Array.newInstance(componentType, 0).getClass();
-	}
+    private Class<? extends Object> toArrayClass(final Class<?> componentType) {
+        return Array.newInstance(componentType, 0).getClass();
+    }
 }

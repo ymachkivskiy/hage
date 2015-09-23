@@ -31,14 +31,15 @@
 
 package org.jage.strategy;
 
+
 import org.jage.platform.component.provider.IComponentInstanceProviderAware;
+
 
 /**
  * Interface for strategies which needs access to component provider.
- * 
+ *
  * @author AGH AgE Team
- * 
  */
 public interface IProviderAwareStrategy extends IStrategy, IComponentInstanceProviderAware {
-	// Empty
+    // Empty
 }

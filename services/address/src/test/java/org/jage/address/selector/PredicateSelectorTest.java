@@ -31,29 +31,27 @@
 
 package org.jage.address.selector;
 
-import java.util.Set;
 
-import javax.annotation.Nullable;
-
+import com.google.common.collect.ImmutableSet;
+import org.jage.address.agent.AgentAddress;
+import org.jage.address.agent.DefaultAgentAddress;
+import org.jage.address.node.NodeAddress;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import javax.annotation.Nullable;
+import java.util.Set;
+
+import static com.google.common.collect.Sets.newHashSetWithExpectedSize;
 import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.isIn;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
-import org.jage.address.agent.AgentAddress;
-import org.jage.address.agent.DefaultAgentAddress;
-import org.jage.address.node.NodeAddress;
-
-import com.google.common.collect.ImmutableSet;
-
-import static com.google.common.collect.Sets.newHashSetWithExpectedSize;
 
 /**
  * Tests for the {@link PredicateSelector} class.
@@ -63,60 +61,62 @@ import static com.google.common.collect.Sets.newHashSetWithExpectedSize;
 @RunWith(MockitoJUnitRunner.class)
 public class PredicateSelectorTest {
 
-	private Set<AgentAddress> addresses;
+    private Set<AgentAddress> addresses;
 
-	private PredicateSelector<AgentAddress> selector;
+    private PredicateSelector<AgentAddress> selector;
 
-	@Mock
-	private NodeAddress nodeAddress;
+    @Mock
+    private NodeAddress nodeAddress;
 
-	@Before
-	public void setUp() {
-		final ImmutableSet.Builder<AgentAddress> builder = ImmutableSet.builder();
-		for (int i = 0; i < 5; i++) {
-			builder.add(new DefaultAgentAddress(nodeAddress));
-		}
-		addresses = builder.build();
-	}
+    @Before
+    public void setUp() {
+        final ImmutableSet.Builder<AgentAddress> builder = ImmutableSet.builder();
+        for(int i = 0; i < 5; i++) {
+            builder.add(new DefaultAgentAddress(nodeAddress));
+        }
+        addresses = builder.build();
+    }
 
-	@Test(expected = IllegalArgumentException.class)
-	public void initialAddressesCannotBeNull() {
-		// when
-		selector = PredicateSelector.create(null);
-	}
+    @Test(expected = IllegalArgumentException.class)
+    public void initialAddressesCannotBeNull() {
+        // when
+        selector = PredicateSelector.create(null);
+    }
 
-	@Test
-	public void shouldCreateCorrectly() {
-		// given
-		selector = PredicateSelector.create(new AddressPredicate<AgentAddress>() {
-			@Override
-			public boolean apply(@Nullable final AgentAddress input) {
-				return true;
-			}
-		});
+    @Test
+    public void shouldCreateCorrectly() {
+        // given
+        selector = PredicateSelector.create(new AddressPredicate<AgentAddress>() {
 
-		// then
-		assertThat(selector, is(notNullValue()));
-	}
+            @Override
+            public boolean apply(@Nullable final AgentAddress input) {
+                return true;
+            }
+        });
 
-	@Test
-	public void shouldSelectProcessAddressesWithPredicate() {
-		// given
-		final Set<AgentAddress> processedAddresses = newHashSetWithExpectedSize(addresses.size());
-		selector = PredicateSelector.create(new AddressPredicate<AgentAddress>() {
-			@Override
-			public boolean apply(@Nullable final AgentAddress address) {
-				return processedAddresses.add(address);
-			}
-		});
+        // then
+        assertThat(selector, is(notNullValue()));
+    }
 
-		// when
-		for (final AgentAddress address : addresses) {
-			selector.selects(address);
-		}
+    @Test
+    public void shouldSelectProcessAddressesWithPredicate() {
+        // given
+        final Set<AgentAddress> processedAddresses = newHashSetWithExpectedSize(addresses.size());
+        selector = PredicateSelector.create(new AddressPredicate<AgentAddress>() {
 
-		// then
-		assertThat(addresses, everyItem(isIn(processedAddresses)));
-	}
+            @Override
+            public boolean apply(@Nullable final AgentAddress address) {
+                return processedAddresses.add(address);
+            }
+        });
+
+        // when
+        for(final AgentAddress address : addresses) {
+            selector.selects(address);
+        }
+
+        // then
+        assertThat(addresses, everyItem(isIn(processedAddresses)));
+    }
 
 }

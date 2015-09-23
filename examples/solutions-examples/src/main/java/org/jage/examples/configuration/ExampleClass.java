@@ -31,31 +31,31 @@
 
 package org.jage.examples.configuration;
 
+
 /**
  * This class is a simple example class to use in collections.
- * 
+ *
  * @author AGH AgE Team
  */
 public class ExampleClass {
 
-	private String argument;
+    private String argument;
 
-	/**
-	 * Creates a simple example class instance.
-	 * 
-	 * @param argument
-	 *            A sample string argument.
-	 */
-	public ExampleClass(String argument) {
-		this.argument = argument;
-	}
+    /**
+     * Creates a simple example class instance.
+     *
+     * @param argument A sample string argument.
+     */
+    public ExampleClass(String argument) {
+        this.argument = argument;
+    }
 
-	public String getArgument() {
-		return argument;
-	}
+    public String getArgument() {
+        return argument;
+    }
 
-	public void setArgument(String argument) {
-		this.argument = argument;
-	}
+    public void setArgument(String argument) {
+        this.argument = argument;
+    }
 
 }

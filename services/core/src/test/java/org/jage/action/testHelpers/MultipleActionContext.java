@@ -31,10 +31,13 @@
 
 package org.jage.action.testHelpers;
 
+
 import org.jage.action.IActionContext;
 import org.jage.action.context.AgentActionContext;
 
-@AgentActionContext({ "mult1Action", "mult2Action" })
+
+@AgentActionContext({"mult1Action", "mult2Action"})
 public class MultipleActionContext implements IActionContext {
-	public boolean actionRun = false;
+
+    public boolean actionRun = false;
 }

@@ -31,11 +31,12 @@
 
 package org.jage.platform.config.xml.util;
 
+
 import org.dom4j.Document;
+import org.jage.platform.config.xml.ConfigTags;
 
 import static org.dom4j.DocumentHelper.createDocument;
 
-import org.jage.platform.config.xml.ConfigTags;
 
 /**
  * Utility builder for documents.
@@ -43,16 +44,17 @@ import org.jage.platform.config.xml.ConfigTags;
  * @author AGH AgE Team
  */
 public class DocumentBuilder {
-	private final Document document = createDocument(ElementBuilder.element(ConfigTags.CONFIGURATION).build());
 
-	/**
-	 * Creates an empty configuration Document, with appropriate namespace settings.
-	 *
-	 * @return an empty document.
-	 */
+    private final Document document = createDocument(ElementBuilder.element(ConfigTags.CONFIGURATION).build());
+
+    /**
+     * Creates an empty configuration Document, with appropriate namespace settings.
+     *
+     * @return an empty document.
+     */
     public static DocumentBuilder emptyDocument() {
-		return new DocumentBuilder();
-	}
+        return new DocumentBuilder();
+    }
 
     /**
      * Adds an element, represented by an {@link ElementBuilder}, to the document being built.
@@ -61,8 +63,8 @@ public class DocumentBuilder {
      * @return this builder
      */
     public DocumentBuilder add(final ElementBuilder element) {
-    	document.getRootElement().add(element.build());
-    	return this;
+        document.getRootElement().add(element.build());
+        return this;
     }
 
     /**

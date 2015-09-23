@@ -31,6 +31,7 @@
 
 package org.jage.exception;
 
+
 /**
  * A basic class for all AgE exceptions.
  *
@@ -38,44 +39,37 @@ package org.jage.exception;
  */
 public class AgeException extends RuntimeException {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/***
-	 * Constructs a new exception with the specified detail message.
-	 *
-	 * @param message
-	 *            the detail message.
-	 *
-	 * @see Exception#Exception(String)
-	 */
-	public AgeException(final String message) {
-		super(message);
-	}
+    /**
+     * Constructs a new exception with the specified detail message.
+     *
+     * @param message the detail message.
+     * @see Exception#Exception(String)
+     */
+    public AgeException(final String message) {
+        super(message);
+    }
 
-	/**
-	 * Constructs a new exception with the specified detail message.
-	 *
-	 * @param cause
-	 *            the cause.
-	 *
-	 * @see Exception#Exception(String)
-	 */
-	public AgeException(final Throwable cause) {
-		super(cause);
-	}
+    /**
+     * Constructs a new exception with the specified detail message.
+     *
+     * @param cause the cause.
+     * @see Exception#Exception(String)
+     */
+    public AgeException(final Throwable cause) {
+        super(cause);
+    }
 
-	/**
-	 * Constructs a new exception with the specified cause and a detail message of
-	 * <tt>(cause==null ? null : cause.toString())</tt>.
-	 *
-	 * @param message
-	 *            the detail message.
-	 * @param cause
-	 *            the cause.
-	 *
-	 * @see Exception#Exception(String, Throwable)
-	 */
-	public AgeException(final String message, final Throwable cause) {
-		super(message, cause);
-	}
+    /**
+     * Constructs a new exception with the specified cause and a detail message of
+     * <tt>(cause==null ? null : cause.toString())</tt>.
+     *
+     * @param message the detail message.
+     * @param cause   the cause.
+     * @see Exception#Exception(String, Throwable)
+     */
+    public AgeException(final String message, final Throwable cause) {
+        super(message, cause);
+    }
 }

@@ -29,13 +29,6 @@
  */
 package org.jage.config;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.picocontainer.PicoCompositionException;
 
 import org.jage.platform.component.definition.ClassWithProperties;
 import org.jage.platform.component.definition.ConfigurationAssert;
@@ -43,104 +36,111 @@ import org.jage.platform.component.definition.IComponentDefinition;
 import org.jage.platform.component.pico.PicoComponentInstanceProvider;
 import org.jage.platform.component.provider.IMutableComponentInstanceProvider;
 import org.jage.platform.config.xml.XmlConfigurationLoader;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.picocontainer.PicoCompositionException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.jage.platform.component.builder.ConfigurationBuilder.Configuration;
 
+
 /**
- *
  * @author Adam Wos <adam.wos@gmail.com>
  */
 public class ContainerIsolationTest {
 
-	@Before
-	public void setUp() {
+    @Before
+    public void setUp() {
 
-	}
+    }
 
-	@Test
-	public void testCreateInstance() throws Exception {
-		XmlConfigurationLoader loader = new XmlConfigurationLoader();
-		List<IComponentDefinition> definitions = loader.loadConfiguration("classpath:org/jage/config/containerIsolation1.xml");
+    @Test
+    public void testCreateInstance() throws Exception {
+        XmlConfigurationLoader loader = new XmlConfigurationLoader();
+        List<IComponentDefinition> definitions = loader.loadConfiguration("classpath:org/jage/config/containerIsolation1.xml");
 
-		IMutableComponentInstanceProvider pico = new PicoComponentInstanceProvider();
-		for (IComponentDefinition definition : definitions) {
-			pico.addComponent(definition);
-		}
+        IMutableComponentInstanceProvider pico = new PicoComponentInstanceProvider();
+        for(IComponentDefinition definition : definitions) {
+            pico.addComponent(definition);
+        }
 
-		ClassWithProperties o1 = (ClassWithProperties)pico.getInstance("obj1");
-		Assert.assertNotNull(o1);
-		ClassWithProperties o2 = (ClassWithProperties)pico.getInstance("obj2");
-		Assert.assertNotNull(o2);
-		Assert.assertEquals(1, o1.getList().size());
-		Assert.assertEquals(o2, o1.getList().get(0));
-	}
+        ClassWithProperties o1 = (ClassWithProperties) pico.getInstance("obj1");
+        Assert.assertNotNull(o1);
+        ClassWithProperties o2 = (ClassWithProperties) pico.getInstance("obj2");
+        Assert.assertNotNull(o2);
+        Assert.assertEquals(1, o1.getList().size());
+        Assert.assertEquals(o2, o1.getList().get(0));
+    }
 
-	@Test
-	public void testCreateInstance2() throws Exception {
-		XmlConfigurationLoader loader = new XmlConfigurationLoader();
-		List<IComponentDefinition> definitions = loader.loadConfiguration("classpath:org/jage/config/containerIsolation2.xml");
+    @Test
+    public void testCreateInstance2() throws Exception {
+        XmlConfigurationLoader loader = new XmlConfigurationLoader();
+        List<IComponentDefinition> definitions = loader.loadConfiguration("classpath:org/jage/config/containerIsolation2.xml");
 
-		IMutableComponentInstanceProvider pico = new PicoComponentInstanceProvider();
-		for (IComponentDefinition definition : definitions) {
-			pico.addComponent(definition);
-		}
+        IMutableComponentInstanceProvider pico = new PicoComponentInstanceProvider();
+        for(IComponentDefinition definition : definitions) {
+            pico.addComponent(definition);
+        }
 
-		try {
-			pico.verify();
-			pico.getInstance("obj1");
-			Assert.fail("Should not create instance; subobj2 inaccessible!");
-		} catch (PicoCompositionException e) {
-		}
+        try {
+            pico.verify();
+            pico.getInstance("obj1");
+            Assert.fail("Should not create instance; subobj2 inaccessible!");
+        } catch(PicoCompositionException e) {
+        }
 
-	}
+    }
 
-	@Test
-	public void testReadConfiguration() throws Exception {
-		// given
-		List<IComponentDefinition> expected = Configuration()
-				.Component("obj1", ClassWithProperties.class, false)
-					.withPropertyRef("list", "list")
-					.withInner(Configuration()
-						.List("list", ArrayList.class, false)
-							.withItemRef("obj2")
-					)
-				.Component("obj2", ClassWithProperties.class, true)
-					.withInner(Configuration()
-						.Component("subobj2", ClassWithProperties.class, true)
-					)
-				.build();
-		XmlConfigurationLoader loader = new XmlConfigurationLoader();
-		String path = "classpath:org/jage/config/containerIsolation1.xml";
+    @Test
+    public void testReadConfiguration() throws Exception {
+        // given
+        List<IComponentDefinition> expected = Configuration()
+                .Component("obj1", ClassWithProperties.class, false)
+                .withPropertyRef("list", "list")
+                .withInner(Configuration()
+                                   .List("list", ArrayList.class, false)
+                                   .withItemRef("obj2")
+                )
+                .Component("obj2", ClassWithProperties.class, true)
+                .withInner(Configuration()
+                                   .Component("subobj2", ClassWithProperties.class, true)
+                )
+                .build();
+        XmlConfigurationLoader loader = new XmlConfigurationLoader();
+        String path = "classpath:org/jage/config/containerIsolation1.xml";
 
-		// when
-		List<IComponentDefinition> definitions = loader.loadConfiguration(path);
+        // when
+        List<IComponentDefinition> definitions = loader.loadConfiguration(path);
 
-		// then
-		ConfigurationAssert.assertObjectDefinitionListsEqual(expected, definitions);
-	}
+        // then
+        ConfigurationAssert.assertObjectDefinitionListsEqual(expected, definitions);
+    }
 
-	@Test
-	public void testReadConfiguration2() throws Exception {
-		// given
-		List<IComponentDefinition> expected = Configuration()
-				.Component("obj1", ClassWithProperties.class, false)
-					.withPropertyRef("list", "list")
-					.withInner(Configuration()
-						.List("list", ArrayList.class, false)
-							.withItemRef("subobj2")
-					)
-				.Component("obj2", ClassWithProperties.class, true)
-					.withInner(Configuration()
-						.Component("subobj2", ClassWithProperties.class, true)
-					)
-				.build();
-		XmlConfigurationLoader loader = new XmlConfigurationLoader();
-		String path = "classpath:org/jage/config/containerIsolation2.xml";
+    @Test
+    public void testReadConfiguration2() throws Exception {
+        // given
+        List<IComponentDefinition> expected = Configuration()
+                .Component("obj1", ClassWithProperties.class, false)
+                .withPropertyRef("list", "list")
+                .withInner(Configuration()
+                                   .List("list", ArrayList.class, false)
+                                   .withItemRef("subobj2")
+                )
+                .Component("obj2", ClassWithProperties.class, true)
+                .withInner(Configuration()
+                                   .Component("subobj2", ClassWithProperties.class, true)
+                )
+                .build();
+        XmlConfigurationLoader loader = new XmlConfigurationLoader();
+        String path = "classpath:org/jage/config/containerIsolation2.xml";
 
-		// when
-		List<IComponentDefinition> definitions = loader.loadConfiguration(path);
+        // when
+        List<IComponentDefinition> definitions = loader.loadConfiguration(path);
 
-		// then
-		ConfigurationAssert.assertObjectDefinitionListsEqual(expected, definitions);
-	}
+        // then
+        ConfigurationAssert.assertObjectDefinitionListsEqual(expected, definitions);
+    }
 }

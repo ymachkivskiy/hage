@@ -26,62 +26,70 @@
  */
 package org.jage.property.functions;
 
+
 import org.jage.property.IPropertyContainer;
 import org.jage.property.InvalidPropertyPathException;
 import org.jage.property.MetaProperty;
 
+
 /**
  * A single argument for function. It is a pair of property container and name
  * of property within that container.
- * @author Tomek
  *
+ * @author Tomek
  */
 public class FunctionArgument {
-	private IPropertyContainer _container;
-	private String _propertyPath;
-	
-	/**
-	 * Constructor.
-	 * @param container the property container.
-	 * @param propertyPath path for property within the property container.
-	 */
-	public FunctionArgument(IPropertyContainer container, String propertyPath) {
-		_container = container;
-		_propertyPath = propertyPath;
-	}
-	
-	/**
-	 * Gets the property container.
-	 * @return
-	 */
-	public IPropertyContainer getPropertyContainer() {
-		return _container;
-	}
-	
-	/**
-	 * Gets path for property within the property container.
-	 * @return
-	 */
-	public String getPropertyPath() {
-		return _propertyPath;
-	}
-	
-	/**
-	 * Gets value of the argument. 
-	 * @return
-	 * @throws InvalidPropertyPathException
-	 */
-	public Object getValue() throws InvalidPropertyPathException {
-		return _container.getProperty(_propertyPath).getValue();
-	}
 
-	/**
-	 * Gets metadata for argument's value.
-	 * @return metadata for argument's value.
-	 * @throws InvalidPropertyPathException
-	 */
-	public MetaProperty getMetaProperty() throws InvalidPropertyPathException {
-		return _container.getProperty(_propertyPath).getMetaProperty();
-	}
+    private IPropertyContainer _container;
+    private String _propertyPath;
+
+    /**
+     * Constructor.
+     *
+     * @param container    the property container.
+     * @param propertyPath path for property within the property container.
+     */
+    public FunctionArgument(IPropertyContainer container, String propertyPath) {
+        _container = container;
+        _propertyPath = propertyPath;
+    }
+
+    /**
+     * Gets the property container.
+     *
+     * @return
+     */
+    public IPropertyContainer getPropertyContainer() {
+        return _container;
+    }
+
+    /**
+     * Gets path for property within the property container.
+     *
+     * @return
+     */
+    public String getPropertyPath() {
+        return _propertyPath;
+    }
+
+    /**
+     * Gets value of the argument.
+     *
+     * @return
+     * @throws InvalidPropertyPathException
+     */
+    public Object getValue() throws InvalidPropertyPathException {
+        return _container.getProperty(_propertyPath).getValue();
+    }
+
+    /**
+     * Gets metadata for argument's value.
+     *
+     * @return metadata for argument's value.
+     * @throws InvalidPropertyPathException
+     */
+    public MetaProperty getMetaProperty() throws InvalidPropertyPathException {
+        return _container.getProperty(_propertyPath).getMetaProperty();
+    }
 }
 

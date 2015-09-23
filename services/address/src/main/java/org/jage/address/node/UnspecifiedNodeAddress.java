@@ -31,12 +31,13 @@
 
 package org.jage.address.node;
 
+
 /**
  * This is a representation of an unspecified node address.
- *
+ * <p>
  * <p>
  * The "unspecified node" is any node in the distributed environment.
- *
+ * <p>
  * <p>
  * Instances of this implementation have no identifier and cannot be compared to any other instance. They will throw
  * exception if asked for an identifier or comparison.
@@ -44,15 +45,16 @@ package org.jage.address.node;
  * @author AGH AgE Team
  */
 public final class UnspecifiedNodeAddress implements NodeAddress {
-	private static final long serialVersionUID = -2328801738164300641L;
 
-	@Override
-	public int compareTo(final NodeAddress arg0) {
-		throw new UnsupportedOperationException("An unspecified node is not comparable");
-	}
+    private static final long serialVersionUID = -2328801738164300641L;
 
-	@Override
-	public String getIdentifier() {
-		throw new UnsupportedOperationException("An unspecified node have no identifier");
-	}
+    @Override
+    public int compareTo(final NodeAddress arg0) {
+        throw new UnsupportedOperationException("An unspecified node is not comparable");
+    }
+
+    @Override
+    public String getIdentifier() {
+        throw new UnsupportedOperationException("An unspecified node have no identifier");
+    }
 }

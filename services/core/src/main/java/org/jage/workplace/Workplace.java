@@ -31,13 +31,15 @@
 
 package org.jage.workplace;
 
-import javax.annotation.CheckForNull;
-import javax.annotation.Nonnull;
 
 import org.jage.address.agent.AgentAddress;
 import org.jage.agent.IAgent;
 import org.jage.agent.IAgentEnvironment;
 import org.jage.communication.message.Message;
+
+import javax.annotation.CheckForNull;
+import javax.annotation.Nonnull;
+
 
 /**
  * The component that carries out simulation. It is responsible for agents, their life and activities.
@@ -46,99 +48,96 @@ import org.jage.communication.message.Message;
  */
 public interface Workplace extends IAgentEnvironment {
 
-	/**
-	 * States of workplaces.
-	 */
-	public enum State {
-		/**
-		 * A workplace is running and performing computation.
-		 */
-		RUNNING,
-		/**
-		 * A workplace is stopping - it will transition into STOPPED state.
-		 */
-		STOPPING,
-		/**
-		 * A workplace is paused temporarily.
-		 */
-		PAUSED,
-		/**
-		 * The workplace is stopped.
-		 */
-		STOPPED
-	}
+    /**
+     * Sets new workplace environment to this workplace.
+     *
+     * @param workplaceEnvironment A workplace environment to set.
+     * @throws WorkplaceException when environment is already set.
+     */
+    void setEnvironment(@CheckForNull WorkplaceEnvironment workplaceEnvironment);
 
-	/**
-	 * Sets new workplace environment to this workplace.
-	 * 
-	 * @param workplaceEnvironment
-	 *            A workplace environment to set.
-	 * 
-	 * @throws WorkplaceException
-	 *             when environment is already set.
-	 */
-	void setEnvironment(@CheckForNull WorkplaceEnvironment workplaceEnvironment);
+    /**
+     * Starts the workplace.
+     */
+    void start();
 
-	/**
-	 * Starts the workplace.
-	 */
-	void start();
+    /**
+     * Pauses the workplace.
+     */
+    void pause();
 
-	/**
-	 * Pauses the workplace.
-	 */
-	void pause();
+    /**
+     * Resumes the workplace if paused.
+     */
+    void resume();
 
-	/**
-	 * Resumes the workplace if paused.
-	 */
-	void resume();
+    /**
+     * Stops the workplace. After calling this method workplace can be restarted - using the {@link #start} method.
+     */
+    void stop();
 
-	/**
-	 * Stops the workplace. After calling this method workplace can be restarted - using the {@link #start} method.
-	 */
-	void stop();
+    /**
+     * Terminates the workplace. After calling this method workplace cannot be started anymore.
+     */
+    boolean terminate();
 
-	/**
-	 * Terminates the workplace. After calling this method workplace cannot be started anymore.
-	 */
-	boolean terminate();
+    /**
+     * Checks whether the agent is running.
+     *
+     * @return true, if the agent is running.
+     */
+    boolean isRunning();
 
-	/**
-	 * Checks whether the agent is running.
-	 *
-	 * @return true, if the agent is running.
-	 */
-	boolean isRunning();
+    /**
+     * Checks whether the agent is paused.
+     *
+     * @return true, if the agent is paused.
+     */
+    boolean isPaused();
 
-	/**
-	 * Checks whether the agent is paused.
-	 *
-	 * @return true, if the agent is paused.
-	 */
-	boolean isPaused();
+    /**
+     * Checks whether the agent is stopped.
+     *
+     * @return true, if the agent is stopped.
+     */
+    boolean isStopped();
 
-	/**
-	 * Checks whether the agent is stopped.
-	 *
-	 * @return true, if the agent is stopped.
-	 */
-	boolean isStopped();
+    /**
+     * Delivers an agent message to the workplace.
+     *
+     * @param message A message to be delivered.
+     */
+    void deliverMessage(@Nonnull Message<AgentAddress, ?> message);
 
-	/**
-	 * Delivers an agent message to the workplace.
-	 *
-	 * @param message
-	 *            A message to be delivered.
-	 */
-	void deliverMessage(@Nonnull Message<AgentAddress, ?> message);
+    void sendAgent(@Nonnull IAgent agent);
 
-	void sendAgent(@Nonnull IAgent agent);
+    /**
+     * Returns the agent operating in this workplace.
+     *
+     * @return an agent.
+     */
+    @Nonnull
+    IAgent getAgent();
 
-	/**
-	 * Returns the agent operating in this workplace.
-	 *
-	 * @return an agent.
-	 */
-	@Nonnull IAgent getAgent();
+    /**
+     * States of workplaces.
+     */
+    public enum State {
+        /**
+         * A workplace is running and performing computation.
+         */
+        RUNNING,
+        /**
+         * A workplace is stopping - it will transition into STOPPED state.
+         */
+        STOPPING,
+        /**
+         * A workplace is paused temporarily.
+         */
+        PAUSED,
+        /**
+         * The workplace is stopped.
+         */
+        STOPPED
+    }
 }

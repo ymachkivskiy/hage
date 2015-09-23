@@ -31,31 +31,31 @@
 
 package org.jage.action.preparers;
 
-import java.util.List;
 
 import org.jage.action.Action;
 import org.jage.agent.IAgent;
+
+import java.util.List;
+
 
 /**
  * A factory strategy being used by an ActionDrivenAgent. Given a set of properties, reflecting the calling agent state,
  * and a queryable interface, reflecting the calling agent's environment, it prepares a list of Action objects, to be
  * executed by the agent.
  * <p>
- * 
+ * <p>
  * These actions encapsulate the actual behavior of the Agent. They may be either simple or complex.
- * 
- * @param <T>
- *            a type of the agent that the preparator operates on.
+ *
+ * @param <T> a type of the agent that the preparator operates on.
  * @author AGH AgE Team
  */
 public interface IActionPreparer<T extends IAgent> {
 
-	/**
-	 * Returns the list of actions to be executed, given the state and environment of an agent.
-	 * 
-	 * @param agent
-	 *            an agent whose state will be used.
-	 * @return the list of actions to be executed.
-	 */
-	List<Action> prepareActions(T agent);
+    /**
+     * Returns the list of actions to be executed, given the state and environment of an agent.
+     *
+     * @param agent an agent whose state will be used.
+     * @return the list of actions to be executed.
+     */
+    List<Action> prepareActions(T agent);
 }

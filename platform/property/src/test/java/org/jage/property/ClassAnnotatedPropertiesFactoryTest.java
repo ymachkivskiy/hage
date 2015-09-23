@@ -26,111 +26,115 @@
  */
 package org.jage.property;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
 
 import org.jage.property.testHelpers.ChangesNotifierStub;
 import org.jage.property.testHelpers.ClassWithProperties;
 import org.jage.property.testHelpers.InnerClassWithProperties;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
+
+
 public class ClassAnnotatedPropertiesFactoryTest {
 
-	@Test
-	public void testAllGetterSetterProperties()
-			throws InvalidPropertyDefinitionException {
-		ClassAnnotatedPropertiesFactory factory = ClassAnnotatedPropertiesFactory.INSTANCE;
-		ClassWithProperties propertiesObject = new ClassWithProperties();
-		PropertiesSet set = factory.getAllProperties(propertiesObject);
+    @Test
+    public void testAllGetterSetterProperties()
+            throws InvalidPropertyDefinitionException {
+        ClassAnnotatedPropertiesFactory factory = ClassAnnotatedPropertiesFactory.INSTANCE;
+        ClassWithProperties propertiesObject = new ClassWithProperties();
+        PropertiesSet set = factory.getAllProperties(propertiesObject);
 
-		Property intProperty = set.getProperty("intProperty");
-		Property stringProperty = set.getProperty("stringProperty");
-		Property notExistingProperty = set.getProperty("notExisting");
+        Property intProperty = set.getProperty("intProperty");
+        Property stringProperty = set.getProperty("stringProperty");
+        Property notExistingProperty = set.getProperty("notExisting");
 
-		assertEquals(int.class, intProperty.getMetaProperty()
-				.getPropertyClass());
-		assertEquals(String.class, stringProperty.getMetaProperty()
-				.getPropertyClass());
-		assertNull(notExistingProperty);
-	}
+        assertEquals(int.class, intProperty.getMetaProperty()
+                .getPropertyClass());
+        assertEquals(String.class, stringProperty.getMetaProperty()
+                .getPropertyClass());
+        assertNull(notExistingProperty);
+    }
 
-	@Test
-	public void testAllFieldProperties() throws Exception {
-		ClassAnnotatedPropertiesFactory factory = ClassAnnotatedPropertiesFactory.INSTANCE;
-		ClassWithProperties propertiesObject = new ClassWithProperties();
-		PropertiesSet set = factory.getAllProperties(propertiesObject);
+    @Test
+    public void testAllFieldProperties() throws Exception {
+        ClassAnnotatedPropertiesFactory factory = ClassAnnotatedPropertiesFactory.INSTANCE;
+        ClassWithProperties propertiesObject = new ClassWithProperties();
+        PropertiesSet set = factory.getAllProperties(propertiesObject);
 
-		Property floatProperty = set.getProperty("floatProperty");
-		Property objectProperty = set.getProperty("objectProperty");
+        Property floatProperty = set.getProperty("floatProperty");
+        Property objectProperty = set.getProperty("objectProperty");
 
-		assertEquals(float.class, floatProperty.getMetaProperty()
-				.getPropertyClass());
-		assertEquals(Object.class, objectProperty.getMetaProperty()
-				.getPropertyClass());
-	}
+        assertEquals(float.class, floatProperty.getMetaProperty()
+                .getPropertyClass());
+        assertEquals(Object.class, objectProperty.getMetaProperty()
+                .getPropertyClass());
+    }
 
-	@Test
-	public void testInvalidFieldPropertyDefinition() {
-		try {
-			ClassAnnotatedPropertiesFactory factory = ClassAnnotatedPropertiesFactory.INSTANCE;
-			ClassWithInvalidProperties1 propertiesObject = new ClassWithInvalidProperties1();
-			factory.getAllProperties(propertiesObject);
-			fail();
-		} catch (InvalidPropertyDefinitionException ex) {
-		}
-	}
+    @Test
+    public void testInvalidFieldPropertyDefinition() {
+        try {
+            ClassAnnotatedPropertiesFactory factory = ClassAnnotatedPropertiesFactory.INSTANCE;
+            ClassWithInvalidProperties1 propertiesObject = new ClassWithInvalidProperties1();
+            factory.getAllProperties(propertiesObject);
+            fail();
+        } catch(InvalidPropertyDefinitionException ex) {
+        }
+    }
 
-	@Test
-	public void testInvalidGetterPropertyDefinition() {
-		try {
-			ClassAnnotatedPropertiesFactory factory = ClassAnnotatedPropertiesFactory.INSTANCE;
-			ClassWithInvalidProperties2 propertiesObject = new ClassWithInvalidProperties2();
-			factory.getAllProperties(propertiesObject);
-			fail();
-		} catch (InvalidPropertyDefinitionException ex) {
-		}
-	}
+    @Test
+    public void testInvalidGetterPropertyDefinition() {
+        try {
+            ClassAnnotatedPropertiesFactory factory = ClassAnnotatedPropertiesFactory.INSTANCE;
+            ClassWithInvalidProperties2 propertiesObject = new ClassWithInvalidProperties2();
+            factory.getAllProperties(propertiesObject);
+            fail();
+        } catch(InvalidPropertyDefinitionException ex) {
+        }
+    }
 
-	@Test
-	public void testGetMetaProperties() throws Exception {
-		ClassAnnotatedPropertiesFactory factory = ClassAnnotatedPropertiesFactory.INSTANCE;
-		ClassWithProperties propertiesObject = new ClassWithProperties();
+    @Test
+    public void testGetMetaProperties() throws Exception {
+        ClassAnnotatedPropertiesFactory factory = ClassAnnotatedPropertiesFactory.INSTANCE;
+        ClassWithProperties propertiesObject = new ClassWithProperties();
 
-		MetaPropertiesSet set = factory.getAllMetaProperties(propertiesObject);
-		assertEquals(10, set.size());
-		assertEquals(InnerClassWithProperties.class, set.getMetaProperty(
-				"complexProperty").getPropertyClass());
-		assertEquals(InnerClassWithProperties[].class, set.getMetaProperty(
-				"complexArrayProperty").getPropertyClass());
-		assertEquals(ChangesNotifierStub.class, set.getMetaProperty(
-				"changesNotifierProperty").getPropertyClass());
-		assertEquals(float.class, set.getMetaProperty("floatProperty")
-				.getPropertyClass());
-		assertEquals(Object.class, set.getMetaProperty("objectProperty")
-				.getPropertyClass());
-		assertEquals(ChangesNotifierStub.class, set.getMetaProperty(
-				"changesNotifierProperty2").getPropertyClass());
-		assertEquals(String.class, set.getMetaProperty("stringProperty")
-				.getPropertyClass());
-		assertEquals(Object.class, set.getMetaProperty(
-				"monitorableObjectProperty").getPropertyClass());
-		assertEquals(String.class, set.getMetaProperty(
-				"monitorableStringProperty").getPropertyClass());
+        MetaPropertiesSet set = factory.getAllMetaProperties(propertiesObject);
+        assertEquals(10, set.size());
+        assertEquals(InnerClassWithProperties.class, set.getMetaProperty(
+                "complexProperty").getPropertyClass());
+        assertEquals(InnerClassWithProperties[].class, set.getMetaProperty(
+                "complexArrayProperty").getPropertyClass());
+        assertEquals(ChangesNotifierStub.class, set.getMetaProperty(
+                "changesNotifierProperty").getPropertyClass());
+        assertEquals(float.class, set.getMetaProperty("floatProperty")
+                .getPropertyClass());
+        assertEquals(Object.class, set.getMetaProperty("objectProperty")
+                .getPropertyClass());
+        assertEquals(ChangesNotifierStub.class, set.getMetaProperty(
+                "changesNotifierProperty2").getPropertyClass());
+        assertEquals(String.class, set.getMetaProperty("stringProperty")
+                .getPropertyClass());
+        assertEquals(Object.class, set.getMetaProperty(
+                "monitorableObjectProperty").getPropertyClass());
+        assertEquals(String.class, set.getMetaProperty(
+                "monitorableStringProperty").getPropertyClass());
 
-	}
+    }
 
-	private class ClassWithInvalidProperties1 {
+    private class ClassWithInvalidProperties1 {
 
-		@SuppressWarnings("unused")
-		@PropertyField(propertyName = "invalid.")
-		private int _invalidPropertyName = 1;
-	}
+        @SuppressWarnings("unused")
+        @PropertyField(propertyName = "invalid.")
+        private int _invalidPropertyName = 1;
+    }
 
-	private class ClassWithInvalidProperties2 {
-		@PropertyGetter(propertyName = "a[]")
-		public String getInvalidProperty2() {
-			return "";
-		}
-	}
+
+    private class ClassWithInvalidProperties2 {
+
+        @PropertyGetter(propertyName = "a[]")
+        public String getInvalidProperty2() {
+            return "";
+        }
+    }
 }

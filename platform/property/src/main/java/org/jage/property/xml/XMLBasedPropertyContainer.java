@@ -31,11 +31,13 @@
 
 package org.jage.property.xml;
 
+
 import org.jage.property.AbstractPropertyContainer;
 import org.jage.property.DuplicatePropertyNameException;
 import org.jage.property.MetaPropertiesSet;
 import org.jage.property.MetaProperty;
 import org.jage.property.Property;
+
 
 /**
  * Adapter that allows external classes, which do not implement IPropertyContainer, to perform some operations on them
@@ -43,46 +45,43 @@ import org.jage.property.Property;
  *
  * @author AGH AgE Team
  * @see XMLBasedPropertyProvider
- *
  * @since 2.4.0
  */
 public class XMLBasedPropertyContainer extends AbstractPropertyContainer {
 
-	@SuppressWarnings("unused")
-	private Object realComponent;
+    @SuppressWarnings("unused")
+    private Object realComponent;
 
-	/**
-	 * Constructor.
-	 *
-	 * @param metaPropertiesSet
-	 *            Set of properties containing {@link XMLBasedFieldMetaProperty} and/or
-	 *            {@link XMLBasedGetterSetterMetaProperty}
-	 * @param instance
-	 *            instance of component to be adapted
-	 */
-	public XMLBasedPropertyContainer(MetaPropertiesSet metaPropertiesSet, Object instance) {
-		realComponent = instance;
-		for (MetaProperty metaProperty : metaPropertiesSet) {
-			try {
-				if (metaProperty instanceof XMLBasedFieldMetaProperty) {
-					properties
-					        .addProperty(new XMLBasedFieldProperty((XMLBasedFieldMetaProperty)metaProperty, instance));
-				} else if (metaProperty instanceof XMLBasedGetterSetterMetaProperty) {
-					properties.addProperty(new XMLBasedGetterSetterProperty(
-					        (XMLBasedGetterSetterMetaProperty)metaProperty, instance));
-				}
-			} catch (DuplicatePropertyNameException e) {
-				log.error("", e);
-			}
-		}
+    /**
+     * Constructor.
+     *
+     * @param metaPropertiesSet Set of properties containing {@link XMLBasedFieldMetaProperty} and/or
+     *                          {@link XMLBasedGetterSetterMetaProperty}
+     * @param instance          instance of component to be adapted
+     */
+    public XMLBasedPropertyContainer(MetaPropertiesSet metaPropertiesSet, Object instance) {
+        realComponent = instance;
+        for(MetaProperty metaProperty : metaPropertiesSet) {
+            try {
+                if(metaProperty instanceof XMLBasedFieldMetaProperty) {
+                    properties
+                            .addProperty(new XMLBasedFieldProperty((XMLBasedFieldMetaProperty) metaProperty, instance));
+                } else if(metaProperty instanceof XMLBasedGetterSetterMetaProperty) {
+                    properties.addProperty(new XMLBasedGetterSetterProperty(
+                            (XMLBasedGetterSetterMetaProperty) metaProperty, instance));
+                }
+            } catch(DuplicatePropertyNameException e) {
+                log.error("", e);
+            }
+        }
 
-		for (Property property : properties) {
-			Object propertyValue = property.getValue();
-			property.notifyMonitors(propertyValue);
-		}
+        for(Property property : properties) {
+            Object propertyValue = property.getValue();
+            property.notifyMonitors(propertyValue);
+        }
 
-		attachMonitorsToProperties();
+        attachMonitorsToProperties();
 
-	}
+    }
 
 }

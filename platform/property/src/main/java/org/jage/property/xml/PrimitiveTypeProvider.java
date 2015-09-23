@@ -31,40 +31,41 @@
 
 package org.jage.property.xml;
 
+
 import java.util.HashMap;
 import java.util.Map;
+
 
 /**
  * A provider of primitive types which maps string key of type to the property class.
  *
  * @author AGH AgE Team
- *
  * @since 2.4.0
  */
 public class PrimitiveTypeProvider {
 
-	private static Map<String, Class<?>> builtInMap = new HashMap<String, Class<?>>();
-	static {
-		builtInMap.put("int", Integer.TYPE);
-		builtInMap.put("long", Long.TYPE);
-		builtInMap.put("double", Double.TYPE);
-		builtInMap.put("float", Float.TYPE);
-		builtInMap.put("bool", Boolean.TYPE);
-		builtInMap.put("char", Character.TYPE);
-		builtInMap.put("byte", Byte.TYPE);
-		builtInMap.put("void", Void.TYPE);
-		builtInMap.put("short", Short.TYPE);
-	}
+    private static Map<String, Class<?>> builtInMap = new HashMap<String, Class<?>>();
 
-	/**
-	 * Gets a class of primitive property by a given name.
-	 *
-	 * @param name
-	 *            name of property type
-	 * @return property class or null if name is not correct
-	 */
-	public static Class<?> getPrimitiveType(String name) {
-		return builtInMap.get(name);
-	}
+    static {
+        builtInMap.put("int", Integer.TYPE);
+        builtInMap.put("long", Long.TYPE);
+        builtInMap.put("double", Double.TYPE);
+        builtInMap.put("float", Float.TYPE);
+        builtInMap.put("bool", Boolean.TYPE);
+        builtInMap.put("char", Character.TYPE);
+        builtInMap.put("byte", Byte.TYPE);
+        builtInMap.put("void", Void.TYPE);
+        builtInMap.put("short", Short.TYPE);
+    }
+
+    /**
+     * Gets a class of primitive property by a given name.
+     *
+     * @param name name of property type
+     * @return property class or null if name is not correct
+     */
+    public static Class<?> getPrimitiveType(String name) {
+        return builtInMap.get(name);
+    }
 
 }

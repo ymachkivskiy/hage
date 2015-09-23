@@ -31,49 +31,47 @@
 
 package org.jage.action.preparers;
 
-import java.util.List;
-
-import static java.util.Collections.singletonList;
-
-import javax.inject.Inject;
 
 import org.jage.action.Action;
 import org.jage.action.ComplexAction;
 import org.jage.agent.IAgent;
 import org.jage.strategy.AbstractStrategy;
 
+import javax.inject.Inject;
+import java.util.List;
+
+import static java.util.Collections.singletonList;
+
+
 /**
  * A {@link IActionPreparer} that expects a list of other {@link IActionPreparer}s and build an aggregated complex
  * action upon the actions they prepare. This class allows to chain IActionPreparators.
  *
- * @param <T>
- *            a type of the agent that the preparator operates on.
- *
+ * @param <T> a type of the agent that the preparator operates on.
  * @author AGH AgE Team
  */
 public class ActionPreparerChain<T extends IAgent> extends AbstractStrategy implements IActionPreparer<T> {
 
-	@Inject
-	private List<IActionPreparer<IAgent>> actionPreparers;
+    @Inject
+    private List<IActionPreparer<IAgent>> actionPreparers;
 
-	@Override
-	public List<Action> prepareActions(final T agent) {
+    @Override
+    public List<Action> prepareActions(final T agent) {
 
-		final ComplexAction complexAction = new ComplexAction();
-		for (final IActionPreparer<IAgent> actionPreparer : actionPreparers) {
+        final ComplexAction complexAction = new ComplexAction();
+        for(final IActionPreparer<IAgent> actionPreparer : actionPreparers) {
             actionPreparer.prepareActions(agent).forEach(complexAction::addChild);
-		}
+        }
 
-		return singletonList(complexAction);
-	}
+        return singletonList(complexAction);
+    }
 
-	/**
-	 * Sets the action preparers that are to be chained by this preparator.
-	 *
-	 * @param actionPreparers
-	 *            action preparers to be chained.
-	 */
-	public final void setActionPreparers(final List<IActionPreparer<IAgent>> actionPreparers) {
-		this.actionPreparers = actionPreparers;
-	}
+    /**
+     * Sets the action preparers that are to be chained by this preparator.
+     *
+     * @param actionPreparers action preparers to be chained.
+     */
+    public final void setActionPreparers(final List<IActionPreparer<IAgent>> actionPreparers) {
+        this.actionPreparers = actionPreparers;
+    }
 }

@@ -31,7 +31,9 @@
 
 package org.jage.problem.realvalued;
 
+
 import org.jage.problem.ParallelProblem;
+
 
 /**
  * This class represents the problem domain for a floating-point coded Rastrigin function. <br />
@@ -42,15 +44,14 @@ import org.jage.problem.ParallelProblem;
  */
 public final class RastriginProblem extends ParallelProblem<Double> {
 
-	private static final double DEFAULT_RANGE = 50;
+    private static final double DEFAULT_RANGE = 50;
 
-	/**
-	 * Creates a RastriginProblem with a default range of [-50, 50].
-	 *
-	 * @param dimension
-	 *            The dimension of this problem
-	 */
-	public RastriginProblem(Integer dimension) {
-		super(dimension, -DEFAULT_RANGE, DEFAULT_RANGE);
-	}
+    /**
+     * Creates a RastriginProblem with a default range of [-50, 50].
+     *
+     * @param dimension The dimension of this problem
+     */
+    public RastriginProblem(Integer dimension) {
+        super(dimension, -DEFAULT_RANGE, DEFAULT_RANGE);
+    }
 }

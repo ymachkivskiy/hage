@@ -31,17 +31,6 @@
 
 package org.jage.genetic.action;
 
-import static java.util.Arrays.asList;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
 import org.jage.action.IActionContext;
 import org.jage.agent.IAgent;
@@ -49,9 +38,19 @@ import org.jage.genetic.preselection.IPreselection;
 import org.jage.population.IPopulation;
 import org.jage.property.Property;
 import org.jage.solution.ISolution;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
+import static java.util.Arrays.asList;
 import static org.jage.genetic.agent.GeneticActionDrivenAgent.Properties.POPULATION;
 import static org.jage.population.Populations.newPopulation;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+
 
 /**
  * Tests for {@link PreselectionActionStrategy}.
@@ -61,30 +60,30 @@ import static org.jage.population.Populations.newPopulation;
 @RunWith(MockitoJUnitRunner.class)
 public class PreselectionActionStrategyTest {
 
-	@Mock
-	private IPreselection<ISolution, Double> preselection;
+    @Mock
+    private IPreselection<ISolution, Double> preselection;
 
-	@InjectMocks
-	private PreselectionActionStrategy<ISolution> strategy = new PreselectionActionStrategy<ISolution>();
+    @InjectMocks
+    private PreselectionActionStrategy<ISolution> strategy = new PreselectionActionStrategy<ISolution>();
 
-	@Test
-	public void shouldPreselectPopulation() throws Exception {
-		// given
-		ISolution solution = mock(ISolution.class);
-		IPopulation<ISolution, Double> population = newPopulation(asList(solution, solution));
-		IPopulation<ISolution, Double> preselectedPopulation = newPopulation(asList(solution, solution));
-		Property populationProperty = mock(Property.class);
-		IAgent target = mock(IAgent.class);
-		IActionContext context = mock(IActionContext.class);
+    @Test
+    public void shouldPreselectPopulation() throws Exception {
+        // given
+        ISolution solution = mock(ISolution.class);
+        IPopulation<ISolution, Double> population = newPopulation(asList(solution, solution));
+        IPopulation<ISolution, Double> preselectedPopulation = newPopulation(asList(solution, solution));
+        Property populationProperty = mock(Property.class);
+        IAgent target = mock(IAgent.class);
+        IActionContext context = mock(IActionContext.class);
 
-		given(target.getProperty(POPULATION)).willReturn(populationProperty);
-		given(populationProperty.getValue()).willReturn(population);
-		given(preselection.preselect(population)).willReturn(preselectedPopulation);
+        given(target.getProperty(POPULATION)).willReturn(populationProperty);
+        given(populationProperty.getValue()).willReturn(population);
+        given(preselection.preselect(population)).willReturn(preselectedPopulation);
 
-		// when
-		strategy.perform(target, context);
+        // when
+        strategy.perform(target, context);
 
-		// then
-		verify(populationProperty).setValue(preselectedPopulation);
-	}
+        // then
+        verify(populationProperty).setValue(preselectedPopulation);
+    }
 }

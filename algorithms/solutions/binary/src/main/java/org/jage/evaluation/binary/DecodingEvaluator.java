@@ -31,34 +31,34 @@
 
 package org.jage.evaluation.binary;
 
-import javax.inject.Inject;
 
 import org.jage.evaluation.ISolutionEvaluator;
 import org.jage.property.ClassPropertyContainer;
 import org.jage.solution.ISolution;
 
+import javax.inject.Inject;
+
+
 /**
  * An evaluator implementation which applies a {@link ISolutionDecoder} before delegating to some other
  * {@link ISolutionEvaluator}, effectively acting as a bridge.
  *
- * @param <S>
- *            The decoder source solution type
- * @param <T>
- *            The decoder target solution type
+ * @param <S> The decoder source solution type
+ * @param <T> The decoder target solution type
  * @author AGH AgE Team
  */
 public final class DecodingEvaluator<S extends ISolution, T extends ISolution> extends ClassPropertyContainer implements
-        ISolutionEvaluator<S, Double> {
+                                                                                                              ISolutionEvaluator<S, Double> {
 
-	@Inject
-	private ISolutionDecoder<S, T> solutionDecoder;
+    @Inject
+    private ISolutionDecoder<S, T> solutionDecoder;
 
-	@Inject
-	private ISolutionEvaluator<T, Double> solutionEvaluator;
+    @Inject
+    private ISolutionEvaluator<T, Double> solutionEvaluator;
 
-	@Override
-	public Double evaluate(final S solution) {
-		final T decodedSolution = solutionDecoder.decodeSolution(solution);
-		return solutionEvaluator.evaluate(decodedSolution);
-	}
+    @Override
+    public Double evaluate(final S solution) {
+        final T decodedSolution = solutionDecoder.decodeSolution(solution);
+        return solutionEvaluator.evaluate(decodedSolution);
+    }
 }

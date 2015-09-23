@@ -31,15 +31,17 @@
 
 package org.jage.examples.actions;
 
+
 import org.jage.action.IActionContext;
 import org.jage.action.context.AgentActionContext;
 
+
 /**
  * Empty context, because of the action simplicity.
- * 
+ *
  * @author AGH AgE Team
  */
 @AgentActionContext("sampleAction")
 public class SampleActionContext implements IActionContext {
-	// Empty
+    // Empty
 }

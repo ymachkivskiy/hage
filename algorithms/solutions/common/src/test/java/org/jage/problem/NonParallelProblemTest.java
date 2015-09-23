@@ -31,9 +31,11 @@
 
 package org.jage.problem;
 
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
 
 /**
  * Tests for NonParallelProblem.
@@ -42,52 +44,52 @@ import org.junit.Test;
  */
 public class NonParallelProblemTest {
 
-	private NonParallelProblem<Integer> problem;
-	private int dimension = 3;
-	private Integer[] min = new Integer[] {-1, -2, 0};
-	private Integer[] max = new Integer[] {1, 0, 2};
+    private NonParallelProblem<Integer> problem;
+    private int dimension = 3;
+    private Integer[] min = new Integer[]{-1, -2, 0};
+    private Integer[] max = new Integer[]{1, 0, 2};
 
-	@Before
-	public void setUp() throws Exception {
-		problem = new NonParallelProblem<Integer>(min, max);
-	}
+    @Before
+    public void setUp() throws Exception {
+        problem = new NonParallelProblem<Integer>(min, max);
+    }
 
-	@Test
-	public void testDimension() {
-		Assert.assertEquals(dimension, problem.getDimension());
-	}
+    @Test
+    public void testDimension() {
+        Assert.assertEquals(dimension, problem.getDimension());
+    }
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testNegativeLowerBound() {
-		problem.lowerBound(-1);
-	}
+    @Test(expected = IllegalArgumentException.class)
+    public void testNegativeLowerBound() {
+        problem.lowerBound(-1);
+    }
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testTooHighLowerBound() {
-		problem.upperBound(dimension);
-	}
+    @Test(expected = IllegalArgumentException.class)
+    public void testTooHighLowerBound() {
+        problem.upperBound(dimension);
+    }
 
-	@Test
-	public void testLowerBound() {
-		Assert.assertEquals(min[0], problem.lowerBound(0));
-		Assert.assertEquals(min[1], problem.lowerBound(1));
-		Assert.assertEquals(min[2], problem.lowerBound(2));
-	}
+    @Test
+    public void testLowerBound() {
+        Assert.assertEquals(min[0], problem.lowerBound(0));
+        Assert.assertEquals(min[1], problem.lowerBound(1));
+        Assert.assertEquals(min[2], problem.lowerBound(2));
+    }
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testNegativeUpperBound() {
-		problem.upperBound(-1);
-	}
+    @Test(expected = IllegalArgumentException.class)
+    public void testNegativeUpperBound() {
+        problem.upperBound(-1);
+    }
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testTooHighUpperBound() {
-		problem.upperBound(dimension);
-	}
+    @Test(expected = IllegalArgumentException.class)
+    public void testTooHighUpperBound() {
+        problem.upperBound(dimension);
+    }
 
-	@Test
-	public void testUpperBound() {
-		Assert.assertEquals(max[0], problem.upperBound(0));
-		Assert.assertEquals(max[1], problem.upperBound(1));
-		Assert.assertEquals(max[2], problem.upperBound(2));
-	}
+    @Test
+    public void testUpperBound() {
+        Assert.assertEquals(max[0], problem.upperBound(0));
+        Assert.assertEquals(max[1], problem.upperBound(1));
+        Assert.assertEquals(max[2], problem.upperBound(2));
+    }
 }

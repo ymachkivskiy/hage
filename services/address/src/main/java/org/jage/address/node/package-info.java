@@ -32,5 +32,4 @@
 /**
  * Provides a node-related address interfaces and implementations.
  */
-@javax.annotation.ParametersAreNonnullByDefault
-package org.jage.address.node;
+@javax.annotation.ParametersAreNonnullByDefault package org.jage.address.node;

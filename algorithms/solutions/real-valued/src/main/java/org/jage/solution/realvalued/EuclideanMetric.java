@@ -26,11 +26,12 @@
  */
 package org.jage.solution.realvalued;
 
+
+import it.unimi.dsi.fastutil.doubles.DoubleList;
 import org.jage.solution.ISolutionMetric;
 import org.jage.solution.IVectorSolution;
 import org.jage.strategy.AbstractStrategy;
 
-import it.unimi.dsi.fastutil.doubles.DoubleList;
 
 public class EuclideanMetric<S extends IVectorSolution<Double>> extends AbstractStrategy implements ISolutionMetric<S> {
 
@@ -40,7 +41,7 @@ public class EuclideanMetric<S extends IVectorSolution<Double>> extends Abstract
         double[] representation2 = ((DoubleList) solution2.getRepresentation()).toDoubleArray();
 
         double sum = 0;
-        for (int i = 0; i < representation1.length; i++) {
+        for(int i = 0; i < representation1.length; i++) {
             double dif = representation1[i] - representation2[i];
             sum += dif * dif;
         }

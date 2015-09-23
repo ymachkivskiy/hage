@@ -26,13 +26,6 @@
  */
 package org.jage.monitoring.config;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.Arrays;
-import java.util.Set;
 
 import org.jage.monitoring.handler.HandlerFactoryProvider;
 import org.jage.monitoring.observer.AbstractStatefulObserver;
@@ -42,60 +35,69 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.powermock.reflect.Whitebox;
 
+import java.util.Arrays;
+import java.util.Set;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+
 public class XmlConfigTest {
 
-	@Mock
-	private AbstractStatefulObserver observer1;
-	
-	@Mock
-	private AbstractStatefulObserver observer2;
-	
-	@Mock
-	private AbstractStatefulObserver observer3;
-	
-	@Before
-	public void setUp(){
-		MockitoAnnotations.initMocks(this);
-	}
-	
-	@Test
-	public void initWithOneObserver(){
-		// given
-		
-		HandlerFactoryProvider hfp1 = mock(HandlerFactoryProvider.class);
-		when(hfp1.getObservers()).thenReturn(Arrays.asList(observer1));
-		HandlerFactoryProvider hfp2 = mock(HandlerFactoryProvider.class);
-		when(hfp2.getObservers()).thenReturn(Arrays.asList(observer1));
-		
-		XmlConfig xc = new XmlConfig(Arrays.asList(hfp1, hfp2));
+    @Mock
+    private AbstractStatefulObserver observer1;
 
-		// when
-		xc.init();
-		
-		// then
-		Set<AbstractStatefulObserver> observers = Whitebox.getInternalState(xc, "observers");
-		verify(hfp1).createAndSubscribeHandlerBasedObservableOnObservers();
-		verify(hfp2).createAndSubscribeHandlerBasedObservableOnObservers();
-		assertEquals(1, observers.size());
-	}
-	
-	@Test
-	public void initWithThreeObservers(){
-		// given
-		
-		HandlerFactoryProvider hfp1 = mock(HandlerFactoryProvider.class);
-		when(hfp1.getObservers()).thenReturn(Arrays.asList(observer1, observer2, observer3));
-		HandlerFactoryProvider hfp2 = mock(HandlerFactoryProvider.class);
-		when(hfp2.getObservers()).thenReturn(Arrays.asList(observer2, observer3));
-		
-		XmlConfig xc = new XmlConfig(Arrays.asList(hfp1, hfp2));
-		// when
-		xc.init();
-		
-		// then
-		Set<AbstractStatefulObserver> observers = Whitebox.getInternalState(xc, "observers");
-		verify(hfp1).createAndSubscribeHandlerBasedObservableOnObservers();
-		verify(hfp2).createAndSubscribeHandlerBasedObservableOnObservers();
-		assertEquals(3, observers.size());
-	}
+    @Mock
+    private AbstractStatefulObserver observer2;
+
+    @Mock
+    private AbstractStatefulObserver observer3;
+
+    @Before
+    public void setUp() {
+        MockitoAnnotations.initMocks(this);
+    }
+
+    @Test
+    public void initWithOneObserver() {
+        // given
+
+        HandlerFactoryProvider hfp1 = mock(HandlerFactoryProvider.class);
+        when(hfp1.getObservers()).thenReturn(Arrays.asList(observer1));
+        HandlerFactoryProvider hfp2 = mock(HandlerFactoryProvider.class);
+        when(hfp2.getObservers()).thenReturn(Arrays.asList(observer1));
+
+        XmlConfig xc = new XmlConfig(Arrays.asList(hfp1, hfp2));
+
+        // when
+        xc.init();
+
+        // then
+        Set<AbstractStatefulObserver> observers = Whitebox.getInternalState(xc, "observers");
+        verify(hfp1).createAndSubscribeHandlerBasedObservableOnObservers();
+        verify(hfp2).createAndSubscribeHandlerBasedObservableOnObservers();
+        assertEquals(1, observers.size());
+    }
+
+    @Test
+    public void initWithThreeObservers() {
+        // given
+
+        HandlerFactoryProvider hfp1 = mock(HandlerFactoryProvider.class);
+        when(hfp1.getObservers()).thenReturn(Arrays.asList(observer1, observer2, observer3));
+        HandlerFactoryProvider hfp2 = mock(HandlerFactoryProvider.class);
+        when(hfp2.getObservers()).thenReturn(Arrays.asList(observer2, observer3));
+
+        XmlConfig xc = new XmlConfig(Arrays.asList(hfp1, hfp2));
+        // when
+        xc.init();
+
+        // then
+        Set<AbstractStatefulObserver> observers = Whitebox.getInternalState(xc, "observers");
+        verify(hfp1).createAndSubscribeHandlerBasedObservableOnObservers();
+        verify(hfp2).createAndSubscribeHandlerBasedObservableOnObservers();
+        assertEquals(3, observers.size());
+    }
 }

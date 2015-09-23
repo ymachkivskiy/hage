@@ -27,27 +27,28 @@
 
 package org.jage.monitoring.supplier;
 
-import org.jage.platform.component.provider.IComponentInstanceProvider;
 
 import com.google.common.base.Supplier;
 import com.typesafe.config.Config;
+import org.jage.platform.component.provider.IComponentInstanceProvider;
+
 
 /**
  * Class gets an instance of Supplier, which was defined in the XML configuration file.
- * 
+ *
  * @author AGH AgE Team
  */
 public class ReferenceSupplierProvider implements SupplierProvider {
 
-	@Override
-	public Supplier<Object> create(final Config c, final IComponentInstanceProvider provider) {
-		final String refName = c.getString("arg");
-		final Supplier<Object> instance = (Supplier<Object>) provider.getInstance(refName);
-		return instance;
-	}
-	
-	@Override
-	public String getType() {
-		return "ref";
-	}
+    @Override
+    public Supplier<Object> create(final Config c, final IComponentInstanceProvider provider) {
+        final String refName = c.getString("arg");
+        final Supplier<Object> instance = (Supplier<Object>) provider.getInstance(refName);
+        return instance;
+    }
+
+    @Override
+    public String getType() {
+        return "ref";
+    }
 }

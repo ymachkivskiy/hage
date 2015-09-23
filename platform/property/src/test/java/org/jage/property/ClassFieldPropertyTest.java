@@ -26,11 +26,6 @@
  */
 package org.jage.property;
 
-import static org.mockito.Mockito.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.lang.reflect.Field;
 
 import org.jage.property.monitors.DefaultPropertyMonitorRule;
 import org.jage.property.monitors.IPropertyMonitorRule;
@@ -40,84 +35,94 @@ import org.jage.property.testHelpers.PropertyMonitorStub;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.lang.reflect.Field;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.anyObject;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+
 public class ClassFieldPropertyTest {
-	private ClassWithProperties _propertiesObject;
 
-	@Before
-	public void setUp() throws Exception {
-		_propertiesObject = new ClassWithProperties();
-	}
+    private ClassWithProperties _propertiesObject;
 
-	private FieldProperty getFloatProperty() throws Exception {
-		Field field = _propertiesObject.getFloatPropertyField();
-		PropertyField annotation = field.getAnnotation(PropertyField.class);
-		FieldMetaProperty metaProperty = new FieldMetaProperty(annotation.propertyName(), field, annotation.isMonitorable());
-		return new FieldProperty(metaProperty, _propertiesObject);
-	}
+    @Before
+    public void setUp() throws Exception {
+        _propertiesObject = new ClassWithProperties();
+    }
 
-	@Test
-	public void testGetSetValue() throws Exception {
-		_propertiesObject.setIntProperty(0);
-		Property property = getFloatProperty();
-		assertEquals(0.0, ((Float) property.getValue()).floatValue(), 0.0001f);
-		property.setValue(1.0f);
-		assertEquals(1.0f, ((Float) property.getValue()).floatValue(), 0.0001f);
-	}
+    @Test
+    public void testGetSetValue() throws Exception {
+        _propertiesObject.setIntProperty(0);
+        Property property = getFloatProperty();
+        assertEquals(0.0, ((Float) property.getValue()).floatValue(), 0.0001f);
+        property.setValue(1.0f);
+        assertEquals(1.0f, ((Float) property.getValue()).floatValue(), 0.0001f);
+    }
 
-	@Test
-	public void testGetMetaProperty() throws Exception {
-		Property property = getFloatProperty();
-		MetaProperty metaProperty = property.getMetaProperty();
-		assertTrue(float.class.equals(metaProperty.getPropertyClass()));
-		assertTrue(metaProperty.isMonitorable());
-		assertTrue(metaProperty.isWriteable());
-	}
+    private FieldProperty getFloatProperty() throws Exception {
+        Field field = _propertiesObject.getFloatPropertyField();
+        PropertyField annotation = field.getAnnotation(PropertyField.class);
+        FieldMetaProperty metaProperty = new FieldMetaProperty(annotation.propertyName(), field, annotation.isMonitorable());
+        return new FieldProperty(metaProperty, _propertiesObject);
+    }
 
-	@Test
-	public void testPropertyMonitors() throws Exception {
+    @Test
+    public void testGetMetaProperty() throws Exception {
+        Property property = getFloatProperty();
+        MetaProperty metaProperty = property.getMetaProperty();
+        assertTrue(float.class.equals(metaProperty.getPropertyClass()));
+        assertTrue(metaProperty.isMonitorable());
+        assertTrue(metaProperty.isWriteable());
+    }
 
-		IPropertyMonitorRule ruleMock1 = mock(IPropertyMonitorRule.class);
-		IPropertyMonitorRule ruleMock2 = mock(IPropertyMonitorRule.class);
+    @Test
+    public void testPropertyMonitors() throws Exception {
 
-		when(ruleMock1.isActive(anyObject(), anyObject())).thenReturn(true);
-		when(ruleMock2.isActive(anyObject(), anyObject())).thenReturn(true);
-		when(ruleMock1.isActive(anyObject(), anyObject())).thenReturn(true);
+        IPropertyMonitorRule ruleMock1 = mock(IPropertyMonitorRule.class);
+        IPropertyMonitorRule ruleMock2 = mock(IPropertyMonitorRule.class);
 
-		PropertyMonitorStub monitor1 = new PropertyMonitorStub();
-		PropertyMonitorStub monitor2 = new PropertyMonitorStub();
+        when(ruleMock1.isActive(anyObject(), anyObject())).thenReturn(true);
+        when(ruleMock2.isActive(anyObject(), anyObject())).thenReturn(true);
+        when(ruleMock1.isActive(anyObject(), anyObject())).thenReturn(true);
 
-		Property property = getFloatProperty();
-		property.addMonitor(monitor1, ruleMock1);
-		property.addMonitor(monitor2, ruleMock2);
-		property.notifyMonitors(null);
+        PropertyMonitorStub monitor1 = new PropertyMonitorStub();
+        PropertyMonitorStub monitor2 = new PropertyMonitorStub();
 
-		property.removeMonitor(monitor2);
-		property.notifyMonitors(null);
+        Property property = getFloatProperty();
+        property.addMonitor(monitor1, ruleMock1);
+        property.addMonitor(monitor2, ruleMock2);
+        property.notifyMonitors(null);
 
-		assertEquals(2, monitor1.getPropertyChangedInvokationCounter());
-		assertEquals(1, monitor2.getPropertyChangedInvokationCounter());
+        property.removeMonitor(monitor2);
+        property.notifyMonitors(null);
 
-	}
+        assertEquals(2, monitor1.getPropertyChangedInvokationCounter());
+        assertEquals(1, monitor2.getPropertyChangedInvokationCounter());
 
-	/**
-	 * Scenario: property value is object that implements IChangesNotifier
-	 * interface. It changes its internal state and informs monitors about it.
-	 * The property itself should inform its monitors about change.
-	 *
-	 * @throws Exception
-	 */
-	@Test
-	public void testChangesNotifierProperty() throws Exception {
-		PropertyMonitorStub monitor = new PropertyMonitorStub();
+    }
 
-		Property property = _propertiesObject
-				.getProperty("changesNotifierProperty");
-		property.addMonitor(monitor, new DefaultPropertyMonitorRule());
+    /**
+     * Scenario: property value is object that implements IChangesNotifier
+     * interface. It changes its internal state and informs monitors about it.
+     * The property itself should inform its monitors about change.
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testChangesNotifierProperty() throws Exception {
+        PropertyMonitorStub monitor = new PropertyMonitorStub();
 
-		ChangesNotifierStub notifier = (ChangesNotifierStub) property
-				.getValue();
-		notifier.notifyMonitorsAboutChange();
+        Property property = _propertiesObject
+                .getProperty("changesNotifierProperty");
+        property.addMonitor(monitor, new DefaultPropertyMonitorRule());
 
-		assertEquals(1, monitor.getPropertyChangedInvokationCounter());
-	}
+        ChangesNotifierStub notifier = (ChangesNotifierStub) property
+                .getValue();
+        notifier.notifyMonitorsAboutChange();
+
+        assertEquals(1, monitor.getPropertyChangedInvokationCounter());
+    }
 }

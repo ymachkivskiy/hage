@@ -31,15 +31,17 @@
 
 package org.jage.communication.message;
 
+
 import java.io.Serializable;
+
 
 /**
  * A base interface for service message headers. It does not require any methods.
- *
+ * <p>
  * Implementing classes must be Serializable!
  *
  * @author AGH AgE Team
  */
 public interface ServiceHeader extends Serializable {
-	// Empty
+    // Empty
 }

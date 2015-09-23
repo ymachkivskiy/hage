@@ -31,25 +31,22 @@
 
 package org.jage.platform.config.xml.readers;
 
-import java.util.Collection;
 
 import org.dom4j.Element;
-
 import org.jage.platform.component.definition.CollectionDefinition;
 import org.jage.platform.component.definition.ConfigurationException;
 import org.jage.platform.component.definition.IArgumentDefinition;
 import org.jage.platform.component.definition.IComponentDefinition;
+
+import java.util.Collection;
 
 import static org.jage.platform.config.xml.ConfigAttributes.IS_SINGLETON;
 import static org.jage.platform.config.xml.ConfigAttributes.NAME;
 import static org.jage.platform.config.xml.ConfigAttributes.VALUE_TYPE;
 import static org.jage.platform.config.xml.ConfigTags.REFERENCE;
 import static org.jage.platform.config.xml.ConfigTags.VALUE;
-import static org.jage.platform.config.xml.ConfigUtils.getChildrenExcluding;
-import static org.jage.platform.config.xml.ConfigUtils.getChildrenIncluding;
-import static org.jage.platform.config.xml.ConfigUtils.getRequiredAttribute;
-import static org.jage.platform.config.xml.ConfigUtils.toBoolean;
-import static org.jage.platform.config.xml.ConfigUtils.toClass;
+import static org.jage.platform.config.xml.ConfigUtils.*;
+
 
 /**
  * Reader for collection definitions. Intended to process {@code <list>} and {@code <set>} tags.
@@ -58,39 +55,38 @@ import static org.jage.platform.config.xml.ConfigUtils.toClass;
  */
 public class CollectionDefinitionReader extends AbstractDefinitionReader<IComponentDefinition> {
 
-	@SuppressWarnings("rawtypes")
-	private final Class<? extends Collection> collectionClass;
+    @SuppressWarnings("rawtypes")
+    private final Class<? extends Collection> collectionClass;
 
-	/**
-	 * Creates a {@link CollectionDefinitionReader} using a given collection class.
-	 *
-	 * @param collectionClass
-	 *            the collection class to be used in created definitions
-	 */
-	public CollectionDefinitionReader(@SuppressWarnings("rawtypes") final Class<? extends Collection> collectionClass) {
-		this.collectionClass = collectionClass;
-	}
+    /**
+     * Creates a {@link CollectionDefinitionReader} using a given collection class.
+     *
+     * @param collectionClass the collection class to be used in created definitions
+     */
+    public CollectionDefinitionReader(@SuppressWarnings("rawtypes") final Class<? extends Collection> collectionClass) {
+        this.collectionClass = collectionClass;
+    }
 
-	@Override
-	public CollectionDefinition read(final Element element) throws ConfigurationException {
-		final String nameAttribute = getRequiredAttribute(element, NAME);
-		final String valueTypeAttribute = getRequiredAttribute(element, VALUE_TYPE);
-		final String isSingletonAttribute = getRequiredAttribute(element, IS_SINGLETON);
+    @Override
+    public CollectionDefinition read(final Element element) throws ConfigurationException {
+        final String nameAttribute = getRequiredAttribute(element, NAME);
+        final String valueTypeAttribute = getRequiredAttribute(element, VALUE_TYPE);
+        final String isSingletonAttribute = getRequiredAttribute(element, IS_SINGLETON);
 
-		final CollectionDefinition definition = new CollectionDefinition(nameAttribute, collectionClass,
-		        toClass(valueTypeAttribute),
-		        toBoolean(isSingletonAttribute));
+        final CollectionDefinition definition = new CollectionDefinition(nameAttribute, collectionClass,
+                                                                         toClass(valueTypeAttribute),
+                                                                         toBoolean(isSingletonAttribute));
 
-		for (final Element child : getChildrenIncluding(element, REFERENCE, VALUE)) {
-			final IArgumentDefinition value = getArgumentReader().read(child);
-			definition.addItem(value);
-		}
+        for(final Element child : getChildrenIncluding(element, REFERENCE, VALUE)) {
+            final IArgumentDefinition value = getArgumentReader().read(child);
+            definition.addItem(value);
+        }
 
-		for (final Element child : getChildrenExcluding(element, REFERENCE, VALUE)) {
-			final IComponentDefinition innerDefinition = getInstanceReader().read(child);
-			definition.addInnerComponentDefinition(innerDefinition);
-		}
+        for(final Element child : getChildrenExcluding(element, REFERENCE, VALUE)) {
+            final IComponentDefinition innerDefinition = getInstanceReader().read(child);
+            definition.addInnerComponentDefinition(innerDefinition);
+        }
 
-		return definition;
-	}
+        return definition;
+    }
 }

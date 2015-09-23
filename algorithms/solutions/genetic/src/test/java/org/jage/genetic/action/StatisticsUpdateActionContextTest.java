@@ -31,12 +31,13 @@
 
 package org.jage.genetic.action;
 
+
+import org.jage.action.IActionContext;
 import org.junit.Assert;
 import org.junit.Test;
 
-import org.jage.action.IActionContext;
-
 import static org.jage.genetic.action.StatisticsUpdateActionContext.Properties.STATISTICS_UPDATE_ACTION;
+
 
 /**
  * Test for {@link StatisticsUpdateActionContext}.
@@ -45,17 +46,17 @@ import static org.jage.genetic.action.StatisticsUpdateActionContext.Properties.S
  */
 public class StatisticsUpdateActionContextTest {
 
-	@Test
-	public void shouldImplementActionContext() {
-		// given
-		StatisticsUpdateActionContext context = new StatisticsUpdateActionContext();
+    @Test
+    public void shouldImplementActionContext() {
+        // given
+        StatisticsUpdateActionContext context = new StatisticsUpdateActionContext();
 
-		// then
-		Assert.assertTrue(context instanceof IActionContext);
-	}
+        // then
+        Assert.assertTrue(context instanceof IActionContext);
+    }
 
-	@Test
-	public void testActionName() {
-		Assert.assertEquals("statisticsUpdateAction", STATISTICS_UPDATE_ACTION);
-	}
+    @Test
+    public void testActionName() {
+        Assert.assertEquals("statisticsUpdateAction", STATISTICS_UPDATE_ACTION);
+    }
 }

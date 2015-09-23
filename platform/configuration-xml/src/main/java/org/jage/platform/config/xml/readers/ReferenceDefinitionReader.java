@@ -31,14 +31,15 @@
 
 package org.jage.platform.config.xml.readers;
 
-import org.dom4j.Element;
 
+import org.dom4j.Element;
 import org.jage.platform.component.definition.ConfigurationException;
 import org.jage.platform.component.definition.IArgumentDefinition;
 import org.jage.platform.component.definition.ReferenceDefinition;
 
 import static org.jage.platform.config.xml.ConfigAttributes.TARGET;
 import static org.jage.platform.config.xml.ConfigUtils.getRequiredAttribute;
+
 
 /**
  * Reader for reference definitions. Intended to process {@code <reference>} tags.
@@ -47,9 +48,9 @@ import static org.jage.platform.config.xml.ConfigUtils.getRequiredAttribute;
  */
 public class ReferenceDefinitionReader implements IDefinitionReader<IArgumentDefinition> {
 
-	@Override
-	public ReferenceDefinition read(final Element element) throws ConfigurationException {
-		final String targetAttribute = getRequiredAttribute(element, TARGET);
-		return new ReferenceDefinition(targetAttribute);
-	}
+    @Override
+    public ReferenceDefinition read(final Element element) throws ConfigurationException {
+        final String targetAttribute = getRequiredAttribute(element, TARGET);
+        return new ReferenceDefinition(targetAttribute);
+    }
 }

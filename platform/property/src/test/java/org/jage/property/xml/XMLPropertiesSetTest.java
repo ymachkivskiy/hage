@@ -26,9 +26,6 @@
  */
 package org.jage.property.xml;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
 
 import org.jage.property.DuplicatePropertyNameException;
 import org.jage.property.MetaProperty;
@@ -38,74 +35,79 @@ import org.jage.property.SimpleProperty;
 import org.jage.property.xml.testHelpers.AdvancedExampleComponent;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
+
+
 public class XMLPropertiesSetTest {
 
-	private void assertContainsProperty(Iterable<Property> set, Property property) {
-		for (Property existingProperty : set) {
-			if (existingProperty == property) {
-				return;
-			}
-		}
-		fail();
-	}
+    @Test
+    public void testAddRemoveGetIterator() throws Exception {
+        Property property1 = getIntProperty();
+        Property property2 = getStringProperty();
 
-	private XMLBasedGetterSetterProperty getIntProperty() throws Exception {
-		AdvancedExampleComponent component = new AdvancedExampleComponent();
-		XMLBasedGetterSetterMetaProperty metaProperty = new XMLBasedGetterSetterMetaProperty("infProperty", int.class,
-				component.getIntPropertyGetter(), component.getIntPropertySetter());
-		return new XMLBasedGetterSetterProperty(metaProperty, component);
-	}
+        PropertiesSet set = new PropertiesSet();
+        set.addProperty(property1);
+        set.addProperty(property2);
+        assertEquals(property1, set.getProperty(property1.getMetaProperty().getName()));
+        assertEquals(property2, set.getProperty(property2.getMetaProperty().getName()));
+        assertContainsProperty(set, property1);
+        assertContainsProperty(set, property2);
 
-	private XMLBasedGetterSetterProperty getStringProperty() throws Exception {
-		AdvancedExampleComponent component = new AdvancedExampleComponent();
-		XMLBasedGetterSetterMetaProperty metaProperty = new XMLBasedGetterSetterMetaProperty("stringProperty",
-				String.class, component.getStringPropertyGetter(), component.getStringPropertySetter());
-		return new XMLBasedGetterSetterProperty(metaProperty, component);
-	}
+        set.removeProperty(property2);
+        assertEquals(property1, set.getProperty(property1.getMetaProperty().getName()));
+        assertNull(set.getProperty(property2.getMetaProperty().getName()));
+    }
 
-	@Test
-	public void testAddRemoveGetIterator() throws Exception {
-		Property property1 = getIntProperty();
-		Property property2 = getStringProperty();
+    private XMLBasedGetterSetterProperty getIntProperty() throws Exception {
+        AdvancedExampleComponent component = new AdvancedExampleComponent();
+        XMLBasedGetterSetterMetaProperty metaProperty = new XMLBasedGetterSetterMetaProperty("infProperty", int.class,
+                                                                                             component.getIntPropertyGetter(), component.getIntPropertySetter());
+        return new XMLBasedGetterSetterProperty(metaProperty, component);
+    }
 
-		PropertiesSet set = new PropertiesSet();
-		set.addProperty(property1);
-		set.addProperty(property2);
-		assertEquals(property1, set.getProperty(property1.getMetaProperty().getName()));
-		assertEquals(property2, set.getProperty(property2.getMetaProperty().getName()));
-		assertContainsProperty(set, property1);
-		assertContainsProperty(set, property2);
+    private XMLBasedGetterSetterProperty getStringProperty() throws Exception {
+        AdvancedExampleComponent component = new AdvancedExampleComponent();
+        XMLBasedGetterSetterMetaProperty metaProperty = new XMLBasedGetterSetterMetaProperty("stringProperty",
+                                                                                             String.class, component.getStringPropertyGetter(), component.getStringPropertySetter());
+        return new XMLBasedGetterSetterProperty(metaProperty, component);
+    }
 
-		set.removeProperty(property2);
-		assertEquals(property1, set.getProperty(property1.getMetaProperty().getName()));
-		assertNull(set.getProperty(property2.getMetaProperty().getName()));
-	}
+    private void assertContainsProperty(Iterable<Property> set, Property property) {
+        for(Property existingProperty : set) {
+            if(existingProperty == property) {
+                return;
+            }
+        }
+        fail();
+    }
 
-	@Test
-	public void testGetMetaPropertyContainer() throws Exception {
-		Property property1 = getIntProperty();
-		Property property2 = getStringProperty();
-		MetaProperty metaProperty1 = property1.getMetaProperty();
-		MetaProperty metaProperty2 = property2.getMetaProperty();
+    @Test
+    public void testGetMetaPropertyContainer() throws Exception {
+        Property property1 = getIntProperty();
+        Property property2 = getStringProperty();
+        MetaProperty metaProperty1 = property1.getMetaProperty();
+        MetaProperty metaProperty2 = property2.getMetaProperty();
 
-		PropertiesSet set = new PropertiesSet();
-		set.addProperty(property1);
-		set.addProperty(property2);
+        PropertiesSet set = new PropertiesSet();
+        set.addProperty(property1);
+        set.addProperty(property2);
 
-		assertEquals(metaProperty1, set.getMetaPropertiesSet().getMetaProperty(metaProperty1.getName()));
-		assertEquals(metaProperty2, set.getMetaPropertiesSet().getMetaProperty(metaProperty2.getName()));
-	}
+        assertEquals(metaProperty1, set.getMetaPropertiesSet().getMetaProperty(metaProperty1.getName()));
+        assertEquals(metaProperty2, set.getMetaPropertiesSet().getMetaProperty(metaProperty2.getName()));
+    }
 
-	@Test
-	public void testDuplicateProperty() throws Exception {
-		Property property1 = new SimpleProperty(new MetaProperty("a", Integer.class, false, false), new Integer(1));
-		Property property2 = new SimpleProperty(new MetaProperty("a", String.class, false, false), "aaa");
-		PropertiesSet set = new PropertiesSet();
-		set.addProperty(property1);
-		try {
-			set.addProperty(property2);
-			fail();
-		} catch (DuplicatePropertyNameException ex) {
-		}
-	}
+    @Test
+    public void testDuplicateProperty() throws Exception {
+        Property property1 = new SimpleProperty(new MetaProperty("a", Integer.class, false, false), new Integer(1));
+        Property property2 = new SimpleProperty(new MetaProperty("a", String.class, false, false), "aaa");
+        PropertiesSet set = new PropertiesSet();
+        set.addProperty(property1);
+        try {
+            set.addProperty(property2);
+            fail();
+        } catch(DuplicatePropertyNameException ex) {
+        }
+    }
 }

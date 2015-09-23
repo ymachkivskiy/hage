@@ -31,31 +31,30 @@
 
 package org.jage.platform.config.loader;
 
-import java.util.Collection;
 
 import org.jage.platform.component.definition.ConfigurationException;
 import org.jage.platform.component.definition.IComponentDefinition;
+
+import java.util.Collection;
+
 
 /**
  * The service responsible for loading configuration from a given source. The loaded configuration is returned to the
  * service client.
  *
- * @since 2.5.0
- *
  * @author AGH AgE Team
+ * @since 2.5.0
  */
 public interface IConfigurationLoader {
 
-	/**
-	 * Loads a configuration from a given source.
-	 *
-	 * @param source
-	 *            object containing configuration in a source format or a connector to configuration; type of the source
-	 *            is dependent on the particular implementation
-	 * @return loaded configuration as collection of {@link IComponentDefinition} objects
-	 * @throws ConfigurationException
-	 *             when any error occurs during loading the configuration; particular implementation define the cases
-	 *             when exception is thrown
-	 */
-	Collection<IComponentDefinition> loadConfiguration(Object source) throws ConfigurationException;
+    /**
+     * Loads a configuration from a given source.
+     *
+     * @param source object containing configuration in a source format or a connector to configuration; type of the source
+     *               is dependent on the particular implementation
+     * @return loaded configuration as collection of {@link IComponentDefinition} objects
+     * @throws ConfigurationException when any error occurs during loading the configuration; particular implementation define the cases
+     *                                when exception is thrown
+     */
+    Collection<IComponentDefinition> loadConfiguration(Object source) throws ConfigurationException;
 }

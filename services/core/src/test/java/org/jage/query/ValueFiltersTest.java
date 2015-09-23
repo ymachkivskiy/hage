@@ -31,15 +31,16 @@
 
 package org.jage.query;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import org.jage.address.agent.AgentAddress;
 import org.jage.agent.IAgent;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -50,307 +51,313 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
+
 /**
  * Tests for the {@link ValueFilters} class.
- * 
+ *
  * @author AGH AgE Team
  */
 @SuppressWarnings("static-method")
 public class ValueFiltersTest {
 
-	/**
-	 * Tests the {@link org.jage.query.ValueFilters#pattern(java.lang.String)} method.
-	 */
-	@Test
-	public void testPattern() {
-		IValueFilter<String> testedFilter = ValueFilters.pattern("testPattern.*");
+    /**
+     * Tests the {@link org.jage.query.ValueFilters#pattern(java.lang.String)} method.
+     */
+    @Test
+    public void testPattern() {
+        IValueFilter<String> testedFilter = ValueFilters.pattern("testPattern.*");
 
-		assertTrue(testedFilter.matches("testPattern"));
-		assertTrue(testedFilter.matches("testPattern 3.14"));
-		assertFalse(testedFilter.matches("tsetPattern"));
-	}
+        assertTrue(testedFilter.matches("testPattern"));
+        assertTrue(testedFilter.matches("testPattern 3.14"));
+        assertFalse(testedFilter.matches("tsetPattern"));
+    }
 
-	/**
-	 * Tests the {@link org.jage.query.ValueFilters#pattern(java.lang.String)} method with <code>null</code> pattern.
-	 */
-	@Test(expected = NullPointerException.class)
-	public void testPatternWithNull() {
-		ValueFilters.pattern(null);
-	}
+    /**
+     * Tests the {@link org.jage.query.ValueFilters#pattern(java.lang.String)} method with <code>null</code> pattern.
+     */
+    @Test(expected = NullPointerException.class)
+    public void testPatternWithNull() {
+        ValueFilters.pattern(null);
+    }
 
-	/**
-	 * Tests the {@link org.jage.query.ValueFilters#eq(java.lang.Object)} method.
-	 */
-	@Test
-	public void testEq() {
-		Object object = new Object();
-		IValueFilter<Object> testedFilter = ValueFilters.eq(object);
+    /**
+     * Tests the {@link org.jage.query.ValueFilters#eq(java.lang.Object)} method.
+     */
+    @Test
+    public void testEq() {
+        Object object = new Object();
+        IValueFilter<Object> testedFilter = ValueFilters.eq(object);
 
-		assertTrue(testedFilter.matches(object));
-		assertFalse(testedFilter.matches(new Object()));
-		assertFalse(testedFilter.matches(null));
+        assertTrue(testedFilter.matches(object));
+        assertFalse(testedFilter.matches(new Object()));
+        assertFalse(testedFilter.matches(null));
 
-		testedFilter = ValueFilters.eq(null);
-		assertFalse(testedFilter.matches(object));
-		assertTrue(testedFilter.matches(null));
-	}
+        testedFilter = ValueFilters.eq(null);
+        assertFalse(testedFilter.matches(object));
+        assertTrue(testedFilter.matches(null));
+    }
 
-	/**
-	 * Tests the {@link org.jage.query.ValueFilters#lessThan(Comparable)} method.
-	 */
-	@Test
-	public void testLessThan() {
-		IValueFilter<Integer> testedFilter = ValueFilters.lessThan(10);
+    /**
+     * Tests the {@link org.jage.query.ValueFilters#lessThan(Comparable)} method.
+     */
+    @Test
+    public void testLessThan() {
+        IValueFilter<Integer> testedFilter = ValueFilters.lessThan(10);
 
-		assertTrue(testedFilter.matches(0));
-		assertTrue(testedFilter.matches(-100));
-		assertFalse(testedFilter.matches(10));
-		assertFalse(testedFilter.matches(100));
-	}
+        assertTrue(testedFilter.matches(0));
+        assertTrue(testedFilter.matches(-100));
+        assertFalse(testedFilter.matches(10));
+        assertFalse(testedFilter.matches(100));
+    }
 
-	/**
-	 * Tests the {@link org.jage.query.ValueFilters#lessOrEqual(Comparable)} method.
-	 */
-	@Test
-	public void testLessOrEqual() {
-		IValueFilter<Integer> testedFilter = ValueFilters.lessOrEqual(10);
+    /**
+     * Tests the {@link org.jage.query.ValueFilters#lessOrEqual(Comparable)} method.
+     */
+    @Test
+    public void testLessOrEqual() {
+        IValueFilter<Integer> testedFilter = ValueFilters.lessOrEqual(10);
 
-		assertTrue(testedFilter.matches(0));
-		assertTrue(testedFilter.matches(-100));
-		assertTrue(testedFilter.matches(10));
-		assertFalse(testedFilter.matches(100));
-	}
+        assertTrue(testedFilter.matches(0));
+        assertTrue(testedFilter.matches(-100));
+        assertTrue(testedFilter.matches(10));
+        assertFalse(testedFilter.matches(100));
+    }
 
-	/**
-	 * Tests the {@link org.jage.query.ValueFilters#moreThan(Comparable)} method.
-	 */
-	@Test
-	public void testMoreThan() {
-		IValueFilter<Integer> testedFilter = ValueFilters.moreThan(10);
+    /**
+     * Tests the {@link org.jage.query.ValueFilters#moreThan(Comparable)} method.
+     */
+    @Test
+    public void testMoreThan() {
+        IValueFilter<Integer> testedFilter = ValueFilters.moreThan(10);
 
-		assertFalse(testedFilter.matches(0));
-		assertFalse(testedFilter.matches(-100));
-		assertFalse(testedFilter.matches(10));
-		assertTrue(testedFilter.matches(100));
-	}
+        assertFalse(testedFilter.matches(0));
+        assertFalse(testedFilter.matches(-100));
+        assertFalse(testedFilter.matches(10));
+        assertTrue(testedFilter.matches(100));
+    }
 
-	/**
-	 * Tests the {@link org.jage.query.ValueFilters#moreOrEqual(Comparable)} method.
-	 */
-	@Test
-	public void testMoreOrEqual() {
-		IValueFilter<Integer> testedFilter = ValueFilters.moreOrEqual(10);
+    /**
+     * Tests the {@link org.jage.query.ValueFilters#moreOrEqual(Comparable)} method.
+     */
+    @Test
+    public void testMoreOrEqual() {
+        IValueFilter<Integer> testedFilter = ValueFilters.moreOrEqual(10);
 
-		assertFalse(testedFilter.matches(0));
-		assertFalse(testedFilter.matches(-100));
-		assertTrue(testedFilter.matches(10));
-		assertTrue(testedFilter.matches(100));
-	}
+        assertFalse(testedFilter.matches(0));
+        assertFalse(testedFilter.matches(-100));
+        assertTrue(testedFilter.matches(10));
+        assertTrue(testedFilter.matches(100));
+    }
 
-	/**
-	 * Tests the {@link org.jage.query.ValueFilters#anyOf(org.jage.query.IValueFilter[])} method.
-	 */
-	@SuppressWarnings("unchecked")
-	@Test
-	public void testAnyOf() {
-		IValueFilter<Object> innerFilter1 = mock(IValueFilter.class);
-		when(innerFilter1.matches(any())).thenAnswer(new Answer<Boolean>() {
-			@Override
-			public Boolean answer(InvocationOnMock invocation) throws Throwable {
-				Object obj = invocation.getArguments()[0];
-				return obj instanceof Boolean;
-			}
-		});
+    /**
+     * Tests the {@link org.jage.query.ValueFilters#anyOf(org.jage.query.IValueFilter[])} method.
+     */
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testAnyOf() {
+        IValueFilter<Object> innerFilter1 = mock(IValueFilter.class);
+        when(innerFilter1.matches(any())).thenAnswer(new Answer<Boolean>() {
 
-		IValueFilter<Object> innerFilter2 = mock(IValueFilter.class);
-		when(innerFilter2.matches(any())).thenAnswer(new Answer<Boolean>() {
-			@Override
-			public Boolean answer(InvocationOnMock invocation) throws Throwable {
-				Object obj = invocation.getArguments()[0];
-				return obj instanceof Integer;
-			}
-		});
+            @Override
+            public Boolean answer(InvocationOnMock invocation) throws Throwable {
+                Object obj = invocation.getArguments()[0];
+                return obj instanceof Boolean;
+            }
+        });
 
-		IValueFilter<Object> testedFilter = ValueFilters.anyOf(innerFilter1, innerFilter2);
+        IValueFilter<Object> innerFilter2 = mock(IValueFilter.class);
+        when(innerFilter2.matches(any())).thenAnswer(new Answer<Boolean>() {
 
-		assertTrue(testedFilter.matches(10));
-		assertTrue(testedFilter.matches(true));
-		assertFalse(testedFilter.matches("test string"));
-	}
+            @Override
+            public Boolean answer(InvocationOnMock invocation) throws Throwable {
+                Object obj = invocation.getArguments()[0];
+                return obj instanceof Integer;
+            }
+        });
 
-	/**
-	 * Tests the {@link org.jage.query.ValueFilters#allOf} method.
-	 */
-	@SuppressWarnings("unchecked")
-	@Test
-	public void testAllOf() {
-		IValueFilter<Object> innerFilter1 = mock(IValueFilter.class);
-		when(innerFilter1.matches(any())).thenAnswer(new Answer<Boolean>() {
-			@Override
-			public Boolean answer(InvocationOnMock invocation) throws Throwable {
-				Object obj = invocation.getArguments()[0];
-				return obj instanceof Boolean || obj instanceof String;
-			}
-		});
+        IValueFilter<Object> testedFilter = ValueFilters.anyOf(innerFilter1, innerFilter2);
 
-		IValueFilter<Object> innerFilter2 = mock(IValueFilter.class);
-		when(innerFilter2.matches(any())).thenAnswer(new Answer<Boolean>() {
-			@Override
-			public Boolean answer(InvocationOnMock invocation) throws Throwable {
-				Object obj = invocation.getArguments()[0];
-				return obj instanceof Integer || obj instanceof String;
-			}
-		});
+        assertTrue(testedFilter.matches(10));
+        assertTrue(testedFilter.matches(true));
+        assertFalse(testedFilter.matches("test string"));
+    }
 
-		IValueFilter<Object> testedFilter = ValueFilters.allOf(innerFilter1, innerFilter2);
+    /**
+     * Tests the {@link org.jage.query.ValueFilters#allOf} method.
+     */
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testAllOf() {
+        IValueFilter<Object> innerFilter1 = mock(IValueFilter.class);
+        when(innerFilter1.matches(any())).thenAnswer(new Answer<Boolean>() {
 
-		assertFalse(testedFilter.matches(10));
-		assertFalse(testedFilter.matches(true));
-		assertTrue(testedFilter.matches("test string"));
-	}
+            @Override
+            public Boolean answer(InvocationOnMock invocation) throws Throwable {
+                Object obj = invocation.getArguments()[0];
+                return obj instanceof Boolean || obj instanceof String;
+            }
+        });
 
-	/**
-	 * Tests the {@link org.jage.query.ValueFilters#fieldValue(java.lang.String, org.jage.query.IValueFilter)} method.
-	 */
-	@Test
-	public void testFieldValue() {
-		/**
-		 * A utility class.
-		 *
-		 * @author AGH AgE Team
-		 */
-		class TestingClass {
-			private int field;
+        IValueFilter<Object> innerFilter2 = mock(IValueFilter.class);
+        when(innerFilter2.matches(any())).thenAnswer(new Answer<Boolean>() {
 
-			public TestingClass(int field) {
-				this.field = field;
-			}
+            @Override
+            public Boolean answer(InvocationOnMock invocation) throws Throwable {
+                Object obj = invocation.getArguments()[0];
+                return obj instanceof Integer || obj instanceof String;
+            }
+        });
 
-			@SuppressWarnings("unused")
-			public int getField() {
-				return field;
-			}
-		}
-		IValueFilter<Object> testedFilter = ValueFilters.fieldValue("field", ValueFilters.eq(1));
+        IValueFilter<Object> testedFilter = ValueFilters.allOf(innerFilter1, innerFilter2);
 
-		assertTrue(testedFilter.matches(new TestingClass(1)));
-		assertFalse(testedFilter.matches(new TestingClass(0)));
-	}
+        assertFalse(testedFilter.matches(10));
+        assertFalse(testedFilter.matches(true));
+        assertTrue(testedFilter.matches("test string"));
+    }
 
-	/**
-	 * Tests the {@link org.jage.query.ValueFilters#any()} method.
-	 */
-	@Test
-	public void testAny() {
-		IValueFilter<String> testedFilter = ValueFilters.any();
+    /**
+     * Tests the {@link org.jage.query.ValueFilters#fieldValue(java.lang.String, org.jage.query.IValueFilter)} method.
+     */
+    @Test
+    public void testFieldValue() {
+        /**
+         * A utility class.
+         *
+         * @author AGH AgE Team
+         */
+        class TestingClass {
 
-		assertTrue(testedFilter.matches("testPattern"));
-		assertTrue(testedFilter.matches("testPattern 3.14"));
-		assertTrue(testedFilter.matches("tsetPattern"));
-	}
+            private int field;
 
-	/**
-	 * Tests the {@link org.jage.query.ValueFilters#key(org.jage.query.IValueFilter)} method.
-	 */
-	@SuppressWarnings("unchecked")
-	@Test
-	public void testKey() {
-		IValueFilter<String> keyFilter = mock(IValueFilter.class);
-		IValueFilter<Entry<String, ?>> testedFilter = ValueFilters.key(keyFilter);
+            public TestingClass(int field) {
+                this.field = field;
+            }
 
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("string1", new Object());
-		map.put("string2", new Object());
-		map.put("string3", new Object());
+            @SuppressWarnings("unused")
+            public int getField() {
+                return field;
+            }
+        }
+        IValueFilter<Object> testedFilter = ValueFilters.fieldValue("field", ValueFilters.eq(1));
 
-		for (Entry<String, Object> entry : map.entrySet()) {
-			testedFilter.matches(entry);
-		}
+        assertTrue(testedFilter.matches(new TestingClass(1)));
+        assertFalse(testedFilter.matches(new TestingClass(0)));
+    }
 
-		for (String key : map.keySet()) {
-			verify(keyFilter).matches(key);
-		}
-		verifyNoMoreInteractions(keyFilter);
-	}
+    /**
+     * Tests the {@link org.jage.query.ValueFilters#any()} method.
+     */
+    @Test
+    public void testAny() {
+        IValueFilter<String> testedFilter = ValueFilters.any();
 
-	/**
-	 * Tests the {@link org.jage.query.ValueFilters#value(org.jage.query.IValueFilter)} method.
-	 */
-	@SuppressWarnings("unchecked")
-	@Test
-	public void testValue() {
-		IValueFilter<String> valueFilter = mock(IValueFilter.class);
-		IValueFilter<Entry<?, String>> testedFilter = ValueFilters.value(valueFilter);
+        assertTrue(testedFilter.matches("testPattern"));
+        assertTrue(testedFilter.matches("testPattern 3.14"));
+        assertTrue(testedFilter.matches("tsetPattern"));
+    }
 
-		Map<Object, String> map = new HashMap<Object, String>();
-		map.put(new Object(), "string1");
-		map.put(new Object(), "string2");
-		map.put(new Object(), "string3");
+    /**
+     * Tests the {@link org.jage.query.ValueFilters#key(org.jage.query.IValueFilter)} method.
+     */
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testKey() {
+        IValueFilter<String> keyFilter = mock(IValueFilter.class);
+        IValueFilter<Entry<String, ?>> testedFilter = ValueFilters.key(keyFilter);
 
-		for (Entry<Object, String> entry : map.entrySet()) {
-			testedFilter.matches(entry);
-		}
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("string1", new Object());
+        map.put("string2", new Object());
+        map.put("string3", new Object());
 
-		for (String value : map.values()) {
-			verify(valueFilter).matches(value);
-		}
-		verifyNoMoreInteractions(valueFilter);
-	}
+        for(Entry<String, Object> entry : map.entrySet()) {
+            testedFilter.matches(entry);
+        }
 
-	/**
-	 * Tests the {@link org.jage.query.ValueFilters#entry(org.jage.query.IValueFilter, org.jage.query.IValueFilter)}
-	 * method.
-	 */
-	@SuppressWarnings("unchecked")
-	@Test
-	public void testEntry() {
-		IValueFilter<String> keyFilter = mock(IValueFilter.class);
-		when(keyFilter.matches(anyString())).thenReturn(true);
-		IValueFilter<String> valueFilter = mock(IValueFilter.class);
-		IValueFilter<Entry<String, String>> testedFilter = ValueFilters.entry(keyFilter, valueFilter);
+        for(String key : map.keySet()) {
+            verify(keyFilter).matches(key);
+        }
+        verifyNoMoreInteractions(keyFilter);
+    }
 
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("string1", "value1");
-		map.put("string2", "value2");
-		map.put("string3", "value3");
+    /**
+     * Tests the {@link org.jage.query.ValueFilters#value(org.jage.query.IValueFilter)} method.
+     */
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testValue() {
+        IValueFilter<String> valueFilter = mock(IValueFilter.class);
+        IValueFilter<Entry<?, String>> testedFilter = ValueFilters.value(valueFilter);
 
-		for (Entry<String, String> entry : map.entrySet()) {
-			testedFilter.matches(entry);
-		}
+        Map<Object, String> map = new HashMap<Object, String>();
+        map.put(new Object(), "string1");
+        map.put(new Object(), "string2");
+        map.put(new Object(), "string3");
 
-		for (Entry<String, String> entry : map.entrySet()) {
-			verify(keyFilter).matches(entry.getKey());
-			verify(valueFilter).matches(entry.getValue());
-		}
-		verifyNoMoreInteractions(keyFilter, valueFilter);
-	}
+        for(Entry<Object, String> entry : map.entrySet()) {
+            testedFilter.matches(entry);
+        }
 
-	@Test
-	public void testAddressShouldReturnTrue() {
-		// given
-		IValueFilter<IAgent> testedFilter = ValueFilters.address(ValueFilters.pattern("f.o"));
-		IAgent agent = mock(IAgent.class);
-		AgentAddress agentAddress = mock(AgentAddress.class);
-		when(agent.getAddress()).thenReturn(agentAddress);
-		when(agentAddress.getFriendlyName()).thenReturn("foo");
+        for(String value : map.values()) {
+            verify(valueFilter).matches(value);
+        }
+        verifyNoMoreInteractions(valueFilter);
+    }
 
-		// then
-		assertTrue(testedFilter.matches(agent));
-		
-	}
-	
-	@Test
-	public void testAddressShouldReturnFalse() {
-		// given
-		IValueFilter<IAgent> testedFilter = ValueFilters.address(ValueFilters.pattern("lo.*"));
-		IAgent agent = mock(IAgent.class);
-		AgentAddress agentAddress = mock(AgentAddress.class);
-		when(agent.getAddress()).thenReturn(agentAddress);
-		when(agentAddress.getFriendlyName()).thenReturn("foo");
+    /**
+     * Tests the {@link org.jage.query.ValueFilters#entry(org.jage.query.IValueFilter, org.jage.query.IValueFilter)}
+     * method.
+     */
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testEntry() {
+        IValueFilter<String> keyFilter = mock(IValueFilter.class);
+        when(keyFilter.matches(anyString())).thenReturn(true);
+        IValueFilter<String> valueFilter = mock(IValueFilter.class);
+        IValueFilter<Entry<String, String>> testedFilter = ValueFilters.entry(keyFilter, valueFilter);
 
-		// then
-		assertFalse(testedFilter.matches(agent));
-		
-	}
-	
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("string1", "value1");
+        map.put("string2", "value2");
+        map.put("string3", "value3");
+
+        for(Entry<String, String> entry : map.entrySet()) {
+            testedFilter.matches(entry);
+        }
+
+        for(Entry<String, String> entry : map.entrySet()) {
+            verify(keyFilter).matches(entry.getKey());
+            verify(valueFilter).matches(entry.getValue());
+        }
+        verifyNoMoreInteractions(keyFilter, valueFilter);
+    }
+
+    @Test
+    public void testAddressShouldReturnTrue() {
+        // given
+        IValueFilter<IAgent> testedFilter = ValueFilters.address(ValueFilters.pattern("f.o"));
+        IAgent agent = mock(IAgent.class);
+        AgentAddress agentAddress = mock(AgentAddress.class);
+        when(agent.getAddress()).thenReturn(agentAddress);
+        when(agentAddress.getFriendlyName()).thenReturn("foo");
+
+        // then
+        assertTrue(testedFilter.matches(agent));
+
+    }
+
+    @Test
+    public void testAddressShouldReturnFalse() {
+        // given
+        IValueFilter<IAgent> testedFilter = ValueFilters.address(ValueFilters.pattern("lo.*"));
+        IAgent agent = mock(IAgent.class);
+        AgentAddress agentAddress = mock(AgentAddress.class);
+        when(agent.getAddress()).thenReturn(agentAddress);
+        when(agentAddress.getFriendlyName()).thenReturn("foo");
+
+        // then
+        assertFalse(testedFilter.matches(agent));
+
+    }
+
 }

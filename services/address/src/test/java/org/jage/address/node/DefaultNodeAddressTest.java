@@ -31,6 +31,7 @@
 
 package org.jage.address.node;
 
+
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -39,6 +40,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 
+
 /**
  * Tests for DefaultNodeAddress.
  *
@@ -46,113 +48,113 @@ import static org.junit.Assert.assertThat;
  */
 public class DefaultNodeAddressTest {
 
-	private final String localPart = "localPart";
+    private final String localPart = "localPart";
 
-	private final String hostname = "hostname";
+    private final String hostname = "hostname";
 
-	@Test(expected = NullPointerException.class)
-	public void shouldThrowNpeAtNullLocalPart() {
-		// when
-		new DefaultNodeAddress(null, "");
-	}
+    @Test(expected = NullPointerException.class)
+    public void shouldThrowNpeAtNullLocalPart() {
+        // when
+        new DefaultNodeAddress(null, "");
+    }
 
-	@Test(expected = NullPointerException.class)
-	public void shouldThrowNpeAtNullHostname() {
-		// when
-		new DefaultNodeAddress("", null);
-	}
+    @Test(expected = NullPointerException.class)
+    public void shouldThrowNpeAtNullHostname() {
+        // when
+        new DefaultNodeAddress("", null);
+    }
 
-	@Test
-	public void shouldUseDefaultHostname() {
-		// when
-		final DefaultNodeAddress address = new DefaultNodeAddress(localPart);
+    @Test
+    public void shouldUseDefaultHostname() {
+        // when
+        final DefaultNodeAddress address = new DefaultNodeAddress(localPart);
 
-		// then
-		assertThat(address.getHostname(), is("localhost"));
-	}
+        // then
+        assertThat(address.getHostname(), is("localhost"));
+    }
 
-	@Test
-	public void shouldUseGivenLocalPart() {
-		// when
-		final DefaultNodeAddress address = new DefaultNodeAddress(localPart);
+    @Test
+    public void shouldUseGivenLocalPart() {
+        // when
+        final DefaultNodeAddress address = new DefaultNodeAddress(localPart);
 
-		// then
-		assertThat(address.getLocalPart(), is(localPart));
-	}
+        // then
+        assertThat(address.getLocalPart(), is(localPart));
+    }
 
-	@Test
-	public void shouldUseGivenHostname() {
-		// when
-		final DefaultNodeAddress address = new DefaultNodeAddress(localPart, hostname);
+    @Test
+    public void shouldUseGivenHostname() {
+        // when
+        final DefaultNodeAddress address = new DefaultNodeAddress(localPart, hostname);
 
-		// then
-		assertThat(address.getHostname(), is(hostname));
-	}
+        // then
+        assertThat(address.getHostname(), is(hostname));
+    }
 
-	@Test
-	public void shouldUseLocalAndHostnameInToString() {
-		// when
-		final DefaultNodeAddress address = new DefaultNodeAddress(localPart, hostname);
+    @Test
+    public void shouldUseLocalAndHostnameInToString() {
+        // when
+        final DefaultNodeAddress address = new DefaultNodeAddress(localPart, hostname);
 
-		// then
-		assertThat(address, hasToString(localPart + "@" + hostname));
-	}
+        // then
+        assertThat(address, hasToString(localPart + "@" + hostname));
+    }
 
-	@Test
-	public void shouldUseToStringAsIdentifier() {
-		// given
-		final DefaultNodeAddress address = new DefaultNodeAddress(localPart, hostname);
+    @Test
+    public void shouldUseToStringAsIdentifier() {
+        // given
+        final DefaultNodeAddress address = new DefaultNodeAddress(localPart, hostname);
 
-		// then
-		assertThat(address.getIdentifier(), is(address.toString()));
-	}
+        // then
+        assertThat(address.getIdentifier(), is(address.toString()));
+    }
 
-	@Test
-	public void testHashcode() {
-		// given
-		final String otherLocalPart = "otherLocalPart";
-		final String otherHostname = "otherHostname";
-		NodeAddress first = new DefaultNodeAddress(localPart, hostname);
-		NodeAddress second;
+    @Test
+    public void testHashcode() {
+        // given
+        final String otherLocalPart = "otherLocalPart";
+        final String otherHostname = "otherHostname";
+        NodeAddress first = new DefaultNodeAddress(localPart, hostname);
+        NodeAddress second;
 
-		// same localpart, hostname
+        // same localpart, hostname
 
-		second = new DefaultNodeAddress(localPart, hostname);
-		assertThat(first.hashCode(), is(equalTo(second.hashCode())));
+        second = new DefaultNodeAddress(localPart, hostname);
+        assertThat(first.hashCode(), is(equalTo(second.hashCode())));
 
-		// different localpart
-		first = new DefaultNodeAddress(localPart, hostname);
-		second = new DefaultNodeAddress(otherLocalPart, hostname);
-		assertThat(first.hashCode(), is(not(equalTo(second.hashCode()))));
+        // different localpart
+        first = new DefaultNodeAddress(localPart, hostname);
+        second = new DefaultNodeAddress(otherLocalPart, hostname);
+        assertThat(first.hashCode(), is(not(equalTo(second.hashCode()))));
 
-		// different hostname
-		first = new DefaultNodeAddress(localPart, hostname);
-		second = new DefaultNodeAddress(localPart, otherHostname);
-		assertThat(first.hashCode(), is(not(equalTo(second.hashCode()))));
-	}
+        // different hostname
+        first = new DefaultNodeAddress(localPart, hostname);
+        second = new DefaultNodeAddress(localPart, otherHostname);
+        assertThat(first.hashCode(), is(not(equalTo(second.hashCode()))));
+    }
 
-	@Test
-	public void testEquals() {
-		// given
-		final String otherLocalPart = "otherLocalPart";
-		final String otherHostname = "otherHostname";
-		NodeAddress first = new DefaultNodeAddress(localPart, hostname);
-		NodeAddress second;
+    @Test
+    public void testEquals() {
+        // given
+        final String otherLocalPart = "otherLocalPart";
+        final String otherHostname = "otherHostname";
+        NodeAddress first = new DefaultNodeAddress(localPart, hostname);
+        NodeAddress second;
 
-		// same localpart, hostname
+        // same localpart, hostname
 
-		second = new DefaultNodeAddress(localPart, hostname);
-		assertThat(first, is(equalTo(second)));
+        second = new DefaultNodeAddress(localPart, hostname);
+        assertThat(first, is(equalTo(second)));
 
-		// different localpart
-		first = new DefaultNodeAddress(localPart, hostname);
-		second = new DefaultNodeAddress(otherLocalPart, hostname);
-		assertThat(first, is(not(equalTo(second))));
+        // different localpart
+        first = new DefaultNodeAddress(localPart, hostname);
+        second = new DefaultNodeAddress(otherLocalPart, hostname);
+        assertThat(first, is(not(equalTo(second))));
 
-		// different hostname
-		first = new DefaultNodeAddress(localPart, hostname);
-		second = new DefaultNodeAddress(localPart, otherHostname);
-		assertThat(first, is(not(equalTo(second))));
-	}
+        // different hostname
+        first = new DefaultNodeAddress(localPart, hostname);
+        second = new DefaultNodeAddress(localPart, otherHostname);
+        assertThat(first, is(not(equalTo(second))));
+    }
 
 }

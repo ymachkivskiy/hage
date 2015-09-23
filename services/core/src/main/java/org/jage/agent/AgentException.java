@@ -31,7 +31,9 @@
 
 package org.jage.agent;
 
+
 import org.jage.exception.AgeException;
+
 
 /**
  * Exception which can occur during performing operations on agents.
@@ -40,42 +42,38 @@ import org.jage.exception.AgeException;
  */
 public class AgentException extends AgeException {
 
-	private static final long serialVersionUID = 2L;
+    private static final long serialVersionUID = 2L;
 
-	/**
-	 * Constructs a new exception with the specified detail message.
-	 *
-	 * @param message
-	 *            the detail message.
-	 * @see Exception#Exception(String)
-	 */
-	public AgentException(final String message) {
-		super(message);
-	}
+    /**
+     * Constructs a new exception with the specified detail message.
+     *
+     * @param message the detail message.
+     * @see Exception#Exception(String)
+     */
+    public AgentException(final String message) {
+        super(message);
+    }
 
-	/**
-	 * Constructs a new exception with the specified cause and a detail message of
-	 * <tt>(cause==null ? null : cause.toString())</tt>.
-	 *
-	 * @param cause
-	 *            the cause.
-	 * @see Exception#Exception(Throwable)
-	 */
-	public AgentException(final Throwable cause) {
-		super(cause);
-	}
+    /**
+     * Constructs a new exception with the specified cause and a detail message of
+     * <tt>(cause==null ? null : cause.toString())</tt>.
+     *
+     * @param cause the cause.
+     * @see Exception#Exception(Throwable)
+     */
+    public AgentException(final Throwable cause) {
+        super(cause);
+    }
 
-	/**
-	 * Constructs a new exception with the specified detail message and cause.
-	 *
-	 * @param message
-	 *            the detail message.
-	 * @param cause
-	 *            the cause.
-	 * @see Exception#Exception(String, Throwable)
-	 */
-	public AgentException(final String message, final Throwable cause) {
-		super(message, cause);
-	}
+    /**
+     * Constructs a new exception with the specified detail message and cause.
+     *
+     * @param message the detail message.
+     * @param cause   the cause.
+     * @see Exception#Exception(String, Throwable)
+     */
+    public AgentException(final String message, final Throwable cause) {
+        super(message, cause);
+    }
 
 }

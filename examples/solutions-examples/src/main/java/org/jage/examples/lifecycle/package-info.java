@@ -31,9 +31,8 @@
 
 /**
  * Examples that presents lifeycle properties.
- * 
+ *
  * @author AGH AgE Team
  */
-@javax.annotation.ParametersAreNonnullByDefault
-package org.jage.examples.lifecycle;
+@javax.annotation.ParametersAreNonnullByDefault package org.jage.examples.lifecycle;
 

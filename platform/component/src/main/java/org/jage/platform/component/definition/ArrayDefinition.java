@@ -31,12 +31,13 @@
 
 package org.jage.platform.component.definition;
 
-import java.util.List;
 
-import static java.util.Collections.unmodifiableList;
+import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newLinkedList;
+import static java.util.Collections.unmodifiableList;
+
 
 /**
  * An array component definition.
@@ -45,49 +46,45 @@ import static com.google.common.collect.Lists.newLinkedList;
  */
 public class ArrayDefinition extends AbstractComponentDefinition {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private final List<IArgumentDefinition> items = newLinkedList();
+    private final List<IArgumentDefinition> items = newLinkedList();
 
-	/**
-	 * Creates a new array definition with a given name and array type.
-	 *
-	 * @param name
-	 *            the name of the component
-	 * @param type
-	 *            the array type of the component
-	 * @param isSingleton
-	 *            whether the component has a singleton scope
-	 */
-	public ArrayDefinition(final String name, final Class<?> type, final boolean isSingleton) {
-		super(name, type, isSingleton);
-	}
+    /**
+     * Creates a new array definition with a given name and array type.
+     *
+     * @param name        the name of the component
+     * @param type        the array type of the component
+     * @param isSingleton whether the component has a singleton scope
+     */
+    public ArrayDefinition(final String name, final Class<?> type, final boolean isSingleton) {
+        super(name, type, isSingleton);
+    }
 
-	/**
-	 * Returns the elements type of this array definition.
-	 *
-	 * @return the elements type of this array definition
-	 */
-	public Class<?> getElementsType() {
-		return getType().getComponentType();
-	}
+    /**
+     * Returns the elements type of this array definition.
+     *
+     * @return the elements type of this array definition
+     */
+    public Class<?> getElementsType() {
+        return getType().getComponentType();
+    }
 
-	/**
-	 * Adds an item to this array definition.
-	 *
-	 * @param item
-	 *            an item
-	 */
-	public void addItem(final IArgumentDefinition item) {
-		items.add(checkNotNull(item));
-	}
+    /**
+     * Adds an item to this array definition.
+     *
+     * @param item an item
+     */
+    public void addItem(final IArgumentDefinition item) {
+        items.add(checkNotNull(item));
+    }
 
-	/**
-	 * Returns a read only view of this array definition's items.
-	 *
-	 * @return this array definition's items
-	 */
-	public List<IArgumentDefinition> getItems() {
-		return unmodifiableList(items);
-	}
+    /**
+     * Returns a read only view of this array definition's items.
+     *
+     * @return this array definition's items
+     */
+    public List<IArgumentDefinition> getItems() {
+        return unmodifiableList(items);
+    }
 }

@@ -31,25 +31,27 @@
 
 package org.jage.examples.distributed;
 
+
 import org.jage.platform.component.exception.ComponentException;
 import org.jage.workplace.IStopCondition;
 
+
 /**
  * An {@link IStopCondition} implementation that is never satisfied.
- * 
+ *
  * @author AGH AgE Team
  */
 public class NeverStopCondition implements IStopCondition {
 
-	@Override
-	public void init() throws ComponentException {
-		// Empty
-	}
+    @Override
+    public void init() throws ComponentException {
+        // Empty
+    }
 
-	@Override
-	public boolean finish() throws ComponentException {
-		// Empty
-		return false;
-	}
+    @Override
+    public boolean finish() throws ComponentException {
+        // Empty
+        return false;
+    }
 
 }

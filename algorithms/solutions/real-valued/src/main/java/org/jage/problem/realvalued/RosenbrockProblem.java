@@ -31,7 +31,9 @@
 
 package org.jage.problem.realvalued;
 
+
 import org.jage.problem.ParallelProblem;
+
 
 /**
  * This class represents the problem domain for a floating-point coded Rosenbrock function. <br />
@@ -42,16 +44,15 @@ import org.jage.problem.ParallelProblem;
  */
 public final class RosenbrockProblem extends ParallelProblem<Double> {
 
-	private static final double DEFAULT_RANGE = 10;
+    private static final double DEFAULT_RANGE = 10;
 
-	/**
-	 * Creates a RosenbrockProblem with a default range of [-10, 10].
-	 *
-	 * @param dimension
-	 *            The dimension of this problem
-	 */
-	public RosenbrockProblem(Integer dimension) {
-		super(dimension, -DEFAULT_RANGE, DEFAULT_RANGE);
-	}
+    /**
+     * Creates a RosenbrockProblem with a default range of [-10, 10].
+     *
+     * @param dimension The dimension of this problem
+     */
+    public RosenbrockProblem(Integer dimension) {
+        super(dimension, -DEFAULT_RANGE, DEFAULT_RANGE);
+    }
 
 }

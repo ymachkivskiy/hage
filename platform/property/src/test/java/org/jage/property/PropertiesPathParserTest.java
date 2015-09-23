@@ -26,79 +26,82 @@
  */
 package org.jage.property;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
-import java.util.List;
 
 import org.jage.property.functions.FunctionsTestPropertyContainer;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
+
 public class PropertiesPathParserTest {
-	private FunctionsTestPropertyContainer _root;
 
-	@Before
-	public void setUp() throws Exception {
-		_root = new FunctionsTestPropertyContainer();
+    private FunctionsTestPropertyContainer _root;
 
-		FunctionsTestPropertyContainer property11 = new FunctionsTestPropertyContainer();
-		FunctionsTestPropertyContainer property12a = new FunctionsTestPropertyContainer();
-		FunctionsTestPropertyContainer property12b = new FunctionsTestPropertyContainer();
+    @Before
+    public void setUp() throws Exception {
+        _root = new FunctionsTestPropertyContainer();
 
-		_root.addProperty("first", property11);
-		_root.addProperty("second", new IPropertyContainer[] { property12a,
-				property12b });
+        FunctionsTestPropertyContainer property11 = new FunctionsTestPropertyContainer();
+        FunctionsTestPropertyContainer property12a = new FunctionsTestPropertyContainer();
+        FunctionsTestPropertyContainer property12b = new FunctionsTestPropertyContainer();
 
-		property11.addProperty("a", 1);
-		property11.addProperty("aa", "propertyAA");
-		property12a.addProperty("b", 2);
-		property12b.addProperty("c", "c");
-	}
+        _root.addProperty("first", property11);
+        _root.addProperty("second", new IPropertyContainer[]{property12a,
+                property12b});
 
-	@Test
-	public void testGetPropertyForPath() throws Exception {
-		PropertyPathParser parser = new PropertyPathParser(_root);
+        property11.addProperty("a", 1);
+        property11.addProperty("aa", "propertyAA");
+        property12a.addProperty("b", 2);
+        property12b.addProperty("c", "c");
+    }
 
-		Property property11a = parser.getPropertyForPath("first.a");
-		Property property11aa = parser.getPropertyForPath("first.aa");
-		Property property12ab = parser.getPropertyForPath("second[0].b");
-		Property property12ac = parser.getPropertyForPath("second[1].c");
+    @Test
+    public void testGetPropertyForPath() throws Exception {
+        PropertyPathParser parser = new PropertyPathParser(_root);
 
-		assertEquals("a", property11a.getMetaProperty().getName());
-		assertEquals(1, property11a.getValue());
-		assertEquals("aa", property11aa.getMetaProperty().getName());
-		assertEquals("propertyAA", property11aa.getValue());
-		assertEquals("b", property12ab.getMetaProperty().getName());
-		assertEquals(2, property12ab.getValue());
-		assertEquals("c", property12ac.getMetaProperty().getName());
-		assertEquals("c", property12ac.getValue());
-	}
+        Property property11a = parser.getPropertyForPath("first.a");
+        Property property11aa = parser.getPropertyForPath("first.aa");
+        Property property12ab = parser.getPropertyForPath("second[0].b");
+        Property property12ac = parser.getPropertyForPath("second[1].c");
 
-	@Test
-	public void testGetPropertiesOnPath() throws Exception {
-		PropertyPathParser parser = new PropertyPathParser(_root);
+        assertEquals("a", property11a.getMetaProperty().getName());
+        assertEquals(1, property11a.getValue());
+        assertEquals("aa", property11aa.getMetaProperty().getName());
+        assertEquals("propertyAA", property11aa.getValue());
+        assertEquals("b", property12ab.getMetaProperty().getName());
+        assertEquals(2, property12ab.getValue());
+        assertEquals("c", property12ac.getMetaProperty().getName());
+        assertEquals("c", property12ac.getValue());
+    }
 
-		List<Property> properties11a = parser.getPropertiesOnPath("first.a");
-		assertEquals(2, properties11a.size());
-		assertEquals("first", properties11a.get(0).getMetaProperty().getName());
-		assertEquals("a", properties11a.get(1).getMetaProperty().getName());
+    @Test
+    public void testGetPropertiesOnPath() throws Exception {
+        PropertyPathParser parser = new PropertyPathParser(_root);
 
-		List<Property> properties12ab = parser
-				.getPropertiesOnPath("second[0].b");
-		assertEquals(2, properties12ab.size());
-		assertEquals("second", properties12ab.get(0).getMetaProperty()
-				.getName());
-		assertEquals("b", properties12ab.get(1).getMetaProperty().getName());
-	}
+        List<Property> properties11a = parser.getPropertiesOnPath("first.a");
+        assertEquals(2, properties11a.size());
+        assertEquals("first", properties11a.get(0).getMetaProperty().getName());
+        assertEquals("a", properties11a.get(1).getMetaProperty().getName());
 
-	@Test
-	public void testInvalidPropertyPath() {
-		try {
-			PropertyPathParser parser = new PropertyPathParser(_root);
-			parser.getPropertyForPath("notExisintPath");
-			fail();
-		} catch (InvalidPropertyPathException ex) {
-		}
-	}
+        List<Property> properties12ab = parser
+                .getPropertiesOnPath("second[0].b");
+        assertEquals(2, properties12ab.size());
+        assertEquals("second", properties12ab.get(0).getMetaProperty()
+                .getName());
+        assertEquals("b", properties12ab.get(1).getMetaProperty().getName());
+    }
+
+    @Test
+    public void testInvalidPropertyPath() {
+        try {
+            PropertyPathParser parser = new PropertyPathParser(_root);
+            parser.getPropertyForPath("notExisintPath");
+            fail();
+        } catch(InvalidPropertyPathException ex) {
+        }
+    }
 }

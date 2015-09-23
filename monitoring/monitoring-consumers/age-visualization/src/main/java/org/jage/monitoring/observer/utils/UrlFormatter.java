@@ -27,45 +27,46 @@
 
 package org.jage.monitoring.observer.utils;
 
-import java.util.Iterator;
 
 import com.google.common.base.Splitter;
 
+import java.util.Iterator;
+
 
 /**
- * Utility class for formatting string url from monitoring typesafe configuration file. 
- * 
- * @author AGH AgE Team 
+ * Utility class for formatting string url from monitoring typesafe configuration file.
+ *
+ * @author AGH AgE Team
  */
 public class UrlFormatter {
 
-	public static String removeLastSlash(String url) {
-		if (url.length() > 0 && url.endsWith("/")) {
-			url = url.substring(0, url.length() - 1);
-		}
-		return url;
-	}
+    public static String getComputationTypeFromUrl(String url) {
+        url = removeLastSlash(url);
+        int compTypeStartIndex = url.lastIndexOf("/") + 1;
+        return url.substring(compTypeStartIndex, url.length());
+    }
 
-	public static String getComputationTypeFromUrl(String url){
-		url = removeLastSlash(url);
-		int compTypeStartIndex = url.lastIndexOf("/")+1;
-		return url.substring(compTypeStartIndex, url.length());
-	}
-	
-	public static String getHostFromUrl(String url){
-		url = removeLastSlash(url);
-		Iterable<String> splited = Splitter.on("/").omitEmptyStrings().split(url);
-		Iterator<String> iterator = splited.iterator();
-		iterator.next();
-		return iterator.next();
-	}
-	
-	public static String getSchemaFromUrl(String url){
-		url = removeLastSlash(url);
-		Iterable<String> splited = Splitter.on("/").omitEmptyStrings().split(url);
-		Iterator<String> iterator = splited.iterator();
-		iterator.next();
-		iterator.next();
-		return iterator.next();
-	}
+    public static String removeLastSlash(String url) {
+        if(url.length() > 0 && url.endsWith("/")) {
+            url = url.substring(0, url.length() - 1);
+        }
+        return url;
+    }
+
+    public static String getHostFromUrl(String url) {
+        url = removeLastSlash(url);
+        Iterable<String> splited = Splitter.on("/").omitEmptyStrings().split(url);
+        Iterator<String> iterator = splited.iterator();
+        iterator.next();
+        return iterator.next();
+    }
+
+    public static String getSchemaFromUrl(String url) {
+        url = removeLastSlash(url);
+        Iterable<String> splited = Splitter.on("/").omitEmptyStrings().split(url);
+        Iterator<String> iterator = splited.iterator();
+        iterator.next();
+        iterator.next();
+        return iterator.next();
+    }
 }

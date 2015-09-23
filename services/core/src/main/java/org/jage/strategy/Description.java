@@ -34,22 +34,25 @@
 
 package org.jage.strategy;
 
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+
 /**
  * Annotation definition.
- * 
+ * <p>
  * It can be used only for classes, interfaces or enum declarations.
- * 
+ * <p>
  * Not inherited Optional. Client must handle the situation when this annotation is not used.
- * 
+ *
  * @author AGH AgE Team
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Description {
-	String info();
+
+    String info();
 }

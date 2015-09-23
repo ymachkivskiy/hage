@@ -31,11 +31,13 @@
 
 package org.jage.property;
 
-import java.io.Serializable;
-import java.lang.reflect.Field;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.Serializable;
+import java.lang.reflect.Field;
+
 
 /**
  * Field-based {@link MetaProperty} implementation. By definition always writeable.
@@ -44,79 +46,73 @@ import org.slf4j.LoggerFactory;
  */
 public class FieldMetaProperty extends MetaProperty implements Serializable {
 
-	private static final long serialVersionUID = 182352715318861310L;
+    private static final long serialVersionUID = 182352715318861310L;
 
-	private static Logger log = LoggerFactory.getLogger(FieldMetaProperty.class);
+    private static Logger log = LoggerFactory.getLogger(FieldMetaProperty.class);
 
-	/**
-	 * Field which holds the property value.
-	 */
-	private transient Field propertyField;
+    /**
+     * Field which holds the property value.
+     */
+    private transient Field propertyField;
 
-	/**
-	 * Name of the property class.
-	 */
-	private String className;
+    /**
+     * Name of the property class.
+     */
+    private String className;
 
-	/**
-	 * Name of the field which holds the property.
-	 */
-	private String fieldName;
+    /**
+     * Name of the field which holds the property.
+     */
+    private String fieldName;
 
-	/**
-	 * Constructor.
-	 *
-	 * @param name
-	 *            name of the property.
-	 * @param field
-	 *            field that stores property value.
-	 * @param isMonitorable
-	 *            indicates whether this property is monitorable.
-	 * @throws PropertyException
-	 */
-	public FieldMetaProperty(String name, Field field, boolean isMonitorable) throws PropertyException {
-		super(name, field.getGenericType(), true, true, isMonitorable);
-		this.propertyField = field;
-		this.propertyField.setAccessible(true);
-		this.className = propertyField.getDeclaringClass().getName();
-		this.fieldName = propertyField.getName();
-	}
+    /**
+     * Constructor.
+     *
+     * @param name          name of the property.
+     * @param field         field that stores property value.
+     * @param isMonitorable indicates whether this property is monitorable.
+     * @throws PropertyException
+     */
+    public FieldMetaProperty(String name, Field field, boolean isMonitorable) throws PropertyException {
+        super(name, field.getGenericType(), true, true, isMonitorable);
+        this.propertyField = field;
+        this.propertyField.setAccessible(true);
+        this.className = propertyField.getDeclaringClass().getName();
+        this.fieldName = propertyField.getName();
+    }
 
-	/**
-	 * Constructor.
-	 *
-	 * @param name
-	 *            the name
-	 * @param propertyClass
-	 *            the property class
-	 * @param isMonitorable
-	 *            the is monitorable
-	 * @throws PropertyException
-	 */
-	public FieldMetaProperty(String name, Class<?> propertyClass, boolean isMonitorable) throws PropertyException {
-		super(name, propertyClass, true, true, isMonitorable);
-	}
+    /**
+     * Constructor.
+     *
+     * @param name          the name
+     * @param propertyClass the property class
+     * @param isMonitorable the is monitorable
+     * @throws PropertyException
+     */
+    public FieldMetaProperty(String name, Class<?> propertyClass, boolean isMonitorable) throws PropertyException {
+        super(name, propertyClass, true, true, isMonitorable);
+    }
 
-	@Override
-	public FieldProperty createPropertyFor(Object instance) throws InvalidPropertyOperationException {
-	    return new FieldProperty(this, instance);
-	}
+    @Override
+    public FieldProperty createPropertyFor(Object instance) throws InvalidPropertyOperationException {
+        return new FieldProperty(this, instance);
+    }
 
-	/**
-	 * Returns field that stores property value.
-	 *
-	 * @return field that stores property value.
-	 */
-	public final Field getPropertyField() {
-		if (propertyField == null) {
-			try {
-				Class<?> aClass = Class.forName(className);
-				propertyField = aClass.getField(fieldName);
-			} catch (Exception ex) {
-				log.error(ex.getMessage(), ex);
-			}
-		}
-		return propertyField;
-	}
+    /**
+     * Returns field that stores property value.
+     *
+     * @return field that stores property value.
+     */
+    public final Field getPropertyField() {
+        if(propertyField == null) {
+            try {
+                Class<?> aClass = Class.forName(className);
+                propertyField = aClass.getField(fieldName);
+            } catch(Exception ex) {
+                log.error(ex.getMessage(), ex);
+            }
+        }
+        return propertyField;
+    }
 
 }

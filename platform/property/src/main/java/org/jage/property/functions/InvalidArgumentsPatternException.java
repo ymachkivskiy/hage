@@ -26,40 +26,45 @@
  */
 package org.jage.property.functions;
 
+
 import org.jage.property.PropertyException;
+
 
 /**
  * Exception thrown by function arguments resolvers when invalid arguments
  * pattern was used.
- * @author Tomek
  *
+ * @author Tomek
  */
 public class InvalidArgumentsPatternException extends PropertyException {
 
-	private static final long serialVersionUID = 1;
+    private static final long serialVersionUID = 1;
 
-	/**
-	 * Constructor
-	 * @param message message for the exception.
-	 */
-	public InvalidArgumentsPatternException(final String message) {
-		super(message);
-	}
+    /**
+     * Constructor
+     *
+     * @param message message for the exception.
+     */
+    public InvalidArgumentsPatternException(final String message) {
+        super(message);
+    }
 
-	/**
-	 * Constructor.
-	 * @param message message for the exception.
-	 * @param throwable inner exception.
-	 */
-	public InvalidArgumentsPatternException(final String message, final Throwable throwable) {
-		super(message, throwable);
-	}
+    /**
+     * Constructor.
+     *
+     * @param message   message for the exception.
+     * @param throwable inner exception.
+     */
+    public InvalidArgumentsPatternException(final String message, final Throwable throwable) {
+        super(message, throwable);
+    }
 
-	/**
-	 * Constructor.
-	 * @param throwable inner exception.
-	 */
-	public InvalidArgumentsPatternException(final Throwable throwable) {
-		super(throwable);
-	}
+    /**
+     * Constructor.
+     *
+     * @param throwable inner exception.
+     */
+    public InvalidArgumentsPatternException(final Throwable throwable) {
+        super(throwable);
+    }
 }

@@ -31,11 +31,11 @@
 
 package org.jage.platform.component.provider;
 
+
 /**
- *
  * @author AGH AgE Team
  */
 public interface IMutableComponentInstanceProviderAware {
 
-	void setMutableComponentInstanceProvider(IMutableComponentInstanceProvider instanceProvider);
+    void setMutableComponentInstanceProvider(IMutableComponentInstanceProvider instanceProvider);
 }

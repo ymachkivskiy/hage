@@ -31,10 +31,13 @@
 
 package org.jage.action.testHelpers;
 
+
 import org.jage.action.IActionContext;
 import org.jage.action.context.AgentActionContext;
 
+
 @AgentActionContext("privateTestAction")
 public class PrivateTestActionContext implements IActionContext {
-	public boolean actionRun = false;
+
+    public boolean actionRun = false;
 }

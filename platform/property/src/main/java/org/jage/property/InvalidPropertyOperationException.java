@@ -30,37 +30,40 @@ package org.jage.property;
 /**
  * Exception thrown when invalid property operation has been invoked (for example, setting
  * value of read-only property or attaching monitor to property that is not monitorable).
- * @author Tomek
  *
+ * @author Tomek
  */
 public class InvalidPropertyOperationException extends PropertyException {
 
-	public static final long serialVersionUID = 1;
+    public static final long serialVersionUID = 1;
 
-	/**
-	 * Constructor.
-	 * @param message message for the exception.
-	 */
-	public InvalidPropertyOperationException(final String message) {
-		super(message);
-	}
+    /**
+     * Constructor.
+     *
+     * @param message message for the exception.
+     */
+    public InvalidPropertyOperationException(final String message) {
+        super(message);
+    }
 
-	/**
-	 * Constructor.
-	 * @param message message for the exception.
-	 * @param throwable inner exception.
-	 */
-	public InvalidPropertyOperationException(final String message, final Throwable throwable) {
-		super(message, throwable);
-	}
+    /**
+     * Constructor.
+     *
+     * @param message   message for the exception.
+     * @param throwable inner exception.
+     */
+    public InvalidPropertyOperationException(final String message, final Throwable throwable) {
+        super(message, throwable);
+    }
 
-	/**
-	 * Constructor.
-	 * @param throwable inner exception.
-	 */
-	public InvalidPropertyOperationException(final Throwable throwable) {
-		super(throwable);
-	}
+    /**
+     * Constructor.
+     *
+     * @param throwable inner exception.
+     */
+    public InvalidPropertyOperationException(final Throwable throwable) {
+        super(throwable);
+    }
 }
 
 

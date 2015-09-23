@@ -33,87 +33,88 @@
 
 package org.jage.examples.monitoring;
 
-import java.util.Random;
 
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.jage.address.agent.AgentAddress;
 import org.jage.address.agent.AgentAddressSupplier;
 import org.jage.agent.SimpleAgent;
 import org.jage.property.PropertyGetter;
 import org.jage.property.PropertySetter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
+import java.util.Random;
+
 
 /**
- * 
  * @author AGH AgE Team
  */
 public class MonitoringSimpleAgent extends SimpleAgent {
-	private static final long serialVersionUID = 3L;
 
-	private final Logger log = LoggerFactory.getLogger(MonitoringSimpleAgent.class);
+    private static final long serialVersionUID = 3L;
 
-	private final Random random = new Random();
+    private final Logger log = LoggerFactory.getLogger(MonitoringSimpleAgent.class);
 
-	private int stepNo = 1;
+    private final Random random = new Random();
 
-	private int chanceToMeetUfo = 0;
+    private int stepNo = 1;
 
-	private double radiationFromUfo = 0d;
+    private int chanceToMeetUfo = 0;
 
-	private int alienAbductions = 0;
+    private double radiationFromUfo = 0d;
 
-	public MonitoringSimpleAgent(final AgentAddress address) {
-		super(address);
-	}
+    private int alienAbductions = 0;
 
-	@Inject
-	public MonitoringSimpleAgent(final AgentAddressSupplier supplier) {
-		super(supplier);
-	}
+    public MonitoringSimpleAgent(final AgentAddress address) {
+        super(address);
+    }
 
-	@PropertyGetter(propertyName = "chanceToMeetUfo")
-	public int getChanceToMeetUfo() {
-		return chanceToMeetUfo;
-	}
-	
-	@PropertySetter(propertyName = "chanceToMeetUfo")
-	public void setChanceToMeetUfo(int chanceToMeetUfo) {
-		this.chanceToMeetUfo = chanceToMeetUfo;
-	}
+    @Inject
+    public MonitoringSimpleAgent(final AgentAddressSupplier supplier) {
+        super(supplier);
+    }
 
-	@PropertyGetter(propertyName = "radiationFromUfo")
-	public double getRadiationFromUfo() {
-		return radiationFromUfo;
-	}
+    @PropertyGetter(propertyName = "chanceToMeetUfo")
+    public int getChanceToMeetUfo() {
+        return chanceToMeetUfo;
+    }
 
-	@PropertySetter(propertyName = "radiationFromUfo")
-	public void setRadiationFromUfo(double radiationFromUfo) {
-		this.radiationFromUfo = radiationFromUfo;
-	}
+    @PropertySetter(propertyName = "chanceToMeetUfo")
+    public void setChanceToMeetUfo(int chanceToMeetUfo) {
+        this.chanceToMeetUfo = chanceToMeetUfo;
+    }
 
-	@PropertyGetter(propertyName = "alienAbductions")
-	public int getAlienAbductions() {
-		return alienAbductions;
-	}
-	
-	@PropertySetter(propertyName = "alienAbductions")
-	public void setAlienAbductions(int alienAbductions) {
-		this.alienAbductions = alienAbductions;
-	}
+    @PropertyGetter(propertyName = "radiationFromUfo")
+    public double getRadiationFromUfo() {
+        return radiationFromUfo;
+    }
 
-	@Override
-	public void step() {
-		chanceToMeetUfo += random.nextInt(10);
-		radiationFromUfo += chanceToMeetUfo / Math.abs(random.nextGaussian());
-		alienAbductions += random.nextInt(5);
-		log.info("{} performed step no. {} ", getAddress(), stepNo);
-		stepNo++;
-		try {
-			Thread.sleep(200);
-		} catch (final InterruptedException e) {
-			log.error("Interrupted", e);
-		}
-	}
+    @PropertySetter(propertyName = "radiationFromUfo")
+    public void setRadiationFromUfo(double radiationFromUfo) {
+        this.radiationFromUfo = radiationFromUfo;
+    }
+
+    @PropertyGetter(propertyName = "alienAbductions")
+    public int getAlienAbductions() {
+        return alienAbductions;
+    }
+
+    @PropertySetter(propertyName = "alienAbductions")
+    public void setAlienAbductions(int alienAbductions) {
+        this.alienAbductions = alienAbductions;
+    }
+
+    @Override
+    public void step() {
+        chanceToMeetUfo += random.nextInt(10);
+        radiationFromUfo += chanceToMeetUfo / Math.abs(random.nextGaussian());
+        alienAbductions += random.nextInt(5);
+        log.info("{} performed step no. {} ", getAddress(), stepNo);
+        stepNo++;
+        try {
+            Thread.sleep(200);
+        } catch(final InterruptedException e) {
+            log.error("Interrupted", e);
+        }
+    }
 }

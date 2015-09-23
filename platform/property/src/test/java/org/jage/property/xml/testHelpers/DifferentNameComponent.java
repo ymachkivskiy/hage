@@ -25,36 +25,36 @@
  * along with AgE.  If not, see <http://www.gnu.org/licenses/>.
  */
 /**
- * 
+ *
  */
 package org.jage.property.xml.testHelpers;
 
+
 /**
  * @author Tomasz Lukasik
- * 
  */
 public class DifferentNameComponent {
 
-	@SuppressWarnings("unused")
-	private static final String version = "1.0.0";
+    @SuppressWarnings("unused")
+    private static final String version = "1.0.0";
 
-	private int _intProperty = 0;
-	private String _stringProperty = "";
+    private int _intProperty = 0;
+    private String _stringProperty = "";
 
-	public int getIntProperty() {
-		return _intProperty;
-	}
+    public int getIntProperty() {
+        return _intProperty;
+    }
 
-	public void setIntProperty(int value) {
-		_intProperty = value;
-	}
+    public void setIntProperty(int value) {
+        _intProperty = value;
+    }
 
-	public String getStringProperty() {
-		return _stringProperty;
-	}
+    public String getStringProperty() {
+        return _stringProperty;
+    }
 
-	public void setStringProperty(String value) {
-		_stringProperty = value;
-	}
+    public void setStringProperty(String value) {
+        _stringProperty = value;
+    }
 
 }

@@ -31,58 +31,54 @@
 
 package org.jage.agent;
 
+
+import org.jage.address.agent.AgentAddress;
+
 import java.util.Collection;
 import java.util.Set;
 
-import org.jage.address.agent.AgentAddress;
 
 /**
  * Interface to all agents which can contain other agents.
  * <p>
- *
+ * <p>
  * They execute their code and are responsible for their "life".
  *
- * @param <C>
- *            a lower bound of agents located in this aggregate.
- *
+ * @param <C> a lower bound of agents located in this aggregate.
  * @author AGH AgE Team
  */
 public interface IAggregate<C extends IAgent> extends IAgent, Collection<C> {
 
-	/**
-	 * Checks if this aggregate contains an agent with the given address.
-	 *
-	 * @param address
-	 *            the address of agent to check.
-	 * @return <code>true</code> if this aggregate contains the agent; <code>false
-	 *         </code>- otherwise.
-	 */
-	boolean containsAgent(AgentAddress address);
+    /**
+     * Checks if this aggregate contains an agent with the given address.
+     *
+     * @param address the address of agent to check.
+     * @return <code>true</code> if this aggregate contains the agent; <code>false
+     * </code>- otherwise.
+     */
+    boolean containsAgent(AgentAddress address);
 
-	/**
-	 * Returns the agent with the specified address.
-	 *
-	 * @param address
-	 *            the address of an agent.
-	 * @return the agent with the specified address.
-	 */
-	C getAgent(AgentAddress address);
+    /**
+     * Returns the agent with the specified address.
+     *
+     * @param address the address of an agent.
+     * @return the agent with the specified address.
+     */
+    C getAgent(AgentAddress address);
 
-	/**
-	 * Removes the agent from this aggregate.
-	 *
-	 * @param address
-	 *            Address of the agent to remove.
-	 * @throws AgentException
-	 *             occurs when the aggregate cannot remove the agent.
-	 */
-	void removeAgent(AgentAddress address);
+    /**
+     * Removes the agent from this aggregate.
+     *
+     * @param address Address of the agent to remove.
+     * @throws AgentException occurs when the aggregate cannot remove the agent.
+     */
+    void removeAgent(AgentAddress address);
 
-	/**
-	 * Returns addresses of agents located in this aggregate.
-	 *
-	 * @return addresses of agents.
-	 */
-	Set<AgentAddress> getAgentsAddresses();
+    /**
+     * Returns addresses of agents located in this aggregate.
+     *
+     * @return addresses of agents.
+     */
+    Set<AgentAddress> getAgentsAddresses();
 
 }

@@ -31,20 +31,15 @@
 
 package org.jage.platform.config.xml.loaders;
 
-import org.junit.Test;
 
 import org.jage.platform.component.definition.ConfigurationException;
 import org.jage.platform.config.xml.ConfigTags;
 import org.jage.platform.config.xml.util.DocumentBuilder;
+import org.junit.Test;
 
 import static org.jage.platform.config.xml.util.DocumentBuilder.emptyDocument;
-import static org.jage.platform.config.xml.util.ElementBuilder.SOME_CLASS;
-import static org.jage.platform.config.xml.util.ElementBuilder.SOME_NAME;
-import static org.jage.platform.config.xml.util.ElementBuilder.componentElement;
-import static org.jage.platform.config.xml.util.ElementBuilder.element;
-import static org.jage.platform.config.xml.util.ElementBuilder.multipleElement;
-import static org.jage.platform.config.xml.util.ElementBuilder.referenceElement;
-import static org.jage.platform.config.xml.util.ElementBuilder.valueElement;
+import static org.jage.platform.config.xml.util.ElementBuilder.*;
+
 
 /**
  * Tests for MultipleTagDuplicator.
@@ -53,83 +48,83 @@ import static org.jage.platform.config.xml.util.ElementBuilder.valueElement;
  */
 public class MultipleTagDuplicatorTest extends AbstractDocumentLoaderTest<MultipleTagDuplicator> {
 
-	@Override
-	protected MultipleTagDuplicator getLoader() {
-	    return new MultipleTagDuplicator();
-	}
+    @Override
+    protected MultipleTagDuplicator getLoader() {
+        return new MultipleTagDuplicator();
+    }
 
-	@Test
-	public void shouldDuplicateMultipleInList() throws ConfigurationException {
-		shouldDuplicateMultipleInElement(ConfigTags.LIST);
-	}
+    @Test
+    public void shouldDuplicateMultipleInList() throws ConfigurationException {
+        shouldDuplicateMultipleInElement(ConfigTags.LIST);
+    }
 
-	@Test
-	public void shouldDuplicateMultipleInArray() throws ConfigurationException {
-		shouldDuplicateMultipleInElement(ConfigTags.ARRAY);
-	}
+    private void shouldDuplicateMultipleInElement(final ConfigTags tag) throws ConfigurationException {
+        // given
+        final DocumentBuilder original = emptyDocument()
+                .add(element(tag)
+                             .withBody(
+                                     multipleElement(3, referenceElement(SOME_NAME)),
+                                     multipleElement(2, valueElement(SOME_CLASS, SOME_NAME))));
+        final DocumentBuilder expected = emptyDocument()
+                .add(element(tag)
+                             .withBody(
+                                     referenceElement(SOME_NAME),
+                                     referenceElement(SOME_NAME),
+                                     referenceElement(SOME_NAME),
+                                     valueElement(SOME_CLASS, SOME_NAME),
+                                     valueElement(SOME_CLASS, SOME_NAME)));
 
-	@Test
-	public void shouldDuplicateMultipleInSet() throws ConfigurationException {
-		shouldDuplicateMultipleComponentInElement(ConfigTags.SET);
-	}
+        // then
+        assertDocumentTransformation(original, expected);
+    }
 
-	@Test
-	public void shouldDuplicateMultipleComponentInList() throws ConfigurationException {
-		shouldDuplicateMultipleComponentInElement(ConfigTags.LIST);
-	}
+    @Test
+    public void shouldDuplicateMultipleInArray() throws ConfigurationException {
+        shouldDuplicateMultipleInElement(ConfigTags.ARRAY);
+    }
 
-	@Test
-	public void shouldDuplicateMultipleComponentInArray() throws ConfigurationException {
-		shouldDuplicateMultipleComponentInElement(ConfigTags.ARRAY);
-	}
+    @Test
+    public void shouldDuplicateMultipleInSet() throws ConfigurationException {
+        shouldDuplicateMultipleComponentInElement(ConfigTags.SET);
+    }
 
-	@Test
-	public void shouldDuplicateMultipleComponentInSet() throws ConfigurationException {
-		shouldDuplicateMultipleComponentInElement(ConfigTags.SET);
-	}
+    private void shouldDuplicateMultipleComponentInElement(final ConfigTags tag) throws ConfigurationException {
+        // given
+        final String name1 = "name1";
+        final String name2 = "name2";
 
-	private void shouldDuplicateMultipleInElement(final ConfigTags tag) throws ConfigurationException {
-		// given
-		final DocumentBuilder original = emptyDocument()
-			.add(element(tag)
-				.withBody(
-					multipleElement(3, referenceElement(SOME_NAME)),
-					multipleElement(2, valueElement(SOME_CLASS, SOME_NAME))));
-		final DocumentBuilder expected = emptyDocument()
-			.add(element(tag)
-				.withBody(
-					referenceElement(SOME_NAME),
-					referenceElement(SOME_NAME),
-					referenceElement(SOME_NAME),
-					valueElement(SOME_CLASS, SOME_NAME),
-					valueElement(SOME_CLASS, SOME_NAME)));
+        final DocumentBuilder original = emptyDocument()
+                .add(element(tag)
+                             .withBody(
+                                     multipleElement(3, componentElement(name1)),
+                                     multipleElement(2, componentElement(name2))));
+        final DocumentBuilder expected = emptyDocument()
+                .add(element(tag)
+                             .withBody(
+                                     componentElement(name1),
+                                     referenceElement(name1),
+                                     referenceElement(name1),
+                                     referenceElement(name1),
+                                     componentElement(name2),
+                                     referenceElement(name2),
+                                     referenceElement(name2)));
 
-		// then
-		assertDocumentTransformation(original, expected);
-	}
+        // then
+        assertDocumentTransformation(original, expected);
+    }
 
-	private void shouldDuplicateMultipleComponentInElement(final ConfigTags tag) throws ConfigurationException {
-		// given
-		final String name1 = "name1";
-		final String name2 = "name2";
+    @Test
+    public void shouldDuplicateMultipleComponentInList() throws ConfigurationException {
+        shouldDuplicateMultipleComponentInElement(ConfigTags.LIST);
+    }
 
-		final DocumentBuilder original = emptyDocument()
-			.add(element(tag)
-				.withBody(
-					multipleElement(3, componentElement(name1)),
-	                multipleElement(2, componentElement(name2))));
-		final DocumentBuilder expected = emptyDocument()
-			.add(element(tag)
-				.withBody(
-					componentElement(name1),
-					referenceElement(name1),
-					referenceElement(name1),
-					referenceElement(name1),
-					componentElement(name2),
-					referenceElement(name2),
-					referenceElement(name2)));
+    @Test
+    public void shouldDuplicateMultipleComponentInArray() throws ConfigurationException {
+        shouldDuplicateMultipleComponentInElement(ConfigTags.ARRAY);
+    }
 
-		// then
-		assertDocumentTransformation(original, expected);
-	}
+    @Test
+    public void shouldDuplicateMultipleComponentInSet() throws ConfigurationException {
+        shouldDuplicateMultipleComponentInElement(ConfigTags.SET);
+    }
 }

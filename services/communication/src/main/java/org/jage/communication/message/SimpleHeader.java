@@ -31,69 +31,68 @@
 
 package org.jage.communication.message;
 
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
 
 import org.jage.address.Address;
 import org.jage.address.selector.AddressSelector;
 
+import javax.annotation.Nonnull;
+import javax.annotation.concurrent.Immutable;
+
 import static com.google.common.base.Objects.toStringHelper;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+
 /**
  * This class provides a default implementation of {@link Header}.
- * 
- * @param <A>
- *            A type of sender and receiver address.
+ *
+ * @param <A> A type of sender and receiver address.
  * @author AGH AgE Team
  */
 @Immutable
 public class SimpleHeader<A extends Address> implements Header<A> {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private final AddressSelector<A> receiverSelector;
+    private final AddressSelector<A> receiverSelector;
 
-	private final A senderAddress;
+    private final A senderAddress;
 
-	/**
-	 * Constructs a new header specifying a sender and a selector for receivers.
-	 * 
-	 * @param senderAddress
-	 *            An address of the sender of the message.
-	 * @param receiverSelector
-	 *            A selector for selecting receivers.
-	 */
-	private SimpleHeader(final A senderAddress, final AddressSelector<A> receiverSelector) {
-		this.senderAddress = checkNotNull(senderAddress);
-		this.receiverSelector = checkNotNull(receiverSelector);
-	}
-	
-	/**
-	 * Constructs a new header specifying a sender and a selector for receivers.
-	 * 
-	 * @param senderAddress
-	 *            An address of the sender of the message.
-	 * @param receiverSelector
-	 *            A selector for selecting receivers.
-	 * @return a new header.
-	 */
-	public static <V extends Address> SimpleHeader<V> create(final V senderAddress, final AddressSelector<V> receiverSelector) {
-		return new SimpleHeader<>(senderAddress, receiverSelector);
-	}
+    /**
+     * Constructs a new header specifying a sender and a selector for receivers.
+     *
+     * @param senderAddress    An address of the sender of the message.
+     * @param receiverSelector A selector for selecting receivers.
+     */
+    private SimpleHeader(final A senderAddress, final AddressSelector<A> receiverSelector) {
+        this.senderAddress = checkNotNull(senderAddress);
+        this.receiverSelector = checkNotNull(receiverSelector);
+    }
 
-	@Override @Nonnull
-	public A getSenderAddress() {
-		return senderAddress;
-	}
+    /**
+     * Constructs a new header specifying a sender and a selector for receivers.
+     *
+     * @param senderAddress    An address of the sender of the message.
+     * @param receiverSelector A selector for selecting receivers.
+     * @return a new header.
+     */
+    public static <V extends Address> SimpleHeader<V> create(final V senderAddress, final AddressSelector<V> receiverSelector) {
+        return new SimpleHeader<>(senderAddress, receiverSelector);
+    }
 
-	@Override @Nonnull
-	public AddressSelector<A> getReceiverSelector() {
-		return receiverSelector;
-	}
+    @Override
+    @Nonnull
+    public A getSenderAddress() {
+        return senderAddress;
+    }
 
-	@Override
-	public String toString() {
-		return toStringHelper(this).add("sender", senderAddress).add("receiver", receiverSelector).toString();
-	}
+    @Override
+    @Nonnull
+    public AddressSelector<A> getReceiverSelector() {
+        return receiverSelector;
+    }
+
+    @Override
+    public String toString() {
+        return toStringHelper(this).add("sender", senderAddress).add("receiver", receiverSelector).toString();
+    }
 }

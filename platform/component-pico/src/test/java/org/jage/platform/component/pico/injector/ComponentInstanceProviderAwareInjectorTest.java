@@ -31,6 +31,13 @@
 
 package org.jage.platform.component.pico.injector;
 
+
+import org.jage.platform.component.definition.ComponentDefinition;
+import org.jage.platform.component.pico.IPicoComponentInstanceProvider;
+import org.jage.platform.component.provider.IComponentInstanceProviderAware;
+import org.jage.platform.component.provider.IMutableComponentInstanceProviderAware;
+import org.jage.platform.component.provider.ISelfAwareComponentInstanceProvider;
+import org.jage.platform.component.provider.ISelfAwareComponentInstanceProviderAware;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -45,12 +52,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
-import org.jage.platform.component.definition.ComponentDefinition;
-import org.jage.platform.component.pico.IPicoComponentInstanceProvider;
-import org.jage.platform.component.provider.IComponentInstanceProviderAware;
-import org.jage.platform.component.provider.IMutableComponentInstanceProviderAware;
-import org.jage.platform.component.provider.ISelfAwareComponentInstanceProvider;
-import org.jage.platform.component.provider.ISelfAwareComponentInstanceProviderAware;
 
 /**
  * Tests for StatefulComponentInjector.
@@ -60,88 +61,88 @@ import org.jage.platform.component.provider.ISelfAwareComponentInstanceProviderA
 @RunWith(MockitoJUnitRunner.class)
 public class ComponentInstanceProviderAwareInjectorTest extends AbstractBaseInjectorTest {
 
-	@Mock
-	private IPicoComponentInstanceProvider container;
+    @Mock
+    private IPicoComponentInstanceProvider container;
 
-	@Test(expected = NullPointerException.class)
-	public void shouldThrowNPEForNullDefinition() {
-		// when
-		new StatefulComponentInjector<Object>(null);
-	}
+    @Test(expected = NullPointerException.class)
+    public void shouldThrowNPEForNullDefinition() {
+        // when
+        new StatefulComponentInjector<Object>(null);
+    }
 
-	@Test(expected = UnsupportedOperationException.class)
-	public void shouldNotSupportCreatingComponents() {
-		// given
-		final Injector<Object> injector = injectorFor(anyDefinition());
+    @Test(expected = UnsupportedOperationException.class)
+    public void shouldNotSupportCreatingComponents() {
+        // given
+        final Injector<Object> injector = injectorFor(anyDefinition());
 
-		// when
-		injector.getComponentInstance(container, null);
-	}
+        // when
+        injector.getComponentInstance(container, null);
+    }
 
-	@Test
-	public void shouldDoNothingIfInterfacesNotImplemented() {
-		// given
-		final Object instance = mock(Object.class);
-		final Injector<Object> injector = injectorFor(instance);
+    @Override
+    protected <T> Injector<T> injectorFor(final ComponentDefinition definition) {
+        return new ComponentInstanceProviderAwareInjector<T>(definition);
+    }
 
-		// when
-		injector.decorateComponentInstance(container, null, instance);
+    @Test
+    public void shouldDoNothingIfInterfacesNotImplemented() {
+        // given
+        final Object instance = mock(Object.class);
+        final Injector<Object> injector = injectorFor(instance);
 
-		// then
-		verifyNoMoreInteractions(instance);
-	}
+        // when
+        injector.decorateComponentInstance(container, null, instance);
 
-	@Test
-	public void shouldInjectIComponentInstanceProviderAware() {
-		// given
-		final IComponentInstanceProviderAware instance = mock(IComponentInstanceProviderAware.class);
-		final Injector<IComponentInstanceProviderAware> injector = injectorFor(instance);
+        // then
+        verifyNoMoreInteractions(instance);
+    }
 
-		// when
-		injector.decorateComponentInstance(container, null, instance);
+    @Test
+    public void shouldInjectIComponentInstanceProviderAware() {
+        // given
+        final IComponentInstanceProviderAware instance = mock(IComponentInstanceProviderAware.class);
+        final Injector<IComponentInstanceProviderAware> injector = injectorFor(instance);
 
-		// then
-		verify(instance).setInstanceProvider(container);
-	}
+        // when
+        injector.decorateComponentInstance(container, null, instance);
 
-	@Test
-	public void shouldInjectIMutableComponentInstanceProviderAware() {
-		// given
-		final IMutableComponentInstanceProviderAware instance = mock(IMutableComponentInstanceProviderAware.class);
-		final Injector<IMutableComponentInstanceProviderAware> injector = injectorFor(instance);
+        // then
+        verify(instance).setInstanceProvider(container);
+    }
 
-		// when
-		injector.decorateComponentInstance(container, null, instance);
+    @Test
+    public void shouldInjectIMutableComponentInstanceProviderAware() {
+        // given
+        final IMutableComponentInstanceProviderAware instance = mock(IMutableComponentInstanceProviderAware.class);
+        final Injector<IMutableComponentInstanceProviderAware> injector = injectorFor(instance);
 
-		// then
-		verify(instance).setMutableComponentInstanceProvider(container);
-	}
+        // when
+        injector.decorateComponentInstance(container, null, instance);
 
-	@Test
-	public void shouldInjectISelfAwareComponentInstanceProviderAware() {
-		// given
-		final ISelfAwareComponentInstanceProviderAware instance = mock(ISelfAwareComponentInstanceProviderAware.class);
-		final ComponentDefinition definition = definitionFor(instance);
-		final Injector<ISelfAwareComponentInstanceProviderAware> injector = injectorFor(definition);
+        // then
+        verify(instance).setMutableComponentInstanceProvider(container);
+    }
 
-		// when
-		injector.decorateComponentInstance(container, null, instance);
+    @Test
+    public void shouldInjectISelfAwareComponentInstanceProviderAware() {
+        // given
+        final ISelfAwareComponentInstanceProviderAware instance = mock(ISelfAwareComponentInstanceProviderAware.class);
+        final ComponentDefinition definition = definitionFor(instance);
+        final Injector<ISelfAwareComponentInstanceProviderAware> injector = injectorFor(definition);
 
-		// then
-		final ArgumentCaptor<ISelfAwareComponentInstanceProvider> argument = ArgumentCaptor.forClass(ISelfAwareComponentInstanceProvider.class);
-		verify(instance).setSelfAwareComponentInstanceProvider(argument.capture());
-		final ISelfAwareComponentInstanceProvider provider = argument.getValue();
-		assertThat(provider.getName(), is(equalTo(definition.getName())));
+        // when
+        injector.decorateComponentInstance(container, null, instance);
 
-		// when
-		provider.getInstance();
-		// then
-		verify(container).getInstance(definition.getName());
+        // then
+        final ArgumentCaptor<ISelfAwareComponentInstanceProvider> argument = ArgumentCaptor.forClass(ISelfAwareComponentInstanceProvider.class);
+        verify(instance).setSelfAwareComponentInstanceProvider(argument.capture());
+        final ISelfAwareComponentInstanceProvider provider = argument.getValue();
+        assertThat(provider.getName(), is(equalTo(definition.getName())));
 
-	}
+        // when
+        provider.getInstance();
+        // then
+        verify(container).getInstance(definition.getName());
 
-	@Override
-	protected <T> Injector<T> injectorFor(final ComponentDefinition definition) {
-		return new ComponentInstanceProviderAwareInjector<T>(definition);
-	}
+    }
 }

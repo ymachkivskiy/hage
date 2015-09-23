@@ -31,24 +31,22 @@
 
 package org.jage.query;
 
+
 /**
  * The interface for selectors of values.
- * 
- * @param <T>
- *            A type of the object this selector operates on.
- * @param <V>
- *            A type of a value that this selector can select.
+ *
+ * @param <T> A type of the object this selector operates on.
+ * @param <V> A type of a value that this selector can select.
  * @author AGH AgE Team
  */
 public interface IValueSelector<T, V> {
 
-	/**
-	 * Selects a value of the type <code>V</code> from the object of the type <code>T</code>. The relation between the
-	 * object parameter and the returned value is completely implementation dependent.
-	 * 
-	 * @param object
-	 *            An object to process.
-	 * @return Selected value.
-	 */
-	V selectValue(T object);
+    /**
+     * Selects a value of the type <code>V</code> from the object of the type <code>T</code>. The relation between the
+     * object parameter and the returned value is completely implementation dependent.
+     *
+     * @param object An object to process.
+     * @return Selected value.
+     */
+    V selectValue(T object);
 }

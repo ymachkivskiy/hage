@@ -31,23 +31,22 @@
 
 package org.jage.genetic.preselection;
 
-import java.util.List;
 
-import javax.inject.Inject;
-
+import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
+import it.unimi.dsi.fastutil.ints.IntSet;
 import org.jage.population.IPopulation;
 import org.jage.solution.ISolutionFactory;
 import org.jage.solution.IVectorSolution;
 import org.jage.strategy.AbstractStrategy;
 
-import static org.jage.population.Populations.newPopulation;
-
-import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
-import it.unimi.dsi.fastutil.ints.IntSet;
+import javax.inject.Inject;
+import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayListWithCapacity;
 import static com.google.common.primitives.Doubles.toArray;
+import static org.jage.population.Populations.newPopulation;
+
 
 /**
  * Abtract {@link IPreselection} implementation. Relies on subclasses to provide the indices of the preselected solution
@@ -56,46 +55,45 @@ import static com.google.common.primitives.Doubles.toArray;
  * @author AGH AgE Team
  */
 public abstract class AbstractPreselection extends AbstractStrategy implements
-        IPreselection<IVectorSolution<Double>, Double> {
+                                                                    IPreselection<IVectorSolution<Double>, Double> {
 
-	@Inject
-	private ISolutionFactory<IVectorSolution<Double>> solutionFactory;
+    @Inject
+    private ISolutionFactory<IVectorSolution<Double>> solutionFactory;
 
-	@Override
-	public final IPopulation<IVectorSolution<Double>, Double> preselect(
-	        final IPopulation<IVectorSolution<Double>, Double> population) {
-		checkNotNull(population, "The population must not be null");
+    @Override
+    public final IPopulation<IVectorSolution<Double>, Double> preselect(
+            final IPopulation<IVectorSolution<Double>, Double> population) {
+        checkNotNull(population, "The population must not be null");
 
-		final int populationSize = population.size();
-		if (populationSize < 2) {
-			return population;
-		}
+        final int populationSize = population.size();
+        if(populationSize < 2) {
+            return population;
+        }
 
-		final List<IVectorSolution<Double>> solutionList = population.asSolutionList();
-		final List<Double> evaluationList = population.asEvaluationList();
+        final List<IVectorSolution<Double>> solutionList = population.asSolutionList();
+        final List<Double> evaluationList = population.asEvaluationList();
 
-		final IntSet preselectedIndices = new IntOpenHashSet();
-		final List<IVectorSolution<Double>> preselectedSolutions = newArrayListWithCapacity(populationSize);
-		for (final int index : getPreselectedIndices(toArray(evaluationList))) {
-			IVectorSolution<Double> solution = solutionList.get(index);
-			if (!preselectedIndices.add(index)) {
-				solution = solutionFactory.copySolution(solution);
-			}
-			preselectedSolutions.add(solution);
-		}
-		preselectedIndices.clear();
+        final IntSet preselectedIndices = new IntOpenHashSet();
+        final List<IVectorSolution<Double>> preselectedSolutions = newArrayListWithCapacity(populationSize);
+        for(final int index : getPreselectedIndices(toArray(evaluationList))) {
+            IVectorSolution<Double> solution = solutionList.get(index);
+            if(!preselectedIndices.add(index)) {
+                solution = solutionFactory.copySolution(solution);
+            }
+            preselectedSolutions.add(solution);
+        }
+        preselectedIndices.clear();
 
-		return newPopulation(preselectedSolutions);
-	}
+        return newPopulation(preselectedSolutions);
+    }
 
-	/**
-	 * Performs the actual preselection. Given an array of evaluation values, returns an array containing indices of the
-	 * preselected solutions. Any given solution may be preselected multiple times, in which case it will be copied in
-	 * the resulting preselected population.
-	 *
-	 * @param values
-	 *            The solutions evaluation values
-	 * @return The indices of the preselected solutions
-	 */
-	protected abstract int[] getPreselectedIndices(double[] values);
+    /**
+     * Performs the actual preselection. Given an array of evaluation values, returns an array containing indices of the
+     * preselected solutions. Any given solution may be preselected multiple times, in which case it will be copied in
+     * the resulting preselected population.
+     *
+     * @param values The solutions evaluation values
+     * @return The indices of the preselected solutions
+     */
+    protected abstract int[] getPreselectedIndices(double[] values);
 }

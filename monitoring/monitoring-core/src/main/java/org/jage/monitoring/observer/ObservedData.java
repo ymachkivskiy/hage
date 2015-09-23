@@ -26,49 +26,50 @@
  */
 package org.jage.monitoring.observer;
 
+
 /**
  * Represents data processed by handler.
- * 
+ *
  * @author AGH AgE Team
- * 
  */
 public class ObservedData {
 
-	private final String name;
-	private final long timestamp;
-	private final Object data;
+    private final String name;
+    private final long timestamp;
+    private final Object data;
 
-	public ObservedData(String name, long timestamp, Object data) {
-		this.name = name;
-		this.timestamp = timestamp;
-		this.data = data;
-	}
+    public ObservedData(String name, long timestamp, Object data) {
+        this.name = name;
+        this.timestamp = timestamp;
+        this.data = data;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public long getTimestamp() {
-		return timestamp;
-	}
+    public long getTimestamp() {
+        return timestamp;
+    }
 
-	public Object getData() {
-		return data;
-	}
+    public Object getData() {
+        return data;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null) {
-			return false;
-		}
-		if(obj instanceof ObservedData){
-			ObservedData od = (ObservedData)obj;
-			return name.equals(od.name) && timestamp == od.timestamp && data == od.data;
-		} else {
-			return false;
-		}
-		
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if(this == obj) {
+            return true;
+        }
+        if(obj == null) {
+            return false;
+        }
+        if(obj instanceof ObservedData) {
+            ObservedData od = (ObservedData) obj;
+            return name.equals(od.name) && timestamp == od.timestamp && data == od.data;
+        } else {
+            return false;
+        }
+
+    }
 }

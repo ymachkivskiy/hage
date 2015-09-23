@@ -31,41 +31,41 @@
 
 package org.jage.action.context;
 
+
 import static com.google.common.base.Preconditions.checkNotNull;
+
 
 /**
  * The action of getting agent reference. Used for complex actions which operates on more than one agents.
- * 
+ *
  * @author AGH AgE Team
  */
 @AgentActionContext(GetAgentActionContext.ACTION_NAME)
 public class GetAgentActionContext extends AbstractAgentActionContext {
 
-	/**
-	 * The action name of this context.
-	 */
-	public static final String ACTION_NAME = "getAgent";
+    /**
+     * The action name of this context.
+     */
+    public static final String ACTION_NAME = "getAgent";
 
-	private final IActionWithAgentReferenceContext context;
+    private final IActionWithAgentReferenceContext context;
 
-	/**
-	 * Constructs a new "get agent" action context.
-	 * 
-	 * @param context
-	 *            a context providing a reference to an agent.
-	 * @throws NullPointerException
-	 *             if context is <code>null</code>.
-	 */
-	public GetAgentActionContext(final IActionWithAgentReferenceContext context) {
-		this.context = checkNotNull(context);
-	}
+    /**
+     * Constructs a new "get agent" action context.
+     *
+     * @param context a context providing a reference to an agent.
+     * @throws NullPointerException if context is <code>null</code>.
+     */
+    public GetAgentActionContext(final IActionWithAgentReferenceContext context) {
+        this.context = checkNotNull(context);
+    }
 
-	/**
-	 * Returns the target context for the action results.
-	 * 
-	 * @return the target context (to which the agent reference will be injected).
-	 */
-	public IActionWithAgentReferenceContext getActionWithAgentReferenceContext() {
-		return context;
-	}
+    /**
+     * Returns the target context for the action results.
+     *
+     * @return the target context (to which the agent reference will be injected).
+     */
+    public IActionWithAgentReferenceContext getActionWithAgentReferenceContext() {
+        return context;
+    }
 }

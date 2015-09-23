@@ -1,5 +1,6 @@
 package org.jage.platform.cli;
 
+
 import lombok.extern.slf4j.Slf4j;
 import org.jage.platform.argument.InvalidRuntimeArgumentsException;
 import org.jage.platform.argument.RuntimeArgumentsService;
@@ -13,7 +14,7 @@ public class CliNodeBootstrapper {
     private static final String APP_CONTEXT = "spring/appconfig.xml";
 
     private static final String HEADER =
-                         "+-------------------------------+\n"
+            "+-------------------------------+\n"
                     + "|Hh  hH   AAA           EEEEEEE |\n"
                     + "|Hh  hH  AAAAA   gggggg EE      |\n"
                     + "|hhhhhH AA   AA gg   gg EEEEE   |\n"
@@ -35,17 +36,21 @@ public class CliNodeBootstrapper {
 
     }
 
+    public static void main(final String[] args) {
+        new CliNodeBootstrapper(args).start();
+    }
+
     public void start() {
         log.debug("Starting AgE Node from the command line.");
 
-        if (argumentsService.hasHelpOption()) {
+        if(argumentsService.hasHelpOption()) {
             argumentsService.printUsage();
             return;
         }
 
         try {
             initialize();
-        } catch (final InvalidRuntimeArgumentsException e) {
+        } catch(final InvalidRuntimeArgumentsException e) {
             log.error("Invalid runtime arguments.", e);
             argumentsService.printUsage();
         }
@@ -54,9 +59,5 @@ public class CliNodeBootstrapper {
 
     private void initialize() {
         applicationContext.getBean(LifecycleManager.class).start();
-    }
-
-    public static void main(final String[] args) {
-        new CliNodeBootstrapper(args).start();
     }
 }

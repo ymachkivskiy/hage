@@ -31,16 +31,17 @@
 
 package org.jage.examples.configuration;
 
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.jage.address.agent.AgentAddress;
 import org.jage.address.agent.AgentAddressSupplier;
 import org.jage.agent.SimpleAgent;
 import org.jage.platform.component.provider.IComponentInstanceProvider;
 import org.jage.platform.component.provider.IComponentInstanceProviderAware;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
+
 
 /**
  * This class provides a simple agent that presents how to obtain and handle arrays from the instance provider.
@@ -49,60 +50,61 @@ import org.jage.platform.component.provider.IComponentInstanceProviderAware;
  */
 public class ArrayAgent extends SimpleAgent implements IComponentInstanceProviderAware {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private final Logger log = LoggerFactory.getLogger(ArrayAgent.class);
-	private IComponentInstanceProvider instanceProvider;
+    private final Logger log = LoggerFactory.getLogger(ArrayAgent.class);
+    private IComponentInstanceProvider instanceProvider;
 
-	public ArrayAgent(final AgentAddress address) {
-	    super(address);
+    public ArrayAgent(final AgentAddress address) {
+        super(address);
     }
 
-	@Inject
-	public ArrayAgent(final AgentAddressSupplier supplier) {
-	    super(supplier);
+    @Inject
+    public ArrayAgent(final AgentAddressSupplier supplier) {
+        super(supplier);
     }
 
-	@Override
-	public void init() {
-		log.info("Initializing Hello World Simple Agent: {}", getAddress());
+    @Override
+    public void init() {
+        log.info("Initializing Hello World Simple Agent: {}", getAddress());
 
-		final ExampleClass[] array = (ExampleClass[])instanceProvider.getInstance("object-example");
+        final ExampleClass[] array = (ExampleClass[]) instanceProvider.getInstance("object-example");
 
-		log.info("Obtained an instance of object-example: {}", array);
-		log.info("Values:");
-		for (final ExampleClass element : array) {
-			log.info("Instance: {}. Value: {}", element, element.getArgument());
-		}
+        log.info("Obtained an instance of object-example: {}", array);
+        log.info("Values:");
+        for(final ExampleClass element : array) {
+            log.info("Instance: {}. Value: {}", element, element.getArgument());
+        }
 
-		final Long[] longArray = (Long[])instanceProvider.getInstance("long-example");
+        final Long[] longArray = (Long[]) instanceProvider.getInstance("long-example");
 
-		log.info("Obtained an instance of long-example: {}", longArray);
-		log.info("Values:");
-		for (final long element : longArray) {
-			log.info("Instance: {}", element);
-		}
-	}
+        log.info("Obtained an instance of long-example: {}", longArray);
+        log.info("Values:");
+        for(final long element : longArray) {
+            log.info("Instance: {}", element);
+        }
+    }
 
-	@Override
-	public void step() {
-		// Do nothing
-	}
+    /**
+     * {@inheritDoc}
+     * <p>
+     * This implementation does nothing.
+     *
+     * @see org.jage.agent.AbstractAgent#finish()
+     */
+    @Override
+    public boolean finish() {
+        log.info("Finishing Array Agent: {}", getAddress());
+        return true;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * This implementation does nothing.
-	 *
-	 * @see org.jage.agent.AbstractAgent#finish()
-	 */
-	@Override
-	public boolean finish() {
-		log.info("Finishing Array Agent: {}", getAddress());
-		return true;
-	}
+    @Override
+    public void step() {
+        // Do nothing
+    }
 
-	@Override public void setInstanceProvider(final IComponentInstanceProvider provider) {
-		this.instanceProvider = provider;
-	}
+    @Override
+    public void setInstanceProvider(final IComponentInstanceProvider provider) {
+        this.instanceProvider = provider;
+    }
 }

@@ -4,10 +4,10 @@
 
     <!-- Add some build-in rulesets -->
 
-    <rule ref="rulesets/favorites.xml" />
+    <rule ref="rulesets/favorites.xml"/>
 
     <!-- Customized rules -->
-    <rule ref="rulesets/codesize.xml/ExcessiveMethodLength" >
+    <rule ref="rulesets/codesize.xml/ExcessiveMethodLength">
         <priority>1</priority>
         <properties>
             <property name="minimum">
@@ -16,7 +16,7 @@
         </properties>
     </rule>
 
-    <rule ref="rulesets/codesize.xml/ExcessiveClassLength" >
+    <rule ref="rulesets/codesize.xml/ExcessiveClassLength">
         <priority>1</priority>
         <properties>
             <property name="minimum">
@@ -25,7 +25,7 @@
         </properties>
     </rule>
 
-    <rule ref="rulesets/codesize.xml/CyclomaticComplexity" >
+    <rule ref="rulesets/codesize.xml/CyclomaticComplexity">
         <priority>1</priority>
         <properties>
             <property name="reportLevel">

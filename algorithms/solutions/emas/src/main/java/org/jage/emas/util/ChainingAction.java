@@ -31,6 +31,8 @@
 
 package org.jage.emas.util;
 
+
+import com.google.common.base.Optional;
 import org.jage.action.AbstractPerformActionStrategy;
 import org.jage.action.IActionContext;
 import org.jage.action.SingleAction;
@@ -41,7 +43,6 @@ import org.jage.agent.AgentException;
 import org.jage.agent.IAgent;
 import org.jage.emas.agent.EmasAgent;
 
-import com.google.common.base.Optional;
 
 /**
  * Utility class to chain actions. Subclasses need only implement the abstract template method. The next action to
@@ -49,35 +50,31 @@ import com.google.common.base.Optional;
  * <p>
  * This class can be removed when proper interleaving of actions is implemented.
  *
- * @param <A>
- *            the type of agent to perform the action on
- *
+ * @param <A> the type of agent to perform the action on
  * @author AGH AgE Team
  */
 public abstract class ChainingAction<A extends EmasAgent> extends AbstractPerformActionStrategy {
 
-	@Override
-	public final void perform(final IAgent target, final IActionContext context) throws AgentException {
-		@SuppressWarnings("unchecked")
-		// classCastExc is appropriate here
-		final A agent = (A)target;
-		doPerform(agent);
+    @Override
+    public final void perform(final IAgent target, final IActionContext context) throws AgentException {
+        @SuppressWarnings("unchecked")
+        // classCastExc is appropriate here
+        final A agent = (A) target;
+        doPerform(agent);
 
-		final ChainingContext chainingContext = (ChainingContext)context;
-		final Optional<ChainingContext> nextContext = chainingContext.getNextContext();
-		if (nextContext.isPresent()) {
-			final AddressSelector<AgentAddress> selector = Selectors.singleAddress(target.getAddress());
-			agent.getEnvironment().submitAction(new SingleAction(selector, nextContext.get()));
-		}
-	}
+        final ChainingContext chainingContext = (ChainingContext) context;
+        final Optional<ChainingContext> nextContext = chainingContext.getNextContext();
+        if(nextContext.isPresent()) {
+            final AddressSelector<AgentAddress> selector = Selectors.singleAddress(target.getAddress());
+            agent.getEnvironment().submitAction(new SingleAction(selector, nextContext.get()));
+        }
+    }
 
-	/**
-	 * Sublasses should implement this template method to actually perform some action.
-	 *
-	 * @param target
-	 *            the target agent
-	 * @throws AgentException
-	 *             if something goes wrong.
-	 */
-	protected abstract void doPerform(A target) throws AgentException;
+    /**
+     * Sublasses should implement this template method to actually perform some action.
+     *
+     * @param target the target agent
+     * @throws AgentException if something goes wrong.
+     */
+    protected abstract void doPerform(A target) throws AgentException;
 }

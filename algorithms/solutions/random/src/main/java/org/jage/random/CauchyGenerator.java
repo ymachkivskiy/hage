@@ -31,9 +31,11 @@
 
 package org.jage.random;
 
-import javax.inject.Inject;
 
 import org.jage.property.ClassPropertyContainer;
+
+import javax.inject.Inject;
+
 
 /**
  * An implementation of {@link IDoubleSymmetricGenerator} which generates values on the base of a Cauchy distribution.
@@ -42,31 +44,31 @@ import org.jage.property.ClassPropertyContainer;
  */
 public final class CauchyGenerator extends ClassPropertyContainer implements IDoubleSymmetricGenerator {
 
-	public static final double DEFAULT_LOCATION = 0.0;
+    public static final double DEFAULT_LOCATION = 0.0;
 
-	public static final double DEFAULT_SCALE = 1.0;
+    public static final double DEFAULT_SCALE = 1.0;
 
-	@Inject
-	private INormalizedDoubleRandomGenerator rand;
+    @Inject
+    private INormalizedDoubleRandomGenerator rand;
 
-	@Override
-	public double nextDouble() {
-		return nextDouble(DEFAULT_LOCATION, DEFAULT_SCALE);
-	}
+    @Override
+    public double nextDouble() {
+        return nextDouble(DEFAULT_LOCATION, DEFAULT_SCALE);
+    }
 
-	@Override
-	public double nextDouble(final double location, final double scale) {
-		final double seed = rand.nextDouble();
-		return location + scale * Math.tan(Math.PI * (seed - 0.5));
-	}
+    @Override
+    public double nextDouble(final double location, final double scale) {
+        final double seed = rand.nextDouble();
+        return location + scale * Math.tan(Math.PI * (seed - 0.5));
+    }
 
-	@Override
-	public double getLowerDouble() {
-		return Double.MIN_VALUE;
-	}
+    @Override
+    public double getLowerDouble() {
+        return Double.MIN_VALUE;
+    }
 
-	@Override
-	public double getUpperDouble() {
-		return Double.MAX_VALUE;
-	}
+    @Override
+    public double getUpperDouble() {
+        return Double.MAX_VALUE;
+    }
 }

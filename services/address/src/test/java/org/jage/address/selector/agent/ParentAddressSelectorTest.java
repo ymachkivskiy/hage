@@ -31,19 +31,21 @@
 
 package org.jage.address.selector.agent;
 
+
 import org.jage.address.agent.AgentAddress;
 import org.jage.address.agent.DefaultAgentAddress;
 import org.jage.address.node.NodeAddress;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
+
 
 /**
  * Tests for the {@link ParentAddressSelector} class.
@@ -53,36 +55,36 @@ import static org.mockito.Mockito.mock;
 @RunWith(MockitoJUnitRunner.class)
 public class ParentAddressSelectorTest {
 
-	private AgentAddress address;
+    private AgentAddress address;
 
-	private ParentAddressSelector selector;
+    private ParentAddressSelector selector;
 
-	@Mock
-	private NodeAddress nodeAddress;
+    @Mock
+    private NodeAddress nodeAddress;
 
-	@Before
-	public void setUp() {
-		address = new DefaultAgentAddress(nodeAddress);
-	}
+    @Before
+    public void setUp() {
+        address = new DefaultAgentAddress(nodeAddress);
+    }
 
-	@Test
-	public void shouldCreateCorrectly() {
-		// given
-		selector = ParentAddressSelector.create(address);
+    @Test
+    public void shouldCreateCorrectly() {
+        // given
+        selector = ParentAddressSelector.create(address);
 
-		// then
-		assertThat(selector.getChildAddress(), equalTo(address));
-	}
+        // then
+        assertThat(selector.getChildAddress(), equalTo(address));
+    }
 
-	@Test
-	public void shouldNotSelectAnything() {
-		// given
-		selector = ParentAddressSelector.create(address);
-		final AgentAddress anotherAddress = mock(AgentAddress.class);
+    @Test
+    public void shouldNotSelectAnything() {
+        // given
+        selector = ParentAddressSelector.create(address);
+        final AgentAddress anotherAddress = mock(AgentAddress.class);
 
-		// then
-		assertThat(selector.selects(address), is(false));
-		assertThat(selector.selects(anotherAddress), is(false));
-		assertThat(selector.selects(null), is(false));
-	}
+        // then
+        assertThat(selector.selects(address), is(false));
+        assertThat(selector.selects(anotherAddress), is(false));
+        assertThat(selector.selects(null), is(false));
+    }
 }
