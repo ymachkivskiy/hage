@@ -50,9 +50,9 @@ import org.jage.agent.IAgent;
 import org.jage.agent.ISimpleAgent;
 import org.jage.bus.ConfigurationUpdatedEvent;
 import org.jage.bus.EventBus;
-import org.jage.communication.api.CommunicationChannel;
-import org.jage.communication.api.CommunicationManager;
-import org.jage.communication.api.MessageSubscriber;
+import org.jage.communication.common.RemoteCommunicationChannel;
+import org.jage.communication.common.RemoteCommunicationManager;
+import org.jage.communication.common.RemoteMessageSubscriber;
 import org.jage.communication.message.Message;
 import org.jage.platform.component.definition.IComponentDefinition;
 import org.jage.platform.component.exception.ComponentException;
@@ -101,7 +101,7 @@ import static java.util.Objects.requireNonNull;
  */
 @ParametersAreNonnullByDefault
 public class DefaultWorkplaceManager implements WorkplaceManager,
-                                                MessageSubscriber<WorkplaceManagerMessage> {
+                                                RemoteMessageSubscriber<WorkplaceManagerMessage> {
 
     public static final String WORKPLACES_MAP_NAME = "workplaces";
 
@@ -124,8 +124,8 @@ public class DefaultWorkplaceManager implements WorkplaceManager,
     private IMap<NodeAddress, Set<AgentAddress>> workplacesMap;
     private IMap<AgentAddress, Map<String, Iterable<?>>> queryCache;
     @Autowired
-    private CommunicationManager communicationManager;
-    private CommunicationChannel<WorkplaceManagerMessage> communicationChannel;
+    private RemoteCommunicationManager communicationManager;
+    private RemoteCommunicationChannel<WorkplaceManagerMessage> communicationChannel;
     @Autowired
     private NodeAddressSupplier nodeAddressProvider;
     private IPicoComponentInstanceProvider childContainer;
@@ -573,7 +573,7 @@ public class DefaultWorkplaceManager implements WorkplaceManager,
     }
 
     @Override
-    public void onMessage(@Nonnull final WorkplaceManagerMessage message) {
+    public void onRemoteMessage(@Nonnull final WorkplaceManagerMessage message) {
         final Serializable payload = message.getPayload();
         switch(message.getType()) {
             case AGENT_MESSAGE:

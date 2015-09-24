@@ -6,31 +6,29 @@ import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 import com.hazelcast.core.ITopic;
+import lombok.extern.slf4j.Slf4j;
 import org.jage.address.node.HazelcastNodeAddress;
 import org.jage.address.node.NodeAddress;
 import org.jage.address.node.NodeAddressSupplier;
-import org.jage.communication.api.CommunicationManager;
+import org.jage.communication.common.RemoteCommunicationManager;
 import org.jage.platform.component.IStatefulComponent;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
+import java.io.Serializable;
 
 import static com.google.common.base.Objects.toStringHelper;
 
 
 @ThreadSafe
-class HazelcastCommunicationManager implements IStatefulComponent, NodeAddressSupplier, CommunicationManager {
+@Slf4j
+class HazelcastRemoteCommunicationManager
+        implements IStatefulComponent, NodeAddressSupplier, RemoteCommunicationManager {
 
     public static final String HAZELCAST_INSTANCE_NAME = "HageInstance";
+    public static final String SERVICE_PREFIX = "service-";
 
-    private static final Logger log = LoggerFactory.getLogger(HazelcastCommunicationManager.class);
-
-    @Nonnull
     private static final HazelcastInstance hazelcastInstance;
-
-    @Nonnull
     private static final HazelcastNodeAddress nodeAddress;
 
     static {
@@ -59,9 +57,9 @@ class HazelcastCommunicationManager implements IStatefulComponent, NodeAddressSu
 
     @Nonnull
     @Override
-    public <T> HazelcastCommunicationChannel<T> getCommunicationChannelForService(final String serviceName) {
-        final ITopic<T> topic = hazelcastInstance.getTopic("service-" + serviceName);
-        return new HazelcastCommunicationChannel<>(topic);
+    public <T extends Serializable> HazelcastRemoteCommunicationChannel<T> getCommunicationChannelForService(final String serviceName) {
+        final ITopic<T> topic = hazelcastInstance.getTopic(SERVICE_PREFIX + serviceName);
+        return new HazelcastRemoteCommunicationChannel<>(topic);
     }
 
     @Nonnull

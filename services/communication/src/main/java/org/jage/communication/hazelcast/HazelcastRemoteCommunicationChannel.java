@@ -5,11 +5,12 @@ import com.hazelcast.core.ITopic;
 import com.hazelcast.core.Message;
 import com.hazelcast.core.MessageListener;
 import lombok.extern.slf4j.Slf4j;
-import org.jage.communication.api.CommunicationChannel;
-import org.jage.communication.api.MessageSubscriber;
+import org.jage.communication.common.RemoteCommunicationChannel;
+import org.jage.communication.common.RemoteMessageSubscriber;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
+import java.io.Serializable;
 import java.util.Set;
 
 import static com.google.common.base.Objects.toStringHelper;
@@ -18,14 +19,14 @@ import static com.google.common.collect.Sets.newCopyOnWriteArraySet;
 
 @ThreadSafe
 @Slf4j
-class HazelcastCommunicationChannel<T> implements CommunicationChannel<T> {
+class HazelcastRemoteCommunicationChannel<T extends Serializable> implements RemoteCommunicationChannel<T> {
 
     @Nonnull
     private final ITopic<T> topic;
 
-    private final Set<MessageSubscriber<T>> subscribers = newCopyOnWriteArraySet();
+    private final Set<RemoteMessageSubscriber<T>> subscribers = newCopyOnWriteArraySet();
 
-    public HazelcastCommunicationChannel(@Nonnull final ITopic<T> topic) {
+    public HazelcastRemoteCommunicationChannel(@Nonnull final ITopic<T> topic) {
         this.topic = topic;
         topic.addMessageListener(new Listener());
     }
@@ -38,14 +39,14 @@ class HazelcastCommunicationChannel<T> implements CommunicationChannel<T> {
     }
 
     @Override
-    public void subscribe(@Nonnull MessageSubscriber<T> listener) {
+    public void subscribe(@Nonnull RemoteMessageSubscriber<T> listener) {
         log.debug("Subscribe {} to the channel {}.", listener, this);
 
         subscribers.add(listener);
     }
 
     @Override
-    public void unsubscribe(@Nonnull MessageSubscriber<T> listener) {
+    public void unsubscribe(@Nonnull RemoteMessageSubscriber<T> listener) {
         log.debug("Unsubscribe {} from the channel {}.", listener, this);
 
         subscribers.remove(listener);
@@ -63,8 +64,8 @@ class HazelcastCommunicationChannel<T> implements CommunicationChannel<T> {
             log.debug("Message {} on the channel {}.", message, this);
 
             final T messageObject = message.getMessageObject();
-            for(final MessageSubscriber<T> subscriber : subscribers) {
-                subscriber.onMessage(messageObject);
+            for(final RemoteMessageSubscriber<T> subscriber : subscribers) {
+                subscriber.onRemoteMessage(messageObject);
             }
         }
     }

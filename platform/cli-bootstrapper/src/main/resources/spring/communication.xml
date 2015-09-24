@@ -3,7 +3,8 @@
        xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="hage.platform.communication" class="org.jage.communication.hazelcast.HazelcastCommunicationManager"/>
+    <bean id="hage.platform.communication"
+          class="org.jage.communication.hazelcast.HazelcastRemoteCommunicationManager"/>
 
     <bean id="hage.platform.bus" class="org.jage.bus.EventBus">
         <constructor-arg value="mainBus"/>

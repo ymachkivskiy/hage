@@ -36,9 +36,9 @@ import com.google.common.eventbus.Subscribe;
 import lombok.extern.slf4j.Slf4j;
 import org.jage.bus.ConfigurationUpdatedEvent;
 import org.jage.bus.EventBus;
-import org.jage.communication.api.CommunicationChannel;
-import org.jage.communication.api.CommunicationManager;
-import org.jage.communication.api.MessageSubscriber;
+import org.jage.communication.common.RemoteCommunicationChannel;
+import org.jage.communication.common.RemoteCommunicationManager;
+import org.jage.communication.common.RemoteMessageSubscriber;
 import org.jage.lifecycle.LifecycleMessage.LifecycleCommand;
 import org.jage.platform.component.IStatefulComponent;
 import org.jage.platform.component.exception.ComponentException;
@@ -72,7 +72,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Slf4j
 public class DefaultLifecycleManager implements
                                      LifecycleManager,
-                                     MessageSubscriber<LifecycleMessage> {
+                                     RemoteMessageSubscriber<LifecycleMessage> {
 
     /**
      * The name of the node configuration file parameter.
@@ -85,7 +85,7 @@ public class DefaultLifecycleManager implements
     @Autowired
     private CoreComponent coreComponent;
     @Autowired
-    private CommunicationManager communicationManager;
+    private RemoteCommunicationManager communicationManager;
     @Autowired
     private EventBus eventBus;
 
@@ -137,7 +137,7 @@ public class DefaultLifecycleManager implements
     // Interface methods that translate environment changes to events
 
     @Override
-    public void onMessage(final LifecycleMessage message) {
+    public void onRemoteMessage(final LifecycleMessage message) {
         final LifecycleCommand command = message.getCommand();
         switch(command) {
             case FAIL:
@@ -247,7 +247,7 @@ public class DefaultLifecycleManager implements
         private void initializeCommunicationChanel() {
             log.debug("Communication service: {}.", communicationManager);
 
-            CommunicationChannel<LifecycleMessage> communicationChannel = communicationManager.getCommunicationChannelForService(SERVICE_NAME);
+            RemoteCommunicationChannel<LifecycleMessage> communicationChannel = communicationManager.getCommunicationChannelForService(SERVICE_NAME);
             communicationChannel.subscribe(DefaultLifecycleManager.this);
 
             log.debug("Communication channel: {}.", communicationChannel);

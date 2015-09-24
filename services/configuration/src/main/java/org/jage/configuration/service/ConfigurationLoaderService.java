@@ -29,12 +29,13 @@
  * $Id$
  */
 
-package org.jage.configuration;
+package org.jage.configuration.service;
 
 
 import com.google.common.eventbus.Subscribe;
 import lombok.extern.slf4j.Slf4j;
 import org.jage.bus.EventBus;
+import org.jage.configuration.communication.ConfigurationLoadedEvent;
 import org.jage.lifecycle.LifecycleStateChangedEvent;
 import org.jage.platform.argument.RuntimeArgumentsService;
 import org.jage.platform.component.IStatefulComponent;
@@ -56,7 +57,7 @@ import static com.google.common.base.Objects.toStringHelper;
  * Provides a way to load computation configuration from a file.</p>
  * <p>
  * This service reacts on the "INITIALIZED" event of the lifecycle manager and loads a computation configuration
- * from file. The configuration is sent via the event bus in {@link ConfigurationLoadedEvent}.
+ * from file. The configuration is sent via the event bus in {@link org.jage.configuration.communication.ConfigurationLoadedEvent}.
  */
 @ThreadSafe
 @Slf4j
