@@ -29,12 +29,12 @@ public abstract class AbstractRemoteServiceChanelEndpoint<MessageT extends Seria
         this.serviceName = serviceName;
     }
 
-    public final void registerConsumerHandler(Predicate<MessageT> matchingPredicate, Consumer<MessageT> messageConsumer) {
+    protected final void registerConsumerHandler(Predicate<MessageT> matchingPredicate, Consumer<MessageT> messageConsumer) {
         log.debug("Registered consumer handler {} for predicate {}", messageConsumer, matchingPredicate);
         messageConsumers.add(new MessageFilterConsumer<>(matchingPredicate, messageConsumer));
     }
 
-    public void sendMessage(MessageT messageT) {
+    protected final void sendMessage(MessageT messageT) {
         remoteChanel.publish(messageT);
     }
 
@@ -42,12 +42,16 @@ public abstract class AbstractRemoteServiceChanelEndpoint<MessageT extends Seria
     public final void init() throws ComponentException {
         remoteChanel = remoteCommunicationManager.getCommunicationChannelForService(serviceName);
         remoteChanel.subscribe(this);
+        postInit();
     }
 
     @Override
     public final boolean finish() throws ComponentException {
         remoteChanel.unsubscribe(this);
         return true;
+    }
+
+    protected void postInit() {
     }
 
     @Override
@@ -59,6 +63,7 @@ public abstract class AbstractRemoteServiceChanelEndpoint<MessageT extends Seria
                 .forEach(pF -> pF.getConsumer().accept(message));
 
     }
+
 
     @Data
     @AllArgsConstructor

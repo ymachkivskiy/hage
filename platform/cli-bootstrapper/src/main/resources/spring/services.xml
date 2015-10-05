@@ -5,14 +5,14 @@
 
     <bean id="hage.service.commandLine.arguments" class="org.jage.platform.cli.CommandLineArgumentsService"/>
 
-    <bean id="hage.service.configuration" class="org.jage.configuration.service.ConfigurationHubService"
+    <bean id="hage.service.configuration" class="org.jage.configuration.service.ConfigurationService"
           parent="hage.component.stateful.base"/>
 
     <bean id="hage.service.configurationLoader" class="org.jage.configuration.service.ConfigurationLoaderService"
           parent="hage.component.stateful.base"/>
 
     <bean id="hage.service.configuration.communication.remote"
-          class="org.jage.configuration.communication.ConfigurationRemoteServiceChanelEndpoint"
+          class="org.jage.configuration.communication.ConfigurationServiceRemoteChanel"
           parent="hage.component.stateful.base"/>
 
 </beans>

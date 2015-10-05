@@ -7,17 +7,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.jage.bus.ConfigurationUpdatedEvent;
 import org.jage.bus.EventBus;
 import org.jage.configuration.communication.ConfigurationLoadedEvent;
-import org.jage.configuration.communication.ConfigurationMessage;
-import org.jage.configuration.communication.ConfigurationMessage.MessageType;
-import org.jage.configuration.communication.ConfigurationRemoteServiceChanelEndpoint;
+import org.jage.configuration.communication.ConfigurationServiceRemoteChanel;
 import org.jage.platform.component.IStatefulComponent;
 import org.jage.platform.component.definition.IComponentDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
@@ -30,7 +26,7 @@ import static java.util.Collections.unmodifiableList;
 
 @ThreadSafe
 @Slf4j
-public class ConfigurationHubService extends AbstractScheduledService
+public class ConfigurationService extends AbstractScheduledService
         implements IStatefulComponent {
 
     private final AtomicReference<Collection<IComponentDefinition>> configuration = new AtomicReference<>(null);
@@ -39,27 +35,10 @@ public class ConfigurationHubService extends AbstractScheduledService
     private EventBus eventBus;
 
     @Autowired
-    private ConfigurationRemoteServiceChanelEndpoint remoteChanel;
+    private ConfigurationServiceRemoteChanel remoteConfigurationChanel;
 
     @Override
     public void init() {
-
-        remoteChanel.registerConsumerHandler(message -> message.getType() == MessageType.REQUEST && configuration.get() != null,
-                                             message -> distribute()
-        );
-        remoteChanel.registerConsumerHandler(message -> message.getType() == MessageType.DISTRIBUTE,
-                                             message -> {
-                                                 final Serializable payload = message.getPayload();
-                                                 if(!(payload instanceof Collection)) {
-                                                     throw new NullPointerException(String.format("Configuration payload was null. Faulty message was sent by %s.", message));
-                                                 }
-
-                                                 if(configuration.compareAndSet(null, (Collection<IComponentDefinition>) payload)) {
-                                                     notifyConfigurationUpdated();
-                                                 }
-                                             }
-        );
-
         eventBus.register(this);
         startAsync();
     }
@@ -71,14 +50,16 @@ public class ConfigurationHubService extends AbstractScheduledService
         return true;
     }
 
-    private void distribute() {
-        assert configuration.get() != null;
-        // Ensure serializable collection.
-        final ArrayList<IComponentDefinition> definitions = newArrayList(configuration.get());
+    public void distributeConfiguration() {
+        if(configuration.get() != null) {
+            remoteConfigurationChanel.distributeConfiguration(configuration.get());
+        }
+    }
 
-        final ConfigurationMessage message = ConfigurationMessage.create(ConfigurationMessage.MessageType.DISTRIBUTE, definitions);
-
-        remoteChanel.sendMessage(message);
+    public void updateConfiguration(Collection<IComponentDefinition> configuration) {
+        if(this.configuration.compareAndSet(null, configuration)) {
+            notifyConfigurationUpdated();
+        }
     }
 
     private void notifyConfigurationUpdated() {
@@ -97,8 +78,7 @@ public class ConfigurationHubService extends AbstractScheduledService
     protected void runOneIteration() {
         if(configuration.get() == null) {
             log.debug("No configuration. Broadcasting the request.");
-            final ConfigurationMessage message = ConfigurationMessage.create(ConfigurationMessage.MessageType.REQUEST);
-            remoteChanel.sendMessage(message);
+            remoteConfigurationChanel.acquireConfiguration();
         }
     }
 
