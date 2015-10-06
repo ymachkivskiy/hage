@@ -2,7 +2,7 @@ package org.jage.configuration.communication;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.jage.communication.common.AbstractRemoteServiceChanelEndpoint;
+import org.jage.communication.common.AbstractRemoteChanel;
 import org.jage.configuration.communication.ConfigurationMessage.MessageType;
 import org.jage.configuration.service.ConfigurationService;
 import org.jage.platform.component.definition.IComponentDefinition;
@@ -15,7 +15,7 @@ import java.util.Collection;
 
 @Slf4j
 public class ConfigurationServiceRemoteChanel
-        extends AbstractRemoteServiceChanelEndpoint<ConfigurationMessage> {
+        extends AbstractRemoteChanel<ConfigurationMessage> {
 
 
     public static final String SERVICE_NAME = "ConfigurationPropagationHub";
@@ -47,7 +47,7 @@ public class ConfigurationServiceRemoteChanel
     }
 
     public void distributeConfiguration(Collection<IComponentDefinition> configuration) {
-        log.info("Distributing configuration {} ", configuration);
+        log.debug("Distributing configuration {} ", configuration);
 
         ArrayList<IComponentDefinition> definitions = new ArrayList<>(configuration);
         ConfigurationMessage message = ConfigurationMessage.create(ConfigurationMessage.MessageType.DISTRIBUTE, definitions);
@@ -56,7 +56,7 @@ public class ConfigurationServiceRemoteChanel
     }
 
     public void acquireConfiguration() {
-        log.info("Acquiring configuration");
+        log.debug("Acquiring configuration");
 
         ConfigurationMessage message = ConfigurationMessage.create(ConfigurationMessage.MessageType.REQUEST);
 

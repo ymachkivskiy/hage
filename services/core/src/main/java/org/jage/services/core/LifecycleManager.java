@@ -39,8 +39,6 @@ package org.jage.services.core;
  */
 public interface LifecycleManager {
 
-    public static final String SERVICE_NAME = LifecycleManager.class.getSimpleName();
-
     void start();
 
 

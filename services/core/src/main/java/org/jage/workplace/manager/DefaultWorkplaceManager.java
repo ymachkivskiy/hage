@@ -41,6 +41,7 @@ import com.google.common.util.concurrent.ListeningScheduledExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.hazelcast.core.IMap;
+import lombok.extern.slf4j.Slf4j;
 import org.jage.address.agent.AgentAddress;
 import org.jage.address.node.NodeAddress;
 import org.jage.address.node.NodeAddressSupplier;
@@ -65,8 +66,6 @@ import org.jage.util.Locks;
 import org.jage.workplace.IStopCondition;
 import org.jage.workplace.Workplace;
 import org.jage.workplace.WorkplaceException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.Nonnull;
@@ -82,6 +81,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.stream.Collectors;
 
 import static com.google.common.base.Objects.toStringHelper;
 import static com.google.common.base.Preconditions.checkState;
@@ -89,7 +89,6 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.newLinkedList;
 import static com.google.common.collect.Maps.newHashMap;
 import static com.google.common.collect.Sets.newHashSet;
-import static com.google.common.collect.Sets.newHashSetWithExpectedSize;
 import static java.util.Objects.requireNonNull;
 
 
@@ -100,12 +99,13 @@ import static java.util.Objects.requireNonNull;
  * @author AGH AgE Team
  */
 @ParametersAreNonnullByDefault
+@Slf4j
 public class DefaultWorkplaceManager implements WorkplaceManager,
                                                 RemoteMessageSubscriber<WorkplaceManagerMessage> {
 
+    public static final String QUERY_CACHE_NAME = "queryCache";
     public static final String WORKPLACES_MAP_NAME = "workplaces";
 
-    private static final Logger log = LoggerFactory.getLogger(DefaultWorkplaceManager.class);
     @GuardedBy("workplacesLock")
     @Nonnull
     private final Map<AgentAddress, Workplace> initializedWorkplaces = newHashMap();
@@ -140,23 +140,19 @@ public class DefaultWorkplaceManager implements WorkplaceManager,
         communicationChannel.subscribe(this);
         eventBus.register(this);
         workplacesMap = communicationManager.getDistributedMap(WORKPLACES_MAP_NAME);
-        queryCache = communicationManager.getDistributedMap("queryCache");
+        queryCache = communicationManager.getDistributedMap(QUERY_CACHE_NAME);
     }
 
     @Override
     public boolean finish() {
-        withReadLock(new Runnable() {
-
-            @Override
-            public void run() {
-                for(final Workplace workplace : initializedWorkplaces.values()) {
-                    synchronized(workplace) {
-                        if(workplace.isStopped()) {
-                            workplace.terminate();
-                            log.info("Workplace {} finished", workplace);
-                        } else {
-                            log.error("Cannot terminate still running workplace: {}.", workplace);
-                        }
+        withReadLock(() -> {
+            for(final Workplace workplace : initializedWorkplaces.values()) {
+                synchronized(workplace) {
+                    if(workplace.isStopped()) {
+                        workplace.terminate();
+                        log.info("Workplace {} finished", workplace);
+                    } else {
+                        log.error("Cannot terminate still running workplace: {}.", workplace);
                     }
                 }
             }
@@ -165,38 +161,11 @@ public class DefaultWorkplaceManager implements WorkplaceManager,
         return true;
     }
 
-    /**
-     * Executes the provided {@link Runnable} with locked workplaces' lock. The lock is locked before execution and
-     * guaranteed to be unlocked after finishing the call.
-     * <p>
-     * <p>
-     * This method locks on a <em>read</em> lock of the {@link ReadWriteLock}.
-     *
-     * @param action the runnable to execute.
-     * @see #withReadLockAndRuntimeExceptions(Callable) for a rationale of behaviour for exceptions.
-     * @see Locks#withReadLock(ReadWriteLock, Runnable)
-     */
     protected final void withReadLock(final Runnable action) {
         withReadLockAndRuntimeExceptions(Executors.callable(action));
     }
 
-    /**
-     * Executes the provided {@link Callable} with locked workplaces' lock. The lock is locked before execution and
-     * guaranteed to be unlocked after finishing the call.
-     * <p>
-     * <p>
-     * This method locks on a <em>read</em> lock of the {@link ReadWriteLock}. Interrupted exception is logged and the
-     * interrupted status is set. All other exceptions are logged and rethrown as runtime exceptions. (The rationale
-     * behind this is that this method should be used only for locking all operations on workplaces' collection and it
-     * does not throw exceptions.)
-     *
-     * @param action the callable to execute.
-     * @param <V>    a type of the value returned by the callable.
-     * @return an object returned by the callable.
-     * @see Locks#withReadLock(ReadWriteLock, Callable)
-     */
     protected final <V> V withReadLockAndRuntimeExceptions(final Callable<V> action) {
-        assert (action != null);
         return Locks.withReadLockAndRuntimeExceptions(workplacesLock, action);
     }
 
@@ -211,56 +180,46 @@ public class DefaultWorkplaceManager implements WorkplaceManager,
         eventBus.post(new CoreComponentEvent(CoreComponentEvent.Type.STARTING));
 
         // start all workplaces
-        withReadLock(new Runnable() {
+        withReadLock(() -> {
+            checkState(!initializedWorkplaces.isEmpty(), "There is no workplace to run.");
 
-            @Override
-            public void run() {
-                checkState(!initializedWorkplaces.isEmpty(), "There is no workplace to run.");
-
-                for(final Workplace workplace : initializedWorkplaces.values()) {
-                    workplace.start();
-                    activeWorkplaces.add(workplace);
-                    log.info("Workplace {} started.", workplace);
-                }
-                updateWorkplacesCache();
+            for(final Workplace workplace : initializedWorkplaces.values()) {
+                workplace.start();
+                activeWorkplaces.add(workplace);
+                log.info("Workplace {} started.", workplace);
             }
+            updateWorkplacesCache();
         });
     }
 
     @Override
     public void pause() {
         log.debug("Workplace manager is pausing computation.");
-        withReadLock(new Runnable() {
-
-            @Override
-            public void run() {
-                for(final Workplace workplace : initializedWorkplaces.values()) {
-                    synchronized(workplace) {
-                        if(workplace.isRunning()) {
-                            workplace.pause();
-                        } else {
-                            log.warn("Trying to pause not running workplace: {}.", workplace);
-                        }
+        withReadLock(() -> {
+            for(final Workplace workplace : initializedWorkplaces.values()) {
+                synchronized(workplace) {
+                    if(workplace.isRunning()) {
+                        workplace.pause();
+                    } else {
+                        log.warn("Trying to pause not running workplace: {}.", workplace);
                     }
                 }
             }
         });
     }
 
+	/* Workplace management methods */
+
     @Override
     public void resume() {
         log.debug("Workplace manager is resuming computation.");
-        withReadLock(new Runnable() {
-
-            @Override
-            public void run() {
-                for(final Workplace workplace : initializedWorkplaces.values()) {
-                    synchronized(workplace) {
-                        if(workplace.isPaused()) {
-                            workplace.resume();
-                        } else {
-                            log.warn("Trying to resume not paused workplace: {}.", workplace);
-                        }
+        withReadLock(() -> {
+            for(final Workplace workplace : initializedWorkplaces.values()) {
+                synchronized(workplace) {
+                    if(workplace.isPaused()) {
+                        workplace.resume();
+                    } else {
+                        log.warn("Trying to resume not paused workplace: {}.", workplace);
                     }
                 }
             }
@@ -270,26 +229,20 @@ public class DefaultWorkplaceManager implements WorkplaceManager,
     @Override
     public void stop() {
         log.debug("Workplace manager is stopping.");
-        withReadLock(new Runnable() {
-
-            @Override
-            public void run() {
-                for(final Workplace workplace : initializedWorkplaces.values()) {
-                    synchronized(workplace) {
-                        if(workplace.isRunning() || workplace.isPaused()) {
-                            workplace.stop();
-                        } else {
-                            log.warn("Trying to stop not running workplace: {}.", workplace);
-                        }
+        withReadLock(() -> {
+            for(final Workplace workplace : initializedWorkplaces.values()) {
+                synchronized(workplace) {
+                    if(workplace.isRunning() || workplace.isPaused()) {
+                        workplace.stop();
+                    } else {
+                        log.warn("Trying to stop not running workplace: {}.", workplace);
                     }
                 }
-                updateWorkplacesCache();
             }
+            updateWorkplacesCache();
         });
         log.debug("Workplace manager stopped.");
     }
-
-	/* Workplace management methods */
 
     @Override
     public void teardownConfiguration() {
@@ -309,6 +262,8 @@ public class DefaultWorkplaceManager implements WorkplaceManager,
         return !activeWorkplaces.isEmpty();
     }
 
+	/* Workplace environment methods. */
+
     private void initializeWorkplaces() {
         if(configuredWorkplaces == null || configuredWorkplaces.isEmpty()) {
             throw new ComponentException("There is no workplace defined. Cannot run the computation.");
@@ -316,25 +271,21 @@ public class DefaultWorkplaceManager implements WorkplaceManager,
 
         log.info("Created {} workplace(s).", configuredWorkplaces.size());
 
-        withWriteLock(new Runnable() {
+        withWriteLock(() -> {
+            for(final Workplace workplace : configuredWorkplaces) {
+                final AgentAddress agentAddress = workplace.getAddress();
 
-            @Override
-            public void run() {
-                for(final Workplace workplace : configuredWorkplaces) {
-                    final AgentAddress agentAddress = workplace.getAddress();
-
-                    // We call setEnvironment() relying on the fact, that all agents and workplaces were
-                    // initialized before the workplace manager by the container.
-                    try {
-                        initializedWorkplaces.put(agentAddress, workplace);
-                        workplace.setEnvironment(DefaultWorkplaceManager.this);
-                        log.info("Workplace {} initialized.", agentAddress);
-                    } catch(final WorkplaceException e) {
-                        initializedWorkplaces.remove(
-                                agentAddress); // Do not leave not configured workplace in the manager
-                        throw new ComponentException(
-                                String.format("Cannot set workplace environment for: %s.", agentAddress), e);
-                    }
+                // We call setEnvironment() relying on the fact, that all agents and workplaces were
+                // initialized before the workplace manager by the container.
+                try {
+                    initializedWorkplaces.put(agentAddress, workplace);
+                    workplace.setEnvironment(DefaultWorkplaceManager.this);
+                    log.info("Workplace {} initialized.", agentAddress);
+                } catch(final WorkplaceException e) {
+                    initializedWorkplaces.remove(
+                            agentAddress); // Do not leave not configured workplace in the manager
+                    throw new ComponentException(
+                            String.format("Cannot set workplace environment for: %s.", agentAddress), e);
                 }
             }
         });
@@ -346,50 +297,34 @@ public class DefaultWorkplaceManager implements WorkplaceManager,
         workplacesMap.put(nodeAddressProvider.get(), getAddressesOfLocalWorkplaces());
     }
 
-	/* Workplace environment methods. */
-
-    /**
-     * Executes the provided {@link Runnable} with locked workplaces' lock. The lock is locked before execution and
-     * guaranteed to be unlocked after finishing the call.
-     * <p>
-     * <p>
-     * This method locks on a <em>write</em> lock of the {@link ReadWriteLock}.
-     *
-     * @param action the runnable to execute.
-     * @see #withReadLockAndRuntimeExceptions(Callable) for a rationale of behaviour for exceptions.
-     * @see Locks#withWriteLock(ReadWriteLock, Runnable)
-     */
     protected final void withWriteLock(final Runnable action) {
         withWriteLockAndRuntimeExceptions(Executors.callable(action));
     }
 
     @Nonnull
     protected Set<AgentAddress> getAddressesOfLocalWorkplaces() {
-        final Set<AgentAddress> addresses = newHashSetWithExpectedSize(getLocalWorkplaces().size());
-
-        for(final Workplace workplace : getLocalWorkplaces()) {
-            addresses.add(workplace.getAddress());
-        }
-        return addresses;
+        return getLocalWorkplaces().stream()
+                .map(Workplace::getAddress)
+                .collect(Collectors.toSet());
     }
 
-    /**
-     * Executes the provided {@link Callable} with locked workplaces' lock. The lock is locked before execution and
-     * guaranteed to be unlocked after finishing the call.
-     * <p>
-     * <p>
-     * This method locks on a <em>write</em> lock of the {@link ReadWriteLock}.
-     *
-     * @param action the callable to execute.
-     * @param <V>    a type of the value returned by the callable.
-     * @return an object returned by the callable.
-     * @see #withReadLockAndRuntimeExceptions(Callable) for a rationale of behaviour for exceptions.
-     * @see Locks#withWriteLock(ReadWriteLock, Callable)
-     */
     protected final <V> V withWriteLockAndRuntimeExceptions(final Callable<V> action) {
         assert (action != null);
         return Locks.withWriteLockAndRuntimeExceptions(workplacesLock, action);
     }
+
+    protected final <V, E extends Exception> V withWriteLockThrowing(final Callable<V> action,
+            final Class<E> exceptionClass) throws E {
+        assert (action != null && exceptionClass != null);
+        return Locks.withWriteLockThrowing(workplacesLock, action, exceptionClass);
+    }
+
+    protected final <V, E extends Exception> V withReadLockThrowing(final Callable<V> action,
+            final Class<E> exceptionClass) throws E {
+        assert (action != null && exceptionClass != null);
+        return Locks.withReadLockThrowing(workplacesLock, action, exceptionClass);
+    }
+
 
     @Override
     public void onWorkplaceStop(@Nonnull final Workplace workplace) {
@@ -437,9 +372,7 @@ public class DefaultWorkplaceManager implements WorkplaceManager,
     @Override
     public Set<AgentAddress> getAddressesOfWorkplaces() {
         final ImmutableSet.Builder<AgentAddress> builder = ImmutableSet.builder();
-        for(final Set<AgentAddress> remoteAddresses : workplacesMap.values()) {
-            builder.addAll(remoteAddresses);
-        }
+        workplacesMap.values().forEach(builder::addAll);
         return builder.build();
     }
 
@@ -475,23 +408,18 @@ public class DefaultWorkplaceManager implements WorkplaceManager,
      *                            the manager
      */
     public void addWorkplace(final Workplace workplace) {
-        withWriteLock(new Runnable() {
-
-            @SuppressWarnings("unchecked")
-            @Override
-            public void run() {
-                final AgentAddress agentAddress = workplace.getAddress();
-                if(!initializedWorkplaces.containsKey(agentAddress)) {
-                    initializedWorkplaces.put(agentAddress, workplace);
-                    if(workplace.isRunning() && !activeWorkplaces.contains(workplace)) {
-                        workplace.setEnvironment(DefaultWorkplaceManager.this);
-                        activeWorkplaces.add(workplace);
-                    }
-                    log.info("Workplace added: {}", workplace.getAddress());
-                    updateWorkplacesCache();
-                } else {
-                    throw new WorkplaceException(String.format("%s already exists in the manager.", agentAddress));
+        withWriteLock(() -> {
+            final AgentAddress agentAddress = workplace.getAddress();
+            if(!initializedWorkplaces.containsKey(agentAddress)) {
+                initializedWorkplaces.put(agentAddress, workplace);
+                if(workplace.isRunning() && !activeWorkplaces.contains(workplace)) {
+                    workplace.setEnvironment(DefaultWorkplaceManager.this);
+                    activeWorkplaces.add(workplace);
                 }
+                log.info("Workplace added: {}", workplace.getAddress());
+                updateWorkplacesCache();
+            } else {
+                throw new WorkplaceException(String.format("%s already exists in the manager.", agentAddress));
             }
         });
     }
@@ -499,38 +427,22 @@ public class DefaultWorkplaceManager implements WorkplaceManager,
     @Override
     @Nullable
     public Workplace getLocalWorkplace(@Nonnull final AgentAddress workplaceAddress) {
-        return withReadLockAndRuntimeExceptions(new Callable<Workplace>() {
-
-            @Override
-            public Workplace call() {
-                return initializedWorkplaces.get(workplaceAddress);
-            }
-        });
+        return withReadLockAndRuntimeExceptions(() -> initializedWorkplaces.get(workplaceAddress));
     }
 
     @Override
     @Nonnull
     public List<Workplace> getLocalWorkplaces() {
-        return withReadLockAndRuntimeExceptions(new Callable<List<Workplace>>() {
-
-            @Override
-            public List<Workplace> call() {
-                return ImmutableList.copyOf(initializedWorkplaces.values());
-            }
-        });
+        return withReadLockAndRuntimeExceptions(() -> ImmutableList.copyOf(initializedWorkplaces.values()));
     }
 
     private void deliverMessageToWorkplace(@Nonnull final Message<AgentAddress, ?> message) {
-        withReadLock(new Runnable() {
-
-            @Override
-            public void run() {
-                final AddressSelector<AgentAddress> receiverSelector = message.getHeader().getReceiverSelector();
-                final Set<AgentAddress> addresses = Selectors.filter(getAddressesOfLocalWorkplaces(), receiverSelector);
-                for(final AgentAddress agentAddress : addresses) {
-                    log.debug("Delivering to {}.", agentAddress);
-                    getLocalWorkplace(agentAddress).deliverMessage(message);
-                }
+        withReadLock(() -> {
+            final AddressSelector<AgentAddress> receiverSelector = message.getHeader().getReceiverSelector();
+            final Set<AgentAddress> addresses = Selectors.filter(getAddressesOfLocalWorkplaces(), receiverSelector);
+            for(final AgentAddress agentAddress : addresses) {
+                log.debug("Delivering to {}.", agentAddress);
+                getLocalWorkplace(agentAddress).deliverMessage(message);
             }
         });
     }
@@ -553,23 +465,6 @@ public class DefaultWorkplaceManager implements WorkplaceManager,
 
         log.info("Configured workplaces: {}.", configuredWorkplaces);
         eventBus.post(new CoreComponentEvent(CoreComponentEvent.Type.CONFIGURED));
-    }
-
-    protected final <V, E extends Exception> V withWriteLockThrowing(final Callable<V> action,
-            final Class<E> exceptionClass) throws E {
-        assert (action != null && exceptionClass != null);
-        return Locks.withWriteLockThrowing(workplacesLock, action, exceptionClass);
-    }
-
-    protected final <V, E extends Exception> V withReadLockThrowing(final Callable<V> action,
-            final Class<E> exceptionClass) throws E {
-        assert (action != null && exceptionClass != null);
-        return Locks.withReadLockThrowing(workplacesLock, action, exceptionClass);
-    }
-
-    @Override
-    public String toString() {
-        return toStringHelper(this).toString();
     }
 
     @Override
@@ -601,5 +496,10 @@ public class DefaultWorkplaceManager implements WorkplaceManager,
                 break;
         }
 
+    }
+
+    @Override
+    public String toString() {
+        return toStringHelper(this).toString();
     }
 }

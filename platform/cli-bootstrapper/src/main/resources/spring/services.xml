@@ -11,8 +11,5 @@
     <bean id="hage.service.configurationLoader" class="org.jage.configuration.service.ConfigurationLoaderService"
           parent="hage.component.stateful.base"/>
 
-    <bean id="hage.service.configuration.communication.remote"
-          class="org.jage.configuration.communication.ConfigurationServiceRemoteChanel"
-          parent="hage.component.stateful.base"/>
 
 </beans>

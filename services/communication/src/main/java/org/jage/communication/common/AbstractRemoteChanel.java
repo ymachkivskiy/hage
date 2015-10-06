@@ -16,7 +16,7 @@ import java.util.function.Predicate;
 
 
 @Slf4j
-public abstract class AbstractRemoteServiceChanelEndpoint<MessageT extends Serializable>
+public abstract class AbstractRemoteChanel<MessageT extends Serializable>
         implements IStatefulComponent, RemoteMessageSubscriber<MessageT> {
 
     private final String serviceName;
@@ -25,7 +25,7 @@ public abstract class AbstractRemoteServiceChanelEndpoint<MessageT extends Seria
     private RemoteCommunicationChannel<MessageT> remoteChanel;
     private List<MessageFilterConsumer<MessageT>> messageConsumers = new ArrayList<>();
 
-    protected AbstractRemoteServiceChanelEndpoint(String serviceName) {
+    protected AbstractRemoteChanel(String serviceName) {
         this.serviceName = serviceName;
     }
 

@@ -1,34 +1,3 @@
-/**
- * Copyright (C) 2006 - 2012
- *   Pawel Kedzior
- *   Tomasz Kmiecik
- *   Kamil Pietak
- *   Krzysztof Sikora
- *   Adam Wos
- *   Lukasz Faber
- *   Daniel Krzywicki
- *   and other students of AGH University of Science and Technology.
- *
- * This file is part of AgE.
- *
- * AgE is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * AgE is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with AgE.  If not, see <http://www.gnu.org/licenses/>.
- */
-/*
- * Created: 2012-08-21
- * $Id$
- */
-
 package org.jage.lifecycle;
 
 
@@ -36,9 +5,6 @@ import com.google.common.eventbus.Subscribe;
 import lombok.extern.slf4j.Slf4j;
 import org.jage.bus.ConfigurationUpdatedEvent;
 import org.jage.bus.EventBus;
-import org.jage.communication.common.RemoteCommunicationChannel;
-import org.jage.communication.common.RemoteCommunicationManager;
-import org.jage.communication.common.RemoteMessageSubscriber;
 import org.jage.lifecycle.LifecycleMessage.LifecycleCommand;
 import org.jage.platform.component.IStatefulComponent;
 import org.jage.platform.component.exception.ComponentException;
@@ -61,22 +27,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import static com.google.common.base.Objects.toStringHelper;
-import static com.google.common.base.Preconditions.checkNotNull;
 
 
-/**
- * A default lifecycle manager for generic AgE nodes.
- *
- * @author AGH AgE Team
- */
 @Slf4j
-public class DefaultLifecycleManager implements
-                                     LifecycleManager,
-                                     RemoteMessageSubscriber<LifecycleMessage> {
-
-    /**
-     * The name of the node configuration file parameter.
-     */
+public class DefaultLifecycleManager implements LifecycleManager {
 
     private final StateMachineService<State, Event> service;
 
@@ -85,13 +39,9 @@ public class DefaultLifecycleManager implements
     @Autowired
     private CoreComponent coreComponent;
     @Autowired
-    private RemoteCommunicationManager communicationManager;
-    @Autowired
     private EventBus eventBus;
 
-    /**
-     * Constructs a new lifecycle manager.
-     */
+
     public DefaultLifecycleManager() {
         final StateMachineServiceBuilder<State, Event> builder = StateMachineServiceBuilder.create();
 
@@ -134,16 +84,11 @@ public class DefaultLifecycleManager implements
         Runtime.getRuntime().addShutdownHook(new ShutdownHook());
     }
 
-    // Interface methods that translate environment changes to events
-
-    @Override
-    public void onRemoteMessage(final LifecycleMessage message) {
-        final LifecycleCommand command = message.getCommand();
+    public void performCommand(LifecycleCommand command) {
         switch(command) {
             case FAIL:
                 break;
             case NOTIFY:
-                handleNotifyCommand((Map<String, Object>) message.getPayload());
                 break;
             case PAUSE:
                 service.fire(Event.PAUSE);
@@ -159,14 +104,6 @@ public class DefaultLifecycleManager implements
                 break;
             default:
                 break;
-        }
-    }
-
-    private void handleNotifyCommand(final Map<String, Object> payload) {
-        final Map<String, Object> data = checkNotNull(payload);
-
-        for(final Entry<String, Object> entry : data.entrySet()) {
-            // XXX
         }
     }
 
@@ -225,7 +162,6 @@ public class DefaultLifecycleManager implements
             log.debug("Initializing LifecycleManager.");
 
             initializeStatefullComponents();
-            initializeCommunicationChanel();
             initializeEventBus();
 
             log.debug("Node has finished initialization.");
@@ -242,15 +178,6 @@ public class DefaultLifecycleManager implements
                 //fallback for other potential implementations
                 instanceProvider.getInstances(IStatefulComponent.class);
             }
-        }
-
-        private void initializeCommunicationChanel() {
-            log.debug("Communication service: {}.", communicationManager);
-
-            RemoteCommunicationChannel<LifecycleMessage> communicationChannel = communicationManager.getCommunicationChannelForService(SERVICE_NAME);
-            communicationChannel.subscribe(DefaultLifecycleManager.this);
-
-            log.debug("Communication channel: {}.", communicationChannel);
         }
 
         private void initializeEventBus() {
