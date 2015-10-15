@@ -27,12 +27,6 @@
         </dependency>
 
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>lifecycle</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.jage.platform</groupId>
             <artifactId>arguments</artifactId>
             <version>${project.version}</version>

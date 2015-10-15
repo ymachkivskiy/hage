@@ -29,9 +29,10 @@
  * $Id$
  */
 
-package org.jage.bus;
+package org.jage.configuration.event;
 
 
+import org.jage.bus.AgeEvent;
 import org.jage.platform.component.definition.IComponentDefinition;
 
 import javax.annotation.Nonnull;

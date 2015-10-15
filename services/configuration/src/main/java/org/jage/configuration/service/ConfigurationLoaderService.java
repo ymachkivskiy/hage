@@ -1,26 +1,26 @@
 /**
  * Copyright (C) 2006 - 2012
- *   Pawel Kedzior
- *   Tomasz Kmiecik
- *   Kamil Pietak
- *   Krzysztof Sikora
- *   Adam Wos
- *   Lukasz Faber
- *   Daniel Krzywicki
- *   and other students of AGH University of Science and Technology.
- *
+ * Pawel Kedzior
+ * Tomasz Kmiecik
+ * Kamil Pietak
+ * Krzysztof Sikora
+ * Adam Wos
+ * Lukasz Faber
+ * Daniel Krzywicki
+ * and other students of AGH University of Science and Technology.
+ * <p>
  * This file is part of AgE.
- *
+ * <p>
  * AgE is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * AgE is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with AgE.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -35,15 +35,14 @@ package org.jage.configuration.service;
 import com.google.common.eventbus.Subscribe;
 import lombok.extern.slf4j.Slf4j;
 import org.jage.bus.EventBus;
-import org.jage.configuration.communication.ConfigurationLoadedEvent;
-import org.jage.lifecycle.LifecycleStateChangedEvent;
+import org.jage.configuration.event.ConfigurationLoadRequestEvent;
+import org.jage.configuration.event.ConfigurationLoadedEvent;
 import org.jage.platform.argument.RuntimeArgumentsService;
 import org.jage.platform.component.IStatefulComponent;
 import org.jage.platform.component.definition.ConfigurationException;
 import org.jage.platform.component.definition.IComponentDefinition;
 import org.jage.platform.component.exception.ComponentException;
 import org.jage.platform.config.loader.IConfigurationLoader;
-import org.jage.services.core.LifecycleManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.Nonnull;
@@ -57,7 +56,7 @@ import static com.google.common.base.Objects.toStringHelper;
  * Provides a way to load computation configuration from a file.</p>
  * <p>
  * This service reacts on the "INITIALIZED" event of the lifecycle manager and loads a computation configuration
- * from file. The configuration is sent via the event bus in {@link org.jage.configuration.communication.ConfigurationLoadedEvent}.
+ * from file. The configuration is sent via the event bus in {@link ConfigurationLoadedEvent}.
  */
 @ThreadSafe
 @Slf4j
@@ -83,19 +82,13 @@ public class ConfigurationLoaderService implements IStatefulComponent {
     }
 
     @Subscribe
-    public void onLifecycleEvent(@Nonnull final LifecycleStateChangedEvent event) {
-        if(canLoadConfigurationOnEvent(event)) {
-            tryLoadAndPropagateConfiguration();
-        }
-    }
-
-    private boolean canLoadConfigurationOnEvent(LifecycleStateChangedEvent event) {
-        return LifecycleManager.State.INITIALIZED.equals(event.getNewState());
+    public void onLifecycleEvent(@Nonnull final ConfigurationLoadRequestEvent event) {
+        tryLoadAndPropagateConfiguration();
     }
 
     private void tryLoadAndPropagateConfiguration() {
         final String configFilePath = argumentsService.getCustomOption(COMPUTATION_CONFIGURATION);
-        if(configFilePath != null) {
+        if (configFilePath != null) {
             loadAndPropagateConfiguration(configFilePath);
         } else {
             log.info("No computation configuration.");
@@ -113,7 +106,7 @@ public class ConfigurationLoaderService implements IStatefulComponent {
         final Collection<IComponentDefinition> computationComponents;
         try {
             computationComponents = configurationLoader.loadConfiguration(configFilePath);
-        } catch(final ConfigurationException e) {
+        } catch (final ConfigurationException e) {
             log.error("Cannot load configuration from {}.", configFilePath, e);
             throw new ComponentException(e);
         }

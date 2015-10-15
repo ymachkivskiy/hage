@@ -29,7 +29,7 @@
  * $Id$
  */
 
-package org.jage.configuration.communication;
+package org.jage.configuration.event;
 
 
 import org.jage.bus.AgeEvent;

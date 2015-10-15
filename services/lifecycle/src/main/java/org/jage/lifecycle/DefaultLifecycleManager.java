@@ -3,8 +3,9 @@ package org.jage.lifecycle;
 
 import com.google.common.eventbus.Subscribe;
 import lombok.extern.slf4j.Slf4j;
-import org.jage.bus.ConfigurationUpdatedEvent;
 import org.jage.bus.EventBus;
+import org.jage.configuration.event.ConfigurationLoadRequestEvent;
+import org.jage.configuration.event.ConfigurationUpdatedEvent;
 import org.jage.lifecycle.LifecycleMessage.LifecycleCommand;
 import org.jage.platform.component.IStatefulComponent;
 import org.jage.platform.component.exception.ComponentException;
@@ -85,7 +86,7 @@ public class DefaultLifecycleManager implements LifecycleManager {
     }
 
     public void performCommand(LifecycleCommand command) {
-        switch(command) {
+        switch (command) {
             case FAIL:
                 break;
             case NOTIFY:
@@ -121,7 +122,7 @@ public class DefaultLifecycleManager implements LifecycleManager {
     @Subscribe
     public void onCoreComponentEvent(@Nonnull final CoreComponentEvent event) {
         log.debug("Core component Event: {}.", event);
-        switch(event.getType()) {
+        switch (event.getType()) {
             case CONFIGURED:
                 service.fire(Event.START_COMMAND);
                 break;
@@ -162,10 +163,14 @@ public class DefaultLifecycleManager implements LifecycleManager {
             log.debug("Initializing LifecycleManager.");
 
             initializeEventBus();
+            notifyConfigurationCanBeLoaded();
 
             log.debug("Node has finished initialization.");
         }
 
+        private void notifyConfigurationCanBeLoaded() {
+            eventBus.post(ConfigurationLoadRequestEvent.INSTANCE);
+        }
 
 
         private void initializeEventBus() {
@@ -193,7 +198,7 @@ public class DefaultLifecycleManager implements LifecycleManager {
             log.debug("Initialising required components.");
             // initialize in the whole hierarchy (see AGE-163). Can be removed when some @PostConstruct are introduced
             // or component starting is supported at container level.
-            if(instanceProvider instanceof PicoContainer) {
+            if (instanceProvider instanceof PicoContainer) {
                 ((PicoContainer) instanceProvider).accept(new StatefulComponentInitializer());
             } else {
                 //fallback for other potential implementations
@@ -212,7 +217,7 @@ public class DefaultLifecycleManager implements LifecycleManager {
 
             try {
                 coreComponent.start();
-            } catch(final ComponentException e) {
+            } catch (final ComponentException e) {
                 throw new LifecycleException("The core component could not start.", e);
             }
         }
@@ -281,17 +286,17 @@ public class DefaultLifecycleManager implements LifecycleManager {
 
             // Tears down in the whole hierarchy (similar to AGE-163). Can be removed when some @PreDestroy are
             // introduced or component stopping is supported at container level.
-            if(instanceProvider instanceof PicoContainer) {
+            if (instanceProvider instanceof PicoContainer) {
                 ((PicoContainer) instanceProvider).accept(new StatefulComponentFinisher());
             } else {
                 // fallback for other potential implementations
                 final Collection<IStatefulComponent> statefulComponents =
                         instanceProvider.getInstances(IStatefulComponent.class);
-                if(statefulComponents != null) {
-                    for(final IStatefulComponent statefulComponent : statefulComponents) {
+                if (statefulComponents != null) {
+                    for (final IStatefulComponent statefulComponent : statefulComponents) {
                         try {
                             statefulComponent.finish();
-                        } catch(final ComponentException e) {
+                        } catch (final ComponentException e) {
                             log.error("Exception during the teardown.", e);
                         }
                     }
@@ -299,14 +304,14 @@ public class DefaultLifecycleManager implements LifecycleManager {
             }
             log.info("Node terminated.");
 
-            if(log.isDebugEnabled()) {
+            if (log.isDebugEnabled()) {
                 final Map<Thread, StackTraceElement[]> stackTraces = Thread.getAllStackTraces();
 
-                for(final Entry<Thread, StackTraceElement[]> entry : stackTraces.entrySet()) {
+                for (final Entry<Thread, StackTraceElement[]> entry : stackTraces.entrySet()) {
                     final Thread thread = entry.getKey();
-                    if(!thread.equals(Thread.currentThread()) && thread.isAlive() && !thread.isDaemon()) {
+                    if (!thread.equals(Thread.currentThread()) && thread.isAlive() && !thread.isDaemon()) {
                         log.debug("{} has not been shutdown properly.", entry.getKey());
-                        for(final StackTraceElement e : entry.getValue()) {
+                        for (final StackTraceElement e : entry.getValue()) {
                             log.debug("\t{}", e);
                         }
                     }
@@ -335,11 +340,11 @@ public class DefaultLifecycleManager implements LifecycleManager {
         @Override
         public void run() {
             log.debug("Shutdown hook called.");
-            if(!service.terminated() && !service.isTerminating()) {
+            if (!service.terminated() && !service.isTerminating()) {
                 service.fire(Event.EXIT);
                 try {
                     Thread.sleep(2000); // Simple wait to let other threads terminate properly.
-                } catch(final InterruptedException ignored) {
+                } catch (final InterruptedException ignored) {
                     // Ignore
                 }
             }
