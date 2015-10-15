@@ -1,14 +1,18 @@
 package org.jage.communication.common;
 
 
+import org.jage.address.node.NodeAddress;
+
 import java.io.Serializable;
 
 
 public interface RemoteCommunicationChannel<T extends Serializable> {
 
-    public void publish(final T message);
+    void sendMessageToAll(final T message);
 
-    public void subscribe(RemoteMessageSubscriber<T> subscriber);
+    void setMessageToNode(final T message, NodeAddress nodeAddress);
 
-    public void unsubscribe(RemoteMessageSubscriber<T> subscriber);
+    void subscribeChannel(RemoteMessageSubscriber<T> subscriber);
+
+    void unsubscribeChannel(RemoteMessageSubscriber<T> subscriber);
 }

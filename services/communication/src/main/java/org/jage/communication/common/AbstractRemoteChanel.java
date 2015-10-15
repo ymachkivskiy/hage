@@ -4,6 +4,7 @@ package org.jage.communication.common;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.jage.address.node.NodeAddress;
 import org.jage.platform.component.IStatefulComponent;
 import org.jage.platform.component.exception.ComponentException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -19,11 +21,13 @@ import java.util.function.Predicate;
 public abstract class AbstractRemoteChanel<MessageT extends Serializable>
         implements IStatefulComponent, RemoteMessageSubscriber<MessageT> {
 
-    private final String serviceName;
     @Autowired
     private RemoteCommunicationManager remoteCommunicationManager;
-    private RemoteCommunicationChannel<MessageT> remoteChanel;
+
+    private final String serviceName;
     private List<MessageFilterConsumer<MessageT>> messageConsumers = new ArrayList<>();
+
+    protected RemoteCommunicationChannel<MessageT> remoteChanel;
 
     protected AbstractRemoteChanel(String serviceName) {
         this.serviceName = serviceName;
@@ -34,20 +38,24 @@ public abstract class AbstractRemoteChanel<MessageT extends Serializable>
         messageConsumers.add(new MessageFilterConsumer<>(matchingPredicate, messageConsumer));
     }
 
-    protected final void sendMessage(MessageT messageT) {
-        remoteChanel.publish(messageT);
+    protected NodeAddress getLocalAddress() {
+        return remoteCommunicationManager.getLocalNodeAddress();
+    }
+
+    protected Set<NodeAddress> getRemoteNodeAddresses() {
+        return remoteCommunicationManager.getRemoteNodeAddresses();
     }
 
     @Override
     public final void init() throws ComponentException {
         remoteChanel = remoteCommunicationManager.getCommunicationChannelForService(serviceName);
-        remoteChanel.subscribe(this);
+        remoteChanel.subscribeChannel(this);
         postInit();
     }
 
     @Override
     public final boolean finish() throws ComponentException {
-        remoteChanel.unsubscribe(this);
+        remoteChanel.unsubscribeChannel(this);
         return true;
     }
 

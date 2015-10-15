@@ -52,7 +52,7 @@ public class ConfigurationServiceRemoteChanel
         ArrayList<IComponentDefinition> definitions = new ArrayList<>(configuration);
         ConfigurationMessage message = ConfigurationMessage.create(ConfigurationMessage.MessageType.DISTRIBUTE, definitions);
 
-        sendMessage(message);
+        remoteChanel.sendMessageToAll(message);
     }
 
     public void acquireConfiguration() {
@@ -60,6 +60,6 @@ public class ConfigurationServiceRemoteChanel
 
         ConfigurationMessage message = ConfigurationMessage.create(ConfigurationMessage.MessageType.REQUEST);
 
-        sendMessage(message);
+        remoteChanel.sendMessageToAll(message);
     }
 }

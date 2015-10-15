@@ -1,16 +1,16 @@
 package org.jage.communication.hazelcast;
 
 
-import com.hazelcast.core.ITopic;
-import com.hazelcast.core.Message;
-import com.hazelcast.core.MessageListener;
+import com.hazelcast.core.*;
 import lombok.extern.slf4j.Slf4j;
+import org.jage.address.node.NodeAddress;
 import org.jage.communication.common.RemoteCommunicationChannel;
 import org.jage.communication.common.RemoteMessageSubscriber;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
 import java.io.Serializable;
+import java.util.Optional;
 import java.util.Set;
 
 import static com.google.common.base.Objects.toStringHelper;
@@ -21,52 +21,103 @@ import static com.google.common.collect.Sets.newCopyOnWriteArraySet;
 @Slf4j
 class HazelcastRemoteCommunicationChannel<T extends Serializable> implements RemoteCommunicationChannel<T> {
 
-    @Nonnull
-    private final ITopic<T> topic;
+    private final String chanelName;
+    private final ITopic<T> broadcastTopic;
+    private final IMap<Member, T> unicastMap;
+    private final HazelcastInstance hazelcastInstance;
 
     private final Set<RemoteMessageSubscriber<T>> subscribers = newCopyOnWriteArraySet();
 
-    public HazelcastRemoteCommunicationChannel(@Nonnull final ITopic<T> topic) {
-        this.topic = topic;
-        topic.addMessageListener(new Listener());
+    public HazelcastRemoteCommunicationChannel(HazelcastInstance hazelcastInstance, String chanelName) {
+        this.hazelcastInstance = hazelcastInstance;
+        this.chanelName = chanelName;
+        this.broadcastTopic = hazelcastInstance.getTopic(chanelName);
+        this.unicastMap = hazelcastInstance.getMap("node-unicast-map-" + chanelName);
+
+        this.unicastMap.addEntryListener(new UnicastListener(), hazelcastInstance.getCluster().getLocalMember(), true);
+        this.broadcastTopic.addMessageListener(new BroadcastListener());
     }
 
     @Override
-    public void publish(@Nonnull final T message) {
-        log.debug("Publishing {} on the channel {}.", message, this);
-
-        topic.publish(message);
+    public void sendMessageToAll(@Nonnull final T message) {
+        log.debug("Publishing [{}] on the channel [{}].", message, chanelName);
+        broadcastTopic.publish(message);
     }
 
     @Override
-    public void subscribe(@Nonnull RemoteMessageSubscriber<T> listener) {
-        log.debug("Subscribe {} to the channel {}.", listener, this);
+    public void setMessageToNode(T message, NodeAddress nodeAddress) {
+        String localUid = hazelcastInstance.getCluster().getLocalMember().getUuid();
+        if (nodeAddress.getIdentifier().equals(localUid)) {
+            log.warn("Remote chanel client {} try to send message {} via chanel {} to himself", nodeAddress, message, chanelName);
+        } else {
+            Optional<Member> destinationMember = hazelcastInstance.getCluster().getMembers()
+                    .stream()
+                    .filter(m -> m.getUuid().equals(nodeAddress.getIdentifier()))
+                    .findFirst();
+            if (destinationMember.isPresent()) {
+                log.debug("Send unicast message {} to node {}", message, nodeAddress);
+                unicastMap.put(destinationMember.get(), message);
+            } else {
+                log.warn("Destination node {} is not connected. Can't send message {}", nodeAddress, message);
+            }
+        }
+    }
 
+    @Override
+    public void subscribeChannel(@Nonnull RemoteMessageSubscriber<T> listener) {
+        log.debug("Subscribe {} to the channel [{}].", listener, chanelName);
         subscribers.add(listener);
     }
 
     @Override
-    public void unsubscribe(@Nonnull RemoteMessageSubscriber<T> listener) {
+    public void unsubscribeChannel(@Nonnull RemoteMessageSubscriber<T> listener) {
         log.debug("Unsubscribe {} from the channel {}.", listener, this);
 
         subscribers.remove(listener);
     }
 
-    @Override
-    public String toString() {
-        return toStringHelper(this).add("name", topic.getName()).toString();
+    private void notifyMessageReceived(T message) {
+        subscribers.forEach(s -> s.onRemoteMessage(message));
     }
 
-    private class Listener implements MessageListener<T> {
+    @Override
+    public String toString() {
+        return toStringHelper(this).add("name", broadcastTopic.getName()).toString();
+    }
 
+    private class BroadcastListener implements MessageListener<T> {
         @Override
         public void onMessage(@Nonnull final Message<T> message) {
-            log.debug("Message {} on the channel {}.", message, this);
-
+            log.debug("Broadcast message [{}] on the channel [{}].", message, this);
             final T messageObject = message.getMessageObject();
-            for(final RemoteMessageSubscriber<T> subscriber : subscribers) {
-                subscriber.onRemoteMessage(messageObject);
-            }
+            notifyMessageReceived(messageObject);
+        }
+
+    }
+
+    private class UnicastListener implements EntryListener<Member, T> {
+        @Override
+        public void entryAdded(EntryEvent<Member, T> event) {
+            onMessageReceivedEvent(event);
+        }
+
+        @Override
+        public void entryUpdated(EntryEvent<Member, T> event) {
+            onMessageReceivedEvent(event);
+        }
+
+        private void onMessageReceivedEvent(EntryEvent<Member, T> event) {
+            T message = event.getValue();
+            log.debug("Unicast message [{}] received on the chanel [{}]", message, chanelName);
+            notifyMessageReceived(message);
+        }
+
+        @Override
+        public void entryRemoved(EntryEvent<Member, T> event) {
+        }
+
+        @Override
+        public void entryEvicted(EntryEvent<Member, T> event) {
         }
     }
 }

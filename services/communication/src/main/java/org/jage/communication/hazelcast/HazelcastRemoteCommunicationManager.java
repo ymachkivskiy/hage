@@ -2,10 +2,7 @@ package org.jage.communication.hazelcast;
 
 
 import com.hazelcast.config.Config;
-import com.hazelcast.core.Hazelcast;
-import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.core.IMap;
-import com.hazelcast.core.ITopic;
+import com.hazelcast.core.*;
 import lombok.extern.slf4j.Slf4j;
 import org.jage.address.node.HazelcastNodeAddress;
 import org.jage.address.node.NodeAddress;
@@ -16,6 +13,9 @@ import org.jage.platform.component.IStatefulComponent;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
 import java.io.Serializable;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.google.common.base.Objects.toStringHelper;
 
@@ -49,7 +49,7 @@ class HazelcastRemoteCommunicationManager
         hazelcastInstance.shutdown();
         try {
             Thread.sleep(1000);
-        } catch(final InterruptedException ignored) {
+        } catch (final InterruptedException ignored) {
             Thread.currentThread().interrupt();
         }
         return true;
@@ -58,8 +58,7 @@ class HazelcastRemoteCommunicationManager
     @Nonnull
     @Override
     public <T extends Serializable> HazelcastRemoteCommunicationChannel<T> getCommunicationChannelForService(final String serviceName) {
-        final ITopic<T> topic = hazelcastInstance.getTopic(SERVICE_PREFIX + serviceName);
-        return new HazelcastRemoteCommunicationChannel<>(topic);
+        return new HazelcastRemoteCommunicationChannel<>(hazelcastInstance, SERVICE_PREFIX + serviceName);
     }
 
     @Nonnull
@@ -68,10 +67,24 @@ class HazelcastRemoteCommunicationManager
         return hazelcastInstance.getMap(mapName);
     }
 
+    @Override
+    public Set<NodeAddress> getRemoteNodeAddresses() {
+        return hazelcastInstance.getCluster().getMembers()
+                .stream()
+                .filter(m -> !m.localMember())
+                .map(member -> new HazelcastNodeAddress(member.getUuid()))
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public NodeAddress getLocalNodeAddress() {
+        return nodeAddress;
+    }
+
     @Nonnull
     @Override
     public NodeAddress get() {
-        return nodeAddress;
+        return getLocalNodeAddress();
     }
 
     @Override
