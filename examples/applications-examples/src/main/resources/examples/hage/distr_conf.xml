@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xmlns="http://age.iisg.agh.edu.pl/schema/age"
+               xsi:schemaLocation="http://age.iisg.agh.edu.pl/schema/age http://age.iisg.agh.edu.pl/schema/age/age.xsd">
+
+
+    <component name="globalFooComponent" class="org.jage.examples.hage.distrconf.SomeFooComponent" isSingleton="true">
+        <constructor-arg value="GLOBAL"/>
+    </component>
+
+    <include file="classpath:examples/common.xml">
+        <block name="workplaces">
+            <component name="heavyWorkplace" class="org.jage.workplace.SimpleWorkplace" isSingleton="false">
+                <property name="agent">
+                    <agent class="org.jage.agent.SimpleAggregate">
+                        <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                            <constructor-arg name="nameTemplate" value="Heavy workplace"/>
+                        </component>
+                        <property name="agents">
+                            <list>
+
+                                <agent class="org.jage.examples.hage.distrconf.HeavyAgent">
+                                    <component class="org.jage.examples.hage.distrconf.SomeFooComponent" isSingleton="true">
+                                        <constructor-arg value="SPECIAL TOMAS"/>
+                                    </component>
+                                    <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                                        <constructor-arg name="nameTemplate" value="Tomas"/>
+                                    </component>
+                                </agent>
+
+                                <agent class="org.jage.examples.hage.distrconf.HeavyAgent">
+                                    <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                                        <constructor-arg name="nameTemplate" value="John"/>
+                                    </component>
+                                </agent>
+
+                                <agent class="org.jage.examples.hage.distrconf.HeavyAgent">
+                                    <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                                        <constructor-arg name="nameTemplate" value="David"/>
+                                    </component>
+                                </agent>
+
+                                <agent class="org.jage.examples.hage.distrconf.LightAgent">
+                                    <component class="org.jage.examples.hage.distrconf.SomeFooComponent" isSingleton="true">
+                                        <constructor-arg value="SPECIAL KATE"/>
+                                    </component>
+                                    <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                                        <constructor-arg name="nameTemplate" value="Kate"/>
+                                    </component>
+                                </agent>
+
+                                <agent class="org.jage.examples.hage.distrconf.LightAgent">
+                                    <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                                        <constructor-arg name="nameTemplate" value="Jane"/>
+                                    </component>
+                                </agent>
+
+                            </list>
+                        </property>
+                    </agent>
+                </property>
+            </component>
+        </block>
+    </include>
+</configuration>

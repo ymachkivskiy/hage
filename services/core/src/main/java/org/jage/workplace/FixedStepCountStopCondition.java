@@ -1,34 +1,3 @@
-/**
- * Copyright (C) 2006 - 2012
- *   Pawel Kedzior
- *   Tomasz Kmiecik
- *   Kamil Pietak
- *   Krzysztof Sikora
- *   Adam Wos
- *   Lukasz Faber
- *   Daniel Krzywicki
- *   and other students of AGH University of Science and Technology.
- *
- * This file is part of AgE.
- *
- * AgE is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * AgE is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with AgE.  If not, see <http://www.gnu.org/licenses/>.
- */
-/*
- * Created: 2009-05-18
- * $Id$
- */
-
 package org.jage.workplace;
 
 
@@ -54,22 +23,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static org.jage.query.ValueFilters.lessThan;
 import static org.jage.query.ValueSelectors.field;
 
-
-/**
- * Stop condition which stops workplaces when all of them perform fixed steps count. It gets in constructor number of
- * steps after which workplaces are stopped. In no number is given the default value is set.
- * <p>
- * <p>
- * Important: with the version 2.6 semantics of this stop condition changed: now <emph>all</emph> of workplaces must
- * pass at least the provided number of steps for the computation to stop.
- *
- * @author AGH AgE Team
- */
 @Slf4j
 public class FixedStepCountStopCondition
         implements IStopCondition { //TODO : re-implement and extract some base class with event posting etc.
 
-    private static final long DEFAULT_STEP_COUNT = 10;
+    private static final long DEFAULT_STEP_COUNT = 2;
 
     private final long stepCount;
 
@@ -122,7 +80,7 @@ public class FixedStepCountStopCondition
         log.debug("Event: {}.", event);
         switch(event.getType()) {
             case STARTING:
-                future = executor.scheduleWithFixedDelay(observer, 500, 500, TimeUnit.MILLISECONDS);
+                future = executor.scheduleWithFixedDelay(observer, 100, 100, TimeUnit.MILLISECONDS);
                 break;
             case STOPPED:
                 future.cancel(true);
@@ -147,7 +105,7 @@ public class FixedStepCountStopCondition
 
         final Collection<Long> results = query.matching("step", lessThan(stepCount))
                 .select(field("step")).execute(workplaceManager.getLocalWorkplaces());
-        log.info("Q={}", results);
+//        log.info("Q={}", results);
         return results.isEmpty();
     }
 

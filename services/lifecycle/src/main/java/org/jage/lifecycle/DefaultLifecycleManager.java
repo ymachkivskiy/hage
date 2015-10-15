@@ -161,24 +161,12 @@ public class DefaultLifecycleManager implements LifecycleManager {
         public void run() {
             log.debug("Initializing LifecycleManager.");
 
-            initializeStatefullComponents();
             initializeEventBus();
 
             log.debug("Node has finished initialization.");
         }
 
 
-        private void initializeStatefullComponents() {
-            log.debug("Initialising required components.");
-            // initialize in the whole hierarchy (see AGE-163). Can be removed when some @PostConstruct are introduced
-            // or component starting is supported at container level.
-            if(instanceProvider instanceof PicoContainer) {
-                ((PicoContainer) instanceProvider).accept(new StatefulComponentInitializer());
-            } else {
-                //fallback for other potential implementations
-                instanceProvider.getInstances(IStatefulComponent.class);
-            }
-        }
 
         private void initializeEventBus() {
             service.setEventBus(eventBus);
@@ -194,9 +182,25 @@ public class DefaultLifecycleManager implements LifecycleManager {
         @SuppressWarnings("unchecked")
         @Override
         public void run() {
-            log.debug("Configuring the computation.");
-            log.debug("Node is configured.");
+            log.info("Configuring the computation.");
+
+            initializeStatefullComponents();
+
+            log.info("Node is configured.");
         }
+
+        private void initializeStatefullComponents() {
+            log.debug("Initialising required components.");
+            // initialize in the whole hierarchy (see AGE-163). Can be removed when some @PostConstruct are introduced
+            // or component starting is supported at container level.
+            if(instanceProvider instanceof PicoContainer) {
+                ((PicoContainer) instanceProvider).accept(new StatefulComponentInitializer());
+            } else {
+                //fallback for other potential implementations
+                instanceProvider.getInstances(IStatefulComponent.class);
+            }
+        }
+
     }
 
 
