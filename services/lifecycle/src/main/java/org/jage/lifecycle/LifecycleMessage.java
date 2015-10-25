@@ -33,8 +33,8 @@ package org.jage.lifecycle;
 
 
 import org.jage.annotation.ReturnValuesAreNonnullByDefault;
-import org.jage.communication.message.BaseServiceMessage;
-import org.jage.communication.message.ServiceHeaderWithType;
+import org.jage.communication.message.service.ServiceMessage;
+import org.jage.communication.message.service.ServiceHeader;
 import org.jage.services.core.LifecycleManager;
 
 import javax.annotation.Nonnull;
@@ -52,7 +52,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 @ReturnValuesAreNonnullByDefault
 @Immutable
-public final class LifecycleMessage extends BaseServiceMessage<Serializable> {
+public final class LifecycleMessage extends ServiceMessage<Serializable> {
 
     private static final long serialVersionUID = 1L;
 
@@ -62,19 +62,19 @@ public final class LifecycleMessage extends BaseServiceMessage<Serializable> {
      * @param header  A header that contains metadata for this message.
      * @param payload A payload to transport.
      */
-    public LifecycleMessage(final ServiceHeaderWithType<LifecycleCommand> header, @Nullable final Serializable payload) {
+    public LifecycleMessage(final ServiceHeader<LifecycleCommand> header, @Nullable final Serializable payload) {
         super(header, payload);
     }
 
     @Nonnull
     public static LifecycleMessage create(@Nonnull final LifecycleCommand type,
             @Nullable final Serializable payload) {
-        return new LifecycleMessage(ServiceHeaderWithType.create(checkNotNull(type)), payload);
+        return new LifecycleMessage(ServiceHeader.create(checkNotNull(type)), payload);
     }
 
     @Nonnull
     public static LifecycleMessage create(@Nonnull final LifecycleCommand type) {
-        return new LifecycleMessage(ServiceHeaderWithType.create(type), null);
+        return new LifecycleMessage(ServiceHeader.create(type), null);
     }
 
     /**
@@ -88,8 +88,8 @@ public final class LifecycleMessage extends BaseServiceMessage<Serializable> {
 
     @Override
     @Nonnull
-    public ServiceHeaderWithType<LifecycleCommand> getHeader() {
-        return (ServiceHeaderWithType<LifecycleCommand>) super.getHeader();
+    public ServiceHeader<LifecycleCommand> getHeader() {
+        return (ServiceHeader<LifecycleCommand>) super.getHeader();
     }
 
     /**

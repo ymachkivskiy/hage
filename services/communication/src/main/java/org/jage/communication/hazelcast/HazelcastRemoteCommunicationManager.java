@@ -8,7 +8,7 @@ import org.jage.address.node.HazelcastNodeAddress;
 import org.jage.address.node.NodeAddress;
 import org.jage.address.node.NodeAddressSupplier;
 import org.jage.communication.api.RemoteCommunicationManager;
-import org.jage.communication.message.ServiceMessage;
+import org.jage.communication.message.service.ServiceMessage;
 import org.jage.platform.component.IStatefulComponent;
 
 import javax.annotation.Nonnull;
@@ -56,8 +56,8 @@ class HazelcastRemoteCommunicationManager
 
     @Nonnull
     @Override
-    public <T extends ServiceMessage> HazelcastRemoteChannel<T> getCommunicationChannelForService(final String serviceName) {
-        return new HazelcastRemoteChannel<>(hazelcastInstance, SERVICE_PREFIX + serviceName);
+    public <T extends ServiceMessage> HazelcastRawRemoteChannel<T> getCommunicationChannelForService(final String serviceName) {
+        return new HazelcastRawRemoteChannel<>(hazelcastInstance, SERVICE_PREFIX + serviceName);
     }
 
     @Nonnull

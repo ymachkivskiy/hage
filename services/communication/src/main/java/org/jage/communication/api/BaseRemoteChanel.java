@@ -3,9 +3,8 @@ package org.jage.communication.api;
 
 import lombok.extern.slf4j.Slf4j;
 import org.jage.address.node.NodeAddress;
-import org.jage.communication.message.ServiceMessage;
-import org.jage.communication.message.consume.ConversationMessageConsumer;
-import org.jage.communication.message.consume.MessageConsumer;
+import org.jage.communication.message.service.ServiceMessage;
+import org.jage.communication.message.service.consume.MessageConsumer;
 import org.jage.platform.component.IStatefulComponent;
 import org.jage.platform.component.exception.ComponentException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +20,10 @@ public abstract class BaseRemoteChanel<MessageT extends ServiceMessage>
 
     @Autowired
     private RemoteCommunicationManager remoteCommunicationManager;
+    private RawRemoteChannel<MessageT> remoteChanel;
 
     private final String serviceName;
     private List<MessageConsumer<MessageT>> messageConsumers = new LinkedList<>();
-
-    private RemoteChannel<MessageT> remoteChanel;
 
     protected BaseRemoteChanel(String serviceName) {
         this.serviceName = serviceName;
@@ -44,16 +42,24 @@ public abstract class BaseRemoteChanel<MessageT extends ServiceMessage>
         return remoteCommunicationManager.getRemoteNodeAddresses();
     }
 
-    protected final void sendMessageToAll(MessageT message) {
-        remoteChanel.sendMessageToAll(message);
+    protected final void send(MessageT message) {
+        remoteChanel.sendMessageToAll(wrapWithSenderAddress(message));
     }
 
-    protected final void sendMessageToNode(MessageT message, NodeAddress nodeAddress) {
+    protected final void send(MessageT message, NodeAddress nodeAddress) {
+        message = wrapWithSenderAddress(message);
         if (nodeAddress.equals(getLocalAddress())) {
             onRemoteMessage(message);
         } else {
             remoteChanel.sendMessageToNode(message, nodeAddress);
         }
+    }
+
+    protected void postInit() {
+    }
+
+    public Long nextConversationId() {
+        return remoteChanel.nextConversationId();
     }
 
     @Override
@@ -69,13 +75,16 @@ public abstract class BaseRemoteChanel<MessageT extends ServiceMessage>
         return true;
     }
 
-    protected void postInit() {
-    }
-
     @Override
     public final void onRemoteMessage(MessageT message) {
         log.debug("Received message: {}", message);
 
         messageConsumers.forEach(consumer -> consumer.consumeMessage(message));
     }
+
+    private MessageT wrapWithSenderAddress(MessageT message) {
+        message.getHeader().setSender(getLocalAddress());
+        return message;
+    }
+
 }

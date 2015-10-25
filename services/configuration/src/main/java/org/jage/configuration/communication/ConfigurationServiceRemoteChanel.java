@@ -3,8 +3,7 @@ package org.jage.configuration.communication;
 
 import lombok.extern.slf4j.Slf4j;
 import org.jage.communication.api.BaseRemoteChanel;
-import org.jage.communication.message.consume.BaseConditionalMessageConsumer;
-import org.jage.communication.message.consume.ConversationMessageConsumer;
+import org.jage.communication.message.service.consume.BaseConditionalMessageConsumer;
 import org.jage.configuration.communication.ConfigurationMessage.MessageType;
 import org.jage.configuration.service.ConfigurationService;
 import org.jage.platform.component.definition.IComponentDefinition;
@@ -42,7 +41,7 @@ public class ConfigurationServiceRemoteChanel
         ArrayList<IComponentDefinition> definitions = new ArrayList<>(configuration);
         ConfigurationMessage message = ConfigurationMessage.create(ConfigurationMessage.MessageType.DISTRIBUTE, definitions);
 
-        sendMessageToAll(message);
+        send(message);
     }
 
     public void acquireConfiguration() {
@@ -50,7 +49,7 @@ public class ConfigurationServiceRemoteChanel
 
         ConfigurationMessage message = ConfigurationMessage.create(ConfigurationMessage.MessageType.REQUEST);
 
-        sendMessageToAll(message);
+        send(message);
     }
 
     private class RequestConfigurationMessageConsumer extends BaseConditionalMessageConsumer<ConfigurationMessage> {

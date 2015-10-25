@@ -3,9 +3,7 @@ package org.jage.performance.cluster.communication;
 import lombok.extern.slf4j.Slf4j;
 import org.jage.address.node.NodeAddress;
 import org.jage.communication.api.BaseRemoteChanel;
-import org.jage.communication.message.consume.BaseConditionalMessageConsumer;
-import org.jage.communication.message.consume.ConversationMessageConsumer;
-import org.jage.communication.message.consume.MessageConsumer;
+import org.jage.communication.message.service.consume.BaseConditionalMessageConsumer;
 import org.jage.performance.node.NodePerformanceManager;
 import org.jage.performance.rate.ClusterNode;
 import org.jage.performance.rate.CombinedPerformanceRate;
@@ -42,7 +40,7 @@ public class PerformanceRemoteChanel extends BaseRemoteChanel<PerformanceService
     public List<ClusterNode> getAllNodesPerformances() {
 
         PerformanceServiceMessage requestMessage = PerformanceServiceMessage.requestPerformanceMessage(getLocalAddress());
-        sendMessageToAll(requestMessage);
+        send(requestMessage);
 
         return Collections.emptyList();//TODO
     }
@@ -56,7 +54,7 @@ public class PerformanceRemoteChanel extends BaseRemoteChanel<PerformanceService
         if (nodeAddress.equals(getLocalAddress())) {
             onRemoteMessage(responseMessage);
         } else {
-            sendMessageToNode(responseMessage, nodeAddress);
+            send(responseMessage, nodeAddress);
         }
     }
 

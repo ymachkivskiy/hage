@@ -32,8 +32,8 @@
 package org.jage.workplace.manager;
 
 
-import org.jage.communication.message.BaseServiceMessage;
-import org.jage.communication.message.ServiceHeaderWithType;
+import org.jage.communication.message.service.ServiceMessage;
+import org.jage.communication.message.service.ServiceHeader;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -44,11 +44,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 
 @Immutable
-public class WorkplaceManagerMessage extends BaseServiceMessage<Serializable> {
+public class WorkplaceManagerMessage extends ServiceMessage<Serializable> {
 
     private static final long serialVersionUID = 1L;
 
-    public WorkplaceManagerMessage(final ServiceHeaderWithType<MessageType> header,
+    public WorkplaceManagerMessage(final ServiceHeader<MessageType> header,
             @Nullable final Serializable payload) {
         super(header, payload);
     }
@@ -56,12 +56,12 @@ public class WorkplaceManagerMessage extends BaseServiceMessage<Serializable> {
     @Nonnull
     public static WorkplaceManagerMessage create(@Nonnull final MessageType type,
             @Nullable final Serializable payload) {
-        return new WorkplaceManagerMessage(ServiceHeaderWithType.create(checkNotNull(type)), payload);
+        return new WorkplaceManagerMessage(ServiceHeader.create(checkNotNull(type)), payload);
     }
 
     @Nonnull
     public static WorkplaceManagerMessage create(@Nonnull final MessageType type) {
-        return new WorkplaceManagerMessage(ServiceHeaderWithType.create(type), null);
+        return new WorkplaceManagerMessage(ServiceHeader.create(type), null);
     }
 
     /**
@@ -71,7 +71,7 @@ public class WorkplaceManagerMessage extends BaseServiceMessage<Serializable> {
      * @return a new message.
      */
     @Nonnull
-    public static WorkplaceManagerMessage create(@Nonnull final ServiceHeaderWithType<MessageType> header) {
+    public static WorkplaceManagerMessage create(@Nonnull final ServiceHeader<MessageType> header) {
         return create(header, null);
     }
 
@@ -83,7 +83,7 @@ public class WorkplaceManagerMessage extends BaseServiceMessage<Serializable> {
      * @return a new message.
      */
     @Nonnull
-    public static WorkplaceManagerMessage create(@Nonnull final ServiceHeaderWithType<MessageType> header,
+    public static WorkplaceManagerMessage create(@Nonnull final ServiceHeader<MessageType> header,
             @Nullable final Serializable payload) {
         return new WorkplaceManagerMessage(header, payload);
     }
@@ -95,8 +95,8 @@ public class WorkplaceManagerMessage extends BaseServiceMessage<Serializable> {
 
     @Override
     @Nonnull
-    public ServiceHeaderWithType<MessageType> getHeader() {
-        return (ServiceHeaderWithType<MessageType>) super.getHeader();
+    public ServiceHeader<MessageType> getHeader() {
+        return (ServiceHeader<MessageType>) super.getHeader();
     }
 
     /**

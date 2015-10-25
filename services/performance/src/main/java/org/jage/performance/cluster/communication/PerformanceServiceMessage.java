@@ -1,18 +1,18 @@
 package org.jage.performance.cluster.communication;
 
 import org.jage.address.node.NodeAddress;
-import org.jage.communication.message.BaseServiceMessage;
-import org.jage.communication.message.ServiceHeaderWithType;
+import org.jage.communication.message.service.ServiceMessage;
+import org.jage.communication.message.service.ServiceHeader;
 import org.jage.performance.rate.ClusterNode;
 import org.jage.performance.rate.CombinedPerformanceRate;
 
 import javax.annotation.concurrent.Immutable;
 
 @Immutable
-public class PerformanceServiceMessage extends BaseServiceMessage<ClusterNode> {
+public class PerformanceServiceMessage extends ServiceMessage<ClusterNode> {
 
     private PerformanceServiceMessage(PerformanceMessageType type, ClusterNode payload) {
-        super(ServiceHeaderWithType.create(type), payload);
+        super(ServiceHeader.create(type), payload);
     }
 
     public final boolean isRateRequestedMessage() {
@@ -24,7 +24,7 @@ public class PerformanceServiceMessage extends BaseServiceMessage<ClusterNode> {
     }
 
     private PerformanceMessageType getType() {
-        return ((ServiceHeaderWithType<PerformanceMessageType>) super.getHeader()).getType();
+        return ((ServiceHeader<PerformanceMessageType>) super.getHeader()).getType();
     }
 
     public static PerformanceServiceMessage requestPerformanceMessage(NodeAddress suppliantNodeAddress) {

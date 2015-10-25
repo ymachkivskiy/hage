@@ -32,8 +32,8 @@
 package org.jage.configuration.communication;
 
 
-import org.jage.communication.message.BaseServiceMessage;
-import org.jage.communication.message.ServiceHeaderWithType;
+import org.jage.communication.message.service.ServiceMessage;
+import org.jage.communication.message.service.ServiceHeader;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -44,7 +44,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 
 @Immutable
-public class ConfigurationMessage extends BaseServiceMessage<Serializable> {
+public class ConfigurationMessage extends ServiceMessage<Serializable> {
 
     /**
      * Constructs a new message with the given header and the payload.
@@ -52,19 +52,19 @@ public class ConfigurationMessage extends BaseServiceMessage<Serializable> {
      * @param header  A header that contains metadata for this message.
      * @param payload A payload to transport.
      */
-    public ConfigurationMessage(final ServiceHeaderWithType<MessageType> header,
+    public ConfigurationMessage(final ServiceHeader<MessageType> header,
             @Nullable final Serializable payload) {
         super(header, payload);
     }
 
     @Nonnull
     public static ConfigurationMessage create(@Nonnull final MessageType type, @Nullable final Serializable payload) {
-        return new ConfigurationMessage(ServiceHeaderWithType.create(checkNotNull(type)), payload);
+        return new ConfigurationMessage(ServiceHeader.create(checkNotNull(type)), payload);
     }
 
     @Nonnull
     public static ConfigurationMessage create(@Nonnull final MessageType type) {
-        return new ConfigurationMessage(ServiceHeaderWithType.create(type), null);
+        return new ConfigurationMessage(ServiceHeader.create(type), null);
     }
 
     /**
@@ -73,7 +73,7 @@ public class ConfigurationMessage extends BaseServiceMessage<Serializable> {
      * @param header A header that contains metadata for this message.
      * @return a new message.
      */
-    public static ConfigurationMessage create(@Nonnull final ServiceHeaderWithType<MessageType> header) {
+    public static ConfigurationMessage create(@Nonnull final ServiceHeader<MessageType> header) {
         return create(header, null);
     }
 
@@ -84,7 +84,7 @@ public class ConfigurationMessage extends BaseServiceMessage<Serializable> {
      * @param payload A payload to transport.
      * @return a new message.
      */
-    public static ConfigurationMessage create(@Nonnull final ServiceHeaderWithType<MessageType> header,
+    public static ConfigurationMessage create(@Nonnull final ServiceHeader<MessageType> header,
             @Nullable final Serializable payload) {
         return new ConfigurationMessage(header, payload);
     }
@@ -101,8 +101,8 @@ public class ConfigurationMessage extends BaseServiceMessage<Serializable> {
 
     @Override
     @Nonnull
-    public ServiceHeaderWithType<MessageType> getHeader() {
-        return (ServiceHeaderWithType<MessageType>) super.getHeader();
+    public ServiceHeader<MessageType> getHeader() {
+        return (ServiceHeader<MessageType>) super.getHeader();
     }
 
     /**

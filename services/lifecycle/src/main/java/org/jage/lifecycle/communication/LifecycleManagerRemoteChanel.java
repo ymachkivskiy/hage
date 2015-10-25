@@ -2,8 +2,7 @@ package org.jage.lifecycle.communication;
 
 
 import org.jage.communication.api.BaseRemoteChanel;
-import org.jage.communication.message.consume.ConversationMessageConsumer;
-import org.jage.communication.message.consume.MessageConsumer;
+import org.jage.communication.message.service.consume.MessageConsumer;
 import org.jage.lifecycle.DefaultLifecycleManager;
 import org.jage.lifecycle.LifecycleMessage;
 import org.springframework.beans.factory.annotation.Autowired;

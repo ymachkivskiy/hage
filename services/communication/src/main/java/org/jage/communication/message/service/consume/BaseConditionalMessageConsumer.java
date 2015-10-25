@@ -1,7 +1,7 @@
-package org.jage.communication.message.consume;
+package org.jage.communication.message.service.consume;
 
 import lombok.extern.slf4j.Slf4j;
-import org.jage.communication.message.ServiceMessage;
+import org.jage.communication.message.service.ServiceMessage;
 
 @Slf4j
 public abstract class BaseConditionalMessageConsumer<RemoteMessageT extends ServiceMessage> implements MessageConsumer<RemoteMessageT> {

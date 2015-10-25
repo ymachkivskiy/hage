@@ -4,9 +4,9 @@ package org.jage.communication.hazelcast;
 import com.hazelcast.core.*;
 import lombok.extern.slf4j.Slf4j;
 import org.jage.address.node.NodeAddress;
-import org.jage.communication.api.RemoteChannel;
+import org.jage.communication.api.RawRemoteChannel;
 import org.jage.communication.api.RemoteMessageSubscriber;
-import org.jage.communication.message.ServiceMessage;
+import org.jage.communication.message.service.ServiceMessage;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
@@ -20,7 +20,7 @@ import static com.google.common.collect.Sets.newCopyOnWriteArraySet;
 
 @ThreadSafe
 @Slf4j
-class HazelcastRemoteChannel<T extends ServiceMessage> implements RemoteChannel<T> {
+class HazelcastRawRemoteChannel<T extends ServiceMessage> implements RawRemoteChannel<T> {
 
     private final AtomicLong conversationIdCounter = new AtomicLong(0);
 
@@ -31,7 +31,7 @@ class HazelcastRemoteChannel<T extends ServiceMessage> implements RemoteChannel<
 
     private final Set<RemoteMessageSubscriber<T>> subscribers = newCopyOnWriteArraySet();
 
-    public HazelcastRemoteChannel(HazelcastInstance hazelcastInstance, String chanelName) {
+    public HazelcastRawRemoteChannel(HazelcastInstance hazelcastInstance, String chanelName) {
         this.hazelcastInstance = hazelcastInstance;
         this.chanelName = chanelName;
         this.broadcastTopic = hazelcastInstance.getTopic(chanelName);

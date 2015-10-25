@@ -1,7 +1,7 @@
-package org.jage.communication.message.consume;
+package org.jage.communication.message.service.consume;
 
 
-import org.jage.communication.message.ServiceMessage;
+import org.jage.communication.message.service.ServiceMessage;
 
 import java.util.Optional;
 import java.util.Set;

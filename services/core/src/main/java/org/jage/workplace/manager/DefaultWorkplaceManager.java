@@ -19,7 +19,7 @@ import org.jage.address.selector.Selectors;
 import org.jage.agent.IAgent;
 import org.jage.agent.ISimpleAgent;
 import org.jage.bus.EventBus;
-import org.jage.communication.api.RemoteChannel;
+import org.jage.communication.api.RawRemoteChannel;
 import org.jage.communication.api.RemoteCommunicationManager;
 import org.jage.communication.api.RemoteMessageSubscriber;
 import org.jage.communication.message.Message;
@@ -94,7 +94,7 @@ public class DefaultWorkplaceManager implements WorkplaceManager,
     private IMap<AgentAddress, Map<String, Iterable<?>>> queryCache;
     @Autowired
     private RemoteCommunicationManager communicationManager;
-    private RemoteChannel<WorkplaceManagerMessage> communicationChannel;
+    private RawRemoteChannel<WorkplaceManagerMessage> communicationChannel;
     @Autowired
     private NodeAddressSupplier nodeAddressProvider;
     private IPicoComponentInstanceProvider childContainer;

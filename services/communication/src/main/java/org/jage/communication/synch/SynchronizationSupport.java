@@ -1,62 +1,58 @@
 package org.jage.communication.synch;
 
 
-import com.google.common.util.concurrent.MoreExecutors;
 import lombok.extern.slf4j.Slf4j;
-import org.jage.communication.api.BaseRemoteChanel;
-import org.jage.communication.message.ServiceMessage;
-import org.jage.communication.message.consume.CompositeMessageConsumer;
+import org.jage.communication.message.service.ServiceMessage;
+import org.jage.communication.message.service.consume.MessageConsumer;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
+import java.util.function.Supplier;
 
 
 @Slf4j
-public class SynchronizationSupport<ResultT, RemoteMessageT extends ServiceMessage> {
+public abstract class SynchronizationSupport<ResultT, RemoteMessageT extends ServiceMessage>
+        implements MessageConsumer<RemoteMessageT> {
 
-    private BaseRemoteChanel<RemoteMessageT> remotechanel;
-    private BlockingQueue<RemoteMessageT> messageTs;
+    private ExecutorService executorService = Executors.newFixedThreadPool(1);
 
-    private CompositeMessageConsumer<RemoteMessageT> messagesConsumers = new CompositeMessageConsumer<>();
+    private final Supplier<Long> conversationIdSupplier;
+    private final CompositeSynchronousCommunicationMessageConsumer<RemoteMessageT> messagesConsumers;
 
 
-    // synchronization message consumer aggregate (has all inner message consumers)
-
-//    ExecutorService executorService = MoreExecutors.getExitingExecutorService(Executors.newFixedThreadPool(1));
-
-    public SynchronizationSupport() {
-//        Runtime.getRuntime().;
+    public SynchronizationSupport(Supplier<Long> conversationIdSupplier) {
+        this.conversationIdSupplier = conversationIdSupplier;
+        this.messagesConsumers = new CompositeSynchronousCommunicationMessageConsumer<>();
     }
 
-    public ResultT sendToAll(RemoteMessageT remoteMessageT, MessagesAggregator<RemoteMessageT, ResultT> messagesAggregator) {
+    public ResultT synchronousCall(RemoteMessageT remoteMessage, ConversationMessagesAggregator<ResultT, RemoteMessageT> messagesAggregator) {
+        Long conversationId = conversationIdSupplier.get();
+        ResponseSynch<RemoteMessageT, ResultT> responseSynch = new ResponseSynch<>(conversationId, messagesAggregator);
+        messagesConsumers.registerMessageConsumer(responseSynch);
+
+        Future<ResultT> d = executorService.submit(responseSynch);
+
+        sendMessage(remoteMessage);
+
+        ResultT response = getResponse(d);
+
+        messagesConsumers.unregisterMessageConsumer(responseSynch);
+
+        return response;
+    }
+
+    private ResultT getResponse(Future<ResultT> future) {
+        try {
+            return future.get();
+        } catch (InterruptedException | ExecutionException e) {
+            log.error("Error occurred during synchronization of communication", e);
+        }
         return null;
     }
 
-    public void registerToChanel(BaseRemoteChanel<RemoteMessageT> remoteChanel) {
-        //TODO add our message consumer to channel
+    protected abstract void sendMessage(RemoteMessageT message);
+
+    @Override
+    public void consumeMessage(RemoteMessageT message) {
+        messagesConsumers.consumeMessage(message);
     }
-
-    public void unregisterFromChanel(BaseRemoteChanel<RemoteMessageT> remoteChanel) {
-        //TODO remove our message consumer from chanel
-    }
-
-    private class Response implements Callable<ResultT> {
-
-        private final MessagesAggregator<RemoteMessageT, ResultT> messagesAggregator;
-
-        private Response(MessagesAggregator<RemoteMessageT, ResultT> messagesAggregator) {
-            this.messagesAggregator = messagesAggregator;
-        }
-
-        @Override
-        public ResultT call() throws Exception {
-
-
-            return null;
-        }
-    }
-
-//    private class SynchShutdownHook extends
 }
