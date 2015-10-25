@@ -23,4 +23,6 @@
 
     <bean id="hage.service.performance.DiskMeasurer" class="org.jage.performance.node.category.disk.DiskPerformanceMeasurer"/>
 
+    <bean id="hage.service.performance.ClusterPerformanceManager" class="org.jage.performance.cluster.CombinedClusterPerformanceManager"/>
+
 </beans>

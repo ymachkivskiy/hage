@@ -1,18 +1,19 @@
 package org.jage.performance.cluster.communication;
 
 import org.jage.address.node.NodeAddress;
-import org.jage.communication.message.service.ServiceMessage;
 import org.jage.communication.message.service.ServiceHeader;
-import org.jage.performance.rate.ClusterNode;
+import org.jage.communication.message.service.ServiceMessage;
 import org.jage.performance.rate.CombinedPerformanceRate;
 
 import javax.annotation.concurrent.Immutable;
 
-@Immutable
-public class PerformanceServiceMessage extends ServiceMessage<ClusterNode> {
+import static org.jage.communication.message.service.ServiceHeader.create;
 
-    private PerformanceServiceMessage(PerformanceMessageType type, ClusterNode payload) {
-        super(ServiceHeader.create(type), payload);
+@Immutable
+public class PerformanceServiceMessage extends ServiceMessage<CombinedPerformanceRate> {
+
+    private PerformanceServiceMessage(ServiceHeader header, CombinedPerformanceRate payload) {
+        super(header, payload);
     }
 
     public final boolean isRateRequestedMessage() {
@@ -28,12 +29,12 @@ public class PerformanceServiceMessage extends ServiceMessage<ClusterNode> {
     }
 
     public static PerformanceServiceMessage requestPerformanceMessage(NodeAddress suppliantNodeAddress) {
-        return new PerformanceServiceMessage(PerformanceMessageType.RATE_REQUESTED, new ClusterNode(suppliantNodeAddress));
+        ServiceHeader header = create(PerformanceMessageType.RATE_REQUESTED, suppliantNodeAddress);
+        return new PerformanceServiceMessage(header, null);
     }
 
-    public static PerformanceServiceMessage responsePerformanceMessage(NodeAddress responderNodeAddress, CombinedPerformanceRate nodePerformanceRate) {
-        ClusterNode payload = new ClusterNode(responderNodeAddress);
-        payload.setPerformanceRateInfo(nodePerformanceRate);
-        return new PerformanceServiceMessage(PerformanceMessageType.RATE_RESPONSE, payload);
+    public static PerformanceServiceMessage responsePerformanceMessage(Long conversationId, NodeAddress responderNodeAddress, CombinedPerformanceRate nodePerformanceRate) {
+        ServiceHeader header = create(PerformanceMessageType.RATE_RESPONSE, conversationId, responderNodeAddress);
+        return new PerformanceServiceMessage(header, nodePerformanceRate);
     }
 }

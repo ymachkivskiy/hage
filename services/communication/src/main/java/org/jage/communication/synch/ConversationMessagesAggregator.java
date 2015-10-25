@@ -20,7 +20,11 @@ public abstract class ConversationMessagesAggregator<ResultT, RemoteMessageT ext
     private final List<RemoteMessageT> collectedMessages = new ArrayList<>();
 
     public ConversationMessagesAggregator(NodeAddress... expectedMessageSenders) {
-        this.expectedMessageSenders = Stream.of(expectedMessageSenders).collect(toSet());
+        this(Stream.of(expectedMessageSenders).collect(toSet()));
+    }
+
+    public ConversationMessagesAggregator(Collection<NodeAddress> nodeAddresses) {
+        expectedMessageSenders = new HashSet<>(nodeAddresses);
     }
 
     public final boolean hasAllMessages() {

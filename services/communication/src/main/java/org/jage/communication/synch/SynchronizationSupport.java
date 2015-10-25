@@ -3,6 +3,7 @@ package org.jage.communication.synch;
 
 import lombok.extern.slf4j.Slf4j;
 import org.jage.communication.message.service.ServiceMessage;
+import org.jage.communication.message.service.consume.BaseConditionalMessageConsumer;
 import org.jage.communication.message.service.consume.MessageConsumer;
 
 import java.util.concurrent.*;
@@ -11,7 +12,7 @@ import java.util.function.Supplier;
 
 @Slf4j
 public abstract class SynchronizationSupport<ResultT, RemoteMessageT extends ServiceMessage>
-        implements MessageConsumer<RemoteMessageT> {
+        extends BaseConditionalMessageConsumer<RemoteMessageT> {
 
     private ExecutorService executorService = Executors.newFixedThreadPool(1);
 
@@ -26,6 +27,7 @@ public abstract class SynchronizationSupport<ResultT, RemoteMessageT extends Ser
 
     public ResultT synchronousCall(RemoteMessageT remoteMessage, ConversationMessagesAggregator<ResultT, RemoteMessageT> messagesAggregator) {
         Long conversationId = conversationIdSupplier.get();
+        remoteMessage.getHeader().setConversationId(conversationId);
         ResponseSynch<RemoteMessageT, ResultT> responseSynch = new ResponseSynch<>(conversationId, messagesAggregator);
         messagesConsumers.registerMessageConsumer(responseSynch);
 
@@ -52,7 +54,8 @@ public abstract class SynchronizationSupport<ResultT, RemoteMessageT extends Ser
     protected abstract void sendMessage(RemoteMessageT message);
 
     @Override
-    public void consumeMessage(RemoteMessageT message) {
+    protected void consumeMatchingMessage(RemoteMessageT message) {
         messagesConsumers.consumeMessage(message);
     }
+
 }

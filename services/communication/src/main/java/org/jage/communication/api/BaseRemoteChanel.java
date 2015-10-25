@@ -34,12 +34,16 @@ public abstract class BaseRemoteChanel<MessageT extends ServiceMessage>
         messageConsumers.add(remoteMessageConsumer);
     }
 
-    protected NodeAddress getLocalAddress() {
+    protected final NodeAddress getLocalAddress() {
         return remoteCommunicationManager.getLocalNodeAddress();
     }
 
-    protected Set<NodeAddress> getRemoteNodeAddresses() {
+    protected final Set<NodeAddress> getRemoteNodeAddresses() {
         return remoteCommunicationManager.getRemoteNodeAddresses();
+    }
+
+    protected final Set<NodeAddress> getAllClusterAddresses() {
+        return remoteCommunicationManager.getAllNodeAddresses();
     }
 
     protected final void send(MessageT message) {

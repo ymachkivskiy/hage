@@ -3,14 +3,18 @@ package org.jage.performance.cluster.communication;
 import lombok.extern.slf4j.Slf4j;
 import org.jage.address.node.NodeAddress;
 import org.jage.communication.api.BaseRemoteChanel;
+import org.jage.communication.message.service.ServiceHeader;
 import org.jage.communication.message.service.consume.BaseConditionalMessageConsumer;
+import org.jage.communication.synch.SynchronizationSupport;
 import org.jage.performance.node.NodePerformanceManager;
 import org.jage.performance.rate.ClusterNode;
 import org.jage.performance.rate.CombinedPerformanceRate;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Collections;
 import java.util.List;
+
+import static org.jage.performance.cluster.communication.PerformanceServiceMessage.requestPerformanceMessage;
+import static org.jage.performance.cluster.communication.PerformanceServiceMessage.responsePerformanceMessage;
 
 @Slf4j
 public class PerformanceRemoteChanel extends BaseRemoteChanel<PerformanceServiceMessage> {
@@ -19,46 +23,44 @@ public class PerformanceRemoteChanel extends BaseRemoteChanel<PerformanceService
     @Autowired
     private NodePerformanceManager nodePerformanceManager;
 
+    private final PerformanceRequestSynchConnector performanceRequestSynchConnector;
+
     protected PerformanceRemoteChanel() {
         super(SERVICE_NAME);
+        this.performanceRequestSynchConnector = new PerformanceRequestSynchConnector();
     }
 
     @Override
     protected void postInit() {
-        registerMessageConsumer(new RateRequestedMessageConsumer());
-    }
-
-    public CombinedPerformanceRate getNodePerformance(NodeAddress nodeAddress) {
-        PerformanceServiceMessage requestMessage = PerformanceServiceMessage.requestPerformanceMessage(getLocalAddress());
-
-        if (nodeAddress.equals(getLocalAddress())) {
-            onRemoteMessage(requestMessage);
-        }
-        return null;
+        registerMessageConsumer(new RateRequestedMessageConsumerConnector());
+        registerMessageConsumer(performanceRequestSynchConnector);
     }
 
     public List<ClusterNode> getAllNodesPerformances() {
+        log.info("Request for all nodes performances");
 
-        PerformanceServiceMessage requestMessage = PerformanceServiceMessage.requestPerformanceMessage(getLocalAddress());
-        send(requestMessage);
-
-        return Collections.emptyList();//TODO
+        return performanceRequestSynchConnector.synchronousCall(
+                requestPerformanceMessage(getLocalAddress()),
+                new ClusterNodeAggregator(getAllClusterAddresses())
+        );
     }
 
-    private void sendLocalNodeRateToNode(NodeAddress nodeAddress) {
-        log.info("Send local performance to {}", nodeAddress);
+    private void sendLocalNodeRateToNode(ServiceHeader requestMessageHeader) {
+        log.info("Send local performance request for {}", requestMessageHeader);
 
         CombinedPerformanceRate localPerformance = nodePerformanceManager.getOverallPerformance();
-        PerformanceServiceMessage responseMessage = PerformanceServiceMessage.responsePerformanceMessage(getLocalAddress(), localPerformance);
+        PerformanceServiceMessage responseMessage = responsePerformanceMessage(requestMessageHeader.getConversationId(), getLocalAddress(), localPerformance);
 
-        if (nodeAddress.equals(getLocalAddress())) {
+        NodeAddress performanceRequestSender = requestMessageHeader.getSender();
+
+        if (performanceRequestSender.equals(getLocalAddress())) {
             onRemoteMessage(responseMessage);
         } else {
-            send(responseMessage, nodeAddress);
+            send(responseMessage, performanceRequestSender);
         }
     }
 
-    private class RateRequestedMessageConsumer extends BaseConditionalMessageConsumer<PerformanceServiceMessage> {
+    private class RateRequestedMessageConsumerConnector extends BaseConditionalMessageConsumer<PerformanceServiceMessage> {
 
         @Override
         protected boolean messageMatches(PerformanceServiceMessage remoteMessage) {
@@ -67,9 +69,26 @@ public class PerformanceRemoteChanel extends BaseRemoteChanel<PerformanceService
 
         @Override
         protected void consumeMatchingMessage(PerformanceServiceMessage message) {
-            sendLocalNodeRateToNode(message.getPayload().getAddress());
+            sendLocalNodeRateToNode(message.getHeader());
         }
 
+    }
+
+    private class PerformanceRequestSynchConnector extends SynchronizationSupport<List<ClusterNode>, PerformanceServiceMessage> {
+
+        public PerformanceRequestSynchConnector() {
+            super(PerformanceRemoteChanel.this::nextConversationId);
+        }
+
+        @Override
+        protected void sendMessage(PerformanceServiceMessage message) {
+            send(message);
+        }
+
+        @Override
+        protected boolean messageMatches(PerformanceServiceMessage message) {
+            return message.isRateResponseMessage();
+        }
     }
 
 }

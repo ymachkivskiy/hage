@@ -18,4 +18,8 @@
           class="org.jage.lifecycle.communication.LifecycleManagerRemoteChanel"
           parent="hage.component.stateful.base"/>
 
+    <bean id="hage.service.performance.communication.remote"
+          class="org.jage.performance.cluster.communication.PerformanceRemoteChanel"
+          parent="hage.component.stateful.base"/>
+
 </beans>

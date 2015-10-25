@@ -19,4 +19,6 @@ public interface RemoteCommunicationManager {
     Set<NodeAddress> getRemoteNodeAddresses();
 
     NodeAddress getLocalNodeAddress();
+
+    Set<NodeAddress> getAllNodeAddresses();
 }
