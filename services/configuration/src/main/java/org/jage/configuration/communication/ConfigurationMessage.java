@@ -3,7 +3,7 @@ package org.jage.configuration.communication;
 
 import org.jage.communication.message.service.ServiceHeader;
 import org.jage.communication.message.service.ServiceMessage;
-import org.jage.configuration.data.ComputationConfiguration;
+import org.jage.platform.config.ComputationConfiguration;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;

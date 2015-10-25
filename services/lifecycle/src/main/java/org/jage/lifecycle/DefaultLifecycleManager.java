@@ -4,7 +4,6 @@ package org.jage.lifecycle;
 import com.google.common.eventbus.Subscribe;
 import lombok.extern.slf4j.Slf4j;
 import org.jage.bus.EventBus;
-import org.jage.configuration.event.ConfigurationLoadRequestEvent;
 import org.jage.configuration.event.ConfigurationUpdatedEvent;
 import org.jage.lifecycle.LifecycleMessage.LifecycleCommand;
 import org.jage.platform.component.IStatefulComponent;
@@ -28,6 +27,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import static com.google.common.base.Objects.toStringHelper;
+import static org.jage.configuration.event.ConfigurationLoadRequestEvent.configurationLoadRequest;
 
 
 @Slf4j
@@ -169,7 +169,7 @@ public class DefaultLifecycleManager implements LifecycleManager {
         }
 
         private void notifyConfigurationCanBeLoaded() {
-            eventBus.post(ConfigurationLoadRequestEvent.INSTANCE);
+            eventBus.post(configurationLoadRequest());
         }
 
 

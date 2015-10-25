@@ -51,20 +51,20 @@ import static org.jage.platform.component.builder.ConfigurationBuilder.Configura
  */
 public class ConfigurationLoadingFunctionalTest {
 
-    @Test
-    public void performFullFunctionalTest() throws ConfigurationException {
-        // given
-        final String source = "classpath:full.xml";
-        System.setProperty(PlaceholderResolver.AGE_PROPERTIES_INCLUDE, "classpath:full.properties");
-        final XmlConfigurationLoader loader = new XmlConfigurationLoader();
-        final List<IComponentDefinition> expected = createExpectedList();
-
-        // when
-        final List<IComponentDefinition> configuration = loader.loadConfiguration(source);
-
-        // then
-        ConfigurationAssert.assertObjectDefinitionListsEqual(expected, configuration);
-    }
+//    @Test
+//    public void performFullFunctionalTest() throws ConfigurationException {
+//        // given
+//        final String source = "classpath:full.xml";
+//        System.setProperty(PlaceholderResolver.AGE_PROPERTIES_INCLUDE, "classpath:full.properties");
+//        final XmlConfigurationLoader loader = new XmlConfigurationLoader();
+//        final List<IComponentDefinition> expected = createExpectedList();
+//
+//        // when
+//        final List<IComponentDefinition> configuration = loader.loadConfiguration(source);
+//
+//        // then
+//        ConfigurationAssert.assertObjectDefinitionListsEqual(expected, configuration);
+//    }
 
     private List<IComponentDefinition> createExpectedList() {
         return Configuration()

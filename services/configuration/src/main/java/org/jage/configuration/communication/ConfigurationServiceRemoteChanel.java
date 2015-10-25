@@ -4,13 +4,9 @@ package org.jage.configuration.communication;
 import lombok.extern.slf4j.Slf4j;
 import org.jage.communication.api.BaseRemoteChanel;
 import org.jage.communication.message.service.consume.BaseConditionalMessageConsumer;
-import org.jage.configuration.data.ComputationConfiguration;
-import org.jage.configuration.service.ConfigurationService;
-import org.jage.platform.component.definition.IComponentDefinition;
+import org.jage.platform.config.ComputationConfiguration;
+import org.jage.configuration.service.ConfigurationStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.io.Serializable;
-import java.util.Collection;
 
 import static org.jage.configuration.communication.ConfigurationMessage.distributeConfigurationMessage;
 import static org.jage.configuration.communication.ConfigurationMessage.requestConfigurationMessage;
@@ -23,7 +19,7 @@ public class ConfigurationServiceRemoteChanel extends BaseRemoteChanel<Configura
     public static final String SERVICE_NAME = "ConfigurationPropagationHub";
 
     @Autowired
-    private ConfigurationService configurationService;
+    private ConfigurationStorageService configurationStorageService;
 
     protected ConfigurationServiceRemoteChanel() {
         super(SERVICE_NAME);
@@ -55,7 +51,7 @@ public class ConfigurationServiceRemoteChanel extends BaseRemoteChanel<Configura
 
         @Override
         public void consumeMatchingMessage(ConfigurationMessage configurationMessage) {
-            configurationService.distributeConfiguration();
+            configurationStorageService.distributeConfiguration();
         }
     }
 
@@ -68,7 +64,7 @@ public class ConfigurationServiceRemoteChanel extends BaseRemoteChanel<Configura
 
         @Override
         public void consumeMatchingMessage(ConfigurationMessage configurationMessage) {
-            configurationService.updateConfiguration(configurationMessage.getPayload());
+            configurationStorageService.updateConfiguration(configurationMessage.getPayload());
         }
     }
 }

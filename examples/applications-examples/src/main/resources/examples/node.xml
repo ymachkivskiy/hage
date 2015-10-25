@@ -4,7 +4,7 @@
                xsi:schemaLocation="http://age.iisg.agh.edu.pl/schema/age http://age.iisg.agh.edu.pl/schema/age/age.xsd">
 
     <component class="org.jage.communication.HazelcastCommunicationManager"/>
-    <component class="org.jage.configuration.service.ConfigurationService"/>
+    <component class="org.jage.configuration.service.ConfigurationStorageService"/>
     <component class="org.jage.configuration.service.ConfigurationLoaderService"/>
     <component class="org.jage.bus.EventBus">
         <constructor-arg name="name" type="String" value="mainBus"/>

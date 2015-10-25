@@ -1,20 +1,20 @@
 package org.jage.configuration.event;
 
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.ToString;
 import org.jage.bus.AgeEvent;
-import org.jage.configuration.data.ComputationConfiguration;
+import org.jage.platform.config.ComputationConfiguration;
 
-import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
 
 
 @Immutable
-@Data
+@AllArgsConstructor
 @ToString
-public class ConfigurationLoadedEvent implements AgeEvent {
+public final class ConfigurationLoadedEvent implements AgeEvent {
 
-    @Nonnull
+    @Getter
     private final ComputationConfiguration computationConfiguration;
 }

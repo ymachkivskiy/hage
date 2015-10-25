@@ -5,10 +5,12 @@
 
     <bean id="hage.service.commandLine.arguments" class="org.jage.platform.cli.CommandLineArgumentsService"/>
 
-    <bean id="hage.service.configuration" class="org.jage.configuration.service.ConfigurationService"
+    <bean id="hage.service.configuration"
+          class="org.jage.configuration.service.ConfigurationStorageService"
           parent="hage.component.stateful.base"/>
 
-    <bean id="hage.service.configurationLoader" class="org.jage.configuration.service.ConfigurationLoaderService"
+    <bean id="hage.service.configurationLoader"
+          class="org.jage.configuration.service.ConfigurationLoaderService"
           parent="hage.component.stateful.base"/>
 
     <bean id="hage.service.performance.NodePerformanceManager" class="org.jage.performance.node.CombinedNodePerformanceManager">

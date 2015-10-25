@@ -35,6 +35,7 @@ package org.jage.platform.config.xml;
 import org.dom4j.Document;
 import org.jage.platform.component.definition.ConfigurationException;
 import org.jage.platform.component.definition.IComponentDefinition;
+import org.jage.platform.config.ComputationConfiguration;
 import org.jage.platform.config.xml.loaders.DocumentLoader;
 import org.jage.platform.config.xml.readers.DocumentReader;
 import org.junit.Test;
@@ -65,28 +66,19 @@ public class XmlConfigurationLoaderTest {
         configLoader = new XmlConfigurationLoader(loader, reader);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testCheckSourceIsString() throws ConfigurationException {
-        // given
-        Object source = new Object();
-
-        // when
-        configLoader.loadConfiguration(source);
-    }
-
-    @Test
-    public void testWithMocks() throws ConfigurationException {
-        // given
-        String source = "somePath";
-        Document document = mock(Document.class);
-        List<IComponentDefinition> definitions = Collections.emptyList();
-        given(loader.loadDocument(source)).willReturn(document);
-        given(reader.readDocument(document)).willReturn(definitions);
-
-        // when
-        List<IComponentDefinition> loaded = configLoader.loadConfiguration(source);
-
-        // then
-        assertThat(loaded, is(definitions));
-    }
+//    @Test
+//    public void testWithMocks() throws ConfigurationException {
+//        // given
+//        String source = "somePath";
+//        Document document = mock(Document.class);
+//        List<IComponentDefinition> definitions = Collections.emptyList();
+//        given(loader.loadDocument(source)).willReturn(document);
+//        given(reader.readDocument(document)).willReturn(definitions);
+//
+//        // when
+//        ComputationConfiguration loaded = configLoader.loadConfiguration(new FileConfigurationSource(source));
+//
+//        // then
+//        assertThat(loaded.getComponentsDefinitions(), is(definitions));
+//    }
 }
