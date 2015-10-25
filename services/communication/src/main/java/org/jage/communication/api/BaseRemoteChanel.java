@@ -1,9 +1,11 @@
-package org.jage.communication.common;
+package org.jage.communication.api;
 
 
 import lombok.extern.slf4j.Slf4j;
 import org.jage.address.node.NodeAddress;
 import org.jage.communication.message.ServiceMessage;
+import org.jage.communication.message.consume.ConversationMessageConsumer;
+import org.jage.communication.message.consume.MessageConsumer;
 import org.jage.platform.component.IStatefulComponent;
 import org.jage.platform.component.exception.ComponentException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,15 +23,15 @@ public abstract class BaseRemoteChanel<MessageT extends ServiceMessage>
     private RemoteCommunicationManager remoteCommunicationManager;
 
     private final String serviceName;
-    private List<RemoteMessageConsumer<MessageT>> messageConsumers = new LinkedList<>();
+    private List<MessageConsumer<MessageT>> messageConsumers = new LinkedList<>();
 
-    private RemoteCommunicationChannel<MessageT> remoteChanel;
+    private RemoteChannel<MessageT> remoteChanel;
 
     protected BaseRemoteChanel(String serviceName) {
         this.serviceName = serviceName;
     }
 
-    protected final void registerMessageConsumer(RemoteMessageConsumer<MessageT> remoteMessageConsumer) {
+    protected final void registerMessageConsumer(MessageConsumer<MessageT> remoteMessageConsumer) {
         log.debug("Registered remote message consumer {}", remoteMessageConsumer);
         messageConsumers.add(remoteMessageConsumer);
     }
@@ -74,11 +76,6 @@ public abstract class BaseRemoteChanel<MessageT extends ServiceMessage>
     public final void onRemoteMessage(MessageT message) {
         log.debug("Received message: {}", message);
 
-        messageConsumers
-                .stream()
-                .filter(consumer -> consumer.test(message))
-                .forEach(consumer -> consumer.accept(message));
+        messageConsumers.forEach(consumer -> consumer.consumeMessage(message));
     }
-
-    //TODO pastin conversationID
 }

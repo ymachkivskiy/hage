@@ -1,8 +1,9 @@
 package org.jage.lifecycle.communication;
 
 
-import org.jage.communication.common.BaseRemoteChanel;
-import org.jage.communication.common.RemoteMessageConsumer;
+import org.jage.communication.api.BaseRemoteChanel;
+import org.jage.communication.message.consume.ConversationMessageConsumer;
+import org.jage.communication.message.consume.MessageConsumer;
 import org.jage.lifecycle.DefaultLifecycleManager;
 import org.jage.lifecycle.LifecycleMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +25,9 @@ public class LifecycleManagerRemoteChanel extends BaseRemoteChanel<LifecycleMess
         registerMessageConsumer(new PerformCommandMessageConsumer());
     }
 
-    private class PerformCommandMessageConsumer extends RemoteMessageConsumer<LifecycleMessage> {
+    private class PerformCommandMessageConsumer implements MessageConsumer<LifecycleMessage> {
         @Override
-        public void accept(LifecycleMessage lifecycleMessage) {
+        public void consumeMessage(LifecycleMessage lifecycleMessage) {
             lifecycleManager.performCommand(lifecycleMessage.getCommand());
         }
     }

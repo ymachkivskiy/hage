@@ -7,16 +7,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.jage.address.node.HazelcastNodeAddress;
 import org.jage.address.node.NodeAddress;
 import org.jage.address.node.NodeAddressSupplier;
-import org.jage.communication.common.RemoteCommunicationManager;
+import org.jage.communication.api.RemoteCommunicationManager;
 import org.jage.communication.message.ServiceMessage;
 import org.jage.platform.component.IStatefulComponent;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
-import java.io.Serializable;
-import java.util.Iterator;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 import static com.google.common.base.Objects.toStringHelper;
@@ -59,8 +56,8 @@ class HazelcastRemoteCommunicationManager
 
     @Nonnull
     @Override
-    public <T extends ServiceMessage> HazelcastRemoteCommunicationChannel<T> getCommunicationChannelForService(final String serviceName) {
-        return new HazelcastRemoteCommunicationChannel<>(hazelcastInstance, SERVICE_PREFIX + serviceName);
+    public <T extends ServiceMessage> HazelcastRemoteChannel<T> getCommunicationChannelForService(final String serviceName) {
+        return new HazelcastRemoteChannel<>(hazelcastInstance, SERVICE_PREFIX + serviceName);
     }
 
     @Nonnull

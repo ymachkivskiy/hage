@@ -1,4 +1,4 @@
-package org.jage.communication.common;
+package org.jage.communication.api;
 
 
 import org.jage.exception.AgeException;

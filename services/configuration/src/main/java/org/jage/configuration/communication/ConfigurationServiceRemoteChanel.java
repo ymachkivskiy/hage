@@ -2,8 +2,9 @@ package org.jage.configuration.communication;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.jage.communication.common.BaseRemoteChanel;
-import org.jage.communication.common.RemoteMessageConsumer;
+import org.jage.communication.api.BaseRemoteChanel;
+import org.jage.communication.message.consume.BaseConditionalMessageConsumer;
+import org.jage.communication.message.consume.ConversationMessageConsumer;
 import org.jage.configuration.communication.ConfigurationMessage.MessageType;
 import org.jage.configuration.service.ConfigurationService;
 import org.jage.platform.component.definition.IComponentDefinition;
@@ -52,28 +53,28 @@ public class ConfigurationServiceRemoteChanel
         sendMessageToAll(message);
     }
 
-    private class RequestConfigurationMessageConsumer extends RemoteMessageConsumer<ConfigurationMessage> {
+    private class RequestConfigurationMessageConsumer extends BaseConditionalMessageConsumer<ConfigurationMessage> {
 
         @Override
-        protected boolean messageMatch(ConfigurationMessage remoteMessage) {
+        protected boolean messageMatches(ConfigurationMessage remoteMessage) {
             return remoteMessage.getType() == MessageType.REQUEST;
         }
 
         @Override
-        public void accept(ConfigurationMessage configurationMessage) {
+        public void consumeMatchingMessage(ConfigurationMessage configurationMessage) {
             configurationService.distributeConfiguration();
         }
     }
 
-    private class DistributeConfigurationMessageConsumer extends RemoteMessageConsumer<ConfigurationMessage> {
+    private class DistributeConfigurationMessageConsumer extends BaseConditionalMessageConsumer<ConfigurationMessage> {
 
         @Override
-        protected boolean messageMatch(ConfigurationMessage remoteMessage) {
+        protected boolean messageMatches(ConfigurationMessage remoteMessage) {
             return remoteMessage.getType() == MessageType.DISTRIBUTE;
         }
 
         @Override
-        public void accept(ConfigurationMessage configurationMessage) {
+        public void consumeMatchingMessage(ConfigurationMessage configurationMessage) {
             Serializable payload = configurationMessage.getPayload();
             if (!(payload instanceof Collection)) {
                 throw new NullPointerException(String.format("Configuration payload was null. Faulty message was sent by %s.", configurationMessage));

@@ -2,8 +2,10 @@ package org.jage.performance.cluster.communication;
 
 import lombok.extern.slf4j.Slf4j;
 import org.jage.address.node.NodeAddress;
-import org.jage.communication.common.BaseRemoteChanel;
-import org.jage.communication.common.RemoteMessageConsumer;
+import org.jage.communication.api.BaseRemoteChanel;
+import org.jage.communication.message.consume.BaseConditionalMessageConsumer;
+import org.jage.communication.message.consume.ConversationMessageConsumer;
+import org.jage.communication.message.consume.MessageConsumer;
 import org.jage.performance.node.NodePerformanceManager;
 import org.jage.performance.rate.ClusterNode;
 import org.jage.performance.rate.CombinedPerformanceRate;
@@ -58,15 +60,15 @@ public class PerformanceRemoteChanel extends BaseRemoteChanel<PerformanceService
         }
     }
 
-    private class RateRequestedMessageConsumer extends RemoteMessageConsumer<PerformanceServiceMessage> {
+    private class RateRequestedMessageConsumer extends BaseConditionalMessageConsumer<PerformanceServiceMessage> {
 
         @Override
-        protected boolean messageMatch(PerformanceServiceMessage remoteMessage) {
+        protected boolean messageMatches(PerformanceServiceMessage remoteMessage) {
             return remoteMessage.isRateRequestedMessage();
         }
 
         @Override
-        public void accept(PerformanceServiceMessage message) {
+        protected void consumeMatchingMessage(PerformanceServiceMessage message) {
             sendLocalNodeRateToNode(message.getPayload().getAddress());
         }
 

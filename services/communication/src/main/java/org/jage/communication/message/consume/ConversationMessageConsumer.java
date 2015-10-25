@@ -1,35 +1,33 @@
-package org.jage.communication.common;
+package org.jage.communication.message.consume;
 
 
 import org.jage.communication.message.ServiceMessage;
 
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 import static java.util.Optional.ofNullable;
 
-public abstract class RemoteMessageConsumer<RemoteMessageT extends ServiceMessage>
-        implements Predicate<RemoteMessageT>, Consumer<RemoteMessageT> {
+public abstract class ConversationMessageConsumer<RemoteMessageT extends ServiceMessage>
+        extends BaseConditionalMessageConsumer<RemoteMessageT> {
 
     private Optional<Set<Long>> trackedConversationIds;
 
-    protected RemoteMessageConsumer() {
+    protected ConversationMessageConsumer() {
         this(null);
     }
 
-    protected RemoteMessageConsumer(Set<Long> trackedConversationIds) {
+    protected ConversationMessageConsumer(Set<Long> trackedConversationIds) {
         this.trackedConversationIds = ofNullable(trackedConversationIds);
     }
 
     @Override
-    public final boolean test(RemoteMessageT remoteMessage) {
+    public final boolean messageMatches(RemoteMessageT remoteMessage) {
         return ofNullable(remoteMessage.getHeader().getConversationId())
                 .map(this::isTrackingConversation)
                 .orElse(true)
                 &&
-                messageMatch(remoteMessage);
+                messageMatchAdditionalCheck(remoteMessage);
     }
 
     private boolean isTrackingConversation(Long conversationId) {
@@ -38,7 +36,7 @@ public abstract class RemoteMessageConsumer<RemoteMessageT extends ServiceMessag
                 .orElse(true);
     }
 
-    protected boolean messageMatch(RemoteMessageT remoteMessage) {
+    protected boolean messageMatchAdditionalCheck(RemoteMessageT remoteMessage) {
         return true;
     }
 }

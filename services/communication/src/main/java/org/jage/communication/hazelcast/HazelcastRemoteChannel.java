@@ -4,13 +4,12 @@ package org.jage.communication.hazelcast;
 import com.hazelcast.core.*;
 import lombok.extern.slf4j.Slf4j;
 import org.jage.address.node.NodeAddress;
-import org.jage.communication.common.RemoteCommunicationChannel;
-import org.jage.communication.common.RemoteMessageSubscriber;
+import org.jage.communication.api.RemoteChannel;
+import org.jage.communication.api.RemoteMessageSubscriber;
 import org.jage.communication.message.ServiceMessage;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
-import java.io.Serializable;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
@@ -21,7 +20,7 @@ import static com.google.common.collect.Sets.newCopyOnWriteArraySet;
 
 @ThreadSafe
 @Slf4j
-class HazelcastRemoteCommunicationChannel<T extends ServiceMessage> implements RemoteCommunicationChannel<T> {
+class HazelcastRemoteChannel<T extends ServiceMessage> implements RemoteChannel<T> {
 
     private final AtomicLong conversationIdCounter = new AtomicLong(0);
 
@@ -32,7 +31,7 @@ class HazelcastRemoteCommunicationChannel<T extends ServiceMessage> implements R
 
     private final Set<RemoteMessageSubscriber<T>> subscribers = newCopyOnWriteArraySet();
 
-    public HazelcastRemoteCommunicationChannel(HazelcastInstance hazelcastInstance, String chanelName) {
+    public HazelcastRemoteChannel(HazelcastInstance hazelcastInstance, String chanelName) {
         this.hazelcastInstance = hazelcastInstance;
         this.chanelName = chanelName;
         this.broadcastTopic = hazelcastInstance.getTopic(chanelName);
