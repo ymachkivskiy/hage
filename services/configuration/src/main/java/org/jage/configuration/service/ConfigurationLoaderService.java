@@ -35,6 +35,7 @@ package org.jage.configuration.service;
 import com.google.common.eventbus.Subscribe;
 import lombok.extern.slf4j.Slf4j;
 import org.jage.bus.EventBus;
+import org.jage.configuration.data.ComputationConfiguration;
 import org.jage.configuration.event.ConfigurationLoadRequestEvent;
 import org.jage.configuration.event.ConfigurationLoadedEvent;
 import org.jage.platform.argument.RuntimeArgumentsService;
@@ -114,7 +115,7 @@ public class ConfigurationLoaderService implements IStatefulComponent {
     }
 
     private void propagateComputationComponentsDefinitions(Collection<IComponentDefinition> computationComponents) {
-        eventBus.post(new ConfigurationLoadedEvent(computationComponents));
+        eventBus.post(new ConfigurationLoadedEvent(new ComputationConfiguration(computationComponents)));
     }
 
     @Override

@@ -4,19 +4,20 @@ package org.jage.configuration.communication;
 import lombok.extern.slf4j.Slf4j;
 import org.jage.communication.api.BaseRemoteChanel;
 import org.jage.communication.message.service.consume.BaseConditionalMessageConsumer;
-import org.jage.configuration.communication.ConfigurationMessage.MessageType;
+import org.jage.configuration.data.ComputationConfiguration;
 import org.jage.configuration.service.ConfigurationService;
 import org.jage.platform.component.definition.IComponentDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
+
+import static org.jage.configuration.communication.ConfigurationMessage.distributeConfigurationMessage;
+import static org.jage.configuration.communication.ConfigurationMessage.requestConfigurationMessage;
 
 
 @Slf4j
-public class ConfigurationServiceRemoteChanel
-        extends BaseRemoteChanel<ConfigurationMessage> {
+public class ConfigurationServiceRemoteChanel extends BaseRemoteChanel<ConfigurationMessage> {
 
 
     public static final String SERVICE_NAME = "ConfigurationPropagationHub";
@@ -35,28 +36,21 @@ public class ConfigurationServiceRemoteChanel
         registerMessageConsumer(new DistributeConfigurationMessageConsumer());
     }
 
-    public void distributeConfiguration(Collection<IComponentDefinition> configuration) {
+    public void distributeConfiguration(ComputationConfiguration configuration) {
         log.debug("Distributing configuration {} ", configuration);
-
-        ArrayList<IComponentDefinition> definitions = new ArrayList<>(configuration);
-        ConfigurationMessage message = ConfigurationMessage.create(ConfigurationMessage.MessageType.DISTRIBUTE, definitions);
-
-        send(message);
+        send(distributeConfigurationMessage(configuration));
     }
 
     public void acquireConfiguration() {
         log.debug("Acquiring configuration");
-
-        ConfigurationMessage message = ConfigurationMessage.create(ConfigurationMessage.MessageType.REQUEST);
-
-        send(message);
+        send(requestConfigurationMessage());
     }
 
     private class RequestConfigurationMessageConsumer extends BaseConditionalMessageConsumer<ConfigurationMessage> {
 
         @Override
         protected boolean messageMatches(ConfigurationMessage remoteMessage) {
-            return remoteMessage.getType() == MessageType.REQUEST;
+            return remoteMessage.isRequest();
         }
 
         @Override
@@ -69,16 +63,12 @@ public class ConfigurationServiceRemoteChanel
 
         @Override
         protected boolean messageMatches(ConfigurationMessage remoteMessage) {
-            return remoteMessage.getType() == MessageType.DISTRIBUTE;
+            return remoteMessage.isDistribute();
         }
 
         @Override
         public void consumeMatchingMessage(ConfigurationMessage configurationMessage) {
-            Serializable payload = configurationMessage.getPayload();
-            if (!(payload instanceof Collection)) {
-                throw new NullPointerException(String.format("Configuration payload was null. Faulty message was sent by %s.", configurationMessage));
-            }
-            configurationService.updateConfiguration((Collection<IComponentDefinition>) payload);
+            configurationService.updateConfiguration(configurationMessage.getPayload());
         }
     }
 }

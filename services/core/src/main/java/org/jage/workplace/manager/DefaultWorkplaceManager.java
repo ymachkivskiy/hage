@@ -421,7 +421,7 @@ public class DefaultWorkplaceManager implements WorkplaceManager,
         log.debug("Event: {}.", event);
         checkState(configuredWorkplaces == null, "The core component is already configured.");
 
-        final Collection<IComponentDefinition> componentDefinitions = event.getComponents();
+        final Collection<IComponentDefinition> componentDefinitions = event.getComputationConfiguration().getComponents();
 
         childContainer = instanceProvider.makeChildContainer();
         for(final IComponentDefinition def : componentDefinitions) {

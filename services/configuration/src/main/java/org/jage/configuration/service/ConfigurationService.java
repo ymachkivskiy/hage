@@ -5,6 +5,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.common.util.concurrent.AbstractScheduledService;
 import lombok.extern.slf4j.Slf4j;
 import org.jage.bus.EventBus;
+import org.jage.configuration.data.ComputationConfiguration;
 import org.jage.configuration.event.ConfigurationLoadedEvent;
 import org.jage.configuration.communication.ConfigurationServiceRemoteChanel;
 import org.jage.configuration.event.ConfigurationUpdatedEvent;
@@ -29,7 +30,7 @@ import static java.util.Collections.unmodifiableList;
 public class ConfigurationService extends AbstractScheduledService
         implements IStatefulComponent {
 
-    private final AtomicReference<Collection<IComponentDefinition>> configuration = new AtomicReference<>(null);
+    private final AtomicReference<ComputationConfiguration> configuration = new AtomicReference<>(null);
 
     @Autowired
     private EventBus eventBus;
@@ -51,32 +52,32 @@ public class ConfigurationService extends AbstractScheduledService
     }
 
     public void distributeConfiguration() {
-        if(configuration.get() != null) {
+        if (configuration.get() != null) {
             remoteConfigurationChanel.distributeConfiguration(configuration.get());
         }
     }
 
-    public void updateConfiguration(Collection<IComponentDefinition> configuration) {
-        if(this.configuration.compareAndSet(null, configuration)) {
+    public void updateConfiguration(ComputationConfiguration configuration) {
+        if (this.configuration.compareAndSet(null, configuration)) {
             notifyConfigurationUpdated();
         }
     }
 
     private void notifyConfigurationUpdated() {
         log.debug("Computation configuration set.");
-        eventBus.post(new ConfigurationUpdatedEvent(unmodifiableList(newArrayList(configuration.get()))));
+        eventBus.post(new ConfigurationUpdatedEvent(configuration.get()));
     }
 
     @Subscribe
     public void onConfigurationLoaded(@Nonnull final ConfigurationLoadedEvent event) {
         log.debug("Configuration loaded event: {}.", event);
-        configuration.set(event.getLoadedComponents());
+        configuration.set(event.getComputationConfiguration());
         notifyConfigurationUpdated();
     }
 
     @Override
     protected void runOneIteration() {
-        if(configuration.get() == null) {
+        if (configuration.get() == null) {
             log.debug("No configuration. Broadcasting the request.");
             remoteConfigurationChanel.acquireConfiguration();
         }
