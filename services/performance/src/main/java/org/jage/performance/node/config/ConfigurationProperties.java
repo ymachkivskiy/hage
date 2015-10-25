@@ -1,6 +1,6 @@
-package org.jage.performance.config;
+package org.jage.performance.node.config;
 
-import org.jage.performance.category.PerformanceCategory;
+import org.jage.performance.node.category.PerformanceCategory;
 
 import java.util.EnumMap;
 import java.util.Map;

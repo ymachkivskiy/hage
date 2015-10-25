@@ -1,8 +1,8 @@
-package org.jage.performance.category.cpu;
+package org.jage.performance.node.category.cpu;
 
 import lombok.extern.slf4j.Slf4j;
-import org.jage.performance.category.PerformanceMeasurer;
-import org.jage.performance.category.PerformanceRate;
+import org.jage.performance.node.category.PerformanceMeasurer;
+import org.jage.performance.node.category.PerformanceRate;
 
 @Slf4j
 class CpuPerformanceMeasurer implements PerformanceMeasurer {

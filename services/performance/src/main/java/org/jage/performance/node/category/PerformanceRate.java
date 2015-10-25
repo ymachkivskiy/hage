@@ -1,4 +1,4 @@
-package org.jage.performance.category;
+package org.jage.performance.node.category;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -2,7 +2,8 @@ package org.jage.configuration.communication;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.jage.communication.common.AbstractRemoteChanel;
+import org.jage.communication.common.BaseRemoteChanel;
+import org.jage.communication.common.RemoteMessageConsumer;
 import org.jage.configuration.communication.ConfigurationMessage.MessageType;
 import org.jage.configuration.service.ConfigurationService;
 import org.jage.platform.component.definition.IComponentDefinition;
@@ -15,7 +16,7 @@ import java.util.Collection;
 
 @Slf4j
 public class ConfigurationServiceRemoteChanel
-        extends AbstractRemoteChanel<ConfigurationMessage> {
+        extends BaseRemoteChanel<ConfigurationMessage> {
 
 
     public static final String SERVICE_NAME = "ConfigurationPropagationHub";
@@ -30,20 +31,8 @@ public class ConfigurationServiceRemoteChanel
 
     @Override
     protected void postInit() {
-        registerConsumerHandler(message -> message.getType() == MessageType.REQUEST,
-                                message -> configurationService.distributeConfiguration()
-        );
-
-        registerConsumerHandler(message -> message.getType() == MessageType.DISTRIBUTE,
-                                message -> {
-                                    final Serializable payload = message.getPayload();
-                                    if(!(payload instanceof Collection)) {
-                                        throw new NullPointerException(String.format("Configuration payload was null. Faulty message was sent by %s.", message));
-                                    }
-                                    configurationService.updateConfiguration((Collection<IComponentDefinition>) payload);
-                                }
-        );
-
+        registerMessageConsumer(new RequestConfigurationMessageConsumer());
+        registerMessageConsumer(new DistributeConfigurationMessageConsumer());
     }
 
     public void distributeConfiguration(Collection<IComponentDefinition> configuration) {
@@ -52,7 +41,7 @@ public class ConfigurationServiceRemoteChanel
         ArrayList<IComponentDefinition> definitions = new ArrayList<>(configuration);
         ConfigurationMessage message = ConfigurationMessage.create(ConfigurationMessage.MessageType.DISTRIBUTE, definitions);
 
-        remoteChanel.sendMessageToAll(message);
+        sendMessageToAll(message);
     }
 
     public void acquireConfiguration() {
@@ -60,6 +49,36 @@ public class ConfigurationServiceRemoteChanel
 
         ConfigurationMessage message = ConfigurationMessage.create(ConfigurationMessage.MessageType.REQUEST);
 
-        remoteChanel.sendMessageToAll(message);
+        sendMessageToAll(message);
+    }
+
+    private class RequestConfigurationMessageConsumer extends RemoteMessageConsumer<ConfigurationMessage> {
+
+        @Override
+        protected boolean messageMatch(ConfigurationMessage remoteMessage) {
+            return remoteMessage.getType() == MessageType.REQUEST;
+        }
+
+        @Override
+        public void accept(ConfigurationMessage configurationMessage) {
+            configurationService.distributeConfiguration();
+        }
+    }
+
+    private class DistributeConfigurationMessageConsumer extends RemoteMessageConsumer<ConfigurationMessage> {
+
+        @Override
+        protected boolean messageMatch(ConfigurationMessage remoteMessage) {
+            return remoteMessage.getType() == MessageType.DISTRIBUTE;
+        }
+
+        @Override
+        public void accept(ConfigurationMessage configurationMessage) {
+            Serializable payload = configurationMessage.getPayload();
+            if (!(payload instanceof Collection)) {
+                throw new NullPointerException(String.format("Configuration payload was null. Faulty message was sent by %s.", configurationMessage));
+            }
+            configurationService.updateConfiguration((Collection<IComponentDefinition>) payload);
+        }
     }
 }

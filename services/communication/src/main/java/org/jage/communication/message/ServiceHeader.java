@@ -33,6 +33,7 @@ package org.jage.communication.message;
 
 
 import java.io.Serializable;
+import java.util.Optional;
 
 
 /**
@@ -43,5 +44,5 @@ import java.io.Serializable;
  * @author AGH AgE Team
  */
 public interface ServiceHeader extends Serializable {
-    // Empty
+    Long getConversationId();
 }

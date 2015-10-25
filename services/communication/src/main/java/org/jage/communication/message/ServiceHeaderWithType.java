@@ -32,43 +32,41 @@
 package org.jage.communication.message;
 
 
-import javax.annotation.Nonnull;
+import lombok.ToString;
+
+import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
+import java.util.Optional;
 
-import static com.google.common.base.Objects.toStringHelper;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Optional.ofNullable;
 
-
-/**
- * Base implementation for the {@link ServiceHeader} which defines a type of a message.
- *
- * @param <T> enum that lists all types of a message.
- */
 @Immutable
-public class ServiceHeaderWithType<T extends Enum<T>> implements ServiceHeader {
+@ToString
+public class ServiceHeaderWithType<E extends Enum<E>> implements ServiceHeader {
 
-    private final T type;
+    private final E type;
+    private Long conversationId;
 
-    private ServiceHeaderWithType(final T type) {
-        this.type = checkNotNull(type);
+    private ServiceHeaderWithType(E type, @Nullable Long conversationId) {
+        this.type = type;
+        this.conversationId = conversationId;
     }
 
-    public static <V extends Enum<V>> ServiceHeaderWithType<V> create(final V type) {
-        return new ServiceHeaderWithType<>(checkNotNull(type));
+    public static <E extends Enum<E>> ServiceHeaderWithType<E> create(E type, Long conversationId) {
+        return new ServiceHeaderWithType<>(checkNotNull(type), conversationId);
     }
 
-    /**
-     * Returns the type that this header represents.
-     *
-     * @return a type that this header represents.
-     */
-    @Nonnull
-    public T getType() {
+    public static <E extends Enum<E>> ServiceHeaderWithType<E> create(E type) {
+        return new ServiceHeaderWithType<>(checkNotNull(type), null);
+    }
+
+    public E getType() {
         return type;
     }
 
     @Override
-    public String toString() {
-        return toStringHelper(this).addValue(type).toString();
+    public Long getConversationId() {
+        return conversationId;
     }
 }

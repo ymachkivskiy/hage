@@ -11,16 +11,16 @@
     <bean id="hage.service.configurationLoader" class="org.jage.configuration.service.ConfigurationLoaderService"
           parent="hage.component.stateful.base"/>
 
-    <bean id="hage.service.performance.NodePerformanceManager" class="org.jage.performance.CombinedNodePerformanceManager">
+    <bean id="hage.service.performance.NodePerformanceManager" class="org.jage.performance.node.CombinedNodePerformanceManager">
         <property name="cpuPerformanceMeasurer" ref="hage.service.performance.CPUMeasurer"/>
         <property name="memoryPerformanceMeasurer" ref="hage.service.performance.MemoryMeasurer"/>
         <property name="diskPerformanceMeasurer" ref="hage.service.performance.DiskMeasurer"/>
     </bean>
 
-    <bean id="hage.service.performance.CPUMeasurer" class="org.jage.performance.category.cpu.CpuPerformanceMeasurer"/>
+    <bean id="hage.service.performance.CPUMeasurer" class="org.jage.performance.node.category.cpu.CpuPerformanceMeasurer"/>
 
-    <bean id="hage.service.performance.MemoryMeasurer" class="org.jage.performance.category.memory.MemoryPerformanceMeasurer"/>
+    <bean id="hage.service.performance.MemoryMeasurer" class="org.jage.performance.node.category.memory.MemoryPerformanceMeasurer"/>
 
-    <bean id="hage.service.performance.DiskMeasurer" class="org.jage.performance.category.disk.DiskPerformanceMeasurer"/>
+    <bean id="hage.service.performance.DiskMeasurer" class="org.jage.performance.node.category.disk.DiskPerformanceMeasurer"/>
 
 </beans>

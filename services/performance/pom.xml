@@ -11,5 +11,12 @@
 
     <artifactId>performance</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.jage.services</groupId>
+            <artifactId>communication</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 
 </project>

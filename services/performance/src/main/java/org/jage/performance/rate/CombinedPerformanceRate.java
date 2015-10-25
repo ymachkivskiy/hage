@@ -1,4 +1,4 @@
-package org.jage.performance;
+package org.jage.performance.rate;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,13 +10,13 @@ import java.io.Serializable;
 @Immutable
 @AllArgsConstructor
 @ToString
-public class CombinedNodePerformanceRate implements Serializable, Comparable<CombinedNodePerformanceRate> {
+public class CombinedPerformanceRate implements Serializable, Comparable<CombinedPerformanceRate> {
 
     @Getter
     private final int rate;
 
     @Override
-    public int compareTo(CombinedNodePerformanceRate o) {
+    public int compareTo(CombinedPerformanceRate o) {
         return rate - o.rate;
     }
 }

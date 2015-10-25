@@ -1,4 +1,4 @@
-package org.jage.performance.config;
+package org.jage.performance.node.config;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

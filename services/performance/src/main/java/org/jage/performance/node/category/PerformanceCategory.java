@@ -1,4 +1,4 @@
-package org.jage.performance.category;
+package org.jage.performance.node.category;
 
 public enum PerformanceCategory {
     CPU,

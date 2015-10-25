@@ -6,12 +6,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.jage.address.node.NodeAddress;
 import org.jage.communication.common.RemoteCommunicationChannel;
 import org.jage.communication.common.RemoteMessageSubscriber;
+import org.jage.communication.message.ServiceMessage;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
 import java.io.Serializable;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicLong;
 
 import static com.google.common.base.Objects.toStringHelper;
 import static com.google.common.collect.Sets.newCopyOnWriteArraySet;
@@ -19,7 +21,9 @@ import static com.google.common.collect.Sets.newCopyOnWriteArraySet;
 
 @ThreadSafe
 @Slf4j
-class HazelcastRemoteCommunicationChannel<T extends Serializable> implements RemoteCommunicationChannel<T> {
+class HazelcastRemoteCommunicationChannel<T extends ServiceMessage> implements RemoteCommunicationChannel<T> {
+
+    private final AtomicLong conversationIdCounter = new AtomicLong(0);
 
     private final String chanelName;
     private final ITopic<T> broadcastTopic;
@@ -39,13 +43,18 @@ class HazelcastRemoteCommunicationChannel<T extends Serializable> implements Rem
     }
 
     @Override
+    public Long nextConversationId() {
+        return conversationIdCounter.getAndIncrement();
+    }
+
+    @Override
     public void sendMessageToAll(@Nonnull final T message) {
         log.debug("Publishing [{}] on the channel [{}].", message, chanelName);
         broadcastTopic.publish(message);
     }
 
     @Override
-    public void setMessageToNode(T message, NodeAddress nodeAddress) {
+    public void sendMessageToNode(T message, NodeAddress nodeAddress) {
         String localUid = hazelcastInstance.getCluster().getLocalMember().getUuid();
         if (nodeAddress.getIdentifier().equals(localUid)) {
             log.warn("Remote chanel client {} try to send message {} via chanel {} to himself", nodeAddress, message, chanelName);

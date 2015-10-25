@@ -1,4 +1,4 @@
-package org.jage.performance.category;
+package org.jage.performance.node.category;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -9,7 +9,7 @@ public class DummyMeasurer implements PerformanceMeasurer {
 
     @Override
     public PerformanceRate measure() {
-        PerformanceRate result = PerformanceRate.DUMMY;
+        PerformanceRate result = new PerformanceRate(1);
         log.info("Default measure rate {}", result);
         return result;
     }

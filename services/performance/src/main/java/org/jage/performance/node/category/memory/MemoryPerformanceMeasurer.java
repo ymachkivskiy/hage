@@ -1,8 +1,8 @@
-package org.jage.performance.category.memory;
+package org.jage.performance.node.category.memory;
 
 import lombok.extern.slf4j.Slf4j;
-import org.jage.performance.category.PerformanceMeasurer;
-import org.jage.performance.category.PerformanceRate;
+import org.jage.performance.node.category.PerformanceMeasurer;
+import org.jage.performance.node.category.PerformanceRate;
 
 @Slf4j
 class MemoryPerformanceMeasurer implements PerformanceMeasurer {

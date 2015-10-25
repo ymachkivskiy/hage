@@ -1,10 +1,12 @@
-package org.jage.performance;
+package org.jage.performance.node;
 
 import lombok.extern.slf4j.Slf4j;
-import org.jage.performance.category.DummyMeasurer;
-import org.jage.performance.category.PerformanceCategory;
-import org.jage.performance.category.PerformanceMeasurer;
-import org.jage.performance.config.ConfigurationProperties;
+import org.jage.performance.rate.RateCombiner;
+import org.jage.performance.node.category.DummyMeasurer;
+import org.jage.performance.node.category.PerformanceCategory;
+import org.jage.performance.node.category.PerformanceMeasurer;
+import org.jage.performance.node.config.ConfigurationProperties;
+import org.jage.performance.rate.CombinedPerformanceRate;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -23,14 +25,14 @@ class CombinedNodePerformanceManager implements NodePerformanceManager {
     }
 
     @Override
-    public CombinedNodePerformanceRate getOverallPerformance() {
+    public CombinedPerformanceRate getOverallPerformance() {
         log.info("Calculating overall node performance");
 
         RateCombiner rateCombiner = new RateCombiner();
 
         performanceMeasurers.forEach((cat, measurer) -> rateCombiner.addMeasurement(cat, measurer.measure()));
 
-        CombinedNodePerformanceRate overallPerformance = rateCombiner.calculateCombinedRate(configurationProperties);
+        CombinedPerformanceRate overallPerformance = rateCombiner.calculateCombinedRate(configurationProperties);
 
         log.info("Overall performance is {}", overallPerformance);
 

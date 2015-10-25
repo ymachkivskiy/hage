@@ -1,41 +1,37 @@
 package org.jage.communication.common;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.jage.address.node.NodeAddress;
+import org.jage.communication.message.ServiceMessage;
 import org.jage.platform.component.IStatefulComponent;
 import org.jage.platform.component.exception.ComponentException;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 
 @Slf4j
-public abstract class AbstractRemoteChanel<MessageT extends Serializable>
+public abstract class BaseRemoteChanel<MessageT extends ServiceMessage>
         implements IStatefulComponent, RemoteMessageSubscriber<MessageT> {
 
     @Autowired
     private RemoteCommunicationManager remoteCommunicationManager;
 
     private final String serviceName;
-    private List<MessageFilterConsumer<MessageT>> messageConsumers = new ArrayList<>();
+    private List<RemoteMessageConsumer<MessageT>> messageConsumers = new LinkedList<>();
 
-    protected RemoteCommunicationChannel<MessageT> remoteChanel;
+    private RemoteCommunicationChannel<MessageT> remoteChanel;
 
-    protected AbstractRemoteChanel(String serviceName) {
+    protected BaseRemoteChanel(String serviceName) {
         this.serviceName = serviceName;
     }
 
-    protected final void registerConsumerHandler(Predicate<MessageT> matchingPredicate, Consumer<MessageT> messageConsumer) {
-        log.debug("Registered consumer handler {} for predicate {}", messageConsumer, matchingPredicate);
-        messageConsumers.add(new MessageFilterConsumer<>(matchingPredicate, messageConsumer));
+    protected final void registerMessageConsumer(RemoteMessageConsumer<MessageT> remoteMessageConsumer) {
+        log.debug("Registered remote message consumer {}", remoteMessageConsumer);
+        messageConsumers.add(remoteMessageConsumer);
     }
 
     protected NodeAddress getLocalAddress() {
@@ -44,6 +40,18 @@ public abstract class AbstractRemoteChanel<MessageT extends Serializable>
 
     protected Set<NodeAddress> getRemoteNodeAddresses() {
         return remoteCommunicationManager.getRemoteNodeAddresses();
+    }
+
+    protected final void sendMessageToAll(MessageT message) {
+        remoteChanel.sendMessageToAll(message);
+    }
+
+    protected final void sendMessageToNode(MessageT message, NodeAddress nodeAddress) {
+        if (nodeAddress.equals(getLocalAddress())) {
+            onRemoteMessage(message);
+        } else {
+            remoteChanel.sendMessageToNode(message, nodeAddress);
+        }
     }
 
     @Override
@@ -66,18 +74,11 @@ public abstract class AbstractRemoteChanel<MessageT extends Serializable>
     public final void onRemoteMessage(MessageT message) {
         log.debug("Received message: {}", message);
 
-        messageConsumers.stream()
-                .filter(pF -> pF.getPredicate().test(message))
-                .forEach(pF -> pF.getConsumer().accept(message));
-
+        messageConsumers
+                .stream()
+                .filter(consumer -> consumer.test(message))
+                .forEach(consumer -> consumer.accept(message));
     }
 
-
-    @Data
-    @AllArgsConstructor
-    private static class MessageFilterConsumer<MessageT> {
-
-        private Predicate<MessageT> predicate;
-        private Consumer<MessageT> consumer;
-    }
+    //TODO pastin conversationID
 }

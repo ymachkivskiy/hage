@@ -1,16 +1,16 @@
-package org.jage.performance;
+package org.jage.performance.rate;
 
 import lombok.extern.slf4j.Slf4j;
-import org.jage.performance.category.PerformanceCategory;
-import org.jage.performance.category.PerformanceRate;
-import org.jage.performance.config.CategoryConfiguration;
-import org.jage.performance.config.ConfigurationProperties;
+import org.jage.performance.node.category.PerformanceCategory;
+import org.jage.performance.node.category.PerformanceRate;
+import org.jage.performance.node.config.CategoryConfiguration;
+import org.jage.performance.node.config.ConfigurationProperties;
 
 import java.util.EnumMap;
 import java.util.Map;
 
 @Slf4j
-class RateCombiner {
+public class RateCombiner {
 
     private Map<PerformanceCategory, PerformanceRate> measuredRates = new EnumMap<>(PerformanceCategory.class);
 
@@ -21,7 +21,7 @@ class RateCombiner {
         return this;
     }
 
-    public CombinedNodePerformanceRate calculateCombinedRate(ConfigurationProperties confProps) {
+    public CombinedPerformanceRate calculateCombinedRate(ConfigurationProperties confProps) {
         log.info("Calculating combined rate");
 
         int overallRate = 0;
@@ -37,7 +37,7 @@ class RateCombiner {
             overallRate += categoryRate;
         }
 
-        CombinedNodePerformanceRate resultRate = new CombinedNodePerformanceRate(overallRate);
+        CombinedPerformanceRate resultRate = new CombinedPerformanceRate(overallRate);
 
         log.info("Node performance rate is {}", resultRate);
 

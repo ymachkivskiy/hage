@@ -9,8 +9,6 @@ import javax.annotation.concurrent.Immutable;
 @Immutable
 public class RemoteCommunicationException extends AgeException {
 
-    private static final long serialVersionUID = -2313554547438876828L;
-
     public RemoteCommunicationException(final String message, final Throwable cause) {
         super(message, cause);
     }
