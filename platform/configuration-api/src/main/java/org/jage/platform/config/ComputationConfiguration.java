@@ -23,4 +23,10 @@ public class ComputationConfiguration implements Serializable {
                 ofNullable(localComponents).map(Collection::stream).orElse(empty())
         ).collect(toList());
     }
+
+    @Override
+    public String toString() {
+        //TODO implement computation configuration description
+        return super.toString();
+    }
 }

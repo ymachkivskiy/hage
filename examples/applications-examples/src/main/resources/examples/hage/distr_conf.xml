@@ -60,6 +60,34 @@
                     </agent>
                 </property>
             </component>
+            <component name="lightWorkplace" class="org.jage.workplace.SimpleWorkplace" isSingleton="false">
+                <property name="agent">
+                    <agent class="org.jage.agent.SimpleAggregate">
+                        <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                            <constructor-arg name="nameTemplate" value="Light Workplace"/>
+                        </component>
+                        <property name="agents">
+                            <list>
+                                <agent class="org.jage.examples.hage.distrconf.LightAgent">
+                                    <component class="org.jage.examples.hage.distrconf.SomeFooComponent" isSingleton="true">
+                                        <constructor-arg value="SPECIAL LILIAN"/>
+                                    </component>
+                                    <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                                        <constructor-arg name="nameTemplate" value="Lilian"/>
+                                    </component>
+                                </agent>
+
+                                <agent class="org.jage.examples.hage.distrconf.LightAgent">
+                                    <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                                        <constructor-arg name="nameTemplate" value="Alice"/>
+                                    </component>
+                                </agent>
+
+                            </list>
+                        </property>
+                    </agent>
+                </property>
+            </component>
         </block>
     </include>
 </configuration>

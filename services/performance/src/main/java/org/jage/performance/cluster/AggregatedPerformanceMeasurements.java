@@ -9,10 +9,10 @@ import java.util.List;
 import static java.util.Collections.unmodifiableList;
 
 @ToString
-public class ClusterPerformance {
+public class AggregatedPerformanceMeasurements {
     private List<ClusterNode> clusterNodesRates;
 
-    public ClusterPerformance(List<ClusterNode> clusterNodesRates) {
+    public AggregatedPerformanceMeasurements(List<ClusterNode> clusterNodesRates) {
         this.clusterNodesRates = new ArrayList<>(clusterNodesRates);
     }
 

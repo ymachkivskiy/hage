@@ -12,23 +12,18 @@ import org.jage.performance.rate.CombinedPerformanceRate;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Set;
 
-import static org.jage.performance.cluster.communication.PerformanceServiceMessage.requestPerformanceMessage;
-import static org.jage.performance.cluster.communication.PerformanceServiceMessage.responsePerformanceMessage;
+import static org.jage.performance.cluster.communication.PerformanceServiceMessage.newRequestPerformanceMessage;
+import static org.jage.performance.cluster.communication.PerformanceServiceMessage.newResponsePerformanceMessage;
 
 @Slf4j
 public class PerformanceRemoteChanel extends BaseRemoteChanel<PerformanceServiceMessage> {
-    private static final String SERVICE_NAME = "PerformanceService";
 
     @Autowired
     private NodePerformanceManager nodePerformanceManager;
 
-    private final PerformanceRequestSynchConnector performanceRequestSynchConnector;
-
-    protected PerformanceRemoteChanel() {
-        super(SERVICE_NAME);
-        this.performanceRequestSynchConnector = new PerformanceRequestSynchConnector();
-    }
+    private final PerformanceRequestSynchConnector performanceRequestSynchConnector = new PerformanceRequestSynchConnector();
 
     @Override
     protected void postInit() {
@@ -37,11 +32,15 @@ public class PerformanceRemoteChanel extends BaseRemoteChanel<PerformanceService
     }
 
     public List<ClusterNode> getAllNodesPerformances() {
-        log.info("Request for all nodes performances");
+        return getNodesPerformances(getAllClusterAddresses());
+    }
+
+    public List<ClusterNode> getNodesPerformances(Set<NodeAddress> nodeAddresses) {
+        log.info("Request for {} nodes performances", nodeAddresses);
 
         return performanceRequestSynchConnector.synchronousCall(
-                requestPerformanceMessage(getLocalAddress()),
-                new ClusterNodeAggregator(getAllClusterAddresses())
+                newRequestPerformanceMessage(),
+                new ClusterNodeAggregator(nodeAddresses)
         );
     }
 
@@ -49,15 +48,9 @@ public class PerformanceRemoteChanel extends BaseRemoteChanel<PerformanceService
         log.info("Send local performance request for {}", requestMessageHeader);
 
         CombinedPerformanceRate localPerformance = nodePerformanceManager.getOverallPerformance();
-        PerformanceServiceMessage responseMessage = responsePerformanceMessage(requestMessageHeader.getConversationId(), getLocalAddress(), localPerformance);
+        PerformanceServiceMessage responseMessage = newResponsePerformanceMessage(requestMessageHeader.getConversationId(), localPerformance);
 
-        NodeAddress performanceRequestSender = requestMessageHeader.getSender();
-
-        if (performanceRequestSender.equals(getLocalAddress())) {
-            onRemoteMessage(responseMessage);
-        } else {
-            send(responseMessage, performanceRequestSender);
-        }
+        send(responseMessage, requestMessageHeader.getSender());
     }
 
     private class RateRequestedMessageConsumerConnector extends BaseConditionalMessageConsumer<PerformanceServiceMessage> {

@@ -10,14 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class LifecycleManagerRemoteChanel extends BaseRemoteChanel<LifecycleMessage> {
 
-    public static final String SERVICE_NAME = "LifecycleManager";
-
     @Autowired
     private DefaultLifecycleManager lifecycleManager;
-
-    protected LifecycleManagerRemoteChanel() {
-        super(SERVICE_NAME);
-    }
 
     @Override
     protected void postInit() {

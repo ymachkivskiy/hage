@@ -1,5 +1,11 @@
 package org.jage.performance.cluster;
 
+import org.jage.address.node.NodeAddress;
+
+import java.util.Set;
+
 public interface ClusterPerformanceManager {
-    ClusterPerformance getClusterPerformance();
+    AggregatedPerformanceMeasurements getClusterPerformance();
+
+    AggregatedPerformanceMeasurements getNodePerformances(Set<NodeAddress> nodeAddresses);
 }

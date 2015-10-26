@@ -11,7 +11,7 @@
     </bean>
 
     <bean id="hage.service.configuration.communication.remote"
-          class="org.jage.configuration.communication.ConfigurationServiceRemoteChanel"
+          class="org.jage.configuration.communication.ConfigurationRemoteChanel"
           parent="hage.component.stateful.base"/>
 
     <bean id="hage.service.lifecycle.communication.remote"

@@ -8,10 +8,10 @@ public abstract class BaseConditionalMessageConsumer<RemoteMessageT extends Serv
 
     @Override
     public final void consumeMessage(RemoteMessageT message) {
-        log.debug("Got message");
+        log.debug("Got message {}", message);
 
         if (messageMatches(message)) {
-            log.debug("Consuming matching message {}", message);
+            log.debug("Message matching. Consuming.", message);
 
             consumeMatchingMessage(message);
         }

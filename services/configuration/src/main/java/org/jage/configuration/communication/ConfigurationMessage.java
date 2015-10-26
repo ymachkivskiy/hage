@@ -5,36 +5,47 @@ import org.jage.communication.message.service.ServiceHeader;
 import org.jage.communication.message.service.ServiceMessage;
 import org.jage.platform.config.ComputationConfiguration;
 
-import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
+
+import static org.jage.communication.message.service.ServiceHeader.create;
 
 
 @Immutable
-public final class ConfigurationMessage extends ServiceMessage<ComputationConfiguration> {
+public final class ConfigurationMessage extends ServiceMessage<ConfigurationMessageType, ComputationConfiguration> {
 
-
-    public static final ConfigurationMessage REQUEST_CONFIGURATION_MESSAGE = new ConfigurationMessage(ConfigurationMessageType.REQUEST, null);
-
-    public ConfigurationMessage(ConfigurationMessageType type, ComputationConfiguration computationConfiguration) {
-        super(ServiceHeader.create(type), computationConfiguration);
+    private ConfigurationMessage(ServiceHeader<ConfigurationMessageType> header, ComputationConfiguration computationConfiguration) {
+        super(header, computationConfiguration);
     }
 
-    @Nonnull
-    public static ConfigurationMessage distributeConfigurationMessage(ComputationConfiguration configuration) {
-        return new ConfigurationMessage(ConfigurationMessageType.DISTRIBUTE, configuration);
+    public static ConfigurationMessage newDistributeConfigurationMessage(ComputationConfiguration configuration) {
+        return new ConfigurationMessage(create(ConfigurationMessageType.DISTRIBUTE), configuration);
     }
 
-    @Nonnull
-    public static ConfigurationMessage requestConfigurationMessage() {
-        return REQUEST_CONFIGURATION_MESSAGE;
+    public static ConfigurationMessage newRequestConfigurationMessage(Long conversationId) {
+        return new ConfigurationMessage(create(ConfigurationMessageType.REQUEST, conversationId), null);
     }
 
-    public boolean isRequest() {
+    public static ConfigurationMessage newCheckConfigurationMessage() {
+        return new ConfigurationMessage(create(ConfigurationMessageType.CHECK), null);
+    }
+
+    public static ConfigurationMessage newRefuseConfigurationMessage(Long conversationId) {
+        return new ConfigurationMessage(create(ConfigurationMessageType.REFUSE, conversationId), null);
+    }
+
+    public boolean isCheckMessage() {
+        return getHeader().getType() == ConfigurationMessageType.CHECK;
+    }
+
+    public boolean isRequestMessage() {
         return getHeader().getType() == ConfigurationMessageType.REQUEST;
     }
 
-    public boolean isDistribute() {
+    public boolean isDistributeMessage() {
         return getHeader().getType() == ConfigurationMessageType.DISTRIBUTE;
     }
 
+    public boolean isRefuseMessage() {
+        return getHeader().getType() == ConfigurationMessageType.REFUSE;
+    }
 }

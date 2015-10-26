@@ -25,6 +25,7 @@ public abstract class SynchronizationSupport<ResultT, RemoteMessageT extends Ser
         this.messagesConsumers = new CompositeSynchronousCommunicationMessageConsumer<>();
     }
 
+    //TODO refactor
     public ResultT synchronousCall(RemoteMessageT remoteMessage, ConversationMessagesAggregator<ResultT, RemoteMessageT> messagesAggregator) {
         Long conversationId = conversationIdSupplier.get();
         remoteMessage.getHeader().setConversationId(conversationId);

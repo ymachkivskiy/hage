@@ -25,8 +25,8 @@ public abstract class BaseRemoteChanel<MessageT extends ServiceMessage>
     private final String serviceName;
     private List<MessageConsumer<MessageT>> messageConsumers = new LinkedList<>();
 
-    protected BaseRemoteChanel(String serviceName) {
-        this.serviceName = serviceName;
+    protected BaseRemoteChanel() {
+        this.serviceName = getClass().getSimpleName();
     }
 
     protected final void registerMessageConsumer(MessageConsumer<MessageT> remoteMessageConsumer) {

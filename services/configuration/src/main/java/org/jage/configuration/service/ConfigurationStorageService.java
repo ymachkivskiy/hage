@@ -1,82 +1,55 @@
 package org.jage.configuration.service;
 
 
-import com.google.common.eventbus.Subscribe;
-import com.google.common.util.concurrent.AbstractScheduledService;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.jage.bus.EventBus;
-import org.jage.configuration.communication.ConfigurationServiceRemoteChanel;
-import org.jage.configuration.event.ConfigurationLoadedEvent;
 import org.jage.configuration.event.ConfigurationUpdatedEvent;
 import org.jage.platform.component.IStatefulComponent;
 import org.jage.platform.config.ComputationConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.Optional;
 
-import static com.google.common.base.Objects.toStringHelper;
-import static com.google.common.util.concurrent.AbstractScheduledService.Scheduler.newFixedRateSchedule;
+import static java.util.Optional.empty;
+import static java.util.Optional.ofNullable;
 
 
+@ToString
 @ThreadSafe
 @Slf4j
-public class ConfigurationStorageService extends AbstractScheduledService
-        implements IStatefulComponent {
+public class ConfigurationStorageService implements IStatefulComponent {
 
-    private final AtomicReference<ComputationConfiguration> configuration = new AtomicReference<>(null);
+    private Optional<ComputationConfiguration> configuration = empty();
 
     @Autowired
     private EventBus eventBus;
-    @Autowired
-    private ConfigurationServiceRemoteChanel remoteConfigurationChanel;
 
     @Override
     public void init() {
-        startAsync();
+        eventBus.register(this);
     }
 
     @Override
     public boolean finish() {
-        stopAsync();
-        awaitTerminated();
+        eventBus.unregister(this);
         return true;
     }
 
-    public void distributeConfiguration() {
-        if (configuration.get() != null) {
-            remoteConfigurationChanel.distributeConfiguration(configuration.get());
-        }
+    public boolean hasConfiguration() {
+        return configuration.isPresent();
     }
 
     public void updateConfiguration(ComputationConfiguration configuration) {
-        if (this.configuration.compareAndSet(null, configuration)) {
-            notifyConfigurationUpdated();
+        if (this.configuration.isPresent()) {
+            log.warn("Trying to set configuration when there is all ready one");
+        } else {
+            Optional<ComputationConfiguration> newConfiguration = ofNullable(configuration);
+            if (newConfiguration.isPresent()) {
+                this.configuration = newConfiguration;
+                eventBus.post(new ConfigurationUpdatedEvent(configuration));
+            }
         }
-    }
-
-    private void notifyConfigurationUpdated() {
-        log.debug("Computation configuration set.");
-        eventBus.post(new ConfigurationUpdatedEvent(configuration.get()));
-    }
-
-    @Override
-    protected void runOneIteration() {
-        if (configuration.get() == null) {
-            log.debug("No configuration. Broadcasting the request.");
-            remoteConfigurationChanel.acquireConfiguration();
-        }
-    }
-
-    @Override
-    protected Scheduler scheduler() {
-        return newFixedRateSchedule(1, 1, TimeUnit.SECONDS);
-    }
-
-    @Override
-    public String toString() {
-        return toStringHelper(this).add("configuration", configuration.get()).toString();
     }
 }

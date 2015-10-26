@@ -52,7 +52,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 @ReturnValuesAreNonnullByDefault
 @Immutable
-public final class LifecycleMessage extends ServiceMessage<Serializable> {
+public final class LifecycleMessage extends ServiceMessage<LifecycleMessage.LifecycleCommand, Serializable> {
 
     private static final long serialVersionUID = 1L;
 
@@ -97,7 +97,7 @@ public final class LifecycleMessage extends ServiceMessage<Serializable> {
      *
      * @author AGH AgE Team
      */
-    public static enum LifecycleCommand {
+    public enum LifecycleCommand {
         /**
          * Start the computation.
          */

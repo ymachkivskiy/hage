@@ -32,8 +32,6 @@ public class ConfigurationLoaderService implements IStatefulComponent {
     private IConfigurationLoader<ConfigurationSource> configurationLoader;
     @Autowired
     private EventBus eventBus;
-    @Autowired
-    private ConfigurationStorageService configurationStorageService;
 
     @Override
     public void init() {
@@ -61,7 +59,7 @@ public class ConfigurationLoaderService implements IStatefulComponent {
     }
 
     private void loadAndPropagateConfiguration(String configFilePath) {
-        configurationStorageService.updateConfiguration(getConfiguration(configFilePath));
+        eventBus.post(new ConfigurationLoadedEvent(getConfiguration(configFilePath)));
     }
 
     private ComputationConfiguration getConfiguration(String configFilePath) {

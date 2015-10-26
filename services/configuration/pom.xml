@@ -27,6 +27,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.jage.services</groupId>
+            <artifactId>performance</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.jage.platform</groupId>
             <artifactId>arguments</artifactId>
             <version>${project.version}</version>

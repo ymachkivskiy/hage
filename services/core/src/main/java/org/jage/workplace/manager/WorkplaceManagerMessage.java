@@ -44,7 +44,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 
 @Immutable
-public class WorkplaceManagerMessage extends ServiceMessage<Serializable> {
+public class WorkplaceManagerMessage extends ServiceMessage<WorkplaceManagerMessage.MessageType, Serializable> {
 
     private static final long serialVersionUID = 1L;
 
@@ -99,12 +99,7 @@ public class WorkplaceManagerMessage extends ServiceMessage<Serializable> {
         return (ServiceHeader<MessageType>) super.getHeader();
     }
 
-    /**
-     * A list of available commands (message types).
-     *
-     * @author AGH AgE Team
-     */
-    public static enum MessageType {
+    public  enum MessageType {
         AGENT_MESSAGE,
         MIGRATE_AGENT,
     }
