@@ -25,6 +25,7 @@
         <module>lifecycle</module>
         <module>configuration</module>
         <module>performance</module>
+        <module>configuration-split</module>
     </modules>
 
     <dependencies>
