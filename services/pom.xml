@@ -21,7 +21,6 @@
         <module>core</module>
         <module>address</module>
         <module>communication</module>
-        <module>core-integration-test</module>
         <module>lifecycle</module>
         <module>configuration</module>
         <module>performance</module>

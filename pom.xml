@@ -36,7 +36,6 @@
         <module>examples</module>
         <module>algorithms</module>
         <module>archetypes</module>
-        <module>legacy</module>
     </modules>
 
     <!-- minimal required Maven version set to 3.0.0 because of maven-site-plugin-3.0 requirements -->
