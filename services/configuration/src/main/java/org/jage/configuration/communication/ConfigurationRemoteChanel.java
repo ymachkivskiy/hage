@@ -8,12 +8,11 @@ import org.jage.communication.message.service.ServiceHeader;
 import org.jage.communication.message.service.consume.BaseConditionalMessageConsumer;
 import org.jage.communication.synch.SynchronizationSupport;
 import org.jage.configuration.service.ConfigurationStorageService;
-import org.jage.platform.config.ComputationConfiguration;
+import org.jage.configuration.split.ConfigurationAllocation;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Set;
 
-import static java.util.Collections.emptySet;
 import static org.jage.configuration.communication.ConfigurationMessage.*;
 
 
@@ -42,9 +41,13 @@ public class ConfigurationRemoteChanel extends BaseRemoteChanel<ConfigurationMes
         send(responseMessage, header.getSender());
     }
 
-    public void sendConfigurationToNode(ComputationConfiguration configuration, NodeAddress nodeAddress) {
-        log.info("Sending computation configuration {} to node {}", configuration, nodeAddress);
-        send(newDistributeConfigurationMessage(configuration), nodeAddress);
+    public void sendConfiguration(ConfigurationAllocation configurationAllocation) {
+        log.info("Sending computation configuration part {}", configurationAllocation);
+
+        ConfigurationMessage message = newDistributeConfigurationMessage(configurationAllocation.getConfiguration());
+        NodeAddress destinationNode = configurationAllocation.getDestinationNode();
+
+        send(message, destinationNode);
     }
 
 

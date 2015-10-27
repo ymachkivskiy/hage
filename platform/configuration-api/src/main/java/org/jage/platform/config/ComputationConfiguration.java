@@ -5,7 +5,9 @@ import org.jage.platform.component.definition.IComponentDefinition;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Collections;
 
+import static java.util.Collections.unmodifiableCollection;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Stream.concat;
@@ -22,6 +24,14 @@ public class ComputationConfiguration implements Serializable {
                 ofNullable(globalComponents).map(Collection::stream).orElse(empty()),
                 ofNullable(localComponents).map(Collection::stream).orElse(empty())
         ).collect(toList());
+    }
+
+    public Collection<IComponentDefinition> getGlobalComponents() {
+        return unmodifiableCollection(globalComponents);
+    }
+
+    public Collection<IComponentDefinition> getLocalComponents() {
+        return unmodifiableCollection(localComponents);
     }
 
     @Override

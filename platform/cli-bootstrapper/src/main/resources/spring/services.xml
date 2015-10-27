@@ -17,6 +17,9 @@
           class="org.jage.configuration.service.ConfigurationSplitService"
           parent="hage.component.stateful.base"/>
 
+    <bean id="hage.service.configurationSplitter.ConfSplitterWorker"
+            class="org.jage.configuration.split.SimplePerformanceBasedConfigurationSplitAllocator"/>
+
     <bean id="hage.service.performance.NodePerformanceManager" class="org.jage.performance.node.CombinedNodePerformanceManager">
         <property name="cpuPerformanceMeasurer" ref="hage.service.performance.CPUMeasurer"/>
         <property name="memoryPerformanceMeasurer" ref="hage.service.performance.MemoryMeasurer"/>

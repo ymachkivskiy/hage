@@ -59,10 +59,11 @@ public class ConfigurationLoaderService implements IStatefulComponent {
     }
 
     private void loadAndPropagateConfiguration(String configFilePath) {
-        eventBus.post(new ConfigurationLoadedEvent(getConfiguration(configFilePath)));
+        ComputationConfiguration configuration = loadComputationConfiguration(configFilePath);
+        notifyConfigurationLoaded(configuration);
     }
 
-    private ComputationConfiguration getConfiguration(String configFilePath) {
+    private ComputationConfiguration loadComputationConfiguration(String configFilePath) {
         log.info("Loading computation configuration from {}.", configFilePath);
 
         try {
@@ -71,5 +72,11 @@ public class ConfigurationLoaderService implements IStatefulComponent {
             log.error("Cannot load configuration from {}.", configFilePath, e);
             throw new ComponentException(e);
         }
+    }
+
+    private void notifyConfigurationLoaded(ComputationConfiguration configuration) {
+        log.info("Notify configuration has been loaded {}", configuration);
+
+        eventBus.post(new ConfigurationLoadedEvent(configuration));
     }
 }
