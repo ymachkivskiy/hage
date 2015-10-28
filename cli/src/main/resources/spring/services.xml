@@ -3,7 +3,7 @@
        xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="hage.service.commandLine.arguments" class="org.jage.platform.cli.CommandLineArgumentsService"/>
+    <bean id="hage.service.commandLine.arguments" class="org.jage.cli.CommandLineArgumentsService"/>
 
     <bean id="hage.service.configuration"
           class="org.jage.configuration.service.ConfigurationStorageService"

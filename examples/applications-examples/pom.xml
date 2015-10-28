@@ -23,7 +23,7 @@
 
         <!-- AgE Modules -->
         <dependency>
-            <groupId>org.jage.platform</groupId>
+            <groupId>org.jage</groupId>
             <artifactId>cli-bootstrapper</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -83,7 +83,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
 
                         <configuration>
-                            <mainClass>org.jage.platform.cli.CliNodeBootstrapper</mainClass>
+                            <mainClass>CliNodeBootstrapper</mainClass>
                             <arguments>
                                 <argument>-Dage.node.conf=${age.node.conf}</argument>
                                 <argument>-Dage.computation.conf=${age.computation.conf}</argument>
@@ -112,7 +112,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
 
                         <configuration>
-                            <mainClass>org.jage.platform.cli.CliNodeBootstrapper</mainClass>
+                            <mainClass>CliNodeBootstrapper</mainClass>
                             <arguments>
                                 <argument>-Dage.node.conf=${age.node.conf}</argument>
                             </arguments>

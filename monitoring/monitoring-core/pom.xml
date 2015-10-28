@@ -46,7 +46,7 @@
         </dependency>
 
         <dependency>
-            <groupId>org.jage.platform</groupId>
+            <groupId>org.jage</groupId>
             <artifactId>cli-bootstrapper</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>

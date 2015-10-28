@@ -1,4 +1,4 @@
-package org.jage.platform.cli;
+package org.jage.cli;
 
 
 import org.apache.commons.cli.CommandLine;

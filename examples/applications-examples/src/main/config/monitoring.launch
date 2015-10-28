@@ -10,7 +10,7 @@
     <booleanAttribute key="org.eclipse.debug.core.appendEnvironmentVariables" value="true"/>
     <stringAttribute key="org.eclipse.jdt.launching.CLASSPATH_PROVIDER"
                      value="org.eclipse.m2e.launchconfig.classpathProvider"/>
-    <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.jage.platform.cli.CliNodeBootstrapper"/>
+    <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="CliNodeBootstrapper"/>
     <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS"
                      value="-Dage.node.conf=file:node.xml -Dage.computation.conf=file:age.xml"/>
     <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="org.jage.student.examples-applications"/>

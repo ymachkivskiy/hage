@@ -1,4 +1,4 @@
-package org.jage.platform.cli;
+package org.jage.cli;
 
 
 import lombok.extern.slf4j.Slf4j;
