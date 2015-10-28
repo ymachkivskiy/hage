@@ -43,21 +43,6 @@
         <maven>3.0.0</maven>
     </prerequisites>
 
-    <!-- issue/bug management system -->
-    <issueManagement>
-        <system>Jira</system>
-        <url>https://age.iisg.agh.edu.pl/jira/browse/AGE</url>
-    </issueManagement>
-
-    <!-- mailing lists -->
-    <mailingLists>
-        <mailingList>
-            <name>AgE Development List</name>
-            <subscribe>https://mailman.iisg.agh.edu.pl/cgi-bin/mailman/listinfo/age-dev</subscribe>
-            <unsubscribe>https://mailman.iisg.agh.edu.pl/cgi-bin/mailman/listinfo/age-dev</unsubscribe>
-            <post>age-dev@iisg.agh.edu.pl</post>
-        </mailingList>
-    </mailingLists>
 
     <!-- Continuous Integration Management -->
     <ciManagement>
@@ -67,88 +52,9 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <scm.base-url>https://age.iisg.agh.edu.pl/git/age.git</scm.base-url>
-        <scm.base-public-url>git://age.iisg.agh.edu.pl/age.git</scm.base-public-url>
+        <scm.base-url>https://github.com/ymachkivskiy/hage.git</scm.base-url>
+        <scm.base-public-url>https://github.com/ymachkivskiy/hage.git</scm.base-public-url>
     </properties>
-
-    <!-- source configuration management -->
-    <scm>
-        <connection>scm:git:${scm.base-public-url}</connection>
-        <developerConnection>scm:git:${scm.base-url}</developerConnection>
-        <url>https://age.iisg.agh.edu.pl/fisheye/browse/AgE-Git</url>
-    </scm>
-
-    <!-- libraries/tools repositories -->
-    <repositories>
-        <repository>
-            <id>dotsrc.org</id>
-            <url>http://mirrors.dotsrc.org/maven2</url>
-            <layout>default</layout>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>never</updatePolicy>
-                <checksumPolicy>warn</checksumPolicy>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>sunsite.dk</id>
-            <url>http://mirrors.sunsite.dk/maven2</url>
-            <layout>default</layout>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>never</updatePolicy>
-                <checksumPolicy>warn</checksumPolicy>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>apache.org</id>
-            <name>Maven Snapshots</name>
-            <url>https://repository.apache.org/content/repositories/snapshots</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>codehaus.org</id>
-            <name>CodeHaus Snapshots</name>
-            <url>http://snapshots.repository.codehaus.org</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>maven2-repository.dev.java.net</id>
-            <name>Java.net Repository for Maven</name>
-            <url>http://download.java.net/maven/2/</url>
-            <layout>default</layout>
-        </repository>
-        <repository>
-            <id>age</id>
-            <url>http://age.iisg.agh.edu.pl/maven2</url>
-            <releases>
-                <enabled>true</enabled>
-                <!--<updatePolicy>daily</updatePolicy>-->
-                <checksumPolicy>warn</checksumPolicy>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-                <!--<updatePolicy>daily</updatePolicy>-->
-                <checksumPolicy>fail</checksumPolicy>
-            </snapshots>
-        </repository>
-    </repositories>
 
     <!-- plugin repositories -->
     <pluginRepositories>
@@ -228,11 +134,6 @@
             </snapshots>
         </pluginRepository>
         <pluginRepository>
-            <id>age</id>
-            <url>http://age.iisg.agh.edu.pl/maven2</url>
-            <layout>default</layout>
-        </pluginRepository>
-        <pluginRepository>
             <id>mc-release</id>
             <name>Local Maven repository of releases</name>
             <url>http://oss.sonatype.org/content/repositories/releases/</url>
@@ -276,11 +177,6 @@
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-eclipse-plugin</artifactId>
-                    <version>2.9</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.1</version>
                 </plugin>
@@ -295,29 +191,14 @@
                     <version>2.4.2</version>
                 </plugin>
                 <plugin>
-                    <groupId>com.mycila.maven-license-plugin</groupId>
-                    <artifactId>maven-license-plugin</artifactId>
-                    <version>1.10.b1</version>
-                </plugin>
-                <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
                     <version>2.4</version>
                 </plugin>
                 <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-site-plugin</artifactId>
-                    <version>3.3</version>
-                </plugin>
-                <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>exec-maven-plugin</artifactId>
                     <version>1.2.1</version>
-                </plugin>
-                <plugin>
-                    <groupId>com.atlassian.maven.plugins</groupId>
-                    <artifactId>maven-clover2-plugin</artifactId>
-                    <version>3.2.0</version>
                 </plugin>
                 <plugin>
                     <groupId>org.eclipse.jetty</groupId>
@@ -328,20 +209,15 @@
                     <artifactId>maven-war-plugin</artifactId>
                     <version>2.4</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>1.4.1</version>
+                </plugin>
             </plugins>
         </pluginManagement>
 
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-eclipse-plugin</artifactId>
-                <configuration>
-                    <downloadSources>true</downloadSources>
-                    <downloadJavadocs>true</downloadJavadocs>
-                    <projectNameTemplate>[groupId]-[artifactId]</projectNameTemplate>
-                </configuration>
-            </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -385,34 +261,6 @@
                 </configuration>
             </plugin>
 
-            <!-- check license -->
-            <plugin>
-                <groupId>com.mycila.maven-license-plugin</groupId>
-                <artifactId>maven-license-plugin</artifactId>
-                <configuration>
-                    <basedir>${basedir}</basedir>
-                    <header>${basedir}/src/etc/license.txt</header>
-                    <strictCheck>true</strictCheck>
-                    <quiet>false</quiet>
-                    <failIfMissing>true</failIfMissing>
-                    <includes>
-                        <include>src/**/*.java</include>
-                        <include>src/**/*.html</include>
-                    </includes>
-                    <useDefaultExcludes>true</useDefaultExcludes>
-                    <useDefaultMapping>true</useDefaultMapping>
-                    <encoding>UTF-8</encoding>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <!-- inlucde test jar into build process -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -426,47 +274,34 @@
             </plugin>
 
             <plugin>
-                <groupId>com.atlassian.maven.plugins</groupId>
-                <artifactId>maven-clover2-plugin</artifactId>
-                <configuration>
-                    <licenseLocation>${user.dir}/build-conf/src/main/resources/clover/license</licenseLocation>
-                    <generateHtml>true</generateHtml>
-                    <generateXml>true</generateXml>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-site-plugin</artifactId>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.apache.maven.doxia</groupId>
-                        <artifactId>doxia-module-confluence</artifactId>
-                        <version>1.1.4</version>
-                    </dependency>
-                </dependencies>
-                <configuration>
-                    <locales>en</locales>
-                    <inputEncoding>UTF-8</inputEncoding>
-                    <outputEncoding>UTF-8</outputEncoding>
-
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>attach-descriptor</id>
-                        <goals>
-                            <goal>attach-descriptor</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <configuration>
                     <ignoreNonCompile>true</ignoreNonCompile>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>enforce-versions</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>[3.0.5,)</version>
+                                </requireMavenVersion>
+                                <requireJavaVersion>
+                                    <version>[1.8.0-40,)</version>
+                                </requireJavaVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

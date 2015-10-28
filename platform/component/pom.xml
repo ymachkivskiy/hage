@@ -16,7 +16,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>org.jage.platform</groupId>
             <artifactId>util</artifactId>
             <version>${project.version}</version>
         </dependency>
