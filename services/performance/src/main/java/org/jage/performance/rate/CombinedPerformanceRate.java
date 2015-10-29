@@ -6,6 +6,7 @@ import lombok.ToString;
 
 import javax.annotation.concurrent.Immutable;
 import java.io.Serializable;
+import java.math.BigInteger;
 
 @Immutable
 @AllArgsConstructor
@@ -13,10 +14,10 @@ import java.io.Serializable;
 public class CombinedPerformanceRate implements Serializable, Comparable<CombinedPerformanceRate> {
 
     @Getter
-    private final int rate;
+    private final BigInteger combinedRate;
 
     @Override
     public int compareTo(CombinedPerformanceRate o) {
-        return rate - o.rate;
+        return combinedRate.compareTo(o.combinedRate);
     }
 }

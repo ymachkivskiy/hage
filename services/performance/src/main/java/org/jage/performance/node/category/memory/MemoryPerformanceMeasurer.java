@@ -1,19 +1,19 @@
 package org.jage.performance.node.category.memory;
 
 import lombok.extern.slf4j.Slf4j;
-import org.jage.performance.node.category.PerformanceMeasurer;
-import org.jage.performance.node.category.PerformanceRate;
+import org.jage.performance.node.category.CategoryPerformanceMeasurer;
+import org.jage.performance.rate.normalize.config.CategoryRateConfiguration;
 
 @Slf4j
-class MemoryPerformanceMeasurer implements PerformanceMeasurer {
+class MemoryPerformanceMeasurer implements CategoryPerformanceMeasurer {
+
     @Override
-    public PerformanceRate measure() {
-        log.info("Request for performance rate");
+    public CategoryRateConfiguration getRateConfiguration() {
+        return null;
+    }
 
-        PerformanceRate rate = new PerformanceRate(1);
-        //todo implement as: available jvm memory * memory speed
-
-        log.info("Measured performance rate {}", rate);
-        return rate;
+    @Override
+    public int measureRate() {
+        return 0;
     }
 }

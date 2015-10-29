@@ -1,7 +1,9 @@
 package org.jage.performance.node.config;
 
 import org.jage.performance.node.category.PerformanceCategory;
+import org.jage.performance.rate.normalize.config.GlobalRateConfig;
 
+import java.math.BigInteger;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -14,6 +16,8 @@ public class ConfigurationProperties {
     private static final int DISK_CATEGORY_WEIGHT = 4;
     private static final int MEMORY_CATEGORY_WEIGHT = 4;
 
+    private static final int GLOBAL_MAX_CATEGORY_RATE = 1_000_000;
+
     private Map<PerformanceCategory, CategoryConfiguration> categoryConfigurations = new EnumMap<>(PerformanceCategory.class);
 
     {
@@ -25,4 +29,10 @@ public class ConfigurationProperties {
     public CategoryConfiguration forCategory(PerformanceCategory category) {
         return categoryConfigurations.get(category);
     }
+
+    public GlobalRateConfig getMaxGlobalRateConfig() {
+        return new GlobalRateConfig(BigInteger.valueOf(GLOBAL_MAX_CATEGORY_RATE));
+    }
+
+
 }

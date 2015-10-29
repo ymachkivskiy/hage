@@ -26,6 +26,9 @@
         <property name="diskPerformanceMeasurer" ref="hage.service.performance.DiskMeasurer"/>
     </bean>
 
+    <bean id="hage.service.performance.normalizer.scaled"
+          class="org.jage.performance.rate.normalize.scaled.Provider"/>
+
     <bean id="hage.service.performance.CPUMeasurer" class="org.jage.performance.node.category.cpu.CpuPerformanceMeasurer"/>
 
     <bean id="hage.service.performance.MemoryMeasurer" class="org.jage.performance.node.category.memory.MemoryPerformanceMeasurer"/>

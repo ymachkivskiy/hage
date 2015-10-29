@@ -2,6 +2,7 @@ package org.jage.performance.util;
 
 import org.jage.performance.rate.CombinedPerformanceRate;
 
+import java.math.BigInteger;
 import java.util.stream.Stream;
 
 public abstract class CombinedPerformanceRateArithmetic {
@@ -9,9 +10,9 @@ public abstract class CombinedPerformanceRateArithmetic {
     }
 
     public CombinedPerformanceRate sum(CombinedPerformanceRate... rates) {
-        int overallSum = Stream.of(rates)
-                .mapToInt(CombinedPerformanceRate::getRate)
-                .sum();
+        BigInteger overallSum = Stream.of(rates)
+                .map(CombinedPerformanceRate::getCombinedRate)
+                .reduce(BigInteger.ZERO, BigInteger::add);
         return new CombinedPerformanceRate(overallSum);
     }
 

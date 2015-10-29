@@ -6,8 +6,11 @@ import org.jage.performance.node.category.PerformanceRate;
 import org.jage.performance.node.config.CategoryConfiguration;
 import org.jage.performance.node.config.ConfigurationProperties;
 
+import java.math.BigInteger;
 import java.util.EnumMap;
 import java.util.Map;
+
+import static java.math.BigInteger.valueOf;
 
 @Slf4j
 public class RateCombiner {
@@ -24,17 +27,17 @@ public class RateCombiner {
     public CombinedPerformanceRate calculateCombinedRate(ConfigurationProperties confProps) {
         log.info("Calculating combined rate");
 
-        int overallRate = 0;
+        BigInteger overallRate = BigInteger.ZERO;
 
         for (Map.Entry<PerformanceCategory, PerformanceRate> entry : measuredRates.entrySet()) {
             PerformanceRate performanceRate = entry.getValue();
             PerformanceCategory category = entry.getKey();
 
-            int categoryRate = calculateRate(performanceRate, confProps.forCategory(category));
+            BigInteger categoryRate = calculateRate(performanceRate, confProps.forCategory(category));
 
             log.info("computed weighted rate {} for category {}", categoryRate, category);
 
-            overallRate += categoryRate;
+            overallRate = overallRate.add(categoryRate);
         }
 
         CombinedPerformanceRate resultRate = new CombinedPerformanceRate(overallRate);
@@ -44,7 +47,8 @@ public class RateCombiner {
         return resultRate;
     }
 
-    private int calculateRate(PerformanceRate rate, CategoryConfiguration conf) {
-        return rate.getRate() * (conf.getCategoryBaseWeight() + conf.getCategoryWeight());
+    private BigInteger calculateRate(PerformanceRate rate, CategoryConfiguration conf) {
+        int categorySummaryWeight = conf.getCategoryBaseWeight() + conf.getCategoryWeight();
+        return rate.getRate().multiply(valueOf(categorySummaryWeight));
     }
 }
