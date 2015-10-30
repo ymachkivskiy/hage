@@ -1,7 +1,7 @@
 package org.jage.configuration.split;
 
 import org.jage.performance.cluster.AggregatedPerformanceMeasurements;
-import org.jage.performance.rate.ClusterNode;
+import org.jage.performance.cluster.NodeCombinedPerformance;
 import org.jage.platform.component.definition.IComponentDefinition;
 import org.jage.platform.config.ComputationConfiguration;
 
@@ -17,16 +17,16 @@ public class SimplePerformanceBasedConfigurationSplitAllocator implements Config
     @Override
     public List<ConfigurationAllocation> allocateConfigurationParts(ComputationConfiguration configuration, AggregatedPerformanceMeasurements performanceMeasurements) {
 
-        int componentsPerNode = Math.floorDiv(configuration.getLocalComponents().size(), performanceMeasurements.getClusterNodesRates().size());
+        int componentsPerNode = Math.floorDiv(configuration.getLocalComponents().size(), performanceMeasurements.getNodesRateCombinedPerformances().size());
         if (componentsPerNode == 0) {
             componentsPerNode = 1;
         }
 
         Queue<IComponentDefinition> localComponentsQueue = new LinkedList<>(configuration.getLocalComponents());
 
-        List<ConfigurationAllocation> result = new ArrayList<>(performanceMeasurements.getClusterNodesRates().size());
+        List<ConfigurationAllocation> result = new ArrayList<>(performanceMeasurements.getNodesRateCombinedPerformances().size());
 
-        for (ClusterNode clusterNode : performanceMeasurements.getClusterNodesRates()) {
+        for (NodeCombinedPerformance nodeCombinedPerformance : performanceMeasurements.getNodesRateCombinedPerformances()) {
             List<IComponentDefinition> clusterLocalComponents = new LinkedList<>();
 
             int needToPeek = componentsPerNode;
@@ -41,7 +41,7 @@ public class SimplePerformanceBasedConfigurationSplitAllocator implements Config
                     .localComponents(clusterLocalComponents)
                     .build();
 
-            result.add(new ConfigurationAllocation(nodeComputation, clusterNode.getAddress()));
+            result.add(new ConfigurationAllocation(nodeComputation, nodeCombinedPerformance.getAddress()));
         }
 
         if (!localComponentsQueue.isEmpty()) {

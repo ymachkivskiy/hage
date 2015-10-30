@@ -1,8 +1,8 @@
-package org.jage.performance.node.category.impl;
+package org.jage.performance.node.measure.impl;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.jage.performance.node.category.PerformanceMeasurer;
+import org.jage.performance.node.measure.PerformanceMeasurer;
 
 @Slf4j
 public class DiskPerformanceMeasurer implements PerformanceMeasurer {

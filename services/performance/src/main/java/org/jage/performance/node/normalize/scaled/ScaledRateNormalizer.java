@@ -1,11 +1,11 @@
-package org.jage.performance.rate.normalize.scaled;
+package org.jage.performance.node.normalize.scaled;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jage.performance.node.MeasurerRateConfiguration;
-import org.jage.performance.node.category.PerformanceRate;
-import org.jage.performance.rate.normalize.RateNormalizer;
-import org.jage.performance.rate.normalize.config.GlobalRateConfiguration;
+import org.jage.performance.node.config.MeasurerRateConfiguration;
+import org.jage.performance.node.measure.PerformanceRate;
+import org.jage.performance.node.normalize.RateNormalizer;
+import org.jage.performance.node.config.GlobalRateConfiguration;
 
 import java.math.BigDecimal;
 
@@ -24,7 +24,7 @@ class ScaledRateNormalizer implements RateNormalizer {
 
         BigDecimal proportion = valueOf(rate).divide(valueOf(rateConfig.getMaxRate()), 16, ROUND_CEILING);
 
-        log.debug("Proportion is {} to max category rate {}", proportion, rateConfig.getMaxRate());
+        log.debug("Proportion is {} to max measure rate {}", proportion, rateConfig.getMaxRate());
 
         BigDecimal resultRate = new BigDecimal(globalRateConfiguration.getMaxGlobalRate()).multiply(proportion);
 

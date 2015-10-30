@@ -1,8 +1,7 @@
-package org.jage.performance.rate.normalize.config;
+package org.jage.performance.node.config;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.jage.performance.node.MeasurerRateConfiguration;
 
 @AllArgsConstructor
 public class NormalizationRateConfiguration {

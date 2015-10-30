@@ -1,8 +1,8 @@
-package org.jage.performance.rate.normalize.scaled;
+package org.jage.performance.node.normalize.scaled;
 
-import org.jage.performance.rate.normalize.config.NormalizationRateConfiguration;
-import org.jage.performance.rate.normalize.RateNormalizationProvider;
-import org.jage.performance.rate.normalize.RateNormalizer;
+import org.jage.performance.node.config.NormalizationRateConfiguration;
+import org.jage.performance.node.normalize.RateNormalizationProvider;
+import org.jage.performance.node.normalize.RateNormalizer;
 
 public class ScaledNormalizerProvider implements RateNormalizationProvider {
     @Override

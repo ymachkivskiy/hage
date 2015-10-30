@@ -7,8 +7,8 @@ import org.jage.communication.message.service.ServiceHeader;
 import org.jage.communication.message.service.consume.BaseConditionalMessageConsumer;
 import org.jage.communication.synch.SynchronizationSupport;
 import org.jage.performance.node.NodePerformanceManager;
-import org.jage.performance.rate.ClusterNode;
-import org.jage.performance.rate.CombinedPerformanceRate;
+import org.jage.performance.cluster.NodeCombinedPerformance;
+import org.jage.performance.node.measure.PerformanceRate;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -31,11 +31,11 @@ public class PerformanceRemoteChanel extends BaseRemoteChanel<PerformanceService
         registerMessageConsumer(performanceRequestSynchConnector);
     }
 
-    public List<ClusterNode> getAllNodesPerformances() {
+    public List<NodeCombinedPerformance> getAllNodesPerformances() {
         return getNodesPerformances(getAllClusterAddresses());
     }
 
-    public List<ClusterNode> getNodesPerformances(Set<NodeAddress> nodeAddresses) {
+    public List<NodeCombinedPerformance> getNodesPerformances(Set<NodeAddress> nodeAddresses) {
         log.info("Request for {} nodes performances", nodeAddresses);
 
         return performanceRequestSynchConnector.synchronousCall(
@@ -47,7 +47,7 @@ public class PerformanceRemoteChanel extends BaseRemoteChanel<PerformanceService
     private void sendLocalNodeRateToNode(ServiceHeader requestMessageHeader) {
         log.info("Send local performance request for {}", requestMessageHeader);
 
-        CombinedPerformanceRate localPerformance = nodePerformanceManager.getOverallPerformance();
+        PerformanceRate localPerformance = nodePerformanceManager.getOverallPerformance();
         PerformanceServiceMessage responseMessage = newResponsePerformanceMessage(requestMessageHeader.getConversationId(), localPerformance);
 
         send(responseMessage, requestMessageHeader.getSender());
@@ -67,7 +67,7 @@ public class PerformanceRemoteChanel extends BaseRemoteChanel<PerformanceService
 
     }
 
-    private class PerformanceRequestSynchConnector extends SynchronizationSupport<List<ClusterNode>, PerformanceServiceMessage> {
+    private class PerformanceRequestSynchConnector extends SynchronizationSupport<List<NodeCombinedPerformance>, PerformanceServiceMessage> {
 
         public PerformanceRequestSynchConnector() {
             super(PerformanceRemoteChanel.this::nextConversationId);

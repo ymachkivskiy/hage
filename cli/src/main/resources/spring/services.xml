@@ -31,13 +31,13 @@
     </bean>
 
     <bean id="hage.service.performance.normalizer.scaled"
-          class="org.jage.performance.rate.normalize.scaled.ScaledNormalizerProvider"/>
+          class="org.jage.performance.node.normalize.scaled.ScaledNormalizerProvider"/>
 
-    <bean id="hage.service.performance.CPUMeasurer" class="org.jage.performance.node.category.impl.CpuPerformanceMeasurer"/>
+    <bean id="hage.service.performance.CPUMeasurer" class="org.jage.performance.node.measure.impl.CpuPerformanceMeasurer"/>
 
-    <bean id="hage.service.performance.MemoryMeasurer" class="org.jage.performance.node.category.impl.MemoryPerformanceMeasurer"/>
+    <bean id="hage.service.performance.MemoryMeasurer" class="org.jage.performance.node.measure.impl.MemoryPerformanceMeasurer"/>
 
-    <bean id="hage.service.performance.DiskMeasurer" class="org.jage.performance.node.category.impl.DiskPerformanceMeasurer"/>
+    <bean id="hage.service.performance.DiskMeasurer" class="org.jage.performance.node.measure.impl.DiskPerformanceMeasurer"/>
 
     <bean id="hage.service.performance.ClusterPerformanceManager" class="org.jage.performance.cluster.CombinedClusterPerformanceManager"/>
 

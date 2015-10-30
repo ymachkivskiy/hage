@@ -1,4 +1,4 @@
-package org.jage.performance.node.category;
+package org.jage.performance.node.measure;
 
 
 public interface PerformanceMeasurer {

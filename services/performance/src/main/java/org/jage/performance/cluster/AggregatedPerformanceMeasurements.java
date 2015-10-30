@@ -1,7 +1,6 @@
 package org.jage.performance.cluster;
 
 import lombok.ToString;
-import org.jage.performance.rate.ClusterNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,13 +9,13 @@ import static java.util.Collections.unmodifiableList;
 
 @ToString
 public class AggregatedPerformanceMeasurements {
-    private List<ClusterNode> clusterNodesRates;
+    private List<NodeCombinedPerformance> nodesRateCombinedPerformances;
 
-    public AggregatedPerformanceMeasurements(List<ClusterNode> clusterNodesRates) {
-        this.clusterNodesRates = new ArrayList<>(clusterNodesRates);
+    public AggregatedPerformanceMeasurements(List<NodeCombinedPerformance> nodesRateCombinedPerformances) {
+        this.nodesRateCombinedPerformances = new ArrayList<>(nodesRateCombinedPerformances);
     }
 
-    public List<ClusterNode> getClusterNodesRates() {
-        return unmodifiableList(clusterNodesRates);
+    public List<NodeCombinedPerformance> getNodesRateCombinedPerformances() {
+        return unmodifiableList(nodesRateCombinedPerformances);
     }
 }

@@ -1,6 +1,6 @@
-package org.jage.performance.rate.normalize;
+package org.jage.performance.node.normalize;
 
-import org.jage.performance.rate.normalize.config.NormalizationRateConfiguration;
+import org.jage.performance.node.config.NormalizationRateConfiguration;
 
 public interface RateNormalizationProvider {
     RateNormalizer getNormalizer(NormalizationRateConfiguration configuration);

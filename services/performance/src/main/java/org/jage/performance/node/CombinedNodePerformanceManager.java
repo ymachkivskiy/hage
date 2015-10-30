@@ -1,22 +1,19 @@
 package org.jage.performance.node;
 
 import lombok.extern.slf4j.Slf4j;
-import org.jage.performance.node.category.PerformanceMeasurer;
-import org.jage.performance.node.category.PerformanceRate;
 import org.jage.performance.node.config.ConfigurationProperties;
-import org.jage.performance.rate.CombinedPerformanceRate;
-import org.jage.performance.rate.normalize.RateNormalizationProvider;
-import org.jage.performance.rate.normalize.RateNormalizer;
-import org.jage.performance.rate.normalize.config.NormalizationRateConfiguration;
+import org.jage.performance.node.config.MeasurerRateConfiguration;
+import org.jage.performance.node.config.NormalizationRateConfiguration;
+import org.jage.performance.node.measure.PerformanceMeasurer;
+import org.jage.performance.node.measure.PerformanceRate;
+import org.jage.performance.node.normalize.RateNormalizationProvider;
+import org.jage.performance.node.normalize.RateNormalizer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.math.BigInteger;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-
-import static java.math.BigInteger.valueOf;
 
 @Slf4j
 class CombinedNodePerformanceManager implements NodePerformanceManager {
@@ -28,24 +25,26 @@ class CombinedNodePerformanceManager implements NodePerformanceManager {
     private Set<PerformanceMeasurer> measurers = new HashSet<>();
 
     @Override
-    public CombinedPerformanceRate getOverallPerformance() {
+    public PerformanceRate getOverallPerformance() {
         log.info("Calculating overall node performance");
 
-        BigInteger overallRate = BigInteger.ZERO;
+        PerformanceRate overallRate = measurers
+                .stream()
+                .map(this::getMeasuredRate)
+                .reduce(PerformanceRate.ZERO_RATE, PerformanceRate::add);
 
-        for (PerformanceMeasurer measurer : measurers) {
+        log.info("Overall performance is {}", overallRate);
 
-            PerformanceRate rate = getNormalizedRate(measurer);
-            MeasurerRateConfiguration rateConfig = configurationProperties.forMeasurer(measurer.getClass());
+        return overallRate;
+    }
 
-            overallRate = overallRate.add(calculateRate(rate, rateConfig));
-        }
+    private PerformanceRate getMeasuredRate(PerformanceMeasurer measurer) {
+        log.debug("Getting measured rate from {}", measurer);
 
-        CombinedPerformanceRate overallPerformance = new CombinedPerformanceRate(overallRate);
+        PerformanceRate rate = getNormalizedRate(measurer);
+        MeasurerRateConfiguration rateConfig = configurationProperties.forMeasurer(measurer.getClass());
 
-        log.info("Overall performance is {}", overallPerformance);
-
-        return overallPerformance;
+        return calculateWeightedRate(rate, rateConfig);
     }
 
     private PerformanceRate getNormalizedRate(PerformanceMeasurer measurer) {
@@ -59,16 +58,15 @@ class CombinedNodePerformanceManager implements NodePerformanceManager {
     }
 
 
-    private BigInteger calculateRate(PerformanceRate rate, MeasurerRateConfiguration configuration) {
-        log.info("Calculating weighted rate for {} with configuration {}", rate, configuration);
-
+    private PerformanceRate calculateWeightedRate(PerformanceRate rate, MeasurerRateConfiguration configuration) {
+        log.debug("Calculating weighted rate for {} with configuration {}", rate, configuration);
         int categorySummaryWeight = configuration.getRateBaseWeight() + configuration.getRateWeight();
-        return rate.getRate().multiply(valueOf(categorySummaryWeight));
+        return rate.multiply(categorySummaryWeight);
     }
 
     @Required
     public void setMeasurers(Collection<PerformanceMeasurer> measurers) {
-        log.info("Setting performance measurers: {}", measurers);
+        log.debug("Setting performance measurers: {}", measurers);
 
         this.measurers.clear();
         this.measurers.addAll(measurers);

@@ -1,12 +1,10 @@
 package org.jage.performance.node.config;
 
 import lombok.extern.slf4j.Slf4j;
-import org.jage.performance.node.MeasurerRateConfiguration;
-import org.jage.performance.node.category.PerformanceMeasurer;
-import org.jage.performance.node.category.impl.CpuPerformanceMeasurer;
-import org.jage.performance.node.category.impl.DiskPerformanceMeasurer;
-import org.jage.performance.node.category.impl.MemoryPerformanceMeasurer;
-import org.jage.performance.rate.normalize.config.GlobalRateConfiguration;
+import org.jage.performance.node.measure.PerformanceMeasurer;
+import org.jage.performance.node.measure.impl.CpuPerformanceMeasurer;
+import org.jage.performance.node.measure.impl.DiskPerformanceMeasurer;
+import org.jage.performance.node.measure.impl.MemoryPerformanceMeasurer;
 
 import java.math.BigInteger;
 import java.util.HashMap;

@@ -1,9 +1,11 @@
-package org.jage.performance.node;
+package org.jage.performance.node.config;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.ToString;
 
 @AllArgsConstructor
+@ToString
 public class MeasurerRateConfiguration {
     @Getter
     private final int rateBaseWeight;

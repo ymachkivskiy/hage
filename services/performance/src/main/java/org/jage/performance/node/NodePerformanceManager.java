@@ -1,7 +1,7 @@
 package org.jage.performance.node;
 
-import org.jage.performance.rate.CombinedPerformanceRate;
+import org.jage.performance.node.measure.PerformanceRate;
 
 public interface NodePerformanceManager {
-    CombinedPerformanceRate getOverallPerformance();
+    PerformanceRate getOverallPerformance();
 }
