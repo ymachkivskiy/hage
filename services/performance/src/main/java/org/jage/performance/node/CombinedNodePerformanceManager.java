@@ -1,21 +1,22 @@
 package org.jage.performance.node;
 
 import lombok.extern.slf4j.Slf4j;
+import org.jage.performance.node.category.PerformanceMeasurer;
 import org.jage.performance.node.category.PerformanceRate;
-import org.jage.performance.rate.RateCombiner;
-import org.jage.performance.node.category.DummyMeasurer;
-import org.jage.performance.node.category.PerformanceCategory;
-import org.jage.performance.node.category.CategoryPerformanceMeasurer;
 import org.jage.performance.node.config.ConfigurationProperties;
 import org.jage.performance.rate.CombinedPerformanceRate;
 import org.jage.performance.rate.normalize.RateNormalizationProvider;
 import org.jage.performance.rate.normalize.RateNormalizer;
-import org.jage.performance.rate.normalize.config.CategoryRateConfiguration;
-import org.jage.performance.rate.normalize.config.RateConfiguration;
+import org.jage.performance.rate.normalize.config.NormalizationRateConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 
-import java.util.EnumMap;
-import java.util.Map;
+import java.math.BigInteger;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
+import static java.math.BigInteger.valueOf;
 
 @Slf4j
 class CombinedNodePerformanceManager implements NodePerformanceManager {
@@ -24,53 +25,52 @@ class CombinedNodePerformanceManager implements NodePerformanceManager {
     @Autowired
     private RateNormalizationProvider normalizationProvider;
 
-    private Map<PerformanceCategory, CategoryPerformanceMeasurer> performanceMeasurers = new EnumMap<>(PerformanceCategory.class);
-
-    {
-        for (PerformanceCategory performanceCategory : PerformanceCategory.values()) {
-            performanceMeasurers.put(performanceCategory, DummyMeasurer.INSTANCE);
-        }
-    }
+    private Set<PerformanceMeasurer> measurers = new HashSet<>();
 
     @Override
     public CombinedPerformanceRate getOverallPerformance() {
         log.info("Calculating overall node performance");
 
-        RateCombiner rateCombiner = new RateCombiner();
+        BigInteger overallRate = BigInteger.ZERO;
 
-        performanceMeasurers.forEach((cat, measurer) -> rateCombiner.addMeasurement(cat, getMeasurerRate(measurer)));
+        for (PerformanceMeasurer measurer : measurers) {
 
-        CombinedPerformanceRate overallPerformance = rateCombiner.calculateCombinedRate(configurationProperties);
+            PerformanceRate rate = getNormalizedRate(measurer);
+            MeasurerRateConfiguration rateConfig = configurationProperties.forMeasurer(measurer.getClass());
+
+            overallRate = overallRate.add(calculateRate(rate, rateConfig));
+        }
+
+        CombinedPerformanceRate overallPerformance = new CombinedPerformanceRate(overallRate);
 
         log.info("Overall performance is {}", overallPerformance);
 
         return overallPerformance;
     }
 
-    private PerformanceRate getMeasurerRate(CategoryPerformanceMeasurer measurer) {
-        final CategoryRateConfiguration categoryRateConfiguration = measurer.getRateConfiguration();
-        RateNormalizer normalizer = normalizationProvider.getNormalizer(new RateConfiguration(configurationProperties.getMaxGlobalRateConfig(), categoryRateConfiguration));
+    private PerformanceRate getNormalizedRate(PerformanceMeasurer measurer) {
+        log.debug("Getting normalized rate for measurer {}", measurer);
+
+        MeasurerRateConfiguration rateConfiguration = configurationProperties.forMeasurer(measurer.getClass());
+        NormalizationRateConfiguration normalizationConfiguration = new NormalizationRateConfiguration(configurationProperties.getMaxGlobalRateConfig(), rateConfiguration);
+        RateNormalizer normalizer = normalizationProvider.getNormalizer(normalizationConfiguration);
 
         return normalizer.normalize(measurer.measureRate());
     }
 
 
-    public void setCpuPerformanceMeasurer(CategoryPerformanceMeasurer cpuCategoryPerformanceMeasurer) {
-        log.info("Set CPU performance measurer {}", cpuCategoryPerformanceMeasurer);
+    private BigInteger calculateRate(PerformanceRate rate, MeasurerRateConfiguration configuration) {
+        log.info("Calculating weighted rate for {} with configuration {}", rate, configuration);
 
-        performanceMeasurers.put(PerformanceCategory.CPU, cpuCategoryPerformanceMeasurer);
+        int categorySummaryWeight = configuration.getRateBaseWeight() + configuration.getRateWeight();
+        return rate.getRate().multiply(valueOf(categorySummaryWeight));
     }
 
-    public void setMemoryPerformanceMeasurer(CategoryPerformanceMeasurer memoryCategoryPerformanceMeasurer) {
-        log.info("Set MEMORY performance measurer {}", memoryCategoryPerformanceMeasurer);
+    @Required
+    public void setMeasurers(Collection<PerformanceMeasurer> measurers) {
+        log.info("Setting performance measurers: {}", measurers);
 
-        performanceMeasurers.put(PerformanceCategory.MEMORY, memoryCategoryPerformanceMeasurer);
+        this.measurers.clear();
+        this.measurers.addAll(measurers);
     }
-
-    public void setDiskPerformanceMeasurer(CategoryPerformanceMeasurer diskCategoryPerformanceMeasurer) {
-        log.info("Set DISK performance measurer {}", diskCategoryPerformanceMeasurer);
-
-        performanceMeasurers.put(PerformanceCategory.DISK, diskCategoryPerformanceMeasurer);
-    }
-
 }

@@ -3,8 +3,10 @@ package org.jage.performance.rate.normalize.config;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.math.BigInteger;
+
 @AllArgsConstructor
-public class CategoryRateConfiguration {
+public class GlobalRateConfiguration {
     @Getter
-    private final int maxCategoryRate;
+    private final BigInteger maxGlobalRate;
 }

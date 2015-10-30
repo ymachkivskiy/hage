@@ -21,19 +21,23 @@
             class="org.jage.configuration.split.SimplePerformanceBasedConfigurationSplitAllocator"/>
 
     <bean id="hage.service.performance.NodePerformanceManager" class="org.jage.performance.node.CombinedNodePerformanceManager">
-        <property name="cpuPerformanceMeasurer" ref="hage.service.performance.CPUMeasurer"/>
-        <property name="memoryPerformanceMeasurer" ref="hage.service.performance.MemoryMeasurer"/>
-        <property name="diskPerformanceMeasurer" ref="hage.service.performance.DiskMeasurer"/>
+        <property name="measurers">
+            <list>
+                <ref bean="hage.service.performance.CPUMeasurer"/>
+                <ref bean="hage.service.performance.MemoryMeasurer"/>
+                <ref bean="hage.service.performance.DiskMeasurer"/>
+            </list>
+        </property>
     </bean>
 
     <bean id="hage.service.performance.normalizer.scaled"
-          class="org.jage.performance.rate.normalize.scaled.Provider"/>
+          class="org.jage.performance.rate.normalize.scaled.ScaledNormalizerProvider"/>
 
-    <bean id="hage.service.performance.CPUMeasurer" class="org.jage.performance.node.category.cpu.CpuPerformanceMeasurer"/>
+    <bean id="hage.service.performance.CPUMeasurer" class="org.jage.performance.node.category.impl.CpuPerformanceMeasurer"/>
 
-    <bean id="hage.service.performance.MemoryMeasurer" class="org.jage.performance.node.category.memory.MemoryPerformanceMeasurer"/>
+    <bean id="hage.service.performance.MemoryMeasurer" class="org.jage.performance.node.category.impl.MemoryPerformanceMeasurer"/>
 
-    <bean id="hage.service.performance.DiskMeasurer" class="org.jage.performance.node.category.disk.DiskPerformanceMeasurer"/>
+    <bean id="hage.service.performance.DiskMeasurer" class="org.jage.performance.node.category.impl.DiskPerformanceMeasurer"/>
 
     <bean id="hage.service.performance.ClusterPerformanceManager" class="org.jage.performance.cluster.CombinedClusterPerformanceManager"/>
 
