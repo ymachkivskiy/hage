@@ -26,7 +26,7 @@ public class HeavyAgent extends SimpleAgent {
         log.info("agent {} perform step", getAddress());
         component.processMessage("hello from " + getAddress());
         try {
-            Thread.sleep(300);
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
