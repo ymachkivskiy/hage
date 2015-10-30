@@ -26,13 +26,6 @@
  */
 package org.jage.monitoring.supplier.test;
 
-import static org.jage.platform.component.builder.ConfigurationBuilder.Configuration;
-import static org.junit.Assert.assertEquals;
-
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import org.jage.monitoring.Monitoring;
 import org.jage.monitoring.config.ExecutorProvider;
@@ -48,97 +41,107 @@ import org.jage.platform.component.definition.IComponentDefinition;
 import org.jage.platform.component.pico.PicoComponentInstanceProvider;
 import org.junit.Before;
 import org.junit.Test;
-
 import rx.schedulers.TestScheduler;
 
-public class FunctionalTest {
-	
-	private ComponentBuilder componentBuilder;
-	
-	@Before
-	public void setUp(){
-		componentBuilder = Configuration()
-				.Component("executorProvider", ExecutorProvider.class)
-				.Component("executorShutdownCaller", ExecutorShutdownCaller.class)
-				.Component("rxSchedulerProvider", RxTestSchedulerProvider.class)
-				.Component("random1", RandomSupplier.class, false)
-				.Component("random2", RandomSupplier.class, false)
-				.Component("observer", ObserverUnderTest.class, true);
-	}
-	
-	/**
-	 * Test with TypeSafe configuration way of monitoring. 
-	 * @throws InterruptedException
-	 * @throws IllegalAccessException 
-	 * @throws NoSuchFieldException 
-	 */
-	@Test
-	public void typesafeConfigurationWay() throws InterruptedException, NoSuchFieldException, IllegalAccessException{
-		List<IComponentDefinition> components = componentBuilder
-			.Component("monitoring", Monitoring.class)
-			.withConstructorArgRef("typesafe")
-			.Component("typesafe", TypeSafeConfig.class)
-			.withConstructorArg(String.class, "testMonitoring").build();
-		
-		PicoComponentInstanceProvider ioc = new PicoComponentInstanceProvider();
-		for(IComponentDefinition def: components) {
-			ioc.addComponent(def);
-		}
-		ioc.getComponents(IStatefulComponent.class);
-		
-		TestScheduler scheduler = (TestScheduler) ioc.getComponent(RxTestSchedulerProvider.class).getScheduler();
-		scheduler.advanceTimeTo(300, TimeUnit.MILLISECONDS);
-		
-		Monitoring monitoring = ioc.getComponent(Monitoring.class);
-		monitoring.finish();
-		ObserverUnderTest observer = extractTestObserver(monitoring);
-		
-		assertEquals(18, observer.getNextCount());
-		assertEquals(1, observer.getCompleteCount());
-	}
-	
-	/**
-	 * Test of using <code>ref</code> supplier type in TypeSafe file.
-	 * @throws InterruptedException
-	 * @throws SecurityException 
-	 * @throws NoSuchFieldException 
-	 * @throws IllegalAccessException 
-	 * @throws IllegalArgumentException 
-	 */
-	@Test
-	public void typesafeConfigurationWayWithRefSupplier() throws InterruptedException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException{
-		List<IComponentDefinition> components = componentBuilder
-			.Component("monitoring", Monitoring.class)
-			.withConstructorArgRef("typesafe")
-			.Component("typesafe", TypeSafeConfig.class)
-			.withConstructorArg(String.class, "testRef").build();
-		
-		PicoComponentInstanceProvider ioc = new PicoComponentInstanceProvider();
-		for(IComponentDefinition def: components) {
-			ioc.addComponent(def);
-		}
-		ioc.getComponents(IStatefulComponent.class);
-		
-		TestScheduler scheduler = (TestScheduler) ioc.getComponent(RxTestSchedulerProvider.class).getScheduler();
-		scheduler.advanceTimeTo(300, TimeUnit.MILLISECONDS);
-		Monitoring monitoring = ioc.getComponent(Monitoring.class);
-		monitoring.finish();
-		ObserverUnderTest observer = extractTestObserver(monitoring);
-		
-		assertEquals(6, observer.getNextCount());
-		assertEquals(1, observer.getCompleteCount());
-		
-	}
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
-	private ObserverUnderTest extractTestObserver(Monitoring monitoring)
-			throws NoSuchFieldException, IllegalAccessException {
-		Field tscField = monitoring.getClass().getDeclaredField("typeSafeConfig");
-		tscField.setAccessible(true);
-		TypeSafeConfig typeSafeConfig = (TypeSafeConfig) tscField.get(monitoring);
-		
-		Field observerMapField = typeSafeConfig.getClass().getDeclaredField("observerMap");
-		observerMapField.setAccessible(true);
-		Map<String, AbstractStatefulObserver> observerMap = (Map<String, AbstractStatefulObserver>) observerMapField.get(typeSafeConfig);
-		return (ObserverUnderTest) observerMap.get("observertest");
-	}
+import static org.jage.platform.component.builder.ConfigurationBuilder.Configuration;
+import static org.junit.Assert.assertEquals;
+
+
+public class FunctionalTest {
+
+    private ComponentBuilder componentBuilder;
+
+    @Before
+    public void setUp() {
+        componentBuilder = Configuration()
+                .Component("executorProvider", ExecutorProvider.class)
+                .Component("executorShutdownCaller", ExecutorShutdownCaller.class)
+                .Component("rxSchedulerProvider", RxTestSchedulerProvider.class)
+                .Component("random1", RandomSupplier.class, false)
+                .Component("random2", RandomSupplier.class, false)
+                .Component("observer", ObserverUnderTest.class, true);
+    }
+
+    /**
+     * Test with TypeSafe configuration way of monitoring.
+     *
+     * @throws InterruptedException
+     * @throws IllegalAccessException
+     * @throws NoSuchFieldException
+     */
+    @Test
+    public void typesafeConfigurationWay() throws InterruptedException, NoSuchFieldException, IllegalAccessException {
+        List<IComponentDefinition> components = componentBuilder
+                .Component("monitoring", Monitoring.class)
+                .withConstructorArgRef("typesafe")
+                .Component("typesafe", TypeSafeConfig.class)
+                .withConstructorArg(String.class, "testMonitoring").build();
+
+        PicoComponentInstanceProvider ioc = new PicoComponentInstanceProvider();
+        for(IComponentDefinition def : components) {
+            ioc.addComponent(def);
+        }
+        ioc.getComponents(IStatefulComponent.class);
+
+        TestScheduler scheduler = (TestScheduler) ioc.getComponent(RxTestSchedulerProvider.class).getScheduler();
+        scheduler.advanceTimeTo(300, TimeUnit.MILLISECONDS);
+
+        Monitoring monitoring = ioc.getComponent(Monitoring.class);
+        monitoring.finish();
+        ObserverUnderTest observer = extractTestObserver(monitoring);
+
+        assertEquals(18, observer.getNextCount());
+        assertEquals(1, observer.getCompleteCount());
+    }
+
+    private ObserverUnderTest extractTestObserver(Monitoring monitoring)
+            throws NoSuchFieldException, IllegalAccessException {
+        Field tscField = monitoring.getClass().getDeclaredField("typeSafeConfig");
+        tscField.setAccessible(true);
+        TypeSafeConfig typeSafeConfig = (TypeSafeConfig) tscField.get(monitoring);
+
+        Field observerMapField = typeSafeConfig.getClass().getDeclaredField("observerMap");
+        observerMapField.setAccessible(true);
+        Map<String, AbstractStatefulObserver> observerMap = (Map<String, AbstractStatefulObserver>) observerMapField.get(typeSafeConfig);
+        return (ObserverUnderTest) observerMap.get("observertest");
+    }
+
+    /**
+     * Test of using <code>ref</code> supplier type in TypeSafe file.
+     *
+     * @throws InterruptedException
+     * @throws SecurityException
+     * @throws NoSuchFieldException
+     * @throws IllegalAccessException
+     * @throws IllegalArgumentException
+     */
+    @Test
+    public void typesafeConfigurationWayWithRefSupplier() throws InterruptedException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+        List<IComponentDefinition> components = componentBuilder
+                .Component("monitoring", Monitoring.class)
+                .withConstructorArgRef("typesafe")
+                .Component("typesafe", TypeSafeConfig.class)
+                .withConstructorArg(String.class, "testRef").build();
+
+        PicoComponentInstanceProvider ioc = new PicoComponentInstanceProvider();
+        for(IComponentDefinition def : components) {
+            ioc.addComponent(def);
+        }
+        ioc.getComponents(IStatefulComponent.class);
+
+        TestScheduler scheduler = (TestScheduler) ioc.getComponent(RxTestSchedulerProvider.class).getScheduler();
+        scheduler.advanceTimeTo(300, TimeUnit.MILLISECONDS);
+        Monitoring monitoring = ioc.getComponent(Monitoring.class);
+        monitoring.finish();
+        ObserverUnderTest observer = extractTestObserver(monitoring);
+
+        assertEquals(6, observer.getNextCount());
+        assertEquals(1, observer.getCompleteCount());
+
+    }
 }

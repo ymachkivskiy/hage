@@ -31,19 +31,20 @@
 
 package org.jage.action;
 
+
 /**
  * The interface of actions created by agents, passed on to local environment and executed by aggregates.
- * 
+ *
  * @author AGH AgE Team
  */
 public interface IActionContext {
 
-	/**
-	 * Returns information about the action in a string format.
-	 * <p>
-	 * {@inheritDoc}
-	 */
-	@Override
-	String toString();
+    /**
+     * Returns information about the action in a string format.
+     * <p>
+     * {@inheritDoc}
+     */
+    @Override
+    String toString();
 
 }

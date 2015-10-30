@@ -33,43 +33,44 @@
 
 package org.jage.monitoring.persistence.service;
 
-import java.util.List;
 
 import org.hibernate.Session;
 import org.jage.monitoring.persistence.config.HibernateConfiguration;
 import org.jage.monitoring.persistence.dao.AbstractHibernateDao;
 
+import java.util.List;
+
+
 /**
  * Synchronizer of model data object.
- * 
+ *
  * @author AGH AgE Team
  */
 
-public class DictionarySynchronizer extends AbstractHibernateDao{
+public class DictionarySynchronizer extends AbstractHibernateDao {
 
-	private Session hibernateSession;
-	
-	public DictionarySynchronizer(HibernateConfiguration hibernateConfiguration) {
-		super(hibernateConfiguration);
-	}
-	
-	/**
-	 * Checks if exist the table which represents the given type of passed object.
-	 * 
-	 * @param type
-	 * 			Type whose presence will be checked.
-	 * @return
-	 */
-	public <T> T synchronizeDictionary(T type) {
-		hibernateSession = hibernateConfiguration.openSession();
-		List<T> list = hibernateSession.createQuery("from " + type.getClass().getSimpleName()).list();
-		for (T typeElement : list) {
-			if (typeElement.equals(type)) {
-				hibernateSession.close();
-				return typeElement;
-			}
-		}
-		hibernateSession.close();
-		return type;
-	}
+    private Session hibernateSession;
+
+    public DictionarySynchronizer(HibernateConfiguration hibernateConfiguration) {
+        super(hibernateConfiguration);
+    }
+
+    /**
+     * Checks if exist the table which represents the given type of passed object.
+     *
+     * @param type Type whose presence will be checked.
+     * @return
+     */
+    public <T> T synchronizeDictionary(T type) {
+        hibernateSession = hibernateConfiguration.openSession();
+        List<T> list = hibernateSession.createQuery("from " + type.getClass().getSimpleName()).list();
+        for(T typeElement : list) {
+            if(typeElement.equals(type)) {
+                hibernateSession.close();
+                return typeElement;
+            }
+        }
+        hibernateSession.close();
+        return type;
+    }
 }

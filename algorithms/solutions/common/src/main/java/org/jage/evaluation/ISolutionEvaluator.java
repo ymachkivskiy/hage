@@ -31,26 +31,25 @@
 
 package org.jage.evaluation;
 
+
 import org.jage.solution.ISolution;
 import org.jage.strategy.IStrategy;
+
 
 /**
  * Interface for evaluating solutions.
  *
- * @param <S>
- *            The type of {@link ISolution} to be evaluated
- * @param <E>
- *            the type of evaluation
+ * @param <S> The type of {@link ISolution} to be evaluated
+ * @param <E> the type of evaluation
  * @author AGH AgE Team
  */
 public interface ISolutionEvaluator<S extends ISolution, E> extends IStrategy {
 
-	/**
-	 * Evaluates the given solution.
-	 *
-	 * @param solution
-	 *            the solution to be evaluated
-	 * @return that solution's evaluation
-	 */
-	public E evaluate(S solution);
+    /**
+     * Evaluates the given solution.
+     *
+     * @param solution the solution to be evaluated
+     * @return that solution's evaluation
+     */
+    public E evaluate(S solution);
 }

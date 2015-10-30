@@ -31,26 +31,24 @@
 
 package org.jage.emas.reproduction;
 
+
 import org.jage.agent.IAgent;
+
 
 /**
  * Strategy for agents sexual reproduction.
  *
- * @param <A>
- *            the type of agents
- *
+ * @param <A> the type of agents
  * @author AGH AgE Team
  */
 public interface SexualReproduction<A extends IAgent> {
 
-	/**
-	 * Reproduce the given agents sexually.
-	 *
-	 * @param first
-	 *            the first parent
-	 * @param second
-	 *            the second parent
-	 * @return a child
-	 */
-	A reproduce(A first, A second);
+    /**
+     * Reproduce the given agents sexually.
+     *
+     * @param first  the first parent
+     * @param second the second parent
+     * @return a child
+     */
+    A reproduce(A first, A second);
 }

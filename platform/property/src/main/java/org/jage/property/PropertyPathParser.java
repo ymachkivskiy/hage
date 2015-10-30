@@ -26,13 +26,15 @@
  */
 package org.jage.property;
 
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * Parser that analyses property paths.
- * 
+ * <p>
  * A grammar for property paths is as follows:<br />
  * path : propertyIdentifier ( '.' propertyIdentifier )*;<br />
  * propertyIdentifier : identifier arrayIndex*;<br />
@@ -40,240 +42,234 @@ import java.util.List;
  * arrayIndex : '[' number ']';<br />
  * number : digit+;<br />
  * <p>
- * 
+ * <p>
  * This parser uses simple, hand-made recursive LL(1) alogorithm.
- * 
+ *
  * @author Tomek
  */
 public class PropertyPathParser {
 
-	private IPropertyContainer _root;
+    private IPropertyContainer _root;
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param root
-	 *            PropertyContainer that is root of the properties tree.
-	 */
-	public PropertyPathParser(IPropertyContainer root) {
-		_root = root;
-	}
+    /**
+     * Constructor.
+     *
+     * @param root PropertyContainer that is root of the properties tree.
+     */
+    public PropertyPathParser(IPropertyContainer root) {
+        _root = root;
+    }
 
-	/**
-	 * Returns all properties on the given path.
-	 * 
-	 * @param path
-	 *            Property path.
-	 * @return list of all properties on the given path. For example, for path "first[0][1].second", this method will
-	 *         return two properties: the first with name "first", and the second with name "second".
-	 * @throws InvalidPropertyPathException
-	 *             the specified property path is incorrect.
-	 */
-	public List<Property> getPropertiesOnPath(String path) throws InvalidPropertyPathException {
-		Parser parser = new Parser();
-		return parser.getPropertiesOnPath(path);
-	}
+    /**
+     * Returns property specified by the given path.
+     *
+     * @param path path to the property.
+     * @return property specified by the given path.
+     * @throws InvalidPropertyPathException the specified path is incorrect.
+     */
+    public Property getPropertyForPath(String path) throws InvalidPropertyPathException {
+        List<Property> allPropertiesOnPath = getPropertiesOnPath(path);
+        return allPropertiesOnPath.get(allPropertiesOnPath.size() - 1);
+    }
 
-	/**
-	 * Returns property specified by the given path.
-	 * 
-	 * @param path
-	 *            path to the property.
-	 * @return property specified by the given path.
-	 * @throws InvalidPropertyPathException
-	 *             the specified path is incorrect.
-	 */
-	public Property getPropertyForPath(String path) throws InvalidPropertyPathException {
-		List<Property> allPropertiesOnPath = getPropertiesOnPath(path);
-		return allPropertiesOnPath.get(allPropertiesOnPath.size() - 1);
-	}
+    /**
+     * Returns all properties on the given path.
+     *
+     * @param path Property path.
+     * @return list of all properties on the given path. For example, for path "first[0][1].second", this method will
+     * return two properties: the first with name "first", and the second with name "second".
+     * @throws InvalidPropertyPathException the specified property path is incorrect.
+     */
+    public List<Property> getPropertiesOnPath(String path) throws InvalidPropertyPathException {
+        Parser parser = new Parser();
+        return parser.getPropertiesOnPath(path);
+    }
 
-	private class Parser {
 
-		private String _currentPath;
+    private class Parser {
 
-		private int _currentIndex;
+        private String _currentPath;
 
-		public List<Property> getPropertiesOnPath(String path) throws InvalidPropertyPathException {
-			try {
-				_currentPath = path;
-				_currentIndex = 0;
-				IPropertyContainer currentPropertyContainer = _root;
+        private int _currentIndex;
 
-				ArrayList<Property> result = new ArrayList<Property>();
+        public List<Property> getPropertiesOnPath(String path) throws InvalidPropertyPathException {
+            try {
+                _currentPath = path;
+                _currentIndex = 0;
+                IPropertyContainer currentPropertyContainer = _root;
 
-				do {
-					PropertyIndicesPair currentProperty = propertyIdentifier(currentPropertyContainer);
-					result.add(currentProperty.getProperty());
-					if (!isEndOfPath()) {
-						match(".");
-						Object currentPropertyValue = currentProperty.getValue();
-						assertPropertyPathIsValid(currentPropertyValue instanceof IPropertyContainer);
-						currentPropertyContainer = (IPropertyContainer)currentPropertyValue;
-					}
-				} while (!isEndOfPath());
+                ArrayList<Property> result = new ArrayList<Property>();
 
-				return result;
-			} catch (InvalidPropertyOperationException ex) {
-				throw new InvalidPropertyPathException("Invalid property path: " + path, ex);
-			}
-		}
+                do {
+                    PropertyIndicesPair currentProperty = propertyIdentifier(currentPropertyContainer);
+                    result.add(currentProperty.getProperty());
+                    if(!isEndOfPath()) {
+                        match(".");
+                        Object currentPropertyValue = currentProperty.getValue();
+                        assertPropertyPathIsValid(currentPropertyValue instanceof IPropertyContainer);
+                        currentPropertyContainer = (IPropertyContainer) currentPropertyValue;
+                    }
+                } while(!isEndOfPath());
 
-		/**
-		 * Method for the "propertyIdentifer" rule.
-		 * 
-		 * @param currentPropertyContainer
-		 *            property container that should contain property with parsed name.
-		 * @return pair that contains property and indices for accessing one element in the multidimensional array.
-		 * @throws InvalidPropertyPathException
-		 * @throws InvalidPropertyOperationException
-		 */
-		private PropertyIndicesPair propertyIdentifier(IPropertyContainer currentPropertyContainer)
-		        throws InvalidPropertyPathException, InvalidPropertyOperationException {
-			List<Integer> indices = new ArrayList<Integer>();
+                return result;
+            } catch(InvalidPropertyOperationException ex) {
+                throw new InvalidPropertyPathException("Invalid property path: " + path, ex);
+            }
+        }
 
-			String propertyName = identifier();
-			Property currentProperty = currentPropertyContainer.getProperties().getProperty(propertyName);
-			assertPropertyPathIsValid(currentProperty != null);
+        /**
+         * Method for the "propertyIdentifer" rule.
+         *
+         * @param currentPropertyContainer property container that should contain property with parsed name.
+         * @return pair that contains property and indices for accessing one element in the multidimensional array.
+         * @throws InvalidPropertyPathException
+         * @throws InvalidPropertyOperationException
+         */
+        private PropertyIndicesPair propertyIdentifier(IPropertyContainer currentPropertyContainer)
+                throws InvalidPropertyPathException, InvalidPropertyOperationException {
+            List<Integer> indices = new ArrayList<Integer>();
 
-			while (nextChar() == '[') {
-				match("[");
-				int arrayIndex = number();
-				indices.add(new Integer(arrayIndex));
-				match("]");
-			}
+            String propertyName = identifier();
+            Property currentProperty = currentPropertyContainer.getProperties().getProperty(propertyName);
+            assertPropertyPathIsValid(currentProperty != null);
 
-			if (isEndOfPath()) {
-				assertPropertyPathIsValid(indices.size() == 0);
-			}
-			return new PropertyIndicesPair(currentProperty, indices);
-		}
+            while(nextChar() == '[') {
+                match("[");
+                int arrayIndex = number();
+                indices.add(new Integer(arrayIndex));
+                match("]");
+            }
 
-		/**
-		 * Method for the "identifier" rule.
-		 * 
-		 * @return text (name) of identifier.
-		 * @throws InvalidPropertyPathException
-		 */
-		private String identifier() throws InvalidPropertyPathException {
-			StringBuilder result = new StringBuilder();
-			assertPropertyPathIsValid(!isEndOfPath()
-			        && PropertyNamesHelper.isValidPropertyNameCharacter((char)nextChar()));
+            if(isEndOfPath()) {
+                assertPropertyPathIsValid(indices.size() == 0);
+            }
+            return new PropertyIndicesPair(currentProperty, indices);
+        }
 
-			do {
-				result.append((char)nextChar());
-				consume();
-			} while (!isEndOfPath() && PropertyNamesHelper.isValidPropertyNameCharacter((char)nextChar()));
+        /**
+         * Method for the "identifier" rule.
+         *
+         * @return text (name) of identifier.
+         * @throws InvalidPropertyPathException
+         */
+        private String identifier() throws InvalidPropertyPathException {
+            StringBuilder result = new StringBuilder();
+            assertPropertyPathIsValid(!isEndOfPath()
+                                              && PropertyNamesHelper.isValidPropertyNameCharacter((char) nextChar()));
 
-			return result.toString();
-		}
+            do {
+                result.append((char) nextChar());
+                consume();
+            } while(!isEndOfPath() && PropertyNamesHelper.isValidPropertyNameCharacter((char) nextChar()));
 
-		/**
-		 * Method fot the "number" rule.
-		 * 
-		 * @return value of the number.
-		 * @throws InvalidPropertyPathException
-		 */
-		private int number() throws InvalidPropertyPathException {
-			int result = 0;
+            return result.toString();
+        }
 
-			assertPropertyPathIsValid(!isEndOfPath() && Character.isDigit((char)nextChar()));
-			result = nextChar() - '0';
-			consume();
+        /**
+         * Method fot the "number" rule.
+         *
+         * @return value of the number.
+         * @throws InvalidPropertyPathException
+         */
+        private int number() throws InvalidPropertyPathException {
+            int result = 0;
 
-			while (!isEndOfPath() && Character.isDigit((char)nextChar())) {
-				result *= 10;
-				result += nextChar() - '0';
-				consume();
-			}
-			return result;
-		}
+            assertPropertyPathIsValid(!isEndOfPath() && Character.isDigit((char) nextChar()));
+            result = nextChar() - '0';
+            consume();
 
-		/**
-		 * Matches and consumes given string.
-		 * 
-		 * @param pattern
-		 *            text to mach and consume.
-		 * @throws InvalidPropertyPathException
-		 */
-		private void match(String pattern) throws InvalidPropertyPathException {
-			for (int i = 0; i < pattern.length(); i++) {
-				assertPropertyPathIsValid(nextChar() == pattern.charAt(i));
-				consume();
-			}
-		}
+            while(!isEndOfPath() && Character.isDigit((char) nextChar())) {
+                result *= 10;
+                result += nextChar() - '0';
+                consume();
+            }
+            return result;
+        }
 
-		/**
-		 * Value of the next character on the input, or -1, if there is no next character.
-		 * 
-		 * @return
-		 */
-		private int nextChar() {
-			return isEndOfPath() ? -1 : _currentPath.charAt(_currentIndex);
-		}
+        /**
+         * Matches and consumes given string.
+         *
+         * @param pattern text to mach and consume.
+         * @throws InvalidPropertyPathException
+         */
+        private void match(String pattern) throws InvalidPropertyPathException {
+            for(int i = 0; i < pattern.length(); i++) {
+                assertPropertyPathIsValid(nextChar() == pattern.charAt(i));
+                consume();
+            }
+        }
 
-		/**
-		 * Consumes one character from the current path and moves the index.
-		 */
-		private void consume() {
-			_currentIndex++;
-		}
+        /**
+         * Value of the next character on the input, or -1, if there is no next character.
+         *
+         * @return
+         */
+        private int nextChar() {
+            return isEndOfPath() ? -1 : _currentPath.charAt(_currentIndex);
+        }
 
-		/**
-		 * Checks if there are more character in the current path.
-		 * 
-		 * @return true, if there are no more characters to parse; otherwise, returns false.
-		 */
-		private boolean isEndOfPath() {
-			return _currentIndex >= _currentPath.length();
-		}
+        /**
+         * Consumes one character from the current path and moves the index.
+         */
+        private void consume() {
+            _currentIndex++;
+        }
 
-		/**
-		 * Checks whether the given condition is true. If not, throws and InvalidPropertyPathException exception.
-		 * 
-		 * @param condition
-		 * @throws InvalidPropertyPathException
-		 */
-		private void assertPropertyPathIsValid(boolean condition) throws InvalidPropertyPathException {
-			if (!condition) {
-				throw new InvalidPropertyPathException("Invalid property path: " + _currentPath);
-			}
-		}
+        /**
+         * Checks if there are more character in the current path.
+         *
+         * @return true, if there are no more characters to parse; otherwise, returns false.
+         */
+        private boolean isEndOfPath() {
+            return _currentIndex >= _currentPath.length();
+        }
 
-		/**
-		 * Pair that stores property and indices that allow to access a single element if value of the property is
-		 * multidimensional array.
-		 * 
-		 * @author Tomek
-		 */
-		private class PropertyIndicesPair {
+        /**
+         * Checks whether the given condition is true. If not, throws and InvalidPropertyPathException exception.
+         *
+         * @param condition
+         * @throws InvalidPropertyPathException
+         */
+        private void assertPropertyPathIsValid(boolean condition) throws InvalidPropertyPathException {
+            if(!condition) {
+                throw new InvalidPropertyPathException("Invalid property path: " + _currentPath);
+            }
+        }
 
-			private Property _property;
+        /**
+         * Pair that stores property and indices that allow to access a single element if value of the property is
+         * multidimensional array.
+         *
+         * @author Tomek
+         */
+        private class PropertyIndicesPair {
 
-			private List<Integer> _arrayIndices;
+            private Property _property;
 
-			public PropertyIndicesPair(Property property, List<Integer> indices) {
-				_property = property;
-				_arrayIndices = indices;
-			}
+            private List<Integer> _arrayIndices;
 
-			public Property getProperty() {
-				return _property;
-			}
+            public PropertyIndicesPair(Property property, List<Integer> indices) {
+                _property = property;
+                _arrayIndices = indices;
+            }
 
-			public List<Integer> getIndices() {
-				return _arrayIndices;
-			}
+            public Property getProperty() {
+                return _property;
+            }
 
-			public Object getValue() throws InvalidPropertyPathException, InvalidPropertyOperationException {
-				Object currentValue = _property.getValue();
-				for (Integer index : _arrayIndices) {
-					assertPropertyPathIsValid(currentValue != null && currentValue.getClass().isArray());
-					currentValue = Array.get(currentValue, index.intValue());
-				}
-				return currentValue;
-			}
-		}
+            public List<Integer> getIndices() {
+                return _arrayIndices;
+            }
 
-	}
+            public Object getValue() throws InvalidPropertyPathException, InvalidPropertyOperationException {
+                Object currentValue = _property.getValue();
+                for(Integer index : _arrayIndices) {
+                    assertPropertyPathIsValid(currentValue != null && currentValue.getClass().isArray());
+                    currentValue = Array.get(currentValue, index.intValue());
+                }
+                return currentValue;
+            }
+        }
+
+    }
 }

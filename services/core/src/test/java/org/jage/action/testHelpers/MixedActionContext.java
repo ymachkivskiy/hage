@@ -31,51 +31,53 @@
 
 package org.jage.action.testHelpers;
 
+
 import org.jage.action.IActionContext;
 import org.jage.action.context.AgentActionContext;
 
+
 /**
  * A context for mixed (strategic + aggregate) actions.
- * 
+ *
  * @author AGH AgE Team
  */
-@AgentActionContext({ MixedActionContext.STRATEGIC_ACTION_ID, MixedActionContext.AGGREGATE_ACTION_ID,
-        MixedActionContext.UNKNOWN_ACTION_ID })
+@AgentActionContext({MixedActionContext.STRATEGIC_ACTION_ID, MixedActionContext.AGGREGATE_ACTION_ID,
+        MixedActionContext.UNKNOWN_ACTION_ID})
 public class MixedActionContext implements IActionContext {
 
-	public final static String STRATEGIC_ACTION_ID = "mixedStrategic";
+    public final static String STRATEGIC_ACTION_ID = "mixedStrategic";
 
-	public final static String AGGREGATE_ACTION_ID = "mixedAggregate";
+    public final static String AGGREGATE_ACTION_ID = "mixedAggregate";
 
-	public final static String UNKNOWN_ACTION_ID = "unknown";
+    public final static String UNKNOWN_ACTION_ID = "unknown";
 
-	private boolean execStrat = false;
+    private boolean execStrat = false;
 
-	private boolean execAggr = false;
+    private boolean execAggr = false;
 
-	private boolean execUnknown = false;
+    private boolean execUnknown = false;
 
-	public boolean getExecAggr() {
-		return execAggr;
-	}
+    public boolean getExecAggr() {
+        return execAggr;
+    }
 
-	public boolean getExecStrat() {
-		return execStrat;
-	}
+    public boolean getExecStrat() {
+        return execStrat;
+    }
 
-	public boolean getExecUnknown() {
-		return execUnknown;
-	}
+    public boolean getExecUnknown() {
+        return execUnknown;
+    }
 
-	public void setExecAggr(boolean execAggr) {
-		this.execAggr = execAggr;
-	}
+    public void setExecAggr(boolean execAggr) {
+        this.execAggr = execAggr;
+    }
 
-	public void setExecStrat(boolean execStrat) {
-		this.execStrat = execStrat;
-	}
+    public void setExecStrat(boolean execStrat) {
+        this.execStrat = execStrat;
+    }
 
-	public void setExecUnknown(boolean execUnknown) {
-		this.execUnknown = execUnknown;
-	}
+    public void setExecUnknown(boolean execUnknown) {
+        this.execUnknown = execUnknown;
+    }
 }

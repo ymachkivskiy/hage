@@ -1,6 +1,6 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
+#set($symbol_pound='#')
+        #set($symbol_dollar='$')
+        #set($symbol_escape='\' )
 /**
  * Copyright (C) 2006 - 2012
  *   Pawel Kedzior
@@ -32,83 +32,82 @@
  * ${symbol_dollar}Id: HelloWorldSimpleAgent.java 971 2011-09-27 17:24:51Z faber ${symbol_dollar}
  */
 
-package ${package};
+        package ${package};
 
-import javax.inject.Inject;
+        import javax.inject.Inject;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+        import org.slf4j.Logger;
+        import org.slf4j.LoggerFactory;
 
-import org.jage.address.agent.AgentAddress;
-import org.jage.address.agent.AgentAddressSupplier;
-import org.jage.agent.SimpleAgent;
+        import org.jage.address.agent.AgentAddress;
+        import org.jage.address.agent.AgentAddressSupplier;
+        import org.jage.agent.SimpleAgent;
+
 
 /**
  * This agent only logs basic information. It doesn't perform any other operations.
  * <p>
  * Make sure that logger configuration allows to log at info level from this class.
- * 
+ *
  * @author AGH AgE Team
  */
 public class HelloWorldSimpleAgent extends SimpleAgent {
 
-	private static final long serialVersionUID = 3L;
+    private static final long serialVersionUID = 3L;
 
-	private final Logger log = LoggerFactory.getLogger(HelloWorldSimpleAgent.class);
+    private final Logger log = LoggerFactory.getLogger(HelloWorldSimpleAgent.class);
 
-	public HelloWorldSimpleAgent(final AgentAddress address) {
-	    super(address);
+    public HelloWorldSimpleAgent(final AgentAddress address) {
+        super(address);
     }
 
-	@Inject
-	public HelloWorldSimpleAgent(final AgentAddressSupplier supplier) {
-	    super(supplier);
+    @Inject
+    public HelloWorldSimpleAgent(final AgentAddressSupplier supplier) {
+        super(supplier);
     }
 
-	/**
-	 * This method initialises the agent.
-	 * <p>
-	 * {@inheritDoc}
-	 * 
-	 * @throws ComponentException
-	 *             Thrown when initialisation fails.
-	 * 
-	 * @see org.jage.agent.AbstractAgent${symbol_pound}init()
-	 */
-	@Override
-	public void init() {
-		super.init();
-		log.info("Initializing Hello World Simple Agent: {}", getAddress());
-	}
+    /**
+     * This method initialises the agent.
+     * <p>
+     * {@inheritDoc}
+     *
+     * @throws ComponentException Thrown when initialisation fails.
+     * @see org.jage.agent.AbstractAgent${symbol_pound}init()
+     */
+    @Override
+    public void init() {
+        super.init();
+        log.info("Initializing Hello World Simple Agent: {}", getAddress());
+    }
 
-	/**
-	 * In this method, the agent performs its work.
-	 * <p>
-	 * {@inheritDoc}
-	 * 
-	 * @see org.jage.agent.SimpleAgent${symbol_pound}step()
-	 */
-	@Override
-	public void step() {
-		log.info("{} says Hello World from {}", getAddress(), getParentAddress());
-		try {
-			Thread.sleep(200);
-		} catch (InterruptedException e) {
-			log.error("Interrupted", e);
-		}
-	}
+    /**
+     * In this method, the agent performs its work.
+     * <p>
+     * {@inheritDoc}
+     *
+     * @see org.jage.agent.SimpleAgent${symbol_pound}step()
+     */
+    @Override
+    public void step() {
+        log.info("{} says Hello World from {}", getAddress(), getParentAddress());
+        try {
+            Thread.sleep(200);
+        } catch(InterruptedException e) {
+            log.error("Interrupted", e);
+        }
+    }
 
-	/**
-	 * This method is called when the agent is to be removed (e.g. when the system is shutting down).
-	 * <p>
-	 * {@inheritDoc}
-	 * 
-	 * @see org.jage.agent.AbstractAgent${symbol_pound}finish()
-	 */
-	@Override
-	public boolean finish() {
-		log.info("Finishing Hello World Simple Agent: {}", getAddress());
-		return true;
-	}
+    /**
+     * This method is called when the agent is to be removed (e.g. when the system is shutting down).
+     * <p>
+     * {@inheritDoc}
+     *
+     * @see org.jage.agent.AbstractAgent${symbol_pound}finish()
+     */
+    @Override
+    public boolean finish() {
+        log.info("Finishing Hello World Simple Agent: {}", getAddress());
+        return true;
+    }
 
 }

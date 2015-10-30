@@ -31,9 +31,11 @@
 
 package org.jage.address.node;
 
+
 import org.junit.Test;
 
 import static org.mockito.Mockito.mock;
+
 
 /**
  * Tests for UnspecifiedNodeAddress.
@@ -42,16 +44,16 @@ import static org.mockito.Mockito.mock;
  */
 public class UnspecifiedNodeAddressTest {
 
-	private final UnspecifiedNodeAddress address = new UnspecifiedNodeAddress();
+    private final UnspecifiedNodeAddress address = new UnspecifiedNodeAddress();
 
-	@Test(expected = UnsupportedOperationException.class)
-	public void getIdentifierShouldThrowException() {
-		address.getIdentifier();
-	}
+    @Test(expected = UnsupportedOperationException.class)
+    public void getIdentifierShouldThrowException() {
+        address.getIdentifier();
+    }
 
-	@Test(expected = UnsupportedOperationException.class)
-	public void compareToShouldThrowException() {
-		address.compareTo(mock(NodeAddress.class));
-	}
+    @Test(expected = UnsupportedOperationException.class)
+    public void compareToShouldThrowException() {
+        address.compareTo(mock(NodeAddress.class));
+    }
 
 }

@@ -31,6 +31,7 @@
 
 package org.jage.property.monitors;
 
+
 /**
  * Default monitor rule, that always informs monitor about change.
  *
@@ -38,16 +39,14 @@ package org.jage.property.monitors;
  */
 public class DefaultPropertyMonitorRule implements IPropertyMonitorRule {
 
-	/**
-	 * Checks whether the rule is active, and the monitor should be informed about the change.
-	 *
-	 * @param oldValue
-	 *            old property's value.
-	 * @param newValue
-	 *            new property's value.
-	 * @return true, if the monitor should be informed about the change; otherwise, returns false.
-	 */
-	public boolean isActive(Object oldValue, Object newValue) {
-		return true;
-	}
+    /**
+     * Checks whether the rule is active, and the monitor should be informed about the change.
+     *
+     * @param oldValue old property's value.
+     * @param newValue new property's value.
+     * @return true, if the monitor should be informed about the change; otherwise, returns false.
+     */
+    public boolean isActive(Object oldValue, Object newValue) {
+        return true;
+    }
 }

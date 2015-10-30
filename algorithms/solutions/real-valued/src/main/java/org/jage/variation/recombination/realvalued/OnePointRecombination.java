@@ -31,18 +31,18 @@
 
 package org.jage.variation.recombination.realvalued;
 
-import static java.lang.System.arraycopy;
 
-import javax.inject.Inject;
-
+import it.unimi.dsi.fastutil.doubles.DoubleList;
 import org.jage.random.IIntRandomGenerator;
 import org.jage.solution.IVectorSolution;
 import org.jage.strategy.AbstractStrategy;
 import org.jage.variation.recombination.IRecombine;
 
-import it.unimi.dsi.fastutil.doubles.DoubleList;
+import javax.inject.Inject;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static java.lang.System.arraycopy;
+
 
 /**
  * Recombines the representations of two real-valued solutions at a random point.
@@ -51,20 +51,20 @@ import static com.google.common.base.Preconditions.checkArgument;
  */
 public class OnePointRecombination extends AbstractStrategy implements IRecombine<IVectorSolution<Double>> {
 
-	@Inject
-	private IIntRandomGenerator rand;
+    @Inject
+    private IIntRandomGenerator rand;
 
     @Override
     public void recombine(final IVectorSolution<Double> solution1, final IVectorSolution<Double> solution2) {
-    	final double[] representation1 = ((DoubleList)solution1.getRepresentation()).toDoubleArray();
-    	final double[] representation2 = ((DoubleList)solution2.getRepresentation()).toDoubleArray();
-    	checkArgument(representation1.length == representation2.length);
+        final double[] representation1 = ((DoubleList) solution1.getRepresentation()).toDoubleArray();
+        final double[] representation2 = ((DoubleList) solution2.getRepresentation()).toDoubleArray();
+        checkArgument(representation1.length == representation2.length);
 
-    	final int recombinationPoint = rand.nextInt(representation1.length);
+        final int recombinationPoint = rand.nextInt(representation1.length);
 
-		final double[] tmp = new double[recombinationPoint];
-		arraycopy(representation1, 0, tmp, 0, recombinationPoint);
-		arraycopy(representation2, 0, representation1, 0, recombinationPoint);
-		arraycopy(tmp, 0, representation2, 0, recombinationPoint);
+        final double[] tmp = new double[recombinationPoint];
+        arraycopy(representation1, 0, tmp, 0, recombinationPoint);
+        arraycopy(representation2, 0, representation1, 0, recombinationPoint);
+        arraycopy(tmp, 0, representation2, 0, recombinationPoint);
     }
 }

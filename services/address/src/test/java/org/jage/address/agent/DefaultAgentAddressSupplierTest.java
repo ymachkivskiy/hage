@@ -31,6 +31,9 @@
 
 package org.jage.address.agent;
 
+
+import org.jage.address.node.NodeAddress;
+import org.jage.address.node.NodeAddressSupplier;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,89 +47,83 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-import org.jage.address.node.NodeAddress;
-import org.jage.address.node.NodeAddressSupplier;
 
 /**
- *
  * @author AGH AgE Team
  */
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultAgentAddressSupplierTest {
 
-	@Mock
-	private NodeAddressSupplier nodeAddressSupplier;
+    @InjectMocks
+    private final DefaultAgentAddressSupplier supplier = new DefaultAgentAddressSupplier();
+    @InjectMocks
+    private final DefaultAgentAddressSupplier templatedSupplier = new DefaultAgentAddressSupplier("template");
+    @InjectMocks
+    private final DefaultAgentAddressSupplier wildcardedSupplier = new DefaultAgentAddressSupplier("*template*");
+    @Mock
+    private NodeAddressSupplier nodeAddressSupplier;
 
-	@InjectMocks
-	private final DefaultAgentAddressSupplier supplier = new DefaultAgentAddressSupplier();
+    @Before
+    public void setup() {
+        given(nodeAddressSupplier.get()).willReturn(mock(NodeAddress.class));
+    }
 
-	@InjectMocks
-	private final DefaultAgentAddressSupplier templatedSupplier = new DefaultAgentAddressSupplier("template");
+    @Test
+    public void shouldCreateDefaultAgentAddressInstances() {
+        // when
+        final AgentAddress address = supplier.get();
 
-	@InjectMocks
-	private final DefaultAgentAddressSupplier wildcardedSupplier = new DefaultAgentAddressSupplier("*template*");
+        // then
+        assertThat(address, instanceOf(DefaultAgentAddress.class));
+    }
 
-	@Before
-	public void setup() {
-		given(nodeAddressSupplier.get()).willReturn(mock(NodeAddress.class));
-	}
+    @Test
+    public void shouldUseNodeAddressInstancesFromNodeAddressSupplier() {
+        // given
+        final NodeAddress nodeAddress = mock(NodeAddress.class);
+        given(nodeAddressSupplier.get()).willReturn(nodeAddress);
 
-	@Test
-	public void shouldCreateDefaultAgentAddressInstances() {
-		// when
-		final AgentAddress address = supplier.get();
+        // when
+        final AgentAddress address = supplier.get();
 
-		// then
-		assertThat(address, instanceOf(DefaultAgentAddress.class));
-	}
+        // then
+        assertThat(address.getNodeAddress(), is(nodeAddress));
+    }
 
-	@Test
-	public void shouldUseNodeAddressInstancesFromNodeAddressSupplier() {
-		// given
-		final NodeAddress nodeAddress = mock(NodeAddress.class);
-		given(nodeAddressSupplier.get()).willReturn(nodeAddress);
+    @Test
+    public void shouldUseDefaultTemplate() {
+        // when
+        final AgentAddress address = supplier.get();
 
-		// when
-		final AgentAddress address = supplier.get();
+        // then
+        assertThat(address.getFriendlyName(), is("agent0"));
+    }
 
-		// then
-		assertThat(address.getNodeAddress(), is(nodeAddress));
-	}
+    @Test
+    public void shouldIncrementWildcardInTemplate() {
+        // when
+        supplier.get();
+        final AgentAddress address = supplier.get();
 
-	@Test
-	public void shouldUseDefaultTemplate() {
-		// when
-		final AgentAddress address = supplier.get();
+        // then
+        assertThat(address.getFriendlyName(), is("agent1"));
+    }
 
-		// then
-		assertThat(address.getFriendlyName(), is("agent0"));
-	}
+    @Test
+    public void shouldUseProvidedTemplate() {
+        // when
+        final AgentAddress address = templatedSupplier.get();
 
-	@Test
-	public void shouldIncrementWildcardInTemplate() {
-		// when
-		supplier.get();
-		final AgentAddress address = supplier.get();
+        // then
+        assertThat(address.getFriendlyName(), is("template"));
+    }
 
-		// then
-		assertThat(address.getFriendlyName(), is("agent1"));
-	}
+    @Test
+    public void shouldReplaceWildcardInTemplate() {
+        // when
+        final AgentAddress address = wildcardedSupplier.get();
 
-	@Test
-	public void shouldUseProvidedTemplate() {
-		// when
-		final AgentAddress address = templatedSupplier.get();
-
-		// then
-		assertThat(address.getFriendlyName(), is("template"));
-	}
-
-	@Test
-	public void shouldReplaceWildcardInTemplate() {
-		// when
-		final AgentAddress address = wildcardedSupplier.get();
-
-		// then
-		assertThat(address.getFriendlyName(), is("0template0"));
-	}
+        // then
+        assertThat(address.getFriendlyName(), is("0template0"));
+    }
 }

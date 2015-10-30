@@ -31,20 +31,6 @@
 
 package org.jage.agent;
 
-import java.util.Arrays;
-import java.util.List;
-
-import javax.annotation.Nullable;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
 
 import org.jage.action.ComplexAction;
 import org.jage.action.SingleAction;
@@ -56,10 +42,22 @@ import org.jage.address.selector.AddressSelector;
 import org.jage.address.selector.Selectors;
 import org.jage.address.selector.UnicastSelector;
 import org.jage.platform.component.provider.IComponentInstanceProvider;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.jage.utils.AgentTestUtils.createSimpleAgentWithoutStep;
+import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.List;
 
 import static com.google.common.collect.Lists.newLinkedList;
+import static org.hamcrest.Matchers.is;
+import static org.jage.utils.AgentTestUtils.createSimpleAgentWithoutStep;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+
 
 /**
  * Tests for the {@link AggregateActionService} class: the action execution.
@@ -69,100 +67,98 @@ import static com.google.common.collect.Lists.newLinkedList;
 @RunWith(MockitoJUnitRunner.class)
 public class AggregateActionServiceExecuteActionsTest {
 
-	private static final int AGENT_COUNT = 10;
+    private static final int AGENT_COUNT = 10;
 
-	private final SimpleAggregate aggregate = new SimpleAggregate(mock(AgentAddress.class));
+    private final SimpleAggregate aggregate = new SimpleAggregate(mock(AgentAddress.class));
 
-	private final HelperTestAggregateActionService actionService = new HelperTestAggregateActionService();
+    private final HelperTestAggregateActionService actionService = new HelperTestAggregateActionService();
+    private final List<UnicastSelector<AgentAddress>> unicasts = newLinkedList();
+    private AgentAddress[] addresses;
+    private AddressSelector<AgentAddress> broadcast;
 
-	private AgentAddress[] addresses;
+    private ComplexAction action;
 
-	private final List<UnicastSelector<AgentAddress>> unicasts = newLinkedList();
+    private TracingActionContext context;
 
-	private AddressSelector<AgentAddress> broadcast;
+    @Mock
+    private IComponentInstanceProvider componentInstanceProvider;
 
-	private ComplexAction action;
+    @Before
+    public void setUp() throws Exception {
+        // Configure agents
+        actionService.setInstanceProvider(componentInstanceProvider);
+        actionService.setAggregate(aggregate);
 
-	private TracingActionContext context;
+        final ISimpleAgent[] agents = new SimpleAgent[AGENT_COUNT];
+        addresses = new AgentAddress[AGENT_COUNT];
 
-	@Mock
-	private IComponentInstanceProvider componentInstanceProvider;
+        for(int i = 0; i < AGENT_COUNT; i++) {
+            final SimpleAgent agent = createSimpleAgentWithoutStep();
+            agent.init();
+            agents[i] = agent;
+            addresses[i] = agent.getAddress();
+        }
 
-	@Before
-	public void setUp() throws Exception {
-		// Configure agents
-		actionService.setInstanceProvider(componentInstanceProvider);
-		actionService.setAggregate(aggregate);
+        aggregate.addAll(Arrays.asList(agents));
 
-		final ISimpleAgent[] agents = new SimpleAgent[AGENT_COUNT];
-		addresses = new AgentAddress[AGENT_COUNT];
+        createAction();
+    }
 
-		for (int i = 0; i < AGENT_COUNT; i++) {
-			final SimpleAgent agent = createSimpleAgentWithoutStep();
-			agent.init();
-			agents[i] = agent;
-			addresses[i] = agent.getAddress();
-		}
+    public void createAction() {
+        unicasts.add(UnicastSelector.create(addresses[0]));
+        unicasts.add(UnicastSelector.create(addresses[1]));
+        unicasts.add(UnicastSelector.create(addresses[2]));
 
-		aggregate.addAll(Arrays.asList(agents));
+        // Define sth like old BroadUnusedSelector
+        broadcast = Selectors.allAddressesMatching(new AddressPredicate<AgentAddress>() {
 
-		createAction();
-	}
+            @Override
+            public boolean apply(@Nullable final AgentAddress input) {
+                for(final AddressSelector<AgentAddress> selector : unicasts) {
+                    if(selector.selects(input)) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        });
 
-	public void createAction() {
-		unicasts.add(UnicastSelector.create(addresses[0]));
-		unicasts.add(UnicastSelector.create(addresses[1]));
-		unicasts.add(UnicastSelector.create(addresses[2]));
+        context = new TracingActionContext();
+        final SingleAction sa1 = new SingleAction(unicasts.get(0), context, "c1Action");
+        final SingleAction sa2 = new SingleAction(unicasts.get(1), context, "c2Action");
+        final SingleAction sa3 = new SingleAction(unicasts.get(2), context, "c3Action");
+        final SingleAction sa4 = new SingleAction(broadcast, context, "c4Action");
 
-		// Define sth like old BroadUnusedSelector
-		broadcast = Selectors.allAddressesMatching(new AddressPredicate<AgentAddress>() {
-			@Override
-			public boolean apply(@Nullable final AgentAddress input) {
-				for (final AddressSelector<AgentAddress> selector : unicasts) {
-					if (selector.selects(input)) {
-						return false;
-					}
-				}
-				return true;
-			}
-		});
+        action = new ComplexAction();
+        action.addChild(sa1);
+        action.addChild(sa2);
+        action.addChild(sa3);
+        action.addChild(sa4);
+    }
 
-		context = new TracingActionContext();
-		final SingleAction sa1 = new SingleAction(unicasts.get(0), context, "c1Action");
-		final SingleAction sa2 = new SingleAction(unicasts.get(1), context, "c2Action");
-		final SingleAction sa3 = new SingleAction(unicasts.get(2), context, "c3Action");
-		final SingleAction sa4 = new SingleAction(broadcast, context, "c4Action");
+    @Test
+    public void shouldExecuteAllInitializationPhases() {
+        // when
+        actionService.initializeAction(action);
 
-		action = new ComplexAction();
-		action.addChild(sa1);
-		action.addChild(sa2);
-		action.addChild(sa3);
-		action.addChild(sa4);
-	}
+        // then
+        assertThat(context.trace, is("C1IC2IC3IC4I"));
+    }
 
-	@Test
-	public void shouldExecuteAllInitializationPhases() {
-		// when
-		actionService.initializeAction(action);
+    /**
+     * In this test actions 1-3 should be performed once on separate agents and the action 4 should be performed on
+     * all remaining agents.
+     */
+    @Test
+    public void shouldPerformAction() {
+        // given
+        actionService.initializeAction(action);
 
-		// then
-		assertThat(context.trace, is("C1IC2IC3IC4I"));
-	}
+        // when
+        actionService.executeAction(action);
 
-	/**
-	 * In this test actions 1-3 should be performed once on separate agents and the action 4 should be performed on
-	 * all remaining agents.
-	 */
-	@Test
-	public void shouldPerformAction() {
-		// given
-		actionService.initializeAction(action);
-
-		// when
-		actionService.executeAction(action);
-
-		// then
-		assertThat(context.trace, is("C1IC2IC3IC4I1234444444"));
-	}
+        // then
+        assertThat(context.trace, is("C1IC2IC3IC4I1234444444"));
+    }
 
 }

@@ -31,11 +31,12 @@
 
 package org.jage.variation.mutation.integer;
 
-import java.util.List;
-
-import org.jage.variation.mutation.AbstractStochasticMutate;
 
 import it.unimi.dsi.fastutil.ints.IntList;
+import org.jage.variation.mutation.AbstractStochasticMutate;
+
+import java.util.List;
+
 
 /**
  * Abstract class which efficiently unboxes Integer AbstractStochasticMutate.
@@ -44,18 +45,17 @@ import it.unimi.dsi.fastutil.ints.IntList;
  */
 public abstract class IntegerAbstractStochasticMutate extends AbstractStochasticMutate<Integer> {
 
-	@Override
-	protected final void doMutate(List<Integer> representation, int index) {
-		IntList list = (IntList)representation;
-		list.set(index, doMutate(list.getInt(index)));
-	}
+    @Override
+    protected final void doMutate(List<Integer> representation, int index) {
+        IntList list = (IntList) representation;
+        list.set(index, doMutate(list.getInt(index)));
+    }
 
-	/**
-	 * Perform the actual mutation on a primitive int.
-	 *
-	 * @param value
-	 *            The old value
-	 * @return a mutated value
-	 */
-	protected abstract int doMutate(int value);
+    /**
+     * Perform the actual mutation on a primitive int.
+     *
+     * @param value The old value
+     * @return a mutated value
+     */
+    protected abstract int doMutate(int value);
 }

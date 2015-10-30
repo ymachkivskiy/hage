@@ -26,16 +26,16 @@
  */
 package org.jage.property;
 
-import java.util.ArrayList;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.jage.event.AbstractEvent;
 import org.jage.monitor.IChangesNotifierMonitor;
 import org.jage.property.functions.PropertyFunction;
 import org.jage.property.monitors.AbstractPropertyMonitor;
 import org.jage.property.monitors.DefaultPropertyMonitorRule;
 import org.jage.property.monitors.IPropertyMonitorRule;
+
+import java.util.ArrayList;
+
 
 /**
  * IPropertyContainer implementation that reads properties from annotated fields
@@ -45,229 +45,210 @@ import org.jage.property.monitors.IPropertyMonitorRule;
  */
 public class ClassPropertyContainer extends AbstractPropertyContainer {
 
-	private boolean _propertiesLoaded;
+    private boolean _propertiesLoaded;
 
-	/**
-	 * Constructor.
-	 */
-	public ClassPropertyContainer() {
-		super();
-		_propertiesLoaded = false;
-	}
+    /**
+     * Constructor.
+     */
+    public ClassPropertyContainer() {
+        super();
+        _propertiesLoaded = false;
+    }
 
-	private synchronized void loadProperties() {
-		if (_propertiesLoaded) {
-			return;
-		}
-		try {
-			properties = getPropertiesFactory().getAllProperties(this);
-		} catch (InvalidPropertyDefinitionException ex) {
-			log.error(ex.toString());
-			properties = new PropertiesSet();
-		}
-		_propertiesLoaded = true;
-		for (Property property : properties) {
-			Object propertyValue = property.getValue();
-			property.notifyMonitors(propertyValue);
-		}
+    private synchronized void loadProperties() {
+        if(_propertiesLoaded) {
+            return;
+        }
+        try {
+            properties = getPropertiesFactory().getAllProperties(this);
+        } catch(InvalidPropertyDefinitionException ex) {
+            log.error(ex.toString());
+            properties = new PropertiesSet();
+        }
+        _propertiesLoaded = true;
+        for(Property property : properties) {
+            Object propertyValue = property.getValue();
+            property.notifyMonitors(propertyValue);
+        }
 
-		attachMonitorsToProperties();
+        attachMonitorsToProperties();
 
-	}
+    }
 
-	/**
-	 * Adds monitor with a rule to property with a given path.
-	 *
-	 * @param propertyPath
-	 *            path to the property.
-	 * @param monitor
-	 *            monitor to add.
-	 * @param rule
-	 *            monitor rule.
-	 * @throws InvalidPropertyOperationException
-	 *             property with the given path is not monitorable.
-	 * @throws InvalidPropertyPathException
-	 *             invlaid path to the property.
-	 */
-	@Override
-    public void addPropertyMonitor(String propertyPath,
-			AbstractPropertyMonitor monitor, IPropertyMonitorRule rule)
-			throws InvalidPropertyOperationException,
-			InvalidPropertyPathException {
-		loadProperties();
-		super.addPropertyMonitor(propertyPath, monitor, rule);
-	}
-
-	/**
-	 * Adds monitor to property with a given path.
-	 *
-	 * @param propertyPath
-	 *            path to the property.
-	 * @param monitor
-	 *            monitor to add.
-	 * @throws InvalidPropertyOperationException
-	 *             property with the given path is not monitorable.
-	 * @throws InvalidPropertyPathException
-	 *             invalid path to the property.
-	 */
-	@Override
-    public void addPropertyMonitor(String propertyPath, AbstractPropertyMonitor monitor)
-			throws InvalidPropertyOperationException,
-			InvalidPropertyPathException {
-		addPropertyMonitor(propertyPath, monitor,
-				new DefaultPropertyMonitorRule());
-	}
-
-	/**
-	 * Unregisters monitor from property with a given path.
-	 *
-	 * @param propertyPath
-	 *            path to the property.
-	 * @param monitor
-	 *            monitor to unergister.
-	 * @throws InvalidPropertyOperationException
-	 *             property with the given path is not monitorable.
-	 * @throws InvalidPropertyPathException
-	 *             invalid path to the property.
-	 */
-	@Override
-    public void removePropertyMonitor(String propertyPath,
-			AbstractPropertyMonitor monitor) throws InvalidPropertyOperationException,
-			InvalidPropertyPathException {
-		loadProperties();
-		super.removePropertyMonitor(propertyPath, monitor);
-	}
-
-	/**
-	 * Adds new property function to the container.
-	 *
-	 * @param function
-	 *            function to add.
-	 * @throws DuplicatePropertyNameException
-	 *             property or function with the same name already exists in
-	 *             this container.
-	 */
-	@Override
-    public void addFunction(PropertyFunction function)
-			throws DuplicatePropertyNameException {
-		loadProperties();
-		super.addFunction(function);
-	}
-
-	/**
-	 * Removes property function. If the function doesn't belong to this
-	 * container, this method doesn't throw any exception.
-	 *
-	 * @param function
-	 *            function to remove.
-	 */
-	@Override
-    public void removeFunction(PropertyFunction function) {
-		loadProperties();
-		super.removeFunction(function);
-	}
-
-	/**
-	 * Returns property with a given path.
-	 *
-	 * @param propertyPath
-	 *            path to the property.
-	 * @return Property with a given path.
-	 * @throws InvalidPropertyPathException
-	 *             invalid path to the property.
-	 */
-	@Override
+    /**
+     * Returns property with a given path.
+     *
+     * @param propertyPath path to the property.
+     * @return Property with a given path.
+     * @throws InvalidPropertyPathException invalid path to the property.
+     */
+    @Override
     public Property getProperty(String propertyPath)
-			throws InvalidPropertyPathException {
-		loadProperties();
-		return super.getProperty(propertyPath);
-	}
+            throws InvalidPropertyPathException {
+        loadProperties();
+        return super.getProperty(propertyPath);
+    }
 
-	/**
-	 * Returns set that stores all properties (not including subproperties).
-	 *
-	 * @return set that stores all properties.
-	 */
-	@Override
+    /**
+     * Adds new property function to the container.
+     *
+     * @param function function to add.
+     * @throws DuplicatePropertyNameException property or function with the same name already exists in
+     *                                        this container.
+     */
+    @Override
+    public void addFunction(PropertyFunction function)
+            throws DuplicatePropertyNameException {
+        loadProperties();
+        super.addFunction(function);
+    }
+
+    /**
+     * Adds monitor to property with a given path.
+     *
+     * @param propertyPath path to the property.
+     * @param monitor      monitor to add.
+     * @throws InvalidPropertyOperationException property with the given path is not monitorable.
+     * @throws InvalidPropertyPathException      invalid path to the property.
+     */
+    @Override
+    public void addPropertyMonitor(String propertyPath, AbstractPropertyMonitor monitor)
+            throws InvalidPropertyOperationException,
+                   InvalidPropertyPathException {
+        addPropertyMonitor(propertyPath, monitor,
+                           new DefaultPropertyMonitorRule());
+    }
+
+    /**
+     * Adds monitor with a rule to property with a given path.
+     *
+     * @param propertyPath path to the property.
+     * @param monitor      monitor to add.
+     * @param rule         monitor rule.
+     * @throws InvalidPropertyOperationException property with the given path is not monitorable.
+     * @throws InvalidPropertyPathException      invlaid path to the property.
+     */
+    @Override
+    public void addPropertyMonitor(String propertyPath,
+            AbstractPropertyMonitor monitor, IPropertyMonitorRule rule)
+            throws InvalidPropertyOperationException,
+                   InvalidPropertyPathException {
+        loadProperties();
+        super.addPropertyMonitor(propertyPath, monitor, rule);
+    }
+
+    /**
+     * Unregisters monitor from property with a given path.
+     *
+     * @param propertyPath path to the property.
+     * @param monitor      monitor to unergister.
+     * @throws InvalidPropertyOperationException property with the given path is not monitorable.
+     * @throws InvalidPropertyPathException      invalid path to the property.
+     */
+    @Override
+    public void removePropertyMonitor(String propertyPath,
+            AbstractPropertyMonitor monitor) throws InvalidPropertyOperationException,
+                                                    InvalidPropertyPathException {
+        loadProperties();
+        super.removePropertyMonitor(propertyPath, monitor);
+    }
+
+    /**
+     * Removes property function. If the function doesn't belong to this
+     * container, this method doesn't throw any exception.
+     *
+     * @param function function to remove.
+     */
+    @Override
+    public void removeFunction(PropertyFunction function) {
+        loadProperties();
+        super.removeFunction(function);
+    }
+
+    /**
+     * Returns set that stores all properties (not including subproperties).
+     *
+     * @return set that stores all properties.
+     */
+    @Override
     public IPropertiesSet getProperties() {
-		loadProperties();
-		return super.getProperties();
-	}
+        loadProperties();
+        return super.getProperties();
+    }
 
-	@Override
+    @Override
     public synchronized MetaPropertiesSet getMetaProperties() {
-		if (!_propertiesLoaded) {
-			try {
-				return getPropertiesFactory().getAllMetaProperties(this);
-			} catch (InvalidPropertyDefinitionException ex) {
-				log.error(ex.toString());
-				return null;
-			}
-		} else {
-			return super.getMetaProperties();
-		}
-	}
+        if(!_propertiesLoaded) {
+            try {
+                return getPropertiesFactory().getAllMetaProperties(this);
+            } catch(InvalidPropertyDefinitionException ex) {
+                log.error(ex.toString());
+                return null;
+            }
+        } else {
+            return super.getMetaProperties();
+        }
+    }
 
-	/**
-	 * Informs the container that it has been deleted.
-	 *
-	 * @param event
-	 */
-	@Override
+    /**
+     * Informs the container that it has been deleted.
+     *
+     * @param event
+     */
+    @Override
     public void objectDeleted(AbstractEvent event) {
-		loadProperties();
-		super.objectDeleted(event);
-	}
+        loadProperties();
+        super.objectDeleted(event);
+    }
 
-	/**
-	 * Factory method. Returns properties factory that should be used to
-	 * construct properties set.
-	 *
-	 * @return
-	 */
-	protected IClassPropertiesFactory getPropertiesFactory() {
-		return ClassAnnotatedPropertiesFactory.INSTANCE;
-	}
-
-	protected void notifyMonitorsForChangedProperties() {
-		for (Property property : properties) {
-			property.notifyMonitors(property.getValue(), false);
-		}
-	}
-
-	/**
-	 * Notifies monitor about property change.
-	 *
-	 * @param propertyPath
-	 *            path to the property that has been changed.
-	 */
-	protected void notifyMonitorsForChangedProperty(String propertyPath) {
-		loadProperties();
-
-		Property property = properties.getProperty(propertyPath);
-		if (property == null) {
-			return;
-		}
-
-		if (!property.getMetaProperty().isMonitorable()) {
-			return;
-		}
-
-		property.notifyMonitors(property.getValue());
-	}
-
-	protected void notifyMonitorsAboutDeletion(AbstractEvent event) {
-		ArrayList<IChangesNotifierMonitor> monitorsCopy = new ArrayList<IChangesNotifierMonitor>(
-				changesNotifierMonitors);
-		for (IChangesNotifierMonitor monitor : monitorsCopy) {
-			monitor.ownerDeleted(event);
-		}
-	}
-
-	@Override
+    @Override
     protected void attachMonitorsToProperties() {
-		loadProperties();
-		super.attachMonitorsToProperties();
-	}
+        loadProperties();
+        super.attachMonitorsToProperties();
+    }
+
+    /**
+     * Factory method. Returns properties factory that should be used to
+     * construct properties set.
+     *
+     * @return
+     */
+    protected IClassPropertiesFactory getPropertiesFactory() {
+        return ClassAnnotatedPropertiesFactory.INSTANCE;
+    }
+
+    protected void notifyMonitorsForChangedProperties() {
+        for(Property property : properties) {
+            property.notifyMonitors(property.getValue(), false);
+        }
+    }
+
+    /**
+     * Notifies monitor about property change.
+     *
+     * @param propertyPath path to the property that has been changed.
+     */
+    protected void notifyMonitorsForChangedProperty(String propertyPath) {
+        loadProperties();
+
+        Property property = properties.getProperty(propertyPath);
+        if(property == null) {
+            return;
+        }
+
+        if(!property.getMetaProperty().isMonitorable()) {
+            return;
+        }
+
+        property.notifyMonitors(property.getValue());
+    }
+
+    protected void notifyMonitorsAboutDeletion(AbstractEvent event) {
+        ArrayList<IChangesNotifierMonitor> monitorsCopy = new ArrayList<IChangesNotifierMonitor>(
+                changesNotifierMonitors);
+        for(IChangesNotifierMonitor monitor : monitorsCopy) {
+            monitor.ownerDeleted(event);
+        }
+    }
 
 }

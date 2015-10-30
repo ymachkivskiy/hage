@@ -33,52 +33,54 @@
 
 package org.jage.monitoring.persistence.service;
 
+
 import org.jage.monitoring.persistence.config.HibernateConfiguration;
 import org.jage.monitoring.persistence.dao.PropertyDao;
 import org.jage.monitoring.persistence.model.ComputationInstance;
 import org.jage.monitoring.persistence.model.ComputationType;
 import org.jage.monitoring.persistence.model.GathererName;
 
+
 /**
  * Service responsible for persisting passed data.
- * 
+ *
  * @author AGH AgE Team
  */
-public class PropertyService{
+public class PropertyService {
 
-	private DictionarySynchronizer dictionarySynchronizer;
-	
-	private PropertyDao propertyDao;
-	
-	private ComputationType computationType;
-	private ComputationInstance computationInstance;
-	private GathererName gathererName;
-	
-	public PropertyService(HibernateConfiguration hibernateConfiguration){
-		dictionarySynchronizer = new DictionarySynchronizer(hibernateConfiguration);
-		propertyDao = new PropertyDao(hibernateConfiguration);
-	}
-	
-	/**
-	 * Persists passed data object.
-	 *  
-	 * @param name
-	 * @param compInstanceName
-	 * @param compTypeName
-	 * @param timestamp
-	 * @param data
-	 */
-	public void saveProperty(String name, String compInstanceName, String compTypeName, long timestamp, Object data) {
-		gathererName = new GathererName(name);
-		gathererName = dictionarySynchronizer.synchronizeDictionary(gathererName);
-		
-		computationType = new ComputationType(compTypeName);
-		computationType = dictionarySynchronizer.synchronizeDictionary(computationType);
-				
-		computationInstance = new ComputationInstance(compInstanceName, computationType);
-		computationInstance = dictionarySynchronizer.synchronizeDictionary(computationInstance);
+    private DictionarySynchronizer dictionarySynchronizer;
 
-		propertyDao.mergeProperty(gathererName, computationInstance, timestamp, data);
+    private PropertyDao propertyDao;
 
-	}
+    private ComputationType computationType;
+    private ComputationInstance computationInstance;
+    private GathererName gathererName;
+
+    public PropertyService(HibernateConfiguration hibernateConfiguration) {
+        dictionarySynchronizer = new DictionarySynchronizer(hibernateConfiguration);
+        propertyDao = new PropertyDao(hibernateConfiguration);
+    }
+
+    /**
+     * Persists passed data object.
+     *
+     * @param name
+     * @param compInstanceName
+     * @param compTypeName
+     * @param timestamp
+     * @param data
+     */
+    public void saveProperty(String name, String compInstanceName, String compTypeName, long timestamp, Object data) {
+        gathererName = new GathererName(name);
+        gathererName = dictionarySynchronizer.synchronizeDictionary(gathererName);
+
+        computationType = new ComputationType(compTypeName);
+        computationType = dictionarySynchronizer.synchronizeDictionary(computationType);
+
+        computationInstance = new ComputationInstance(compInstanceName, computationType);
+        computationInstance = dictionarySynchronizer.synchronizeDictionary(computationInstance);
+
+        propertyDao.mergeProperty(gathererName, computationInstance, timestamp, data);
+
+    }
 }

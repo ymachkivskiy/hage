@@ -26,21 +26,25 @@
  */
 package org.jage.property.functions;
 
+
 import java.util.List;
+
 
 /**
  * Interface for classes that can convert arguments pattern to list of function arguments.
- * @author Tomek
  *
+ * @author Tomek
  */
 public interface IFunctionArgumentsResolver {
-	/**
-	 * Finds all function arguments for the given pattern.
-	 * @param argumentsPattern pattern that decribes function arguments.
-	 * @return list of all resolved arguments.
-	 * @throws InvalidArgumentsPatternException the given pattern is not correct according
-	 * to used grammar. 
-	 */
-	public List<FunctionArgument> resolveArguments(String argumentsPattern)  throws InvalidArgumentsPatternException;
+
+    /**
+     * Finds all function arguments for the given pattern.
+     *
+     * @param argumentsPattern pattern that decribes function arguments.
+     * @return list of all resolved arguments.
+     * @throws InvalidArgumentsPatternException the given pattern is not correct according
+     *                                          to used grammar.
+     */
+    public List<FunctionArgument> resolveArguments(String argumentsPattern) throws InvalidArgumentsPatternException;
 }
 

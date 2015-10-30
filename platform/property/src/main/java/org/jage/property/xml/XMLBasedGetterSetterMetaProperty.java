@@ -31,44 +31,41 @@
 
 package org.jage.property.xml;
 
-import java.lang.reflect.Method;
 
 import org.jage.property.GetterSetterMetaProperty;
 import org.jage.property.PropertyException;
+
+import java.lang.reflect.Method;
+
 
 /**
  * Meta property for XMLBasedProperty class. Doesn't support monitoring.
  *
  * @author AGH AgE Team
- *
  * @since 2.4.0
  */
 public class XMLBasedGetterSetterMetaProperty extends GetterSetterMetaProperty {
 
-	private static final long serialVersionUID = 1;
+    private static final long serialVersionUID = 1;
 
-	/**
-	 * Creates a read-write XMLBasedGetterSetterMetaProperty.
-	 *
-	 * @param name
-	 *            name of the property.
-	 * @param propertyClass
-	 *            type of the property.
-	 * @param getter
-	 *            method that can be used to read property value.
-	 * @param setter
-	 *            method that can be used to set property value.
-	 * @throws PropertyException
-	 */
-	public XMLBasedGetterSetterMetaProperty(String name, Class<?> propertyClass, Method getter, Method setter) throws PropertyException {
-		super(name, getter, setter, false);
-	}
+    /**
+     * Creates a read-write XMLBasedGetterSetterMetaProperty.
+     *
+     * @param name          name of the property.
+     * @param propertyClass type of the property.
+     * @param getter        method that can be used to read property value.
+     * @param setter        method that can be used to set property value.
+     * @throws PropertyException
+     */
+    public XMLBasedGetterSetterMetaProperty(String name, Class<?> propertyClass, Method getter, Method setter) throws PropertyException {
+        super(name, getter, setter, false);
+    }
 
-	/**
-	 * Creates a read-only XMLBasedGetterSetterMetaProperty.
-	 */
-	public XMLBasedGetterSetterMetaProperty(String name, Class<?> propertyClass, Method getter) throws PropertyException {
-		super(name, getter, false);
-	}
+    /**
+     * Creates a read-only XMLBasedGetterSetterMetaProperty.
+     */
+    public XMLBasedGetterSetterMetaProperty(String name, Class<?> propertyClass, Method getter) throws PropertyException {
+        super(name, getter, false);
+    }
 
 }

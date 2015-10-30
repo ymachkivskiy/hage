@@ -31,10 +31,6 @@
 
 package org.jage.examples.delegation;
 
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.jage.address.agent.AgentAddress;
 import org.jage.address.agent.AgentAddressSupplier;
@@ -42,6 +38,11 @@ import org.jage.agent.IAgent;
 import org.jage.agent.IAgentEnvironment;
 import org.jage.agent.SimpleAggregate;
 import org.jage.platform.component.exception.ComponentException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
+
 
 /**
  * This aggregate presents an example delegation of strategies. It basically enforces its children to use a strategy
@@ -51,89 +52,89 @@ import org.jage.platform.component.exception.ComponentException;
  */
 public class DelegationSimpleAggregate extends SimpleAggregate {
 
-	private static final long serialVersionUID = 2L;
+    private static final long serialVersionUID = 2L;
 
-	private static final Logger log = LoggerFactory.getLogger(DelegationSimpleAggregate.class);
+    private static final Logger log = LoggerFactory.getLogger(DelegationSimpleAggregate.class);
 
-	@Inject
-	private IEchoStrategy echoStrategy;
+    @Inject
+    private IEchoStrategy echoStrategy;
 
-	private String childStrategy;
+    private String childStrategy;
 
-	public void setEchoStrategy(final IEchoStrategy echoStrategy) {
-		this.echoStrategy = echoStrategy;
-	}
+    public DelegationSimpleAggregate(final AgentAddress address) {
+        super(address);
+    }
 
-	public void setChildStrategy(final String childStrategy) {
-		this.childStrategy = childStrategy;
-	}
+    @Inject
+    public DelegationSimpleAggregate(final AgentAddressSupplier supplier) {
+        super(supplier);
+    }
 
-	public DelegationSimpleAggregate(final AgentAddress address) {
-		super(address);
-	}
+    public void setEchoStrategy(final IEchoStrategy echoStrategy) {
+        this.echoStrategy = echoStrategy;
+    }
 
-	@Inject
-	public DelegationSimpleAggregate(final AgentAddressSupplier supplier) {
-		super(supplier);
-	}
+    public void setChildStrategy(final String childStrategy) {
+        this.childStrategy = childStrategy;
+    }
 
-	/**
-	 * Initialises this aggregate. It also sets an <em>echo strategy</em> for all its children agents that are instances
-	 * of the {@link IEchoStrategyAcceptingAgent} class.
-	 * <p>
-	 * {@inheritDoc}
-	 *
-	 * @see org.jage.agent.SimpleAggregate#init()
-	 */
+    @Override
+    public boolean finish() throws ComponentException {
+        log.info("Finishing Delegation Simple Aggregate: {}.", getAddress().getFriendlyName());
 
-	@Override
-	public void setAgentEnvironment(final IAgentEnvironment localEnvironment) {
-		super.setAgentEnvironment(localEnvironment);
+        return super.finish();
+    }
 
-		try {
-			getAgentsLock().readLock().lockInterruptibly();
-			try {
-				for (final IAgent agent : agents.values()) {
-					log.info("Agent: {}.", agent.getClass());
-					if (agent instanceof IEchoStrategyAcceptingAgent) {
-						((IEchoStrategyAcceptingAgent)agent).acceptEchoStrategy(childStrategy);
-					}
-				}
-			} finally {
-				getAgentsLock().readLock().unlock();
-			}
-		} catch (final InterruptedException e) {
-			log.error("Interrupted in run", e);
-		}
-	}
+    /**
+     * Executes a step of the aggregate. It uses an <em>echo strategy</em> and then delegates execution to the parent
+     * class.
+     * <p>
+     * {@inheritDoc}
+     *
+     * @see org.jage.agent.SimpleAggregate#step()
+     */
+    @Override
+    public void step() {
+        log.info("{} says Hello World from {}", getAddress().getFriendlyName(), getParentAddress().getFriendlyName());
 
-	/**
-	 * Executes a step of the aggregate. It uses an <em>echo strategy</em> and then delegates execution to the parent
-	 * class.
-	 * <p>
-	 * {@inheritDoc}
-	 *
-	 * @see org.jage.agent.SimpleAggregate#step()
-	 */
-	@Override
-	public void step() {
-		log.info("{} says Hello World from {}", getAddress().getFriendlyName(), getParentAddress().getFriendlyName());
+        echoStrategy.echo(getParentAddress().toString());
 
-		echoStrategy.echo(getParentAddress().toString());
+        super.step();
 
-		super.step();
+        try {
+            Thread.sleep(200);
+        } catch(final InterruptedException e) {
+            log.error("Interrupted", e);
+        }
+    }
 
-		try {
-			Thread.sleep(200);
-		} catch (final InterruptedException e) {
-			log.error("Interrupted", e);
-		}
-	}
+    /**
+     * Initialises this aggregate. It also sets an <em>echo strategy</em> for all its children agents that are instances
+     * of the {@link IEchoStrategyAcceptingAgent} class.
+     * <p>
+     * {@inheritDoc}
+     *
+     * @see org.jage.agent.SimpleAggregate#init()
+     */
 
-	@Override
-	public boolean finish() throws ComponentException {
-		log.info("Finishing Delegation Simple Aggregate: {}.", getAddress().getFriendlyName());
+    @Override
+    public void setAgentEnvironment(final IAgentEnvironment localEnvironment) {
+        super.setAgentEnvironment(localEnvironment);
 
-		return super.finish();
-	}
+        try {
+            getAgentsLock().readLock().lockInterruptibly();
+            try {
+                for(final IAgent agent : agents.values()) {
+                    log.info("Agent: {}.", agent.getClass());
+                    if(agent instanceof IEchoStrategyAcceptingAgent) {
+                        ((IEchoStrategyAcceptingAgent) agent).acceptEchoStrategy(childStrategy);
+                    }
+                }
+            } finally {
+                getAgentsLock().readLock().unlock();
+            }
+        } catch(final InterruptedException e) {
+            log.error("Interrupted in run", e);
+        }
+    }
 }

@@ -31,8 +31,10 @@
 
 package org.jage.examples.strategy;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 /**
  * An echo strategy that counts its invocations.
@@ -40,14 +42,15 @@ import org.slf4j.LoggerFactory;
  * @author AGH AgE Team
  */
 public class CounterEchoStrategy implements IEchoStrategy {
-	private final static Logger log = LoggerFactory.getLogger(CounterEchoStrategy.class);
 
-	private int count = 0;
+    private final static Logger log = LoggerFactory.getLogger(CounterEchoStrategy.class);
 
-	@Override
-	public void echo() {
-		log.info("Counter {}", count);
-		count++;
-	}
+    private int count = 0;
+
+    @Override
+    public void echo() {
+        log.info("Counter {}", count);
+        count++;
+    }
 
 }

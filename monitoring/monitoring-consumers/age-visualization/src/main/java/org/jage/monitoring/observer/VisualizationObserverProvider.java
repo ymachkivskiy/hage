@@ -27,29 +27,30 @@
 
 package org.jage.monitoring.observer;
 
+
+import com.typesafe.config.Config;
 import org.jage.monitoring.config.ExecutorProvider;
 import org.jage.platform.component.provider.IComponentInstanceProvider;
 
-import com.typesafe.config.Config;
 
 /**
  * Providers an instance of VisualizationObserver class.
- * 
+ *
  * @author AGH AgE Team
  */
 public class VisualizationObserverProvider implements ObserverProvider {
 
-	@Override
-	public AbstractStatefulObserver create(final Config c, final IComponentInstanceProvider provider) {
-		final String url = c.getString("url");
-		final VisualizationObserver vc = new VisualizationObserver(
-				url, provider, provider.getInstance(ExecutorProvider.class)
-		);
-		return vc;
-	}
-	
-	@Override
-	public String getType() {
-		return "visualization";
-	}
+    @Override
+    public AbstractStatefulObserver create(final Config c, final IComponentInstanceProvider provider) {
+        final String url = c.getString("url");
+        final VisualizationObserver vc = new VisualizationObserver(
+                url, provider, provider.getInstance(ExecutorProvider.class)
+        );
+        return vc;
+    }
+
+    @Override
+    public String getType() {
+        return "visualization";
+    }
 }

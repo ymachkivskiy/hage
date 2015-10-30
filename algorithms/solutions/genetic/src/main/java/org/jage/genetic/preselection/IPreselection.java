@@ -31,28 +31,27 @@
 
 package org.jage.genetic.preselection;
 
+
 import org.jage.population.IPopulation;
 import org.jage.solution.ISolution;
 import org.jage.strategy.IStrategy;
 
+
 /**
  * Preselection strategy interface.
  *
- * @param <S>
- *            The type of {@link ISolution} to be preselected.
- * @param <E>
- *            The type of evaluations
+ * @param <S> The type of {@link ISolution} to be preselected.
+ * @param <E> The type of evaluations
  * @author AGH AgE Team
  */
 public interface IPreselection<S extends ISolution, E> extends IStrategy {
 
-	/**
-	 * Preselects a given population.
-	 *
-	 * @param population
-	 *            The population to be preselected
-	 * @return Preselected solutions
-	 */
-	public IPopulation<S, E> preselect(IPopulation<S, E> population);
+    /**
+     * Preselects a given population.
+     *
+     * @param population The population to be preselected
+     * @return Preselected solutions
+     */
+    public IPopulation<S, E> preselect(IPopulation<S, E> population);
 
 }

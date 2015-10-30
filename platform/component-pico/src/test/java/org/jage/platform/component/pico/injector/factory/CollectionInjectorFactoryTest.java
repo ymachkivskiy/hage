@@ -31,41 +31,43 @@
 
 package org.jage.platform.component.pico.injector.factory;
 
-import java.util.Set;
 
+import org.jage.platform.component.definition.CollectionDefinition;
+import org.jage.platform.component.pico.injector.CollectionInjector;
 import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
+
+import java.util.Set;
 
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
-import org.jage.platform.component.definition.CollectionDefinition;
-import org.jage.platform.component.pico.injector.CollectionInjector;
 
 /**
  * Tests for CollectionInjectorFactory.
+ *
  * @author AGH AgE Team
  */
 public class CollectionInjectorFactoryTest {
 
-	private final CollectionInjectorFactory factory = new CollectionInjectorFactory();
+    private final CollectionInjectorFactory factory = new CollectionInjectorFactory();
 
-	@Test(expected = NullPointerException.class)
-	public void shouldThrowNPEForNullDefinition() {
-		// when
-		factory.createAdapter(null);
-	}
+    @Test(expected = NullPointerException.class)
+    public void shouldThrowNPEForNullDefinition() {
+        // when
+        factory.createAdapter(null);
+    }
 
-	@Test
-	public void shouldCreateArrayInjectors() {
-		// given
-		final CollectionDefinition definition = new CollectionDefinition("any", Set.class, Object.class, false);
+    @Test
+    public void shouldCreateArrayInjectors() {
+        // given
+        final CollectionDefinition definition = new CollectionDefinition("any", Set.class, Object.class, false);
 
-		// when
-		final ComponentAdapter<Object> adapter = factory.createAdapter(definition);
+        // when
+        final ComponentAdapter<Object> adapter = factory.createAdapter(definition);
 
-		// then
-		assertThat(adapter, is(instanceOf(CollectionInjector.class)));
-	}
+        // then
+        assertThat(adapter, is(instanceOf(CollectionInjector.class)));
+    }
 }

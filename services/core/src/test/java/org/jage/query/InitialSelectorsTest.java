@@ -31,48 +31,50 @@
 
 package org.jage.query;
 
+
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+
 /**
  * Tests for the {@link InitialSelectors} class.
- * 
+ *
  * @author AGH AgE Team
  */
 public class InitialSelectorsTest {
 
-	private IInitialSelector testedSelector;
+    private IInitialSelector testedSelector;
 
-	/**
-	 * Tests the {@link org.jage.query.InitialSelectors#first(int)} method.
-	 */
-	@Test
-	public void testFirst() {
-		final int elementsCount = 20;
-		testedSelector = InitialSelectors.first(elementsCount / 2);
-		testedSelector.initialise(elementsCount);
+    /**
+     * Tests the {@link org.jage.query.InitialSelectors#first(int)} method.
+     */
+    @Test
+    public void testFirst() {
+        final int elementsCount = 20;
+        testedSelector = InitialSelectors.first(elementsCount / 2);
+        testedSelector.initialise(elementsCount);
 
-		for (int i = 0; i < elementsCount; i++) {
-			if (i < elementsCount / 2) {
-				assertTrue(testedSelector.include());
-			} else {
-				assertFalse(testedSelector.include());
-			}
-		}
-	}
+        for(int i = 0; i < elementsCount; i++) {
+            if(i < elementsCount / 2) {
+                assertTrue(testedSelector.include());
+            } else {
+                assertFalse(testedSelector.include());
+            }
+        }
+    }
 
-	/**
-	 * Tests the {@link org.jage.query.InitialSelectors#all()} method.
-	 */
-	@Test
-	public void testAll() {
-		testedSelector = InitialSelectors.all();
+    /**
+     * Tests the {@link org.jage.query.InitialSelectors#all()} method.
+     */
+    @Test
+    public void testAll() {
+        testedSelector = InitialSelectors.all();
 
-		for (int i = 0; i < 20; i++) {
-			assertTrue(testedSelector.include());
-		}
-	}
+        for(int i = 0; i < 20; i++) {
+            assertTrue(testedSelector.include());
+        }
+    }
 
 }

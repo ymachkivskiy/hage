@@ -31,7 +31,9 @@
 
 package org.jage.problem.realvalued;
 
+
 import org.jage.problem.ParallelProblem;
+
 
 /**
  * This class represents the problem domain for a floating-point coded Griewank function. <br />
@@ -42,15 +44,14 @@ import org.jage.problem.ParallelProblem;
  */
 public final class GriewankProblem extends ParallelProblem<Double> {
 
-	private static final double DEFAULT_RANGE = 600;
+    private static final double DEFAULT_RANGE = 600;
 
-	/**
-	 * Creates a GriewankProblem with a default range of [-600, 600].
-	 *
-	 * @param dimension
-	 *            The dimension of this problem
-	 */
-	public GriewankProblem(Integer dimension) {
-		super(dimension, -DEFAULT_RANGE, DEFAULT_RANGE);
-	}
+    /**
+     * Creates a GriewankProblem with a default range of [-600, 600].
+     *
+     * @param dimension The dimension of this problem
+     */
+    public GriewankProblem(Integer dimension) {
+        super(dimension, -DEFAULT_RANGE, DEFAULT_RANGE);
+    }
 }

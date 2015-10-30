@@ -39,11 +39,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+
 /**
- *
  * @author AGH AgE Team
  */
-public interface DataSupplierService{
+public interface DataSupplierService {
 
-	public List<LinkedList<VisualData>> get(Map<Integer, Date> lastDateMap, String chartId);
+    public List<LinkedList<VisualData>> get(Map<Integer, Date> lastDateMap, String chartId);
 }

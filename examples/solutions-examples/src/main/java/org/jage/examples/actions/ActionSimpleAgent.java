@@ -31,10 +31,6 @@
 
 package org.jage.examples.actions;
 
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.jage.action.SingleAction;
 import org.jage.address.agent.AgentAddress;
@@ -43,6 +39,11 @@ import org.jage.address.selector.Selectors;
 import org.jage.agent.AgentException;
 import org.jage.agent.SimpleAgent;
 import org.jage.platform.component.exception.ComponentException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
+
 
 /**
  * An agent showing how to order an action to perform by aggregate.
@@ -51,47 +52,47 @@ import org.jage.platform.component.exception.ComponentException;
  */
 public class ActionSimpleAgent extends SimpleAgent {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private final Logger log = LoggerFactory.getLogger(ActionSimpleAgent.class);
+    private final Logger log = LoggerFactory.getLogger(ActionSimpleAgent.class);
 
-	public ActionSimpleAgent(final AgentAddress address) {
-		super(address);
-	}
+    public ActionSimpleAgent(final AgentAddress address) {
+        super(address);
+    }
 
-	@Inject
-	public ActionSimpleAgent(final AgentAddressSupplier supplier) {
-		super(supplier);
-	}
+    @Inject
+    public ActionSimpleAgent(final AgentAddressSupplier supplier) {
+        super(supplier);
+    }
 
-	@Override
-	public void step() {
-		log.info("{} says Hello World from {}", getAddress().getFriendlyName(), getParentAddress().getFriendlyName());
-		try {
-			doAction(new SingleAction(Selectors.singleAddress(getAddress()), new SampleActionContext()));
-		} catch (final AgentException e) {
-			log.error("Agent exception", e);
-			return;
-		}
+    @Override
+    public void step() {
+        log.info("{} says Hello World from {}", getAddress().getFriendlyName(), getParentAddress().getFriendlyName());
+        try {
+            doAction(new SingleAction(Selectors.singleAddress(getAddress()), new SampleActionContext()));
+        } catch(final AgentException e) {
+            log.error("Agent exception", e);
+            return;
+        }
 
-		try {
-			Thread.sleep(200);
-		} catch (final InterruptedException e) {
-			log.error("Interrupted", e);
-		}
+        try {
+            Thread.sleep(200);
+        } catch(final InterruptedException e) {
+            log.error("Interrupted", e);
+        }
 
-	}
+    }
 
-	@Override
-	public boolean finish() {
-		log.info("Finishing Action Simple Agent: {}", getAddress().getFriendlyName());
-		return true;
-	}
+    @Override
+    public void init() throws ComponentException {
+        super.init();
+        log.info("Initializing Action Simple Agent: {}", getAddress().getFriendlyName());
+    }
 
-	@Override
-	public void init() throws ComponentException {
-		super.init();
-		log.info("Initializing Action Simple Agent: {}", getAddress().getFriendlyName());
-	}
+    @Override
+    public boolean finish() {
+        log.info("Finishing Action Simple Agent: {}", getAddress().getFriendlyName());
+        return true;
+    }
 
 }

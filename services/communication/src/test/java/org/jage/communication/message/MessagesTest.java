@@ -31,18 +31,19 @@
 
 package org.jage.communication.message;
 
-import java.io.Serializable;
 
+import org.jage.address.Address;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.io.Serializable;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 
-import org.jage.address.Address;
 
 /**
  * Tests for the {@link Messages} class.
@@ -52,33 +53,31 @@ import org.jage.address.Address;
 @RunWith(MockitoJUnitRunner.class)
 public class MessagesTest {
 
-	@SuppressWarnings("unchecked")
-	@Test
-	public void testGetPayloadOfTypeOrThrowWithCorrectType() {
-		// given
-		String samplePayload = "payload";
-		DefaultMessage<Address, String> message =
-				new DefaultMessage<Address, String>(mock(Header.class), samplePayload);
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testGetPayloadOfTypeOrThrowWithCorrectType() {
+        // given
+        String samplePayload = "payload";
+        SimpleMessage<Address, String> message = SimpleMessage.create(mock(Header.class), samplePayload);
 
-		// when
-		String returnedPayload = Messages.getPayloadOfTypeOrThrow(message, String.class);
+        // when
+        String returnedPayload = Messages.getPayloadOfTypeOrThrow(message, String.class);
 
-		// then
-		assertThat(returnedPayload, is(equalTo(samplePayload)));
-	}
+        // then
+        assertThat(returnedPayload, is(equalTo(samplePayload)));
+    }
 
-	@SuppressWarnings("unchecked")
-	@Test(expected = IllegalArgumentException.class)
-	public void testGetPayloadOfTypeOrThrowWithWrongType() {
-		// given
-		String samplePayload = "payload";
-		DefaultMessage<Address, Serializable>
-				message = new DefaultMessage<Address, Serializable>(mock(Header.class), samplePayload);
+    @SuppressWarnings("unchecked")
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetPayloadOfTypeOrThrowWithWrongType() {
+        // given
+        String samplePayload = "payload";
+        SimpleMessage<Address, Serializable> message = SimpleMessage.create(mock(Header.class), samplePayload);
 
-		// when
-		Messages.getPayloadOfTypeOrThrow(message, Integer.class);
+        // when
+        Messages.getPayloadOfTypeOrThrow(message, Integer.class);
 
-		// then should throw
-	}
+        // then should throw
+    }
 
 }

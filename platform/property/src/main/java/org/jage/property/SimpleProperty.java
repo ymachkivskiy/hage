@@ -26,71 +26,78 @@
  */
 package org.jage.property;
 
+
 import java.io.Serializable;
+
 
 /**
  * Simple Property implementation. It was desinged for QueryableQueryResult class,
  * but can be used everywhere else.
+ *
  * @author Tomek
  */
 public class SimpleProperty extends Property implements Serializable {
 
-	private static final long serialVersionUID = 1;
-	
-	/**
-	 * Value
-	 */
-	private Object _value;
-	
-	/**
-	 * Meta property
-	 */
-	private MetaProperty _metaProperty;
+    private static final long serialVersionUID = 1;
 
-	/**
-	 * Constructor. 
-	 * @param metaProperty metadata for the property. It cannot be null.
-	 * @param value value of the property.
-	 */
-	public SimpleProperty(MetaProperty metaProperty, Object value) {
-		if (metaProperty == null) {
-			throw new NullPointerException("MetaProperty cannot be null.");
-		}
-		_metaProperty = new MetaProperty(metaProperty);
-		_value = value;
-	}
+    /**
+     * Value
+     */
+    private Object _value;
 
-	/**
-	 * Returns metadata for this property.
-	 * @return metadata for this property.
-	 */
-	@Override
-	public MetaProperty getMetaProperty() {
-		return _metaProperty;
-	}
+    /**
+     * Meta property
+     */
+    private MetaProperty _metaProperty;
 
-	/**
-	 * Returns value of this property.
-	 * @return value of this property.
-	 * @exception InvalidPropertyOperationException
-	 */
-	@Override
-	public Object getValue() {
-		return _value;
-	}
+    /**
+     * Constructor.
+     *
+     * @param metaProperty metadata for the property. It cannot be null.
+     * @param value        value of the property.
+     */
+    public SimpleProperty(MetaProperty metaProperty, Object value) {
+        if(metaProperty == null) {
+            throw new NullPointerException("MetaProperty cannot be null.");
+        }
+        _metaProperty = new MetaProperty(metaProperty);
+        _value = value;
+    }
 
-	/**
-	 * Sets value of this property.
-	 * @param value new value.
-	 * @throws InvalidPropertyOperationException property is read-only.
-	 */
-	@Override
-	public void setValue(Object value) throws InvalidPropertyOperationException {
-		if (!_metaProperty.isWriteable()) {
-			throw new InvalidPropertyOperationException("Property is not writeable.");
-		}
-		_value = value;
-	}
+    /**
+     * Returns metadata for this property.
+     *
+     * @return metadata for this property.
+     */
+    @Override
+    public MetaProperty getMetaProperty() {
+        return _metaProperty;
+    }
+
+    /**
+     * Sets value of this property.
+     *
+     * @param value new value.
+     * @throws InvalidPropertyOperationException property is read-only.
+     */
+    @Override
+    public void setValue(Object value) throws InvalidPropertyOperationException {
+        if(!_metaProperty.isWriteable()) {
+            throw new InvalidPropertyOperationException("Property is not writeable.");
+        }
+        _value = value;
+    }
+
+    /**
+     * Returns value of this property.
+     *
+     * @return value of this property.
+     * @throws InvalidPropertyOperationException
+     */
+    @Override
+    public Object getValue() {
+        return _value;
+    }
 }
 
 

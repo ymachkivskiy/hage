@@ -31,27 +31,28 @@
 
 package org.jage.action.testHelpers;
 
+
 public class ActionTestException extends RuntimeException {
 
-	private static final long serialVersionUID = -2762160280386020316L;
+    private static final long serialVersionUID = -2762160280386020316L;
 
-	public ActionTestException() {
-		super();
-	}
+    public ActionTestException() {
+        super();
+    }
 
-	public ActionTestException(String message) {
-		super(message);
-	}
+    public ActionTestException(String message) {
+        super(message);
+    }
 
-	public ActionTestException(Throwable cause) {
-		super(cause);
-	}
+    public ActionTestException(Throwable cause) {
+        super(cause);
+    }
 
-	public ActionTestException(String message, Throwable cause) {
-		super(message, cause);
-	}
+    public ActionTestException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-	public Throwable getCauseCause() {
-		return getCause() == null ? null : getCause().getCause();
-	}
+    public Throwable getCauseCause() {
+        return getCause() == null ? null : getCause().getCause();
+    }
 }

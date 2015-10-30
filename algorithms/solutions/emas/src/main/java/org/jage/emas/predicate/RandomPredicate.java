@@ -31,32 +31,32 @@
 
 package org.jage.emas.predicate;
 
-import javax.inject.Inject;
 
 import org.jage.agent.IAgent;
 import org.jage.random.INormalizedDoubleRandomGenerator;
 
+import javax.inject.Inject;
+
+
 /**
  * Predicate applying to agents with some probability.
  *
- * @param <A>
- *            the type of agent this predicate applies to
- *
+ * @param <A> the type of agent this predicate applies to
  * @author AGH AgE Team
  */
 public class RandomPredicate<A extends IAgent> implements IPredicate<A> {
 
-	@Inject
-	private INormalizedDoubleRandomGenerator rand;
+    @Inject
+    private INormalizedDoubleRandomGenerator rand;
 
-	private double probability;
+    private double probability;
 
-	public void setProbability(final double probability) {
-		this.probability = probability;
-	}
+    public void setProbability(final double probability) {
+        this.probability = probability;
+    }
 
-	@Override
-	public boolean apply(final A agent) {
-		return rand.nextDouble() < probability;
-	}
+    @Override
+    public boolean apply(final A agent) {
+        return rand.nextDouble() < probability;
+    }
 }

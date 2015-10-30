@@ -31,7 +31,9 @@
 
 package org.jage.query;
 
+
 import javax.annotation.Nonnull;
+
 
 /**
  * The base interface for queries.
@@ -43,21 +45,19 @@ import javax.annotation.Nonnull;
  * <li>a type of results (usually some kind of a collection),
  * <li>a relation between a target and results (usually transformation and selection of some kind).
  * </ul>
- * 
- * @param <Q>
- *            A type of a queried object.
- * @param <R>
- *            A type of results.
+ *
+ * @param <Q> A type of a queried object.
+ * @param <R> A type of results.
  * @author AGH AgE Team
  */
 public interface IQuery<Q, R> {
-	/**
-	 * Executes the query on a provided target and generates results.
-	 * 
-	 * @param target
-	 *            An object to perform query on.
-	 * @return Results of the execution.
-	 */
-	@Nonnull
-	R execute(Q target);
+
+    /**
+     * Executes the query on a provided target and generates results.
+     *
+     * @param target An object to perform query on.
+     * @return Results of the execution.
+     */
+    @Nonnull
+    R execute(Q target);
 }

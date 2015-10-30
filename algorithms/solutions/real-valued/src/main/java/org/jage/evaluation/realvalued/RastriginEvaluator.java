@@ -31,11 +31,12 @@
 
 package org.jage.evaluation.realvalued;
 
+
+import it.unimi.dsi.fastutil.doubles.DoubleList;
 import org.jage.evaluation.ISolutionEvaluator;
 import org.jage.property.ClassPropertyContainer;
 import org.jage.solution.IVectorSolution;
 
-import it.unimi.dsi.fastutil.doubles.DoubleList;
 
 /**
  * This class represents a floating-point coded Rastrigin function. <br />
@@ -48,18 +49,18 @@ import it.unimi.dsi.fastutil.doubles.DoubleList;
  * @author AGH AgE Team
  */
 public final class RastriginEvaluator extends ClassPropertyContainer implements
-        ISolutionEvaluator<IVectorSolution<Double>, Double> {
+                                                                     ISolutionEvaluator<IVectorSolution<Double>, Double> {
 
-	@Override
-	public Double evaluate(IVectorSolution<Double> solution) {
-		DoubleList representation = (DoubleList)solution.getRepresentation();
-		int n = representation.size();
-		double sum = 0.0;
-		for (int i = 0; i < n; i++) {
-			double value = representation.getDouble(i);
-			sum += value * value - 10 * Math.cos(2 * Math.PI * value);
-		}
+    @Override
+    public Double evaluate(IVectorSolution<Double> solution) {
+        DoubleList representation = (DoubleList) solution.getRepresentation();
+        int n = representation.size();
+        double sum = 0.0;
+        for(int i = 0; i < n; i++) {
+            double value = representation.getDouble(i);
+            sum += value * value - 10 * Math.cos(2 * Math.PI * value);
+        }
 
-		return (-10.0 * n) - sum;
-	}
+        return (-10.0 * n) - sum;
+    }
 }

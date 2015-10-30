@@ -31,7 +31,6 @@
 
 package org.jage.emas.reproduction;
 
-import javax.inject.Inject;
 
 import org.jage.emas.agent.IndividualAgent;
 import org.jage.evaluation.ISolutionEvaluator;
@@ -40,6 +39,9 @@ import org.jage.platform.component.provider.IComponentInstanceProviderAware;
 import org.jage.solution.ISolution;
 import org.jage.solution.ISolutionFactory;
 import org.jage.variation.mutation.IMutateSolution;
+
+import javax.inject.Inject;
+
 
 /**
  * Default implementation of {@link AsexualReproduction}.
@@ -51,51 +53,51 @@ import org.jage.variation.mutation.IMutateSolution;
  * @author AGH AgE Team
  */
 public class DefaultAsexualReproduction implements AsexualReproduction<IndividualAgent>,
-        IComponentInstanceProviderAware {
+                                                   IComponentInstanceProviderAware {
 
-	private static final double ENERGY_FRACTION = 0.33;
+    private static final double ENERGY_FRACTION = 0.33;
 
-	@Inject
-	private ISolutionFactory<ISolution> solutionFactory;
+    @Inject
+    private ISolutionFactory<ISolution> solutionFactory;
 
-	@Inject
-	private IMutateSolution<ISolution> mutate;
+    @Inject
+    private IMutateSolution<ISolution> mutate;
 
-	@Inject
-	private ISolutionEvaluator<ISolution, Double> evaluator;
+    @Inject
+    private ISolutionEvaluator<ISolution, Double> evaluator;
 
-	private IComponentInstanceProvider provider;
+    private IComponentInstanceProvider provider;
 
-	@Override
-	public IndividualAgent reproduce(final IndividualAgent parent) {
-		final ISolution gamete = createGamete(parent);
-		final IndividualAgent child = createChild(gamete);
-		transferEnergy(parent, child);
-		return child;
-	}
+    @Override
+    public IndividualAgent reproduce(final IndividualAgent parent) {
+        final ISolution gamete = createGamete(parent);
+        final IndividualAgent child = createChild(gamete);
+        transferEnergy(parent, child);
+        return child;
+    }
 
-	private ISolution createGamete(final IndividualAgent parent) {
-		final ISolution gamete = solutionFactory.copySolution(parent.getSolution());
-		mutate.mutateSolution(gamete);
-		return gamete;
-	}
+    private ISolution createGamete(final IndividualAgent parent) {
+        final ISolution gamete = solutionFactory.copySolution(parent.getSolution());
+        mutate.mutateSolution(gamete);
+        return gamete;
+    }
 
-	private IndividualAgent createChild(final ISolution gamete) {
-		final IndividualAgent child = provider.getInstance(IndividualAgent.class);
-		child.setSolution(gamete);
-		child.setOriginalFitness(evaluator.evaluate(gamete));
-		return child;
-	}
+    private IndividualAgent createChild(final ISolution gamete) {
+        final IndividualAgent child = provider.getInstance(IndividualAgent.class);
+        child.setSolution(gamete);
+        child.setOriginalFitness(evaluator.evaluate(gamete));
+        return child;
+    }
 
-	private void transferEnergy(final IndividualAgent parent, final IndividualAgent child) {
-		final double parentGift = parent.getEnergy() * ENERGY_FRACTION;
+    private void transferEnergy(final IndividualAgent parent, final IndividualAgent child) {
+        final double parentGift = parent.getEnergy() * ENERGY_FRACTION;
 
-		child.changeEnergyBy(parentGift);
-		parent.changeEnergyBy(-parentGift);
-	}
+        child.changeEnergyBy(parentGift);
+        parent.changeEnergyBy(-parentGift);
+    }
 
-	@Override
-	public void setInstanceProvider(final IComponentInstanceProvider provider) {
-		this.provider = provider;
-	}
+    @Override
+    public void setInstanceProvider(final IComponentInstanceProvider provider) {
+        this.provider = provider;
+    }
 }

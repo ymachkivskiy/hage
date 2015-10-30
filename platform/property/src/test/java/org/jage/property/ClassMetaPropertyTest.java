@@ -26,76 +26,78 @@
  */
 package org.jage.property;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.lang.reflect.Method;
 
 import org.jage.property.testHelpers.ClassWithProperties;
 import org.junit.Test;
 
+import java.lang.reflect.Method;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+
 public class ClassMetaPropertyTest {
 
-	@Test
-	public void testGetterSetter() throws Exception {
-		ClassWithProperties propertiesObject = new ClassWithProperties();
-		Method intPropertyGetter = propertiesObject.getIntPropertyGetter();
-		Method intPropertySetter = propertiesObject.getIntPropertySetter();
-		PropertyGetter intAnnotation = intPropertyGetter.getAnnotation(PropertyGetter.class);
-		GetterSetterMetaProperty metaProperty = new GetterSetterMetaProperty(
-		        intAnnotation.propertyName(), intPropertyGetter, intPropertySetter, intAnnotation.isMonitorable());
+    @Test
+    public void testGetterSetter() throws Exception {
+        ClassWithProperties propertiesObject = new ClassWithProperties();
+        Method intPropertyGetter = propertiesObject.getIntPropertyGetter();
+        Method intPropertySetter = propertiesObject.getIntPropertySetter();
+        PropertyGetter intAnnotation = intPropertyGetter.getAnnotation(PropertyGetter.class);
+        GetterSetterMetaProperty metaProperty = new GetterSetterMetaProperty(
+                intAnnotation.propertyName(), intPropertyGetter, intPropertySetter, intAnnotation.isMonitorable());
 
-		assertEquals(propertiesObject.getIntPropertyGetter(), metaProperty
-				.getGetter());
-		assertEquals(propertiesObject.getIntPropertySetter(), metaProperty
-				.getSetter());
-	}
+        assertEquals(propertiesObject.getIntPropertyGetter(), metaProperty
+                .getGetter());
+        assertEquals(propertiesObject.getIntPropertySetter(), metaProperty
+                .getSetter());
+    }
 
-	@Test
-	public void testIsMonitorable() throws Exception {
-		ClassWithProperties propertiesObject = new ClassWithProperties();
+    @Test
+    public void testIsMonitorable() throws Exception {
+        ClassWithProperties propertiesObject = new ClassWithProperties();
 
-		Method intPropertyGetter = propertiesObject.getIntPropertyGetter();
-		PropertyGetter intAnnotation = intPropertyGetter.getAnnotation(PropertyGetter.class);
-		GetterSetterMetaProperty monitorableMetaProperty = new GetterSetterMetaProperty(
-		        intAnnotation.propertyName(), intPropertyGetter, intAnnotation.isMonitorable());
+        Method intPropertyGetter = propertiesObject.getIntPropertyGetter();
+        PropertyGetter intAnnotation = intPropertyGetter.getAnnotation(PropertyGetter.class);
+        GetterSetterMetaProperty monitorableMetaProperty = new GetterSetterMetaProperty(
+                intAnnotation.propertyName(), intPropertyGetter, intAnnotation.isMonitorable());
 
-		Method stringPropertyGetter = propertiesObject.getStringPropertyGetter();
-		PropertyGetter stringAnnotation = stringPropertyGetter.getAnnotation(PropertyGetter.class);
-		GetterSetterMetaProperty notMonitorableMetaProperty = new GetterSetterMetaProperty(
-		        stringAnnotation.propertyName(), stringPropertyGetter, stringAnnotation.isMonitorable());
+        Method stringPropertyGetter = propertiesObject.getStringPropertyGetter();
+        PropertyGetter stringAnnotation = stringPropertyGetter.getAnnotation(PropertyGetter.class);
+        GetterSetterMetaProperty notMonitorableMetaProperty = new GetterSetterMetaProperty(
+                stringAnnotation.propertyName(), stringPropertyGetter, stringAnnotation.isMonitorable());
 
-		assertTrue(monitorableMetaProperty.isMonitorable());
-		assertFalse(notMonitorableMetaProperty.isMonitorable());
-	}
+        assertTrue(monitorableMetaProperty.isMonitorable());
+        assertFalse(notMonitorableMetaProperty.isMonitorable());
+    }
 
-	@Test
-	public void testPropertyName() throws Exception {
-		ClassWithProperties propertiesObject = new ClassWithProperties();
-		Method intPropertyGetter = propertiesObject.getIntPropertyGetter();
-		Method intPropertySetter = propertiesObject.getIntPropertySetter();
-		PropertyGetter intAnnotation = intPropertyGetter.getAnnotation(PropertyGetter.class);
-		GetterSetterMetaProperty intMetaProperty = new GetterSetterMetaProperty(
-		        intAnnotation.propertyName(), intPropertyGetter, intPropertySetter, intAnnotation.isMonitorable());
+    @Test
+    public void testPropertyName() throws Exception {
+        ClassWithProperties propertiesObject = new ClassWithProperties();
+        Method intPropertyGetter = propertiesObject.getIntPropertyGetter();
+        Method intPropertySetter = propertiesObject.getIntPropertySetter();
+        PropertyGetter intAnnotation = intPropertyGetter.getAnnotation(PropertyGetter.class);
+        GetterSetterMetaProperty intMetaProperty = new GetterSetterMetaProperty(
+                intAnnotation.propertyName(), intPropertyGetter, intPropertySetter, intAnnotation.isMonitorable());
 
-		Method stringPropertyGetter = propertiesObject.getStringPropertyGetter();
-		Method stringPropertySetter = propertiesObject.getStringPropertySetter();
-		PropertyGetter stringAnnotation = stringPropertyGetter.getAnnotation(PropertyGetter.class);
-		GetterSetterMetaProperty stringMetaProperty = new GetterSetterMetaProperty(
-		        stringAnnotation.propertyName(), stringPropertyGetter, stringPropertySetter, stringAnnotation.isMonitorable());
+        Method stringPropertyGetter = propertiesObject.getStringPropertyGetter();
+        Method stringPropertySetter = propertiesObject.getStringPropertySetter();
+        PropertyGetter stringAnnotation = stringPropertyGetter.getAnnotation(PropertyGetter.class);
+        GetterSetterMetaProperty stringMetaProperty = new GetterSetterMetaProperty(
+                stringAnnotation.propertyName(), stringPropertyGetter, stringPropertySetter, stringAnnotation.isMonitorable());
 
-		assertEquals("intProperty", intMetaProperty.getName());
-		assertEquals("stringProperty", stringMetaProperty.getName());
-	}
+        assertEquals("intProperty", intMetaProperty.getName());
+        assertEquals("stringProperty", stringMetaProperty.getName());
+    }
 
-	@Test
-	public void testPropertyClass() throws Exception {
-		ClassWithProperties propertiesObject = new ClassWithProperties();
-		Method intPropertyGetter = propertiesObject.getIntPropertyGetter();
-		PropertyGetter intAnnotation = intPropertyGetter.getAnnotation(PropertyGetter.class);
-		GetterSetterMetaProperty metaProperty = new GetterSetterMetaProperty(
-		        intAnnotation.propertyName(), intPropertyGetter, intAnnotation.isMonitorable());
-		assertEquals(int.class, metaProperty.getPropertyClass());
-	}
+    @Test
+    public void testPropertyClass() throws Exception {
+        ClassWithProperties propertiesObject = new ClassWithProperties();
+        Method intPropertyGetter = propertiesObject.getIntPropertyGetter();
+        PropertyGetter intAnnotation = intPropertyGetter.getAnnotation(PropertyGetter.class);
+        GetterSetterMetaProperty metaProperty = new GetterSetterMetaProperty(
+                intAnnotation.propertyName(), intPropertyGetter, intAnnotation.isMonitorable());
+        assertEquals(int.class, metaProperty.getPropertyClass());
+    }
 }

@@ -31,9 +31,11 @@
 
 package org.jage.variation.mutation.realvalued;
 
-import javax.inject.Inject;
 
 import org.jage.random.INormalizedDoubleRandomGenerator;
+
+import javax.inject.Inject;
+
 
 /**
  * Simple population mutation strategy, that mutates each solution individually using provided solution mutation
@@ -43,18 +45,18 @@ import org.jage.random.INormalizedDoubleRandomGenerator;
  */
 public final class FixedRangeMutate extends DoubleAbstractStochasticMutate {
 
-	@Inject
-	private INormalizedDoubleRandomGenerator rand;
+    @Inject
+    private INormalizedDoubleRandomGenerator rand;
 
-	private double mutationRange;
+    private double mutationRange;
 
     public void setMutationRange(final double mutationRange) {
-	    this.mutationRange = mutationRange;
+        this.mutationRange = mutationRange;
     }
 
-	@Override
-	protected double doMutate(final double value) {
-		// Choose a random value from [ oldValue - mutRange, oldValue + mutRange ]
-		return value + mutationRange * (-1 + rand.nextDouble() * 2.0);
-	}
+    @Override
+    protected double doMutate(final double value) {
+        // Choose a random value from [ oldValue - mutRange, oldValue + mutRange ]
+        return value + mutationRange * (-1 + rand.nextDouble() * 2.0);
+    }
 }

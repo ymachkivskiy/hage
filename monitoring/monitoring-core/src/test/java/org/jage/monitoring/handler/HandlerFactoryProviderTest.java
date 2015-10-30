@@ -26,12 +26,6 @@
  */
 package org.jage.monitoring.handler;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.Arrays;
-import java.util.List;
 
 import org.jage.monitoring.config.FactoryMethodInvoker;
 import org.jage.monitoring.observable.ObservableProvider;
@@ -41,64 +35,70 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import rx.Observable;
-import rx.Scheduler;
 import rx.schedulers.Timestamped;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 
 public class HandlerFactoryProviderTest {
 
-	@Mock
-	private ObservableProvider observableProvider;
-	
-	@Mock
-	private ObservableProvider observableProvider2;
-	
-	@Mock
-	private Observable<Timestamped<Object>> observable;
-	
-	@Mock
-	private Observable<Timestamped<Object>> observable2;
-	
-	@Mock
-	private Observable<ObservedData> mergedObservable;
+    @Mock
+    private ObservableProvider observableProvider;
 
-	@Mock
-	private AbstractStatefulObserver abstractObserver;
-	
-	@Mock
-	private AbstractStatefulObserver abstractObserver2;
+    @Mock
+    private ObservableProvider observableProvider2;
 
-	@Mock
-	private FactoryMethodInvoker factoryMethodInvoker;
-	
-	@Before
-	public void setUp(){
-		MockitoAnnotations.initMocks(this);
-	}
-	
-	@Test
-	public void createAndSubscribeHandlerBasedObservableOnObserversTest(){
-		
-		// given
-		when(factoryMethodInvoker.invokeFactoryMethod(any(List.class), any(String.class), any(String.class), any(String.class))).thenReturn(mergedObservable);
-		
-		when(observableProvider.provideObservable()).thenReturn(observable);
-		when(observableProvider2.provideObservable()).thenReturn(observable2);
-		HandlerFactoryProvider hfp = new HandlerFactoryProvider("handlerName", 
-				Arrays.asList(observableProvider, observableProvider2), 
-				Arrays.asList(abstractObserver, abstractObserver2), 
-				"class", "method");
-		
-		hfp.setFactoryMethodInvoker(factoryMethodInvoker);
+    @Mock
+    private Observable<Timestamped<Object>> observable;
 
-		// when
-		hfp.createAndSubscribeHandlerBasedObservableOnObservers();
+    @Mock
+    private Observable<Timestamped<Object>> observable2;
 
-		//then 
-		verify(observableProvider).provideObservable();
-		verify(observableProvider2).provideObservable();
-		verify(abstractObserver).addObservable(mergedObservable);
-		verify(abstractObserver2).addObservable(mergedObservable);
-	}
+    @Mock
+    private Observable<ObservedData> mergedObservable;
+
+    @Mock
+    private AbstractStatefulObserver abstractObserver;
+
+    @Mock
+    private AbstractStatefulObserver abstractObserver2;
+
+    @Mock
+    private FactoryMethodInvoker factoryMethodInvoker;
+
+    @Before
+    public void setUp() {
+        MockitoAnnotations.initMocks(this);
+    }
+
+    @Test
+    public void createAndSubscribeHandlerBasedObservableOnObserversTest() {
+
+        // given
+        when(factoryMethodInvoker.invokeFactoryMethod(any(List.class), any(String.class), any(String.class), any(String.class))).thenReturn(mergedObservable);
+
+        when(observableProvider.provideObservable()).thenReturn(observable);
+        when(observableProvider2.provideObservable()).thenReturn(observable2);
+        HandlerFactoryProvider hfp = new HandlerFactoryProvider("handlerName",
+                                                                Arrays.asList(observableProvider, observableProvider2),
+                                                                Arrays.asList(abstractObserver, abstractObserver2),
+                                                                "class", "method");
+
+        hfp.setFactoryMethodInvoker(factoryMethodInvoker);
+
+        // when
+        hfp.createAndSubscribeHandlerBasedObservableOnObservers();
+
+        //then
+        verify(observableProvider).provideObservable();
+        verify(observableProvider2).provideObservable();
+        verify(abstractObserver).addObservable(mergedObservable);
+        verify(abstractObserver2).addObservable(mergedObservable);
+    }
 }

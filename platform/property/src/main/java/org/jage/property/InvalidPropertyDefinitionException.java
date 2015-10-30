@@ -30,36 +30,40 @@ package org.jage.property;
 /**
  * Exception thrown by IClassPropertiesFactory and related classes when invalid
  * property definition has been found.
+ *
  * @author Tomek
  */
 public class InvalidPropertyDefinitionException extends PropertyException {
 
-	public static final long serialVersionUID = 1;
+    public static final long serialVersionUID = 1;
 
-	/**
-	 * Constructor.
-	 * @param message message for the exception.
-	 */
-	public InvalidPropertyDefinitionException(final String message) {
-		super(message);
-	}
+    /**
+     * Constructor.
+     *
+     * @param message message for the exception.
+     */
+    public InvalidPropertyDefinitionException(final String message) {
+        super(message);
+    }
 
-	/**
-	 * Constructor.
-	 * @param message message for the exception.
-	 * @param throwable inner exception.
-	 */
-	public InvalidPropertyDefinitionException(final String message, final Throwable throwable) {
-		super(message, throwable);
-	}
+    /**
+     * Constructor.
+     *
+     * @param message   message for the exception.
+     * @param throwable inner exception.
+     */
+    public InvalidPropertyDefinitionException(final String message, final Throwable throwable) {
+        super(message, throwable);
+    }
 
-	/**
-	 * Constructor.
-	 * @param throwable inner exception
-	 */
-	public InvalidPropertyDefinitionException(final Throwable throwable) {
-		super(throwable);
-	}
+    /**
+     * Constructor.
+     *
+     * @param throwable inner exception
+     */
+    public InvalidPropertyDefinitionException(final Throwable throwable) {
+        super(throwable);
+    }
 }
 
 

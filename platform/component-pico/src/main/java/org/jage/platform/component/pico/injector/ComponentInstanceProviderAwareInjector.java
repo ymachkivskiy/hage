@@ -31,8 +31,6 @@
 
 package org.jage.platform.component.pico.injector;
 
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.PicoContainer;
 
 import org.jage.platform.component.definition.ComponentDefinition;
 import org.jage.platform.component.pico.IPicoComponentInstanceProvider;
@@ -40,60 +38,60 @@ import org.jage.platform.component.provider.IComponentInstanceProviderAware;
 import org.jage.platform.component.provider.IMutableComponentInstanceProviderAware;
 import org.jage.platform.component.provider.ISelfAwareComponentInstanceProviderAware;
 import org.jage.platform.component.provider.SelfAwareComponentInstanceProvider;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+
 
 /**
  * This class provides an injector that is able to inject an instance provider into ComponentInstanceProvider-aware
  * components.
  *
- * @param <T>
- *            the type of components this injector can inject into
- *
+ * @param <T> the type of components this injector can inject into
  * @author AGH AgE Team
  */
 public final class ComponentInstanceProviderAwareInjector<T> extends AbstractInjector<T> {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private final ComponentDefinition definition;
+    private final ComponentDefinition definition;
 
-	/**
-	 * Creates an ComponentInstanceProviderAwareInjector using a given component definition.
-	 *
-	 * @param definition
-	 *            the component definition to use
-	 */
-	public ComponentInstanceProviderAwareInjector(final ComponentDefinition definition) {
-		super(definition);
-		this.definition = checkNotNull(definition);
-	}
+    /**
+     * Creates an ComponentInstanceProviderAwareInjector using a given component definition.
+     *
+     * @param definition the component definition to use
+     */
+    public ComponentInstanceProviderAwareInjector(final ComponentDefinition definition) {
+        super(definition);
+        this.definition = checkNotNull(definition);
+    }
 
-	@Override
-	public void doInject(final PicoContainer container, final T instance) throws PicoCompositionException {
-		final IPicoComponentInstanceProvider provider = (IPicoComponentInstanceProvider)container;
+    @Override
+    protected void doVerify(final PicoContainer container) {
+        if(!(container instanceof IPicoComponentInstanceProvider)) {
+            throw new PicoCompositionException("The container needs to implement IPicoComponentInstanceProvider");
+        }
+    }
 
-		if (instance instanceof IComponentInstanceProviderAware) {
-			((IComponentInstanceProviderAware)instance).setInstanceProvider(provider);
-		}
-		if (instance instanceof IMutableComponentInstanceProviderAware) {
-			((IMutableComponentInstanceProviderAware)instance).setMutableComponentInstanceProvider(provider);
-		}
-		if (instance instanceof ISelfAwareComponentInstanceProviderAware) {
-			((ISelfAwareComponentInstanceProviderAware)instance)
-			        .setSelfAwareComponentInstanceProvider(new SelfAwareComponentInstanceProvider(provider, definition));
-		}
-	}
+    @Override
+    public void doInject(final PicoContainer container, final T instance) throws PicoCompositionException {
+        final IPicoComponentInstanceProvider provider = (IPicoComponentInstanceProvider) container;
 
-	@Override
-	protected void doVerify(final PicoContainer container) {
-		if (!(container instanceof IPicoComponentInstanceProvider)) {
-			throw new PicoCompositionException("The container needs to implement IPicoComponentInstanceProvider");
-		}
-	}
+        if(instance instanceof IComponentInstanceProviderAware) {
+            ((IComponentInstanceProviderAware) instance).setInstanceProvider(provider);
+        }
+        if(instance instanceof IMutableComponentInstanceProviderAware) {
+            ((IMutableComponentInstanceProviderAware) instance).setMutableComponentInstanceProvider(provider);
+        }
+        if(instance instanceof ISelfAwareComponentInstanceProviderAware) {
+            ((ISelfAwareComponentInstanceProviderAware) instance)
+                    .setSelfAwareComponentInstanceProvider(new SelfAwareComponentInstanceProvider(provider, definition));
+        }
+    }
 
-	@Override
-	public String getDescriptor() {
-		return "ComponentInstanceProviderAware Injector";
-	}
+    @Override
+    public String getDescriptor() {
+        return "ComponentInstanceProviderAware Injector";
+    }
 }

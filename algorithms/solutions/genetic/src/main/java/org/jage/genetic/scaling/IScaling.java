@@ -31,7 +31,9 @@
 
 package org.jage.genetic.scaling;
 
+
 import org.jage.strategy.IStrategy;
+
 
 /**
  * Scaling strategy interface.
@@ -40,12 +42,11 @@ import org.jage.strategy.IStrategy;
  */
 public interface IScaling extends IStrategy {
 
-	/**
-	 * Scales a given array of data.
-	 *
-	 * @param data
-	 *            The input array.
-	 * @return The scaled input array
-	 */
-	double[] scale(double[] data);
+    /**
+     * Scales a given array of data.
+     *
+     * @param data The input array.
+     * @return The scaled input array
+     */
+    double[] scale(double[] data);
 }

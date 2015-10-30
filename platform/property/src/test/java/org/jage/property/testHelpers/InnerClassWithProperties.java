@@ -26,30 +26,32 @@
  */
 package org.jage.property.testHelpers;
 
+
 import org.jage.property.ClassPropertyContainer;
 import org.jage.property.PropertyField;
 import org.jage.property.PropertyGetter;
 import org.jage.property.PropertySetter;
 
+
 public class InnerClassWithProperties extends ClassPropertyContainer {
 
-	@SuppressWarnings("unused")
-	@PropertyField(propertyName="intProperty")
-	private int _intProperty = 2;
+    @SuppressWarnings("unused")
+    @PropertyField(propertyName = "intProperty")
+    private int _intProperty = 2;
 
-	private String _stringProperty = "stringProperty";
+    private String _stringProperty = "stringProperty";
 
-	public InnerClassWithProperties() {
-	}
+    public InnerClassWithProperties() {
+    }
 
-	@PropertyGetter(propertyName="stringProperty")
-	public String getStringProperty() {
-		return _stringProperty;
-	}
+    @PropertyGetter(propertyName = "stringProperty")
+    public String getStringProperty() {
+        return _stringProperty;
+    }
 
-	@PropertySetter(propertyName="stringProperty")
-	public void setStringProperty(String value) {
-		_stringProperty = value;
-		notifyMonitorsForChangedProperty("stringProperty");
-	}
+    @PropertySetter(propertyName = "stringProperty")
+    public void setStringProperty(String value) {
+        _stringProperty = value;
+        notifyMonitorsForChangedProperty("stringProperty");
+    }
 }

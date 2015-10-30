@@ -26,54 +26,56 @@
  */
 package org.jage.property;
 
+
+import org.junit.Test;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
-import org.junit.Test;
 
 public class MetaPropertyContainerTest {
-	
-	private MetaProperty getMockMetaProperty(Class<?> propertyClass) throws PropertyException {
-		return new MetaProperty(propertyClass.getName(), propertyClass, false, false);
-	}
-	
-	private void assertContains(Iterable<MetaProperty> metaProperties, MetaProperty metaProperty) {
-		for (MetaProperty existingMetaProperty : metaProperties) {
-			if (existingMetaProperty == metaProperty) {
-				return;
-			}
-		}
-		fail();
-	}
-	
-	@Test
-	public void testAddRemoveGetMethods() throws PropertyException {
-		MetaProperty metaProperty1 = getMockMetaProperty(int.class);
-		MetaProperty metaProperty2 = getMockMetaProperty(String.class);
-		
-		MetaPropertiesSet container = new MetaPropertiesSet();
-		container.addMetaProperty(metaProperty1);
-		container.addMetaProperty(metaProperty2);
-		
-		assertEquals(metaProperty1, container.getMetaProperty(metaProperty1.getName()));
-		assertEquals(metaProperty2, container.getMetaProperty(metaProperty2.getName()));
-		
-		container.removeMetaProperty(metaProperty1);
-		assertEquals(metaProperty2, container.getMetaProperty(metaProperty2.getName()));
-		assertNull(container.getMetaProperty(metaProperty1.getName()));
-	}
-	
-	@Test
-	public void testIterator() throws PropertyException {
-		MetaProperty metaProperty1 = getMockMetaProperty(Object.class);
-		MetaProperty metaProperty2 = getMockMetaProperty(Float.class);
-		
-		MetaPropertiesSet container = new MetaPropertiesSet();
-		container.addMetaProperty(metaProperty1);
-		container.addMetaProperty(metaProperty2);
-		
-		assertContains(container, metaProperty1);
-		assertContains(container, metaProperty2);
-	}
+
+    @Test
+    public void testAddRemoveGetMethods() throws PropertyException {
+        MetaProperty metaProperty1 = getMockMetaProperty(int.class);
+        MetaProperty metaProperty2 = getMockMetaProperty(String.class);
+
+        MetaPropertiesSet container = new MetaPropertiesSet();
+        container.addMetaProperty(metaProperty1);
+        container.addMetaProperty(metaProperty2);
+
+        assertEquals(metaProperty1, container.getMetaProperty(metaProperty1.getName()));
+        assertEquals(metaProperty2, container.getMetaProperty(metaProperty2.getName()));
+
+        container.removeMetaProperty(metaProperty1);
+        assertEquals(metaProperty2, container.getMetaProperty(metaProperty2.getName()));
+        assertNull(container.getMetaProperty(metaProperty1.getName()));
+    }
+
+    private MetaProperty getMockMetaProperty(Class<?> propertyClass) throws PropertyException {
+        return new MetaProperty(propertyClass.getName(), propertyClass, false, false);
+    }
+
+    @Test
+    public void testIterator() throws PropertyException {
+        MetaProperty metaProperty1 = getMockMetaProperty(Object.class);
+        MetaProperty metaProperty2 = getMockMetaProperty(Float.class);
+
+        MetaPropertiesSet container = new MetaPropertiesSet();
+        container.addMetaProperty(metaProperty1);
+        container.addMetaProperty(metaProperty2);
+
+        assertContains(container, metaProperty1);
+        assertContains(container, metaProperty2);
+    }
+
+    private void assertContains(Iterable<MetaProperty> metaProperties, MetaProperty metaProperty) {
+        for(MetaProperty existingMetaProperty : metaProperties) {
+            if(existingMetaProperty == metaProperty) {
+                return;
+            }
+        }
+        fail();
+    }
 }

@@ -31,6 +31,7 @@
 
 package org.jage.random;
 
+
 /**
  * This interface introduces additional semantics to the {@link IDoubleRandomGenerator} one. <br />
  * <br />
@@ -43,16 +44,13 @@ package org.jage.random;
  */
 public interface IDoubleSymmetricGenerator extends IDoubleRandomGenerator {
 
-	/**
-	 * Returns a random double value arbitrarily distributed in the range
-	 * <code>[getLowerDouble(), getUpperDouble()]</code>, accordingly to the provided parameters.
-	 *
-	 * @param location
-	 *            The location of the distribution.
-	 * @param scale
-	 *            The scale of the distribution
-	 *
-	 * @return A random value.
-	 */
-	public double nextDouble(double location, double scale);
+    /**
+     * Returns a random double value arbitrarily distributed in the range
+     * <code>[getLowerDouble(), getUpperDouble()]</code>, accordingly to the provided parameters.
+     *
+     * @param location The location of the distribution.
+     * @param scale    The scale of the distribution
+     * @return A random value.
+     */
+    public double nextDouble(double location, double scale);
 }

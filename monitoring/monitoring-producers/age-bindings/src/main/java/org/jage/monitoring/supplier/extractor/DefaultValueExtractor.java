@@ -33,42 +33,43 @@
 
 package org.jage.monitoring.supplier.extractor;
 
-import java.lang.reflect.InvocationTargetException;
 
+import com.google.common.base.Optional;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.jage.agent.IAgent;
 import org.jage.property.Property;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Optional;
+import java.lang.reflect.InvocationTargetException;
+
 
 /**
- * Default implementation of ValueExtractor. 
+ * Default implementation of ValueExtractor.
  * Extracts data from a given agent using getProperty method. If this fails it use JavaBeans notation.
- *   
+ *
  * @author AGH AgE Team
  */
 public class DefaultValueExtractor implements ValueExtractor {
 
-	private static final Logger log = LoggerFactory.getLogger(DefaultValueExtractor.class);
+    private static final Logger log = LoggerFactory.getLogger(DefaultValueExtractor.class);
 
-	public Optional<Object> extract(IAgent agent, String propertyName) {
+    public Optional<Object> extract(IAgent agent, String propertyName) {
 
-		Property property = agent.getProperty(propertyName);
+        Property property = agent.getProperty(propertyName);
 
-		Optional<Object> result = Optional.absent();
-		
-		if (property != null) {
-			result = Optional.fromNullable(property.getValue());
-		} else {
-			try {
-				result = result.or(Optional.fromNullable(PropertyUtils.getSimpleProperty(agent, propertyName)));
-			} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-				log.error(e.getMessage());
+        Optional<Object> result = Optional.absent();
 
-			}
-		}
-		return result;
-	}
+        if(property != null) {
+            result = Optional.fromNullable(property.getValue());
+        } else {
+            try {
+                result = result.or(Optional.fromNullable(PropertyUtils.getSimpleProperty(agent, propertyName)));
+            } catch(IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                log.error(e.getMessage());
+
+            }
+        }
+        return result;
+    }
 }

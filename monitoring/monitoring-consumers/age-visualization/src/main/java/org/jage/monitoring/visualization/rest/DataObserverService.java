@@ -27,6 +27,12 @@
 
 package org.jage.monitoring.visualization.rest;
 
+
+import org.jage.monitoring.visualization.storage.StorageDescription;
+import org.jage.monitoring.visualization.storage.VisualData;
+import org.jage.monitoring.visualization.storage.VisualDataStorageFactory;
+import org.jage.monitoring.visualization.storage.element.VisualDataStorage;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -35,53 +41,49 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.jage.monitoring.visualization.storage.StorageDescription;
-import org.jage.monitoring.visualization.storage.VisualData;
-import org.jage.monitoring.visualization.storage.VisualDataStorageFactory;
-import org.jage.monitoring.visualization.storage.element.VisualDataStorage;
 
 /**
  * Service class which supports RESTfull requests.
- *  
+ *
  * @author AGH AgE Team
  */
 @Path("/")
 public class DataObserverService {
-	
-	
-	public DataObserverService() {
-    }
-	
-	@GET
-	@Path("/init")
-	public Response initProcessor(){
-		VisualDataStorageFactory.loadSavedStorages();
-		return Response.status(201).entity("Baza zaladowana").build();
-	}
 
-	@POST
-	@Path("/{computationType}/{computationInstance}/{gathererId}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response consumeVisualData(
-		@PathParam("computationType") String computationType,
-		@PathParam("computationInstance") String computationInstance,
-		@PathParam("gathererId") String gathererId,
-		VisualData data
-		) {
-		
-		StorageDescription storageDescription = new StorageDescription(
-				computationType, computationInstance, gathererId);
-		String result = "";
+
+    public DataObserverService() {
+    }
+
+    @GET
+    @Path("/init")
+    public Response initProcessor() {
+        VisualDataStorageFactory.loadSavedStorages();
+        return Response.status(201).entity("Baza zaladowana").build();
+    }
+
+    @POST
+    @Path("/{computationType}/{computationInstance}/{gathererId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response consumeVisualData(
+            @PathParam("computationType") String computationType,
+            @PathParam("computationInstance") String computationInstance,
+            @PathParam("gathererId") String gathererId,
+            VisualData data
+    ) {
+
+        StorageDescription storageDescription = new StorageDescription(
+                computationType, computationInstance, gathererId);
+        String result = "";
         try {
-        	VisualDataStorage storage = VisualDataStorageFactory.getOrCreateVisualDataStorage(storageDescription);
-        	storage.save(data);
-			result = "Data saved: " + data;
-			
-        } catch (Exception e) {
-	        e.printStackTrace();
+            VisualDataStorage storage = VisualDataStorageFactory.getOrCreateVisualDataStorage(storageDescription);
+            storage.save(data);
+            result = "Data saved: " + data;
+
+        } catch(Exception e) {
+            e.printStackTrace();
         }
         return Response.status(201).entity(result).build();
 
-	}
+    }
 
 }

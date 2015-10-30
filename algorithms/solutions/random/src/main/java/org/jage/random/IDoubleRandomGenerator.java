@@ -31,7 +31,9 @@
 
 package org.jage.random;
 
+
 import org.jage.strategy.IStrategy;
+
 
 /**
  * An interface for generating random double values. <br />
@@ -45,26 +47,26 @@ import org.jage.strategy.IStrategy;
  */
 public interface IDoubleRandomGenerator extends IStrategy {
 
-	/**
-	 * Returns a random double value arbitrarily distributed in the range
-	 * <code>[getLowerDouble(), getUpperDouble()]</code>.
-	 *
-	 * @return A random value.
-	 */
-	double nextDouble();
+    /**
+     * Returns a random double value arbitrarily distributed in the range
+     * <code>[getLowerDouble(), getUpperDouble()]</code>.
+     *
+     * @return A random value.
+     */
+    double nextDouble();
 
-	/**
-	 * Specifies the lower bound of the values that can be returned by <code>nextDouble()</code>.
-	 *
-	 * @return This generator's lower bound.
-	 */
-	double getLowerDouble();
+    /**
+     * Specifies the lower bound of the values that can be returned by <code>nextDouble()</code>.
+     *
+     * @return This generator's lower bound.
+     */
+    double getLowerDouble();
 
-	/**
-	 * Specifies the upper bound of the values that can be returned by <code>nextDouble()</code>.
-	 *
-	 * @return This generator's upper bound.
-	 */
-	double getUpperDouble();
+    /**
+     * Specifies the upper bound of the values that can be returned by <code>nextDouble()</code>.
+     *
+     * @return This generator's upper bound.
+     */
+    double getUpperDouble();
 
 }

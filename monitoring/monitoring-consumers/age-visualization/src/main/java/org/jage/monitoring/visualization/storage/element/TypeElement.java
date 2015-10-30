@@ -27,18 +27,16 @@
 
 package org.jage.monitoring.visualization.storage.element;
 
-/**
- *  
- * 
- * @author AGH AgE Team
- *
- */
-public interface TypeElement extends DescriptionElement<ComputationInstance>{
 
-	/**
-	 * Returns the latest (last) ComputationInstance object.
-	 * 
-	 * @return
-	 */
-	ComputationInstance last();
+/**
+ * @author AGH AgE Team
+ */
+public interface TypeElement extends DescriptionElement<ComputationInstance> {
+
+    /**
+     * Returns the latest (last) ComputationInstance object.
+     *
+     * @return
+     */
+    ComputationInstance last();
 }

@@ -31,10 +31,6 @@
 
 package org.jage.emas.action.island;
 
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.jage.agent.AgentException;
 import org.jage.emas.agent.IndividualAgent;
@@ -43,6 +39,11 @@ import org.jage.emas.util.ChainingAction;
 import org.jage.evaluation.ISolutionEvaluator;
 import org.jage.solution.ISolution;
 import org.jage.solution.ISolutionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
+
 
 /**
  * This action handler performs initialization actions on island agents. Each child agent is initialized with a
@@ -52,29 +53,29 @@ import org.jage.solution.ISolutionFactory;
  */
 public final class InitializationAction extends ChainingAction<IslandAgent> {
 
-	private static final Logger log = LoggerFactory.getLogger(InitializationAction.class);
+    private static final Logger log = LoggerFactory.getLogger(InitializationAction.class);
 
-	@Inject
-	private ISolutionFactory<ISolution> solutionFactory;
+    @Inject
+    private ISolutionFactory<ISolution> solutionFactory;
 
-	@Inject
-	private ISolutionEvaluator<ISolution, Double> evaluator;
+    @Inject
+    private ISolutionEvaluator<ISolution, Double> evaluator;
 
-	private double initialEnergy;
+    private double initialEnergy;
 
-	public void setInitialEnergy(final double initialEnergy) {
-		this.initialEnergy = initialEnergy;
-	}
+    public void setInitialEnergy(final double initialEnergy) {
+        this.initialEnergy = initialEnergy;
+    }
 
-	@Override
-	protected void doPerform(final IslandAgent agent) throws AgentException {
-		log.debug("Performing initialization action on {}", agent);
+    @Override
+    protected void doPerform(final IslandAgent agent) throws AgentException {
+        log.debug("Performing initialization action on {}", agent);
 
-		for (final IndividualAgent child : agent.getIndividualAgents()) {
-			final ISolution solution = solutionFactory.createInitializedSolution();
-			child.setSolution(solution);
-			child.setOriginalFitness(evaluator.evaluate(solution));
-			child.changeEnergyBy(initialEnergy);
-		}
-	}
+        for(final IndividualAgent child : agent.getIndividualAgents()) {
+            final ISolution solution = solutionFactory.createInitializedSolution();
+            child.setSolution(solution);
+            child.setOriginalFitness(evaluator.evaluate(solution));
+            child.changeEnergyBy(initialEnergy);
+        }
+    }
 }

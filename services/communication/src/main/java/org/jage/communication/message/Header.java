@@ -31,34 +31,35 @@
 
 package org.jage.communication.message;
 
-import java.io.Serializable;
-
-import javax.annotation.Nonnull;
 
 import org.jage.address.Address;
 import org.jage.address.selector.AddressSelector;
 
+import javax.annotation.Nonnull;
+import java.io.Serializable;
+
+
 /**
  * DefaultMessage header which contains sender and receiver addresses. The header is parametrised by the type of an address.
- * 
- * @param <A>
- *            A type of sender and receiver address.
- * 
+ *
+ * @param <A> A type of sender and receiver address.
  * @author AGH AgE Team
  */
 public interface Header<A extends Address> extends Serializable {
 
-	/**
-	 * Returns an address of the sender.
-	 * 
-	 * @return The address of the sender.
-	 */
-	@Nonnull A getSenderAddress();
+    /**
+     * Returns an address of the sender.
+     *
+     * @return The address of the sender.
+     */
+    @Nonnull
+    A getSenderAddress();
 
-	/**
-	 * Returns a selector that selects all receivers.
-	 * 
-	 * @return A selector for receivers.
-	 */
-	@Nonnull AddressSelector<A> getReceiverSelector();
+    /**
+     * Returns a selector that selects all receivers.
+     *
+     * @return A selector for receivers.
+     */
+    @Nonnull
+    AddressSelector<A> getReceiverSelector();
 }

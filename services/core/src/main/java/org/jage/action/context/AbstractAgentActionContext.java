@@ -31,25 +31,26 @@
 
 package org.jage.action.context;
 
-import java.util.Arrays;
-
-import org.jage.action.IActionContext;
 
 import com.google.common.base.Objects;
+import org.jage.action.IActionContext;
+
+import java.util.Arrays;
+
 
 /**
  * The abstract implementation of the agent action context.
- * 
+ *
  * @author AGH AgE Team
  */
 public abstract class AbstractAgentActionContext implements IActionContext {
 
-	@Override
-	public String toString() {
-		final AgentActionContext context = this.getClass().getAnnotation(AgentActionContext.class);
-		if (context != null) {
-			return Objects.toStringHelper(Arrays.toString(context.value())).toString();
-		}
-		return Objects.toStringHelper(this).toString();
-	}
+    @Override
+    public String toString() {
+        final AgentActionContext context = this.getClass().getAnnotation(AgentActionContext.class);
+        if(context != null) {
+            return Objects.toStringHelper(Arrays.toString(context.value())).toString();
+        }
+        return Objects.toStringHelper(this).toString();
+    }
 }

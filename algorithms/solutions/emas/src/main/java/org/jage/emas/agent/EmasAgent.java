@@ -31,8 +31,10 @@
 
 package org.jage.emas.agent;
 
+
 import org.jage.agent.IAgent;
 import org.jage.agent.ISimpleAgentEnvironment;
+
 
 /**
  * EMAS general agent interface.
@@ -41,8 +43,8 @@ import org.jage.agent.ISimpleAgentEnvironment;
  */
 public interface EmasAgent extends IAgent {
 
-	/**
-	 * Get the current agent environment.
-	 */
-	ISimpleAgentEnvironment getEnvironment();
+    /**
+     * Get the current agent environment.
+     */
+    ISimpleAgentEnvironment getEnvironment();
 }

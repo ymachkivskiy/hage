@@ -31,6 +31,9 @@
 
 package org.jage.platform.fsm;
 
+
+import com.google.common.collect.Table;
+import com.google.common.collect.Table.Cell;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,149 +44,158 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
-import com.google.common.collect.Table;
-import com.google.common.collect.Table.Cell;
 
 /**
  * Tests for the {@link StateMachineServiceBuilder} class.
- * 
+ *
  * @author AGH AgE Team
  */
 @RunWith(MockitoJUnitRunner.class)
 public class StateMachineServiceBuilderTest {
 
-	private enum State {
-		INITIAL, SECOND, THIRD, FOURTH, FAIL, TERMINAL;
-	}
+    private StateMachineServiceBuilder<State, Event> builder;
 
-	private enum Event {
-		A, B, C, D, E, ERROR;
-	}
+    @Before
+    public void setUp() {
+        builder = StateMachineServiceBuilder.create();
+    }
 
-	private StateMachineServiceBuilder<State, Event> builder;
+    @Test
+    public void minimalRequiredConfigurationWontFail() {
+        // given
+        builder.states(State.class).events(Event.class);
+        builder.startWith(State.INITIAL);
+        builder.terminateIn(State.TERMINAL);
+        builder.ifFailed().fire(Event.ERROR);
+        builder.inAnyState().on(Event.ERROR).goTo(State.FAIL);
 
-	@Before
-	public void setUp() {
-		builder = StateMachineServiceBuilder.create();
-	}
+        // when
+        final StateMachineService<State, Event> service = builder.build();
 
-	@Test
-	public void minimalRequiredConfigurationWontFail() {
-		// given
-		builder.states(State.class).events(Event.class);
-		builder.startWith(State.INITIAL);
-		builder.terminateIn(State.TERMINAL);
-		builder.ifFailed().fire(Event.ERROR);
-		builder.inAnyState().on(Event.ERROR).goTo(State.FAIL);
+        // then
+        assertThat(builder.getStateClass(), equalTo(State.class));
+        assertThat(builder.getEventClass(), equalTo(Event.class));
+        assertThat(service, is(notNullValue()));
+    }
 
-		// when
-		final StateMachineService<State, Event> service = builder.build();
+    @Test(expected = IllegalStateException.class)
+    public void noStatesTypeShouldResultInException() {
+        // given
+        builder.events(Event.class);
+        builder.startWith(State.INITIAL);
+        builder.terminateIn(State.TERMINAL);
+        builder.ifFailed().fire(Event.ERROR);
+        builder.inAnyState().on(Event.ERROR).goTo(State.FAIL).commit();
 
-		// then
-		assertThat(builder.getStateClass(), equalTo(State.class));
-		assertThat(builder.getEventClass(), equalTo(Event.class));
-		assertThat(service, is(notNullValue()));
-	}
+        // when
+        builder.build();
+    }
 
-	@Test(expected = IllegalStateException.class)
-	public void noStatesTypeShouldResultInException() {
-		// given
-		builder.events(Event.class);
-		builder.startWith(State.INITIAL);
-		builder.terminateIn(State.TERMINAL);
-		builder.ifFailed().fire(Event.ERROR);
-		builder.inAnyState().on(Event.ERROR).goTo(State.FAIL).commit();
+    @Test(expected = IllegalStateException.class)
+    public void noEventsTypeShouldResultInException() {
+        // given
+        builder.states(State.class);
+        builder.startWith(State.INITIAL);
+        builder.terminateIn(State.TERMINAL);
+        builder.ifFailed().fire(Event.ERROR);
+        builder.inAnyState().on(Event.ERROR).goTo(State.FAIL).commit();
 
-		// when
-		builder.build();
-	}
+        // when
+        builder.build();
+    }
 
-	@Test(expected = IllegalStateException.class)
-	public void noEventsTypeShouldResultInException() {
-		// given
-		builder.states(State.class);
-		builder.startWith(State.INITIAL);
-		builder.terminateIn(State.TERMINAL);
-		builder.ifFailed().fire(Event.ERROR);
-		builder.inAnyState().on(Event.ERROR).goTo(State.FAIL).commit();
+    @Test(expected = IllegalStateException.class)
+    public void noInitialStateShouldResultInException() {
+        // given
+        builder.states(State.class).events(Event.class);
+        builder.terminateIn(State.TERMINAL);
+        builder.ifFailed().fire(Event.ERROR);
+        builder.inAnyState().on(Event.ERROR).goTo(State.FAIL).commit();
 
-		// when
-		builder.build();
-	}
+        // when
+        builder.build();
+    }
 
-	@Test(expected = IllegalStateException.class)
-	public void noInitialStateShouldResultInException() {
-		// given
-		builder.states(State.class).events(Event.class);
-		builder.terminateIn(State.TERMINAL);
-		builder.ifFailed().fire(Event.ERROR);
-		builder.inAnyState().on(Event.ERROR).goTo(State.FAIL).commit();
+    @Test(expected = IllegalStateException.class)
+    public void noTerminalStateShouldResultInException() {
+        // given
+        builder.states(State.class).events(Event.class);
+        builder.startWith(State.INITIAL);
+        builder.ifFailed().fire(Event.ERROR);
+        builder.inAnyState().on(Event.ERROR).goTo(State.FAIL).commit();
 
-		// when
-		builder.build();
-	}
+        // when
+        builder.build();
+    }
 
-	@Test(expected = IllegalStateException.class)
-	public void noTerminalStateShouldResultInException() {
-		// given
-		builder.states(State.class).events(Event.class);
-		builder.startWith(State.INITIAL);
-		builder.ifFailed().fire(Event.ERROR);
-		builder.inAnyState().on(Event.ERROR).goTo(State.FAIL).commit();
+    @Test(expected = IllegalStateException.class)
+    public void noFailureBehaviorShouldResultInException() {
+        // given
+        builder.states(State.class).events(Event.class);
+        builder.startWith(State.INITIAL);
+        builder.terminateIn(State.TERMINAL);
+        builder.inAnyState().on(Event.ERROR).goTo(State.FAIL).commit();
 
-		// when
-		builder.build();
-	}
+        // when
+        builder.build();
+    }
 
-	@Test(expected = IllegalStateException.class)
-	public void noFailureBehaviorShouldResultInException() {
-		// given
-		builder.states(State.class).events(Event.class);
-		builder.startWith(State.INITIAL);
-		builder.terminateIn(State.TERMINAL);
-		builder.inAnyState().on(Event.ERROR).goTo(State.FAIL).commit();
+    @Test
+    public void minimalRequiredConfigurationBuildsNullTable() {
+        // given
+        builder.states(State.class).events(Event.class);
+        builder.startWith(State.INITIAL);
+        builder.terminateIn(State.TERMINAL);
+        builder.ifFailed().fire(Event.ERROR);
+        builder.inAnyState().on(Event.ERROR).goTo(State.FAIL).commit();
 
-		// when
-		builder.build();
-	}
+        // when
+        final Table<State, Event, TransitionDescriptor<State, Event>> transitions = builder.buildTransitionsTable();
 
-	@Test
-	public void minimalRequiredConfigurationBuildsNullTable() {
-		// given
-		builder.states(State.class).events(Event.class);
-		builder.startWith(State.INITIAL);
-		builder.terminateIn(State.TERMINAL);
-		builder.ifFailed().fire(Event.ERROR);
-		builder.inAnyState().on(Event.ERROR).goTo(State.FAIL).commit();
+        // then
+        for(final Cell<State, Event, TransitionDescriptor<State, Event>> cell : transitions.cellSet()) {
+            if(cell.getColumnKey().equals(Event.ERROR)) {
+                assertThat(cell.getValue().isNull(), is(false));
+                assertThat(cell.getValue().getTarget(), is(State.FAIL));
+            } else {
+                assertThat(cell.getValue().isNull(), is(true));
+            }
+        }
+    }
 
-		// when
-		final Table<State, Event, TransitionDescriptor<State, Event>> transitions = builder.buildTransitionsTable();
+    @Test
+    public void transitionsHaveCorrectPreferences() {
+        // given
+        builder.states(State.class).events(Event.class);
+        builder.startWith(State.INITIAL);
+        builder.terminateIn(State.TERMINAL);
+        builder.ifFailed().fire(Event.ERROR);
+        builder.inAnyState().on(Event.ERROR).goTo(State.FAIL).commit();
+        builder.in(State.INITIAL).on(Event.A).goTo(State.SECOND).commit();
 
-		// then
-		for (final Cell<State, Event, TransitionDescriptor<State, Event>> cell : transitions.cellSet()) {
-			if (cell.getColumnKey().equals(Event.ERROR)) {
-				assertThat(cell.getValue().isNull(), is(false));
-				assertThat(cell.getValue().getTarget(), is(State.FAIL));
-			} else {
-				assertThat(cell.getValue().isNull(), is(true));
-			}
-		}
-	}
+        // when
+        final Table<State, Event, TransitionDescriptor<State, Event>> transitions = builder.buildTransitionsTable();
 
-	@Test
-	public void transitionsHaveCorrectPreferences() {
-		// given
-		builder.states(State.class).events(Event.class);
-		builder.startWith(State.INITIAL);
-		builder.terminateIn(State.TERMINAL);
-		builder.ifFailed().fire(Event.ERROR);
-		builder.inAnyState().on(Event.ERROR).goTo(State.FAIL).commit();
-		builder.in(State.INITIAL).on(Event.A).goTo(State.SECOND).commit();
+        // then
+        assertThat(transitions.get(State.INITIAL, Event.A).getTarget(), equalTo(State.SECOND));
+    }
 
-		// when
-		final Table<State, Event, TransitionDescriptor<State, Event>> transitions = builder.buildTransitionsTable();
+    private enum State {
+        INITIAL,
+        SECOND,
+        THIRD,
+        FOURTH,
+        FAIL,
+        TERMINAL
+    }
 
-		// then
-		assertThat(transitions.get(State.INITIAL, Event.A).getTarget(), equalTo(State.SECOND));
-	}
+
+    private enum Event {
+        A,
+        B,
+        C,
+        D,
+        E,
+        ERROR
+    }
 }

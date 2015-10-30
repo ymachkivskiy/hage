@@ -31,8 +31,10 @@
 
 package org.jage.property;
 
+
 import org.jage.property.annotations.ClassPropertiesFactory;
 import org.jage.property.annotations.MetaPropertiesReader;
+
 
 /**
  * IClassPropertiesFactory implementation that uses annotated fields and getter / setter methods. It is implemented as a
@@ -42,17 +44,17 @@ import org.jage.property.annotations.MetaPropertiesReader;
  */
 public enum ClassAnnotatedPropertiesFactory implements IClassPropertiesFactory {
 
-	INSTANCE;
+    INSTANCE;
 
-	private final IClassPropertiesFactory factory = new ClassPropertiesFactory(new MetaPropertiesReader());
+    private final IClassPropertiesFactory factory = new ClassPropertiesFactory(new MetaPropertiesReader());
 
-	@Override
-	public synchronized PropertiesSet getAllProperties(Object object) throws InvalidPropertyDefinitionException {
-		return factory.getAllProperties(object);
-	}
+    @Override
+    public synchronized PropertiesSet getAllProperties(Object object) throws InvalidPropertyDefinitionException {
+        return factory.getAllProperties(object);
+    }
 
-	@Override
-	public synchronized MetaPropertiesSet getAllMetaProperties(Object object) throws InvalidPropertyDefinitionException {
-		return factory.getAllMetaProperties(object);
-	}
+    @Override
+    public synchronized MetaPropertiesSet getAllMetaProperties(Object object) throws InvalidPropertyDefinitionException {
+        return factory.getAllMetaProperties(object);
+    }
 }

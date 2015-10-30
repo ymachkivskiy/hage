@@ -31,16 +31,17 @@
 
 package org.jage.agent;
 
+
 /**
  * Interface of an agent which can reside in an environment. Simple agent is an agent that is not thread-based, but does
  * his job sequentially by executing short steps.
- * 
+ *
  * @author AGH AgE Team
  */
 public interface ISimpleAgent extends IAgent {
 
-	/**
-	 * The main method of the agent. Here the agent does all his work.
-	 */
-	void step();
+    /**
+     * The main method of the agent. Here the agent does all his work.
+     */
+    void step();
 }

@@ -26,6 +26,7 @@
  */
 package org.jage.property;
 
+
 public abstract class MockTest {
-	
+
 }

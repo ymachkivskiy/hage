@@ -26,23 +26,26 @@
  */
 package org.jage.monitoring.config;
 
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+
 /**
- * Class provides an executor service. 
- * 
+ * Class provides an executor service.
+ *
  * @author AGH AgE Team
  */
-public class ExecutorProvider{
+public class ExecutorProvider {
 
-	private ExecutorService executor;
-	public ExecutorProvider(){
-		executor = Executors.newCachedThreadPool();
-	}
+    private ExecutorService executor;
 
-	public ExecutorService getExecutor(){
-		return executor;
-	}
+    public ExecutorProvider() {
+        executor = Executors.newCachedThreadPool();
+    }
+
+    public ExecutorService getExecutor() {
+        return executor;
+    }
 
 }

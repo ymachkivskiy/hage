@@ -31,7 +31,9 @@
 
 package org.jage.emas.predicate;
 
+
 import org.jage.emas.agent.IndividualAgent;
+
 
 /**
  * Predicate applying to agents which energy is lower than some threshold.
@@ -40,14 +42,14 @@ import org.jage.emas.agent.IndividualAgent;
  */
 public class LowEnergyPredicate implements IPredicate<IndividualAgent> {
 
-	private double threshold;
+    private double threshold;
 
-	public void setThreshold(final double threshold) {
-		this.threshold = threshold;
-	}
+    public void setThreshold(final double threshold) {
+        this.threshold = threshold;
+    }
 
-	@Override
-	public boolean apply(final IndividualAgent agent) {
-		return agent.getEnergy() <= threshold;
-	}
+    @Override
+    public boolean apply(final IndividualAgent agent) {
+        return agent.getEnergy() <= threshold;
+    }
 }

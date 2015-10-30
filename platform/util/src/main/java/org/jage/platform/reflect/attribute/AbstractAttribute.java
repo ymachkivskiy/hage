@@ -31,52 +31,50 @@
 
 package org.jage.platform.reflect.attribute;
 
-import static org.jage.platform.reflect.Classes.isAssignable;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static org.jage.platform.reflect.Classes.isAssignable;
+
 
 /**
  * Abstract implementation of Attribute. Subclasses need only implement the actual injection mechanism.
  *
- * @param <T>
- *            the type of this attribute
+ * @param <T> the type of this attribute
  * @author AGH AgE Team
  */
 abstract class AbstractAttribute<T> implements Attribute<T> {
 
-	private final String name;
+    private final String name;
 
-	private final Class<T> type;
+    private final Class<T> type;
 
-	/**
-	 * Creates an abstract attribute with the given name and type.
-	 *
-	 * @param name
-	 *            the attribute's name
-	 * @param type
-	 *            the attribute's type
-	 */
-	protected AbstractAttribute(final String name, final Class<T> type) {
-		this.name = checkNotNull(name);
-		this.type = checkNotNull(type);
-	}
+    /**
+     * Creates an abstract attribute with the given name and type.
+     *
+     * @param name the attribute's name
+     * @param type the attribute's type
+     */
+    protected AbstractAttribute(final String name, final Class<T> type) {
+        this.name = checkNotNull(name);
+        this.type = checkNotNull(type);
+    }
 
-	@Override
-	public final String getName() {
-		return name;
-	}
+    @Override
+    public final String getName() {
+        return name;
+    }
 
-	@Override
-	public final Class<T> getType() {
-		return type;
-	}
+    @Override
+    public final Class<T> getType() {
+        return type;
+    }
 
-	@Override
-	@SuppressWarnings("unchecked" /* checked at runtime */)
-	public final <S> Attribute<S> asType(final Class<S> targetType) {
-		checkArgument(isAssignable(targetType, getType()), "Attribute %s is not compatible with return type %s",
-		        getName(), getType());
-		return (Attribute<S>)this;
-	}
+    @Override
+    @SuppressWarnings("unchecked" /* checked at runtime */)
+    public final <S> Attribute<S> asType(final Class<S> targetType) {
+        checkArgument(isAssignable(targetType, getType()), "Attribute %s is not compatible with return type %s",
+                      getName(), getType());
+        return (Attribute<S>) this;
+    }
 }

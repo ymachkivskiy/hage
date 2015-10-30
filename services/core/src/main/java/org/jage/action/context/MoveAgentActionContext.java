@@ -31,12 +31,13 @@
 
 package org.jage.action.context;
 
+
+import com.google.common.base.Objects;
 import org.jage.agent.ISimpleAgent;
 import org.jage.agent.ISimpleAggregate;
 
-import com.google.common.base.Objects;
-
 import static com.google.common.base.Preconditions.checkNotNull;
+
 
 /**
  * The action of moving an agent to another aggregate.
@@ -46,78 +47,77 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @AgentActionContext(MoveAgentActionContext.ACTION_NAME)
 public class MoveAgentActionContext extends AbstractAgentActionContext implements IActionWithAgentReferenceContext {
 
-	/**
-	 * The action name of this context.
-	 */
-	public static final String ACTION_NAME = "moveAgent";
+    /**
+     * The action name of this context.
+     */
+    public static final String ACTION_NAME = "moveAgent";
 
-	/**
-	 * The agent to move or null.
-	 */
-	private ISimpleAgent agent;
+    /**
+     * The agent to move or null.
+     */
+    private ISimpleAgent agent;
 
-	/**
-	 * The parent of the moving agent or null.
-	 */
-	private ISimpleAggregate parent;
+    /**
+     * The parent of the moving agent or null.
+     */
+    private ISimpleAggregate parent;
 
-	/**
-	 * Target aggregate where an agent is going to migrate.
-	 */
-	private ISimpleAggregate target;
+    /**
+     * Target aggregate where an agent is going to migrate.
+     */
+    private ISimpleAggregate target;
 
-	/**
-	 * Returns the agent which is to move or null if agent is not set.
-	 *
-	 * @return the agent which is to move
-	 */
-	@Override
-	public ISimpleAgent getAgent() {
-		return agent;
-	}
+    @Override
+    public void setAgent(final ISimpleAgent agent) {
+        this.agent = checkNotNull(agent);
+    }
 
-	/**
-	 * Returns the parent of the moving agent.
-	 *
-	 * @return the parent of the moving agent or <TT>null</TT> if the aggregate which receives this action is the parent
-	 */
-	@Override
-	public ISimpleAggregate getParent() {
-		return parent;
-	}
+    /**
+     * Returns the agent which is to move or null if agent is not set.
+     *
+     * @return the agent which is to move
+     */
+    @Override
+    public ISimpleAgent getAgent() {
+        return agent;
+    }
 
-	@Override
-	public void setAgent(final ISimpleAgent agent) {
-		this.agent = checkNotNull(agent);
-	}
+    @Override
+    public void setParent(final ISimpleAggregate parent) {
+        this.parent = checkNotNull(parent);
+    }
 
-	@Override
-	public void setParent(final ISimpleAggregate parent) {
-		this.parent = checkNotNull(parent);
-	}
+    /**
+     * Returns the parent of the moving agent.
+     *
+     * @return the parent of the moving agent or <TT>null</TT> if the aggregate which receives this action is the parent
+     */
+    @Override
+    public ISimpleAggregate getParent() {
+        return parent;
+    }
 
-	/**
-	 * Returns the target aggregate (the new parent of the agent).
-	 *
-	 * @return the target aggregate.
-	 */
-	public ISimpleAggregate getTarget() {
-		return target;
-	}
+    /**
+     * Returns the target aggregate (the new parent of the agent).
+     *
+     * @return the target aggregate.
+     */
+    public ISimpleAggregate getTarget() {
+        return target;
+    }
 
-	/**
-	 * Sets the target aggregate (the new parent of the agent).
-	 *
-	 * @param target
-	 *            the target aggregate.
-	 */
-	public void setTarget(final ISimpleAggregate target) {
-		this.target = checkNotNull(target);
-	}
+    /**
+     * Sets the target aggregate (the new parent of the agent).
+     *
+     * @param target the target aggregate.
+     */
+    public void setTarget(final ISimpleAggregate target) {
+        this.target = checkNotNull(target);
+    }
 
-	@Override
-	public String toString() {
-		return Objects.toStringHelper(this).add("agent", agent).add("parent", parent).add("target", target).toString();
-	}
+    @Override
+    public String toString() {
+        return Objects.toStringHelper(this).add("agent", agent).add("parent", parent).add("target", target).toString();
+    }
 
 }

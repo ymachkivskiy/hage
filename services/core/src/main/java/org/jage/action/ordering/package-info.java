@@ -31,7 +31,7 @@
 
 /**
  * Utilities for controlling the actions execution order.
- * 
+ *
  * @since 2.6
  */
 package org.jage.action.ordering;

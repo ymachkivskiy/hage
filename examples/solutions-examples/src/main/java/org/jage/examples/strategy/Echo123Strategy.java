@@ -31,8 +31,10 @@
 
 package org.jage.examples.strategy;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 /**
  * An echo strategy that prints "123".
@@ -40,11 +42,12 @@ import org.slf4j.LoggerFactory;
  * @author AGH AgE Team
  */
 public class Echo123Strategy implements IEchoStrategy {
-	private final static Logger log = LoggerFactory.getLogger(Echo123Strategy.class);
 
-	@Override
-	public void echo() {
-		log.info("Strategy says 123 123 123 !!!");
-	}
+    private final static Logger log = LoggerFactory.getLogger(Echo123Strategy.class);
+
+    @Override
+    public void echo() {
+        log.info("Strategy says 123 123 123 !!!");
+    }
 
 }

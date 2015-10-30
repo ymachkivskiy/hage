@@ -31,15 +31,21 @@
 
 package org.jage.variation.mutation;
 
-import java.util.Arrays;
-import java.util.List;
 
+import org.jage.population.IPopulation;
+import org.jage.random.INormalizedDoubleRandomGenerator;
+import org.jage.solution.ISolution;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.Arrays;
+import java.util.List;
+
+import static org.jage.population.Populations.newPopulation;
+import static org.jage.variation.mutation.IndividuallyMutatePopulation.DEFAULT_CHANCE_TO_MUTATE;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
@@ -47,12 +53,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
-import org.jage.population.IPopulation;
-import org.jage.random.INormalizedDoubleRandomGenerator;
-import org.jage.solution.ISolution;
-
-import static org.jage.population.Populations.newPopulation;
-import static org.jage.variation.mutation.IndividuallyMutatePopulation.DEFAULT_CHANCE_TO_MUTATE;
 
 /**
  * Tests for IndividuallyMutatePopulation.
@@ -62,56 +62,56 @@ import static org.jage.variation.mutation.IndividuallyMutatePopulation.DEFAULT_C
 @RunWith(MockitoJUnitRunner.class)
 public class IndividuallyMutatePopulationTest {
 
-	@Mock
-	private INormalizedDoubleRandomGenerator rand;
+    @Mock
+    private INormalizedDoubleRandomGenerator rand;
 
-	@Mock
-	private IMutateSolution<ISolution> mutate;
+    @Mock
+    private IMutateSolution<ISolution> mutate;
 
-	@InjectMocks
-	private IndividuallyMutatePopulation<ISolution> underTest = new IndividuallyMutatePopulation<ISolution>();
+    @InjectMocks
+    private IndividuallyMutatePopulation<ISolution> underTest = new IndividuallyMutatePopulation<ISolution>();
 
-	@Test
-	public void shouldMutateOnLower() {
-		// given
-		List<ISolution> solutions = Arrays.asList(mock(ISolution.class), mock(ISolution.class));
-		IPopulation<ISolution, Object> population = newPopulation(solutions);
-		given(rand.nextDouble()).willReturn(0.9 * DEFAULT_CHANCE_TO_MUTATE);
+    @Test
+    public void shouldMutateOnLower() {
+        // given
+        List<ISolution> solutions = Arrays.asList(mock(ISolution.class), mock(ISolution.class));
+        IPopulation<ISolution, Object> population = newPopulation(solutions);
+        given(rand.nextDouble()).willReturn(0.9 * DEFAULT_CHANCE_TO_MUTATE);
 
-		// when
-		underTest.mutatePopulation(population);
+        // when
+        underTest.mutatePopulation(population);
 
-		// then
-		verify(mutate, times(2)).mutateSolution(any(ISolution.class));
-	}
+        // then
+        verify(mutate, times(2)).mutateSolution(any(ISolution.class));
+    }
 
-	@Test
-	public void shouldNotMutateOnEqual() {
-		// given
-		List<ISolution> solutions = Arrays.asList(mock(ISolution.class), mock(ISolution.class));
-		IPopulation<ISolution, Object> population = newPopulation(solutions);
-		given(rand.nextDouble()).willReturn(DEFAULT_CHANCE_TO_MUTATE);
+    @Test
+    public void shouldNotMutateOnEqual() {
+        // given
+        List<ISolution> solutions = Arrays.asList(mock(ISolution.class), mock(ISolution.class));
+        IPopulation<ISolution, Object> population = newPopulation(solutions);
+        given(rand.nextDouble()).willReturn(DEFAULT_CHANCE_TO_MUTATE);
 
-		// when
-		underTest.mutatePopulation(population);
+        // when
+        underTest.mutatePopulation(population);
 
-		// then
+        // then
 
-		verifyZeroInteractions(mutate);
-	}
+        verifyZeroInteractions(mutate);
+    }
 
-	@Test
-	public void shouldNotMutateOnBigger() {
-		// given
-		List<ISolution> solutions = Arrays.asList(mock(ISolution.class), mock(ISolution.class));
-		IPopulation<ISolution, Object> population = newPopulation(solutions);
-		given(rand.nextDouble()).willReturn(1.1 * DEFAULT_CHANCE_TO_MUTATE);
+    @Test
+    public void shouldNotMutateOnBigger() {
+        // given
+        List<ISolution> solutions = Arrays.asList(mock(ISolution.class), mock(ISolution.class));
+        IPopulation<ISolution, Object> population = newPopulation(solutions);
+        given(rand.nextDouble()).willReturn(1.1 * DEFAULT_CHANCE_TO_MUTATE);
 
-		// when
-		underTest.mutatePopulation(population);
+        // when
+        underTest.mutatePopulation(population);
 
-		// then
+        // then
 
-		verifyZeroInteractions(mutate);
-	}
+        verifyZeroInteractions(mutate);
+    }
 }

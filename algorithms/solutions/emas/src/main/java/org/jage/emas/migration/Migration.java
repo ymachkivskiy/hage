@@ -31,27 +31,25 @@
 
 package org.jage.emas.migration;
 
+
 import org.jage.agent.AgentException;
 import org.jage.agent.IAgent;
 import org.jage.strategy.IStrategy;
 
+
 /**
  * Strategy for agents migrations.
  *
- * @param <A>
- *            the type of agents
- *
+ * @param <A> the type of agents
  * @author AGH AgE Team
  */
 public interface Migration<A extends IAgent> extends IStrategy {
 
-	/**
-	 * Migrates the given agent.
-	 *
-	 * @param agent
-	 *            an agent to be migrated
-	 * @throws AgentException
-	 *             if the migration fails
-	 */
-	void migrate(A agent) throws AgentException;
+    /**
+     * Migrates the given agent.
+     *
+     * @param agent an agent to be migrated
+     * @throws AgentException if the migration fails
+     */
+    void migrate(A agent) throws AgentException;
 }

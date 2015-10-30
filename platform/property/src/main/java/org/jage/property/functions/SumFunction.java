@@ -26,45 +26,48 @@
  */
 package org.jage.property.functions;
 
+
 import java.util.List;
+
 
 /**
  * Sum property function.
- * @author Tomek
  *
+ * @author Tomek
  */
 public class SumFunction extends NumericFunction {
 
-	/**
-	 * Constructor.
-	 * @param functionName name of the function.
-	 * @param argumentsPattern pattern for arguments.
-	 */
-	public SumFunction(String functionName, String argumentsPattern) {
-		super(functionName, argumentsPattern);
-	}
+    /**
+     * Constructor.
+     *
+     * @param functionName     name of the function.
+     * @param argumentsPattern pattern for arguments.
+     */
+    public SumFunction(String functionName, String argumentsPattern) {
+        super(functionName, argumentsPattern);
+    }
 
-	/**
-	 * Computes function's value. It returns sum of all arguments.
-	 */
-	@Override
-	protected Object computeValue(List<FunctionArgument> arguments) 
-	throws InvalidFunctionArgumentException {
+    /**
+     * Computes function's value. It returns sum of all arguments.
+     */
+    @Override
+    protected Object computeValue(List<FunctionArgument> arguments)
+            throws InvalidFunctionArgumentException {
 
-		double result = 0.0;		
-		for (FunctionArgument argument : arguments) {
-			result += getArgumentValue(argument);
-		}
+        double result = 0.0;
+        for(FunctionArgument argument : arguments) {
+            result += getArgumentValue(argument);
+        }
 
-		return new Double(result);
-	}
+        return new Double(result);
+    }
 
-	/**
-	 * Returns Double.class. 
-	 */
-	@Override
-	protected Class<?> getReturnType() {
-		return Double.class;
-	}
+    /**
+     * Returns Double.class.
+     */
+    @Override
+    protected Class<?> getReturnType() {
+        return Double.class;
+    }
 }
 

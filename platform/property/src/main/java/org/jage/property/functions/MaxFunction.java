@@ -26,56 +26,59 @@
  */
 package org.jage.property.functions;
 
+
 import java.util.List;
+
 
 /**
  * Maximum property function.
- * @author Tomek
  *
+ * @author Tomek
  */
 public class MaxFunction extends NumericFunction {
 
-	private Double _defaultValue;
+    private Double _defaultValue;
 
-	/**
-	 * Constructor.
-	 * @param functionName name of the function.
-	 * @param argumentsPattern pattern for arguments.
-	 * @param defaultValue default value of function, returned when no arguments are passed to it.
-	 */
-	public MaxFunction(String functionName, String argumentsPattern, double defaultValue) {
-		super(functionName, argumentsPattern);
-		_defaultValue = new Double(defaultValue);
-	}
-	
-	/**
-	 * Computes function's value. It returns the greatest argument, or default value,
-	 * if not arguments were given.
-	 */
-	@Override
-	protected Object computeValue(List<FunctionArgument> arguments)
-			throws InvalidFunctionArgumentException {
-		if (arguments.size() == 0) {
-			return _defaultValue;
-		}
-		
-		double result = Double.MIN_VALUE;
-		for (FunctionArgument argument : arguments) {
-			double argumentValue = getArgumentValue(argument);
-			if (argumentValue > result) {
-				result = argumentValue;
-			}
-		}
-		
-		return new Double(result);
-	}
+    /**
+     * Constructor.
+     *
+     * @param functionName     name of the function.
+     * @param argumentsPattern pattern for arguments.
+     * @param defaultValue     default value of function, returned when no arguments are passed to it.
+     */
+    public MaxFunction(String functionName, String argumentsPattern, double defaultValue) {
+        super(functionName, argumentsPattern);
+        _defaultValue = new Double(defaultValue);
+    }
 
-	/**
-	 * Returns Double.class.
-	 */
-	@Override
-	protected Class<?> getReturnType() {
-		return Double.class;
-	}
+    /**
+     * Computes function's value. It returns the greatest argument, or default value,
+     * if not arguments were given.
+     */
+    @Override
+    protected Object computeValue(List<FunctionArgument> arguments)
+            throws InvalidFunctionArgumentException {
+        if(arguments.size() == 0) {
+            return _defaultValue;
+        }
+
+        double result = Double.MIN_VALUE;
+        for(FunctionArgument argument : arguments) {
+            double argumentValue = getArgumentValue(argument);
+            if(argumentValue > result) {
+                result = argumentValue;
+            }
+        }
+
+        return new Double(result);
+    }
+
+    /**
+     * Returns Double.class.
+     */
+    @Override
+    protected Class<?> getReturnType() {
+        return Double.class;
+    }
 
 }

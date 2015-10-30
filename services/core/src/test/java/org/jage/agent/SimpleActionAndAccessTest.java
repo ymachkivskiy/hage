@@ -31,15 +31,6 @@
 
 package org.jage.agent;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
 
 import org.jage.action.SingleAction;
 import org.jage.action.testHelpers.ActionTestException;
@@ -49,9 +40,18 @@ import org.jage.action.testHelpers.PrivateTestActionContext;
 import org.jage.action.testHelpers.SimpleTestActionContext;
 import org.jage.address.agent.AgentAddress;
 import org.jage.platform.component.provider.IComponentInstanceProvider;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
+import static org.hamcrest.Matchers.is;
 import static org.jage.address.selector.Selectors.singleAddress;
 import static org.jage.utils.AgentTestUtils.createMockAgentWithAddress;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+
 
 /**
  * Tests for the {@link AggregateActionService} class: simple actions and methods access qualifiers.
@@ -62,63 +62,63 @@ import static org.jage.utils.AgentTestUtils.createMockAgentWithAddress;
 public class SimpleActionAndAccessTest {
 
 
-	private final SimpleAggregate aggregate = new SimpleAggregate(mock(AgentAddress.class));
+    private final SimpleAggregate aggregate = new SimpleAggregate(mock(AgentAddress.class));
 
-	private final HelperTestAggregateActionService actionService = new HelperTestAggregateActionService();
+    private final HelperTestAggregateActionService actionService = new HelperTestAggregateActionService();
 
-	private final ISimpleAgent agent = createMockAgentWithAddress();
+    private final ISimpleAgent agent = createMockAgentWithAddress();
 
-	@Mock
-	private IComponentInstanceProvider componentInstanceProvider;
+    @Mock
+    private IComponentInstanceProvider componentInstanceProvider;
 
-	@Before
-	public void setUp() {
-		aggregate.setInstanceProvider(componentInstanceProvider);
-		aggregate.add(agent);
-		actionService.setAggregate(aggregate);
-		actionService.setInstanceProvider(componentInstanceProvider);
-	}
+    @Before
+    public void setUp() {
+        aggregate.setInstanceProvider(componentInstanceProvider);
+        aggregate.add(agent);
+        actionService.setAggregate(aggregate);
+        actionService.setInstanceProvider(componentInstanceProvider);
+    }
 
     @SuppressWarnings("unused")
-    @Test(expected=NullPointerException.class)
-	public void testNullContext() {
-    	// when
-		new SingleAction(singleAddress(agent.getAddress()), null);
-	}
+    @Test(expected = NullPointerException.class)
+    public void testNullContext() {
+        // when
+        new SingleAction(singleAddress(agent.getAddress()), null);
+    }
 
-	@Test
-	public void testExecuteDefaultActionFromContext() {
-		// given
-		final SimpleTestActionContext context = new SimpleTestActionContext();
+    @Test
+    public void testExecuteDefaultActionFromContext() {
+        // given
+        final SimpleTestActionContext context = new SimpleTestActionContext();
 
-		// when
-		actionService.doAction(new SingleAction(singleAddress(agent.getAddress()), context));
-		actionService.processActions();
+        // when
+        actionService.doAction(new SingleAction(singleAddress(agent.getAddress()), context));
+        actionService.processActions();
 
-		// then
-		assertThat(context.actionRun, is(true));
-	}
+        // then
+        assertThat(context.actionRun, is(true));
+    }
 
-	@Test(expected = ActionTestException.class)
-	public void testFailPrivateMethod() throws Exception {
-		// given
-		final PrivateTestActionContext context = new PrivateTestActionContext();
+    @Test(expected = ActionTestException.class)
+    public void testFailPrivateMethod() throws Exception {
+        // given
+        final PrivateTestActionContext context = new PrivateTestActionContext();
 
-		// when
-		actionService.doAction(new SingleAction(singleAddress(agent.getAddress()), context));
-			actionService.processActions();
-	}
+        // when
+        actionService.doAction(new SingleAction(singleAddress(agent.getAddress()), context));
+        actionService.processActions();
+    }
 
-	@Test
-	public void testPackageMethod() throws Exception {
-		// given
-		final PackageTestActionContext context = new PackageTestActionContext();
+    @Test
+    public void testPackageMethod() throws Exception {
+        // given
+        final PackageTestActionContext context = new PackageTestActionContext();
 
-		// when
-		actionService.doAction(new SingleAction(singleAddress(agent.getAddress()), context));
-		actionService.processActions();
+        // when
+        actionService.doAction(new SingleAction(singleAddress(agent.getAddress()), context));
+        actionService.processActions();
 
-		// then
-		assertThat(context.actionRun, is(true));
-	}
+        // then
+        assertThat(context.actionRun, is(true));
+    }
 }

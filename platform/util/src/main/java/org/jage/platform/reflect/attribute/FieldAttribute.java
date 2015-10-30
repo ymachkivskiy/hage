@@ -31,76 +31,74 @@
 
 package org.jage.platform.reflect.attribute;
 
-import java.lang.reflect.Field;
-
-import static java.lang.reflect.Modifier.isFinal;
-import static java.lang.reflect.Modifier.isStatic;
 
 import com.google.common.base.Objects;
 
+import java.lang.reflect.Field;
+
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.lang.reflect.Modifier.isFinal;
+import static java.lang.reflect.Modifier.isStatic;
+
 
 /**
  * Attribute implementation which injects values into a non-final instance field.
  * <p>
  * Is effectively immutable if the underlying field is not modified.
  *
- * @param <T>
- *            the type of this attribute
+ * @param <T> the type of this attribute
  * @author AGH AgE Team
  */
 final class FieldAttribute<T> extends AbstractAttribute<T> {
 
-	private final Field field;
+    private final Field field;
 
-	private FieldAttribute(final String name, final Class<T> type, final Field field) {
-		super(name, type);
-		this.field = checkNotNull(field);
-	}
+    private FieldAttribute(final String name, final Class<T> type, final Field field) {
+        super(name, type);
+        this.field = checkNotNull(field);
+    }
 
-	/**
-	 * Creates an attribute based on the given field. The attribute name and type will be inferred from this field. The
-	 * field must not be final or static.
-	 *
-	 * @param field
-	 *            the field this attribute represents
-	 * @throws IllegalArgumentException
-	 *             if the field is final or static
-	 */
-	@SuppressWarnings("unchecked")
-	static <T> Attribute<T> newFieldAttribute(final Field field) {
-		checkNotNull(field);
-		checkArgument(!isFinal(field.getModifiers()), "The given field is final");
-		checkArgument(!isStatic(field.getModifiers()), "The given field is static");
+    /**
+     * Creates an attribute based on the given field. The attribute name and type will be inferred from this field. The
+     * field must not be final or static.
+     *
+     * @param field the field this attribute represents
+     * @throws IllegalArgumentException if the field is final or static
+     */
+    @SuppressWarnings("unchecked")
+    static <T> Attribute<T> newFieldAttribute(final Field field) {
+        checkNotNull(field);
+        checkArgument(!isFinal(field.getModifiers()), "The given field is final");
+        checkArgument(!isStatic(field.getModifiers()), "The given field is static");
 
-		return new FieldAttribute<T>(field.getName(), (Class<T>)field.getType(), field);
-	}
+        return new FieldAttribute<T>(field.getName(), (Class<T>) field.getType(), field);
+    }
 
-	@Override
-	public void setValue(final Object target, final T value) throws IllegalAccessException {
-		field.setAccessible(true);
-		// All the exceptions declared in Attribute will be handled by the call
-		field.set(target, value);
-	}
+    @Override
+    public void setValue(final Object target, final T value) throws IllegalAccessException {
+        field.setAccessible(true);
+        // All the exceptions declared in Attribute will be handled by the call
+        field.set(target, value);
+    }
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (!(obj instanceof FieldAttribute)) {
-			return false;
-		}
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(field, getName(), getType());
+    }
 
-		final FieldAttribute<?> other = (FieldAttribute<?>)obj;
+    @Override
+    public boolean equals(final Object obj) {
+        if(this == obj) {
+            return true;
+        }
+        if(!(obj instanceof FieldAttribute)) {
+            return false;
+        }
 
-		// name and type are inferred from the field, so doesn't need to be checked
-		return Objects.equal(this.field, other.field);
-	}
+        final FieldAttribute<?> other = (FieldAttribute<?>) obj;
 
-	@Override
-	public int hashCode() {
-		return Objects.hashCode(field, getName(), getType());
-	}
+        // name and type are inferred from the field, so doesn't need to be checked
+        return Objects.equal(this.field, other.field);
+    }
 }

@@ -1,63 +1,62 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<configuration xmlns="http://age.iisg.agh.edu.pl/schema/age"
-               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xmlns="http://age.iisg.agh.edu.pl/schema/age"
                xsi:schemaLocation="http://age.iisg.agh.edu.pl/schema/age http://age.iisg.agh.edu.pl/schema/age/age.xsd">
 
-	<component class="org.jage.communication.DefaultCommunicationManager"/>
-	<component class="org.jage.configuration.DefaultConfigurationService"/>
-	<component class="org.jage.configuration.ConfigurationLoaderService"/>
-	<component class="org.jage.bus.EventBus">
-		<constructor-arg name="name" type="String" value="mainBus"/>
-	</component>
+    <component class="org.jage.communication.HazelcastCommunicationManager"/>
+    <component class="org.jage.configuration.service.ConfigurationStorageService"/>
+    <component class="org.jage.configuration.service.ConfigurationLoaderService"/>
+    <component class="org.jage.bus.EventBus">
+        <constructor-arg name="name" type="String" value="mainBus"/>
+    </component>
 
-	<component name="workplaceManager" class="org.jage.workplace.manager.DefaultWorkplaceManager"/>
+    <component name="workplaceManager" class="org.jage.workplace.manager.DefaultWorkplaceManager"/>
 
-	<block name="monitoring">
-	<component class="org.jage.monitoring.gatherer.DefaultComputationInstanceProvider"/>
-						
+    <block name="monitoring">
+        <component class="org.jage.monitoring.gatherer.DefaultComputationInstanceProvider"/>
 
-		<component name="handler1" class="org.jage.monitoring.handler.HandlerFactoryProvider"> 
-			<constructor-arg name="name"    value="first.alienAbductions"/>
-			<constructor-arg name="observableProviders" ref="observableProviders"/>
-			<constructor-arg name="observers" ref="selectFirstList"/>
-			<constructor-arg name="clazz"     value="org.jage.monitoring.handler.BasicHandlerFactory"/>
-			<constructor-arg name="method"    value="create"/>
-		</component>
-		
-		<component name="handler1" class="org.jage.monitoring.handler.HandlerFactoryProvider"> 
-			<constructor-arg name="name"    value="second.alienAbductions"/>
-			<constructor-arg name="observableProviders" ref="observableProviders"/>
-			<constructor-arg name="observers" ref="selectSecondList"/>
-			<constructor-arg name="clazz"     value="org.jage.monitoring.handler.BasicHandlerFactory"/>
-			<constructor-arg name="method"    value="create"/>
-		</component>
+        <component name="handler1" class="org.jage.monitoring.handler.HandlerFactoryProvider">
+            <constructor-arg name="name" value="first.alienAbductions"/>
+            <constructor-arg name="observableProviders" ref="observableProviders"/>
+            <constructor-arg name="observers" ref="selectFirstList"/>
+            <constructor-arg name="clazz" value="org.jage.monitoring.handler.BasicHandlerFactory"/>
+            <constructor-arg name="method" value="create"/>
+        </component>
 
-			<!-- Supplier -->
-			<component name="query" class="org.jage.monitoring.supplier.AgentQuerySupplier">
-				<constructor-arg>
-					<component class="org.jage.examples.monitoring.ExampleQuery"/>
-				</constructor-arg>
-			</component>
-			
-			<!-- Observables -->
-			<list name="observableProviders">
-				<component name="queryProvider" class="org.jage.monitoring.observable.ObservableProvider">
-					<constructor-arg name="supplier" ref="stringQuery"/>
-					<constructor-arg name="rate" value="500" type="Long"/>
-				</component>
-			</list>
+        <component name="handler1" class="org.jage.monitoring.handler.HandlerFactoryProvider">
+            <constructor-arg name="name" value="second.alienAbductions"/>
+            <constructor-arg name="observableProviders" ref="observableProviders"/>
+            <constructor-arg name="observers" ref="selectSecondList"/>
+            <constructor-arg name="clazz" value="org.jage.monitoring.handler.BasicHandlerFactory"/>
+            <constructor-arg name="method" value="create"/>
+        </component>
 
-			<!--  BOOM -->
-			<!-- Consumers -->
-			<component name="selectFirst" class="org.jage.examples.monitoring.SelectNthElement">
-				<constructor-arg name="target" ref="graphiteConsumer"/>
-				<constructor-arg name="index" value="1" type="Integer"/>
-			</component>
-			<component name="selectSecond" class="org.jage.examples.monitoring.SelectNthElement">
-				<constructor-arg name="target" ref="graphiteConsumer"/>
-				<constructor-arg name="index" value="1" type="Integer"/>
-			</component>
-			<component name="graphiteConsumer" class="org.jage.monitoring.graphite.GraphiteConsumer"></component>
-		</block>
+        <!-- Supplier -->
+        <component name="query" class="org.jage.monitoring.supplier.AgentQuerySupplier">
+            <constructor-arg>
+                <component class="org.jage.examples.monitoring.ExampleQuery"/>
+            </constructor-arg>
+        </component>
+
+        <!-- Observables -->
+        <list name="observableProviders">
+            <component name="queryProvider" class="org.jage.monitoring.observable.ObservableProvider">
+                <constructor-arg name="supplier" ref="stringQuery"/>
+                <constructor-arg name="rate" value="500" type="Long"/>
+            </component>
+        </list>
+
+        <!--  BOOM -->
+        <!-- Consumers -->
+        <component name="selectFirst" class="org.jage.examples.monitoring.SelectNthElement">
+            <constructor-arg name="target" ref="graphiteConsumer"/>
+            <constructor-arg name="index" value="1" type="Integer"/>
+        </component>
+        <component name="selectSecond" class="org.jage.examples.monitoring.SelectNthElement">
+            <constructor-arg name="target" ref="graphiteConsumer"/>
+            <constructor-arg name="index" value="1" type="Integer"/>
+        </component>
+        <component name="graphiteConsumer" class="org.jage.monitoring.graphite.GraphiteConsumer"></component>
+    </block>
 
 </configuration>

@@ -27,34 +27,36 @@
 
 package org.jage.monitoring.supplier;
 
+
+import com.google.common.base.Supplier;
+import com.typesafe.config.Config;
 import org.jage.monitoring.supplier.resultprocessor.AgentStringQueryResultProcessor;
 import org.jage.platform.component.provider.IComponentInstanceProvider;
 import org.jage.workplace.manager.WorkplaceManager;
 
-import com.google.common.base.Supplier;
-import com.typesafe.config.Config;
-
 
 /**
  * Class provider an instance of AgentStringQuerySupplier class.
- * 
+ *
  * @author AGH AgE Team
  */
 public class AgentQuerySupplierProvider implements SupplierProvider {
-	@Override
-	public Supplier<Object> create(final Config c, final IComponentInstanceProvider provider) {
-		final String query = c.getString("arg");
-		AgentStringQueryResultProcessor resultProcessor = null;
 
-		if(c.hasPath("resultProcessor")){
-			try{
-				final String resultProcessorString = c.getString("resultProcessor");
-				final Class<? extends AgentStringQueryResultProcessor> extractorClazz = Class.forName(resultProcessorString).asSubclass(AgentStringQueryResultProcessor.class);
-				resultProcessor = extractorClazz.newInstance();
-			} catch(ClassNotFoundException | InstantiationException | IllegalAccessException e){}
-		}
-		WorkplaceManager workplaceManager = (WorkplaceManager) provider.getInstance("workplaceManager");
-		AgentStringQuerySupplier q;
+    @Override
+    public Supplier<Object> create(final Config c, final IComponentInstanceProvider provider) {
+        final String query = c.getString("arg");
+        AgentStringQueryResultProcessor resultProcessor = null;
+
+        if(c.hasPath("resultProcessor")) {
+            try {
+                final String resultProcessorString = c.getString("resultProcessor");
+                final Class<? extends AgentStringQueryResultProcessor> extractorClazz = Class.forName(resultProcessorString).asSubclass(AgentStringQueryResultProcessor.class);
+                resultProcessor = extractorClazz.newInstance();
+            } catch(ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+            }
+        }
+        WorkplaceManager workplaceManager = (WorkplaceManager) provider.getInstance("workplaceManager");
+        AgentStringQuerySupplier q;
         if(resultProcessor != null) {
             q = new AgentStringQuerySupplier(query, resultProcessor);
             q.setWorkplaceManager(workplaceManager);
@@ -64,10 +66,10 @@ public class AgentQuerySupplierProvider implements SupplierProvider {
             q.setWorkplaceManager(workplaceManager);
             return q;
         }
-	}
-	
-	@Override
-	public String getType() {
-		return "query";
-	}
+    }
+
+    @Override
+    public String getType() {
+        return "query";
+    }
 }

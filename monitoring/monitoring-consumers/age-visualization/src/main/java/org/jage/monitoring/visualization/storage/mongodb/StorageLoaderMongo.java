@@ -27,46 +27,42 @@
 package org.jage.monitoring.visualization.storage.mongodb;
 
 
-import static com.google.common.collect.Sets.newHashSet;
+import com.google.common.base.Splitter;
+import com.mongodb.DB;
+import org.jage.monitoring.visualization.storage.StorageDescription;
+import org.jage.monitoring.visualization.storage.StorageLoader;
+import org.jage.monitoring.visualization.storage.mongodb.config.MongoDBConfig;
 
 import java.net.UnknownHostException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.jage.monitoring.visualization.storage.StorageDescription;
-import org.jage.monitoring.visualization.storage.StorageLoader;
-import org.jage.monitoring.visualization.storage.mongodb.config.MongoDBConfig;
-
-import com.google.common.base.Splitter;
-import com.mongodb.DB;
+import static com.google.common.collect.Sets.newHashSet;
 
 
 /**
- * 
- * 
  * @author AGH AgE Team
- *
  */
 public class StorageLoaderMongo implements StorageLoader {
 
-	@Override
-	public Collection<StorageDescription> loadSavedStorageDescriptions() {
-		Collection<StorageDescription> result = newHashSet();
-		try {
-	        DB mongoBase = MongoDBConfig.getMongoBase();
-	        Set<String> collectionNames = mongoBase.getCollectionNames();
-	        for (String name : collectionNames) {
-	        	if(name.contains("_")){
-		        	Iterator<String> splited = Splitter.on("_").split(name).iterator();
-		            StorageDescription sd = new StorageDescription(splited.next(), splited.next(), splited.next());
-		            result.add(sd);
-	        	}
+    @Override
+    public Collection<StorageDescription> loadSavedStorageDescriptions() {
+        Collection<StorageDescription> result = newHashSet();
+        try {
+            DB mongoBase = MongoDBConfig.getMongoBase();
+            Set<String> collectionNames = mongoBase.getCollectionNames();
+            for(String name : collectionNames) {
+                if(name.contains("_")) {
+                    Iterator<String> splited = Splitter.on("_").split(name).iterator();
+                    StorageDescription sd = new StorageDescription(splited.next(), splited.next(), splited.next());
+                    result.add(sd);
+                }
             }
-        } catch (UnknownHostException e) {
-	        e.printStackTrace();
+        } catch(UnknownHostException e) {
+            e.printStackTrace();
         }
-		return result;
-	}
+        return result;
+    }
 
 }

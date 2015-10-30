@@ -31,52 +31,52 @@
 
 package org.jage.action.context;
 
-import org.jage.address.agent.AgentAddress;
 
 import com.google.common.base.Objects;
+import org.jage.address.agent.AgentAddress;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+
 /**
  * The action of removing an agent from an aggregate.
- * 
+ *
  * @author AGH AgE Team
  */
 @AgentActionContext(RemoveAgentActionContext.ACTION_NAME)
 public class RemoveAgentActionContext extends AbstractAgentActionContext {
 
-	/**
-	 * The action name of this context.
-	 */
-	public static final String ACTION_NAME = "removeAgent";
+    /**
+     * The action name of this context.
+     */
+    public static final String ACTION_NAME = "removeAgent";
 
-	/**
-	 * The address of agent to remove.
-	 */
-	private final AgentAddress agentAddress;
+    /**
+     * The address of agent to remove.
+     */
+    private final AgentAddress agentAddress;
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param agentAddress
-	 *            the address of agent to remove
-	 */
-	public RemoveAgentActionContext(final AgentAddress agentAddress) {
-		this.agentAddress = checkNotNull(agentAddress);
-	}
+    /**
+     * Constructor.
+     *
+     * @param agentAddress the address of agent to remove
+     */
+    public RemoveAgentActionContext(final AgentAddress agentAddress) {
+        this.agentAddress = checkNotNull(agentAddress);
+    }
 
-	/**
-	 * Returns the address of agent to remove.
-	 * 
-	 * @return the address of agent to remove
-	 */
-	public AgentAddress getAgentAddress() {
-		return agentAddress;
-	}
+    /**
+     * Returns the address of agent to remove.
+     *
+     * @return the address of agent to remove
+     */
+    public AgentAddress getAgentAddress() {
+        return agentAddress;
+    }
 
-	@Override
-	public String toString() {
-		return Objects.toStringHelper(this).add("agentAddress", agentAddress).toString();
-	}
+    @Override
+    public String toString() {
+        return Objects.toStringHelper(this).add("agentAddress", agentAddress).toString();
+    }
 
 }

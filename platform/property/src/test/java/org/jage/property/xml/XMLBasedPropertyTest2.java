@@ -26,10 +26,6 @@
  */
 package org.jage.property.xml;
 
-import static org.mockito.Mockito.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import org.jage.property.InvalidPropertyOperationException;
 import org.jage.property.MetaProperty;
@@ -43,106 +39,114 @@ import org.jage.property.xml.testHelpers.AdvancedExampleComponent;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.anyObject;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+
 public class XMLBasedPropertyTest2 {
 
-	private AdvancedExampleComponent component;
-	private XMLBasedPropertyContainer _propertiesObject;
+    private AdvancedExampleComponent component;
+    private XMLBasedPropertyContainer _propertiesObject;
 
-	@Before
-	public void setUp() throws Exception {
-		component = new AdvancedExampleComponent();
-		_propertiesObject = new XMLBasedPropertyContainer(XMLBasedPropertyProvider.getInstance().getMetaPropertiesSet(
-				component.getClass()), component);
-	}
+    @Before
+    public void setUp() throws Exception {
+        component = new AdvancedExampleComponent();
+        _propertiesObject = new XMLBasedPropertyContainer(XMLBasedPropertyProvider.getInstance().getMetaPropertiesSet(
+                component.getClass()), component);
+    }
 
-	private XMLBasedFieldProperty getFloatProperty() throws PropertyException {
-		XMLBasedFieldMetaProperty metaProperty = new XMLBasedFieldMetaProperty("floatProperty", component
-				.getFloatPropertyField());
-		return new XMLBasedFieldProperty(metaProperty, component);
-	}
+    @Test
+    public void testGetSetValue() throws PropertyException {
+        component.setIntProperty(0);
+        Property property = getIntProperty();
+        assertEquals(0, property.getValue());
+        property.setValue(1);
+        assertEquals(1, property.getValue());
+        assertEquals(1, component.getIntProperty());
+    }
 
-	private XMLBasedGetterSetterProperty getIntProperty() throws PropertyException {
-		XMLBasedGetterSetterMetaProperty metaProperty = new XMLBasedGetterSetterMetaProperty("intProperty", int.class,
-				component.getIntPropertyGetter(), component.getIntPropertySetter());
-		return new XMLBasedGetterSetterProperty(metaProperty, component);
-	}
+    private XMLBasedGetterSetterProperty getIntProperty() throws PropertyException {
+        XMLBasedGetterSetterMetaProperty metaProperty = new XMLBasedGetterSetterMetaProperty("intProperty", int.class,
+                                                                                             component.getIntPropertyGetter(), component.getIntPropertySetter());
+        return new XMLBasedGetterSetterProperty(metaProperty, component);
+    }
 
-	private XMLBasedGetterSetterProperty getReadonlyIntProperty() throws PropertyException {
-		XMLBasedGetterSetterMetaProperty metaProperty = new XMLBasedGetterSetterMetaProperty("intProperty", int.class,
-				component.getIntPropertyGetter());
-		return new XMLBasedGetterSetterProperty(metaProperty, component);
-	}
+    @Test
+    public void testReadOnlyProperty() throws PropertyException {
+        Property property = getReadonlyIntProperty();
+        try {
+            property.setValue(1);
+            fail();
+        } catch(InvalidPropertyOperationException ex) {
+        }
+    }
 
-	@Test
-	public void testGetSetValue() throws InvalidPropertyOperationException, PropertyException {
-		component.setIntProperty(0);
-		Property property = getIntProperty();
-		assertEquals(0, property.getValue());
-		property.setValue(1);
-		assertEquals(1, property.getValue());
-		assertEquals(1, component.getIntProperty());
-	}
+    private XMLBasedGetterSetterProperty getReadonlyIntProperty() throws PropertyException {
+        XMLBasedGetterSetterMetaProperty metaProperty = new XMLBasedGetterSetterMetaProperty("intProperty", int.class,
+                                                                                             component.getIntPropertyGetter());
+        return new XMLBasedGetterSetterProperty(metaProperty, component);
+    }
 
-	@Test
-	public void testReadOnlyProperty() throws PropertyException {
-		Property property = getReadonlyIntProperty();
-		try {
-			property.setValue(1);
-			fail();
-		} catch (InvalidPropertyOperationException ex) {
-		}
-	}
+    @Test
+    public void testGetMetaProperty() throws PropertyException {
+        Property property = getFloatProperty();
+        MetaProperty metaProperty = property.getMetaProperty();
+        assertTrue(float.class.equals(metaProperty.getPropertyClass()));
+        assertTrue(metaProperty.isMonitorable());
+        assertTrue(metaProperty.isWriteable());
+    }
 
-	@Test
-	public void testGetMetaProperty() throws PropertyException {
-		Property property = getFloatProperty();
-		MetaProperty metaProperty = property.getMetaProperty();
-		assertTrue(float.class.equals(metaProperty.getPropertyClass()));
-		assertTrue(metaProperty.isMonitorable());
-		assertTrue(metaProperty.isWriteable());
-	}
+    private XMLBasedFieldProperty getFloatProperty() throws PropertyException {
+        XMLBasedFieldMetaProperty metaProperty = new XMLBasedFieldMetaProperty("floatProperty", component
+                .getFloatPropertyField());
+        return new XMLBasedFieldProperty(metaProperty, component);
+    }
 
-	@Test
-	public void testPropertyMonitors() throws Exception {
+    @Test
+    public void testPropertyMonitors() throws Exception {
 
-		IPropertyMonitorRule ruleMock1 = mock(IPropertyMonitorRule.class);
-		IPropertyMonitorRule ruleMock2 = mock(IPropertyMonitorRule.class);
+        IPropertyMonitorRule ruleMock1 = mock(IPropertyMonitorRule.class);
+        IPropertyMonitorRule ruleMock2 = mock(IPropertyMonitorRule.class);
 
-		when(ruleMock1.isActive(anyObject(), anyObject())).thenReturn(true);
-		when(ruleMock2.isActive(anyObject(), anyObject())).thenReturn(true);
-		when(ruleMock1.isActive(anyObject(), anyObject())).thenReturn(true);
+        when(ruleMock1.isActive(anyObject(), anyObject())).thenReturn(true);
+        when(ruleMock2.isActive(anyObject(), anyObject())).thenReturn(true);
+        when(ruleMock1.isActive(anyObject(), anyObject())).thenReturn(true);
 
-		PropertyMonitorStub monitor1 = new PropertyMonitorStub();
-		PropertyMonitorStub monitor2 = new PropertyMonitorStub();
+        PropertyMonitorStub monitor1 = new PropertyMonitorStub();
+        PropertyMonitorStub monitor2 = new PropertyMonitorStub();
 
-		Property property = getFloatProperty();
-		property.addMonitor(monitor1, ruleMock1);
-		property.addMonitor(monitor2, ruleMock2);
-		property.notifyMonitors(null);
+        Property property = getFloatProperty();
+        property.addMonitor(monitor1, ruleMock1);
+        property.addMonitor(monitor2, ruleMock2);
+        property.notifyMonitors(null);
 
-		property.removeMonitor(monitor2);
-		property.notifyMonitors(null);
+        property.removeMonitor(monitor2);
+        property.notifyMonitors(null);
 
-		assertEquals(2, monitor1.getPropertyChangedInvokationCounter());
-		assertEquals(1, monitor2.getPropertyChangedInvokationCounter());
-	}
+        assertEquals(2, monitor1.getPropertyChangedInvokationCounter());
+        assertEquals(1, monitor2.getPropertyChangedInvokationCounter());
+    }
 
-	/**
-	 * Scenario: property value is object that implements IChangesNotifier interface. It changes its internal state and
-	 * informs monitors about it. The property itself should inform its monitors about change.
-	 *
-	 * @throws Exception
-	 */
-	@Test
-	public void testChangesNotifierProperty() throws Exception {
-		PropertyMonitorStub monitor = new PropertyMonitorStub();
+    /**
+     * Scenario: property value is object that implements IChangesNotifier interface. It changes its internal state and
+     * informs monitors about it. The property itself should inform its monitors about change.
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testChangesNotifierProperty() throws Exception {
+        PropertyMonitorStub monitor = new PropertyMonitorStub();
 
-		Property property = _propertiesObject.getProperty("changesNotifierProperty");
-		property.addMonitor(monitor, new DefaultPropertyMonitorRule());
+        Property property = _propertiesObject.getProperty("changesNotifierProperty");
+        property.addMonitor(monitor, new DefaultPropertyMonitorRule());
 
-		ChangesNotifierStub notifier = (ChangesNotifierStub) property.getValue();
-		notifier.notifyMonitorsAboutChange();
+        ChangesNotifierStub notifier = (ChangesNotifierStub) property.getValue();
+        notifier.notifyMonitorsAboutChange();
 
-		assertEquals(1, monitor.getPropertyChangedInvokationCounter());
-	}
+        assertEquals(1, monitor.getPropertyChangedInvokationCounter());
+    }
 }

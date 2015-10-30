@@ -35,6 +35,5 @@
  */
 @javax.annotation.ParametersAreNonnullByDefault
 @org.jage.annotation.FieldsAreNonnullByDefault
-@org.jage.annotation.ReturnValuesAreNonnullByDefault
-package org.jage.communication.message;
+@org.jage.annotation.ReturnValuesAreNonnullByDefault package org.jage.communication.message;
 

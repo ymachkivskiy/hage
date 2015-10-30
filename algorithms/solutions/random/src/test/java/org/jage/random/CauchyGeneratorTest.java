@@ -29,6 +29,7 @@
  */
 package org.jage.random;
 
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -40,6 +41,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 
+
 /**
  * Tests for CauchyGenerator.
  *
@@ -48,26 +50,26 @@ import static org.mockito.BDDMockito.given;
 @RunWith(MockitoJUnitRunner.class)
 public class CauchyGeneratorTest {
 
-	@Mock
-	private INormalizedDoubleRandomGenerator rand;
+    @Mock
+    private INormalizedDoubleRandomGenerator rand;
 
-	@InjectMocks
-	private CauchyGenerator underTest = new CauchyGenerator();
+    @InjectMocks
+    private CauchyGenerator underTest = new CauchyGenerator();
 
-	@Test
-	public void testBounds() {
-		assertThat(underTest.getLowerDouble(), is(equalTo(Double.MIN_VALUE)));
-		assertThat(underTest.getUpperDouble(), is(equalTo(Double.MAX_VALUE)));
-	}
+    @Test
+    public void testBounds() {
+        assertThat(underTest.getLowerDouble(), is(equalTo(Double.MIN_VALUE)));
+        assertThat(underTest.getUpperDouble(), is(equalTo(Double.MAX_VALUE)));
+    }
 
-	@Test
-	public void testNextDouble() {
-		// given
-		given(rand.nextDouble()).willReturn(0.0, 0.5, 1.0);
+    @Test
+    public void testNextDouble() {
+        // given
+        given(rand.nextDouble()).willReturn(0.0, 0.5, 1.0);
 
-		// then
-		assertThat(underTest.nextDouble(), is(equalTo(Math.tan(Math.PI * -0.5))));
-		assertThat(underTest.nextDouble(), is(equalTo(Math.tan(0.0))));
-		assertThat(underTest.nextDouble(), is(equalTo(Math.tan(Math.PI * 0.5))));
-	}
+        // then
+        assertThat(underTest.nextDouble(), is(equalTo(Math.tan(Math.PI * -0.5))));
+        assertThat(underTest.nextDouble(), is(equalTo(Math.tan(0.0))));
+        assertThat(underTest.nextDouble(), is(equalTo(Math.tan(Math.PI * 0.5))));
+    }
 }

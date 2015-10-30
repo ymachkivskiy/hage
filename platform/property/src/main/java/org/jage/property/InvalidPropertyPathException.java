@@ -30,36 +30,39 @@ package org.jage.property;
 /**
  * Exception thrown by IPropertyContainer and related classes when invalid property path
  * was used.
- * @author Tomek
  *
+ * @author Tomek
  */
 public class InvalidPropertyPathException extends PropertyException {
 
-	public static final long serialVersionUID = 1;
+    public static final long serialVersionUID = 1;
 
-	/**
-	 * Constructor.
-	 * @param message message for the exception.
-	 */
-	public InvalidPropertyPathException(final String message) {
-		super(message);
-	}
+    /**
+     * Constructor.
+     *
+     * @param message message for the exception.
+     */
+    public InvalidPropertyPathException(final String message) {
+        super(message);
+    }
 
-	/**
-	 * Constructor.
-	 * @param message message for the exception.
-	 * @param throwable inner exception.
-	 */
-	public InvalidPropertyPathException(final String message, final Throwable throwable) {
-		super(message, throwable);
-	}
+    /**
+     * Constructor.
+     *
+     * @param message   message for the exception.
+     * @param throwable inner exception.
+     */
+    public InvalidPropertyPathException(final String message, final Throwable throwable) {
+        super(message, throwable);
+    }
 
-	/**
-	 * Constructor.
-	 * @param throwable inner exception.
-	 */
-	public InvalidPropertyPathException(final Throwable throwable) {
-		super(throwable);
-	}
+    /**
+     * Constructor.
+     *
+     * @param throwable inner exception.
+     */
+    public InvalidPropertyPathException(final Throwable throwable) {
+        super(throwable);
+    }
 }
 

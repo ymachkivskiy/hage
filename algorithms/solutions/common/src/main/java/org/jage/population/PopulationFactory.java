@@ -31,70 +31,68 @@
 
 package org.jage.population;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.jage.property.ClassPropertyContainer;
 import org.jage.solution.ISolution;
 import org.jage.solution.ISolutionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.jage.population.Populations.newPopulation;
+
 
 /**
  * The default implementation of {@link IPopulationFactory}. <br />
  * <br />
  * It relies on a {@link ISolutionFactory} to create the solutions and then forms a population.
  *
- * @param <S>
- *            The type of solutions created by this factory
+ * @param <S> The type of solutions created by this factory
  * @author AGH AgE Team
  */
 public class PopulationFactory<S extends ISolution> extends ClassPropertyContainer implements IPopulationFactory<S> {
 
-	private static final Logger LOG = LoggerFactory.getLogger(PopulationFactory.class);
+    private static final Logger LOG = LoggerFactory.getLogger(PopulationFactory.class);
 
-	private static final int DEFAULT_POPULATION_SIZE = 10;
+    private static final int DEFAULT_POPULATION_SIZE = 10;
 
-	@Inject
-	private ISolutionFactory<S> solutionFactory;
+    @Inject
+    private ISolutionFactory<S> solutionFactory;
 
-	private int populationSize = DEFAULT_POPULATION_SIZE;
+    private int populationSize = DEFAULT_POPULATION_SIZE;
 
-	/**
-	 * Creates a PopulationFactory with a default population size of 10.
-	 */
-	public PopulationFactory() {
-		this(DEFAULT_POPULATION_SIZE);
-	}
+    /**
+     * Creates a PopulationFactory with a default population size of 10.
+     */
+    public PopulationFactory() {
+        this(DEFAULT_POPULATION_SIZE);
+    }
 
-	/**
-	 * Creates a PopulationFactory with a given population size.
-	 *
-	 * @param populationSize
-	 *            the size of the population to be created by this factory
-	 */
-	public PopulationFactory(final int populationSize) {
-		this.populationSize = populationSize;
-	}
+    /**
+     * Creates a PopulationFactory with a given population size.
+     *
+     * @param populationSize the size of the population to be created by this factory
+     */
+    public PopulationFactory(final int populationSize) {
+        this.populationSize = populationSize;
+    }
 
-	public void setPopulationSize(final int populationSize) {
-		this.populationSize = populationSize;
-	}
+    public void setPopulationSize(final int populationSize) {
+        this.populationSize = populationSize;
+    }
 
-	@Override
-	public <E> IPopulation<S, E> createPopulation() {
-		LOG.debug("Creating a population of size {}", populationSize);
+    @Override
+    public <E> IPopulation<S, E> createPopulation() {
+        LOG.debug("Creating a population of size {}", populationSize);
 
-		final List<S> solutions = new ArrayList<S>(populationSize);
-		for (int i = 0; i < populationSize; i++) {
-			solutions.add(solutionFactory.createInitializedSolution());
-		}
+        final List<S> solutions = new ArrayList<S>(populationSize);
+        for(int i = 0; i < populationSize; i++) {
+            solutions.add(solutionFactory.createInitializedSolution());
+        }
 
-		return newPopulation(solutions);
-	}
+        return newPopulation(solutions);
+    }
 }

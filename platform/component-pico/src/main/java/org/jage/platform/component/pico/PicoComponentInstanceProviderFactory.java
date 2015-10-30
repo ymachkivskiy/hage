@@ -31,41 +31,41 @@
 
 package org.jage.platform.component.pico;
 
-import java.util.Collection;
 
 import org.jage.platform.component.definition.IComponentDefinition;
 
+import java.util.Collection;
+
+
 /**
  * Creates PicoContainer hierarchy using list of IComponentDefinition objects.
- * 
+ *
  * @author AGH AgE Team
- * 
  */
 public abstract class PicoComponentInstanceProviderFactory {
 
-	/**
-	 * Creates PicoContainer hierarchy for a given list of {@link IComponentDefinition}'s.
-	 * 
-	 * @param defs
-	 *            list of {@link IComponentDefinition}'s
-	 * @return a root PicoContainer
-	 */
-	public static IPicoComponentInstanceProvider createInstanceProvider(Collection<IComponentDefinition> defs) {
-		IPicoComponentInstanceProvider pico = new PicoComponentInstanceProvider();
+    /**
+     * Creates PicoContainer hierarchy for a given list of {@link IComponentDefinition}'s.
+     *
+     * @param defs list of {@link IComponentDefinition}'s
+     * @return a root PicoContainer
+     */
+    public static IPicoComponentInstanceProvider createInstanceProvider(Collection<IComponentDefinition> defs) {
+        IPicoComponentInstanceProvider pico = new PicoComponentInstanceProvider();
 
-		for (IComponentDefinition definition : defs) {
-			pico.addComponent(definition);
-		}
-		return pico;
-	}
+        for(IComponentDefinition definition : defs) {
+            pico.addComponent(definition);
+        }
+        return pico;
+    }
 
-	/**
-	 * Creates a new empty PicoContainer.
-	 * 
-	 * @return A new and empty PicoContainer.
-	 */
-	public static IPicoComponentInstanceProvider createInstanceProvider() {
-		return new PicoComponentInstanceProvider();
-	}
+    /**
+     * Creates a new empty PicoContainer.
+     *
+     * @return A new and empty PicoContainer.
+     */
+    public static IPicoComponentInstanceProvider createInstanceProvider() {
+        return new PicoComponentInstanceProvider();
+    }
 
 }

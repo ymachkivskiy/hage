@@ -31,12 +31,15 @@
 
 package org.jage.action.testHelpers;
 
+
 import org.jage.action.IActionContext;
 import org.jage.action.context.AgentActionContext;
 
-@AgentActionContext({ NonExistentStrategyTestActionContext.ACTION_NAME })
-public class NonExistentStrategyTestActionContext implements IActionContext {
-	public final static String ACTION_NAME = "nonExistentAction";
 
-	public boolean actionRun = false;
+@AgentActionContext({NonExistentStrategyTestActionContext.ACTION_NAME})
+public class NonExistentStrategyTestActionContext implements IActionContext {
+
+    public final static String ACTION_NAME = "nonExistentAction";
+
+    public boolean actionRun = false;
 }

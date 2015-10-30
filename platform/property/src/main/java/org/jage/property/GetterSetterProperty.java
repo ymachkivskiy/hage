@@ -31,11 +31,13 @@
 
 package org.jage.property;
 
-import java.io.Serializable;
-import java.lang.reflect.Method;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.Serializable;
+import java.lang.reflect.Method;
+
 
 /**
  * {@link Property} implementation that uses methods to read/write property value.
@@ -44,61 +46,59 @@ import org.slf4j.LoggerFactory;
  */
 public class GetterSetterProperty extends Property implements Serializable {
 
-	private static final long serialVersionUID = -81066180816156488L;
+    private static final long serialVersionUID = -81066180816156488L;
 
-	private static Logger log = LoggerFactory.getLogger(GetterSetterProperty.class);
+    private static Logger log = LoggerFactory.getLogger(GetterSetterProperty.class);
 
-	/**
-	 * An object that owns the getter and setter methods which access/set the property value.
-	 */
-	private Object instance;
+    /**
+     * An object that owns the getter and setter methods which access/set the property value.
+     */
+    private Object instance;
 
-	/**
-	 * Meta property which describes the type of this property.
-	 */
-	private GetterSetterMetaProperty metaProperty;
+    /**
+     * Meta property which describes the type of this property.
+     */
+    private GetterSetterMetaProperty metaProperty;
 
-	/**
-	 * Constructor.
-	 *
-	 * @param metaProperty
-	 *            meta property for this property.
-	 * @param instance
-	 *            object for which the property should be created.
-	 */
-	public GetterSetterProperty(GetterSetterMetaProperty metaProperty, Object instance) {
-		this.metaProperty = metaProperty;
-		this.instance = instance;
-		initializeMonitoringStrategy();
-	}
+    /**
+     * Constructor.
+     *
+     * @param metaProperty meta property for this property.
+     * @param instance     object for which the property should be created.
+     */
+    public GetterSetterProperty(GetterSetterMetaProperty metaProperty, Object instance) {
+        this.metaProperty = metaProperty;
+        this.instance = instance;
+        initializeMonitoringStrategy();
+    }
 
-	@Override
-	public MetaProperty getMetaProperty() {
-		return metaProperty;
-	}
+    @Override
+    public MetaProperty getMetaProperty() {
+        return metaProperty;
+    }
 
-	@Override
-	public Object getValue() {
-		try {
-			Method getter = metaProperty.getGetter();
-			return getter.invoke(instance, new Object[0]);
-		} catch (Exception ex) {
-			log.error("Cannot get value of property " + metaProperty.getName(), ex);
-			return null;
-		}
-	}
+    @Override
+    public void setValue(Object value) throws InvalidPropertyOperationException {
+        if(!metaProperty.isWriteable()) {
+            throw new InvalidPropertyOperationException("Property: " + metaProperty.getName() + " is not writeable.");
+        }
 
-	@Override
-	public void setValue(Object value) throws InvalidPropertyOperationException {
-		if (!metaProperty.isWriteable()) {
-			throw new InvalidPropertyOperationException("Property: " + metaProperty.getName() + " is not writeable.");
-		}
+        try {
+            Method setter = metaProperty.getSetter();
+            setter.invoke(instance, value);
+        } catch(Exception ex) {
+            throw new InvalidPropertyOperationException(ex);
+        }
+    }
 
-		try {
-			Method setter = metaProperty.getSetter();
-			setter.invoke(instance, new Object[] { value });
-		} catch (Exception ex) {
-			throw new InvalidPropertyOperationException(ex);
-		}
-	}
+    @Override
+    public Object getValue() {
+        try {
+            Method getter = metaProperty.getGetter();
+            return getter.invoke(instance);
+        } catch(Exception ex) {
+            log.error("Cannot get value of property " + metaProperty.getName(), ex);
+            return null;
+        }
+    }
 }

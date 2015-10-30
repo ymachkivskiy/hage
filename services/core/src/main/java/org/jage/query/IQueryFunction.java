@@ -31,20 +31,20 @@
 
 package org.jage.query;
 
+
 /**
  * The interface for functions executed on results of a query.
- * 
- * @param <T>
- *            A type of results.
+ *
+ * @param <T> A type of results.
  * @author AGH AgE Team
  */
 public interface IQueryFunction<T> {
-	/**
-	 * Executes the function on the provided results.
-	 * 
-	 * @param result
-	 *            Results to process.
-	 * @return Processed results.
-	 */
-	T execute(T result);
+
+    /**
+     * Executes the function on the provided results.
+     *
+     * @param result Results to process.
+     * @return Processed results.
+     */
+    T execute(T result);
 }

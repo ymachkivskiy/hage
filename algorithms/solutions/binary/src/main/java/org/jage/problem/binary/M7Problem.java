@@ -33,6 +33,7 @@
 
 package org.jage.problem.binary;
 
+
 /**
  * The M7 function is defined for 30bit genotypes.
  *
@@ -40,8 +41,8 @@ package org.jage.problem.binary;
  */
 public class M7Problem extends BinaryProblem {
 
-	public M7Problem() {
-		super(30);
-	}
+    public M7Problem() {
+        super(30);
+    }
 
 }

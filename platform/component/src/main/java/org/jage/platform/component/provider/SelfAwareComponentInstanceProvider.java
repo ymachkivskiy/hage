@@ -31,10 +31,12 @@
 
 package org.jage.platform.component.provider;
 
+
+import org.jage.platform.component.definition.IComponentDefinition;
+
 import java.lang.reflect.Type;
 import java.util.Collection;
 
-import org.jage.platform.component.definition.IComponentDefinition;
 
 /**
  * Default implementation of {@link ISelfAwareComponentInstanceProvider}, wrapping a {@link IComponentDefinition}, along
@@ -44,48 +46,48 @@ import org.jage.platform.component.definition.IComponentDefinition;
  */
 public class SelfAwareComponentInstanceProvider implements ISelfAwareComponentInstanceProvider {
 
-	private final IComponentInstanceProvider provider;
+    private final IComponentInstanceProvider provider;
 
-	private final IComponentDefinition definition;
+    private final IComponentDefinition definition;
 
-	public SelfAwareComponentInstanceProvider(final IComponentInstanceProvider provider,
-	        final IComponentDefinition definition) {
-		this.provider = provider;
-		this.definition = definition;
-	}
+    public SelfAwareComponentInstanceProvider(final IComponentInstanceProvider provider,
+            final IComponentDefinition definition) {
+        this.provider = provider;
+        this.definition = definition;
+    }
 
-	@Override
-	public String getName() {
-		return definition.getName();
-	}
+    @Override
+    public Object getInstance() {
+        return getInstance(getName());
+    }
 
-	@Override
-	public Object getInstance() {
-		return getInstance(getName());
-	}
+    @Override
+    public String getName() {
+        return definition.getName();
+    }
 
-	@Override
-	public Object getInstance(final String name) {
-		return provider.getInstance(name);
-	}
+    @Override
+    public Object getInstance(final String name) {
+        return provider.getInstance(name);
+    }
 
-	@Override
-	public <T> T getInstance(final Class<T> type) {
-		return provider.getInstance(type);
-	}
+    @Override
+    public <T> T getInstance(final Class<T> type) {
+        return provider.getInstance(type);
+    }
 
-	@Override
-	public <T> T getParametrizedInstance(final Class<T> type, final Type[] typeParameters) {
-		return provider.getParametrizedInstance(type, typeParameters);
-	}
+    @Override
+    public <T> T getParametrizedInstance(final Class<T> type, final Type[] typeParameters) {
+        return provider.getParametrizedInstance(type, typeParameters);
+    }
 
-	@Override
-	public <T> Collection<T> getInstances(final Class<T> type) {
-		return provider.getInstances(type);
-	}
+    @Override
+    public <T> Collection<T> getInstances(final Class<T> type) {
+        return provider.getInstances(type);
+    }
 
-	@Override
-	public Class<?> getComponentType(final String name) {
-		return provider.getComponentType(name);
-	}
+    @Override
+    public Class<?> getComponentType(final String name) {
+        return provider.getComponentType(name);
+    }
 }

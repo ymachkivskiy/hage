@@ -32,6 +32,5 @@
 /**
  * Basic utitilies for the platform core.
  */
-@javax.annotation.ParametersAreNonnullByDefault
-package org.jage.util;
+@javax.annotation.ParametersAreNonnullByDefault package org.jage.util;
 

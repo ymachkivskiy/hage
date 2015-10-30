@@ -31,8 +31,13 @@
 
 package org.jage.agent;
 
-import static java.util.Collections.singletonList;
 
+import org.jage.action.Action;
+import org.jage.action.preparers.IActionPreparer;
+import org.jage.address.agent.AgentAddress;
+import org.jage.property.Property;
+import org.jage.property.monitors.AbstractPropertyMonitor;
+import org.jage.utils.BaseTest;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,20 +45,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import static java.util.Collections.singletonList;
+import static org.jage.agent.ActionDrivenAgent.Properties.STEP;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import org.jage.action.Action;
-import org.jage.action.preparators.IActionPreparator;
-import org.jage.address.agent.AgentAddress;
-import org.jage.property.Property;
-import org.jage.property.monitors.AbstractPropertyMonitor;
-import org.jage.utils.BaseTest;
-
-import static org.jage.agent.ActionDrivenAgent.Properties.STEP;
 
 /**
  * Tests for {@link ActionDrivenAgent}.
@@ -63,75 +62,71 @@ import static org.jage.agent.ActionDrivenAgent.Properties.STEP;
 @RunWith(MockitoJUnitRunner.class)
 public class ActionDrivenAgentTest extends BaseTest {
 
-	@Mock
-	private IActionPreparator<IAgent> preparator;
+    @InjectMocks
+    private final ActionDrivenAgent agent = new ActionDrivenAgent(mock(AgentAddress.class));
+    @Mock
+    private IActionPreparer<IAgent> preparator;
+    @Mock
+    private Action action;
+    @Mock
+    private ISimpleAgentEnvironment environment;
+    @Mock
+    private AbstractPropertyMonitor monitor;
 
-	@Mock
-	private Action action;
+    @Before
+    public void setup() throws Exception {
+        when(preparator.prepareActions(any(IAgent.class))).thenReturn(singletonList(action));
+    }
 
-	@Mock
-	private ISimpleAgentEnvironment environment;
+    @Test
+    public void initialStepShouldBe0() throws Exception {
+        // when
+        final long step = (Long) agent.getProperty(ActionDrivenAgent.Properties.STEP).getValue();
 
-	@Mock
-	private AbstractPropertyMonitor monitor;
+        // then
+        assertEquals(0, step);
+    }
 
-	@InjectMocks
-	private final ActionDrivenAgent agent = new ActionDrivenAgent(mock(AgentAddress.class));
+    @Test
+    public void shouldIncreaseStepOnCall() throws Exception {
+        // given
+        final long initialStep = (Long) agent.getProperty(STEP).getValue();
 
-	@Before
-	public void setup() throws Exception {
-		when(preparator.prepareActions(any(IAgent.class))).thenReturn(singletonList(action));
-	}
+        // when
+        agent.step();
+        final long step = (Long) agent.getProperty(STEP).getValue();
 
-	@Test
-	public void initialStepShouldBe0() throws Exception {
-		// when
-		final long step = (Long)agent.getProperty(ActionDrivenAgent.Properties.STEP).getValue();
+        // then
+        assertEquals(initialStep + 1, step);
+    }
 
-		// then
-		assertEquals(0, step);
-	}
+    @Test
+    public void shouldAskPreparatorForActionOnCall() {
+        // when
+        agent.step();
 
-	@Test
-	public void shouldIncreaseStepOnCall() throws Exception {
-		// given
-		final long initialStep = (Long)agent.getProperty(STEP).getValue();
+        // then
+        verify(preparator).prepareActions(agent);
+    }
 
-		// when
-		agent.step();
-		final long step = (Long)agent.getProperty(STEP).getValue();
+    @Test
+    public void shouldExecuteActionOnCall() {
+        // when
+        agent.step();
 
-		// then
-		assertEquals(initialStep + 1, step);
-	}
+        // then
+        verify(environment).submitAction(action);
+    }
 
-	@Test
-	public void shouldAskPreparatorForActionOnCall() {
-		// when
-		agent.step();
+    @Test
+    public void shouldNotifyListenersOnCall() throws Exception {
+        // given
+        agent.addPropertyMonitor(STEP, monitor);
 
-		// then
-		verify(preparator).prepareActions(agent);
-	}
+        // when
+        agent.step();
 
-	@Test
-	public void shouldExecuteActionOnCall() {
-		// when
-		agent.step();
-
-		// then
-		verify(environment).submitAction(action);
-	}
-
-	@Test
-	public void shouldNotifyListenersOnCall() throws Exception {
-		// given
-		agent.addPropertyMonitor(STEP, monitor);
-
-		// when
-		agent.step();
-
-		// then
-		verify(monitor).propertyChanged(any(Property.class), any());
-	}
+        // then
+        verify(monitor).propertyChanged(any(Property.class), any());
+    }
 }

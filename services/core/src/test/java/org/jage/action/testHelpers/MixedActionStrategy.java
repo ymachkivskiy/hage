@@ -31,7 +31,6 @@
 
 package org.jage.action.testHelpers;
 
-import java.util.Collection;
 
 import org.jage.action.IActionContext;
 import org.jage.action.IPerformActionStrategy;
@@ -42,29 +41,32 @@ import org.jage.agent.IAgent;
 import org.jage.agent.ISimpleAggregate;
 import org.jage.property.ClassPropertyContainer;
 
+import java.util.Collection;
+
+
 /**
  * A strategy to perform part of the mixed action.
- * 
+ *
  * @author AGH AgE Team
  */
 public class MixedActionStrategy extends ClassPropertyContainer implements IPerformActionStrategy {
 
-	@Override
-	public Collection<AgentAddress> init(ISimpleAggregate aggregate, SingleAction action) throws AgentException {
-		MixedActionContext mixedContext = (MixedActionContext)action.getContext();
-		mixedContext.setExecStrat(true);
-		return aggregate.validateAction(action);
-	}
+    @Override
+    public Collection<AgentAddress> init(ISimpleAggregate aggregate, SingleAction action) throws AgentException {
+        MixedActionContext mixedContext = (MixedActionContext) action.getContext();
+        mixedContext.setExecStrat(true);
+        return aggregate.validateAction(action);
+    }
 
-	@Override
-	public void perfom(IAgent target, IActionContext context) throws AgentException {
-		// Empty
-	}
+    @Override
+    public void perform(IAgent target, IActionContext context) throws AgentException {
+        // Empty
+    }
 
-	@Override
-	public void finish(IAgent target, IActionContext context) {
-		// TODO Auto-generated method stub
+    @Override
+    public void finish(IAgent target, IActionContext context) {
+        // TODO Auto-generated method stub
 
-	}
+    }
 
 }

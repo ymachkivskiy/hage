@@ -26,27 +26,31 @@
  */
 package org.jage.property;
 
+
 /**
- * Strategy that doesn't monitor changes in property value's internal state. It is 
+ * Strategy that doesn't monitor changes in property value's internal state. It is
  * used by Property class.
+ *
  * @author Tomek
  */
 public class NoMonitoringStrategy extends PropertyValueMonitoringStrategy {
 
-	/**
-	 * Constructor.
-	 * @param property property that uses this strategy.
-	 */
-	public NoMonitoringStrategy(Property property) {
-		super(property);
-	}
-	
-	/**
-	 * Informs the strategy that property value has been changed.
-	 * @param oldValue old property value.
-	 * @param newValue new property value.
-	 */
-	@Override
-	public void propertyValueChanged(Object newValue) {		
-	}
+    /**
+     * Constructor.
+     *
+     * @param property property that uses this strategy.
+     */
+    public NoMonitoringStrategy(Property property) {
+        super(property);
+    }
+
+    /**
+     * Informs the strategy that property value has been changed.
+     *
+     * @param oldValue old property value.
+     * @param newValue new property value.
+     */
+    @Override
+    public void propertyValueChanged(Object newValue) {
+    }
 }

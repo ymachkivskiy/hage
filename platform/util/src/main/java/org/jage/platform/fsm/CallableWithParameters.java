@@ -31,20 +31,19 @@
 
 package org.jage.platform.fsm;
 
+
 /**
  * A runnable that should be called with a parameter (or an array of parameters).
- * 
- * @param <T>
- *            a type of the parameter.
- * 
+ *
+ * @param <T> a type of the parameter.
  * @author AGH AgE Team
  */
 public interface CallableWithParameters<T> {
-	/**
-	 * Executes the action.
-	 * 
-	 * @param parameter
-	 *            a parameter of the call.
-	 */
-	void call(T parameter);
+
+    /**
+     * Executes the action.
+     *
+     * @param parameter a parameter of the call.
+     */
+    void call(T parameter);
 }

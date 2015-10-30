@@ -31,25 +31,24 @@
 
 package org.jage.emas.predicate;
 
+
 import org.jage.agent.IAgent;
 import org.jage.strategy.IStrategy;
+
 
 /**
  * Interface for agent predicates.
  *
- * @param <A>
- *            the type of agent this predicate applies to
- *
+ * @param <A> the type of agent this predicate applies to
  * @author AGH AgE Team
  */
 public interface IPredicate<A extends IAgent> extends IStrategy {
 
-	/**
-	 * Returns true if the predicate applies to the given agent.
-	 *
-	 * @param agent
-	 *            some agent
-	 * @return true if the predicate applies to that agent
-	 */
-	boolean apply(A agent);
+    /**
+     * Returns true if the predicate applies to the given agent.
+     *
+     * @param agent some agent
+     * @return true if the predicate applies to that agent
+     */
+    boolean apply(A agent);
 }

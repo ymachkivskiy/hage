@@ -31,18 +31,19 @@
 
 package org.jage.address.selector.agent;
 
-import static java.util.Objects.requireNonNull;
-
-import javax.annotation.concurrent.Immutable;
 
 import org.jage.address.agent.AgentAddress;
 import org.jage.address.selector.AddressSelector;
 
+import javax.annotation.concurrent.Immutable;
+
 import static com.google.common.base.Objects.toStringHelper;
+import static java.util.Objects.requireNonNull;
+
 
 /**
  * This class provides the address selector used for choosing a parent agent.
- * <p/>
+ * <p>
  * This selector works a little not intuitively. It does not select any addresses. Instead, it is an aggregate that
  * needs to check if it is selected. An aggregate is selected if an address returned by {@link #getChildAddress()}
  * method is one of its children addresses.
@@ -52,46 +53,44 @@ import static com.google.common.base.Objects.toStringHelper;
 @Immutable
 public class ParentAddressSelector implements AddressSelector<AgentAddress> {
 
-	private static final long serialVersionUID = -720158404815435693L;
+    private static final long serialVersionUID = -720158404815435693L;
 
-	private final AgentAddress childAddress;
+    private final AgentAddress childAddress;
 
-	/**
-	 * Constructs a new selector for the child with the provided address.
-	 *
-	 * @param childAddress
-	 * 		An address of <b>the child</b>.
-	 */
-	public ParentAddressSelector(final AgentAddress childAddress) {
-		this.childAddress = requireNonNull(childAddress);
-	}
+    /**
+     * Constructs a new selector for the child with the provided address.
+     *
+     * @param childAddress An address of <b>the child</b>.
+     */
+    private ParentAddressSelector(final AgentAddress childAddress) {
+        this.childAddress = requireNonNull(childAddress);
+    }
 
-	/**
-	 * Constructs a new selector for the child with the provided address.
-	 *
-	 * @param childAddress
-	 * 		An address of <b>the child</b>.
-	 */
-	public static ParentAddressSelector create(final AgentAddress childAddress) {
-		return new ParentAddressSelector(childAddress);
-	}
+    /**
+     * Constructs a new selector for the child with the provided address.
+     *
+     * @param childAddress An address of <b>the child</b>.
+     */
+    public static ParentAddressSelector create(final AgentAddress childAddress) {
+        return new ParentAddressSelector(childAddress);
+    }
 
-	/**
-	 * Returns the address wrapped by this selector.
-	 *
-	 * @return an address of the child.
-	 */
-	public AgentAddress getChildAddress() {
-		return childAddress;
-	}
+    /**
+     * Returns the address wrapped by this selector.
+     *
+     * @return an address of the child.
+     */
+    public AgentAddress getChildAddress() {
+        return childAddress;
+    }
 
-	@Override
-	public boolean selects(final AgentAddress address) {
-		return false;
-	}
+    @Override
+    public boolean selects(final AgentAddress address) {
+        return false;
+    }
 
-	@Override
-	public String toString() {
-		return toStringHelper(this).toString();
-	}
+    @Override
+    public String toString() {
+        return toStringHelper(this).toString();
+    }
 }

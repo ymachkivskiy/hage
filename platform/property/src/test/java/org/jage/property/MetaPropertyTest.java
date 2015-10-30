@@ -26,112 +26,117 @@
  */
 package org.jage.property;
 
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Set;
 
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Set;
+
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+
 /**
  * Tests for MetaProperty class.
- * 
+ *
  * @author AGH AgE Team
  */
 public class MetaPropertyTest {
 
-	private static final String META_PROPERTY_NAME = "name";
+    private static final String META_PROPERTY_NAME = "name";
 
-	/**
-	 * Tests a simple meta property for a non-generic class.
-	 * 
-	 * @throws PropertyException
-	 */
-	@Test
-	public void testMetaPropertyConstructorNoGeneric() throws PropertyException {
-		MetaProperty metaProperty = new MetaProperty(META_PROPERTY_NAME, String.class);
-		assertNotNull(metaProperty.getGenericClasses());
-		assertTrue(metaProperty.getGenericClasses().isEmpty());
-	}
-	
-	class InnerGenericClass<T> {
-		// Empty
-	}
-	
-	class InnerGenericClass2<T, V> {
-		// Empty
-	}
+    /**
+     * Tests a simple meta property for a non-generic class.
+     *
+     * @throws PropertyException
+     */
+    @Test
+    public void testMetaPropertyConstructorNoGeneric() throws PropertyException {
+        MetaProperty metaProperty = new MetaProperty(META_PROPERTY_NAME, String.class);
+        assertNotNull(metaProperty.getGenericClasses());
+        assertTrue(metaProperty.getGenericClasses().isEmpty());
+    }
 
-	@SuppressWarnings("unused")
-	class OuterClass {
-		
-		private InnerGenericClass<?> field1;
-		
+    /**
+     * Tests a meta property for a simple generic class (T<V>).
+     */
+    @Test
+    public void testMetaPropertyConstructorSimpleGeneric() throws PropertyException, SecurityException,
+                                                                  NoSuchFieldException {
+
+        Field field = OuterClass.class.getDeclaredField("field2");
+
+        MetaProperty metaProperty = new MetaProperty(META_PROPERTY_NAME, field.getGenericType());
+        List<Class<?>> classes = metaProperty.getGenericClasses();
+
+        assertNotNull(classes);
+        assertTrue(classes.size() == 2);
+        assertTrue(classes.contains(String.class));
+        assertTrue(classes.contains(Long.class));
+    }
+
+    /**
+     * Tests a meta property for a nested generic class (T<V<Z>>).
+     */
+    @Test
+    @Ignore
+    // FIXME: For AGE-29
+    public void testMetaPropertyConstructorNestedGeneric() throws PropertyException, SecurityException,
+                                                                  NoSuchFieldException {
+
+        Field field = OuterClass.class.getDeclaredField("field4");
+
+        MetaProperty metaProperty = new MetaProperty(META_PROPERTY_NAME, field.getGenericType());
+        List<Class<?>> classes = metaProperty.getGenericClasses();
+
+        assertNotNull(classes);
+        assertTrue(classes.size() == 1);
+
+    }
+
+    /**
+     * Tests a meta property for a wildcard generic class (T<?>).
+     */
+    @Test
+    @Ignore
+    // FIXME: For AGE-29
+    public void testMetaPropertyConstructorWildcardGeneric() throws PropertyException, SecurityException,
+                                                                    NoSuchFieldException {
+
+        Field field = OuterClass.class.getDeclaredField("field1");
+
+        MetaProperty metaProperty = new MetaProperty(META_PROPERTY_NAME, field.getGenericType());
+        List<Class<?>> classes = metaProperty.getGenericClasses();
+
+        assertNotNull(classes);
+        assertTrue(classes.size() == 1);
+
+    }
+
+
+    class InnerGenericClass<T> {
+        // Empty
+    }
+
+
+    class InnerGenericClass2<T, V> {
+        // Empty
+    }
+
+
+    @SuppressWarnings("unused")
+    class OuterClass {
+
+        private InnerGenericClass<?> field1;
+
         private InnerGenericClass2<String, Long> field2;
-        
+
         private InnerGenericClass<? extends Integer> field3;
-        
+
         private InnerGenericClass<List<Set<Integer>>> field4;
-		 
-	}
-	
-	/**
-	 * Tests a meta property for a simple generic class (T<V>).
-	 */
-	@Test
-	public void testMetaPropertyConstructorSimpleGeneric() throws PropertyException, SecurityException,
-	        NoSuchFieldException {
 
-		Field field = OuterClass.class.getDeclaredField("field2");
-
-		MetaProperty metaProperty = new MetaProperty(META_PROPERTY_NAME, field.getGenericType());
-		List<Class<?>> classes = metaProperty.getGenericClasses();
-
-		assertNotNull(classes);
-		assertTrue(classes.size() == 2);
-		assertTrue(classes.contains(String.class));
-		assertTrue(classes.contains(Long.class));
-	}
-	
-	/**
-	 * Tests a meta property for a nested generic class (T<V<Z>>).
-	 */
-	@Test
-	@Ignore
-	// FIXME: For AGE-29
-	public void testMetaPropertyConstructorNestedGeneric() throws PropertyException, SecurityException,
-	        NoSuchFieldException {
-
-		Field field = OuterClass.class.getDeclaredField("field4");
-
-		MetaProperty metaProperty = new MetaProperty(META_PROPERTY_NAME, field.getGenericType());
-		List<Class<?>> classes = metaProperty.getGenericClasses();
-
-		assertNotNull(classes);
-		assertTrue(classes.size() == 1);
-	
-	}
-	
-	/**
-	 * Tests a meta property for a wildcard generic class (T<?>).
-	 */
-	@Test
-	@Ignore
-	// FIXME: For AGE-29
-	public void testMetaPropertyConstructorWildcardGeneric() throws PropertyException, SecurityException,
-	        NoSuchFieldException {
-
-		Field field = OuterClass.class.getDeclaredField("field1");
-
-		MetaProperty metaProperty = new MetaProperty(META_PROPERTY_NAME, field.getGenericType());
-		List<Class<?>> classes = metaProperty.getGenericClasses();
-
-		assertNotNull(classes);
-		assertTrue(classes.size() == 1);
-		
-	}
+    }
 
 }

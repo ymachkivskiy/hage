@@ -31,105 +31,96 @@
 
 package org.jage.platform.reflect.predicates;
 
-import java.lang.reflect.Method;
 
+import com.google.common.base.Predicate;
 import org.jage.platform.reflect.Methods;
+
+import java.lang.reflect.Method;
 
 import static org.jage.platform.reflect.Methods.isBooleanGetter;
 import static org.jage.platform.reflect.Methods.isGetter;
 import static org.jage.platform.reflect.Methods.isSetter;
 
-import com.google.common.base.Predicate;
 
 /**
  * Utility predicates for Methods.
  *
- * @since 2.6
  * @author AGH AgE Team
+ * @since 2.6
  */
 public final class MethodPredicates {
 
-	/**
-	 * Stateless predicates.
-	 *
-	 * @author AGH AgE Team
-	 */
-	private static enum FixedPredicates implements Predicate<Method> {
-		BOOLEAN_GETTER {
-			@Override
-			public boolean apply(final Method input) {
-				return isBooleanGetter(input);
-			}
-		},
-		GETTER {
-			@Override
-			public boolean apply(final Method input) {
-				return isGetter(input);
-			}
-		},
-		SETTER {
-			@Override
-			public boolean apply(final Method input) {
-				return isSetter(input);
-			}
-		};
-	}
+    private MethodPredicates() {
+    }
 
-	/**
-	 * Returns a predicate checking if methods are boolean getters.
-	 *
-	 * @return a predicate
-	 *
-	 * @see Methods#isBooleanGetter(Method)
-	 * @since 2.6
-	 */
-	public static Predicate<Method> forBooleanGetters() {
-		return FixedPredicates.BOOLEAN_GETTER;
-	}
+    /**
+     * Returns a predicate checking if methods are boolean getters.
+     *
+     * @return a predicate
+     * @see Methods#isBooleanGetter(Method)
+     * @since 2.6
+     */
+    public static Predicate<Method> forBooleanGetters() {
+        return FixedPredicates.BOOLEAN_GETTER;
+    }
 
-	/**
-	 * Returns a predicate checking if methods are getters.
-	 *
-	 * @return a predicate
-	 *
-	 * @see Methods#isGetter(Method)
-	 * @since 2.6
-	 */
-	public static Predicate<Method> forGetters() {
-		return FixedPredicates.GETTER;
-	}
+    /**
+     * Returns a predicate checking if methods are getters.
+     *
+     * @return a predicate
+     * @see Methods#isGetter(Method)
+     * @since 2.6
+     */
+    public static Predicate<Method> forGetters() {
+        return FixedPredicates.GETTER;
+    }
 
-	/**
-	 * Returns a predicate checking if methods are setters.
-	 *
-	 * @return a predicate
-	 *
-	 * @see Methods#isSetter(Method)
-	 * @since 2.6
-	 */
-	public static Predicate<Method> forSetters() {
-		return FixedPredicates.SETTER;
-	}
+    /**
+     * Returns a predicate checking if methods are setters.
+     *
+     * @return a predicate
+     * @see Methods#isSetter(Method)
+     * @since 2.6
+     */
+    public static Predicate<Method> forSetters() {
+        return FixedPredicates.SETTER;
+    }
 
-	/**
-	 * Returns a predicate checking if methods are overridden by a given child method.
-	 *
-	 * @param child
-	 *            the child method
-	 * @return a predicate
-	 *
-	 * @see Methods#isOverridenBy(Method, Method)
-	 * @since 2.6
-	 */
-	public static Predicate<Method> overriddenBy(final Method child) {
-		return new Predicate<Method>() {
-			@Override
-			public boolean apply(final Method parent) {
-				return Methods.isOverridenBy(parent, child);
-			}
-		};
-	}
+    /**
+     * Returns a predicate checking if methods are overridden by a given child method.
+     *
+     * @param child the child method
+     * @return a predicate
+     * @see Methods#isOverridenBy(Method, Method)
+     * @since 2.6
+     */
+    public static Predicate<Method> overriddenBy(final Method child) {
+        return parent -> Methods.isOverridenBy(parent, child);
+    }
 
-	private MethodPredicates() {
-	}
+    /**
+     * Stateless predicates.
+     *
+     * @author AGH AgE Team
+     */
+    private static enum FixedPredicates implements Predicate<Method> {
+        BOOLEAN_GETTER {
+            @Override
+            public boolean apply(final Method input) {
+                return isBooleanGetter(input);
+            }
+        },
+        GETTER {
+            @Override
+            public boolean apply(final Method input) {
+                return isGetter(input);
+            }
+        },
+        SETTER {
+            @Override
+            public boolean apply(final Method input) {
+                return isSetter(input);
+            }
+        }
+    }
 }

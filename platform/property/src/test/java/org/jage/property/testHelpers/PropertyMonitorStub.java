@@ -26,22 +26,25 @@
  */
 package org.jage.property.testHelpers;
 
+
 import org.jage.event.AbstractEvent;
 import org.jage.event.PropertyEvent;
 import org.jage.property.monitors.AbstractPropertyMonitor;
 
+
 public class PropertyMonitorStub extends AbstractPropertyMonitor {
 
-	private int _propertyChangedInvokationCounter = 0;
-	
-	@Override
-	protected void propertyChanged(PropertyEvent event) {
-		_propertyChangedInvokationCounter++;
-	}
-	
-	public int getPropertyChangedInvokationCounter() {
-		return _propertyChangedInvokationCounter;
-	}
+    private int _propertyChangedInvokationCounter = 0;
 
-	public void ownerDeleted(AbstractEvent event) { }
+    @Override
+    protected void propertyChanged(PropertyEvent event) {
+        _propertyChangedInvokationCounter++;
+    }
+
+    public int getPropertyChangedInvokationCounter() {
+        return _propertyChangedInvokationCounter;
+    }
+
+    public void ownerDeleted(AbstractEvent event) {
+    }
 }

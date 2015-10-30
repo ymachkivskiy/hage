@@ -33,37 +33,37 @@
 
 package org.jage.monitoring.supplier;
 
-import java.util.List;
 
-import javax.inject.Inject;
-
+import com.google.common.base.Supplier;
 import org.jage.query.IQuery;
 import org.jage.workplace.Workplace;
 import org.jage.workplace.manager.WorkplaceManager;
 
-import com.google.common.base.Supplier;
+import javax.inject.Inject;
+import java.util.List;
+
 
 /**
  * Supplier provides data fetched from agents.
- *  
+ *
  * @author AGH AgE Team
  */
 public class AgentQuerySupplier implements Supplier<Object> {
 
-	private WorkplaceManager workplaceManager;
-	private final IQuery<List<Workplace>, ?> query;
-	
-	public AgentQuerySupplier(final IQuery<List<Workplace>, ?> query) {
-		this.query = query;
-	}
+    private final IQuery<List<Workplace>, ?> query;
+    private WorkplaceManager workplaceManager;
 
-	@Inject
-	public void setWorkplaceManager(final WorkplaceManager workplaceManager) {
-		this.workplaceManager = workplaceManager;
-	}
+    public AgentQuerySupplier(final IQuery<List<Workplace>, ?> query) {
+        this.query = query;
+    }
 
-	@Override
-	public Object get() {
-		return query.execute(workplaceManager.getLocalWorkplaces());
-	}
+    @Inject
+    public void setWorkplaceManager(final WorkplaceManager workplaceManager) {
+        this.workplaceManager = workplaceManager;
+    }
+
+    @Override
+    public Object get() {
+        return query.execute(workplaceManager.getLocalWorkplaces());
+    }
 }

@@ -31,8 +31,10 @@
 
 package org.jage.genetic.action;
 
+
 import org.jage.action.IActionContext;
 import org.jage.action.context.AgentActionContext;
+
 
 /**
  * This context defines a variation action. To use it, you should declare a handler bean named 'variationAction' in the
@@ -42,15 +44,17 @@ import org.jage.action.context.AgentActionContext;
  */
 @AgentActionContext(VariationActionContext.Properties.VARIATION_ACTION)
 public final class VariationActionContext implements IActionContext {
-	/**
-	 * VariationActionContext properties.
-	 *
-	 * @author AGH AgE Team
-	 */
-	public static class Properties {
-		/**
-		 * The action name.
-		 */
-		public static final String VARIATION_ACTION = "variationAction";
-	}
+
+    /**
+     * VariationActionContext properties.
+     *
+     * @author AGH AgE Team
+     */
+    public static class Properties {
+
+        /**
+         * The action name.
+         */
+        public static final String VARIATION_ACTION = "variationAction";
+    }
 }

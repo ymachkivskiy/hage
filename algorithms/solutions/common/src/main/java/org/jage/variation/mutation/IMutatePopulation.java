@@ -31,24 +31,24 @@
 
 package org.jage.variation.mutation;
 
+
 import org.jage.population.IPopulation;
 import org.jage.solution.ISolution;
 import org.jage.strategy.IStrategy;
 
+
 /**
  * Strategy interface for mutating a population of solutions.
  *
- * @param <S>
- *            The type of the solutions held by the population to be mutated
+ * @param <S> The type of the solutions held by the population to be mutated
  * @author AGH AgE Team
  */
 public interface IMutatePopulation<S extends ISolution> extends IStrategy {
 
-	/**
-	 * Mutates the given population.
-	 *
-	 * @param population
-	 *            The population to be mutated
-	 */
-	public void mutatePopulation(IPopulation<S, ?> population);
+    /**
+     * Mutates the given population.
+     *
+     * @param population The population to be mutated
+     */
+    public void mutatePopulation(IPopulation<S, ?> population);
 }

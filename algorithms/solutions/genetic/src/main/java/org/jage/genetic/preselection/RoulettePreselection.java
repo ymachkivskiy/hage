@@ -31,14 +31,15 @@
 
 package org.jage.genetic.preselection;
 
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.jage.genetic.scaling.IScaling;
 import org.jage.random.INormalizedDoubleRandomGenerator;
 import org.jage.utils.CumulativeDistribution;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
+
 
 /**
  * Preselect strategy. Roulette wheel implementation. Scales solutions evaluations using a provided {@link IScaling}.
@@ -47,26 +48,26 @@ import org.jage.utils.CumulativeDistribution;
  */
 public final class RoulettePreselection extends AbstractPreselection {
 
-	private static final Logger LOG = LoggerFactory.getLogger(RoulettePreselection.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RoulettePreselection.class);
 
-	@Inject
-	private IScaling scaling;
+    @Inject
+    private IScaling scaling;
 
-	@Inject
-	private INormalizedDoubleRandomGenerator rand;
+    @Inject
+    private INormalizedDoubleRandomGenerator rand;
 
-	@Override
-	protected int[] getPreselectedIndices(final double[] values) {
-		final CumulativeDistribution distribution = new CumulativeDistribution(scaling.scale(values));
-		final int n = values.length;
+    @Override
+    protected int[] getPreselectedIndices(final double[] values) {
+        final CumulativeDistribution distribution = new CumulativeDistribution(scaling.scale(values));
+        final int n = values.length;
 
-		final int[] indices = new int[n];
-		for (int i = 0; i < n; i++) {
-			indices[i] = distribution.getValueFor(rand.nextDouble());
-		}
+        final int[] indices = new int[n];
+        for(int i = 0; i < n; i++) {
+            indices[i] = distribution.getValueFor(rand.nextDouble());
+        }
 
-		LOG.debug("Distribution {} resulted in indices {}", distribution, indices);
+        LOG.debug("Distribution {} resulted in indices {}", distribution, indices);
 
-		return indices;
-	}
+        return indices;
+    }
 }

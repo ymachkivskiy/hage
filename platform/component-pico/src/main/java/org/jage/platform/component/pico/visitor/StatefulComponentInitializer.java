@@ -33,36 +33,37 @@
 
 package org.jage.platform.component.pico.visitor;
 
+
+import org.jage.platform.component.IStatefulComponent;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.visitors.AbstractPicoVisitor;
 
-import org.jage.platform.component.IStatefulComponent;
 
 /**
  * PicoVisitor which eager instantiates Stateful Components at each level of the hierarchy.
- * 
+ *
  * @author AGH AgE Team
  */
 public class StatefulComponentInitializer extends AbstractPicoVisitor {
 
-	@Override
-	public boolean visitContainer(final PicoContainer pico) {
-		pico.getComponents(IStatefulComponent.class);
-		return true;
-	}
+    @Override
+    public boolean visitContainer(final PicoContainer pico) {
+        pico.getComponents(IStatefulComponent.class);
+        return true;
+    }
 
-	@Override
-	public void visitComponentAdapter(final ComponentAdapter<?> componentAdapter) {
-	}
+    @Override
+    public void visitComponentAdapter(final ComponentAdapter<?> componentAdapter) {
+    }
 
-	@Override
-	public void visitComponentFactory(final ComponentFactory componentFactory) {
-	}
+    @Override
+    public void visitComponentFactory(final ComponentFactory componentFactory) {
+    }
 
-	@Override
-	public void visitParameter(final Parameter parameter) {
-	}
+    @Override
+    public void visitParameter(final Parameter parameter) {
+    }
 }

@@ -26,22 +26,24 @@
  */
 package org.jage.monitoring.supplier;
 
-import java.util.Random;
 
 import com.google.common.base.Supplier;
 
+import java.util.Random;
+
+
 /**
  * Supplier which provides random Double numbers.
- * 
+ *
  * @author AGH AgE Team
  */
 public class RandomSupplier implements Supplier<Double> {
 
-	private final Random random = new Random();
-	
-	@Override
-	public Double get() {
-		return random.nextDouble();
-	}
+    private final Random random = new Random();
+
+    @Override
+    public Double get() {
+        return random.nextDouble();
+    }
 }
 

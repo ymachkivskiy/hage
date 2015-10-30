@@ -31,41 +31,43 @@
 
 package org.jage.platform.component.pico.injector.factory;
 
-import java.util.HashMap;
 
+import org.jage.platform.component.definition.MapDefinition;
+import org.jage.platform.component.pico.injector.MapInjector;
 import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
+
+import java.util.HashMap;
 
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
-import org.jage.platform.component.definition.MapDefinition;
-import org.jage.platform.component.pico.injector.MapInjector;
 
 /**
  * Tests for MapInjectorFactory.
+ *
  * @author AGH AgE Team
  */
 public class MapInjectorFactoryTest {
 
-	private final MapInjectorFactory factory = new MapInjectorFactory();
+    private final MapInjectorFactory factory = new MapInjectorFactory();
 
-	@Test(expected = NullPointerException.class)
-	public void shouldThrowNPEForNullDefinition() {
-		// when
-		factory.createAdapter(null);
-	}
+    @Test(expected = NullPointerException.class)
+    public void shouldThrowNPEForNullDefinition() {
+        // when
+        factory.createAdapter(null);
+    }
 
-	@Test
-	public void shouldCreateArrayInjectors() {
-		// given
-		final MapDefinition definition = new MapDefinition("any", HashMap.class, Object.class, Object.class, false);
+    @Test
+    public void shouldCreateArrayInjectors() {
+        // given
+        final MapDefinition definition = new MapDefinition("any", HashMap.class, Object.class, Object.class, false);
 
-		// when
-		final ComponentAdapter<Object> adapter = factory.createAdapter(definition);
+        // when
+        final ComponentAdapter<Object> adapter = factory.createAdapter(definition);
 
-		// then
-		assertThat(adapter, is(instanceOf(MapInjector.class)));
-	}
+        // then
+        assertThat(adapter, is(instanceOf(MapInjector.class)));
+    }
 }

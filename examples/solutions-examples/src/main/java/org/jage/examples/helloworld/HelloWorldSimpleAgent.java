@@ -31,14 +31,15 @@
 
 package org.jage.examples.helloworld;
 
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.jage.address.agent.AgentAddress;
 import org.jage.address.agent.AgentAddressSupplier;
 import org.jage.agent.SimpleAgent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
+
 
 /**
  * This agent only logs basic information. It doesn't perform any other operations.
@@ -49,47 +50,47 @@ import org.jage.agent.SimpleAgent;
  */
 public class HelloWorldSimpleAgent extends SimpleAgent {
 
-	private static final long serialVersionUID = 3L;
+    private static final long serialVersionUID = 3L;
 
-	private final Logger log = LoggerFactory.getLogger(HelloWorldSimpleAgent.class);
+    private final Logger log = LoggerFactory.getLogger(HelloWorldSimpleAgent.class);
 
-	public HelloWorldSimpleAgent(final AgentAddress address) {
-	    super(address);
+    public HelloWorldSimpleAgent(final AgentAddress address) {
+        super(address);
     }
 
-	@Inject
-	public HelloWorldSimpleAgent(final AgentAddressSupplier supplier) {
-	    super(supplier);
+    @Inject
+    public HelloWorldSimpleAgent(final AgentAddressSupplier supplier) {
+        super(supplier);
     }
 
-	/**
-	 * In this method, the agent performs its work.
-	 * <p>
-	 * {@inheritDoc}
-	 *
-	 * @see org.jage.agent.SimpleAgent#step()
-	 */
-	@Override
-	public void step() {
-		log.info("{} says Hello World from {}.", getAddress().getFriendlyName(), getParentAddress().getFriendlyName());
-		try {
-			Thread.sleep(200);
-		} catch (final InterruptedException e) {
-			log.error("Interrupted", e);
-		}
-	}
+    /**
+     * In this method, the agent performs its work.
+     * <p>
+     * {@inheritDoc}
+     *
+     * @see org.jage.agent.SimpleAgent#step()
+     */
+    @Override
+    public void step() {
+        log.info("{} says Hello World from {}.", getAddress().getFriendlyName(), getParentAddress().getFriendlyName());
+        try {
+            Thread.sleep(200);
+        } catch(final InterruptedException e) {
+            log.error("Interrupted", e);
+        }
+    }
 
-	/**
-	 * This method is called when the agent is to be removed (e.g. when the system is shutting down).
-	 * <p>
-	 * {@inheritDoc}
-	 *
-	 * @see org.jage.agent.AbstractAgent#finish()
-	 */
-	@Override
-	public boolean finish() {
-		log.info("Finishing Hello World Simple Agent: {}.", getAddress().getFriendlyName());
-		return true;
-	}
+    /**
+     * This method is called when the agent is to be removed (e.g. when the system is shutting down).
+     * <p>
+     * {@inheritDoc}
+     *
+     * @see org.jage.agent.AbstractAgent#finish()
+     */
+    @Override
+    public boolean finish() {
+        log.info("Finishing Hello World Simple Agent: {}.", getAddress().getFriendlyName());
+        return true;
+    }
 
 }

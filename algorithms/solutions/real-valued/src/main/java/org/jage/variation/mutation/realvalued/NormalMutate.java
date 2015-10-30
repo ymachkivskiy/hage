@@ -31,9 +31,11 @@
 
 package org.jage.variation.mutation.realvalued;
 
-import javax.inject.Inject;
 
 import org.jage.random.INormalizedDoubleRandomGenerator;
+
+import javax.inject.Inject;
+
 
 /**
  * Simple population mutation strategy, that mutates each solution individually using provided solution mutation
@@ -43,19 +45,19 @@ import org.jage.random.INormalizedDoubleRandomGenerator;
  */
 public final class NormalMutate extends DoubleAbstractStochasticMutate {
 
-	@Inject
-	private INormalizedDoubleRandomGenerator rand;
+    @Inject
+    private INormalizedDoubleRandomGenerator rand;
 
-	private double mutationRange;
+    private double mutationRange;
 
-	public void setMutationRange(final double mutationRange) {
-		this.mutationRange = mutationRange;
-	}
+    public void setMutationRange(final double mutationRange) {
+        this.mutationRange = mutationRange;
+    }
 
-	@Override
-	protected double doMutate(final double value) {
-		// Based on Wikipedia's information on inverse cumulative
-		// distribution function of the Cauchy distribution
-		return value + mutationRange * Math.tan(Math.PI * (rand.nextDouble() - 0.5));
-	}
+    @Override
+    protected double doMutate(final double value) {
+        // Based on Wikipedia's information on inverse cumulative
+        // distribution function of the Cauchy distribution
+        return value + mutationRange * Math.tan(Math.PI * (rand.nextDouble() - 0.5));
+    }
 }

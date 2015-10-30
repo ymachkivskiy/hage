@@ -26,6 +26,7 @@
  */
 package org.jage.monitoring.persistence.model;
 
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,55 +35,61 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+
 /**
  * Data model object represents computation type.
- * 
+ *
  * @author AGH AgE Team
  */
 @Entity
 @Table(name = "comptype")
 public class ComputationType {
 
-	@Column(name="comptype_id")
-	@Id
-	@SequenceGenerator(name="comptype_seq", sequenceName="comptype_seq")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="comptype_seq")
-	private long id;
-	
-	private String name;
+    @Column(name = "comptype_id")
+    @Id
+    @SequenceGenerator(name = "comptype_seq", sequenceName = "comptype_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "comptype_seq")
+    private long id;
 
-	public ComputationType(){}
-	
-	public ComputationType(String name) {
-		this.name = name;
-	}
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		if (!(obj instanceof ComputationType)) {
-			return false;
-		}
-		if (this == obj) {
-			return true;
-		}
-		ComputationType o = (ComputationType)obj;
-		if (this.name.equals(o.getName())) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
+    private String name;
+
+    public ComputationType() {
+    }
+
+    public ComputationType(String name) {
+        this.name = name;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof ComputationType)) {
+            return false;
+        }
+        if(this == obj) {
+            return true;
+        }
+        ComputationType o = (ComputationType) obj;
+        if(this.name.equals(o.getName())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public String getName() {
+        return name;
+    }
+
 }

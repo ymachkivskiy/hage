@@ -31,76 +31,79 @@
 
 package org.jage.query;
 
+
+import org.junit.Before;
+import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import static org.junit.Assert.assertEquals;
+
 
 /**
  * Tests for the {@link QueryFunctions} class.
- * 
+ *
  * @author AGH AgE Team
  */
 public class QueryFunctionsTest {
 
-	private IQueryFunction<Collection<Integer>> testedQueryFunction;
+    private IQueryFunction<Collection<Integer>> testedQueryFunction;
 
-	private List<Integer> collection;
+    private List<Integer> collection;
 
-	@Before
-	public void setUp() {
-		collection = new ArrayList<Integer>();
-		for (int i = 0; i < 30; i++) {
-			collection.add(i);
-		}
-	}
+    @Before
+    public void setUp() {
+        collection = new ArrayList<Integer>();
+        for(int i = 0; i < 30; i++) {
+            collection.add(i);
+        }
+    }
 
-	/**
-	 * Tests the {@link org.jage.query.QueryFunctions#max()} method.
-	 */
-	@Test
-	public void testMax() {
-		testedQueryFunction = QueryFunctions.max();
+    /**
+     * Tests the {@link org.jage.query.QueryFunctions#max()} method.
+     */
+    @Test
+    public void testMax() {
+        testedQueryFunction = QueryFunctions.max();
 
-		Collection<Integer> results = testedQueryFunction.execute(collection);
+        Collection<Integer> results = testedQueryFunction.execute(collection);
 
-		assertEquals(Collections.singleton(Collections.max(collection)), results);
-	}
+        assertEquals(Collections.singleton(Collections.max(collection)), results);
+    }
 
-	/**
-	 * Tests the {@link org.jage.query.QueryFunctions#max(java.util.Comparator)} method.
-	 */
-	@Test
-	public void testMaxWithComparator() {
-		Comparator<Integer> comparator = new Comparator<Integer>() {
-			@Override
-			public int compare(Integer o1, Integer o2) {
-				return o2 - o1;
-			}
-		};
-		testedQueryFunction = QueryFunctions.max(comparator);
+    /**
+     * Tests the {@link org.jage.query.QueryFunctions#max(java.util.Comparator)} method.
+     */
+    @Test
+    public void testMaxWithComparator() {
+        Comparator<Integer> comparator = new Comparator<Integer>() {
 
-		Collection<Integer> results = testedQueryFunction.execute(collection);
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return o2 - o1;
+            }
+        };
+        testedQueryFunction = QueryFunctions.max(comparator);
 
-		assertEquals(Collections.singleton(Collections.max(collection, comparator)), results);
-	}
+        Collection<Integer> results = testedQueryFunction.execute(collection);
 
-	/**
-	 * Tests the {@link org.jage.query.QueryFunctions#noOperation()} method.
-	 */
-	@Test
-	public void testNoOperation() {
-		testedQueryFunction = QueryFunctions.noOperation();
+        assertEquals(Collections.singleton(Collections.max(collection, comparator)), results);
+    }
 
-		Collection<Integer> results = testedQueryFunction.execute(collection);
+    /**
+     * Tests the {@link org.jage.query.QueryFunctions#noOperation()} method.
+     */
+    @Test
+    public void testNoOperation() {
+        testedQueryFunction = QueryFunctions.noOperation();
 
-		assertEquals(collection, results);
-	}
+        Collection<Integer> results = testedQueryFunction.execute(collection);
+
+        assertEquals(collection, results);
+    }
 
 }

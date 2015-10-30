@@ -31,10 +31,12 @@
 
 package org.jage.agent;
 
-import java.util.Collection;
 
 import org.jage.address.agent.AgentAddress;
 import org.jage.query.AgentEnvironmentQuery;
+
+import java.util.Collection;
+
 
 /**
  * Interface used by agents to contact with the external environment (their parents).
@@ -43,53 +45,45 @@ import org.jage.query.AgentEnvironmentQuery;
  */
 public interface IAgentEnvironment {
 
-	/**
-	 * Queries an environment of the parent.
-	 * <p>
-	 *
-	 * <pre>
-	 *         T
-	 *        /|\
-	 *       / | \
-	 *      A  B  C
-	 *     /|\
-	 *    / | \
-	 *  *X  Y  Z
-	 * </pre>
-	 *
-	 * The parent environment in the above situation (when seen from the agent X (with an asterisk)) consists of agents:
-	 * A, B and C (agents of the T aggregate).
-	 *
-	 * @param <E>
-	 * 		A type of the agents in the aggregate.
-	 * @param <T>
-	 * 		A type of the elements in the result.
-	 * @param query
-	 * 		The query to perform.
-	 *
-	 * @return the result of the query.
-	 */
-	<E extends IAgent, T> Collection<T> queryParent(AgentEnvironmentQuery<E, T> query);
+    /**
+     * Queries an environment of the parent.
+     * <p>
+     * <p>
+     * <pre>
+     *         T
+     *        /|\
+     *       / | \
+     *      A  B  C
+     *     /|\
+     *    / | \
+     *  *X  Y  Z
+     * </pre>
+     * <p>
+     * The parent environment in the above situation (when seen from the agent X (with an asterisk)) consists of agents:
+     * A, B and C (agents of the T aggregate).
+     *
+     * @param <E>   A type of the agents in the aggregate.
+     * @param <T>   A type of the elements in the result.
+     * @param query The query to perform.
+     * @return the result of the query.
+     */
+    <E extends IAgent, T> Collection<T> queryParent(AgentEnvironmentQuery<E, T> query);
 
-	/**
-	 * Queries the environment.
-	 *
-	 * @param <E>
-	 * 		A type of the agents in the aggregate.
-	 * @param <T>
-	 * 		A type of the elements in the result.
-	 * @param query
-	 * 		The query to perform.
-	 *
-	 * @return the result of the query.
-	 */
-	<E extends IAgent, T> Collection<T> query(AgentEnvironmentQuery<E, T> query);
+    /**
+     * Queries the environment.
+     *
+     * @param <E>   A type of the agents in the aggregate.
+     * @param <T>   A type of the elements in the result.
+     * @param query The query to perform.
+     * @return the result of the query.
+     */
+    <E extends IAgent, T> Collection<T> query(AgentEnvironmentQuery<E, T> query);
 
-	/**
-	 * Returns the parent's address.
-	 *
-	 * @return the parent's address
-	 */
-	AgentAddress getAddress();
+    /**
+     * Returns the parent's address.
+     *
+     * @return the parent's address
+     */
+    AgentAddress getAddress();
 
 }

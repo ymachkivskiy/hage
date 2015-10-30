@@ -31,47 +31,47 @@
 
 package org.jage.action;
 
-import java.util.Collections;
-import java.util.List;
 
 import com.google.common.base.Objects;
 
+import java.util.Collections;
+import java.util.List;
+
 import static com.google.common.collect.Lists.newLinkedList;
+
 
 /**
  * Container for actions which allows to create tree structure of actions.
  *
  * @author AGH AgE Team
- *
  */
 public class ComplexAction extends Action {
 
-	/**
-	 * Children list.
-	 */
-	private final List<Action> children = newLinkedList();
+    /**
+     * Children list.
+     */
+    private final List<Action> children = newLinkedList();
 
-	/**
-	 * Adds a child action to this complex action.
-	 *
-	 * @param action
-	 *            the new child action.
-	 */
-	public void addChild(final Action action) {
-		children.add(action);
-	}
+    /**
+     * Adds a child action to this complex action.
+     *
+     * @param action the new child action.
+     */
+    public void addChild(final Action action) {
+        children.add(action);
+    }
 
-	/**
-	 * Returns all children actions.
-	 *
-	 * @return all children actions.
-	 */
-	public List<Action> getChildren() {
-		return Collections.unmodifiableList(children);
-	}
+    /**
+     * Returns all children actions.
+     *
+     * @return all children actions.
+     */
+    public List<Action> getChildren() {
+        return Collections.unmodifiableList(children);
+    }
 
-	@Override
-	public String toString() {
-		return Objects.toStringHelper(this).add("children", children).toString();
-	}
+    @Override
+    public String toString() {
+        return Objects.toStringHelper(this).add("children", children).toString();
+    }
 }

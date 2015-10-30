@@ -31,7 +31,6 @@
 
 package org.jage.examples.actions;
 
-import java.util.Collection;
 
 import org.jage.action.IActionContext;
 import org.jage.action.IPerformActionStrategy;
@@ -42,28 +41,31 @@ import org.jage.agent.IAgent;
 import org.jage.agent.ISimpleAggregate;
 import org.jage.property.ClassPropertyContainer;
 
+import java.util.Collection;
+
+
 /**
  * The sample action implemented as a strategy.
- * 
+ *
  * @author AGH AgE Team
  */
 public class SampleActionStrategy extends ClassPropertyContainer implements IPerformActionStrategy {
 
-	@Override
-	public void finish(IAgent target, IActionContext context) {
-		// Empty
-	}
+    @Override
+    public Collection<AgentAddress> init(ISimpleAggregate aggregate, SingleAction action) throws AgentException {
+        return aggregate.validateAction(action);
 
-	@Override
-	public Collection<AgentAddress> init(ISimpleAggregate aggregate, SingleAction action) throws AgentException {
-		return aggregate.validateAction(action);
+    }
 
-	}
+    @Override
+    public void perform(IAgent target, IActionContext context) throws AgentException {
+        log.info("Performing action on {}", target.getAddress());
 
-	@Override
-	public void perfom(IAgent target, IActionContext context) throws AgentException {
-		log.info("Performing action on {}", target.getAddress());
+    }
 
-	}
+    @Override
+    public void finish(IAgent target, IActionContext context) {
+        // Empty
+    }
 
 }

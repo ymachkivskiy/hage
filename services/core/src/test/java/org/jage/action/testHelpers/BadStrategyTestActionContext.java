@@ -31,12 +31,15 @@
 
 package org.jage.action.testHelpers;
 
+
 import org.jage.action.IActionContext;
 import org.jage.action.context.AgentActionContext;
 
-@AgentActionContext({ BadStrategyTestActionContext.ACTION_NAME })
-public class BadStrategyTestActionContext implements IActionContext {
-	public final static String ACTION_NAME = "badStrategy";
 
-	public boolean actionRun = false;
+@AgentActionContext({BadStrategyTestActionContext.ACTION_NAME})
+public class BadStrategyTestActionContext implements IActionContext {
+
+    public final static String ACTION_NAME = "badStrategy";
+
+    public boolean actionRun = false;
 }

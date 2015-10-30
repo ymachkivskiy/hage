@@ -31,10 +31,6 @@
 
 package org.jage.genetic.action;
 
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.jage.action.AbstractPerformActionStrategy;
 import org.jage.action.IActionContext;
@@ -43,31 +39,34 @@ import org.jage.agent.IAgent;
 import org.jage.population.IPopulation;
 import org.jage.solution.ISolution;
 import org.jage.variation.IVariationOperator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
 
 import static org.jage.genetic.agent.GeneticActionDrivenAgent.Properties.POPULATION;
 import static org.jage.utils.JageUtils.getPropertyValueOrThrowException;
+
 
 /**
  * This action handler performs a transformation on an agent's population, using a given variation operator algorithm.
  * The agent's population is replaced with the transformed one.
  *
- * @param <S>
- *            the type of solutions
- *
+ * @param <S> the type of solutions
  * @author AGH AgE Team
  */
 public final class VariationActionStrategy<S extends ISolution> extends AbstractPerformActionStrategy {
 
-	private static final Logger LOG = LoggerFactory.getLogger(VariationActionStrategy.class);
+    private static final Logger LOG = LoggerFactory.getLogger(VariationActionStrategy.class);
 
-	@Inject
-	private IVariationOperator<S> variationOperator;
+    @Inject
+    private IVariationOperator<S> variationOperator;
 
-	@Override
-	public void perfom(final IAgent target, final IActionContext context) throws AgentException {
-		LOG.debug("Performing variation on agent {} population.", target.getAddress());
+    @Override
+    public void perform(final IAgent target, final IActionContext context) throws AgentException {
+        LOG.debug("Performing variation on agent {} population.", target.getAddress());
 
-		final IPopulation<S, ?> population = getPropertyValueOrThrowException(target, POPULATION);
-		variationOperator.transformPopulation(population);
-	}
+        final IPopulation<S, ?> population = getPropertyValueOrThrowException(target, POPULATION);
+        variationOperator.transformPopulation(population);
+    }
 }

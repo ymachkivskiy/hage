@@ -31,44 +31,44 @@
 
 package org.jage.action.context;
 
+
 import org.jage.action.IActionContext;
 import org.jage.agent.ISimpleAgent;
 import org.jage.agent.ISimpleAggregate;
 
+
 /**
  * Action context which contains a reference to an agent.
- * 
+ *
  * @author AGH AgE Team
  */
 public interface IActionWithAgentReferenceContext extends IActionContext {
 
-	/**
-	 * Sets the agent reference for the context.
-	 * 
-	 * @param agent
-	 *            the agent reference for the context.
-	 */
-	void setAgent(ISimpleAgent agent);
+    /**
+     * Sets the agent reference for the context.
+     *
+     * @param agent the agent reference for the context.
+     */
+    void setAgent(ISimpleAgent agent);
 
-	/**
-	 * Returns the agent reference for the context.
-	 * 
-	 * @return the agent reference for the context.
-	 */
-	ISimpleAgent getAgent();
+    /**
+     * Returns the agent reference for the context.
+     *
+     * @return the agent reference for the context.
+     */
+    ISimpleAgent getAgent();
 
-	/**
-	 * Sets the parent of the agent that is contained in this context.
-	 * 
-	 * @param parent
-	 *            the parent aggregate.
-	 */
-	void setParent(ISimpleAggregate parent);
+    /**
+     * Sets the parent of the agent that is contained in this context.
+     *
+     * @param parent the parent aggregate.
+     */
+    void setParent(ISimpleAggregate parent);
 
-	/**
-	 * Returns the parent of the agent that is contained in this context.
-	 * 
-	 * @return the parent aggregate.
-	 */
-	ISimpleAggregate getParent();
+    /**
+     * Returns the parent of the agent that is contained in this context.
+     *
+     * @return the parent aggregate.
+     */
+    ISimpleAggregate getParent();
 }

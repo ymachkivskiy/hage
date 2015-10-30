@@ -31,61 +31,60 @@
 
 package org.jage.action.context;
 
+
 import org.jage.action.Action;
 import org.jage.action.IActionContext;
 import org.jage.address.agent.AgentAddress;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+
 /**
  * Context for the action "pass to parent". It holds an action which is ordered on aggregate's parent agent and address
  * of action invoker.
- * 
- * @see org.jage.agent.SimpleAggregate
- * 
+ *
  * @author AGH AgE Team
+ * @see org.jage.agent.SimpleAggregate
  */
 @AgentActionContext(PassToParentActionContext.ACTION_NAME)
 public class PassToParentActionContext implements IActionContext {
 
-	/**
-	 * The action name of this context.
-	 */
-	public static final String ACTION_NAME = "passToParent";
+    /**
+     * The action name of this context.
+     */
+    public static final String ACTION_NAME = "passToParent";
 
-	private final Action action;
+    private final Action action;
 
-	private final AgentAddress invoker;
+    private final AgentAddress invoker;
 
-	/**
-	 * Creates a new "pass-to-parent" context.
-	 * 
-	 * @param invoker
-	 *            the conxtext creator.
-	 * @param action
-	 *            the action to pass to the parent.
-	 */
-	public PassToParentActionContext(final AgentAddress invoker, final Action action) {
-		this.invoker = checkNotNull(invoker);
-		this.action = checkNotNull(action);
-	}
+    /**
+     * Creates a new "pass-to-parent" context.
+     *
+     * @param invoker the conxtext creator.
+     * @param action  the action to pass to the parent.
+     */
+    public PassToParentActionContext(final AgentAddress invoker, final Action action) {
+        this.invoker = checkNotNull(invoker);
+        this.action = checkNotNull(action);
+    }
 
-	/**
-	 * Returns the creator of this context.
-	 * 
-	 * @return the creator of this context.
-	 */
-	public AgentAddress getInvoker() {
-		return invoker;
-	}
+    /**
+     * Returns the creator of this context.
+     *
+     * @return the creator of this context.
+     */
+    public AgentAddress getInvoker() {
+        return invoker;
+    }
 
-	/**
-	 * Returns the action to pass.
-	 * 
-	 * @return the action to pass.
-	 */
-	public Action getAction() {
-		return action;
-	}
+    /**
+     * Returns the action to pass.
+     *
+     * @return the action to pass.
+     */
+    public Action getAction() {
+        return action;
+    }
 
 }

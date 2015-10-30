@@ -31,16 +31,17 @@
 
 package org.jage.emas.action.individual;
 
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.jage.agent.AgentException;
 import org.jage.emas.agent.IndividualAgent;
 import org.jage.emas.migration.Migration;
 import org.jage.emas.predicate.IPredicate;
 import org.jage.emas.util.ChainingAction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
+
 
 /**
  * A migration action handler. If a migration predicate applies to some agent, it is migrated according to some
@@ -50,19 +51,19 @@ import org.jage.emas.util.ChainingAction;
  */
 public final class MigrationAction extends ChainingAction<IndividualAgent> {
 
-	private static final Logger log = LoggerFactory.getLogger(MigrationAction.class);
+    private static final Logger log = LoggerFactory.getLogger(MigrationAction.class);
 
-	@Inject
-	private IPredicate<IndividualAgent> migrationPredicate;
+    @Inject
+    private IPredicate<IndividualAgent> migrationPredicate;
 
-	@Inject
-	private Migration<IndividualAgent> migrationStrategy;
+    @Inject
+    private Migration<IndividualAgent> migrationStrategy;
 
-	@Override
-	public void doPerform(final IndividualAgent agent) throws AgentException {
-		log.debug("Performing migration action on {}", agent);
-		if (migrationPredicate.apply(agent)) {
-			migrationStrategy.migrate(agent);
-		}
-	}
+    @Override
+    public void doPerform(final IndividualAgent agent) throws AgentException {
+        log.debug("Performing migration action on {}", agent);
+        if(migrationPredicate.apply(agent)) {
+            migrationStrategy.migrate(agent);
+        }
+    }
 }

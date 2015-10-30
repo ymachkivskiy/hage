@@ -31,27 +31,25 @@
 
 package org.jage.emas.energy;
 
+
 import org.jage.agent.IAgent;
 import org.jage.strategy.IStrategy;
+
 
 /**
  * Strategy for energy transfer between agents.
  *
- * @param <A>
- *            the type of agents
- *
+ * @param <A> the type of agents
  * @author AGH AgE Team
  */
 public interface EnergyTransfer<A extends IAgent> extends IStrategy {
 
-	/**
-	 * Transfers energy from source to target.
-	 *
-	 * @param source
-	 *            the transfer source
-	 * @param target
-	 *            the transfer target
-	 * @return the amount of energy transferred
-	 */
-	double transferEnergy(A source, A target);
+    /**
+     * Transfers energy from source to target.
+     *
+     * @param source the transfer source
+     * @param target the transfer target
+     * @return the amount of energy transferred
+     */
+    double transferEnergy(A source, A target);
 }

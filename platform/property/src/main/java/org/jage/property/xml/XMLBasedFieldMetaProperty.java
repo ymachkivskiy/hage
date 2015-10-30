@@ -31,33 +31,32 @@
 
 package org.jage.property.xml;
 
-import java.lang.reflect.Field;
 
 import org.jage.property.FieldMetaProperty;
 import org.jage.property.PropertyException;
+
+import java.lang.reflect.Field;
+
 
 /**
  * Meta property for XMLBasedFieldProperty class.
  *
  * @author AGH AgE Team
- *
  * @since 2.4.0
  */
 public class XMLBasedFieldMetaProperty extends FieldMetaProperty {
 
-	private static final long serialVersionUID = 1;
+    private static final long serialVersionUID = 1;
 
-	/**
-	 * Constructor.
-	 *
-	 * @param propertyName
-	 *            name of the property
-	 * @param field
-	 *            field that stores property value.
-	 * @throws PropertyException 
-	 */
-	public XMLBasedFieldMetaProperty(String propertyName, Field field) throws PropertyException {
-		super(propertyName, field, true);
-	}
+    /**
+     * Constructor.
+     *
+     * @param propertyName name of the property
+     * @param field        field that stores property value.
+     * @throws PropertyException
+     */
+    public XMLBasedFieldMetaProperty(String propertyName, Field field) throws PropertyException {
+        super(propertyName, field, true);
+    }
 
 }

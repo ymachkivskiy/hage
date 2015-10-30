@@ -33,10 +33,6 @@
 
 package org.jage.monitoring.persistence.dao;
 
-import static com.google.common.collect.Lists.newLinkedList;
-
-import java.util.Collection;
-import java.util.List;
 
 import org.hibernate.Transaction;
 import org.jage.monitoring.persistence.config.HibernateConfiguration;
@@ -45,34 +41,40 @@ import org.jage.monitoring.persistence.model.Data;
 import org.jage.monitoring.persistence.model.GathererName;
 import org.jage.monitoring.persistence.model.Property;
 
+import java.util.Collection;
+import java.util.List;
+
+import static com.google.common.collect.Lists.newLinkedList;
+
+
 /**
  * DAO for Property class.
- * 
+ *
  * @author AGH AgE Team
  */
-public class PropertyDao extends AbstractHibernateDao{
+public class PropertyDao extends AbstractHibernateDao {
 
-	public PropertyDao(HibernateConfiguration hibernateConfiguration){
-		super(hibernateConfiguration);
-	}
-	
-	public void mergeProperty(GathererName gathererName, ComputationInstance computationInstance, long timestamp, Object data) {
-		List<Data> dataList = newLinkedList();
-		
-		if (data instanceof Collection){
-			int i = 0;
-			for (Object object : (Collection<Object>)data) {
-				dataList.add(new Data(i, object.toString()));
-				i++;
-			}
-		} else {
-			dataList.add(new Data(0, data.toString()));
-		}
-		Property property = new Property(gathererName, computationInstance, timestamp, dataList);
-		hibernateSession = hibernateConfiguration.openSession();
-		Transaction tx = hibernateSession.beginTransaction();
-		hibernateSession.merge(property);
-		tx.commit();
-		hibernateSession.close();
-	}
+    public PropertyDao(HibernateConfiguration hibernateConfiguration) {
+        super(hibernateConfiguration);
+    }
+
+    public void mergeProperty(GathererName gathererName, ComputationInstance computationInstance, long timestamp, Object data) {
+        List<Data> dataList = newLinkedList();
+
+        if(data instanceof Collection) {
+            int i = 0;
+            for(Object object : (Collection<Object>) data) {
+                dataList.add(new Data(i, object.toString()));
+                i++;
+            }
+        } else {
+            dataList.add(new Data(0, data.toString()));
+        }
+        Property property = new Property(gathererName, computationInstance, timestamp, dataList);
+        hibernateSession = hibernateConfiguration.openSession();
+        Transaction tx = hibernateSession.beginTransaction();
+        hibernateSession.merge(property);
+        tx.commit();
+        hibernateSession.close();
+    }
 }

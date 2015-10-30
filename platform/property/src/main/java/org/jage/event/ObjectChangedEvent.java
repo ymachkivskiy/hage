@@ -31,6 +31,7 @@
 
 package org.jage.event;
 
+
 /**
  * Event that stores information about changed object.
  *
@@ -38,36 +39,34 @@ package org.jage.event;
  */
 public class ObjectChangedEvent extends AbstractEvent {
 
-	private final Object changedObject;
+    private final Object changedObject;
 
-	/**
-	 * Constructor.
-	 *
-	 * @param changedObject
-	 *            object that has been changed.
-	 */
-	public ObjectChangedEvent(Object changedObject) {
-		this.changedObject = changedObject;
-	}
+    /**
+     * Constructor.
+     *
+     * @param changedObject object that has been changed.
+     */
+    public ObjectChangedEvent(Object changedObject) {
+        this.changedObject = changedObject;
+    }
 
-	/**
-	 * Returns object that has been changed.
-	 *
-	 * @return object that has been changed.
-	 */
-	public Object getChangedObject() {
-		return changedObject;
-	}
+    /**
+     * Returns object that has been changed.
+     *
+     * @return object that has been changed.
+     */
+    public Object getChangedObject() {
+        return changedObject;
+    }
 
-	/**
-	 *
-	 * {@inheritDoc}
-	 *
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "ObjectChangedEvent(" + (changedObject != null ? changedObject.toString() : "null") + ")";
-	}
+    /**
+     * {@inheritDoc}
+     *
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return "ObjectChangedEvent(" + (changedObject != null ? changedObject.toString() : "null") + ")";
+    }
 
 }

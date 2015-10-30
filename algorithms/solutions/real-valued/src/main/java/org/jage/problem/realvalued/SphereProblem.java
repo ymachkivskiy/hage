@@ -31,7 +31,9 @@
 
 package org.jage.problem.realvalued;
 
+
 import org.jage.problem.ParallelProblem;
+
 
 /**
  * This class represents the problem domain for a floating-point coded Sphere function. <br />
@@ -42,15 +44,14 @@ import org.jage.problem.ParallelProblem;
  */
 public final class SphereProblem extends ParallelProblem<Double> {
 
-	private static final double DEFAULT_RANGE = 5.12;
+    private static final double DEFAULT_RANGE = 5.12;
 
-	/**
-	 * Creates a SphereProblem with a default range of [-5.12, 5.12].
-	 *
-	 * @param dimension
-	 *            The dimension of this problem
-	 */
-	public SphereProblem(Integer dimension) {
-		super(dimension, -DEFAULT_RANGE, DEFAULT_RANGE);
-	}
+    /**
+     * Creates a SphereProblem with a default range of [-5.12, 5.12].
+     *
+     * @param dimension The dimension of this problem
+     */
+    public SphereProblem(Integer dimension) {
+        super(dimension, -DEFAULT_RANGE, DEFAULT_RANGE);
+    }
 }

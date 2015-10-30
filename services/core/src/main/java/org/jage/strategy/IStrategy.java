@@ -31,6 +31,7 @@
 
 package org.jage.strategy;
 
+
 import java.io.Serializable;
 
 
@@ -40,4 +41,5 @@ import java.io.Serializable;
  * @author AGH AgE Team
  */
 public interface IStrategy extends Serializable {
+
 }

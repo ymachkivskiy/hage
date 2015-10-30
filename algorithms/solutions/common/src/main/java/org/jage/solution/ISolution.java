@@ -31,7 +31,9 @@
 
 package org.jage.solution;
 
+
 import java.io.Serializable;
+
 
 /**
  * A solution to a problem.
@@ -40,10 +42,10 @@ import java.io.Serializable;
  */
 public interface ISolution extends Serializable {
 
-	/**
-	 * Returns solution's internal representation.
-	 *
-	 * @return this solution's representation
-	 */
-	public Object getRepresentation();
+    /**
+     * Returns solution's internal representation.
+     *
+     * @return this solution's representation
+     */
+    public Object getRepresentation();
 }

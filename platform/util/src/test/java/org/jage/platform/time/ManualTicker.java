@@ -31,30 +31,31 @@
 
 package org.jage.platform.time;
 
+
 import com.google.common.base.Ticker;
+
 
 /**
  * A ticker that can be manually moved in time.
- * 
+ *
  * @author AGH AgE Team
  */
 public class ManualTicker extends Ticker {
 
-	private long nextValue;
+    private long nextValue;
 
-	@Override
-	public long read() {
-		return nextValue;
-	}
+    @Override
+    public long read() {
+        return nextValue;
+    }
 
-	/**
-	 * Increase value that this ticker holds.
-	 * 
-	 * @param value
-	 *            a number to add to the current value.
-	 */
-	public void increaseValue(final long value) {
-		this.nextValue += value;
-	}
+    /**
+     * Increase value that this ticker holds.
+     *
+     * @param value a number to add to the current value.
+     */
+    public void increaseValue(final long value) {
+        this.nextValue += value;
+    }
 
 }

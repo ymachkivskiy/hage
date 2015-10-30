@@ -31,12 +31,6 @@
 
 package org.jage.examples.properties.xml;
 
-import java.util.Collection;
-
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.jage.address.agent.AgentAddress;
 import org.jage.address.agent.AgentAddressSupplier;
@@ -49,6 +43,12 @@ import org.jage.property.Property;
 import org.jage.property.PropertyGetter;
 import org.jage.property.PropertySetter;
 import org.jage.query.AgentEnvironmentQuery;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
+import java.util.Collection;
+
 
 /**
  * This agent publishes some properties and watches its environment for other agents.
@@ -57,126 +57,122 @@ import org.jage.query.AgentEnvironmentQuery;
  */
 public class PropertiesSimpleAgent extends SimpleAgent {
 
-	private static final long serialVersionUID = 2L;
+    private static final long serialVersionUID = 2L;
+    private final Logger log = LoggerFactory.getLogger(PropertiesSimpleAgent.class);
+    private String actor = null;
+    /**
+     * Steps counter
+     */
+    private transient int counter = 0;
+    private SimpleFunctionCounter functionCounter;
 
-	/**
-	 * PropertiesSimpleAgent properties.
-	 *
-	 * @author AGH AgE Team
-	 */
-	public static class Properties {
+    public PropertiesSimpleAgent(final AgentAddress address) {
+        super(address);
+    }
 
-		/**
-		 * Actor property.
-		 */
-		public static final String ACTOR = "Actor";
-	}
+    @Inject
+    public PropertiesSimpleAgent(final AgentAddressSupplier supplier) {
+        super(supplier);
+    }
 
-	private final Logger log = LoggerFactory.getLogger(PropertiesSimpleAgent.class);
+    @PropertySetter(propertyName = Properties.ACTOR)
+    public void setActor(final String actor) {
+        this.actor = actor;
+    }
 
-	private String actor = null;
+    @PropertyGetter(propertyName = Properties.ACTOR)
+    public String getActor() {
+        return actor;
+    }
 
-	@PropertySetter(propertyName = Properties.ACTOR)
-	public void setActor(final String actor) {
-		this.actor = actor;
-	}
+    @Override
+    public void init() throws ComponentException {
+        super.init();
+        log.info("Initializing agent: {}", getAddress());
+    }
 
-	@PropertyGetter(propertyName = Properties.ACTOR)
-	public String getActor() {
-		return actor;
-	}
+    @Override
+    public boolean finish() {
+        log.info("Finishing {}", getAddress());
+        return true;
+    }
 
-	/**
-	 * Steps counter
-	 */
-	private transient int counter = 0;
+    /**
+     * Executes a step of the agent. In the execution a <code>function counter</code> strategy is called and the
+     * environment is queried. {@inheritDoc}
+     *
+     * @see org.jage.agent.SimpleAgent#step()
+     */
+    @Override
+    public void step() {
+        counter++;
+        log.info("Agent {}: step {}", getAddress(), counter);
+        log.info("Agent: {} counted function. The result for {} is: {}",
+                 getAddress(), functionCounter.toString(), functionCounter.countSquareSum());
+        if((counter + hashCode()) % 3 == 0) {
+            watch();
+        }
 
-	private SimpleFunctionCounter functionCounter;
+        try {
+            Thread.sleep(200);
+        } catch(final InterruptedException e) {
+            log.error("Interrupted", e);
+        }
+    }
 
-	public PropertiesSimpleAgent(final AgentAddress address) {
-		super(address);
-	}
+    private void watch() {
+        Collection<SimpleAgent> answer;
+        try {
+            final AgentEnvironmentQuery<SimpleAgent, SimpleAgent> query = new AgentEnvironmentQuery<SimpleAgent, SimpleAgent>();
 
-	@Inject
-	public PropertiesSimpleAgent(final AgentAddressSupplier supplier) {
-		super(supplier);
-	}
+            answer = queryEnvironment(query);
+            log.info("Agent: {} can see in its environment: {} following agents:", getAddress(), getParentAddress());
+            for(final SimpleAgent entry : answer) {
+                final AgentAddress agentAddress = (AgentAddress) entry.getProperty(AbstractAgent.Properties.ADDRESS)
+                        .getValue();
+                if(agentAddress != getAddress()) {
+                    log.info("    agent: {} with properties:", agentAddress);
 
-	@Override
-	public void init() throws ComponentException {
-		super.init();
-		log.info("Initializing agent: {}", getAddress());
-	}
+                    for(final Property property : entry.getProperties()) {
+                        log.info("        {}: {}", property.getMetaProperty().getName(), property.getValue());
+                    }
+                }
+            }
+        } catch(final AgentException e) {
+            log.error("Agent exception", e);
+        } catch(final InvalidPropertyPathException e) {
+            log.error("Invalid property", e);
+        }
 
-	/**
-	 * Executes a step of the agent. In the execution a <code>function counter</code> strategy is called and the
-	 * environment is queried. {@inheritDoc}
-	 *
-	 * @see org.jage.agent.SimpleAgent#step()
-	 */
-	@Override
-	public void step() {
-		counter++;
-		log.info("Agent {}: step {}", getAddress(), counter);
-		log.info("Agent: {} counted function. The result for {} is: {}",
-		        new Object[] { getAddress(), functionCounter.toString(), functionCounter.countSquareSum() });
-		if ((counter + hashCode()) % 3 == 0) {
-			watch();
-		}
+    }
 
-		try {
-			Thread.sleep(200);
-		} catch (final InterruptedException e) {
-			log.error("Interrupted", e);
-		}
-	}
+    @PropertyGetter(propertyName = "functionCounter", isMonitorable = true)
+    public SimpleFunctionCounter getFunctionCounter() {
+        return functionCounter;
+    }
 
-	private void watch() {
-		Collection<SimpleAgent> answer;
-		try {
-			final AgentEnvironmentQuery<SimpleAgent, SimpleAgent> query = new AgentEnvironmentQuery<SimpleAgent, SimpleAgent>();
+    /**
+     * Sets a <code>function counter</code> strategy.
+     *
+     * @param functionCounter A function to use by this agent.
+     */
+    @Inject
+    @PropertySetter(propertyName = "functionCounter")
+    public void setFunctionCounter(final SimpleFunctionCounter functionCounter) {
+        this.functionCounter = functionCounter;
+    }
 
-			answer = queryEnvironment(query);
-			log.info("Agent: {} can see in its environment: {} following agents:", getAddress(), getParentAddress());
-			for (final SimpleAgent entry : answer) {
-				final AgentAddress agentAddress = (AgentAddress)entry.getProperty(AbstractAgent.Properties.ADDRESS)
-				        .getValue();
-				if (agentAddress != getAddress()) {
-					log.info("    agent: {} with properties:", agentAddress);
 
-					for (final Property property : entry.getProperties()) {
-						log.info("        {}: {}", property.getMetaProperty().getName(), property.getValue());
-					}
-				}
-			}
-		} catch (final AgentException e) {
-			log.error("Agent exception", e);
-		} catch (final InvalidPropertyPathException e) {
-			log.error("Invalid property", e);
-		}
+    /**
+     * PropertiesSimpleAgent properties.
+     *
+     * @author AGH AgE Team
+     */
+    public static class Properties {
 
-	}
-
-	@Override
-	public boolean finish() {
-		log.info("Finishing {}", getAddress());
-		return true;
-	}
-
-	@PropertyGetter(propertyName = "functionCounter", isMonitorable = true)
-	public SimpleFunctionCounter getFunctionCounter() {
-		return functionCounter;
-	}
-
-	/**
-	 * Sets a <code>function counter</code> strategy.
-	 *
-	 * @param functionCounter
-	 *            A function to use by this agent.
-	 */
-	@Inject
-	@PropertySetter(propertyName = "functionCounter")
-	public void setFunctionCounter(final SimpleFunctionCounter functionCounter) {
-		this.functionCounter = functionCounter;
-	}
+        /**
+         * Actor property.
+         */
+        public static final String ACTOR = "Actor";
+    }
 }

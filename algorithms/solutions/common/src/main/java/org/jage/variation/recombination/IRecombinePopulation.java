@@ -31,25 +31,25 @@
 
 package org.jage.variation.recombination;
 
+
 import org.jage.population.IPopulation;
 import org.jage.solution.ISolution;
 import org.jage.strategy.IStrategy;
 
+
 /**
  * Strategy interface for recombining a population of solutions.
  *
- * @param <S>
- *            the type of the solutions held by the population to be recombined
+ * @param <S> the type of the solutions held by the population to be recombined
  * @author AGH AgE Team
  */
 public interface IRecombinePopulation<S extends ISolution> extends IStrategy {
 
-	/**
-	 * Recombines the given population.
-	 *
-	 * @param population
-	 *            The population to be recombined
-	 */
-	public void recombinePopulation(IPopulation<S, ?> population);
+    /**
+     * Recombines the given population.
+     *
+     * @param population The population to be recombined
+     */
+    public void recombinePopulation(IPopulation<S, ?> population);
 
 }

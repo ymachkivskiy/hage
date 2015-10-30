@@ -26,9 +26,6 @@
  */
 package org.jage.property.annotations;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.jage.property.DuplicatePropertyNameException;
 import org.jage.property.IClassPropertiesFactory;
@@ -39,61 +36,66 @@ import org.jage.property.MetaProperty;
 import org.jage.property.PropertiesSet;
 import org.jage.property.PropertyException;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+
+
 public final class ClassPropertiesFactory implements IClassPropertiesFactory {
 
-	private final HashMap<Class<?>, Set<MetaProperty>> classMetaProperties = new HashMap<Class<?>, Set<MetaProperty>>();
+    private final HashMap<Class<?>, Set<MetaProperty>> classMetaProperties = new HashMap<Class<?>, Set<MetaProperty>>();
 
-	private final IPropertiesReader propertiesReader;
+    private final IPropertiesReader propertiesReader;
 
-	public ClassPropertiesFactory(IPropertiesReader propertiesReader) {
-		this.propertiesReader = propertiesReader;
-	}
+    public ClassPropertiesFactory(IPropertiesReader propertiesReader) {
+        this.propertiesReader = propertiesReader;
+    }
 
-	@Override
-	public PropertiesSet getAllProperties(Object object) throws InvalidPropertyDefinitionException {
-		try {
-			Set<MetaProperty> metaProperties = loadMetaPropertiesFor(object.getClass());
+    @Override
+    public PropertiesSet getAllProperties(Object object) throws InvalidPropertyDefinitionException {
+        try {
+            Set<MetaProperty> metaProperties = loadMetaPropertiesFor(object.getClass());
 
-			PropertiesSet propertiesSet = new PropertiesSet();
-			for (MetaProperty metaProperty : metaProperties) {
-				propertiesSet.addProperty(metaProperty.createPropertyFor(object));
-			}
+            PropertiesSet propertiesSet = new PropertiesSet();
+            for(MetaProperty metaProperty : metaProperties) {
+                propertiesSet.addProperty(metaProperty.createPropertyFor(object));
+            }
 
-			return propertiesSet;
-		} catch (InvalidPropertyOperationException ex) {
-			throw new InvalidPropertyDefinitionException(String.format("Unable to create a property for class %s.",
-			        object.getClass()), ex);
-		} catch (DuplicatePropertyNameException ex) {
-			throw new InvalidPropertyDefinitionException(String.format(
-			        "Properties with duplicated name exist in class %s.", object.getClass()), ex);
-		} catch (PropertyException e) {
-			throw new InvalidPropertyDefinitionException(e);
+            return propertiesSet;
+        } catch(InvalidPropertyOperationException ex) {
+            throw new InvalidPropertyDefinitionException(String.format("Unable to create a property for class %s.",
+                                                                       object.getClass()), ex);
+        } catch(DuplicatePropertyNameException ex) {
+            throw new InvalidPropertyDefinitionException(String.format(
+                    "Properties with duplicated name exist in class %s.", object.getClass()), ex);
+        } catch(PropertyException e) {
+            throw new InvalidPropertyDefinitionException(e);
         }
-	}
+    }
 
-	@Override
-	public MetaPropertiesSet getAllMetaProperties(Object object) throws InvalidPropertyDefinitionException {
-		try {
-			Set<MetaProperty> metaProperties = loadMetaPropertiesFor(object.getClass());
+    @Override
+    public MetaPropertiesSet getAllMetaProperties(Object object) throws InvalidPropertyDefinitionException {
+        try {
+            Set<MetaProperty> metaProperties = loadMetaPropertiesFor(object.getClass());
 
-			MetaPropertiesSet metaPropertiesSet = new MetaPropertiesSet();
-			metaPropertiesSet.addAllMetaProperties(metaProperties);
+            MetaPropertiesSet metaPropertiesSet = new MetaPropertiesSet();
+            metaPropertiesSet.addAllMetaProperties(metaProperties);
 
-			return metaPropertiesSet;
-		} catch (PropertyException e) {
-			throw new InvalidPropertyDefinitionException(e);
+            return metaPropertiesSet;
+        } catch(PropertyException e) {
+            throw new InvalidPropertyDefinitionException(e);
         }
-	}
+    }
 
-	private Set<MetaProperty> loadMetaPropertiesFor(Class<?> clazz) throws InvalidPropertyDefinitionException, PropertyException {
-		Set<MetaProperty> metaProperties = classMetaProperties.get(clazz);
-		if (metaProperties == null) {
-			metaProperties = new HashSet<MetaProperty>();
-			metaProperties.addAll(propertiesReader.readFieldMetaProperties(clazz));
-			metaProperties.addAll(propertiesReader.readGetterSetterMetaProperties(clazz));
-			classMetaProperties.put(clazz, metaProperties);
-		}
+    private Set<MetaProperty> loadMetaPropertiesFor(Class<?> clazz) throws PropertyException {
+        Set<MetaProperty> metaProperties = classMetaProperties.get(clazz);
+        if(metaProperties == null) {
+            metaProperties = new HashSet<MetaProperty>();
+            metaProperties.addAll(propertiesReader.readFieldMetaProperties(clazz));
+            metaProperties.addAll(propertiesReader.readGetterSetterMetaProperties(clazz));
+            classMetaProperties.put(clazz, metaProperties);
+        }
 
-		return metaProperties;
-	}
+        return metaProperties;
+    }
 }

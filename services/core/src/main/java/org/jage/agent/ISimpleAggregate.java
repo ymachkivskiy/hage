@@ -31,30 +31,29 @@
 
 package org.jage.agent;
 
-import java.util.Collection;
 
 import org.jage.action.SingleAction;
 import org.jage.address.agent.AgentAddress;
 import org.jage.address.selector.BroadcastSelector;
 
+import java.util.Collection;
+
+
 /**
  * An interface for simple aggregates. It adds methods for performing actions.
  *
  * @author AGH AgE Team
- *
  */
 public interface ISimpleAggregate extends IAggregate<ISimpleAgent>, ISimpleAgent {
 
-	/**
-	 * Validate given action. It checks if used addresses point to agents in current aggregate.
-	 *
-	 * @param action
-	 *            single action to validate
-	 * @return collection of agent addresses used in action, if no addresses is used (action has selectors such as
-	 *         {@link BroadcastSelector}, etc.) the empty collection is returned; <code>null</code> is returned when
-	 *         action didn't validate addresses - then a default validation is performed
-	 * @throws AgentException
-	 *             when validation fails.
-	 */
-	Collection<AgentAddress> validateAction(SingleAction action);
+    /**
+     * Validate given action. It checks if used addresses point to agents in current aggregate.
+     *
+     * @param action single action to validate
+     * @return collection of agent addresses used in action, if no addresses is used (action has selectors such as
+     * {@link BroadcastSelector}, etc.) the empty collection is returned; <code>null</code> is returned when
+     * action didn't validate addresses - then a default validation is performed
+     * @throws AgentException when validation fails.
+     */
+    Collection<AgentAddress> validateAction(SingleAction action);
 }

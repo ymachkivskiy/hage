@@ -31,24 +31,24 @@
 
 package org.jage.agent;
 
-import java.util.List;
-
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.jage.action.Action;
-import org.jage.action.preparators.IActionPreparator;
+import org.jage.action.preparers.IActionPreparer;
 import org.jage.address.agent.AgentAddress;
 import org.jage.address.agent.AgentAddressSupplier;
 import org.jage.platform.component.exception.ComponentException;
 import org.jage.property.PropertyField;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
+import java.util.List;
+
 
 /**
- * This aggregate implementation relies on a {@link IActionPreparator} to provide its actual behavior.
+ * This aggregate implementation relies on a {@link org.jage.action.preparers.IActionPreparer} to provide its actual behavior.
  * <p>
- * Given the aggregate state and environment, the {@link IActionPreparator} prepares an appropriate action, which is
+ * Given the aggregate state and environment, the {@link org.jage.action.preparers.IActionPreparer} prepares an appropriate action, which is
  * then run by the aggregate.
  * <p>
  * Then, the aggregate runs the step methods of its children.
@@ -57,69 +57,66 @@ import org.jage.property.PropertyField;
  */
 public class ActionDrivenAggregate extends SimpleAggregate {
 
-	/**
-	 * ActionDrivenAggregate properties.
-	 *
-	 * @author AGH AgE Team
-	 */
-	public static class Properties {
+    private static final long serialVersionUID = 1L;
+    private static final Logger log = LoggerFactory.getLogger(ActionDrivenAggregate.class);
+    @Inject
+    private IActionPreparer<ActionDrivenAggregate> actionPreparator;
+    @PropertyField(propertyName = Properties.STEP)
+    private long step = 0;
+    private ActionDrivenAggregateActionService actionService;
 
-		/**
-		 * The actual step of computation.
-		 */
-		public static final String STEP = "step";
-	}
-
-	private static final long serialVersionUID = 1L;
-
-	private static final Logger log = LoggerFactory.getLogger(ActionDrivenAggregate.class);
-
-	@Inject
-	private IActionPreparator<ActionDrivenAggregate> actionPreparator;
-
-	@PropertyField(propertyName = Properties.STEP)
-	private long step = 0;
-
-	private ActionDrivenAggregateActionService actionService;
-
-	public ActionDrivenAggregate(final AgentAddress address) {
-	    super(address);
+    public ActionDrivenAggregate(final AgentAddress address) {
+        super(address);
     }
 
-	@Inject
-	public ActionDrivenAggregate(final AgentAddressSupplier supplier) {
-	    super(supplier);
+    @Inject
+    public ActionDrivenAggregate(final AgentAddressSupplier supplier) {
+        super(supplier);
     }
 
-	public long getStep() {
-		return step;
-	}
+    public long getStep() {
+        return step;
+    }
 
-	@Override
-	public void init() throws ComponentException {
-		super.init();
-		if (!(getActionService() instanceof ActionDrivenAggregateActionService)) {
-			throw new AggregateException(String.format("%s was expected as an action service.",
-			        ActionDrivenAggregateActionService.class));
-		}
-		actionService = (ActionDrivenAggregateActionService)getActionService();
-	}
+    @Override
+    public void init() throws ComponentException {
+        super.init();
+        if(!(getActionService() instanceof ActionDrivenAggregateActionService)) {
+            throw new AggregateException(String.format("%s was expected as an action service.",
+                                                       ActionDrivenAggregateActionService.class));
+        }
+        actionService = (ActionDrivenAggregateActionService) getActionService();
+    }
 
-	@Override
-	public void step() {
-		// invoke on children
-		super.step();
-		actionService.performPostponedActions();
+    @Override
+    public void step() {
+        // invoke on children
+        super.step();
+        actionService.performPostponedActions();
 
-		try {
-			final List<Action> actions = actionPreparator.prepareActions(this);
-			log.debug("Step {}, Submitting actions: {}", step, actions);
-			doActions(actions);
-		} catch (final AgentException e) {
-			log.error("An exception occurred during the action call", e);
-		}
+        try {
+            final List<Action> actions = actionPreparator.prepareActions(this);
+            log.debug("Step {}, Submitting actions: {}", step, actions);
+            doActions(actions);
+        } catch(final AgentException e) {
+            log.error("An exception occurred during the action call", e);
+        }
 
-		step++;
-		notifyMonitorsForChangedProperties();
-	}
+        step++;
+        notifyMonitorsForChangedProperties();
+    }
+
+
+    /**
+     * ActionDrivenAggregate properties.
+     *
+     * @author AGH AgE Team
+     */
+    public static class Properties {
+
+        /**
+         * The actual step of computation.
+         */
+        public static final String STEP = "step";
+    }
 }

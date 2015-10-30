@@ -31,10 +31,12 @@
 
 package org.jage.platform.component.definition;
 
+
 import com.google.common.base.Objects;
 
 import static com.google.common.base.Objects.toStringHelper;
 import static com.google.common.base.Preconditions.checkNotNull;
+
 
 /**
  * This argument definition simply refers to another component.
@@ -45,41 +47,40 @@ public class ReferenceDefinition implements IArgumentDefinition {
 
     private static final long serialVersionUID = 6039110377522832121L;
 
-	private final String targetName;
+    private final String targetName;
 
-	/**
-	 * Creates a reference definition referring to the given target component.
-	 *
-	 * @param targetName
-	 *            name of target component
-	 */
-	public ReferenceDefinition(final String targetName) {
-		this.targetName = checkNotNull(targetName);
-	}
+    /**
+     * Creates a reference definition referring to the given target component.
+     *
+     * @param targetName name of target component
+     */
+    public ReferenceDefinition(final String targetName) {
+        this.targetName = checkNotNull(targetName);
+    }
 
-	public String getTargetName() {
-		return targetName;
-	}
+    public String getTargetName() {
+        return targetName;
+    }
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (obj instanceof ReferenceDefinition) {
-			final ReferenceDefinition other = (ReferenceDefinition)obj;
-			return Objects.equal(targetName, other.targetName);
-		} else {
-			return false;
-		}
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(targetName);
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hashCode(targetName);
-	}
+    @Override
+    public boolean equals(final Object obj) {
+        if(obj instanceof ReferenceDefinition) {
+            final ReferenceDefinition other = (ReferenceDefinition) obj;
+            return Objects.equal(targetName, other.targetName);
+        } else {
+            return false;
+        }
+    }
 
-	@Override
-	public String toString() {
-		return toStringHelper(this)
-				.add("targetName", targetName)
-				.toString();
-	}
+    @Override
+    public String toString() {
+        return toStringHelper(this)
+                .add("targetName", targetName)
+                .toString();
+    }
 }

@@ -31,15 +31,18 @@
 
 package org.jage.lifecycle;
 
-import javax.annotation.concurrent.Immutable;
-
-import org.jage.bus.AgeEvent;
 
 import com.google.common.base.Objects;
+import org.jage.bus.AgeEvent;
+
+import javax.annotation.concurrent.Immutable;
+
 
 @Immutable
 public final class ExitRequestedEvent implements AgeEvent {
-	@Override public String toString() {
-		return Objects.toStringHelper(this).toString();
-	}
+
+    @Override
+    public String toString() {
+        return Objects.toStringHelper(this).toString();
+    }
 }

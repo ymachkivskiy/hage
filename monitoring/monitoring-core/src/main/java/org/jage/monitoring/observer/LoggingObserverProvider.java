@@ -27,24 +27,26 @@
 
 package org.jage.monitoring.observer;
 
+
+import com.typesafe.config.Config;
 import org.jage.monitoring.config.ExecutorProvider;
 import org.jage.platform.component.provider.IComponentInstanceProvider;
 
-import com.typesafe.config.Config;
 
 /**
  * Provides an instance of <code>LoggingObserver</code>.
- * 
+ *
  * @author AGH AgE Team
  */
 public class LoggingObserverProvider implements ObserverProvider {
-	@Override
-	public AbstractStatefulObserver create(final Config c, final IComponentInstanceProvider provider) {
-		return new LoggingObserver(provider.getInstance(ExecutorProvider.class));
-	}
 
-	@Override
-	public String getType() {
-		return "console";
-	}
+    @Override
+    public AbstractStatefulObserver create(final Config c, final IComponentInstanceProvider provider) {
+        return new LoggingObserver(provider.getInstance(ExecutorProvider.class));
+    }
+
+    @Override
+    public String getType() {
+        return "console";
+    }
 }

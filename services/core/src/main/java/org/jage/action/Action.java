@@ -31,10 +31,12 @@
 
 package org.jage.action;
 
+
 import java.util.Deque;
 import java.util.Iterator;
 
 import static com.google.common.collect.Lists.newLinkedList;
+
 
 /**
  * An abstract class which represents an action. It allows to create tree structure of actions and contains the iterator
@@ -44,47 +46,48 @@ import static com.google.common.collect.Lists.newLinkedList;
  */
 public abstract class Action implements Iterable<SingleAction> {
 
-	@Override
-	public Iterator<SingleAction> iterator() {
-		return new ActionIterator(this);
-	}
+    @Override
+    public Iterator<SingleAction> iterator() {
+        return new ActionIterator(this);
+    }
 
-	private class ActionIterator implements Iterator<SingleAction> {
+    private class ActionIterator implements Iterator<SingleAction> {
 
-		private final Deque<SingleAction> stack = newLinkedList();
+        private final Deque<SingleAction> stack = newLinkedList();
 
-		public ActionIterator(final Action a) {
-			prepareIterator(a);
-		}
+        public ActionIterator(final Action a) {
+            prepareIterator(a);
+        }
 
-		@Override
-		public boolean hasNext() {
-			return !stack.isEmpty();
-		}
+        private void prepareIterator(final Action a) {
+            if(a instanceof SingleAction) {
+                stack.addLast((SingleAction) a);
+            } else {
+                final ComplexAction ca = (ComplexAction) a;
 
-		@Override
-		public SingleAction next() {
-			if (!hasNext()) {
-				return null;
-			}
-			return stack.removeFirst();
-		}
+                for(Action child : ca.getChildren()) {
+                    prepareIterator(child);
+                }
+            }
+        }
 
-		@Override
-		public void remove() {
-			throw new UnsupportedOperationException("Can't remove subaction");
-		}
+        @Override
+        public boolean hasNext() {
+            return !stack.isEmpty();
+        }
 
-		private void prepareIterator(final Action a) {
-			if (a instanceof SingleAction) {
-				stack.addLast((SingleAction)a);
-			} else {
-				final ComplexAction ca = (ComplexAction)a;
+        @Override
+        public SingleAction next() {
+            if(!hasNext()) {
+                return null;
+            }
+            return stack.removeFirst();
+        }
 
-				for (Action child : ca.getChildren()) {
-					prepareIterator(child);
-				}
-			}
-		}
-	}
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException("Can't remove subaction");
+        }
+
+    }
 }

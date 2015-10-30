@@ -31,14 +31,15 @@
 
 package org.jage.variation.mutation;
 
-import java.util.List;
-
-import javax.inject.Inject;
 
 import org.jage.random.IDoubleRandomGenerator;
 import org.jage.random.IIntRandomGenerator;
 import org.jage.solution.IVectorSolution;
 import org.jage.strategy.AbstractStrategy;
+
+import javax.inject.Inject;
+import java.util.List;
+
 
 /**
  * Abstract implementation of {@link IMutateSolution}. Features are not mutated independently. Instead, a random subset
@@ -47,67 +48,63 @@ import org.jage.strategy.AbstractStrategy;
  * <br />
  * Concrete subclasses are supposed to provide the actual mutation computation.
  *
- * @param <R>
- *            the representation type of the solution to be mutated
+ * @param <R> the representation type of the solution to be mutated
  * @author AGH AgE Team
  */
 public abstract class AbstractStochasticMutate<R> extends AbstractStrategy implements
-        IMutateSolution<IVectorSolution<R>> {
+                                                                           IMutateSolution<IVectorSolution<R>> {
 
-	private static final double DEFAULT_CHANCE_TO_MUTATE = 0.5;
+    private static final double DEFAULT_CHANCE_TO_MUTATE = 0.5;
 
-	@Inject
-	private IDoubleRandomGenerator doubleRand;
+    @Inject
+    private IDoubleRandomGenerator doubleRand;
 
-	@Inject
-	private IIntRandomGenerator intRand;
+    @Inject
+    private IIntRandomGenerator intRand;
 
-	private double chanceToMutate;
+    private double chanceToMutate;
 
-	protected AbstractStochasticMutate() {
-		this(DEFAULT_CHANCE_TO_MUTATE);
-	}
-
-	protected AbstractStochasticMutate(final double chanceToMutate) {
-		this.chanceToMutate = chanceToMutate;
-	}
-
-    public void setChanceToMutate(final double chanceToMutate) {
-	    this.chanceToMutate = chanceToMutate;
+    protected AbstractStochasticMutate() {
+        this(DEFAULT_CHANCE_TO_MUTATE);
     }
 
-	@Override
-	public final void mutateSolution(final IVectorSolution<R> solution) {
-		final List<R> representation = solution.getRepresentation();
-		final int size = representation.size();
+    protected AbstractStochasticMutate(final double chanceToMutate) {
+        this.chanceToMutate = chanceToMutate;
+    }
 
-		int mutatedBitsCount = (int)(chanceToMutate * size);
-		final double chanceForExtraBit = chanceToMutate * size - mutatedBitsCount;
-		final int extraBit = (doubleRand.nextDouble() < chanceForExtraBit) ? 1 : 0;
-		mutatedBitsCount += extraBit;
+    public void setChanceToMutate(final double chanceToMutate) {
+        this.chanceToMutate = chanceToMutate;
+    }
 
-		final boolean[] alreadyChecked = new boolean[size];
-		for (int i = 0; i < mutatedBitsCount; i++) {
-			int k = intRand.nextInt(size);
-			while (alreadyChecked[k]) {
-				k = intRand.nextInt(size);
-			}
-			alreadyChecked[k] = true;
-			doMutate(representation, k);
-		}
-	}
+    @Override
+    public final void mutateSolution(final IVectorSolution<R> solution) {
+        final List<R> representation = solution.getRepresentation();
+        final int size = representation.size();
 
-	/**
-	 * Mutate the representation at the given index. <br />
-	 * <br />
-	 * This method purpose is to allow efficient unboxing in case of representations of primitives. Subclasses can then
-	 * cast the given representation in the corresponding fastutil collection.
-	 *
-	 *
-	 * @param representation
-	 *            the representation to be mutated
-	 * @param index
-	 *            the index at which mutation should occur
-	 */
-	protected abstract void doMutate(List<R> representation, int index);
+        int mutatedBitsCount = (int) (chanceToMutate * size);
+        final double chanceForExtraBit = chanceToMutate * size - mutatedBitsCount;
+        final int extraBit = (doubleRand.nextDouble() < chanceForExtraBit) ? 1 : 0;
+        mutatedBitsCount += extraBit;
+
+        final boolean[] alreadyChecked = new boolean[size];
+        for(int i = 0; i < mutatedBitsCount; i++) {
+            int k = intRand.nextInt(size);
+            while(alreadyChecked[k]) {
+                k = intRand.nextInt(size);
+            }
+            alreadyChecked[k] = true;
+            doMutate(representation, k);
+        }
+    }
+
+    /**
+     * Mutate the representation at the given index. <br />
+     * <br />
+     * This method purpose is to allow efficient unboxing in case of representations of primitives. Subclasses can then
+     * cast the given representation in the corresponding fastutil collection.
+     *
+     * @param representation the representation to be mutated
+     * @param index          the index at which mutation should occur
+     */
+    protected abstract void doMutate(List<R> representation, int index);
 }

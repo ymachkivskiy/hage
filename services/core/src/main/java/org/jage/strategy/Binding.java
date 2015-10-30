@@ -34,21 +34,24 @@
 
 package org.jage.strategy;
 
+
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+
 /**
  * Annotation definition. Defines the binding between two components.
- * 
+ * <p>
  * Inherited Optional
- * 
+ *
  * @author AGH AgE Team
  */
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Binding {
-	Class<?>[] type() default Binding.class;
 
-	Class<?>[] ref();
+    Class<?>[] type() default Binding.class;
+
+    Class<?>[] ref();
 }

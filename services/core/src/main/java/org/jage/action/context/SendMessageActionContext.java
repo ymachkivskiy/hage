@@ -31,53 +31,53 @@
 
 package org.jage.action.context;
 
+
+import com.google.common.base.Objects;
 import org.jage.address.agent.AgentAddress;
 import org.jage.communication.message.Message;
 
-import com.google.common.base.Objects;
-
 import static com.google.common.base.Preconditions.checkNotNull;
+
 
 /**
  * The action of sending a message to an agent.
- * 
+ *
  * @author AGH AgE Team
  */
 @AgentActionContext(SendMessageActionContext.ACTION_NAME)
 public class SendMessageActionContext extends AbstractAgentActionContext {
 
-	/**
-	 * The action name of this context.
-	 */
-	public static final String ACTION_NAME = "sendMessage";
+    /**
+     * The action name of this context.
+     */
+    public static final String ACTION_NAME = "sendMessage";
 
-	/**
-	 * The message to send.
-	 */
-	private final Message<AgentAddress, ?> message;
+    /**
+     * The message to send.
+     */
+    private final Message<AgentAddress, ?> message;
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param message
-	 *            the message to send
-	 */
-	public SendMessageActionContext(final Message<AgentAddress, ?> message) {
-		this.message = checkNotNull(message);
-	}
+    /**
+     * Constructor.
+     *
+     * @param message the message to send
+     */
+    public SendMessageActionContext(final Message<AgentAddress, ?> message) {
+        this.message = checkNotNull(message);
+    }
 
-	/**
-	 * Returns the message to send.
-	 * 
-	 * @return the message to send
-	 */
-	public Message<AgentAddress, ?> getMessage() {
-		return message;
-	}
+    /**
+     * Returns the message to send.
+     *
+     * @return the message to send
+     */
+    public Message<AgentAddress, ?> getMessage() {
+        return message;
+    }
 
-	@Override
-	public String toString() {
-		return Objects.toStringHelper(this).add("sender", message.getHeader().getSenderAddress()).toString();
-	}
+    @Override
+    public String toString() {
+        return Objects.toStringHelper(this).add("sender", message.getHeader().getSenderAddress()).toString();
+    }
 
 }

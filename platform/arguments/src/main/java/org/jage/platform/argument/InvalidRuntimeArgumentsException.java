@@ -31,7 +31,9 @@
 
 package org.jage.platform.argument;
 
+
 import org.jage.exception.AgeException;
+
 
 /**
  * Exception thrown when runtime arguments are invalid.
@@ -40,44 +42,37 @@ import org.jage.exception.AgeException;
  */
 public class InvalidRuntimeArgumentsException extends AgeException {
 
-	private static final long serialVersionUID = 2L;
+    private static final long serialVersionUID = 2L;
 
-	/**
-	 * Constructs a new exception with the specified detail message.
-	 *
-	 * @param message
-	 *            the detail message.
-	 *
-	 * @see Exception#Exception(String)
-	 */
-	public InvalidRuntimeArgumentsException(final String message) {
-		super(message);
-	}
+    /**
+     * Constructs a new exception with the specified detail message.
+     *
+     * @param message the detail message.
+     * @see Exception#Exception(String)
+     */
+    public InvalidRuntimeArgumentsException(final String message) {
+        super(message);
+    }
 
-	/**
-	 * Constructs a new exception with the specified detail message.
-	 *
-	 * @param cause
-	 *            the cause.
-	 *
-	 * @see Exception#Exception(String)
-	 */
-	public InvalidRuntimeArgumentsException(final Throwable cause) {
-		super(cause);
-	}
+    /**
+     * Constructs a new exception with the specified detail message.
+     *
+     * @param cause the cause.
+     * @see Exception#Exception(String)
+     */
+    public InvalidRuntimeArgumentsException(final Throwable cause) {
+        super(cause);
+    }
 
-	/**
-	 * Constructs a new exception with the specified cause and a detail message of
-	 * <tt>(cause==null ? null : cause.toString())</tt>.
-	 *
-	 * @param message
-	 *            the detail message.
-	 * @param cause
-	 *            the cause.
-	 *
-	 * @see Exception#Exception(String, Throwable)
-	 */
-	public InvalidRuntimeArgumentsException(final String message, final Throwable cause) {
-		super(message, cause);
-	}
+    /**
+     * Constructs a new exception with the specified cause and a detail message of
+     * <tt>(cause==null ? null : cause.toString())</tt>.
+     *
+     * @param message the detail message.
+     * @param cause   the cause.
+     * @see Exception#Exception(String, Throwable)
+     */
+    public InvalidRuntimeArgumentsException(final String message, final Throwable cause) {
+        super(message, cause);
+    }
 }

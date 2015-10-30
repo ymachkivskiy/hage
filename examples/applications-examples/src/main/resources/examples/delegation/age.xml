@@ -1,75 +1,75 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<configuration xmlns="http://age.iisg.agh.edu.pl/schema/age" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://age.iisg.agh.edu.pl/schema/age"
                xsi:schemaLocation="http://age.iisg.agh.edu.pl/schema/age http://age.iisg.agh.edu.pl/schema/age/age.xsd">
 
-	<include file="classpath:examples/common.xml">
-		<block name="workplaces">
-			<component name="workplace" class="org.jage.workplace.SimpleWorkplace" isSingleton="false">
-				<property name="agent">
-					<agent name="root" class="org.jage.examples.delegation.DelegationSimpleAggregate">
-						<component class="org.jage.address.agent.DefaultAgentAddressSupplier">
-							<constructor-arg name="nameTemplate" value="Root"/>
-						</component>
-						<property name="echoStrategy" ref="parentStrategy"/>
-						<property name="agents">
-							<list>
-								<agent name="level-1"
-								       class="org.jage.examples.delegation.DelegationSimpleAggregate">
-									<component class="org.jage.address.agent.DefaultAgentAddressSupplier">
-										<constructor-arg name="nameTemplate" value="Level-1"/>
-									</component>
-									<property name="echoStrategy" ref="parentStrategy"/>
-									<property name="childStrategy" value="parentStrategy"/>
+    <include file="classpath:examples/common.xml">
+        <block name="workplaces">
+            <component name="workplace" class="org.jage.workplace.SimpleWorkplace" isSingleton="false">
+                <property name="agent">
+                    <agent name="root" class="org.jage.examples.delegation.DelegationSimpleAggregate">
+                        <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                            <constructor-arg name="nameTemplate" value="Root"/>
+                        </component>
+                        <property name="echoStrategy" ref="parentStrategy"/>
+                        <property name="agents">
+                            <list>
+                                <agent name="level-1"
+                                       class="org.jage.examples.delegation.DelegationSimpleAggregate">
+                                    <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                                        <constructor-arg name="nameTemplate" value="Level-1"/>
+                                    </component>
+                                    <property name="echoStrategy" ref="parentStrategy"/>
+                                    <property name="childStrategy" value="parentStrategy"/>
 
-									<property name="agents">
-										<list>
-											<agent name="level-1-1"
-											       class="org.jage.examples.delegation.DelegationSimpleLeaf">
-												<component
-														class="org.jage.address.agent.DefaultAgentAddressSupplier">
-													<constructor-arg name="nameTemplate" value="Level-1-1"/>
-												</component>
-											</agent>
-											<agent name="level-1-2"
-											       class="org.jage.examples.delegation.DelegationSimpleLeaf">
-												<component
-														class="org.jage.address.agent.DefaultAgentAddressSupplier">
-													<constructor-arg name="nameTemplate" value="Level-1-2"/>
-												</component>
-											</agent>
-										</list>
-									</property>
-								</agent>
+                                    <property name="agents">
+                                        <list>
+                                            <agent name="level-1-1"
+                                                   class="org.jage.examples.delegation.DelegationSimpleLeaf">
+                                                <component
+                                                        class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                                                    <constructor-arg name="nameTemplate" value="Level-1-1"/>
+                                                </component>
+                                            </agent>
+                                            <agent name="level-1-2"
+                                                   class="org.jage.examples.delegation.DelegationSimpleLeaf">
+                                                <component
+                                                        class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                                                    <constructor-arg name="nameTemplate" value="Level-1-2"/>
+                                                </component>
+                                            </agent>
+                                        </list>
+                                    </property>
+                                </agent>
 
-								<agent name="level-2"
-								       class="org.jage.examples.delegation.DelegationSimpleAggregate">
-									<component class="org.jage.address.agent.DefaultAgentAddressSupplier">
-										<constructor-arg name="nameTemplate" value="Level-2"/>
-									</component>
-									<property name="echoStrategy" ref="helloStrategy"/>
-									<property name="childStrategy" value="helloStrategy"/>
+                                <agent name="level-2"
+                                       class="org.jage.examples.delegation.DelegationSimpleAggregate">
+                                    <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                                        <constructor-arg name="nameTemplate" value="Level-2"/>
+                                    </component>
+                                    <property name="echoStrategy" ref="helloStrategy"/>
+                                    <property name="childStrategy" value="helloStrategy"/>
 
-									<property name="agents">
-										<list>
-											<agent name="level-2-1"
-											       class="org.jage.examples.delegation.DelegationSimpleLeaf">
-												<component
-														class="org.jage.address.agent.DefaultAgentAddressSupplier">
-													<constructor-arg name="nameTemplate" value="Level-2-1"/>
-												</component>
-											</agent>
-										</list>
-									</property>
-								</agent>
-							</list>
-						</property>
-					</agent>
-				</property>
-			</component>
-		</block>
-		<block name="workplaceComponents" override="false">
-			<strategy name="parentStrategy" class="org.jage.examples.delegation.EchoParentStrategy"/>
-			<strategy name="helloStrategy" class="org.jage.examples.delegation.EchoHelloStrategy"/>
-		</block>
-	</include>
+                                    <property name="agents">
+                                        <list>
+                                            <agent name="level-2-1"
+                                                   class="org.jage.examples.delegation.DelegationSimpleLeaf">
+                                                <component
+                                                        class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                                                    <constructor-arg name="nameTemplate" value="Level-2-1"/>
+                                                </component>
+                                            </agent>
+                                        </list>
+                                    </property>
+                                </agent>
+                            </list>
+                        </property>
+                    </agent>
+                </property>
+            </component>
+        </block>
+        <block name="workplaceComponents" override="false">
+            <strategy name="parentStrategy" class="org.jage.examples.delegation.EchoParentStrategy"/>
+            <strategy name="helloStrategy" class="org.jage.examples.delegation.EchoHelloStrategy"/>
+        </block>
+    </include>
 </configuration>

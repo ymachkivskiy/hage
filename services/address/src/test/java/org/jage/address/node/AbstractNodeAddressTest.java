@@ -31,50 +31,53 @@
 
 package org.jage.address.node;
 
+
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
+
 /**
- *
  * @author AGH AgE Team
  */
 public class AbstractNodeAddressTest {
 
-	@SuppressWarnings("serial")
+    @SuppressWarnings("serial")
     @Test
-	public void ShouldUseIdentifierInCompareTo() {
-		// given
-		final String identifier1 = "identifier1";
-		final String identifier2 = "identifier2";
+    public void ShouldUseIdentifierInCompareTo() {
+        // given
+        final String identifier1 = "identifier1";
+        final String identifier2 = "identifier2";
 
-		final AbstractNodeAddress address1 = new AbstractNodeAddress() {
+        final AbstractNodeAddress address1 = new AbstractNodeAddress() {
 
-			@Override
-			public String getIdentifier() {
-				return identifier1;
-			}
+            @Override
+            public String getIdentifier() {
+                return identifier1;
+            }
 
-			@Override public boolean equals(final Object obj) {
-				return false;
-			}
-		};
-		final AbstractNodeAddress address2 = new AbstractNodeAddress() {
+            @Override
+            public boolean equals(final Object obj) {
+                return false;
+            }
+        };
+        final AbstractNodeAddress address2 = new AbstractNodeAddress() {
 
-			@Override
-			public String getIdentifier() {
-				return identifier2;
-			}
+            @Override
+            public String getIdentifier() {
+                return identifier2;
+            }
 
-			@Override public boolean equals(final Object obj) {
-				return false;
-			}
-		};
+            @Override
+            public boolean equals(final Object obj) {
+                return false;
+            }
+        };
 
-		// then
-		assertThat(address1.compareTo(address2), is(identifier1.compareTo(identifier2)));
-		assertThat(address2.compareTo(address1), is(identifier2.compareTo(identifier1)));
-	}
+        // then
+        assertThat(address1.compareTo(address2), is(identifier1.compareTo(identifier2)));
+        assertThat(address2.compareTo(address1), is(identifier2.compareTo(identifier1)));
+    }
 
 }

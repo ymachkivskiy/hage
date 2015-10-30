@@ -31,7 +31,9 @@
 
 package org.jage.examples.strategy;
 
+
 import org.jage.strategy.IStrategy;
+
 
 /**
  * A strategy that generates some string on standard output.
@@ -40,8 +42,8 @@ import org.jage.strategy.IStrategy;
  */
 public interface IEchoStrategy extends IStrategy {
 
-	/**
-	 * Print something on the standard output.
-	 */
-	void echo();
+    /**
+     * Print something on the standard output.
+     */
+    void echo();
 }

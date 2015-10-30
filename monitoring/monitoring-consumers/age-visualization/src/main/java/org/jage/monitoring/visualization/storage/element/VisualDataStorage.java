@@ -26,37 +26,38 @@
  */
 package org.jage.monitoring.visualization.storage.element;
 
-import java.util.Date;
-import java.util.List;
 
 import org.jage.monitoring.visualization.storage.StorageDescription;
 import org.jage.monitoring.visualization.storage.VisualData;
 
-/**
- *  
- * 
- * @author AGH AgE Team
- *
- */
-public interface VisualDataStorage extends DescriptionElement<VisualData>{
+import java.util.Date;
+import java.util.List;
 
-	/**
-	 * Saves passed VisualData instance.
-	 * @param data
-	 */
-	public void save(VisualData data);
-	
-	/**
-	 * Gets VisualData instances which are newer than date which is pointed by passed Date object.
-	 * 
-	 * @param date
-	 * @return
-	 */
-	public List<VisualData> getYoungerThan(Date date);
-	
-	/**
-	 * Returns StorageDescription object which describes VisualDataStorage.
-	 * @return
-	 */
-	public StorageDescription getStorageDescription();
+
+/**
+ * @author AGH AgE Team
+ */
+public interface VisualDataStorage extends DescriptionElement<VisualData> {
+
+    /**
+     * Saves passed VisualData instance.
+     *
+     * @param data
+     */
+    public void save(VisualData data);
+
+    /**
+     * Gets VisualData instances which are newer than date which is pointed by passed Date object.
+     *
+     * @param date
+     * @return
+     */
+    public List<VisualData> getYoungerThan(Date date);
+
+    /**
+     * Returns StorageDescription object which describes VisualDataStorage.
+     *
+     * @return
+     */
+    public StorageDescription getStorageDescription();
 }

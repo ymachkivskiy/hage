@@ -31,6 +31,7 @@
 
 package org.jage.util.io;
 
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -38,36 +39,35 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+
 /**
  * The representation of a resource that is located under some URL. This class can handle all URLs that {@link URL} can.
  * For the minimal list of protocols see {@link URL#URL(String, String, int, String)}.
- * 
+ *
  * @author AGH AgE Team
  */
 public class UrlResource implements Resource {
 
-	private URL url;
+    private URL url;
 
-	/**
-	 * Constructs a new URL resource.
-	 * 
-	 * @param uri
-	 *            URI to the resource. It must be a correct URL with a known protocol.
-	 * @throws MalformedURLException
-	 *             If provided URI is not a correct URL.
-	 */
-	public UrlResource(String uri) throws MalformedURLException {
-		this.url = new URL(uri);
-	}
+    /**
+     * Constructs a new URL resource.
+     *
+     * @param uri URI to the resource. It must be a correct URL with a known protocol.
+     * @throws MalformedURLException If provided URI is not a correct URL.
+     */
+    public UrlResource(String uri) throws MalformedURLException {
+        this.url = new URL(uri);
+    }
 
-	@Override
-	public InputStream getInputStream() throws IOException {
-		return url.openStream();
-	}
+    @Override
+    public InputStream getInputStream() throws IOException {
+        return url.openStream();
+    }
 
-	@Override
-	public URI getUri() throws URISyntaxException {
-		return url.toURI();
-	}
+    @Override
+    public URI getUri() throws URISyntaxException {
+        return url.toURI();
+    }
 
 }

@@ -31,9 +31,11 @@
 
 package org.jage.random;
 
-import java.util.Random;
 
 import org.jage.property.ClassPropertyContainer;
+
+import java.util.Random;
+
 
 /**
  * An default {@link IDoubleRandomGenerator} and {@link IIntRandomGenerator}, that simply wraps their API around Sun's
@@ -42,59 +44,58 @@ import org.jage.property.ClassPropertyContainer;
  * @author AGH AgE Team
  */
 public final class SimpleGenerator extends ClassPropertyContainer implements INormalizedDoubleRandomGenerator,
-        IIntRandomGenerator {
+                                                                             IIntRandomGenerator {
 
-	private final Random random;
+    private final Random random;
 
-	/**
-	 * Creates a SimpleGenerator with a default seed.
-	 */
-	public SimpleGenerator() {
-		this(System.currentTimeMillis());
-	}
+    /**
+     * Creates a SimpleGenerator with a default seed.
+     */
+    public SimpleGenerator() {
+        this(System.currentTimeMillis());
+    }
 
-	/**
-	 * Creates a SimpleGenerator with the given seed.
-	 *
-	 * @param seed
-	 *            The seed for this generator
-	 */
-	public SimpleGenerator(final long seed) {
-		random = new Random(seed);
-	}
+    /**
+     * Creates a SimpleGenerator with the given seed.
+     *
+     * @param seed The seed for this generator
+     */
+    public SimpleGenerator(final long seed) {
+        random = new Random(seed);
+    }
 
-	@Override
-	public int nextInt() {
-		return random.nextInt();
-	}
+    @Override
+    public int nextInt() {
+        return random.nextInt();
+    }
 
-	@Override
-	public int nextInt(final int range) {
-	    return random.nextInt(range);
-	}
+    @Override
+    public int nextInt(final int range) {
+        return random.nextInt(range);
+    }
 
-	@Override
-	public int getLowerInt() {
-		return Integer.MIN_VALUE;
-	}
+    @Override
+    public int getLowerInt() {
+        return Integer.MIN_VALUE;
+    }
 
-	@Override
-	public int getUpperInt() {
-		return Integer.MAX_VALUE;
-	}
+    @Override
+    public int getUpperInt() {
+        return Integer.MAX_VALUE;
+    }
 
-	@Override
-	public double nextDouble() {
-		return random.nextDouble();
-	}
+    @Override
+    public double nextDouble() {
+        return random.nextDouble();
+    }
 
-	@Override
-	public double getLowerDouble() {
-		return 0;
-	}
+    @Override
+    public double getLowerDouble() {
+        return 0;
+    }
 
-	@Override
-	public double getUpperDouble() {
-		return 1;
-	}
+    @Override
+    public double getUpperDouble() {
+        return 1;
+    }
 }

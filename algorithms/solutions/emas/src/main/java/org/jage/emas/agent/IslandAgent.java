@@ -31,11 +31,13 @@
 
 package org.jage.emas.agent;
 
-import java.util.List;
 
 import org.jage.agent.IAggregate;
 import org.jage.agent.ISimpleAgent;
 import org.jage.agent.ISimpleAgentEnvironment;
+
+import java.util.List;
+
 
 /**
  * EMAS island agent interface.
@@ -44,13 +46,13 @@ import org.jage.agent.ISimpleAgentEnvironment;
  */
 public interface IslandAgent extends EmasAgent, IAggregate<ISimpleAgent>, ISimpleAgentEnvironment {
 
-	/**
-	 * Get the current step.
-	 */
-	long getStep();
+    /**
+     * Get the current step.
+     */
+    long getStep();
 
-	/**
-	 * Get a list of individual agents.
-	 */
-	List<IndividualAgent> getIndividualAgents();
+    /**
+     * Get a list of individual agents.
+     */
+    List<IndividualAgent> getIndividualAgents();
 }

@@ -31,32 +31,31 @@
 
 package org.jage.property.xml;
 
+
 import org.jage.property.FieldProperty;
+
 
 /**
  * {@link FieldProperty} implementation that uses field to read / write
  * property value.
  *
  * @author AGH AgE Team
- *
  * @since 2.4.0
  */
 public class XMLBasedFieldProperty extends
-		FieldProperty {
+                                   FieldProperty {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * Constructor.
-	 *
-	 * @param metaProperty
-	 *            meta data for this property.
-	 * @param instance
-	 *            instance object that contains annotated field.
-	 */
-	public XMLBasedFieldProperty(XMLBasedFieldMetaProperty metaProperty,
-			Object instance) {
-		super(metaProperty, instance);
-	}
+    /**
+     * Constructor.
+     *
+     * @param metaProperty meta data for this property.
+     * @param instance     instance object that contains annotated field.
+     */
+    public XMLBasedFieldProperty(XMLBasedFieldMetaProperty metaProperty,
+            Object instance) {
+        super(metaProperty, instance);
+    }
 
 }

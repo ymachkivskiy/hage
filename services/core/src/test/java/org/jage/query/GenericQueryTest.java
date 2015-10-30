@@ -31,10 +31,11 @@
 
 package org.jage.query;
 
-import java.util.Collection;
 
 import org.junit.Test;
 import org.mockito.InOrder;
+
+import java.util.Collection;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -44,146 +45,146 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.verify;
 
+
 /**
  * Tests for the {@link GenericQuery} class.
- * 
+ *
  * @author AGH AgE Team
  */
 @SuppressWarnings("static-method")
 public class GenericQueryTest {
 
-	/**
-	 * Tests an empty query - whether it returns the same object.
-	 */
-	@Test
-	public void testEmptyQuery() {
-		GenericQuery<QueriedObject, QueriedObject> query = new GenericQuery<QueriedObject, QueriedObject>(
-		        QueriedObject.class, QueriedObject.class);
-		QueriedObject target = new QueriedObject();
+    private static final String INT_VALUE_FIELD = "intValue";
+    private static final String STRING_VALUE_FIELD = "stringValue";
+    private static final int INT_VALUE = 12;
+    private static final String STRING_VALUE = "Lorem ipsum";
 
-		QueriedObject result = query.execute(target);
-		assertEquals(target, result);
-	}
+    /**
+     * Tests an empty query - whether it returns the same object.
+     */
+    @Test
+    public void testEmptyQuery() {
+        GenericQuery<QueriedObject, QueriedObject> query = new GenericQuery<QueriedObject, QueriedObject>(
+                QueriedObject.class, QueriedObject.class);
+        QueriedObject target = new QueriedObject();
 
-	/**
-	 * Tests a query with a single value filter (matching).
-	 */
-	@Test
-	public void testQueryWithValueMatcher() {
-		GenericQuery<QueriedObject, QueriedObject> query = new GenericQuery<QueriedObject, QueriedObject>(
-		        QueriedObject.class, QueriedObject.class);
-		query.matching(INT_VALUE_FIELD, ValueFilters.eq(INT_VALUE));
-		QueriedObject target = new QueriedObject();
+        QueriedObject result = query.execute(target);
+        assertEquals(target, result);
+    }
 
-		QueriedObject result = query.execute(target);
-		assertEquals(target, result);
-	}
+    /**
+     * Tests a query with a single value filter (matching).
+     */
+    @Test
+    public void testQueryWithValueMatcher() {
+        GenericQuery<QueriedObject, QueriedObject> query = new GenericQuery<QueriedObject, QueriedObject>(
+                QueriedObject.class, QueriedObject.class);
+        query.matching(INT_VALUE_FIELD, ValueFilters.eq(INT_VALUE));
+        QueriedObject target = new QueriedObject();
 
-	/**
-	 * Tests a query with a single value filter (non-matching).
-	 */
-	@Test
-	public void testNonmatchingQueryWithValueMatcher() {
-		GenericQuery<QueriedObject, QueriedObject> query = new GenericQuery<QueriedObject, QueriedObject>(
-		        QueriedObject.class, QueriedObject.class);
-		query.matching(INT_VALUE_FIELD, ValueFilters.eq(0));
-		QueriedObject target = new QueriedObject();
+        QueriedObject result = query.execute(target);
+        assertEquals(target, result);
+    }
 
-		QueriedObject result = query.execute(target);
-		assertEquals(null, result);
-	}
+    /**
+     * Tests a query with a single value filter (non-matching).
+     */
+    @Test
+    public void testNonmatchingQueryWithValueMatcher() {
+        GenericQuery<QueriedObject, QueriedObject> query = new GenericQuery<QueriedObject, QueriedObject>(
+                QueriedObject.class, QueriedObject.class);
+        query.matching(INT_VALUE_FIELD, ValueFilters.eq(0));
+        QueriedObject target = new QueriedObject();
 
-	/**
-	 * Tests a query that selects only one field from the class.
-	 */
-	@Test
-	public void testQueryWithSingleValueSelector() {
-		GenericQuery<QueriedObject, Integer> query = new GenericQuery<QueriedObject, Integer>(QueriedObject.class,
-		        Integer.class);
-		query.select(INT_VALUE_FIELD);
-		QueriedObject target = new QueriedObject();
+        QueriedObject result = query.execute(target);
+        assertEquals(null, result);
+    }
 
-		Integer result = query.execute(target);
-		assertEquals(new Integer(12), result);
-	}
+    // Helpers
 
-	/**
-	 * Tests a query that selects many fields from the class (but not the class itself).
-	 */
-	@Test
-	public void testQueryWithManyValueSelectors() {
-		GenericQuery<QueriedObject, Collection<Object>> query = new GenericQuery<QueriedObject, Collection<Object>>(
-		        QueriedObject.class, Collection.class);
-		query.select(INT_VALUE_FIELD, STRING_VALUE_FIELD);
-		QueriedObject target = new QueriedObject();
+    /**
+     * Tests a query that selects only one field from the class.
+     */
+    @Test
+    public void testQueryWithSingleValueSelector() {
+        GenericQuery<QueriedObject, Integer> query = new GenericQuery<QueriedObject, Integer>(QueriedObject.class,
+                                                                                              Integer.class);
+        query.select(INT_VALUE_FIELD);
+        QueriedObject target = new QueriedObject();
 
-		Collection<Object> result = query.execute(target);
+        Integer result = query.execute(target);
+        assertEquals(new Integer(12), result);
+    }
 
-		assertNotNull(result);
-		assertEquals(2, result.size());
-		assertTrue(result.contains(new Integer(INT_VALUE)));
-		assertTrue(result.contains(STRING_VALUE));
-	}
+    /**
+     * Tests a query that selects many fields from the class (but not the class itself).
+     */
+    @Test
+    public void testQueryWithManyValueSelectors() {
+        GenericQuery<QueriedObject, Collection<Object>> query = new GenericQuery<QueriedObject, Collection<Object>>(
+                QueriedObject.class, Collection.class);
+        query.select(INT_VALUE_FIELD, STRING_VALUE_FIELD);
+        QueriedObject target = new QueriedObject();
 
-	/**
-	 * Tests a query with a single function (whether the function is called).
-	 */
-	@SuppressWarnings("unchecked")
-	@Test
-	public void testQueryWithFunction() {
-		GenericQuery<QueriedObject, QueriedObject> query = new GenericQuery<QueriedObject, QueriedObject>(
-		        QueriedObject.class, QueriedObject.class);
-		IQueryFunction<QueriedObject> queryFunction = mock(IQueryFunction.class);
-		QueriedObject target = new QueriedObject();
+        Collection<Object> result = query.execute(target);
 
-		query.process(queryFunction);
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        assertTrue(result.contains(new Integer(INT_VALUE)));
+        assertTrue(result.contains(STRING_VALUE));
+    }
 
-		query.execute(target);
+    /**
+     * Tests a query with a single function (whether the function is called).
+     */
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testQueryWithFunction() {
+        GenericQuery<QueriedObject, QueriedObject> query = new GenericQuery<QueriedObject, QueriedObject>(
+                QueriedObject.class, QueriedObject.class);
+        IQueryFunction<QueriedObject> queryFunction = mock(IQueryFunction.class);
+        QueriedObject target = new QueriedObject();
 
-		verify(queryFunction, only()).execute(target);
-	}
+        query.process(queryFunction);
 
-	/**
-	 * Tests the execution of a query over a IQueryAware target.
-	 */
-	@SuppressWarnings("unchecked")
-	public void testQueryAwareTarget() {
-		GenericQuery<Object, Object> query = new GenericQuery<Object, Object>(Object.class, Object.class);
+        query.execute(target);
 
-		IQueryAware<Object, Object, GenericQuery<Object, Object>> target = mock(IQueryAware.class);
-		query.execute(target);
+        verify(queryFunction, only()).execute(target);
+    }
 
-		InOrder inOrder = inOrder(target);
-		inOrder.verify(target).beforeExecute(query);
-		inOrder.verify(target).afterExecute(query);
-	}
+    /**
+     * Tests the execution of a query over a IQueryAware target.
+     */
+    @SuppressWarnings("unchecked")
+    public void testQueryAwareTarget() {
+        GenericQuery<Object, Object> query = new GenericQuery<Object, Object>(Object.class, Object.class);
 
-	// Helpers
+        IQueryAware<Object, Object, GenericQuery<Object, Object>> target = mock(IQueryAware.class);
+        query.execute(target);
 
-	private static final String INT_VALUE_FIELD = "intValue";
+        InOrder inOrder = inOrder(target);
+        inOrder.verify(target).beforeExecute(query);
+        inOrder.verify(target).afterExecute(query);
+    }
 
-	private static final String STRING_VALUE_FIELD = "stringValue";
 
-	private static final int INT_VALUE = 12;
+    /**
+     * The helper object.
+     *
+     * @author AGH AgE Team
+     */
+    static class QueriedObject {
 
-	private static final String STRING_VALUE = "Lorem ipsum";
+        private int intValue = INT_VALUE;
 
-	/**
-	 * The helper object.
-	 * 
-	 * @author AGH AgE Team
-	 */
-	static class QueriedObject {
-		private int intValue = INT_VALUE;
+        private String stringValue = STRING_VALUE;
 
-		private String stringValue = STRING_VALUE;
+        public int getIntValue() {
+            return intValue;
+        }
 
-		public int getIntValue() {
-			return intValue;
-		}
-
-		public String getStringValue() {
-			return stringValue;
-		}
-	}
+        public String getStringValue() {
+            return stringValue;
+        }
+    }
 }

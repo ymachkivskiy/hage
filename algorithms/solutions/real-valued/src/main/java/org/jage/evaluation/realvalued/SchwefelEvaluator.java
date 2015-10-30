@@ -31,11 +31,12 @@
 
 package org.jage.evaluation.realvalued;
 
+
+import it.unimi.dsi.fastutil.doubles.DoubleList;
 import org.jage.evaluation.ISolutionEvaluator;
 import org.jage.property.ClassPropertyContainer;
 import org.jage.solution.IVectorSolution;
 
-import it.unimi.dsi.fastutil.doubles.DoubleList;
 
 /**
  * This class represents a floating-point coded Schwefel function. <br />
@@ -48,19 +49,19 @@ import it.unimi.dsi.fastutil.doubles.DoubleList;
  * @author AGH AgE Team
  */
 public final class SchwefelEvaluator extends ClassPropertyContainer implements
-        ISolutionEvaluator<IVectorSolution<Double>, Double> {
+                                                                    ISolutionEvaluator<IVectorSolution<Double>, Double> {
 
-	@Override
-	public Double evaluate(IVectorSolution<Double> solution) {
-		DoubleList representation = (DoubleList)solution.getRepresentation();
-		int n = representation.size();
+    @Override
+    public Double evaluate(IVectorSolution<Double> solution) {
+        DoubleList representation = (DoubleList) solution.getRepresentation();
+        int n = representation.size();
 
-		double sum = 0.0;
-		for (int i = 0; i < n; i++) {
-			double value = representation.getDouble(i);
-			sum += value * Math.sin(Math.sqrt(Math.abs(value)));
-		}
+        double sum = 0.0;
+        for(int i = 0; i < n; i++) {
+            double value = representation.getDouble(i);
+            sum += value * Math.sin(Math.sqrt(Math.abs(value)));
+        }
 
-		return -418.9829 * n + sum;
-	}
+        return -418.9829 * n + sum;
+    }
 }

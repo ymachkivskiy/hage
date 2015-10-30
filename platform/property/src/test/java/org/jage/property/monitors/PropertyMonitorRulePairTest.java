@@ -26,7 +26,6 @@
  */
 package org.jage.property.monitors;
 
-import static org.junit.Assert.assertSame;
 
 import org.jage.property.testHelpers.PropertyMonitorStub;
 import org.junit.Test;
@@ -34,20 +33,23 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import static org.junit.Assert.assertSame;
+
+
 @RunWith(MockitoJUnitRunner.class)
 public class PropertyMonitorRulePairTest {
 
-	@Mock
-	IPropertyMonitorRule rule;
-	
-	@Test
-	public void testMonitorRulePair() {
-		AbstractPropertyMonitor monitor = new PropertyMonitorStub();
-		
-		PropertyMonitorRulePair pair = new PropertyMonitorRulePair(monitor, rule);
-		
-		assertSame(monitor, pair.getPropertyMonitor());
-		assertSame(rule, pair.getPropertyMonitorRule());
-		
-	}
+    @Mock
+    IPropertyMonitorRule rule;
+
+    @Test
+    public void testMonitorRulePair() {
+        AbstractPropertyMonitor monitor = new PropertyMonitorStub();
+
+        PropertyMonitorRulePair pair = new PropertyMonitorRulePair(monitor, rule);
+
+        assertSame(monitor, pair.getPropertyMonitor());
+        assertSame(rule, pair.getPropertyMonitorRule());
+
+    }
 }

@@ -31,10 +31,7 @@
 
 package org.jage.property;
 
-import java.util.HashSet;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.jage.event.AbstractEvent;
 import org.jage.event.ObjectChangedEvent;
 import org.jage.event.PropertyEvent;
@@ -42,239 +39,241 @@ import org.jage.monitor.IChangesNotifierMonitor;
 import org.jage.property.functions.DefaultFunctionArgumentsResolver;
 import org.jage.property.functions.IFunctionArgumentsResolver;
 import org.jage.property.functions.PropertyFunction;
+import org.jage.property.monitors.AbstractPropertyMonitor;
 import org.jage.property.monitors.DefaultPropertyMonitorRule;
 import org.jage.property.monitors.IPropertyMonitorRule;
-import org.jage.property.monitors.AbstractPropertyMonitor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.HashSet;
+
 
 /**
  * Abstract implementation of {@link IPropertyContainer} which implements the basic operations.
  *
  * @author AGH AgE Team
- *
  */
 public abstract class AbstractPropertyContainer implements IPropertyContainer {
 
-	/**
-	 * Logger.
-	 */
-	protected final Logger log = LoggerFactory.getLogger(getClass());
+    /**
+     * Logger.
+     */
+    protected final Logger log = LoggerFactory.getLogger(getClass());
 
-	/**
-	 * Properties set held in this container.
-	 */
-	protected PropertiesSet properties;
+    /**
+     * Properties set held in this container.
+     */
+    protected PropertiesSet properties;
 
-	/**
-	 * Property path parser.
-	 */
-	protected PropertyPathParser pathParser;
+    /**
+     * Property path parser.
+     */
+    protected PropertyPathParser pathParser;
 
-	/**
-	 * Registered property monitors.
-	 */
-	protected HashSet<IChangesNotifierMonitor> changesNotifierMonitors;
+    /**
+     * Registered property monitors.
+     */
+    protected HashSet<IChangesNotifierMonitor> changesNotifierMonitors;
 
-	/**
-	 * Arguments resolver.
-	 */
-	protected IFunctionArgumentsResolver argumentsResolver;
+    /**
+     * Arguments resolver.
+     */
+    protected IFunctionArgumentsResolver argumentsResolver;
 
-	/**
-	 * Default constructor.
-	 */
-	public AbstractPropertyContainer() {
-		properties = new PropertiesSet();
-		changesNotifierMonitors = new HashSet<IChangesNotifierMonitor>();
-		pathParser = new PropertyPathParser(this);
-	}
+    /**
+     * Default constructor.
+     */
+    public AbstractPropertyContainer() {
+        properties = new PropertiesSet();
+        changesNotifierMonitors = new HashSet<IChangesNotifierMonitor>();
+        pathParser = new PropertyPathParser(this);
+    }
 
-	// BEGIN Properties Accessors Methods
+    // BEGIN Properties Accessors Methods
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.jage.property.IPropertyContainer#getMetaProperties()
-	 */
-	public MetaPropertiesSet getMetaProperties() {
-		return properties.getMetaPropertiesSet();
-	}
+    /**
+     * {@inheritDoc}
+     *
+     * @see org.jage.property.IPropertyContainer#getProperty(java.lang.String)
+     */
+    public Property getProperty(String propertyPath) throws InvalidPropertyPathException {
+        return pathParser.getPropertyForPath(propertyPath);
+    }
 
-	/**
-	 *
-	 * {@inheritDoc}
-	 *
-	 * @see org.jage.property.IPropertyContainer#getProperties()
-	 */
-	public IPropertiesSet getProperties() {
-		return properties;
-	}
+    /**
+     * {@inheritDoc}
+     *
+     * @see org.jage.property.IPropertyContainer#addFunction(org.jage.property.functions.PropertyFunction)
+     */
+    public void addFunction(PropertyFunction function) throws DuplicatePropertyNameException {
+        properties.addProperty(function);
+        function.setArgumentsResolver(getFunctionArgumentsResolver());
+    }
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.jage.property.IPropertyContainer#getProperty(java.lang.String)
-	 */
-	public Property getProperty(String propertyPath) throws InvalidPropertyPathException {
-		return pathParser.getPropertyForPath(propertyPath);
-	}
+    /**
+     * {@inheritDoc}
+     *
+     * @see org.jage.property.IPropertyContainer#addPropertyMonitor(java.lang.String,
+     * org.jage.property.monitors.AbstractPropertyMonitor)
+     */
+    public void addPropertyMonitor(String propertyPath, AbstractPropertyMonitor monitor)
+            throws InvalidPropertyOperationException, InvalidPropertyPathException {
+        addPropertyMonitor(propertyPath, monitor, new DefaultPropertyMonitorRule());
+    }
 
-	// END Properties Accessors Methods
+    // END Properties Accessors Methods
 
-	// BEGIN Property Monitors Methods
+    // BEGIN Property Monitors Methods
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.jage.monitor.IChangesNotifier#addMonitor(org.jage.monitor.IChangesNotifierMonitor)
-	 */
-	public void addMonitor(IChangesNotifierMonitor monitor) {
-		changesNotifierMonitors.add(monitor);
-	}
+    /**
+     * {@inheritDoc}
+     *
+     * @see org.jage.property.IPropertyContainer#addPropertyMonitor(java.lang.String,
+     * org.jage.property.monitors.AbstractPropertyMonitor, org.jage.property.monitors.IPropertyMonitorRule)
+     */
+    public void addPropertyMonitor(String propertyPath, AbstractPropertyMonitor monitor, IPropertyMonitorRule rule)
+            throws InvalidPropertyOperationException, InvalidPropertyPathException {
+        Property property = pathParser.getPropertyForPath(propertyPath);
+        property.addMonitor(monitor, rule);
+    }
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.jage.monitor.IChangesNotifier#removeMonitor(org.jage.monitor.IChangesNotifierMonitor)
-	 */
-	public void removeMonitor(IChangesNotifierMonitor monitor) {
-		changesNotifierMonitors.remove(monitor);
-	}
+    /**
+     * {@inheritDoc}
+     *
+     * @see org.jage.property.IPropertyContainer#removePropertyMonitor(java.lang.String,
+     * org.jage.property.monitors.AbstractPropertyMonitor)
+     */
+    public void removePropertyMonitor(String propertyPath, AbstractPropertyMonitor monitor)
+            throws InvalidPropertyOperationException, InvalidPropertyPathException {
+        Property property = pathParser.getPropertyForPath(propertyPath);
+        property.removeMonitor(monitor);
+    }
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.jage.property.IPropertyContainer#addPropertyMonitor(java.lang.String,
-	 *      org.jage.property.monitors.AbstractPropertyMonitor)
-	 */
-	public void addPropertyMonitor(String propertyPath, AbstractPropertyMonitor monitor)
-	        throws InvalidPropertyOperationException, InvalidPropertyPathException {
-		addPropertyMonitor(propertyPath, monitor, new DefaultPropertyMonitorRule());
-	}
+    /**
+     * {@inheritDoc}
+     *
+     * @see org.jage.property.IPropertyContainer#removeFunction(org.jage.property.functions.PropertyFunction)
+     */
+    public void removeFunction(PropertyFunction function) {
+        if(properties.containsProperty(function.getMetaProperty().getName())) {
+            properties.removeProperty(function);
+            function.setArgumentsResolver(null);
+        }
+    }
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.jage.property.IPropertyContainer#addPropertyMonitor(java.lang.String,
-	 *      org.jage.property.monitors.AbstractPropertyMonitor, org.jage.property.monitors.IPropertyMonitorRule)
-	 */
-	public void addPropertyMonitor(String propertyPath, AbstractPropertyMonitor monitor, IPropertyMonitorRule rule)
-	        throws InvalidPropertyOperationException, InvalidPropertyPathException {
-		Property property = pathParser.getPropertyForPath(propertyPath);
-		property.addMonitor(monitor, rule);
-	}
+    /**
+     * {@inheritDoc}
+     *
+     * @see org.jage.property.IPropertyContainer#getProperties()
+     */
+    public IPropertiesSet getProperties() {
+        return properties;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.jage.property.IPropertyContainer#removePropertyMonitor(java.lang.String,
-	 *      org.jage.property.monitors.AbstractPropertyMonitor)
-	 */
-	public void removePropertyMonitor(String propertyPath, AbstractPropertyMonitor monitor)
-	        throws InvalidPropertyOperationException, InvalidPropertyPathException {
-		Property property = pathParser.getPropertyForPath(propertyPath);
-		property.removeMonitor(monitor);
-	}
+    /**
+     * {@inheritDoc}
+     *
+     * @see org.jage.property.IPropertyContainer#getMetaProperties()
+     */
+    public MetaPropertiesSet getMetaProperties() {
+        return properties.getMetaPropertiesSet();
+    }
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.jage.property.IPropertyContainer#objectDeleted(org.jage.event.AbstractEvent)
-	 */
-	public void objectDeleted(AbstractEvent event) {
-		properties.objectDeleted(event);
-	}
+    /**
+     * {@inheritDoc}
+     *
+     * @see org.jage.property.IPropertyContainer#objectDeleted(org.jage.event.AbstractEvent)
+     */
+    public void objectDeleted(AbstractEvent event) {
+        properties.objectDeleted(event);
+    }
 
-	/**
-	 * Attaches new monitors to the all monitorable properties kept in this property container.
-	 */
-	protected void attachMonitorsToProperties() {
-		for (Property property : properties) {
-			try {
-				if (property.getMetaProperty().isMonitorable()) {
-					property.addMonitor(new PropertyMonitorForChangesNotifier(property),
-					        new DefaultPropertyMonitorRule());
-				}
-			} catch (InvalidPropertyOperationException ex) {
-				log.error("Cannot attach monitor to monitorable property.", ex);
-			}
-		}
-	}
+    /**
+     * Factory method. Gets function arguments resolver for this container.
+     *
+     * @return function arguments resolver for this property container
+     */
+    protected IFunctionArgumentsResolver getFunctionArgumentsResolver() {
+        if(argumentsResolver == null) {
+            argumentsResolver = new DefaultFunctionArgumentsResolver(this);
+        }
+        return argumentsResolver;
+    }
 
-	/**
-	 * Notifies all attached monitors ({@link IChangesNotifierMonitor}) that this object has been changed.
-	 */
-	protected void notifyChangeNotiferMonitors() {
-		for (IChangesNotifierMonitor monitor : changesNotifierMonitors) {
-			monitor.objectChanged(this, new ObjectChangedEvent(this));
-		}
-	}
+    /**
+     * {@inheritDoc}
+     *
+     * @see org.jage.monitor.IChangesNotifier#addMonitor(org.jage.monitor.IChangesNotifierMonitor)
+     */
+    public void addMonitor(IChangesNotifierMonitor monitor) {
+        changesNotifierMonitors.add(monitor);
+    }
 
-	// END Property Monitors Methods
+    // END Property Monitors Methods
 
-	// BEGIN Property Function Methods
+    // BEGIN Property Function Methods
 
-	/**
-	 *
-	 * {@inheritDoc}
-	 *
-	 * @see org.jage.property.IPropertyContainer#addFunction(org.jage.property.functions.PropertyFunction)
-	 */
-	public void addFunction(PropertyFunction function) throws DuplicatePropertyNameException {
-		properties.addProperty(function);
-		function.setArgumentsResolver(getFunctionArgumentsResolver());
-	}
+    /**
+     * {@inheritDoc}
+     *
+     * @see org.jage.monitor.IChangesNotifier#removeMonitor(org.jage.monitor.IChangesNotifierMonitor)
+     */
+    public void removeMonitor(IChangesNotifierMonitor monitor) {
+        changesNotifierMonitors.remove(monitor);
+    }
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.jage.property.IPropertyContainer#removeFunction(org.jage.property.functions.PropertyFunction)
-	 */
-	public void removeFunction(PropertyFunction function) {
-		if (properties.containsProperty(function.getMetaProperty().getName())) {
-			properties.removeProperty(function);
-			function.setArgumentsResolver(null);
-		}
-	}
+    /**
+     * Attaches new monitors to the all monitorable properties kept in this property container.
+     */
+    protected void attachMonitorsToProperties() {
+        for(Property property : properties) {
+            try {
+                if(property.getMetaProperty().isMonitorable()) {
+                    property.addMonitor(new PropertyMonitorForChangesNotifier(property),
+                                        new DefaultPropertyMonitorRule());
+                }
+            } catch(InvalidPropertyOperationException ex) {
+                log.error("Cannot attach monitor to monitorable property.", ex);
+            }
+        }
+    }
 
-	/**
-	 * Factory method. Gets function arguments resolver for this container.
-	 *
-	 * @return function arguments resolver for this property container
-	 */
-	protected IFunctionArgumentsResolver getFunctionArgumentsResolver() {
-		if (argumentsResolver == null) {
-			argumentsResolver = new DefaultFunctionArgumentsResolver(this);
-		}
-		return argumentsResolver;
-	}
+    /**
+     * Notifies all attached monitors ({@link IChangesNotifierMonitor}) that this object has been changed.
+     */
+    protected void notifyChangeNotiferMonitors() {
+        for(IChangesNotifierMonitor monitor : changesNotifierMonitors) {
+            monitor.objectChanged(this, new ObjectChangedEvent(this));
+        }
+    }
 
-	// END Property Function Methods
+    // END Property Function Methods
 
-	/**
-	 * This class is used to listen to changes in the PropertyContainer's inner properties.
-	 *
-	 * @author AGH AgE Team
-	 *
-	 */
-	private class PropertyMonitorForChangesNotifier extends AbstractPropertyMonitor {
 
-		private Property property;
+    /**
+     * This class is used to listen to changes in the PropertyContainer's inner properties.
+     *
+     * @author AGH AgE Team
+     */
+    private class PropertyMonitorForChangesNotifier extends AbstractPropertyMonitor {
 
-		public PropertyMonitorForChangesNotifier(Property property) {
-			this.property = property;
-		}
+        private Property property;
 
-		public void propertyChanged(PropertyEvent event) {
-			notifyChangeNotiferMonitors();
-		}
+        public PropertyMonitorForChangesNotifier(Property property) {
+            this.property = property;
+        }
 
-		public void ownerDeleted(AbstractEvent event) {
-			try {
-				property.removeMonitor(this);
-			} catch (InvalidPropertyOperationException ex) {
-				log.error("Cannot unregister monitor from property.", ex);
-			}
-		}
-	}
+        public void propertyChanged(PropertyEvent event) {
+            notifyChangeNotiferMonitors();
+        }
+
+        public void ownerDeleted(AbstractEvent event) {
+            try {
+                property.removeMonitor(this);
+            } catch(InvalidPropertyOperationException ex) {
+                log.error("Cannot unregister monitor from property.", ex);
+            }
+        }
+    }
 
 }

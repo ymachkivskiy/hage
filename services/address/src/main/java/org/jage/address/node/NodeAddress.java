@@ -31,16 +31,18 @@
 
 package org.jage.address.node;
 
-import java.io.Serializable;
 
 import org.jage.annotation.ReturnValuesAreNonnullByDefault;
 
+import java.io.Serializable;
+
+
 /**
  * Represents the address of a single node.
- *
+ * <p>
  * <p>
  * Identity of node addresses should be based on their identifier.
- *
+ * <p>
  * <p>
  * Node addresses should be comparable on the base of their identifiers.
  *
@@ -49,10 +51,10 @@ import org.jage.annotation.ReturnValuesAreNonnullByDefault;
 @ReturnValuesAreNonnullByDefault
 public interface NodeAddress extends Serializable, Comparable<NodeAddress> {
 
-	/**
-	 * Returns a globally unique identifier, comparable and preserved across serialization.
-	 *
-	 * @return the identifier of this node address
-	 */
-	String getIdentifier();
+    /**
+     * Returns a globally unique identifier, comparable and preserved across serialization.
+     *
+     * @return the identifier of this node address
+     */
+    String getIdentifier();
 }

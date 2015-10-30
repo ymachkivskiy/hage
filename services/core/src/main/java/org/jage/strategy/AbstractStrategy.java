@@ -31,14 +31,15 @@
 
 package org.jage.strategy;
 
+
 import org.jage.property.ClassPropertyContainer;
+
 
 /**
  * Abstract class for all strategies. It extends {@link ClassPropertyContainer} for managing properties.
  *
  * @author AGH AgE Team
- *
  */
 public abstract class AbstractStrategy implements IStrategy {
-	// Empty
+    // Empty
 }

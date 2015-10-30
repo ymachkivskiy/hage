@@ -31,7 +31,9 @@
 
 package org.jage.monitor;
 
+
 import org.jage.event.AbstractEvent;
+
 
 /**
  * <p>
@@ -43,17 +45,16 @@ import org.jage.event.AbstractEvent;
  * <p/>
  * <p>
  * Note: monitors should not override equals and hashCode methods.
- *</p>
+ * </p>
  *
  * @author AGH AgE Team
  */
 public interface IMonitor {
 
-	/**
-	 * The method executed if the owner of the monitor is being deleted.
-	 *
-	 * @param event
-	 *            the event that caused the deletion
-	 */
-	public void ownerDeleted(AbstractEvent event);
+    /**
+     * The method executed if the owner of the monitor is being deleted.
+     *
+     * @param event the event that caused the deletion
+     */
+    public void ownerDeleted(AbstractEvent event);
 }

@@ -31,45 +31,44 @@
 
 package org.jage.address.selector;
 
-import static java.util.Objects.requireNonNull;
-
-import javax.annotation.concurrent.Immutable;
 
 import org.jage.address.Address;
 
+import javax.annotation.concurrent.Immutable;
+
 import static com.google.common.base.Objects.toStringHelper;
+import static java.util.Objects.requireNonNull;
+
 
 /**
  * The selector, which selects all available addresses.
  *
- * @param <T>
- * 		type of address which can be selected by this selector
+ * @param <T> type of address which can be selected by this selector
  * @author AGH AgE Team
  */
 @Immutable
 public class BroadcastSelector<T extends Address> implements AddressSelector<T> {
 
-	private static final long serialVersionUID = 8005515047272772268L;
+    private static final long serialVersionUID = 8005515047272772268L;
 
-	/**
-	 * Constructs a new selector that selects all addresses.
-	 *
-	 * @param <T>
-	 * 		type of address which can be selected by the selector.
-	 * @return a new broadcast selector.
-	 */
-	public static <T extends Address> BroadcastSelector<T> create() {
-		return new BroadcastSelector<>();
-	}
+    /**
+     * Constructs a new selector that selects all addresses.
+     *
+     * @param <T> type of address which can be selected by the selector.
+     * @return a new broadcast selector.
+     */
+    public static <T extends Address> BroadcastSelector<T> create() {
+        return new BroadcastSelector<>();
+    }
 
-	@Override
-	public boolean selects(final T address) {
-		requireNonNull(address);
-		return true;
-	}
+    @Override
+    public boolean selects(final T address) {
+        requireNonNull(address);
+        return true;
+    }
 
-	@Override
-	public String toString() {
-		return toStringHelper(this).toString();
-	}
+    @Override
+    public String toString() {
+        return toStringHelper(this).toString();
+    }
 }

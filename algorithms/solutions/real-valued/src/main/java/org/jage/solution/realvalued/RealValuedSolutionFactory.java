@@ -31,10 +31,8 @@
 
 package org.jage.solution.realvalued;
 
-import java.util.List;
 
-import javax.inject.Inject;
-
+import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
 import org.jage.problem.IVectorProblem;
 import org.jage.property.ClassPropertyContainer;
 import org.jage.random.INormalizedDoubleRandomGenerator;
@@ -42,7 +40,9 @@ import org.jage.solution.ISolutionFactory;
 import org.jage.solution.IVectorSolution;
 import org.jage.solution.VectorSolution;
 
-import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
+import javax.inject.Inject;
+import java.util.List;
+
 
 /**
  * Factory for creating IVectorSolution<Double> instances.
@@ -50,75 +50,75 @@ import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
  * @author AGH AgE Team
  */
 public class RealValuedSolutionFactory extends ClassPropertyContainer implements
-        ISolutionFactory<IVectorSolution<Double>> {
+                                                                      ISolutionFactory<IVectorSolution<Double>> {
 
-	@Inject
-	private INormalizedDoubleRandomGenerator rand;
+    @Inject
+    private INormalizedDoubleRandomGenerator rand;
 
-	@Inject
-	private IVectorProblem<Double> problem;
+    @Inject
+    private IVectorProblem<Double> problem;
 
-	@Override
-	public IVectorSolution<Double> createEmptySolution() {
-		final double[] representation = new double[problem.getDimension()];
-		return new VectorSolution<Double>(new FastDoubleArrayList(representation));
-	}
+    @Override
+    public IVectorSolution<Double> createEmptySolution() {
+        final double[] representation = new double[problem.getDimension()];
+        return new VectorSolution<Double>(new FastDoubleArrayList(representation));
+    }
 
-	@Override
-	public IVectorSolution<Double> createInitializedSolution() {
-		final double[] representation = new double[problem.getDimension()];
-		for (int i = 0; i < problem.getDimension(); i++) {
-			representation[i] = problem.lowerBound(i) + rand.nextDouble()
-			        * (problem.upperBound(i) - problem.lowerBound(i));
-		}
+    @Override
+    public IVectorSolution<Double> createInitializedSolution() {
+        final double[] representation = new double[problem.getDimension()];
+        for(int i = 0; i < problem.getDimension(); i++) {
+            representation[i] = problem.lowerBound(i) + rand.nextDouble()
+                    * (problem.upperBound(i) - problem.lowerBound(i));
+        }
 
-		return new VectorSolution<Double>(new FastDoubleArrayList(representation));
-	}
+        return new VectorSolution<Double>(new FastDoubleArrayList(representation));
+    }
 
-	@Override
-	public IVectorSolution<Double> copySolution(final IVectorSolution<Double> solution) {
-		final DoubleArrayList representation = (DoubleArrayList)solution.getRepresentation();
-		return new VectorSolution<Double>(new FastDoubleArrayList(representation));
-	}
+    @Override
+    public IVectorSolution<Double> copySolution(final IVectorSolution<Double> solution) {
+        final DoubleArrayList representation = (DoubleArrayList) solution.getRepresentation();
+        return new VectorSolution<Double>(new FastDoubleArrayList(representation));
+    }
 
-	/**
-	 * Helper class with faster equals and compareTo methods.
-	 *
-	 * @author AGH AgE Team
-	 */
-	private static class FastDoubleArrayList extends DoubleArrayList {
+    /**
+     * Helper class with faster equals and compareTo methods.
+     *
+     * @author AGH AgE Team
+     */
+    private static class FastDoubleArrayList extends DoubleArrayList {
 
         private static final long serialVersionUID = -162525815797087029L;
 
-		public FastDoubleArrayList(final double[] representation) {
-	        super(representation);
+        public FastDoubleArrayList(final double[] representation) {
+            super(representation);
         }
 
-		public FastDoubleArrayList(final DoubleArrayList representation) {
-	        super(representation);
+        public FastDoubleArrayList(final DoubleArrayList representation) {
+            super(representation);
         }
 
-		@Override
-		public boolean equals(final Object o) {
-			if (o instanceof DoubleArrayList) {
-				return super.equals((DoubleArrayList)o);
-			} else {
-				return super.equals(o);
-			}
-		}
+        @Override
+        public boolean equals(final Object o) {
+            if(o instanceof DoubleArrayList) {
+                return super.equals((DoubleArrayList) o);
+            } else {
+                return super.equals(o);
+            }
+        }
 
-		@Override
-		public int hashCode() {
-		    return super.hashCode();
-		}
+        @Override
+        public int compareTo(final List<? extends Double> l) {
+            if(l instanceof DoubleArrayList) {
+                return super.compareTo((DoubleArrayList) l);
+            } else {
+                return super.compareTo(l);
+            }
+        }
 
-		@Override
-		public int compareTo(final List<? extends Double> l) {
-			if (l instanceof DoubleArrayList) {
-				return super.compareTo((DoubleArrayList)l);
-			} else {
-				return super.compareTo(l);
-			}
-		}
-	}
+        @Override
+        public int hashCode() {
+            return super.hashCode();
+        }
+    }
 }

@@ -31,66 +31,64 @@
 
 package org.jage.problem;
 
+
 import org.jage.property.ClassPropertyContainer;
+
 
 /**
  * A non parallel problem that is bounded by the following domain:
- *
+ * <p>
  * <pre>
  * [min[0], max[0]] x [min[1], max[1]] x ... x [min[dimension-1], max[dimension-1]]
  * </pre>
  *
- * @param <R>
- *            The type of the problem bounds
- *
+ * @param <R> The type of the problem bounds
  * @author AGH AgE Team
  */
 public class NonParallelProblem<R> extends ClassPropertyContainer implements IVectorProblem<R> {
 
-	private int dimension;
+    private int dimension;
 
-	private R[] min;
+    private R[] min;
 
-	private R[] max;
+    private R[] max;
 
-	/**
-	 * Creates a NonParallelProblem with the given upper and lower bounds.
-	 *
-	 * @param min
-	 *            the lower bounds
-	 * @param max
-	 *            the upper bounds
-	 */
-	public NonParallelProblem(R[] min, R[] max) {
-		if (min.length != max.length) {
-			throw new IllegalArgumentException("Min and max arrays must have same lenght");
-		}
+    /**
+     * Creates a NonParallelProblem with the given upper and lower bounds.
+     *
+     * @param min the lower bounds
+     * @param max the upper bounds
+     */
+    public NonParallelProblem(R[] min, R[] max) {
+        if(min.length != max.length) {
+            throw new IllegalArgumentException("Min and max arrays must have same lenght");
+        }
 
-		this.min = min;
-		this.max = max;
-		this.dimension = min.length;
-	}
+        this.min = min;
+        this.max = max;
+        this.dimension = min.length;
+    }
 
-	@Override
-	public final int getDimension() {
-		return dimension;
-	}
+    @Override
+    public final int getDimension() {
+        return dimension;
+    }
 
-	@Override
-	public final R lowerBound(int atDimension) {
-		checkDimension(atDimension);
-		return min[atDimension];
-	}
+    @Override
+    public final R lowerBound(int atDimension) {
+        checkDimension(atDimension);
+        return min[atDimension];
+    }
 
-	@Override
-	public final R upperBound(int atDimension) {
-		checkDimension(atDimension);
-		return max[atDimension];
-	}
+    @Override
+    public final R upperBound(int atDimension) {
+        checkDimension(atDimension);
+        return max[atDimension];
+    }
 
-	private void checkDimension(int atDimension) {
-		if (atDimension < 0 || atDimension >= this.dimension) {
-			throw new IllegalArgumentException("Dimension out of range");
-		}
-	}
+    private void checkDimension(int atDimension) {
+        if(atDimension < 0 || atDimension >= this.dimension) {
+            throw new IllegalArgumentException("Dimension out of range");
+        }
+    }
 }

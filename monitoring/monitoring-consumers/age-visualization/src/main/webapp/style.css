@@ -1,239 +1,258 @@
 
 fieldset {
-	border: 1px solid #629262;
-	padding: 10;
-	padding-left: 15px;
-	border-radius:20px;
+    border: 1px solid #629262;
+    padding: 10;
+    padding-left: 15px;
+    border-radius: 20px;
 }
 
 legend {
-	font-size: 1.5em;
-	color: #abc;
-	font-weight: bold;
-	margin-left: 40px;
-	padding: 5px 10px;
-	border: 1px solid #629262;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	-border-radius: 5px;
-	-khtml-border-radius: 5px;
-	text-transform: capitalize;
+    font-size: 1.5em;
+    color: #abc;
+    font-weight: bold;
+    margin-left: 40px;
+    padding: 5px 10px;
+    border: 1px solid #629262;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -border-radius: 5px;
+    -khtml-border-radius: 5px;
+    text-transform: capitalize;
 }
 
+.myButton {
+    position: relative;
+    top: 4px;
+    -moz-box-shadow: inset 0px 1px 0px 0px #d9fbbe;
+    -webkit-box-shadow: inset 0px 1px 0px 0px #d9fbbe;
+    box-shadow: inset 0px 1px 0px 0px #d9fbbe;
 
-    .myButton {
-        position: relative;
-        top: 4px;
-        -moz-box-shadow:inset 0px 1px 0px 0px #d9fbbe;
-        -webkit-box-shadow:inset 0px 1px 0px 0px #d9fbbe;
-        box-shadow:inset 0px 1px 0px 0px #d9fbbe;
-        
-        background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #b8e356), color-stop(1, #a5cc52));
-        background:-moz-linear-gradient(top, #b8e356 5%, #a5cc52 100%);
-        background:-webkit-linear-gradient(top, #b8e356 5%, #a5cc52 100%);
-        background:-o-linear-gradient(top, #b8e356 5%, #a5cc52 100%);
-        background:-ms-linear-gradient(top, #b8e356 5%, #a5cc52 100%);
-        background:linear-gradient(to bottom, #b8e356 5%, #a5cc52 100%);
-        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#b8e356', endColorstr='#a5cc52',GradientType=0);
-        
-        background-color:#b8e356;
-        
-        -moz-border-radius:6px;
-        -webkit-border-radius:6px;
-        border-radius:6px;
-        
-        border:1px solid #83c41a;
-        
-        display:inline-block;
-        color:#ffffff;
-        font-family:arial;
-        font-size:12px;
-        font-weight:bold;
-        padding:6px 20px;
-        text-decoration:none;
-        
-        text-shadow:0px 1px 0px #86ae47;
-        
-    }
-    .myButton:hover {
-        
-        background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #a5cc52), color-stop(1, #b8e356));
-        background:-moz-linear-gradient(top, #a5cc52 5%, #b8e356 100%);
-        background:-webkit-linear-gradient(top, #a5cc52 5%, #b8e356 100%);
-        background:-o-linear-gradient(top, #a5cc52 5%, #b8e356 100%);
-        background:-ms-linear-gradient(top, #a5cc52 5%, #b8e356 100%);
-        background:linear-gradient(to bottom, #a5cc52 5%, #b8e356 100%);
-        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#a5cc52', endColorstr='#b8e356',GradientType=0);
-        
-        background-color:#a5cc52;
-    }
-    .myButton:active {
-        position:relative;
-        top:1px;
-    }
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #b8e356), color-stop(1, #a5cc52));
+    background: -moz-linear-gradient(top, #b8e356 5%, #a5cc52 100%);
+    background: -webkit-linear-gradient(top, #b8e356 5%, #a5cc52 100%);
+    background: -o-linear-gradient(top, #b8e356 5%, #a5cc52 100%);
+    background: -ms-linear-gradient(top, #b8e356 5%, #a5cc52 100%);
+    background: linear-gradient(to bottom, #b8e356 5%, #a5cc52 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#b8e356', endColorstr='#a5cc52', GradientType=0);
 
+    background-color: #b8e356;
 
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
 
+    border: 1px solid #83c41a;
 
+    display: inline-block;
+    color: #ffffff;
+    font-family: arial;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 6px 20px;
+    text-decoration: none;
 
+    text-shadow: 0px 1px 0px #86ae47;
 
+}
+
+.myButton:hover {
+
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #a5cc52), color-stop(1, #b8e356));
+    background: -moz-linear-gradient(top, #a5cc52 5%, #b8e356 100%);
+    background: -webkit-linear-gradient(top, #a5cc52 5%, #b8e356 100%);
+    background: -o-linear-gradient(top, #a5cc52 5%, #b8e356 100%);
+    background: -ms-linear-gradient(top, #a5cc52 5%, #b8e356 100%);
+    background: linear-gradient(to bottom, #a5cc52 5%, #b8e356 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#a5cc52', endColorstr='#b8e356', GradientType=0);
+
+    background-color: #a5cc52;
+}
+
+.myButton:active {
+    position: relative;
+    top: 1px;
+}
 
 body {
-	margin: 0px 0px 0px 0px;
-	padding: 0px 0px 0px 0px;
-	font-family: verdana, arial, helvetica, sans-serif;
-	background-color: #FFFFCC;
-	}
+    margin: 0px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
+    font-family: verdana, arial, helvetica, sans-serif;
+    background-color: #FFFFCC;
+}
+
 a {
-	text-decoration: none;
-	outline: none;
-	}
+    text-decoration: none;
+    outline: none;
+}
+
 a:visited {
-	}
+}
+
 a:active {
-	}
+}
+
 a:hover {
-	text-decoration: underline;
-	}
+    text-decoration: underline;
+}
+
 .ahem {
-	display: none;
-	}
+    display: none;
+}
+
 strong, b {
-	font-weight: bold;
-	}
+    font-weight: bold;
+}
+
 p {
-	font-size: 12px;
-	line-height: 22px;
-	margin-top: 20px;
-	margin-bottom: 10px; 
-	}
+    font-size: 12px;
+    line-height: 22px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
 
 /* weird ie5win bug: all line-height to font-size ratios must agree or box gets pushed around. UPDATE: this has turned out to be very rare. my current recommendation is IGNORE this warning. at the moment i'm leaving it in only in case the issue turns up again. possibly the original bug in march 2001 was caused by an unusual combination of factors, although this solved it at the time.*/
 
 h1 {
-	font-size: 24px;
-	line-height: 44px;
-	font-weight: bold;
-	margin-top: 0;
-	margin-bottom: 0;
-	}
+    font-size: 24px;
+    line-height: 44px;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
 h2 {
-	font-size: 18px;
-	line-height: 40px;
-	font-weight: bold;
-	margin-top: 0;
-	margin-bottom: 0;
-	}
+    font-size: 18px;
+    line-height: 40px;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
 h3 {
-	font-size: 16px;
-	line-height: 22px;
-	font-weight: bold;
-	margin-top: 0;
-	margin-bottom: 0;
-	}
+    font-size: 16px;
+    line-height: 22px;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
 h4 {
-	font-size: 14px;
-	line-height: 26px;
-	font-weight: bold;
-	margin-top: 0;
-	margin-bottom: 0;
-	}
+    font-size: 14px;
+    line-height: 26px;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
 h5 {
-	font-size: 12px;
-	line-height: 22px;
-	font-weight: bold;
-	margin-top: 0;
-	margin-bottom: 0;
-	}
+    font-size: 12px;
+    line-height: 22px;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
 h6 {
-	font-size: 10px;
-	line-height: 18px;
-	font-weight: bold;
-	margin-top: 0;
-	margin-bottom: 0;
-	}
+    font-size: 10px;
+    line-height: 18px;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
 img {
-	border: 0;
-	}
+    border: 0;
+}
+
 .nowrap {
-	white-space: nowrap;
-	font-size: 10px;
-	font-weight: bold;
-	margin-top: 0;
-	margin-bottom: 0;
-/* must be combined with nobr in html for ie5win */
-	}
+    white-space: nowrap;
+    font-size: 10px;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 0;
+    /* must be combined with nobr in html for ie5win */
+}
+
 .tiny {
-	font-size: 9px;
-	line-height: 16px;
-	margin-top: 15px;
-	margin-bottom: 5px; 
-	}	
+    font-size: 9px;
+    line-height: 16px;
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+
 #top {
-	border: 3px solid #33FF66;
-	background: #666;
-	height: 100px; /* ie5win fudge begins */
-	voice-family: "\"}\"";
-	voice-family:inherit;
-	height: 167px;
-	width:978px;
-	margin-left:auto;
-	margin-right:auto;
-	}
-html>body #top {
-	height: 167px; /* ie5win fudge ends */
-	}
+    border: 3px solid #33FF66;
+    background: #666;
+    height: 100px; /* ie5win fudge begins */
+    voice-family: "\"}\"";
+    voice-family: inherit;
+    height: 167px;
+    width: 978px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+html > body #top {
+    height: 167px; /* ie5win fudge ends */
+}
+
 #left {
-	position: absolute;
-	top: 167px;
-	left: 0px;
-	margin: 20px;
-	padding: 10px;
-	border: 5px solid #ccc;
-	background-color:rgba(166,253,191,0.4);
-	width: 150px; /* ie5win fudge begins */
-	voice-family: "\"}\"";
-	voice-family:inherit;
-	width: 120px;
-	height: 70%;
-	}
-html>body #left {
-	width: 120px; /* ie5win fudge ends */
-	}
+    position: absolute;
+    top: 167px;
+    left: 0px;
+    margin: 20px;
+    padding: 10px;
+    border: 5px solid #ccc;
+    background-color: rgba(166, 253, 191, 0.4);
+    width: 150px; /* ie5win fudge begins */
+    voice-family: "\"}\"";
+    voice-family: inherit;
+    width: 120px;
+    height: 70%;
+}
+
+html > body #left {
+    width: 120px; /* ie5win fudge ends */
+}
+
 #middle {
-	margin: 14px 190px 10px 190px;
-	padding: 10px;
-	border: 5px solid #9fff99;
-	background-color:rgba(166,253,191,0.4);
-	border-radius:20px;
-	box-shadow: 5px 5px 5px #888888;
-	}
+    margin: 14px 190px 10px 190px;
+    padding: 10px;
+    border: 5px solid #9fff99;
+    background-color: rgba(166, 253, 191, 0.4);
+    border-radius: 20px;
+    box-shadow: 5px 5px 5px #888888;
+}
+
 #middlecharts {
-	margin: 2px 1px 2px 1px;
-	padding: 5px;
-	border: 1px solid #9fff99;
-	background-color:rgba(166,253,191,0.4);
-	}
+    margin: 2px 1px 2px 1px;
+    padding: 5px;
+    border: 1px solid #9fff99;
+    background-color: rgba(166, 253, 191, 0.4);
+}
+
 #right {
-	position: absolute;
-	top: 167px;
-	right: 0px; /* Opera5.02 will show a space at right when there is no scroll bar */
-	margin: 20px;
-	padding: 10px;
-	border: 5px solid #ccc;
-	background-color:rgba(166,253,191,0.4);
-	width: 150px; /* ie5win fudge begins */
-	voice-family: "\"}\"";
-	voice-family:inherit;
-	width: 120px;
-	height: 70%;
-	}
-html>body #right {
-	width: 120px; /* ie5win fudge ends */
-	}
+    position: absolute;
+    top: 167px;
+    right: 0px; /* Opera5.02 will show a space at right when there is no scroll bar */
+    margin: 20px;
+    padding: 10px;
+    border: 5px solid #ccc;
+    background-color: rgba(166, 253, 191, 0.4);
+    width: 150px; /* ie5win fudge begins */
+    voice-family: "\"}\"";
+    voice-family: inherit;
+    width: 120px;
+    height: 70%;
+}
+
+html > body #right {
+    width: 120px; /* ie5win fudge ends */
+}
+
 pre {
-	font-size: 12px;
-	line-height: 22px;
-	margin-top: 20px;
-	margin-bottom: 10px; 
-	}
+    font-size: 12px;
+    line-height: 22px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}

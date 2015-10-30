@@ -31,22 +31,23 @@
 
 package org.jage.action;
 
+
 /**
  * Describes the phase of an action.
- * 
+ *
  * @author AGH AgE Team
  */
 public enum ActionPhase {
-	/**
-	 * Initialization and address verification phase.
-	 */
-	INIT,
-	/**
-	 * Main execvution phase.
-	 */
-	MAIN,
-	/**
-	 * Finalization phase.
-	 */
-	FINISH;
+    /**
+     * Initialization and address verification phase.
+     */
+    INIT,
+    /**
+     * Main execution phase.
+     */
+    MAIN,
+    /**
+     * Finalization phase.
+     */
+    FINISH
 }

@@ -31,6 +31,7 @@
 
 package org.jage.property.monitors;
 
+
 /**
  * Interface for monitor rules, that decide whether the monitor should be informed or not about property change.
  *
@@ -38,14 +39,12 @@ package org.jage.property.monitors;
  */
 public interface IPropertyMonitorRule {
 
-	/**
-	 * Checks whether the rule is active, and the monitor should be informed about the change.
-	 *
-	 * @param oldValue
-	 *            old property's value.
-	 * @param newValue
-	 *            new property's value.
-	 * @return true, if the monitor should be informed about the change; otherwise, returns false.
-	 */
-	boolean isActive(Object oldValue, Object newValue);
+    /**
+     * Checks whether the rule is active, and the monitor should be informed about the change.
+     *
+     * @param oldValue old property's value.
+     * @param newValue new property's value.
+     * @return true, if the monitor should be informed about the change; otherwise, returns false.
+     */
+    boolean isActive(Object oldValue, Object newValue);
 }

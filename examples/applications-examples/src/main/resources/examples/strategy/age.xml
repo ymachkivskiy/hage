@@ -1,48 +1,48 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<configuration xmlns="http://age.iisg.agh.edu.pl/schema/age" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://age.iisg.agh.edu.pl/schema/age"
                xsi:schemaLocation="http://age.iisg.agh.edu.pl/schema/age http://age.iisg.agh.edu.pl/schema/age/age.xsd">
 
-	<include file="classpath:examples/common.xml">
-		<block name="workplaces">
-			<component name="workplace" class="org.jage.workplace.SimpleWorkplace" isSingleton="false">
-				<property name="agent">
-					<agent name="action" class="org.jage.agent.SimpleAggregate">
-						<component class="org.jage.address.agent.DefaultAgentAddressSupplier">
-							<constructor-arg name="nameTemplate" value="TheXFiles"/>
-						</component>
+    <include file="classpath:examples/common.xml">
+        <block name="workplaces">
+            <component name="workplace" class="org.jage.workplace.SimpleWorkplace" isSingleton="false">
+                <property name="agent">
+                    <agent name="action" class="org.jage.agent.SimpleAggregate">
+                        <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                            <constructor-arg name="nameTemplate" value="TheXFiles"/>
+                        </component>
 
-						<list name="agents">
-							<agent name="echo123" class="org.jage.examples.strategy.StrategySimpleAgent">
-								<component class="org.jage.address.agent.DefaultAgentAddressSupplier">
-									<constructor-arg name="nameTemplate" value="echoEvery1"/>
-								</component>
-								<property name="echoStrategy" ref="customCounter"/>
-							</agent>
-							<agent name="echoABC" class="org.jage.examples.strategy.StrategySimpleAgent">
-								<component class="org.jage.address.agent.DefaultAgentAddressSupplier">
-									<constructor-arg name="nameTemplate" value="echoEvery2"/>
-								</component>
-								<property name="echoStrategy" ref="customCounter2"/>
-							</agent>
-							<agent name="echoEcho" class="org.jage.examples.strategy.StrategySimpleAgent">
-								<component class="org.jage.address.agent.DefaultAgentAddressSupplier">
-									<constructor-arg name="nameTemplate" value="EchoABC"/>
-								</component>
-								<property name="echoStrategy" ref="echoAbcStrategy"/>
-							</agent>
-						</list>
-						<property name="agents" ref="agents"/>
+                        <list name="agents">
+                            <agent name="echo123" class="org.jage.examples.strategy.StrategySimpleAgent">
+                                <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                                    <constructor-arg name="nameTemplate" value="echoEvery1"/>
+                                </component>
+                                <property name="echoStrategy" ref="customCounter"/>
+                            </agent>
+                            <agent name="echoABC" class="org.jage.examples.strategy.StrategySimpleAgent">
+                                <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                                    <constructor-arg name="nameTemplate" value="echoEvery2"/>
+                                </component>
+                                <property name="echoStrategy" ref="customCounter2"/>
+                            </agent>
+                            <agent name="echoEcho" class="org.jage.examples.strategy.StrategySimpleAgent">
+                                <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                                    <constructor-arg name="nameTemplate" value="EchoABC"/>
+                                </component>
+                                <property name="echoStrategy" ref="echoAbcStrategy"/>
+                            </agent>
+                        </list>
+                        <property name="agents" ref="agents"/>
 
-						<strategy name="echo123Strategy" class="org.jage.examples.strategy.Echo123Strategy"/>
-						<strategy name="echoAbcStrategy" class="org.jage.examples.strategy.EchoAbcStrategy"/>
-						<strategy name="counterStrategy" class="org.jage.examples.strategy.CounterEchoStrategy"/>
-						<strategy name="customCounter2" class="org.jage.examples.strategy.CustomCounterEchoStrategy">
-							<property name="increment" type="Integer" value="2"/>
-						</strategy>
-						<strategy name="customCounter" class="org.jage.examples.strategy.CustomCounterEchoStrategy"/>
-					</agent>
-				</property>
-			</component>
-		</block>
-	</include>
+                        <strategy name="echo123Strategy" class="org.jage.examples.strategy.Echo123Strategy"/>
+                        <strategy name="echoAbcStrategy" class="org.jage.examples.strategy.EchoAbcStrategy"/>
+                        <strategy name="counterStrategy" class="org.jage.examples.strategy.CounterEchoStrategy"/>
+                        <strategy name="customCounter2" class="org.jage.examples.strategy.CustomCounterEchoStrategy">
+                            <property name="increment" type="Integer" value="2"/>
+                        </strategy>
+                        <strategy name="customCounter" class="org.jage.examples.strategy.CustomCounterEchoStrategy"/>
+                    </agent>
+                </property>
+            </component>
+        </block>
+    </include>
 </configuration>

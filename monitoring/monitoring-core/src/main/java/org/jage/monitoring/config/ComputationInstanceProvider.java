@@ -30,13 +30,13 @@ package org.jage.monitoring.config;
 
 /**
  * The interface for providers of computation instance.
- * 
+ *
  * @author AGH AgE Team
  */
 public interface ComputationInstanceProvider {
 
-	/**
-	 * @return Created computation instance.
-	 */
-	String getComputationInstance();
+    /**
+     * @return Created computation instance.
+     */
+    String getComputationInstance();
 }

@@ -31,7 +31,9 @@
 
 package org.jage.random;
 
+
 import org.jage.strategy.IStrategy;
+
 
 /**
  * An interface for generating random integer values. <br />
@@ -45,33 +47,32 @@ import org.jage.strategy.IStrategy;
  */
 public interface IIntRandomGenerator extends IStrategy {
 
-	/**
-	 * Returns a random integer value arbitrarily distributed in the range <code>[getLowerInt(), getUpperInt()]</code>.
-	 *
-	 * @return A random value.
-	 */
-	public int nextInt();
+    /**
+     * Returns a random integer value arbitrarily distributed in the range <code>[getLowerInt(), getUpperInt()]</code>.
+     *
+     * @return A random value.
+     */
+    public int nextInt();
 
-	/**
-	 * Returns a random integer value arbitrarily distributed in the range <code>[0, range]</code>.
-	 *
-	 * @param range
-	 *            The distribution range
-	 * @return A random value.
-	 */
-	public int nextInt(int range);
+    /**
+     * Returns a random integer value arbitrarily distributed in the range <code>[0, range]</code>.
+     *
+     * @param range The distribution range
+     * @return A random value.
+     */
+    public int nextInt(int range);
 
-	/**
-	 * Specifies the lower bound of the values that can be returned by <code>nextInt()</code>.
-	 *
-	 * @return This generator's lower bound.
-	 */
-	public int getLowerInt();
+    /**
+     * Specifies the lower bound of the values that can be returned by <code>nextInt()</code>.
+     *
+     * @return This generator's lower bound.
+     */
+    public int getLowerInt();
 
-	/**
-	 * Specifies the upper bound of the values that can be returned by <code>nextInt()</code>.
-	 *
-	 * @return This generator's upper bound.
-	 */
-	public int getUpperInt();
+    /**
+     * Specifies the upper bound of the values that can be returned by <code>nextInt()</code>.
+     *
+     * @return This generator's upper bound.
+     */
+    public int getUpperInt();
 }

@@ -26,50 +26,52 @@
  */
 package org.jage.monitoring.visualization.storage.element;
 
+
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class ComputationType implements TypeElement{
 
-	String typeKey;
-	private Map<String, ComputationInstance> instances = new LinkedHashMap<String, ComputationInstance>();
+public class ComputationType implements TypeElement {
 
-	public ComputationType(String typeKey) {
-		this.typeKey = typeKey;
-	}
+    String typeKey;
+    private Map<String, ComputationInstance> instances = new LinkedHashMap<String, ComputationInstance>();
 
-	@Override
-	public Collection<ComputationInstance> all() {
-		return instances.values();
-	}
+    public ComputationType(String typeKey) {
+        this.typeKey = typeKey;
+    }
 
-	@Override
-	public ComputationInstance get(String key) {
-		return instances.get(key);
-	}
+    @Override
+    public Collection<ComputationInstance> all() {
+        return instances.values();
+    }
 
-	@Override
-	public ComputationInstance last() {
-		Collection<ComputationInstance> instancesCollection = instances.values();
-		ComputationInstance last = new ComputationInstance("1");
-		for (ComputationInstance computationInstance : instancesCollection) {
-	        if(new Long(computationInstance.getInstanceKey()) > new Long(last.getInstanceKey())){
-	        	last = computationInstance;
-	        }
+    @Override
+    public ComputationInstance get(String key) {
+        return instances.get(key);
+    }
+
+    @Override
+    public ComputationInstance last() {
+        Collection<ComputationInstance> instancesCollection = instances.values();
+        ComputationInstance last = new ComputationInstance("1");
+        for(ComputationInstance computationInstance : instancesCollection) {
+            if(new Long(computationInstance.getInstanceKey()) > new Long(last.getInstanceKey())) {
+                last = computationInstance;
+            }
         }
-		return last;
-	}
+        return last;
+    }
 
-	public ComputationInstance put(ComputationInstance instance) {
-		if (!instances.containsKey(instance.instanceKey)) {
-			instances.put(instance.instanceKey, instance);
-		}
-		return instances.get(instance.instanceKey);
-	}
-	
-	@Override
-	public String toString() {
-	    return typeKey;
-	}
+    public ComputationInstance put(ComputationInstance instance) {
+        if(!instances.containsKey(instance.instanceKey)) {
+            instances.put(instance.instanceKey, instance);
+        }
+        return instances.get(instance.instanceKey);
+    }
+
+    @Override
+    public String toString() {
+        return typeKey;
+    }
 }

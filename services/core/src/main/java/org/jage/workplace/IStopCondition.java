@@ -31,14 +31,15 @@
 
 package org.jage.workplace;
 
+
 import org.jage.platform.component.IStatefulComponent;
+
 
 /**
  * An interface for stop conditions which make decision if stop workplaces.
- * 
+ *
  * @author AGH AgE Team
- * 
  */
 public interface IStopCondition extends IStatefulComponent {
-	// Empty
+    // Empty
 }

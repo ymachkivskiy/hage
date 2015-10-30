@@ -31,13 +31,14 @@
 
 package org.jage.platform.component.pico;
 
-import java.lang.reflect.Type;
-import java.util.List;
 
+import org.jage.platform.component.provider.IMutableComponentInstanceProvider;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 
-import org.jage.platform.component.provider.IMutableComponentInstanceProvider;
+import java.lang.reflect.Type;
+import java.util.List;
+
 
 /**
  * Interface for implementations of {@link IMutableComponentInstanceProvider} based on Picocontainer library.
@@ -46,16 +47,14 @@ import org.jage.platform.component.provider.IMutableComponentInstanceProvider;
  */
 public interface IPicoComponentInstanceProvider extends IMutableComponentInstanceProvider, MutablePicoContainer {
 
-	/**
-	 * Retrieves all component adapters inside this container that are associated with the specified parametrized type.
-	 *
-	 * @param type
-	 *            the type of the components.
-	 * @param typeParameters
-	 *            an array of type parameters.
-	 * @return a collection containing all the {@link ComponentAdapter}s inside this container that are associated with
-	 *         the specified type. Changes to this collection will not be reflected in the container itself.
-	 */
-	List<ComponentAdapter<?>> getComponentAdapters(Class<?> type, Type[] typeParameters);
+    /**
+     * Retrieves all component adapters inside this container that are associated with the specified parametrized type.
+     *
+     * @param type           the type of the components.
+     * @param typeParameters an array of type parameters.
+     * @return a collection containing all the {@link ComponentAdapter}s inside this container that are associated with
+     * the specified type. Changes to this collection will not be reflected in the container itself.
+     */
+    List<ComponentAdapter<?>> getComponentAdapters(Class<?> type, Type[] typeParameters);
 
 }

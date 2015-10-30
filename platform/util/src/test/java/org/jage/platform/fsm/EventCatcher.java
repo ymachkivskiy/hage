@@ -31,57 +31,57 @@
 
 package org.jage.platform.fsm;
 
-import java.util.List;
 
 import com.google.common.eventbus.DeadEvent;
 import com.google.common.eventbus.Subscribe;
 
+import java.util.List;
+
 import static com.google.common.collect.Lists.newArrayList;
+
 
 /**
  * A subscriber that catches all FSM events.
- * 
+ *
  * @author AGH AgE Team
  */
 public final class EventCatcher {
 
-	private final List<Object> caughtEvents = newArrayList();
+    private final List<Object> caughtEvents = newArrayList();
 
-	private final List<Object> deadEvents = newArrayList();
+    private final List<Object> deadEvents = newArrayList();
 
-	/**
-	 * Catches StateChangedEvent.
-	 * 
-	 * @param event
-	 *            an event to catch.
-	 */
-	@Subscribe
-	public void catchEvent(final StateChangedEvent<?, ?> event) {
-		caughtEvents.add(event);
-	}
+    /**
+     * Catches StateChangedEvent.
+     *
+     * @param event an event to catch.
+     */
+    @Subscribe
+    public void catchEvent(final StateChangedEvent<?, ?> event) {
+        caughtEvents.add(event);
+    }
 
-	/**
-	 * Catches unexpected events.
-	 * 
-	 * @param event
-	 *            an event to catch.
-	 */
-	@Subscribe
-	public void catchDeadEvent(final DeadEvent event) {
-		deadEvents.add(event);
-	}
+    /**
+     * Catches unexpected events.
+     *
+     * @param event an event to catch.
+     */
+    @Subscribe
+    public void catchDeadEvent(final DeadEvent event) {
+        deadEvents.add(event);
+    }
 
-	/**
-	 * @return caught expected events.
-	 */
-	public List<Object> getCaughtEvents() {
-		return caughtEvents;
-	}
+    /**
+     * @return caught expected events.
+     */
+    public List<Object> getCaughtEvents() {
+        return caughtEvents;
+    }
 
-	/**
-	 * @return caught unexpected events.
-	 */
-	public List<Object> getDeadEvents() {
-		return deadEvents;
-	}
+    /**
+     * @return caught unexpected events.
+     */
+    public List<Object> getDeadEvents() {
+        return deadEvents;
+    }
 }

@@ -31,26 +31,27 @@
 
 package org.jage.platform.component.provider;
 
+
 /**
  * A {@link IComponentInstanceProvider} which supplies a default component instance. This provider can return the
  * component instance.
- * 
+ *
  * @author AGH AgE Team
  */
 public interface ISelfAwareComponentInstanceProvider extends IComponentInstanceProvider {
 
-	/**
-	 * Returns the component instance which is supplied by provider by default.
-	 * 
-	 * @return required object or null if object not found
-	 */
-	public Object getInstance();
+    /**
+     * Returns the component instance which is supplied by provider by default.
+     *
+     * @return required object or null if object not found
+     */
+    public Object getInstance();
 
-	/**
-	 * Returns name of component which is supplied by provider by default.
-	 * 
-	 * @return component name
-	 */
-	public String getName();
+    /**
+     * Returns name of component which is supplied by provider by default.
+     *
+     * @return component name
+     */
+    public String getName();
 
 }

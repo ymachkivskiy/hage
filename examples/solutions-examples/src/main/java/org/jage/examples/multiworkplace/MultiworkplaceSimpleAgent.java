@@ -31,10 +31,6 @@
 
 package org.jage.examples.multiworkplace;
 
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.jage.action.AgentActions;
 import org.jage.address.agent.AgentAddress;
@@ -42,8 +38,13 @@ import org.jage.address.agent.AgentAddressSupplier;
 import org.jage.agent.AgentException;
 import org.jage.communication.message.Message;
 import org.jage.examples.migration.CrawlingSimpleAgent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
 
 import static org.jage.communication.message.Messages.newMessageToParent;
+
 
 /**
  * This agent should be located just beneath a workplace.
@@ -52,51 +53,49 @@ import static org.jage.communication.message.Messages.newMessageToParent;
  */
 public class MultiworkplaceSimpleAgent extends CrawlingSimpleAgent {
 
-	private static Logger log = LoggerFactory.getLogger(MultiworkplaceSimpleAgent.class);
+    private static final long serialVersionUID = 4L;
+    private static Logger log = LoggerFactory.getLogger(MultiworkplaceSimpleAgent.class);
+    private long sentMessagesCount = 0;
 
-	private static final long serialVersionUID = 4L;
+    public MultiworkplaceSimpleAgent(final AgentAddress address) {
+        super(address);
+    }
 
-	private long sentMessagesCount = 0;
+    @Inject
+    public MultiworkplaceSimpleAgent(final AgentAddressSupplier supplier) {
+        super(supplier);
+    }
 
-	public MultiworkplaceSimpleAgent(final AgentAddress address) {
-		super(address);
-	}
+    @Override
+    public void step() {
+        try {
+            final Message<AgentAddress, String> message = newMessageToParent(getAddress(), "DefaultMessage to parent");
+            doAction(AgentActions.sendMessage(message));
+            sentMessagesCount++;
+        } catch(final AgentException e) {
+            log.error("Could not send a message.", e);
+        }
 
-	@Inject
-	public MultiworkplaceSimpleAgent(final AgentAddressSupplier supplier) {
-		super(supplier);
-	}
+        step++;
+        if((step + hashCode()) % 50 == 0) {
+            considerMigration();
+        }
 
-	@Override
-	public void step() {
-		try {
-			final Message<AgentAddress, String> message = newMessageToParent(getAddress(), "DefaultMessage to parent");
-			doAction(AgentActions.sendMessage(message));
-			sentMessagesCount++;
-		} catch (final AgentException e) {
-			log.error("Could not send a message.", e);
-		}
+        try {
+            Thread.sleep(10);
+        } catch(final InterruptedException e) {
+            log.error("Interrupted", e);
+        }
+    }
 
-		step++;
-		if ((step + hashCode()) % 50 == 0) {
-			considerMigration();
-		}
+    @Override
+    public boolean finish() {
+        super.finish();
+        log.info("{}: Sent messages {} times.", getAddress().getFriendlyName(), sentMessagesCount);
+        return true;
+    }
 
-		try {
-			Thread.sleep(10);
-		} catch (final InterruptedException e) {
-			log.error("Interrupted", e);
-		}
-	}
-
-	@Override
-	public boolean finish() {
-		super.finish();
-		log.info("{}: Sent messages {} times.", getAddress().getFriendlyName(), sentMessagesCount);
-		return true;
-	}
-
-	public long getSentMessagesCount() {
-		return sentMessagesCount;
-	}
+    public long getSentMessagesCount() {
+        return sentMessagesCount;
+    }
 }

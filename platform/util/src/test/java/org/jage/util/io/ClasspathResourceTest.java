@@ -31,64 +31,66 @@
 
 package org.jage.util.io;
 
+
+import org.junit.Test;
+
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 
-import org.junit.Test;
-
 import static org.junit.Assert.assertNotNull;
+
 
 /**
  * Tests for the {@link ClasspathResource} class.
- * 
+ *
  * @author AGH AgE Team
  */
 public class ClasspathResourceTest {
 
-	private static final String RESOURCE_EXISTING = "classpath:org/jage/util/io/testResource.res";
+    private static final String RESOURCE_EXISTING = "classpath:org/jage/util/io/testResource.res";
 
-	private static final String RESOURCE_NOT_EXISTING = "classpath:org/jage/util/io/noResource.res";
+    private static final String RESOURCE_NOT_EXISTING = "classpath:org/jage/util/io/noResource.res";
 
-	private static final String RESOURCE_INCORRECT_URI = "claspath:org/jage/util/io/testResource.res";
+    private static final String RESOURCE_INCORRECT_URI = "claspath:org/jage/util/io/testResource.res";
 
-	/**
-	 * Tests getting of an input stream for an existing resource.
-	 */
-	@Test
-	public void testGetInputStream() throws UnknownSchemeException, FileNotFoundException {
-		ClasspathResource classpathResource = new ClasspathResource(RESOURCE_EXISTING);
-		InputStream inputStream = classpathResource.getInputStream();
-		assertNotNull(inputStream);
-	}
+    /**
+     * Tests getting of an input stream for an existing resource.
+     */
+    @Test
+    public void testGetInputStream() throws UnknownSchemeException, FileNotFoundException {
+        ClasspathResource classpathResource = new ClasspathResource(RESOURCE_EXISTING);
+        InputStream inputStream = classpathResource.getInputStream();
+        assertNotNull(inputStream);
+    }
 
-	/**
-	 * Tests getting of a URI for an existing resource.
-	 */
-	@Test
-	public void testGetUri() throws URISyntaxException, UnknownSchemeException {
-		ClasspathResource classpathResource = new ClasspathResource(RESOURCE_EXISTING);
-		assertNotNull(classpathResource.getUri());
-	}
+    /**
+     * Tests getting of a URI for an existing resource.
+     */
+    @Test
+    public void testGetUri() throws URISyntaxException, UnknownSchemeException {
+        ClasspathResource classpathResource = new ClasspathResource(RESOURCE_EXISTING);
+        assertNotNull(classpathResource.getUri());
+    }
 
-	/**
-	 * Tests handling of a not existing resource.
-	 */
-	@Test(expected = FileNotFoundException.class)
-	public void testNotExisitngResource() throws FileNotFoundException, UnknownSchemeException, URISyntaxException {
-		ClasspathResource classpathResource = new ClasspathResource(RESOURCE_NOT_EXISTING);
+    /**
+     * Tests handling of a not existing resource.
+     */
+    @Test(expected = FileNotFoundException.class)
+    public void testNotExisitngResource() throws FileNotFoundException, UnknownSchemeException, URISyntaxException {
+        ClasspathResource classpathResource = new ClasspathResource(RESOURCE_NOT_EXISTING);
 
-		assertNotNull(classpathResource.getUri());
-		classpathResource.getInputStream(); // Should throw
-	}
+        assertNotNull(classpathResource.getUri());
+        classpathResource.getInputStream(); // Should throw
+    }
 
-	/**
-	 * Tests handling of incorrect URIs.
-	 */
-	@SuppressWarnings("unused")
-	@Test(expected = UnknownSchemeException.class)
-	public void testIncorrectUriResource() throws UnknownSchemeException {
-		ClasspathResource classpathResource = new ClasspathResource(RESOURCE_INCORRECT_URI); // Should throw
-	}
+    /**
+     * Tests handling of incorrect URIs.
+     */
+    @SuppressWarnings("unused")
+    @Test(expected = UnknownSchemeException.class)
+    public void testIncorrectUriResource() throws UnknownSchemeException {
+        ClasspathResource classpathResource = new ClasspathResource(RESOURCE_INCORRECT_URI); // Should throw
+    }
 
 }

@@ -31,46 +31,44 @@
 
 package org.jage.property.monitors;
 
+
 /**
  * Pair that stores monitor and rule that decides whether the monitor should be informed about property change.
  *
  * @author AGH AgE Team
- *
  */
 public class PropertyMonitorRulePair {
 
-	private AbstractPropertyMonitor monitor;
+    private AbstractPropertyMonitor monitor;
 
-	private IPropertyMonitorRule rule;
+    private IPropertyMonitorRule rule;
 
-	/**
-	 * Constructor.
-	 *
-	 * @param monitor
-	 *            monitor.
-	 * @param rule
-	 *            rule.
-	 */
-	public PropertyMonitorRulePair(AbstractPropertyMonitor monitor, IPropertyMonitorRule rule) {
-		this.monitor = monitor;
-		this.rule = rule;
-	}
+    /**
+     * Constructor.
+     *
+     * @param monitor monitor.
+     * @param rule    rule.
+     */
+    public PropertyMonitorRulePair(AbstractPropertyMonitor monitor, IPropertyMonitorRule rule) {
+        this.monitor = monitor;
+        this.rule = rule;
+    }
 
-	/**
-	 * Returns monitor.
-	 *
-	 * @return monitor.
-	 */
-	public AbstractPropertyMonitor getPropertyMonitor() {
-		return monitor;
-	}
+    /**
+     * Returns monitor.
+     *
+     * @return monitor.
+     */
+    public AbstractPropertyMonitor getPropertyMonitor() {
+        return monitor;
+    }
 
-	/**
-	 * Returns monitor's rule.
-	 *
-	 * @return monitor's rule.
-	 */
-	public IPropertyMonitorRule getPropertyMonitorRule() {
-		return rule;
-	}
+    /**
+     * Returns monitor's rule.
+     *
+     * @return monitor's rule.
+     */
+    public IPropertyMonitorRule getPropertyMonitorRule() {
+        return rule;
+    }
 }

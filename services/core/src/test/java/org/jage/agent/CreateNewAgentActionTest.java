@@ -31,18 +31,6 @@
 
 package org.jage.agent;
 
-import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
 
 import org.jage.action.AgentActions;
 import org.jage.action.ComplexAction;
@@ -51,9 +39,21 @@ import org.jage.action.testHelpers.HelperTestAggregateActionService;
 import org.jage.action.testHelpers.TracingActionContext;
 import org.jage.address.agent.AgentAddress;
 import org.jage.platform.component.provider.IComponentInstanceProvider;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.List;
+
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.is;
 import static org.jage.address.selector.Selectors.singleAddress;
 import static org.jage.utils.AgentTestUtils.createMockAgentWithAddress;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+
 
 /**
  * Tests for the {@link AggregateActionService} class: the creation of a new agent.
@@ -63,46 +63,46 @@ import static org.jage.utils.AgentTestUtils.createMockAgentWithAddress;
 @RunWith(MockitoJUnitRunner.class)
 public class CreateNewAgentActionTest {
 
-	private final SimpleAggregate aggregate = new SimpleAggregate(mock(AgentAddress.class));
+    private final SimpleAggregate aggregate = new SimpleAggregate(mock(AgentAddress.class));
 
-	private final HelperTestAggregateActionService actionService = new HelperTestAggregateActionService();
+    private final HelperTestAggregateActionService actionService = new HelperTestAggregateActionService();
 
-	private final ISimpleAgent agent = createMockAgentWithAddress();
+    private final ISimpleAgent agent = createMockAgentWithAddress();
 
-	@Mock
-	private IComponentInstanceProvider componentInstanceProvider;
+    @Mock
+    private IComponentInstanceProvider componentInstanceProvider;
 
-	@Before
-	public void setUp() throws Exception {
-		aggregate.setInstanceProvider(componentInstanceProvider);
-		aggregate.add(agent);
-		actionService.setAggregate(aggregate);
-		actionService.setInstanceProvider(componentInstanceProvider);
-	}
+    @Before
+    public void setUp() throws Exception {
+        aggregate.setInstanceProvider(componentInstanceProvider);
+        aggregate.add(agent);
+        actionService.setAggregate(aggregate);
+        actionService.setInstanceProvider(componentInstanceProvider);
+    }
 
-	@Test
-	public void createNewAgentActionTest() throws AgentException {
-		// given
-		final ISimpleAgent newAgent = createMockAgentWithAddress();
-		final ComplexAction action = new ComplexAction();
-		final SingleAction addAction = AgentActions.addToParent(agent, newAgent);
+    @Test
+    public void createNewAgentActionTest() throws AgentException {
+        // given
+        final ISimpleAgent newAgent = createMockAgentWithAddress();
+        final ComplexAction action = new ComplexAction();
+        final SingleAction addAction = AgentActions.addToParent(agent, newAgent);
 
-		action.addChild(addAction);
+        action.addChild(addAction);
 
-		final TracingActionContext tracingContext = new TracingActionContext();
-		action.addChild(new SingleAction(singleAddress(newAgent.getAddress()), tracingContext,
-		        "c1Action"));
-		action.addChild(new SingleAction(singleAddress(newAgent.getAddress()), tracingContext,
-		        "c2Action"));
+        final TracingActionContext tracingContext = new TracingActionContext();
+        action.addChild(new SingleAction(singleAddress(newAgent.getAddress()), tracingContext,
+                                         "c1Action"));
+        action.addChild(new SingleAction(singleAddress(newAgent.getAddress()), tracingContext,
+                                         "c2Action"));
 
-		// when
-		actionService.doAction(action);
-		actionService.processActions();
-		final List<ISimpleAgent> agents = aggregate.getAgents();
+        // when
+        actionService.doAction(action);
+        actionService.processActions();
+        final List<ISimpleAgent> agents = aggregate.getAgents();
 
-		// then
-		assertThat(tracingContext.trace, is("C1IC2I12"));
-		assertThat(agents, hasItem(newAgent));
-	}
+        // then
+        assertThat(tracingContext.trace, is("C1IC2I12"));
+        assertThat(agents, hasItem(newAgent));
+    }
 
 }

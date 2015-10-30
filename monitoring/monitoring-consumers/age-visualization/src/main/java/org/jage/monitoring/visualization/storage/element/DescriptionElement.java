@@ -26,26 +26,27 @@
  */
 package org.jage.monitoring.visualization.storage.element;
 
+
 import java.util.Collection;
 
+
 /**
- *  
- * 
  * @author AGH AgE Team
- *
  */
 public interface DescriptionElement<T> {
-	
-	/**
-	 * Returns collection of all instance of <code>T</code> which are children of DescriptionElement.
-	 * @return
-	 */
-	Collection<T> all();
-	
-	/**
-	 * Returns instance of <code>T</code> which is a child of DescriptionElement and is stored under passed key. 
-	 * @param key
-	 * @return
-	 */
-	T get(String key);
+
+    /**
+     * Returns collection of all instance of <code>T</code> which are children of DescriptionElement.
+     *
+     * @return
+     */
+    Collection<T> all();
+
+    /**
+     * Returns instance of <code>T</code> which is a child of DescriptionElement and is stored under passed key.
+     *
+     * @param key
+     * @return
+     */
+    T get(String key);
 }

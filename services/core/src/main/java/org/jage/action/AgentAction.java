@@ -31,29 +31,32 @@
 
 package org.jage.action;
 
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+
 /**
  * Annotates aggregates methods to mark that the method is a action implementation.
- * 
+ *
  * @author AGH AgE Team
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface AgentAction {
-	/**
-	 * Action name.
-	 */
-	String name();
 
-	/**
-	 * A phase in which the method will be run.
-	 */
-	ActionPhase phase() default ActionPhase.MAIN;
+    /**
+     * Action name.
+     */
+    String name();
+
+    /**
+     * A phase in which the method will be run.
+     */
+    ActionPhase phase() default ActionPhase.MAIN;
 
 }

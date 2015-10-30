@@ -31,26 +31,26 @@
 
 package org.jage.query;
 
+
 /**
  * The interface for selectors performing initial decision about including an element in further processing.
- * 
+ *
  * @author AGH AgE Team
  */
 public interface IInitialSelector {
 
-	/**
-	 * Initialises this selector with the number of elements in collection to process.
-	 * 
-	 * @param elementsCount
-	 *            Number of elements.
-	 */
-	void initialise(long elementsCount);
+    /**
+     * Initialises this selector with the number of elements in collection to process.
+     *
+     * @param elementsCount Number of elements.
+     */
+    void initialise(long elementsCount);
 
-	/**
-	 * Informs whether an element should be included in the further processing.
-	 * 
-	 * @return True if an element should be included in further processing, false otherwise.
-	 */
-	boolean include();
+    /**
+     * Informs whether an element should be included in the further processing.
+     *
+     * @return True if an element should be included in further processing, false otherwise.
+     */
+    boolean include();
 
 }

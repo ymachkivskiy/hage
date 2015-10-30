@@ -31,23 +31,22 @@
 
 package org.jage.examples.lifecycle;
 
+
+import com.google.common.eventbus.Subscribe;
+import org.jage.annotation.FieldsAreNonnullByDefault;
+import org.jage.bus.EventBus;
+import org.jage.platform.component.IStatefulComponent;
+import org.jage.platform.fsm.StateChangedEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
 import static java.lang.String.format;
 
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.jage.annotation.FieldsAreNonnullByDefault;
-import org.jage.bus.EventBus;
-import org.jage.platform.component.IStatefulComponent;
-import org.jage.platform.fsm.StateChangedEvent;
-
-import com.google.common.eventbus.Subscribe;
 
 /**
  * A sample listener that logs lifecycle events and write them to the DOT file.
@@ -57,68 +56,61 @@ import com.google.common.eventbus.Subscribe;
 @FieldsAreNonnullByDefault
 public class LifecycleTransitionLogger implements IStatefulComponent {
 
-	private static final Logger log = LoggerFactory.getLogger(LifecycleTransitionLogger.class);
+    private static final Logger log = LoggerFactory.getLogger(LifecycleTransitionLogger.class);
+    private final File dotFile;
+    private final FileWriter fileWriter;
+    @Inject
+    private EventBus eventBus;
 
-	@Inject private EventBus eventBus;
+    /**
+     * Creates a new logger.
+     *
+     * @throws IOException when the DOT file cannot be opened.
+     */
+    public LifecycleTransitionLogger() throws IOException {
+        dotFile = File.createTempFile("lifecycle", ".dot");
+        fileWriter = new FileWriter(dotFile);
+        log.info("Writing to the file: {}", dotFile.getAbsolutePath());
 
-	private final File dotFile;
+        fileWriter.write("digraph lifecycle {\n");
+    }
 
-	private final FileWriter fileWriter;
+    /**
+     * Logs the state change and writes it to the file.
+     *
+     * @param event a {@link StateChangedEvent}
+     * @param <S>   a state type.
+     * @param <E>   an event type.
+     * @throws IOException thrown when logger cannot write to the file.
+     * @see EventBus#register(Object)
+     */
+    @Subscribe
+    public <S extends Enum<S>, E extends Enum<E>> void logStateChanged(final StateChangedEvent<S, E> event) {
+        log.info("Event {}.", event);
 
-	/**
-	 * Creates a new logger.
-	 *
-	 * @throws IOException
-	 *             when the DOT file cannot be opened.
-	 */
-	public LifecycleTransitionLogger() throws IOException {
-		dotFile = File.createTempFile("lifecycle", ".dot");
-		fileWriter = new FileWriter(dotFile);
-		log.info("Writing to the file: {}", dotFile.getAbsolutePath());
+        try {
+            fileWriter.write(format("\t%s -> %s [label=\"%s\"];%n", event.getPreviousState(), event.getNewState(),
+                                    event.getEvent()));
+        } catch(final IOException e) {
+            log.error("Could not write to the file. (This exception is normal at the end of execution).", e);
+        }
+    }
 
-		fileWriter.write("digraph lifecycle {\n");
-	}
+    @Override
+    public void init() {
+        eventBus.register(this);
+    }
 
-	/**
-	 * Logs the state change and writes it to the file.
-	 *
-	 * @param event
-	 *            a {@link StateChangedEvent}
-	 * @param <S>
-	 *            a state type.
-	 * @param <E>
-	 *            an event type.
-	 * @throws IOException
-	 *             thrown when logger cannot write to the file.
-	 * @see EventBus#register(Object)
-	 */
-	@Subscribe
-	public <S extends Enum<S>, E extends Enum<E>> void logStateChanged(final StateChangedEvent<S, E> event) {
-		log.info("Event {}.", event);
-
-		try {
-			fileWriter.write(format("\t%s -> %s [label=\"%s\"];%n", event.getPreviousState(), event.getNewState(),
-			        event.getEvent()));
-		} catch (final IOException e) {
-			log.error("Could not write to the file. (This exception is normal at the end of execution).", e);
-		}
-	}
-
-	@Override
-	public void init() {
-		eventBus.register(this);
-	}
-
-	@Override
-	public boolean finish() {
-		try {
-			fileWriter.write("}");
-			fileWriter.close();
-			log.info("DOT file: {}", dotFile.getAbsolutePath());
-			return true;
-		} catch (final IOException e) {
-			log.error("Could not write to the file.", e);
-			return false;
-		}
-	}
+    @Override
+    public boolean finish() {
+        try {
+            fileWriter.write("}");
+            fileWriter.close();
+            log.info("DOT file: {}", dotFile.getAbsolutePath());
+            return true;
+        } catch(final IOException e) {
+            log.error("Could not write to the file.", e);
+            return false;
+        }
+    }
 }

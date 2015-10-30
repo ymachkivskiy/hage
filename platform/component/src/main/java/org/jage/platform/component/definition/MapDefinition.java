@@ -31,15 +31,16 @@
 
 package org.jage.platform.component.definition;
 
+
 import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import static java.util.Arrays.asList;
-
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Maps.newLinkedHashMap;
+import static java.util.Arrays.asList;
+
 
 /**
  * The definition of a map component.
@@ -48,91 +49,79 @@ import static com.google.common.collect.Maps.newLinkedHashMap;
  */
 public class MapDefinition extends AbstractComponentDefinition {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private final Map<IArgumentDefinition, IArgumentDefinition> items = newLinkedHashMap();
+    private final Map<IArgumentDefinition, IArgumentDefinition> items = newLinkedHashMap();
 
-	/**
-	 * Creates a new map definition with a given name, map type, elements key and value types.
-	 *
-	 * @param name
-	 *            the name of the component
-	 * @param type
-	 *            the map type of the component
-	 * @param elementsKeyType
-	 *            the elements key type of the component
-	 * @param elementsValueType
-	 *            the elements value type of the component
-	 * @param isSingleton
-	 *            whether the component has a singleton scope
-	 */
-	public MapDefinition(String name, @SuppressWarnings("rawtypes") Class<? extends Map> type, Type elementsKeyType,
-	        Type elementsValueType, boolean isSingleton) {
-		super(name, type, asList(elementsKeyType, elementsValueType), isSingleton);
-	}
+    /**
+     * Creates a new map definition with a given name, default map type, default elements key and value types.
+     *
+     * @param name        the name of the component
+     * @param isSingleton whether the component has a singleton scope
+     */
+    public MapDefinition(String name, boolean isSingleton) {
+        this(name, HashMap.class, isSingleton);
+    }
 
-	/**
-	 * Creates a new map definition with a given name, map type, default elements key and value types.
-	 *
-	 * @param name
-	 *            the name of the component
-	 * @param type
-	 *            the map type of the component
-	 * @param isSingleton
-	 *            whether the component has a singleton scope
-	 */
-	public MapDefinition(String name, @SuppressWarnings("rawtypes") Class<? extends Map> type, boolean isSingleton) {
-		this(name, type, Object.class, Object.class, isSingleton);
-	}
+    /**
+     * Creates a new map definition with a given name, map type, default elements key and value types.
+     *
+     * @param name        the name of the component
+     * @param type        the map type of the component
+     * @param isSingleton whether the component has a singleton scope
+     */
+    public MapDefinition(String name, @SuppressWarnings("rawtypes") Class<? extends Map> type, boolean isSingleton) {
+        this(name, type, Object.class, Object.class, isSingleton);
+    }
 
-	/**
-	 * Creates a new map definition with a given name, default map type, default elements key and value types.
-	 *
-	 * @param name
-	 *            the name of the component
-	 * @param isSingleton
-	 *            whether the component has a singleton scope
-	 */
-	public MapDefinition(String name, boolean isSingleton) {
-		this(name, HashMap.class, isSingleton);
-	}
+    /**
+     * Creates a new map definition with a given name, map type, elements key and value types.
+     *
+     * @param name              the name of the component
+     * @param type              the map type of the component
+     * @param elementsKeyType   the elements key type of the component
+     * @param elementsValueType the elements value type of the component
+     * @param isSingleton       whether the component has a singleton scope
+     */
+    public MapDefinition(String name, @SuppressWarnings("rawtypes") Class<? extends Map> type, Type elementsKeyType,
+            Type elementsValueType, boolean isSingleton) {
+        super(name, type, asList(elementsKeyType, elementsValueType), isSingleton);
+    }
 
-	/**
-	 * Returns the elements key type of this map definition.
-	 *
-	 * @return the elements key type of this map definition
-	 */
-	public Type getElementsKeyType() {
-		return getTypeParameters().get(0);
-	}
+    /**
+     * Returns the elements key type of this map definition.
+     *
+     * @return the elements key type of this map definition
+     */
+    public Type getElementsKeyType() {
+        return getTypeParameters().get(0);
+    }
 
-	/**
-	 * Returns the elements value type of this map definition.
-	 *
-	 * @return the elements value type of this map definition
-	 */
-	public Type getElementsValueType() {
-		return getTypeParameters().get(1);
-	}
+    /**
+     * Returns the elements value type of this map definition.
+     *
+     * @return the elements value type of this map definition
+     */
+    public Type getElementsValueType() {
+        return getTypeParameters().get(1);
+    }
 
-	/**
-	 * Adds a key-value arguments pair to this map definition.
-	 *
-	 * @param key
-	 *            the key argument
-	 * @param value
-	 *            the value argument
-	 */
-	public void addItem(IArgumentDefinition key, IArgumentDefinition value) {
-		items.put(checkNotNull(key), checkNotNull(value));
-	}
+    /**
+     * Adds a key-value arguments pair to this map definition.
+     *
+     * @param key   the key argument
+     * @param value the value argument
+     */
+    public void addItem(IArgumentDefinition key, IArgumentDefinition value) {
+        items.put(checkNotNull(key), checkNotNull(value));
+    }
 
-	/**
-	 * Returns a read only view of this map definition's items.
-	 *
-	 * @return this collection definition's items
-	 */
-	public Map<IArgumentDefinition, IArgumentDefinition> getItems() {
-		return Collections.unmodifiableMap(items);
-	}
+    /**
+     * Returns a read only view of this map definition's items.
+     *
+     * @return this collection definition's items
+     */
+    public Map<IArgumentDefinition, IArgumentDefinition> getItems() {
+        return Collections.unmodifiableMap(items);
+    }
 }

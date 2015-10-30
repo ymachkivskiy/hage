@@ -31,49 +31,46 @@
 
 package org.jage.agent;
 
+
 /**
  * Exception which can occur during operations on aggregates.
- * 
+ *
  * @author AGH AgE Team
  */
 public class AggregateException extends AgentException {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * Constructs a new exception with the specified detail message.
-	 * 
-	 * @param message
-	 *            the detail message.
-	 * @see Exception#Exception(String)
-	 */
-	public AggregateException(final String message) {
-		super(message);
-	}
+    /**
+     * Constructs a new exception with the specified detail message.
+     *
+     * @param message the detail message.
+     * @see Exception#Exception(String)
+     */
+    public AggregateException(final String message) {
+        super(message);
+    }
 
-	/**
-	 * Constructs a new exception with the specified cause and a detail message of
-	 * <tt>(cause==null ? null : cause.toString())</tt>.
-	 * 
-	 * @param cause
-	 *            the cause.
-	 * @see Exception#Exception(Throwable)
-	 */
-	public AggregateException(final Throwable cause) {
-		super(cause);
-	}
+    /**
+     * Constructs a new exception with the specified cause and a detail message of
+     * <tt>(cause==null ? null : cause.toString())</tt>.
+     *
+     * @param cause the cause.
+     * @see Exception#Exception(Throwable)
+     */
+    public AggregateException(final Throwable cause) {
+        super(cause);
+    }
 
-	/**
-	 * Constructs a new exception with the specified detail message and cause.
-	 * 
-	 * @param message
-	 *            the detail message.
-	 * @param cause
-	 *            the cause.
-	 * @see Exception#Exception(String, Throwable)
-	 */
-	public AggregateException(final String message, final Throwable cause) {
-		super(message, cause);
-	}
+    /**
+     * Constructs a new exception with the specified detail message and cause.
+     *
+     * @param message the detail message.
+     * @param cause   the cause.
+     * @see Exception#Exception(String, Throwable)
+     */
+    public AggregateException(final String message, final Throwable cause) {
+        super(message, cause);
+    }
 
 }

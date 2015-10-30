@@ -31,20 +31,21 @@
 
 package org.jage.examples.delegation;
 
+
 import org.jage.strategy.IStrategy;
+
 
 /**
  * Simple interface for strategies printing texts.
- * 
+ *
  * @author AGH AgE Team
  */
 public interface IEchoStrategy extends IStrategy {
 
-	/**
-	 * Decorate and print the given text.
-	 * 
-	 * @param text
-	 *            Text to print.
-	 */
-	void echo(String text);
+    /**
+     * Decorate and print the given text.
+     *
+     * @param text Text to print.
+     */
+    void echo(String text);
 }

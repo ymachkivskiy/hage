@@ -31,80 +31,77 @@
 
 package org.jage.workplace.manager;
 
-import java.io.Serializable;
+
+import org.jage.communication.message.service.ServiceMessage;
+import org.jage.communication.message.service.ServiceHeader;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
-
-import org.jage.communication.message.BaseServiceMessage;
-import org.jage.communication.message.ServiceHeaderWithType;
+import java.io.Serializable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+
 @Immutable
-public class WorkplaceManagerMessage extends BaseServiceMessage<Serializable> {
+public class WorkplaceManagerMessage extends ServiceMessage<WorkplaceManagerMessage.MessageType, Serializable> {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public WorkplaceManagerMessage(final ServiceHeaderWithType<MessageType> header,
-			@Nullable final Serializable payload) {
-		super(header, payload);
-	}
+    public WorkplaceManagerMessage(final ServiceHeader<MessageType> header,
+            @Nullable final Serializable payload) {
+        super(header, payload);
+    }
 
-	@Override @Nonnull public ServiceHeaderWithType<MessageType> getHeader() {
-		return (ServiceHeaderWithType<MessageType>)super.getHeader();
-	}
+    @Nonnull
+    public static WorkplaceManagerMessage create(@Nonnull final MessageType type,
+            @Nullable final Serializable payload) {
+        return new WorkplaceManagerMessage(ServiceHeader.create(checkNotNull(type)), payload);
+    }
 
-	@Nonnull public MessageType getType() {
-		return getHeader().getType();
-	}
+    @Nonnull
+    public static WorkplaceManagerMessage create(@Nonnull final MessageType type) {
+        return new WorkplaceManagerMessage(ServiceHeader.create(type), null);
+    }
 
-	@Nonnull public static WorkplaceManagerMessage create(@Nonnull final MessageType type,
-			@Nullable final Serializable payload) {
-		return new WorkplaceManagerMessage(ServiceHeaderWithType.create(checkNotNull(type)), payload);
-	}
+    /**
+     * Constructs a new message with the given header and with no payload.
+     *
+     * @param header A header that contains metadata for this message.
+     * @return a new message.
+     */
+    @Nonnull
+    public static WorkplaceManagerMessage create(@Nonnull final ServiceHeader<MessageType> header) {
+        return create(header, null);
+    }
 
-	@Nonnull public static WorkplaceManagerMessage create(@Nonnull final MessageType type) {
-		return new WorkplaceManagerMessage(ServiceHeaderWithType.create(type), null);
-	}
+    /**
+     * Constructs a new message with the given header and the payload.
+     *
+     * @param header  A header that contains metadata for this message.
+     * @param payload A payload to transport.
+     * @return a new message.
+     */
+    @Nonnull
+    public static WorkplaceManagerMessage create(@Nonnull final ServiceHeader<MessageType> header,
+            @Nullable final Serializable payload) {
+        return new WorkplaceManagerMessage(header, payload);
+    }
 
+    @Nonnull
+    public MessageType getType() {
+        return getHeader().getType();
+    }
 
-	/**
-	 * Constructs a new message with the given header and the payload.
-	 *
-	 * @param header
-	 * 		A header that contains metadata for this message.
-	 * @param payload
-	 * 		A payload to transport.
-	 *
-	 * @return a new message.
-	 */
-	@Nonnull public static WorkplaceManagerMessage create(@Nonnull final ServiceHeaderWithType<MessageType> header,
-			@Nullable final Serializable payload) {
-		return new WorkplaceManagerMessage(header, payload);
-	}
+    @Override
+    @Nonnull
+    public ServiceHeader<MessageType> getHeader() {
+        return (ServiceHeader<MessageType>) super.getHeader();
+    }
 
-	/**
-	 * Constructs a new message with the given header and with no payload.
-	 *
-	 * @param header
-	 * 		A header that contains metadata for this message.
-	 *
-	 * @return a new message.
-	 */
-	@Nonnull public static WorkplaceManagerMessage create(@Nonnull final ServiceHeaderWithType<MessageType> header) {
-		return create(header, null);
-	}
-
-	/**
-	 * A list of available commands (message types).
-	 *
-	 * @author AGH AgE Team
-	 */
-	public static enum MessageType {
-		AGENT_MESSAGE,
-		MIGRATE_AGENT,
-	}
+    public  enum MessageType {
+        AGENT_MESSAGE,
+        MIGRATE_AGENT,
+    }
 }
 

@@ -31,58 +31,55 @@
 
 package org.jage.util.io;
 
+
 /**
  * Exception thrown when URI scheme (e.g. <code>file</code> in <code>file:///tmp/example</code>) in unknown.
- * 
+ *
  * @author AGH AgE Team
  */
 public class UnknownSchemeException extends Exception {
 
-	private static final long serialVersionUID = 7865372754878950465L;
+    private static final long serialVersionUID = 7865372754878950465L;
 
-	/**
-	 * Constructs a new exception with <code>null</code> as its detail message.
-	 * 
-	 * @see Exception#Exception()
-	 */
-	public UnknownSchemeException() {
-		super();
-	}
+    /**
+     * Constructs a new exception with <code>null</code> as its detail message.
+     *
+     * @see Exception#Exception()
+     */
+    public UnknownSchemeException() {
+        super();
+    }
 
-	/**
-	 * Constructs a new exception with a given message.
-	 * 
-	 * @param message
-	 *            the detail message.
-	 * @see Exception#Exception(String)
-	 */
-	public UnknownSchemeException(String message) {
-		super(message);
-	}
+    /**
+     * Constructs a new exception with a given message.
+     *
+     * @param message the detail message.
+     * @see Exception#Exception(String)
+     */
+    public UnknownSchemeException(String message) {
+        super(message);
+    }
 
-	/**
-	 * Constructs a new exception with the specified cause and a detail message of
-	 * <tt>(cause==null ? null : cause.toString())</tt>.
-	 * 
-	 * @param cause
-	 *            the cause
-	 * @see Exception#Exception(Throwable)
-	 */
-	public UnknownSchemeException(Throwable cause) {
-		super(cause);
-	}
+    /**
+     * Constructs a new exception with the specified cause and a detail message of
+     * <tt>(cause==null ? null : cause.toString())</tt>.
+     *
+     * @param cause the cause
+     * @see Exception#Exception(Throwable)
+     */
+    public UnknownSchemeException(Throwable cause) {
+        super(cause);
+    }
 
-	/**
-	 * Constructs a new exception with the specified detail message and cause.
-	 * 
-	 * @param message
-	 *            the detail message.
-	 * @param cause
-	 *            the cause.
-	 * @see Exception#Exception(String, Throwable)
-	 */
-	public UnknownSchemeException(String message, Throwable cause) {
-		super(message, cause);
-	}
+    /**
+     * Constructs a new exception with the specified detail message and cause.
+     *
+     * @param message the detail message.
+     * @param cause   the cause.
+     * @see Exception#Exception(String, Throwable)
+     */
+    public UnknownSchemeException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
 }

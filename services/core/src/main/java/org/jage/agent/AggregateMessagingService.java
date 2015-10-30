@@ -31,49 +31,49 @@
 
 package org.jage.agent;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.jage.action.SingleAction;
 import org.jage.action.context.SendMessageActionContext;
 import org.jage.address.agent.AgentAddress;
 import org.jage.communication.message.Message;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+
 
 /**
  * The messaging service for the default {@link SimpleAggregate}. It just forwards messages as actions to the
  * {@link AggregateActionService}.
  *
- * @since 2.6
  * @author AGH AgE Team
+ * @since 2.6
  */
 public class AggregateMessagingService {
-	private static final Logger log = LoggerFactory.getLogger(AggregateMessagingService.class);
 
-	private SimpleAggregate aggregate;
+    private static final Logger log = LoggerFactory.getLogger(AggregateMessagingService.class);
 
-	private AggregateActionService actionService;
+    private SimpleAggregate aggregate;
 
-	/**
-	 * Sends the provided message.
-	 *
-	 * @param message
-	 *            the message to send.
-	 */
-	public void sendMessage(final Message<AgentAddress, ?> message) {
-		actionService.doAction(new SingleAction(message.getHeader().getReceiverSelector(),
-		        new SendMessageActionContext(message)));
-	}
+    private AggregateActionService actionService;
 
-	/**
-	 * Sets the aggregate that owns this service instance.
-	 *
-	 * @param aggregate
-	 *            the owner.
-	 */
-	public void setAggregate(final SimpleAggregate aggregate) {
-		this.aggregate = checkNotNull(aggregate);
-		actionService = aggregate.getActionService();
-	}
+    /**
+     * Sends the provided message.
+     *
+     * @param message the message to send.
+     */
+    public void sendMessage(final Message<AgentAddress, ?> message) {
+        actionService.doAction(new SingleAction(message.getHeader().getReceiverSelector(),
+                                                new SendMessageActionContext(message)));
+    }
+
+    /**
+     * Sets the aggregate that owns this service instance.
+     *
+     * @param aggregate the owner.
+     */
+    public void setAggregate(final SimpleAggregate aggregate) {
+        this.aggregate = checkNotNull(aggregate);
+        actionService = aggregate.getActionService();
+    }
 }

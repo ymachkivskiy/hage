@@ -31,9 +31,6 @@
 
 package org.jage.action.testHelpers;
 
-import org.junit.Ignore;
-
-import static org.mockito.Mockito.mock;
 
 import org.jage.action.Action;
 import org.jage.address.agent.AgentAddress;
@@ -41,6 +38,10 @@ import org.jage.address.agent.DefaultAgentAddress;
 import org.jage.address.node.NodeAddress;
 import org.jage.agent.AgentException;
 import org.jage.agent.SimpleAgent;
+import org.junit.Ignore;
+
+import static org.mockito.Mockito.mock;
+
 
 /**
  * A sample, helper agent implementation that does nothing.
@@ -50,34 +51,33 @@ import org.jage.agent.SimpleAgent;
 @Ignore
 public class HelperTestAgent extends SimpleAgent {
 
-	private static final long serialVersionUID = 1374519285747616223L;
+    public static final AgentAddress ADDRESS = new DefaultAgentAddress(mock(NodeAddress.class));
+    private static final long serialVersionUID = 1374519285747616223L;
 
-	public static final AgentAddress ADDRESS = new DefaultAgentAddress(mock(NodeAddress.class));
+    public HelperTestAgent() {
+        super(ADDRESS);
+    }
 
-	public HelperTestAgent() {
-		super(ADDRESS);
-	}
+    public HelperTestAgent(final AgentAddress newAddress) {
+        super(newAddress);
+    }
 
-	public HelperTestAgent(final AgentAddress newAddress) {
-		super(newAddress);
-	}
+    @Override
+    public void step() {
+        // Empty
+    }
 
-	@Override
-	public void step() {
-		// Empty
-	}
+    @Override
+    public void init() {
+        // Empty
+    }
 
-	@Override
-	public boolean finish() {
-		return true;
-	}
+    @Override
+    public boolean finish() {
+        return true;
+    }
 
-	@Override
-	public void init() {
-		// Empty
-	}
-
-	public void runAction(final Action action) throws AgentException {
-		doAction(action);
-	}
+    public void runAction(final Action action) throws AgentException {
+        doAction(action);
+    }
 }

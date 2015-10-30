@@ -31,10 +31,6 @@
 
 package org.jage.examples.functions;
 
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.jage.address.agent.AgentAddress;
 import org.jage.address.agent.AgentAddressSupplier;
@@ -47,53 +43,58 @@ import org.jage.property.functions.CountFunction;
 import org.jage.property.functions.MaxFunction;
 import org.jage.property.functions.MinFunction;
 import org.jage.property.functions.SumFunction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
+
 
 public class FunctionsSimpleAggregate extends SimpleAggregate {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private static final Logger log = LoggerFactory.getLogger(FunctionsSimpleAggregate.class);
+    private static final Logger log = LoggerFactory.getLogger(FunctionsSimpleAggregate.class);
 
-	public FunctionsSimpleAggregate(final AgentAddress address) {
-		super(address);
-	}
+    public FunctionsSimpleAggregate(final AgentAddress address) {
+        super(address);
+    }
 
-	@Inject
-	public FunctionsSimpleAggregate(final AgentAddressSupplier supplier) {
-		super(supplier);
-	}
+    @Inject
+    public FunctionsSimpleAggregate(final AgentAddressSupplier supplier) {
+        super(supplier);
+    }
 
-	public void init() throws ComponentException {
-		try {
-			addFunction(new CountFunction("count", "@Agents[*].value"));
-			addFunction(new SumFunction("sum", "@Agents[*].value"));
-			addFunction(new AvgFunction("avg", "@Agents[*].value", -1));
-			addFunction(new MinFunction("min", "@Agents[*].value", -1));
-			addFunction(new MaxFunction("max", "@Agents[*].value", -1));
-		} catch (final DuplicatePropertyNameException e) {
-			log.error("Could not create property function", e);
-		}
-	}
+    public void init() throws ComponentException {
+        try {
+            addFunction(new CountFunction("count", "@Agents[*].value"));
+            addFunction(new SumFunction("sum", "@Agents[*].value"));
+            addFunction(new AvgFunction("avg", "@Agents[*].value", -1));
+            addFunction(new MinFunction("min", "@Agents[*].value", -1));
+            addFunction(new MaxFunction("max", "@Agents[*].value", -1));
+        } catch(final DuplicatePropertyNameException e) {
+            log.error("Could not create property function", e);
+        }
+    }
 
-	//@Override
-	public void step() {
-		super.step();
+    //@Override
+    public void step() {
+        super.step();
 
-		final String[] names = new String[] {"count", "sum", "avg", "min", "max"};
-		final Object[] values = new Object[5];
+        final String[] names = new String[]{"count", "sum", "avg", "min", "max"};
+        final Object[] values = new Object[5];
 
-		try {
-			for (int i = 0; i < values.length; i++) {
-				values[i] = getProperty(names[i]).getValue();
-			}
-		} catch (final InvalidPropertyPathException e) {
-			log.error("Exception:", e);
-		}
+        try {
+            for(int i = 0; i < values.length; i++) {
+                values[i] = getProperty(names[i]).getValue();
+            }
+        } catch(final InvalidPropertyPathException e) {
+            log.error("Exception:", e);
+        }
 
-		final StringBuilder builder = new StringBuilder();
-		for (int i = 0; i < values.length; i++) {
-			builder.append(names[i] + "=" + values[i] + ", ");
-		}
-		log.info("{}: {}", this, builder.toString());
-	}
+        final StringBuilder builder = new StringBuilder();
+        for(int i = 0; i < values.length; i++) {
+            builder.append(names[i] + "=" + values[i] + ", ");
+        }
+        log.info("{}: {}", this, builder.toString());
+    }
 }

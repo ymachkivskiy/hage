@@ -31,9 +31,11 @@
 
 package org.jage.variation.recombination.realvalued;
 
-import javax.inject.Inject;
 
 import org.jage.random.IDoubleRandomGenerator;
+
+import javax.inject.Inject;
+
 
 /**
  * Recombination strategy that averages randomly between two individuals.
@@ -42,11 +44,11 @@ import org.jage.random.IDoubleRandomGenerator;
  */
 public final class RandomRecombine extends DoubleAbstractContinuousRecombine {
 
-	@Inject
-	private IDoubleRandomGenerator rand;
+    @Inject
+    private IDoubleRandomGenerator rand;
 
-	@Override
-	protected double doRecombine(final double a, final double b) {
-		return Math.min(a, b) + rand.nextDouble() * (Math.max(a, b) - Math.min(a, b));
-	}
+    @Override
+    protected double doRecombine(final double a, final double b) {
+        return Math.min(a, b) + rand.nextDouble() * (Math.max(a, b) - Math.min(a, b));
+    }
 }

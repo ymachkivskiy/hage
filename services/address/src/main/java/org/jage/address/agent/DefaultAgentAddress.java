@@ -31,17 +31,18 @@
 
 package org.jage.address.agent;
 
-import java.util.UUID;
-
-import javax.annotation.concurrent.Immutable;
 
 import org.jage.address.AbstractAddress;
 import org.jage.address.node.NodeAddress;
 import org.jage.address.node.UnspecifiedNodeAddress;
 
+import javax.annotation.concurrent.Immutable;
+import java.util.UUID;
+
+
 /**
  * This class provides a default implementation of the agent address.
- *
+ * <p>
  * <p>
  * Identifiers are based on generated UUIDs, so no two ever created instances of this class can be equal. This identity
  * is preserved across serialization.
@@ -51,21 +52,21 @@ import org.jage.address.node.UnspecifiedNodeAddress;
 @Immutable
 public class DefaultAgentAddress extends AbstractAddress implements AgentAddress {
 
-	private static final long serialVersionUID = -6247664264733075722L;
+    private static final long serialVersionUID = -6247664264733075722L;
 
-	public DefaultAgentAddress() {
-		this(new UnspecifiedNodeAddress());
-	}
+    public DefaultAgentAddress() {
+        this(new UnspecifiedNodeAddress());
+    }
 
-	public DefaultAgentAddress(final NodeAddress nodeAddress) {
-		super(UUID.randomUUID().toString(), nodeAddress);
-	}
+    public DefaultAgentAddress(final NodeAddress nodeAddress) {
+        super(UUID.randomUUID().toString(), nodeAddress);
+    }
 
-	public DefaultAgentAddress(final String friendlyName) {
-		this(new UnspecifiedNodeAddress(), friendlyName);
-	}
+    public DefaultAgentAddress(final String friendlyName) {
+        this(new UnspecifiedNodeAddress(), friendlyName);
+    }
 
-	public DefaultAgentAddress(final NodeAddress nodeAddress, final String friendlyName) {
-		super(UUID.randomUUID().toString(), nodeAddress, friendlyName);
-	}
+    public DefaultAgentAddress(final NodeAddress nodeAddress, final String friendlyName) {
+        super(UUID.randomUUID().toString(), nodeAddress, friendlyName);
+    }
 }

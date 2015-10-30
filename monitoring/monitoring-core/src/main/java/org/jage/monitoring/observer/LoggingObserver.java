@@ -26,33 +26,36 @@
  */
 package org.jage.monitoring.observer;
 
+
 import org.jage.monitoring.config.ExecutorProvider;
+
 
 /**
  * Data observer which displays a passed data as logs in a console. Probably the
  * simplest data observer ever made.
- * 
+ *
  * @author AGH AgE Team
  */
 
 public class LoggingObserver extends AbstractStatefulObserver {
-	
-	public LoggingObserver(){
-		super();
-	}
-	
-	public LoggingObserver(ExecutorProvider executorProvider) {
-		this();
-		this.executorProvider = executorProvider;
-	}
 
-	@Override
-	public void onNext(final ObservedData data) {
-		executor.submit(new Runnable() {
-			@Override
-			public void run() {
-				log.info("{} ({}): {}", data.getName(), data.getTimestamp(), data.getData().toString());
-			}
-		});
-	}
+    public LoggingObserver(ExecutorProvider executorProvider) {
+        this();
+        this.executorProvider = executorProvider;
+    }
+
+    public LoggingObserver() {
+        super();
+    }
+
+    @Override
+    public void onNext(final ObservedData data) {
+        executor.submit(new Runnable() {
+
+            @Override
+            public void run() {
+                log.info("{} ({}): {}", data.getName(), data.getTimestamp(), data.getData().toString());
+            }
+        });
+    }
 }

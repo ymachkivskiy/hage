@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" ?>
- 
-<!DOCTYPE tiles-definitions PUBLIC  
-        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"  
-        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">  
+
+<!DOCTYPE tiles-definitions PUBLIC
+        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 
 <tiles-definitions>
 
-	<definition name="layoutList" template="/WEB-INF/jsp/sections/mainlist.jsp">
-		<put-attribute name="title" value="AgEChartsWeb" />
-		<put-attribute name="header" value="/WEB-INF/jsp/sections/header.jsp" />
-		<put-attribute name="left" value="/WEB-INF/jsp/sections/left.jsp" />
-		<put-attribute name="body" value="" />
-		<put-attribute name="right" value="/WEB-INF/jsp/sections/right.jsp" />
-	</definition>
-	
-	<definition name="layoutShow" template="/WEB-INF/jsp/sections/mainshow.jsp">
-		<put-attribute name="title" value="AgEChartsWeb" />
-		<put-attribute name="header" value="/WEB-INF/jsp/sections/header.jsp" />
-		<put-attribute name="body" value="" />
-	</definition>
+    <definition name="layoutList" template="/WEB-INF/jsp/sections/mainlist.jsp">
+        <put-attribute name="title" value="AgEChartsWeb"/>
+        <put-attribute name="header" value="/WEB-INF/jsp/sections/header.jsp"/>
+        <put-attribute name="left" value="/WEB-INF/jsp/sections/left.jsp"/>
+        <put-attribute name="body" value=""/>
+        <put-attribute name="right" value="/WEB-INF/jsp/sections/right.jsp"/>
+    </definition>
 
-	<definition name="list/*" extends="layoutList">
-		<put-attribute name="body" value="/WEB-INF/jsp/list/{1}.jsp" />
-	</definition>
+    <definition name="layoutShow" template="/WEB-INF/jsp/sections/mainshow.jsp">
+        <put-attribute name="title" value="AgEChartsWeb"/>
+        <put-attribute name="header" value="/WEB-INF/jsp/sections/header.jsp"/>
+        <put-attribute name="body" value=""/>
+    </definition>
 
-	<definition name="show/*" extends="layoutShow">
-		<put-attribute name="body" value="/WEB-INF/jsp/show/{1}.jsp" />
-	</definition>
+    <definition name="list/*" extends="layoutList">
+        <put-attribute name="body" value="/WEB-INF/jsp/list/{1}.jsp"/>
+    </definition>
 
-	<definition name="*" extends="layoutList">
-		<put-attribute name="body" value="/WEB-INF/jsp/{1}.jsp" />
-	</definition>
+    <definition name="show/*" extends="layoutShow">
+        <put-attribute name="body" value="/WEB-INF/jsp/show/{1}.jsp"/>
+    </definition>
+
+    <definition name="*" extends="layoutList">
+        <put-attribute name="body" value="/WEB-INF/jsp/{1}.jsp"/>
+    </definition>
 
 </tiles-definitions>

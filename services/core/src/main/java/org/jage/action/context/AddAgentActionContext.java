@@ -31,11 +31,12 @@
 
 package org.jage.action.context;
 
-import org.jage.agent.ISimpleAgent;
 
 import com.google.common.base.Objects;
+import org.jage.agent.ISimpleAgent;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+
 
 /**
  * The action of adding an agent to an aggregate.
@@ -45,37 +46,36 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @AgentActionContext(AddAgentActionContext.ACTION_NAME)
 public class AddAgentActionContext extends AbstractAgentActionContext {
 
-	/**
-	 * The action name of this context.
-	 */
-	public static final String ACTION_NAME = "addAgent";
+    /**
+     * The action name of this context.
+     */
+    public static final String ACTION_NAME = "addAgent";
 
-	/**
-	 * The agent to add to an aggregate.
-	 */
-	private final ISimpleAgent agent;
+    /**
+     * The agent to add to an aggregate.
+     */
+    private final ISimpleAgent agent;
 
-	/**
-	 * Constructor.
-	 *
-	 * @param agent
-	 *            the agent to add
-	 */
-	public AddAgentActionContext(final ISimpleAgent agent) {
-		this.agent = checkNotNull(agent);
-	}
+    /**
+     * Constructor.
+     *
+     * @param agent the agent to add
+     */
+    public AddAgentActionContext(final ISimpleAgent agent) {
+        this.agent = checkNotNull(agent);
+    }
 
-	/**
-	 * Returns the agent to add.
-	 *
-	 * @return the agent to add
-	 */
-	public ISimpleAgent getAgent() {
-		return agent;
-	}
+    /**
+     * Returns the agent to add.
+     *
+     * @return the agent to add
+     */
+    public ISimpleAgent getAgent() {
+        return agent;
+    }
 
-	@Override
-	public String toString() {
-		return Objects.toStringHelper(this).add("agent", agent).toString();
-	}
+    @Override
+    public String toString() {
+        return Objects.toStringHelper(this).add("agent", agent).toString();
+    }
 }

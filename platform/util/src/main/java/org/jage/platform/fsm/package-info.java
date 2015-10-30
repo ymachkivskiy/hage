@@ -35,5 +35,4 @@
  * @author AGH AgE Team
  * @since 2.6
  */
-@javax.annotation.ParametersAreNonnullByDefault
-package org.jage.platform.fsm;
+@javax.annotation.ParametersAreNonnullByDefault package org.jage.platform.fsm;

@@ -31,7 +31,9 @@
 
 package org.jage.emas.util;
 
+
 import org.jage.action.context.AgentActionContext;
+
 
 /**
  * Action context for the skipping action.
@@ -40,15 +42,17 @@ import org.jage.action.context.AgentActionContext;
  */
 @AgentActionContext(SkippingActionContext.Properties.SKIPPING_ACTION)
 public class SkippingActionContext extends ChainingContext {
-	/**
-	 * SkippingActionContext properties.
-	 *
-	 * @author AGH AgE Team
-	 */
-	public static class Properties {
-		/**
-		 * The action name.
-		 */
-		public static final String SKIPPING_ACTION = "skippingAction";
-	}
+
+    /**
+     * SkippingActionContext properties.
+     *
+     * @author AGH AgE Team
+     */
+    public static class Properties {
+
+        /**
+         * The action name.
+         */
+        public static final String SKIPPING_ACTION = "skippingAction";
+    }
 }

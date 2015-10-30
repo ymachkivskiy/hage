@@ -31,8 +31,10 @@
 
 package org.jage.emas.action.individual;
 
+
 import org.jage.action.context.AgentActionContext;
 import org.jage.emas.util.ChainingContext;
+
 
 /**
  * This context defines a migration action. To use it, you should declare a handler strategy named 'migrationAction' in
@@ -42,15 +44,17 @@ import org.jage.emas.util.ChainingContext;
  */
 @AgentActionContext(MigrationActionContext.Properties.MIGRATION_ACTION)
 public class MigrationActionContext extends ChainingContext {
-	/**
-	 * MigrationActionContext properties.
-	 *
-	 * @author AGH AgE Team
-	 */
-	public static class Properties {
-		/**
-		 * The action name.
-		 */
-		public static final String MIGRATION_ACTION = "migrationAction";
-	}
+
+    /**
+     * MigrationActionContext properties.
+     *
+     * @author AGH AgE Team
+     */
+    public static class Properties {
+
+        /**
+         * The action name.
+         */
+        public static final String MIGRATION_ACTION = "migrationAction";
+    }
 }

@@ -26,25 +26,29 @@
  */
 package org.jage.property;
 
+
 /**
- * Interface for classes that find property definitions for a given object. 
+ * Interface for classes that find property definitions for a given object.
+ *
  * @author Tomek
-  */
+ */
 public interface IClassPropertiesFactory {
-	
-	/**
-	 * Returns set with all properties for the given object.
-	 * @param object object to find property definitions for.
-	 * @return set with all properties for the given object.
-	 * @throws InvalidPropertyDefinitionException invalid property definition was found. 
-	 */
-	public PropertiesSet getAllProperties(Object object) throws InvalidPropertyDefinitionException;
-	
-	/**
-	 * Returns set with all meta properties for the given object.
-	 * @param object object to find property definitions for.
-	 * @return set with all meta properties for the given object.
-	 * @throws InvalidPropertyDefinitionException invalid property definition was found.
-	 */
-	public MetaPropertiesSet getAllMetaProperties(Object object) throws InvalidPropertyDefinitionException;	
+
+    /**
+     * Returns set with all properties for the given object.
+     *
+     * @param object object to find property definitions for.
+     * @return set with all properties for the given object.
+     * @throws InvalidPropertyDefinitionException invalid property definition was found.
+     */
+    public PropertiesSet getAllProperties(Object object) throws InvalidPropertyDefinitionException;
+
+    /**
+     * Returns set with all meta properties for the given object.
+     *
+     * @param object object to find property definitions for.
+     * @return set with all meta properties for the given object.
+     * @throws InvalidPropertyDefinitionException invalid property definition was found.
+     */
+    public MetaPropertiesSet getAllMetaProperties(Object object) throws InvalidPropertyDefinitionException;
 }

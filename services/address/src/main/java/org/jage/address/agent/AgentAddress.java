@@ -31,8 +31,10 @@
 
 package org.jage.address.agent;
 
+
 import org.jage.address.Address;
 import org.jage.annotation.ReturnValuesAreNonnullByDefault;
+
 
 /**
  * Represents an address which is unique in the system.
@@ -43,4 +45,5 @@ import org.jage.annotation.ReturnValuesAreNonnullByDefault;
  */
 @ReturnValuesAreNonnullByDefault
 public interface AgentAddress extends Address {
+
 }

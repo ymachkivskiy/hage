@@ -26,13 +26,16 @@
  */
 package org.jage.monitoring.config;
 
+
 import rx.Scheduler;
+
 
 public interface RxSchedulerProvider {
 
-	/**
-	 * Provides RxJava Scheduler.  
-	 * @return Scheduler
-	 */
-	public Scheduler getScheduler();
+    /**
+     * Provides RxJava Scheduler.
+     *
+     * @return Scheduler
+     */
+    public Scheduler getScheduler();
 }

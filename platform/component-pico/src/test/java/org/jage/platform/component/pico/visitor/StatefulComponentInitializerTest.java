@@ -33,14 +33,8 @@
 
 package org.jage.platform.component.pico.visitor;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
-import java.util.List;
-
-import javax.inject.Inject;
-
+import com.google.common.collect.Lists;
 import org.jage.platform.component.IStatefulComponent;
 import org.jage.platform.component.exception.ComponentException;
 import org.jage.platform.component.pico.IPicoComponentInstanceProvider;
@@ -48,7 +42,13 @@ import org.jage.platform.component.pico.PicoComponentInstanceProvider;
 import org.junit.Test;
 import org.picocontainer.PicoVisitor;
 
-import com.google.common.collect.Lists;
+import javax.inject.Inject;
+import java.util.List;
+
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+
 
 /**
  * Tests for StatefulComponentInitializer.
@@ -57,88 +57,89 @@ import com.google.common.collect.Lists;
  */
 public class StatefulComponentInitializerTest {
 
-	@Test
-	public void shouldLookupInRootContainer() {
-		// given
-		final PicoComponentInstanceProvider provider = new PicoComponentInstanceProvider();
-		final StatefulRegistry registry = new StatefulRegistry();
-		provider.addComponentInstance(registry);
-		provider.addComponent(Stateful.class);
-		final PicoVisitor visitor = new StatefulComponentInitializer();
+    @Test
+    public void shouldLookupInRootContainer() {
+        // given
+        final PicoComponentInstanceProvider provider = new PicoComponentInstanceProvider();
+        final StatefulRegistry registry = new StatefulRegistry();
+        provider.addComponentInstance(registry);
+        provider.addComponent(Stateful.class);
+        final PicoVisitor visitor = new StatefulComponentInitializer();
 
-		// when
-		provider.accept(visitor);
+        // when
+        provider.accept(visitor);
 
-		// then
-		assertThat(registry.inits.size(), is(1));
-	}
+        // then
+        assertThat(registry.inits.size(), is(1));
+    }
 
-	@Test
-	public void shouldLookupInNestedContainer() {
-		// given
-		final StatefulRegistry registry = new StatefulRegistry();
-		final PicoComponentInstanceProvider parent = new PicoComponentInstanceProvider();
-		final IPicoComponentInstanceProvider child = parent.makeChildContainer();
-		parent.addComponentInstance(registry);
-		child.addComponent(Stateful.class);
-		final PicoVisitor visitor = new StatefulComponentInitializer();
+    @Test
+    public void shouldLookupInNestedContainer() {
+        // given
+        final StatefulRegistry registry = new StatefulRegistry();
+        final PicoComponentInstanceProvider parent = new PicoComponentInstanceProvider();
+        final IPicoComponentInstanceProvider child = parent.makeChildContainer();
+        parent.addComponentInstance(registry);
+        child.addComponent(Stateful.class);
+        final PicoVisitor visitor = new StatefulComponentInitializer();
 
-		// when
-		parent.accept(visitor);
+        // when
+        parent.accept(visitor);
 
-		// then
-		assertThat(registry.inits.size(), is(1));
-	}
+        // then
+        assertThat(registry.inits.size(), is(1));
+    }
 
-	@Test
-	public void statefulProperlyRegisters() {
-		// given
-		final PicoComponentInstanceProvider provider = new PicoComponentInstanceProvider();
-		final StatefulRegistry registry = new StatefulRegistry();
-		provider.addComponentInstance(registry);
-		provider.addComponent(Stateful.class);
+    @Test
+    public void statefulProperlyRegisters() {
+        // given
+        final PicoComponentInstanceProvider provider = new PicoComponentInstanceProvider();
+        final StatefulRegistry registry = new StatefulRegistry();
+        provider.addComponentInstance(registry);
+        provider.addComponent(Stateful.class);
 
-		// when
-		final Stateful stateful = provider.getComponent(Stateful.class);
+        // when
+        final Stateful stateful = provider.getComponent(Stateful.class);
 
-		// then
-		 assertThat(registry.inits.size(), is(1));
-		 assertTrue(registry.inits.contains(stateful));
-	}
+        // then
+        assertThat(registry.inits.size(), is(1));
+        assertTrue(registry.inits.contains(stateful));
+    }
 
-	/**
-	 * Stateful instances register in this component, so that we know that their init and finish has been called.
-	 *
-	 * @author AGH AgE Team
-	 */
-	public static class StatefulRegistry {
+    /**
+     * Stateful instances register in this component, so that we know that their init and finish has been called.
+     *
+     * @author AGH AgE Team
+     */
+    public static class StatefulRegistry {
 
-		public final List<Stateful> inits = Lists.newArrayList();
-		public final List<Stateful> finishes = Lists.newArrayList();
+        public final List<Stateful> inits = Lists.newArrayList();
+        public final List<Stateful> finishes = Lists.newArrayList();
 
-		public void registerInit(final Stateful stateful) {
-			inits.add(stateful);
-		}
-		
-		public void registerFinish(final Stateful stateful) {
-			finishes.add(stateful);
-		}
-	}
+        public void registerInit(final Stateful stateful) {
+            inits.add(stateful);
+        }
 
-	public static class Stateful implements IStatefulComponent {
+        public void registerFinish(final Stateful stateful) {
+            finishes.add(stateful);
+        }
+    }
 
-		@Inject
-		private StatefulRegistry registry;
 
-		@Override
-		public void init() throws ComponentException {
-			registry.registerInit(this);
-		}
+    public static class Stateful implements IStatefulComponent {
 
-		@Override
-		public boolean finish() throws ComponentException {
-			registry.registerFinish(this);
-			return false;
-		}
-	}
+        @Inject
+        private StatefulRegistry registry;
+
+        @Override
+        public void init() throws ComponentException {
+            registry.registerInit(this);
+        }
+
+        @Override
+        public boolean finish() throws ComponentException {
+            registry.registerFinish(this);
+            return false;
+        }
+    }
 }

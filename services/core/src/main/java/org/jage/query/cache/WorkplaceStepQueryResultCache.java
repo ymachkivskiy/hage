@@ -31,131 +31,123 @@
 
 package org.jage.query.cache;
 
-import java.util.Map;
 
-import javax.inject.Inject;
-
+import com.google.common.collect.Maps;
 import org.jage.property.InvalidPropertyPathException;
 import org.jage.query.IQuery;
 import org.jage.query.QueryException;
 import org.jage.workplace.Workplace;
 
-import com.google.common.collect.Maps;
+import javax.inject.Inject;
+import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+
 
 /**
  * The default implementation of {@link IWorkplaceBasedQueryResultCache}. It schedules refresh of results after
  * particular number of steps.
  *
- * @param <Q>
- *            A type of a queried object.
- * @param <R>
- *            A type of results.
+ * @param <Q> A type of a queried object.
+ * @param <R> A type of results.
  * @author AGH AgE Team
  */
 public class WorkplaceStepQueryResultCache<Q, R> implements IWorkplaceBasedQueryResultCache<Q, R> {
 
-	/**
-	 * The default age of result after which refresh is needed.
-	 */
-	private static final long DEFAULT_REFRESH_AGE = 1;
+    /**
+     * The default age of result after which refresh is needed.
+     */
+    private static final long DEFAULT_REFRESH_AGE = 1;
+    /**
+     * Results of the queries stored in this cache for particular aggregates.
+     * <p>
+     * <ul>
+     * <li>Key: a target instance.
+     * <li>Value: a cached result.
+     * </ul>
+     */
+    private final Map<Q, CachedQueryResult<R>> results = Maps.newHashMap();
+    /**
+     * The age of the result in this cache after which refresh is needed.
+     */
+    @Inject
+    private long refreshAge = DEFAULT_REFRESH_AGE;
+    /**
+     * Query for which results are stored in this cache.
+     */
+    @Inject
+    private IQuery<Q, R> query;
 
-	/**
-	 * The age of the result in this cache after which refresh is needed.
-	 */
-	@Inject
-	private long refreshAge = DEFAULT_REFRESH_AGE;
+    private Workplace workplace;
 
-	/**
-	 * Results of the queries stored in this cache for particular aggregates.
-	 *
-	 * <ul>
-	 * <li>Key: a target instance.
-	 * <li>Value: a cached result.
-	 * </ul>
-	 */
-	private final Map<Q, CachedQueryResult<R>> results = Maps.newHashMap();
+    /**
+     * Constructs a new cache that is backed by the provided query.
+     *
+     * @param query A query for which results are stored in this cache.
+     */
+    public WorkplaceStepQueryResultCache(final IQuery<Q, R> query) {
+        this(query, DEFAULT_REFRESH_AGE);
+    }
 
-	/**
-	 * Query for which results are stored in this cache.
-	 */
-	@Inject
-	private IQuery<Q, R> query;
+    /**
+     * Constructs a new cache that is backed by the provided query.
+     *
+     * @param query      A query for which results are stored in this cache.
+     * @param refreshAge The age of the result in this cache after which refresh is needed.
+     */
+    public WorkplaceStepQueryResultCache(final IQuery<Q, R> query, final long refreshAge) {
+        this.query = query;
+        this.refreshAge = refreshAge;
+    }
 
-	private Workplace workplace;
+    @Override
+    public void init(final Workplace workplaceToUse) {
+        this.workplace = checkNotNull(workplaceToUse, "Workplace cannot be null.");
+        invalidateAllResults();
+    }
 
-	/**
-	 * Constructs a new cache that is backed by the provided query.
-	 *
-	 * @param query
-	 *            A query for which results are stored in this cache.
-	 */
-	public WorkplaceStepQueryResultCache(final IQuery<Q, R> query) {
-		this(query, DEFAULT_REFRESH_AGE);
-	}
+    @Override
+    public void invalidateAllResults() {
+        for(final CachedQueryResult<R> result : results.values()) {
+            result.setForcedRefresh(true);
+        }
+    }
 
-	/**
-	 * Constructs a new cache that is backed by the provided query.
-	 *
-	 * @param query
-	 *            A query for which results are stored in this cache.
-	 * @param refreshAge
-	 *            The age of the result in this cache after which refresh is needed.
-	 */
-	public WorkplaceStepQueryResultCache(final IQuery<Q, R> query, final long refreshAge) {
-		this.query = query;
-		this.refreshAge = refreshAge;
-	}
+    @Override
+    public IQuery<Q, R> getRealQuery() {
+        return query;
+    }
 
-	@Override
-	public void init(final Workplace workplaceToUse) {
-		this.workplace = checkNotNull(workplaceToUse, "Workplace cannot be null.");
-		invalidateAllResults();
-	}
+    @Override
+    public R execute(final Q target) {
+        long lastStep = 0;
+        try {
+            //lastStep = (Long)workplace.getProperty("step").getValue();
+        } catch(final InvalidPropertyPathException e) {
+            throw new QueryException(e);
+        }
 
-	@Override
-	public R execute(final Q target) {
-		long lastStep = 0;
-		try {
-			//lastStep = (Long)workplace.getProperty("step").getValue();
-		} catch (final InvalidPropertyPathException e) {
-			throw new QueryException(e);
-		}
+        CachedQueryResult<R> cachedResults = results.get(target);
+        if(cachedResults == null) {
+            cachedResults = new CachedQueryResult<R>(null);
+            results.put(target, cachedResults);
+        }
 
-		CachedQueryResult<R> cachedResults = results.get(target);
-		if (cachedResults == null) {
-			cachedResults = new CachedQueryResult<R>(null);
-			results.put(target, cachedResults);
-		}
+        if(cachedResults.isForcedRefresh() || cachedResults.getLastRefresh() + refreshAge <= lastStep) {
+            cachedResults.setResult(query.execute(target));
+            cachedResults.setLastRefresh(lastStep);
+            cachedResults.setForcedRefresh(false);
+        }
 
-		if (cachedResults.isForcedRefresh() || cachedResults.getLastRefresh() + refreshAge <= lastStep) {
-			cachedResults.setResult(query.execute(target));
-			cachedResults.setLastRefresh(lastStep);
-			cachedResults.setForcedRefresh(false);
-		}
+        return cachedResults.getResult();
+    }
 
-		return cachedResults.getResult();
-	}
-
-	@Override
-	public void invalidateAllResults() {
-		for (final CachedQueryResult<R> result : results.values()) {
-			result.setForcedRefresh(true);
-		}
-	}
-
-	@Override
-	public IQuery<Q, R> getRealQuery() {
-		return query;
-	}
-
-	/**
-	 * Returns the number of workplace steps that are required to invalidate the cache.
-	 *
-	 * @return A number of steps.
-	 */
-	public long getRefreshAge() {
-		return refreshAge;
-	}
+    /**
+     * Returns the number of workplace steps that are required to invalidate the cache.
+     *
+     * @return A number of steps.
+     */
+    public long getRefreshAge() {
+        return refreshAge;
+    }
 }

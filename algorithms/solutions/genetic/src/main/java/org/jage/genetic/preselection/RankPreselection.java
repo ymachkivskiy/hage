@@ -31,20 +31,20 @@
 
 package org.jage.genetic.preselection;
 
-import java.util.Comparator;
-import java.util.List;
-
-import static java.util.Collections.sort;
-
-import javax.inject.Inject;
 
 import org.jage.population.IPopulation;
 import org.jage.population.IPopulation.Tuple;
 import org.jage.solution.ISolution;
 import org.jage.strategy.AbstractStrategy;
 
+import javax.inject.Inject;
+import java.util.Comparator;
+import java.util.List;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
+import static java.util.Collections.sort;
+
 
 /**
  * Rank preselection, acting as a decorator on some other preselection.
@@ -56,25 +56,26 @@ import static com.google.common.collect.Lists.newArrayList;
  */
 public class RankPreselection<S extends ISolution> extends AbstractStrategy implements IPreselection<S, Double> {
 
-	@Inject
-	private IPreselection<S, Double> preselection;
+    @Inject
+    private IPreselection<S, Double> preselection;
 
-	@Override
-	public IPopulation<S, Double> preselect(final IPopulation<S, Double> population) {
-		checkNotNull(population, "The population must not be null");
+    @Override
+    public IPopulation<S, Double> preselect(final IPopulation<S, Double> population) {
+        checkNotNull(population, "The population must not be null");
 
-		final List<Tuple<S, Double>> tuples = newArrayList(population.asTupleList());
-		sort(tuples, new Comparator<Tuple<S, Double>>() {
-			@Override
-			public int compare(final Tuple<S, Double> t1, final Tuple<S, Double> t2) {
-				return t1.getEvaluation().compareTo(t2.getEvaluation());
-			}
-		});
+        final List<Tuple<S, Double>> tuples = newArrayList(population.asTupleList());
+        sort(tuples, new Comparator<Tuple<S, Double>>() {
 
-		for (int i = 0, n = tuples.size(); i < n; i++) {
-			population.setEvaluation(tuples.get(i).getSolution(), Double.valueOf(i));
-		}
+            @Override
+            public int compare(final Tuple<S, Double> t1, final Tuple<S, Double> t2) {
+                return t1.getEvaluation().compareTo(t2.getEvaluation());
+            }
+        });
 
-		return preselection.preselect(population);
-	}
+        for(int i = 0, n = tuples.size(); i < n; i++) {
+            population.setEvaluation(tuples.get(i).getSolution(), Double.valueOf(i));
+        }
+
+        return preselection.preselect(population);
+    }
 }

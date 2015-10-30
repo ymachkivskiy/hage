@@ -26,81 +26,96 @@
  */
 package org.jage.monitoring.visualization.storage;
 
+
 public class StorageDescription {
 
-	private String computationType;
-	private String computationInstance;
-	private String gathererId;
-	private String chartId;
-	
-	public StorageDescription(){}
-	
-	public StorageDescription(String computationType, String computationInstance, String gathererId, String chartId) {
-	    this.computationType = computationType;
-	    this.computationInstance = computationInstance;
-	    this.gathererId = gathererId;
-	    this.chartId = chartId;
-    }
-	
-	public StorageDescription(String computationType, String computationInstance, String gathererId) {
-	    this.computationType = computationType;
-	    this.computationInstance = computationInstance;
-	    this.gathererId = gathererId;
-    }
-	public String getComputationType() {
-		return computationType;
-	}
-	public void setComputationType(String computationType) {
-		this.computationType = computationType;
-	}
-	public String getComputationInstance() {
-		return computationInstance;
-	}
-	public void setComputationInstance(String computationInstance) {
-		this.computationInstance = computationInstance;
-	}
-	public String getGathererId() {
-		return gathererId;
-	}
-	public void setGathererId(String gathererId) {
-		this.gathererId = gathererId;
-	}
-	public String getChartId() {
-		return chartId;
-	}
-	public void setChartId(String chartId) {
-		this.chartId = chartId;
-	}
+    private String computationType;
+    private String computationInstance;
+    private String gathererId;
+    private String chartId;
 
-	public String toString2() {
-	    return computationType+"/"+computationInstance+"/"+gathererId;
-	}
-	
-	@Override
-	public String toString() {
-	    return gathererId;
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-	    if(this == obj)
-	    	return true;
-	    StorageDescription si = (StorageDescription) obj;
-	    if(computationType==null && computationInstance==null && gathererId==null)
-	    	return true;
-	    if(computationType.equals(si.getComputationType()) && computationInstance==null && gathererId==null)
-	    	return true;
-	    if(computationType.equals(si.getComputationType()) && computationInstance.equals(si.getComputationInstance()) && gathererId==null)
-	    	return true;
-	    if(computationType.equals(si.getComputationType()) && computationInstance.equals(si.getComputationInstance()) && gathererId.equals(si.getGathererId()))
-	    	return true;
-	    
-		return false;
-	}
-	
-	@Override
-	public int hashCode() {
-	    return 1;
-	}
-	
+    public StorageDescription() {
+    }
+
+    public StorageDescription(String computationType, String computationInstance, String gathererId, String chartId) {
+        this.computationType = computationType;
+        this.computationInstance = computationInstance;
+        this.gathererId = gathererId;
+        this.chartId = chartId;
+    }
+
+    public StorageDescription(String computationType, String computationInstance, String gathererId) {
+        this.computationType = computationType;
+        this.computationInstance = computationInstance;
+        this.gathererId = gathererId;
+    }
+
+    public void setComputationType(String computationType) {
+        this.computationType = computationType;
+    }
+
+    public void setComputationInstance(String computationInstance) {
+        this.computationInstance = computationInstance;
+    }
+
+    public void setGathererId(String gathererId) {
+        this.gathererId = gathererId;
+    }
+
+    public String getChartId() {
+        return chartId;
+    }
+
+    public void setChartId(String chartId) {
+        this.chartId = chartId;
+    }
+
+    public String toString2() {
+        return computationType + "/" + computationInstance + "/" + gathererId;
+    }
+
+    @Override
+    public int hashCode() {
+        return 1;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(this == obj) {
+            return true;
+        }
+        StorageDescription si = (StorageDescription) obj;
+        if(computationType == null && computationInstance == null && gathererId == null) {
+            return true;
+        }
+        if(computationType.equals(si.getComputationType()) && computationInstance == null && gathererId == null) {
+            return true;
+        }
+        if(computationType.equals(si.getComputationType()) && computationInstance.equals(si.getComputationInstance()) && gathererId == null) {
+            return true;
+        }
+        if(computationType.equals(si.getComputationType()) && computationInstance.equals(si.getComputationInstance()) && gathererId.equals(si.getGathererId())) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public String getComputationType() {
+        return computationType;
+    }
+
+    public String getComputationInstance() {
+        return computationInstance;
+    }
+
+    public String getGathererId() {
+        return gathererId;
+    }
+
+    @Override
+    public String toString() {
+        return gathererId;
+    }
+
 }

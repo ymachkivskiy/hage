@@ -31,20 +31,20 @@
 
 package org.jage.genetic.action;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
 
 import org.jage.action.IActionContext;
 import org.jage.agent.IAgent;
 import org.jage.property.Property;
 import org.jage.solution.ISolution;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.jage.agent.ActionDrivenAgent.Properties.STEP;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+
 
 /**
  * Tests for {@link StatisticsUpdateActionStrategy}.
@@ -52,25 +52,25 @@ import static org.jage.agent.ActionDrivenAgent.Properties.STEP;
  * @author AGH AgE Team
  */
 @RunWith(MockitoJUnitRunner.class)
-public class StatisticsUpdateActionStrategyTest  {
+public class StatisticsUpdateActionStrategyTest {
 
-	private final StatisticsUpdateActionStrategy<ISolution> strategy = new StatisticsUpdateActionStrategy<ISolution>();
+    private final StatisticsUpdateActionStrategy<ISolution> strategy = new StatisticsUpdateActionStrategy<ISolution>();
 
-	@Test
-	public void shouldRespectResolution() throws Exception {
-		// given
-		final Property stepProperty = mock(Property.class);
-		final IAgent target = mock(IAgent.class);
-		final IActionContext context = mock(IActionContext.class);
+    @Test
+    public void shouldRespectResolution() throws Exception {
+        // given
+        final Property stepProperty = mock(Property.class);
+        final IAgent target = mock(IAgent.class);
+        final IActionContext context = mock(IActionContext.class);
 
-		given(target.getProperty(STEP)).willReturn(stepProperty);
-		given(stepProperty.getValue()).willReturn(21L);
+        given(target.getProperty(STEP)).willReturn(stepProperty);
+        given(stepProperty.getValue()).willReturn(21L);
 
-		// when
-		strategy.perfom(target, context);
+        // when
+        strategy.perform(target, context);
 
-		// then
-		Mockito.verify(target).getProperty(STEP);
-		Mockito.verifyNoMoreInteractions(target);
-	}
+        // then
+        Mockito.verify(target).getProperty(STEP);
+        Mockito.verifyNoMoreInteractions(target);
+    }
 }

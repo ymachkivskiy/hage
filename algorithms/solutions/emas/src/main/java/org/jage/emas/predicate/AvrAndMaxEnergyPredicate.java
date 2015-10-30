@@ -31,10 +31,12 @@
 
 package org.jage.emas.predicate;
 
-import java.util.Collection;
 
 import org.jage.emas.agent.IndividualAgent;
 import org.jage.query.AgentEnvironmentQuery;
+
+import java.util.Collection;
+
 
 /**
  * Predicate applying to agents which energy is higher than {@code (averageEnergy + energyMax) / 2} of their population.
@@ -43,28 +45,28 @@ import org.jage.query.AgentEnvironmentQuery;
  */
 public class AvrAndMaxEnergyPredicate implements IPredicate<IndividualAgent> {
 
-	@Override
-	public boolean apply(final IndividualAgent agent) {
-		Collection<IndividualAgent> agents = new AgentEnvironmentQuery<IndividualAgent, IndividualAgent>()
-		        .execute(agent.getEnvironment());
+    @Override
+    public boolean apply(final IndividualAgent agent) {
+        Collection<IndividualAgent> agents = new AgentEnvironmentQuery<IndividualAgent, IndividualAgent>()
+                .execute(agent.getEnvironment());
 
-		int agentsNumber = agents.size();
-		if (agentsNumber <= 1) {
-			return true;
-		}
+        int agentsNumber = agents.size();
+        if(agentsNumber <= 1) {
+            return true;
+        }
 
-		double energySum = 0.0;
-		double energyMax = Double.MIN_VALUE;
-		for (IndividualAgent other : agents) {
-			double energy = other.getEnergy();
-			if (energy > energyMax) {
-				energyMax = energy;
-			}
-			energySum += energy;
-		}
-		double averageEnergy = energySum / agentsNumber;
+        double energySum = 0.0;
+        double energyMax = Double.MIN_VALUE;
+        for(IndividualAgent other : agents) {
+            double energy = other.getEnergy();
+            if(energy > energyMax) {
+                energyMax = energy;
+            }
+            energySum += energy;
+        }
+        double averageEnergy = energySum / agentsNumber;
 
-		double threshold = (averageEnergy + energyMax) / 2;
-		return agent.getEnergy() >= threshold;
-	}
+        double threshold = (averageEnergy + energyMax) / 2;
+        return agent.getEnergy() >= threshold;
+    }
 }

@@ -31,24 +31,17 @@
 
 package org.jage.workplace;
 
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Queue;
-import java.util.Set;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicLong;
 
-import javax.annotation.CheckForNull;
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.GuardedBy;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import com.google.common.base.Objects;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListenableScheduledFuture;
+import com.google.common.util.concurrent.ListeningScheduledExecutorService;
+import com.google.common.util.concurrent.MoreExecutors;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.jage.action.Action;
 import org.jage.action.IActionContext;
 import org.jage.action.SingleAction;
@@ -72,23 +65,29 @@ import org.jage.query.AgentEnvironmentQuery;
 import org.jage.query.EnvironmentAddressesQuery;
 import org.jage.query.IQuery;
 import org.jage.workplace.manager.WorkplaceManagerMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Objects;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.ListenableScheduledFuture;
-import com.google.common.util.concurrent.ListeningScheduledExecutorService;
-import com.google.common.util.concurrent.MoreExecutors;
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import javax.annotation.CheckForNull;
+import javax.annotation.Nonnull;
+import javax.annotation.concurrent.GuardedBy;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Queue;
+import java.util.Set;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
 
 import static com.google.common.base.Objects.toStringHelper;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Iterables.consumingIterable;
 import static com.google.common.collect.Queues.newConcurrentLinkedQueue;
+
 
 /**
  * This is a basic workplace for simple agents ({@link ISimpleAgent}).
@@ -97,383 +96,396 @@ import static com.google.common.collect.Queues.newConcurrentLinkedQueue;
  */
 public class SimpleWorkplace implements Workplace, ISimpleAgentEnvironment {
 
-	private static final Logger log = LoggerFactory.getLogger(SimpleWorkplace.class);
+    private static final Logger log = LoggerFactory.getLogger(SimpleWorkplace.class);
 
-	private static final int QUERY_EXECUTOR_RATE_MS = 500;
+    private static final int QUERY_EXECUTOR_RATE_MS = 500;
 
-	@Nonnull
-	private final AtomicLong step = new AtomicLong(0);
+    @Nonnull
+    private final AtomicLong step = new AtomicLong(0);
 
-	@Nonnull
-	private final Object stateMonitor = new Object();
+    @Nonnull
+    private final Object stateMonitor = new Object();
+    private final Queue<Action> actionQueue = newConcurrentLinkedQueue();
+    private ISimpleAgent agent;
+    private final Runnable stepExecutorRunnable = new Runnable() {
 
-	private ISimpleAgent agent;
+        @Override
+        public void run() {
+            setRunning();
+            log.info("{} has been started.", this);
 
-	private List<IQuery<Object, Object>> queries;
+            while(isRunning() || isPaused()) {
+                log.debug("Step {} on {}.", step, agent);
+                agent.step();
 
-	@GuardedBy("stateMonitor") @Nonnull
-	private State state = State.STOPPED;
+                processActions();
+                step.getAndIncrement();
+            }
 
-	@CheckForNull
-	private WorkplaceEnvironment environment;
+            agent.finish();
+        }
+    };
+    private List<IQuery<Object, Object>> queries;
+    @GuardedBy("stateMonitor")
+    @Nonnull
+    private State state = State.STOPPED;
+    @CheckForNull
+    private WorkplaceEnvironment environment;
+    private final Runnable queryCacheExecutorRunnable = new Runnable() {
 
-	private ListeningScheduledExecutorService executorService;
+        @Override
+        public void run() {
+            for(final IQuery<Object, Object> query : queries) {
+                log.debug("Query: {}", query);
+                final Iterable<?> execute = (Iterable<?>) query.execute(Collections.singleton(getAgent()));
+                log.debug("Query result: {}", execute);
+                environment.cacheQueryResults(getAddress(), query, execute);
+            }
+        }
+    };
+    private ListeningScheduledExecutorService executorService;
+    private ListenableFuture<?> agentStepExecutorFuture;
+    private ListenableScheduledFuture<?> queryExecutorFuture;
 
-	private ListenableFuture<?> agentStepExecutorFuture;
+    /**
+     * Gets the step.
+     *
+     * @return the step
+     */
+    public long getStep() {
+        return step.get();
+    }
 
-	private ListenableScheduledFuture<?> queryExecutorFuture;
+    /**
+     * Sets the state of the workplace to "running".
+     */
+    protected void setRunning() {
+        synchronized(stateMonitor) {
+            state = State.RUNNING;
+        }
+    }
 
-	private final Queue<Action> actionQueue = newConcurrentLinkedQueue();
+    /**
+     * Sets the state of the workplace to "stopped".
+     */
+    protected void setStopped() {
+        synchronized(stateMonitor) {
+            if(isStopped()) {
+                return;
+            }
+            state = State.STOPPED;
+        }
+        log.info("Calling environment.");
+        getEnvironment().onWorkplaceStop(this);
+        log.info("{} stopped", this);
+    }
 
-	@Override
-	public void start() {
-		log.info("{} is starting...", this);
+    /**
+     * Returns the environment of the workplace.
+     *
+     * @return the environment.
+     */
+    @Nonnull
+    protected final WorkplaceEnvironment getEnvironment() {
+        checkState(environment != null);
+        return environment;
+    }
 
-		executorService = MoreExecutors.listeningDecorator(Executors.newScheduledThreadPool(2,
-				(new ThreadFactoryBuilder()).setNameFormat("wp-" + getAddress().getFriendlyName() + "-%d").build()));
-		queryExecutorFuture = executorService.scheduleAtFixedRate(queryCacheExecutorRunnable, 0, QUERY_EXECUTOR_RATE_MS,
-				TimeUnit.MILLISECONDS);
-		if (queries == null) {
-			setQueries(Lists.<IQuery<Object, Object>>newArrayList());
-		}
-		checkState(isStopped(), "Workplace has been already started.");
+    @Override
+    public void setEnvironment(@CheckForNull final WorkplaceEnvironment environment) {
+        if(environment == null) {
+            this.environment = null;
+        } else if(this.environment == null) {
+            this.environment = environment;
+        } else {
+            throw new WorkplaceException(String.format("Environment in %s is already set.", this));
+        }
+    }
 
-		agentStepExecutorFuture = executorService.submit(stepExecutorRunnable);
-		Futures.addCallback(agentStepExecutorFuture, new AgentStepExecutorCallback(),
-				MoreExecutors.sameThreadExecutor());
-		Futures.addCallback(queryExecutorFuture, new QueryExecutorCallback(), MoreExecutors.sameThreadExecutor());
+    @Override
+    public void start() {
+        log.info("{} is starting...", this);
 
-		// "Running" state is set in the step executor.
-	}
+        executorService = MoreExecutors.listeningDecorator(Executors.newScheduledThreadPool(2,
+                                                                                            (new ThreadFactoryBuilder()).setNameFormat("wp-" + getAddress().getFriendlyName() + "-%d").build()));
+        queryExecutorFuture = executorService.scheduleAtFixedRate(queryCacheExecutorRunnable, 0, QUERY_EXECUTOR_RATE_MS,
+                                                                  TimeUnit.MILLISECONDS);
+        if(queries == null) {
+            setQueries(Lists.<IQuery<Object, Object>> newArrayList());
+        }
+        checkState(isStopped(), "Workplace has been already started.");
 
-	@Override
-	public void pause() {
-		log.debug("{} asked to pause.", getAddress());
-		synchronized (stateMonitor) {
-			checkState(isRunning(), "Workplace is not running.");
-			state = State.PAUSED;
-		}
+        agentStepExecutorFuture = executorService.submit(stepExecutorRunnable);
+        Futures.addCallback(agentStepExecutorFuture, new AgentStepExecutorCallback(),
+                            MoreExecutors.sameThreadExecutor());
+        Futures.addCallback(queryExecutorFuture, new QueryExecutorCallback(), MoreExecutors.sameThreadExecutor());
 
-		agentStepExecutorFuture.cancel(false);
-	}
+        // "Running" state is set in the step executor.
+    }
 
-	@Override
-	public void resume() {
-		log.debug("{} asked to resume.", this);
-		synchronized (stateMonitor) {
-			checkState(isPaused(), "Workplace is not paused.");
-			state = State.RUNNING;
-		}
+    @Override
+    public void pause() {
+        log.debug("{} asked to pause.", getAddress());
+        synchronized(stateMonitor) {
+            checkState(isRunning(), "Workplace is not running.");
+            state = State.PAUSED;
+        }
 
-		agentStepExecutorFuture = executorService.submit(stepExecutorRunnable);
-		Futures.addCallback(agentStepExecutorFuture, new AgentStepExecutorCallback(),
-				MoreExecutors.sameThreadExecutor());
-	}
+        agentStepExecutorFuture.cancel(false);
+    }
 
-	@Override
-	public void stop() {
-		log.debug("{} asked to stop.", this);
-		synchronized (stateMonitor) {
-			checkState(isRunning() || isPaused(), "Workplace is not running or paused.");
-			state = State.STOPPING;
-		}
+    @Override
+    public void resume() {
+        log.debug("{} asked to resume.", this);
+        synchronized(stateMonitor) {
+            checkState(isPaused(), "Workplace is not paused.");
+            state = State.RUNNING;
+        }
 
-		try {
-			if (!agentStepExecutorFuture.isDone()) {
-				agentStepExecutorFuture.get();
-			}
-		} catch (final InterruptedException | ExecutionException e) {
-			log.warn("Exception when waiting for step executor to finish.", e);
-		}
-	}
+        agentStepExecutorFuture = executorService.submit(stepExecutorRunnable);
+        Futures.addCallback(agentStepExecutorFuture, new AgentStepExecutorCallback(),
+                            MoreExecutors.sameThreadExecutor());
+    }
 
-	@Override
-	public boolean terminate() {
-		checkState(isStopped(), "Illegal use of terminate. Must invoke stop() first.");
+    @Override
+    public void stop() {
+        log.debug("{} asked to stop.", this);
+        synchronized(stateMonitor) {
+            checkState(isRunning() || isPaused(), "Workplace is not running or paused.");
+            state = State.STOPPING;
+        }
 
-		queryExecutorFuture.cancel(true);
-		executorService.shutdown();
-		try {
-			executorService.awaitTermination(1, TimeUnit.SECONDS);
-		} catch (InterruptedException e) {
-			log.debug("Interrupted.", e);
-		}
-		log.info("{} has been shut down.", getAddress());
-		return true;
-	}
+        try {
+            if(!agentStepExecutorFuture.isDone()) {
+                agentStepExecutorFuture.get();
+            }
+        } catch(final InterruptedException | ExecutionException e) {
+            log.warn("Exception when waiting for step executor to finish.", e);
+        }
+    }
 
-	@Override
-	public boolean isRunning() {
-		synchronized (stateMonitor) {
-			return State.RUNNING.equals(state);
-		}
-	}
+    @Override
+    public boolean terminate() {
+        checkState(isStopped(), "Illegal use of terminate. Must invoke stop() first.");
 
-	@Override
-	public boolean isPaused() {
-		synchronized (stateMonitor) {
-			return State.PAUSED.equals(state);
-		}
-	}
+        queryExecutorFuture.cancel(true);
+        executorService.shutdown();
+        try {
+            executorService.awaitTermination(1, TimeUnit.SECONDS);
+        } catch(InterruptedException e) {
+            log.debug("Interrupted.", e);
+        }
+        log.info("{} has been shut down.", getAddress());
+        return true;
+    }
 
-	@Override
-	public boolean isStopped() {
-		synchronized (stateMonitor) {
-			return State.STOPPED.equals(state);
-		}
-	}
+    @Override
+    public boolean isRunning() {
+        synchronized(stateMonitor) {
+            return State.RUNNING.equals(state);
+        }
+    }
 
-	/**
-	 * Gets the step.
-	 *
-	 * @return the step
-	 */
-	public long getStep() {
-		return step.get();
-	}
+    @Override
+    public boolean isPaused() {
+        synchronized(stateMonitor) {
+            return State.PAUSED.equals(state);
+        }
+    }
 
-	/**
-	 * Sets the state of the workplace to "running".
-	 */
-	protected void setRunning() {
-		synchronized (stateMonitor) {
-			state = State.RUNNING;
-		}
-	}
+    @Override
+    public boolean isStopped() {
+        synchronized(stateMonitor) {
+            return State.STOPPED.equals(state);
+        }
+    }
 
-	/**
-	 * Sets the state of the workplace to "stopped".
-	 */
-	protected void setStopped() {
-		synchronized (stateMonitor) {
-			if (isStopped()) {
-				return;
-			}
-			state = State.STOPPED;
-		}
-		log.info("Calling environment.");
-		getEnvironment().onWorkplaceStop(this);
-		log.info("{} stopped", this);
-	}
+    @Override
+    public void deliverMessage(@Nonnull final Message<AgentAddress, ?> message) {
+        if(isStopped()) {
+            log.debug("Workplace is stopped and ignores all messages.");
+            return;
+        }
+        agent.deliverMessage(message);
+    }
 
-	@Override
-	public void setEnvironment(@CheckForNull final WorkplaceEnvironment environment) {
-		if (environment == null) {
-			this.environment = null;
-		} else if (this.environment == null) {
-			this.environment = environment;
-		} else {
-			throw new WorkplaceException(String.format("Environment in %s is already set.", this));
-		}
-	}
+    @Override
+    public void sendAgent(@Nonnull final IAgent migrant) {
+        log.debug("Incoming migrant: {}.", migrant);
 
-	/**
-	 * Returns the environment of the workplace.
-	 *
-	 * @return the environment.
-	 */
-	@Nonnull protected final WorkplaceEnvironment getEnvironment() {
-		checkState(environment != null);
-		return environment;
-	}
+        checkArgument(migrant instanceof ISimpleAgent);
+        checkState(agent instanceof ISimpleAggregate);
+        if(isStopped()) {
+            log.debug("Workplace is stopped and ignores all migrations.");
+            return;
+        }
+        final ISimpleAggregate aggregate = (ISimpleAggregate) agent;
+        aggregate.add((ISimpleAgent) migrant);
+    }
 
-	@Override public <E extends IAgent, T> Collection<T> queryParent(final AgentEnvironmentQuery<E, T> query) {
-		throw new IllegalOperationException("Agent has no grandparents.");
-	}
-
-	@Override public <E extends IAgent, T> Collection<T> query(final AgentEnvironmentQuery<E, T> query) {
-		log.debug("Query on workplaces: {}.", query);
-		return getEnvironment().queryWorkplaces(query);
-	}
-
-	@Override @Nonnull public AgentAddress getAddress() {
-		return getAgent().getAddress();
-	}
-
-	@Nonnull public ISimpleAgent getAgent() {
-		checkState(agent != null);
-		return agent;
-	}
-
-	public void setAgent(final @Nonnull ISimpleAgent agent) {
-		log.debug("Agent set: {}.", agent);
-		this.agent = agent;
-		this.agent.setAgentEnvironment(this);
-	}
+    @Nonnull
+    public ISimpleAgent getAgent() {
+        checkState(agent != null);
+        return agent;
+    }
 
 	/* Actions translation to distributed environment */
 
-	@Override public void submitAction(final Action action) {
-		log.debug("Action: {}.", action);
-		actionQueue.add(action);
-	}
+    public void setQueries(final List<IQuery<Object, Object>> queries) {
+        this.queries = queries;
+        this.queries.add((IQuery) new EnvironmentAddressesQuery());
+    }
 
-	protected void processActions() {
-		for (final Action action : consumingIterable(actionQueue)) {
-			for (final SingleAction singleAction : action) {
-				final IActionContext context = singleAction.getContext();
-				final AddressSelector<AgentAddress> targetSelector = singleAction.getTarget();
+    @Override
+    public <E extends IAgent, T> Collection<T> queryParent(final AgentEnvironmentQuery<E, T> query) {
+        throw new IllegalOperationException("Agent has no grandparents.");
+    }
 
-				// Ugly code ;(
-				if (context instanceof SendMessageActionContext) {
-					handleAction(targetSelector, (SendMessageActionContext)context);
-				} else if (context instanceof PassToParentActionContext) {
-					handleAction(targetSelector, (PassToParentActionContext)context);
-				} else if (context instanceof MoveAgentActionContext) {
-					handleAction(targetSelector, (MoveAgentActionContext)context);
-				} else if (context instanceof RemoveAgentActionContext) {
-					handleAction(targetSelector, (RemoveAgentActionContext)context);
-				} else if (context instanceof KillAgentActionContext) {
-					handleAction(targetSelector, (KillAgentActionContext)context);
-				} else if (context instanceof AddAgentActionContext) {
-					handleAction(targetSelector, (AddAgentActionContext)context);
-				}
+    @Override
+    public <E extends IAgent, T> Collection<T> query(final AgentEnvironmentQuery<E, T> query) {
+        log.debug("Query on workplaces: {}.", query);
+        return getEnvironment().queryWorkplaces(query);
+    }
 
-			}
-		}
-	}
+    @Override
+    @Nonnull
+    public AgentAddress getAddress() {
+        return getAgent().getAddress();
+    }
 
-	private void handleAction(@Nonnull final AddressSelector<AgentAddress> targetSelector,
-			@Nonnull final SendMessageActionContext context) {
-		final WorkplaceManagerMessage message =
-				WorkplaceManagerMessage.create(WorkplaceManagerMessage.MessageType.AGENT_MESSAGE, context.getMessage());
-		getEnvironment().sendMessage(message);
-	}
+    public void setAgent(final @Nonnull ISimpleAgent agent) {
+        log.debug("Agent set: {}.", agent);
+        this.agent = agent;
+        this.agent.setAgentEnvironment(this);
+    }
 
-	private void handleAction(@Nonnull final AddressSelector<AgentAddress> targetSelector,
-			@Nonnull final PassToParentActionContext context) {
-		throw new AgentException("Pass to parent impossible for top-level agents.");
-	}
+    @Override
+    public void submitAction(final Action action) {
+        log.debug("Action: {}.", action);
+        actionQueue.add(action);
+    }
 
-	private void handleAction(@Nonnull final AddressSelector<AgentAddress> targetSelector,
-			@Nonnull final MoveAgentActionContext context) {
+    protected void processActions() {
+        for(final Action action : consumingIterable(actionQueue)) {
+            for(final SingleAction singleAction : action) {
+                final IActionContext context = singleAction.getContext();
+                final AddressSelector<AgentAddress> targetSelector = singleAction.getTarget();
 
-		final ISimpleAgent migrant = context.getAgent();
-		if (migrant instanceof IAggregate<?>) {
-			throw new AgentException("Cannot move aggregates yet.");
-		}
-		final AgentAddress migrantAddress = migrant.getAddress();
-		final ISimpleAggregate migrantParent = context.getParent();
+                // Ugly code ;(
+                if(context instanceof SendMessageActionContext) {
+                    handleAction(targetSelector, (SendMessageActionContext) context);
+                } else if(context instanceof PassToParentActionContext) {
+                    handleAction(targetSelector, (PassToParentActionContext) context);
+                } else if(context instanceof MoveAgentActionContext) {
+                    handleAction(targetSelector, (MoveAgentActionContext) context);
+                } else if(context instanceof RemoveAgentActionContext) {
+                    handleAction(targetSelector, (RemoveAgentActionContext) context);
+                } else if(context instanceof KillAgentActionContext) {
+                    handleAction(targetSelector, (KillAgentActionContext) context);
+                } else if(context instanceof AddAgentActionContext) {
+                    handleAction(targetSelector, (AddAgentActionContext) context);
+                }
 
-		try {
-			migrantParent.removeAgent(migrantAddress);
-		} catch (final AgentException e) {
-			log.info("Cannot remove the agent [agent: {}, parent: {}]", migrantAddress, migrantParent.getAddress());
-			throw e;
-		}
+            }
+        }
+    }
 
-		final ImmutableMap<String, Serializable> migrationPayload =
-				(new ImmutableMap.Builder<String, Serializable>()).put("target", targetSelector)
-				                                                  .put("agent", migrant)
-				                                                  .build();
+    private void handleAction(@Nonnull final AddressSelector<AgentAddress> targetSelector,
+            @Nonnull final SendMessageActionContext context) {
+        final WorkplaceManagerMessage message =
+                WorkplaceManagerMessage.create(WorkplaceManagerMessage.MessageType.AGENT_MESSAGE, context.getMessage());
+        getEnvironment().sendMessage(message);
+    }
 
-		final WorkplaceManagerMessage message =
-				WorkplaceManagerMessage.create(WorkplaceManagerMessage.MessageType.MIGRATE_AGENT, migrationPayload);
-		getEnvironment().sendMessage(message);
-	}
+    private void handleAction(@Nonnull final AddressSelector<AgentAddress> targetSelector,
+            @Nonnull final PassToParentActionContext context) {
+        throw new AgentException("Pass to parent impossible for top-level agents.");
+    }
 
-	private void handleAction(@Nonnull final AddressSelector<AgentAddress> targetSelector,
-			@Nonnull final RemoveAgentActionContext context) {
-		final Set<AgentAddress> addresses = getEnvironment().getAddressesOfWorkplaces();
-		for (final AgentAddress address : Selectors.filter(addresses, targetSelector)) {
-			getEnvironment().requestRemoval(address);
-		}
-	}
+    private void handleAction(@Nonnull final AddressSelector<AgentAddress> targetSelector,
+            @Nonnull final MoveAgentActionContext context) {
 
-	private void handleAction(@Nonnull AddressSelector<AgentAddress> targetSelector,
-			@Nonnull final KillAgentActionContext context) {
-		final Set<AgentAddress> addresses = getEnvironment().getAddressesOfWorkplaces();
-		for (final AgentAddress address : Selectors.filter(addresses, targetSelector)) {
-			getEnvironment().requestRemoval(address);
-		}
-	}
+        final ISimpleAgent migrant = context.getAgent();
+        if(migrant instanceof IAggregate<?>) {
+            throw new AgentException("Cannot move aggregates yet.");
+        }
+        final AgentAddress migrantAddress = migrant.getAddress();
+        final ISimpleAggregate migrantParent = context.getParent();
 
-	private void handleAction(@Nonnull AddressSelector<AgentAddress> targetSelector,
-			@Nonnull final AddAgentActionContext context) {
-		throw new AgentException("Creation of workplaces is not implemented yet."); // XXX:
-	}
+        try {
+            migrantParent.removeAgent(migrantAddress);
+        } catch(final AgentException e) {
+            log.info("Cannot remove the agent [agent: {}, parent: {}]", migrantAddress, migrantParent.getAddress());
+            throw e;
+        }
 
-	@Override public void deliverMessage(@Nonnull final Message<AgentAddress, ?> message) {
-		if (isStopped()) {
-			log.debug("Workplace is stopped and ignores all messages.");
-			return;
-		}
-		agent.deliverMessage(message);
-	}
+        final ImmutableMap<String, Serializable> migrationPayload =
+                (new ImmutableMap.Builder<String, Serializable>()).put("target", targetSelector)
+                        .put("agent", migrant)
+                        .build();
 
-	@Override public void sendAgent(@Nonnull final IAgent migrant) {
-		log.debug("Incoming migrant: {}.", migrant);
+        final WorkplaceManagerMessage message =
+                WorkplaceManagerMessage.create(WorkplaceManagerMessage.MessageType.MIGRATE_AGENT, migrationPayload);
+        getEnvironment().sendMessage(message);
+    }
 
-		checkArgument(migrant instanceof ISimpleAgent);
-		checkState(agent instanceof ISimpleAggregate);
-		if (isStopped()) {
-			log.debug("Workplace is stopped and ignores all migrations.");
-			return;
-		}
-		final ISimpleAggregate aggregate = (ISimpleAggregate)agent;
-		aggregate.add((ISimpleAgent)migrant);
-	}
+    private void handleAction(@Nonnull final AddressSelector<AgentAddress> targetSelector,
+            @Nonnull final RemoveAgentActionContext context) {
+        final Set<AgentAddress> addresses = getEnvironment().getAddressesOfWorkplaces();
+        for(final AgentAddress address : Selectors.filter(addresses, targetSelector)) {
+            getEnvironment().requestRemoval(address);
+        }
+    }
 
-	public void setQueries(final List<IQuery<Object, Object>> queries) {
-		this.queries = queries;
-		this.queries.add((IQuery)new EnvironmentAddressesQuery());
-	}
+    private void handleAction(@Nonnull AddressSelector<AgentAddress> targetSelector,
+            @Nonnull final KillAgentActionContext context) {
+        final Set<AgentAddress> addresses = getEnvironment().getAddressesOfWorkplaces();
+        for(final AgentAddress address : Selectors.filter(addresses, targetSelector)) {
+            getEnvironment().requestRemoval(address);
+        }
+    }
 
-	@Override public String toString() {
-		final Objects.ToStringHelper helper = toStringHelper(this);
-		synchronized (stateMonitor) {
-			helper.add("state", state);
-		}
-		return helper.add("step", step.get()).add("agent", agent).toString();
-	}
+    private void handleAction(@Nonnull AddressSelector<AgentAddress> targetSelector,
+            @Nonnull final AddAgentActionContext context) {
+        throw new AgentException("Creation of workplaces is not implemented yet."); // XXX:
+    }
 
-	private final Runnable stepExecutorRunnable = new Runnable() {
-		@Override public void run() {
-			setRunning();
-			log.info("{} has been started.", this);
+    @Override
+    public String toString() {
+        final Objects.ToStringHelper helper = toStringHelper(this);
+        synchronized(stateMonitor) {
+            helper.add("state", state);
+        }
+        return helper.add("step", step.get()).add("agent", agent).toString();
+    }
 
-			while (isRunning() || isPaused()) {
-				log.debug("Step {} on {}.", step, agent);
-				agent.step();
 
-				processActions();
-				step.getAndIncrement();
-			}
+    private static class QueryExecutorCallback implements FutureCallback<Object> {
 
-			agent.finish();
-		}
-	};
+        @Override
+        public void onSuccess(final Object result) {
+            log.debug("Successful cache.");
+        }
 
-	private final Runnable queryCacheExecutorRunnable = new Runnable() {
-		@Override public void run() {
-			for (final IQuery<Object, Object> query : queries) {
-				log.debug("Query: {}", query);
-				final Iterable<?> execute = (Iterable<?>)query.execute(Collections.singleton(getAgent()));
-				log.debug("Query result: {}", execute);
-				environment.cacheQueryResults(getAddress(), query, execute);
-			}
-		}
-	};
+        @Override
+        public void onFailure(final Throwable t) {
+            log.error("Exception caught during cache run.", t);
+        }
+    }
 
-	private static class QueryExecutorCallback implements FutureCallback<Object> {
-		@Override public void onSuccess(final Object result) {
-			log.debug("Successful cache.");
-		}
 
-		@Override public void onFailure(final Throwable t) {
-			log.error("Exception caught during cache run.", t);
-		}
-	}
+    private class AgentStepExecutorCallback implements FutureCallback<Object> {
 
-	private class AgentStepExecutorCallback implements FutureCallback<Object> {
-		@Override public void onSuccess(final Object result) {
-			log.debug("Successful computation.");
-			setStopped();
-		}
+        @Override
+        public void onSuccess(final Object result) {
+            log.debug("Successful computation.");
+            setStopped();
+        }
 
-		@Override public void onFailure(final Throwable t) {
-			log.error("Exception caught during run.", t);
-			setStopped();
-		}
-	}
+        @Override
+        public void onFailure(final Throwable t) {
+            log.error("Exception caught during run.", t);
+            setStopped();
+        }
+    }
 }

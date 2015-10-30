@@ -24,35 +24,35 @@
  * You should have received a copy of the GNU General Public License
  * along with AgE.  If not, see <http://www.gnu.org/licenses/>.
  */
- package org.jage.monitoring.visualization.storage.element;
+package org.jage.monitoring.visualization.storage.element;
+
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+
 /**
- *  
- * 
  * @author AGH AgE Team
- *
  */
-public class Base implements DescriptionElement<ComputationType>{
-	private Map<String, ComputationType> types = new LinkedHashMap<String, ComputationType>();
+public class Base implements DescriptionElement<ComputationType> {
 
-	@Override
-	public Collection<ComputationType> all() {
-		return types.values();
-	}
+    private Map<String, ComputationType> types = new LinkedHashMap<String, ComputationType>();
 
-	@Override
-	public ComputationType get(String key) {
-		return types.get(key);
-	}
+    @Override
+    public Collection<ComputationType> all() {
+        return types.values();
+    }
 
-	public ComputationType put(ComputationType type) {
-		if (!types.containsKey(type.typeKey)) {
-			types.put(type.typeKey, type);
-		}
-		return types.get(type.typeKey);
-	}
+    @Override
+    public ComputationType get(String key) {
+        return types.get(key);
+    }
+
+    public ComputationType put(ComputationType type) {
+        if(!types.containsKey(type.typeKey)) {
+            types.put(type.typeKey, type);
+        }
+        return types.get(type.typeKey);
+    }
 }

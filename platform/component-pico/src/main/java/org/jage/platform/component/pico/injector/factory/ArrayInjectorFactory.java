@@ -31,9 +31,11 @@
 
 package org.jage.platform.component.pico.injector.factory;
 
+
 import org.jage.platform.component.definition.ArrayDefinition;
 import org.jage.platform.component.pico.injector.ArrayInjector;
 import org.jage.platform.component.pico.injector.Injector;
+
 
 /**
  * Factory for ArrayInjectors.
@@ -41,8 +43,9 @@ import org.jage.platform.component.pico.injector.Injector;
  * @author AGH AgE Team
  */
 final class ArrayInjectorFactory implements InjectorFactory<ArrayDefinition> {
-	@Override
-	public <T> Injector<T> createAdapter(final ArrayDefinition definition) {
-		return new ArrayInjector<T>(definition);
-	}
+
+    @Override
+    public <T> Injector<T> createAdapter(final ArrayDefinition definition) {
+        return new ArrayInjector<T>(definition);
+    }
 }

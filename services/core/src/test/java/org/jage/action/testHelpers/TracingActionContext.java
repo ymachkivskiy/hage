@@ -31,10 +31,13 @@
 
 package org.jage.action.testHelpers;
 
+
 import org.jage.action.IActionContext;
 import org.jage.action.context.AgentActionContext;
 
-@AgentActionContext({ "c1Action", "c2Action", "c3Action", "c4Action" })
+
+@AgentActionContext({"c1Action", "c2Action", "c3Action", "c4Action"})
 public class TracingActionContext implements IActionContext {
-	public String trace = "";
+
+    public String trace = "";
 }

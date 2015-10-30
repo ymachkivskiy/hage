@@ -33,9 +33,9 @@
  * Provides interfaces and implementation of address selectors.
  */
 @ParametersAreNonnullByDefault
-@ReturnValuesAreNonnullByDefault
-package org.jage.address.selector;
+@ReturnValuesAreNonnullByDefault package org.jage.address.selector;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 
 import org.jage.annotation.ReturnValuesAreNonnullByDefault;
+
+import javax.annotation.ParametersAreNonnullByDefault;

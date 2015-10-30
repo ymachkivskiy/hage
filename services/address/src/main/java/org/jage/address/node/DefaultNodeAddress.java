@@ -31,16 +31,18 @@
 
 package org.jage.address.node;
 
-import javax.annotation.concurrent.Immutable;
 
 import com.google.common.base.Objects;
+
+import javax.annotation.concurrent.Immutable;
 
 import static com.google.common.base.Objects.equal;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+
 /**
  * An implementation of a node address that does not depend on Hazelcast.
- *
+ * <p>
  * <p>Consist of a local part and a hostname.
  *
  * @author AGH AgE Team
@@ -48,55 +50,55 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Immutable
 public class DefaultNodeAddress extends AbstractNodeAddress {
 
-	private static final String DEFAULT_HOSTNAME = "localhost";
+    private static final String DEFAULT_HOSTNAME = "localhost";
 
-	private static final long serialVersionUID = 1840324110860769872L;
+    private static final long serialVersionUID = 1840324110860769872L;
 
-	private final String localPart;
+    private final String localPart;
 
-	private final String hostname;
+    private final String hostname;
 
-	public DefaultNodeAddress(final String localPart) {
-		this(localPart, DEFAULT_HOSTNAME);
-	}
+    public DefaultNodeAddress(final String localPart) {
+        this(localPart, DEFAULT_HOSTNAME);
+    }
 
-	public DefaultNodeAddress(final String localPart, final String hostname) {
-		this.localPart = checkNotNull(localPart);
-		this.hostname = checkNotNull(hostname);
-	}
+    public DefaultNodeAddress(final String localPart, final String hostname) {
+        this.localPart = checkNotNull(localPart);
+        this.hostname = checkNotNull(hostname);
+    }
 
-	public String getLocalPart() {
-		return localPart;
-	}
+    public String getLocalPart() {
+        return localPart;
+    }
 
-	public String getHostname() {
-		return hostname;
-	}
+    public String getHostname() {
+        return hostname;
+    }
 
-	@Override
-	public String getIdentifier() {
-		return toString();
-	}
+    @Override
+    public String getIdentifier() {
+        return toString();
+    }
 
-	@Override
-	public String toString() {
-		return localPart + "@" + hostname;
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(localPart, hostname);
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hashCode(localPart, hostname);
-	}
+    @Override
+    public String toString() {
+        return localPart + "@" + hostname;
+    }
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (!(obj instanceof DefaultNodeAddress)) {
-			return false;
-		}
-		final DefaultNodeAddress that = (DefaultNodeAddress)obj;
-		return equal(localPart, that.localPart) && equal(hostname, that.hostname);
-	}
+    @Override
+    public boolean equals(final Object obj) {
+        if(this == obj) {
+            return true;
+        }
+        if(!(obj instanceof DefaultNodeAddress)) {
+            return false;
+        }
+        final DefaultNodeAddress that = (DefaultNodeAddress) obj;
+        return equal(localPart, that.localPart) && equal(hostname, that.hostname);
+    }
 }

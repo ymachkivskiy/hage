@@ -26,152 +26,148 @@
  */
 package org.jage.property.testHelpers;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 
 import org.jage.property.ClassPropertyContainer;
 import org.jage.property.PropertyField;
 import org.jage.property.PropertyGetter;
 import org.jage.property.PropertySetter;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
+
 public class ClassWithProperties extends ClassPropertyContainer {
-		
-		private int _intProperty = 0;
-		private String _stringProperty = "";
-		private ChangesNotifierStub _changesNotifierProperty2 = new ChangesNotifierStub();
-		
-		@SuppressWarnings("unused")
-		@PropertyField(propertyName="complexProperty")
-		private InnerClassWithProperties _complexProperty = new InnerClassWithProperties();
-		
-		@SuppressWarnings("unused")
-		@PropertyField(propertyName="complexArrayProperty")
-		private InnerClassWithProperties[] _complexArrayProperty = {
-				new InnerClassWithProperties(),
-				new InnerClassWithProperties()
-		};
-		
-		@SuppressWarnings("unused")
-		@PropertyField(propertyName="changesNotifierProperty", isMonitorable=true)
-		private ChangesNotifierStub _changesNotifierProperty = new ChangesNotifierStub();
-		
-		@SuppressWarnings("unused")
-		@PropertyField(propertyName="floatProperty", isMonitorable=true)
-		private float _floatProperty = 0.0f;
-		
-		@SuppressWarnings("unused")
-		@PropertyField(propertyName="objectProperty")
-		private Object _objectProperty = new Object();
-		
-		@SuppressWarnings("unused")
-		@PropertyField(propertyName="monitorableObjectProperty")
-		private Object _monitorableObjectProperty = new Object();
-		
-		@SuppressWarnings("unused")
-		@PropertyField(propertyName="monitorableStringProperty")
-		private String _monitorableStringProperty = "Monitorable string";
-		
-		public ClassWithProperties() {
-		}
-		
-		@PropertyGetter(propertyName="intProperty", isMonitorable=true)
-		public int getIntProperty() {
-			return _intProperty;
-		}
-		
-		@PropertySetter(propertyName="intProperty")
-		public void setIntProperty(int value) {
-			_intProperty = value;
-			notifyMonitorsForChangedProperty("intProperty");
-		}
-		
-		@PropertyGetter(propertyName="changesNotifierProperty2", isMonitorable=true)
-		public ChangesNotifierStub getChangesNotifier() {
-			return _changesNotifierProperty2;
-		}
-		
-		@PropertySetter(propertyName="changesNotifierProperty2")
-		public void setChangesNotifier(ChangesNotifierStub value) {
-			_changesNotifierProperty2 = value;
-			notifyMonitorsForChangedProperty("changesNotifier2");
-		}
-		
-		public Method getIntPropertyGetter() {
-			try {
-				return ClassWithProperties.class.getMethod(
-						"getIntProperty", new Class[] { });
-			}
-			catch (NoSuchMethodException ex) {
-				return null;
-			}
-		}
-		
-		public Method getIntPropertySetter() {
-			try {
-				return ClassWithProperties.class.getMethod(
-						"setIntProperty", new Class[] { int.class }); 
-			}
-			catch (NoSuchMethodException ex) {
-				return null;
-			}
-		}
-		
-		@PropertyGetter(propertyName="stringProperty", isMonitorable=false)
-		public String getStringProperty() {
-			return _stringProperty;
-		}
-		
-		@PropertySetter(propertyName="stringProperty")
-		public void setStringProperty(String value) {
-			_stringProperty = value;
-			notifyMonitorsForChangedProperty("stringProperty");
-		}
-		
-		public Method getStringPropertyGetter() {
-			try {
-				return ClassWithProperties.class.getMethod(
-						"getStringProperty", new Class[] { });
-			}
-			catch (NoSuchMethodException ex) {
-				return null;
-			}
-		}
-		
-		public Method getStringPropertySetter() {
-			try {
-				return ClassWithProperties.class.getMethod(
-						"setStringProperty", new Class[] { String.class });
-			}
-			catch (NoSuchMethodException ex) {
-				return null;
-			}
-		}
-		
-		public Field getFloatPropertyField() {
-			try {
-				return ClassWithProperties.class.getDeclaredField("_floatProperty");
-			}
-			catch (NoSuchFieldException ex) {
-				return null;
-			}
-		}
-		
-		public Field getObjectPropertyField() {
-			try {
-				return ClassWithProperties.class.getDeclaredField("_objectProperty");
-				
-			}
-			catch (NoSuchFieldException ex) {
-				return null;
-			}
-		}
-		
-		public void invokeNotifyMonitorsForChangedProperties() {
-			notifyMonitorsForChangedProperties();
-		}
-		
-		public void setMonitorableObjectPropertyValue(Object newValue) {
-			_monitorableObjectProperty = newValue;
-		}
-	}
-	
+
+    private int _intProperty = 0;
+    private String _stringProperty = "";
+    private ChangesNotifierStub _changesNotifierProperty2 = new ChangesNotifierStub();
+
+    @SuppressWarnings("unused")
+    @PropertyField(propertyName = "complexProperty")
+    private InnerClassWithProperties _complexProperty = new InnerClassWithProperties();
+
+    @SuppressWarnings("unused")
+    @PropertyField(propertyName = "complexArrayProperty")
+    private InnerClassWithProperties[] _complexArrayProperty = {
+            new InnerClassWithProperties(),
+            new InnerClassWithProperties()
+    };
+
+    @SuppressWarnings("unused")
+    @PropertyField(propertyName = "changesNotifierProperty", isMonitorable = true)
+    private ChangesNotifierStub _changesNotifierProperty = new ChangesNotifierStub();
+
+    @SuppressWarnings("unused")
+    @PropertyField(propertyName = "floatProperty", isMonitorable = true)
+    private float _floatProperty = 0.0f;
+
+    @SuppressWarnings("unused")
+    @PropertyField(propertyName = "objectProperty")
+    private Object _objectProperty = new Object();
+
+    @SuppressWarnings("unused")
+    @PropertyField(propertyName = "monitorableObjectProperty")
+    private Object _monitorableObjectProperty = new Object();
+
+    @SuppressWarnings("unused")
+    @PropertyField(propertyName = "monitorableStringProperty")
+    private String _monitorableStringProperty = "Monitorable string";
+
+    public ClassWithProperties() {
+    }
+
+    @PropertyGetter(propertyName = "intProperty", isMonitorable = true)
+    public int getIntProperty() {
+        return _intProperty;
+    }
+
+    @PropertySetter(propertyName = "intProperty")
+    public void setIntProperty(int value) {
+        _intProperty = value;
+        notifyMonitorsForChangedProperty("intProperty");
+    }
+
+    @PropertyGetter(propertyName = "changesNotifierProperty2", isMonitorable = true)
+    public ChangesNotifierStub getChangesNotifier() {
+        return _changesNotifierProperty2;
+    }
+
+    @PropertySetter(propertyName = "changesNotifierProperty2")
+    public void setChangesNotifier(ChangesNotifierStub value) {
+        _changesNotifierProperty2 = value;
+        notifyMonitorsForChangedProperty("changesNotifier2");
+    }
+
+    public Method getIntPropertyGetter() {
+        try {
+            return ClassWithProperties.class.getMethod(
+                    "getIntProperty");
+        } catch(NoSuchMethodException ex) {
+            return null;
+        }
+    }
+
+    public Method getIntPropertySetter() {
+        try {
+            return ClassWithProperties.class.getMethod(
+                    "setIntProperty", int.class);
+        } catch(NoSuchMethodException ex) {
+            return null;
+        }
+    }
+
+    @PropertyGetter(propertyName = "stringProperty", isMonitorable = false)
+    public String getStringProperty() {
+        return _stringProperty;
+    }
+
+    @PropertySetter(propertyName = "stringProperty")
+    public void setStringProperty(String value) {
+        _stringProperty = value;
+        notifyMonitorsForChangedProperty("stringProperty");
+    }
+
+    public Method getStringPropertyGetter() {
+        try {
+            return ClassWithProperties.class.getMethod(
+                    "getStringProperty");
+        } catch(NoSuchMethodException ex) {
+            return null;
+        }
+    }
+
+    public Method getStringPropertySetter() {
+        try {
+            return ClassWithProperties.class.getMethod(
+                    "setStringProperty", String.class);
+        } catch(NoSuchMethodException ex) {
+            return null;
+        }
+    }
+
+    public Field getFloatPropertyField() {
+        try {
+            return ClassWithProperties.class.getDeclaredField("_floatProperty");
+        } catch(NoSuchFieldException ex) {
+            return null;
+        }
+    }
+
+    public Field getObjectPropertyField() {
+        try {
+            return ClassWithProperties.class.getDeclaredField("_objectProperty");
+
+        } catch(NoSuchFieldException ex) {
+            return null;
+        }
+    }
+
+    public void invokeNotifyMonitorsForChangedProperties() {
+        notifyMonitorsForChangedProperties();
+    }
+
+    public void setMonitorableObjectPropertyValue(Object newValue) {
+        _monitorableObjectProperty = newValue;
+    }
+}
+

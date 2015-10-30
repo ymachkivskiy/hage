@@ -31,67 +31,66 @@
 
 package org.jage.variation.recombination;
 
-import java.util.Iterator;
-
-import javax.inject.Inject;
 
 import org.jage.population.IPopulation;
 import org.jage.random.INormalizedDoubleRandomGenerator;
 import org.jage.solution.ISolution;
 import org.jage.strategy.AbstractStrategy;
 
+import javax.inject.Inject;
+import java.util.Iterator;
+
+
 /**
  * An {@link IRecombinePopulation} implementation which recombines each consecutive pair of solutions with a given
  * probability, using a specified {@link IRecombine} strategy to actually perform the recombination.
  *
- * @param <S>
- *            The type of solutions to be recombined.
+ * @param <S> The type of solutions to be recombined.
  * @author AGH AgE Team
  */
 public final class PairedRecombinePopulation<S extends ISolution> extends AbstractStrategy implements
-        IRecombinePopulation<S> {
+                                                                                           IRecombinePopulation<S> {
 
-	private static final double DEFAULT_CHANCE_TO_RECOMBINE = 1.0;
+    private static final double DEFAULT_CHANCE_TO_RECOMBINE = 1.0;
 
-	@Inject
-	private INormalizedDoubleRandomGenerator rand;
+    @Inject
+    private INormalizedDoubleRandomGenerator rand;
 
-	@Inject
-	private IRecombine<S> recombine;
+    @Inject
+    private IRecombine<S> recombine;
 
-	private double chanceToRecombine;
+    private double chanceToRecombine;
 
-	/**
-	 * Creates an PairedRecombinePopulation with a default chance to recombine.
-	 */
-	public PairedRecombinePopulation() {
-		this(DEFAULT_CHANCE_TO_RECOMBINE);
-	}
-
-	/**
-	 * Creates an PairedRecombinePopulation with a given chance to recombine.
-	 *
-	 * @param chanceToRecombine
-	 *            the chance to recombine
-	 */
-	public PairedRecombinePopulation(final double chanceToRecombine) {
-		this.chanceToRecombine = chanceToRecombine;
-	}
-
-	public void setChanceToRecombine(final double chanceToRecombine) {
-	    this.chanceToRecombine = chanceToRecombine;
+    /**
+     * Creates an PairedRecombinePopulation with a default chance to recombine.
+     */
+    public PairedRecombinePopulation() {
+        this(DEFAULT_CHANCE_TO_RECOMBINE);
     }
 
-	@Override
-	public void recombinePopulation(final IPopulation<S, ?> population) {
-		for (final Iterator<S> iterator = population.iterator(); iterator.hasNext();) {
-			final S s1 = iterator.next();
-			if (iterator.hasNext()) {
-				final S s2 = iterator.next();
-				if (rand.nextDouble() < chanceToRecombine) {
-					recombine.recombine(s1, s2);
-				}
-			}
-		}
-	}
+    /**
+     * Creates an PairedRecombinePopulation with a given chance to recombine.
+     *
+     * @param chanceToRecombine the chance to recombine
+     */
+    public PairedRecombinePopulation(final double chanceToRecombine) {
+        this.chanceToRecombine = chanceToRecombine;
+    }
+
+    public void setChanceToRecombine(final double chanceToRecombine) {
+        this.chanceToRecombine = chanceToRecombine;
+    }
+
+    @Override
+    public void recombinePopulation(final IPopulation<S, ?> population) {
+        for(final Iterator<S> iterator = population.iterator(); iterator.hasNext(); ) {
+            final S s1 = iterator.next();
+            if(iterator.hasNext()) {
+                final S s2 = iterator.next();
+                if(rand.nextDouble() < chanceToRecombine) {
+                    recombine.recombine(s1, s2);
+                }
+            }
+        }
+    }
 }

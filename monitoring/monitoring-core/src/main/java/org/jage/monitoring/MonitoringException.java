@@ -33,49 +33,46 @@
 
 package org.jage.monitoring;
 
+
 /**
  * Exception class for monitoring module.
  *
  * @author AGH AgE Team
  */
-public class MonitoringException extends RuntimeException{
+public class MonitoringException extends RuntimeException {
 
-	private static final long serialVersionUID = 2L;
+    private static final long serialVersionUID = 2L;
 
-	/**
-	 * Constructs a new exception with the specified detail message.
-	 * 
-	 * @param message
-	 *            the detail message.
-	 * @see Exception#Exception(String)
-	 */
-	public MonitoringException(final String message) {
-		super(message);
-	}
+    /**
+     * Constructs a new exception with the specified detail message.
+     *
+     * @param message the detail message.
+     * @see Exception#Exception(String)
+     */
+    public MonitoringException(final String message) {
+        super(message);
+    }
 
-	/**
-	 * Constructs a new exception with the specified cause and a detail message of
-	 * <tt>(cause==null ? null : cause.toString())</tt>.
-	 * 
-	 * @param cause
-	 *            the cause.
-	 * @see Exception#Exception(Throwable)
-	 */
-	public MonitoringException(final Throwable cause) {
-		super(cause);
-	}
+    /**
+     * Constructs a new exception with the specified cause and a detail message of
+     * <tt>(cause==null ? null : cause.toString())</tt>.
+     *
+     * @param cause the cause.
+     * @see Exception#Exception(Throwable)
+     */
+    public MonitoringException(final Throwable cause) {
+        super(cause);
+    }
 
-	/**
-	 * Constructs a new exception with the specified detail message and cause.
-	 * 
-	 * @param message
-	 *            the detail message.
-	 * @param cause
-	 *            the cause.
-	 * @see Exception#Exception(String, Throwable)
-	 */
-	public MonitoringException(final String message, final Throwable cause) {
-		super(message, cause);
-	}
+    /**
+     * Constructs a new exception with the specified detail message and cause.
+     *
+     * @param message the detail message.
+     * @param cause   the cause.
+     * @see Exception#Exception(String, Throwable)
+     */
+    public MonitoringException(final String message, final Throwable cause) {
+        super(message, cause);
+    }
 
 }

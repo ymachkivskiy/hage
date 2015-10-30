@@ -27,8 +27,6 @@
 
 package org.jage.property.annotations;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 
 import org.jage.property.FieldMetaProperty;
 import org.jage.property.GetterSetterMetaProperty;
@@ -37,46 +35,50 @@ import org.jage.property.PropertyField;
 import org.jage.property.PropertyGetter;
 import org.jage.property.PropertySetter;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
+
 public class MetaPropertiesReader extends AbstractPropertiesReader {
 
-	@Override
-	protected String getFieldPropertyName(Field field) {
-		PropertyField annotation = field.getAnnotation(PropertyField.class);
-		return annotation != null ? annotation.propertyName() : null;
-	}
+    @Override
+    protected String getGetterPropertyName(Method method) {
+        PropertyGetter annotation = method.getAnnotation(PropertyGetter.class);
+        return annotation != null ? annotation.propertyName() : null;
+    }
 
-	@Override
-	protected String getGetterPropertyName(Method method) {
-		PropertyGetter annotation = method.getAnnotation(PropertyGetter.class);
-		return annotation != null ? annotation.propertyName() : null;
-	}
+    @Override
+    protected String getSetterPropertyName(Method method) {
+        PropertySetter annotation = method.getAnnotation(PropertySetter.class);
+        return annotation != null ? annotation.propertyName() : null;
+    }
 
-	@Override
-	protected String getSetterPropertyName(Method method) {
-		PropertySetter annotation = method.getAnnotation(PropertySetter.class);
-		return annotation != null ? annotation.propertyName() : null;
-	}
+    @Override
+    protected GetterSetterMetaProperty createGetterSetterMetaProperty(String propertyName, Method getter, Method setter) throws PropertyException {
+        PropertyGetter annotation = getter.getAnnotation(PropertyGetter.class);
+        return new GetterSetterMetaProperty(propertyName, getter, setter, annotation.isMonitorable());
+    }
 
-	@Override
-	protected FieldMetaProperty createFieldMetaProperty(Field field) throws PropertyException {
-		PropertyField annotation = field.getAnnotation(PropertyField.class);
-		return new FieldMetaProperty(annotation.propertyName(), field, annotation.isMonitorable());
-	}
+    @Override
+    protected GetterSetterMetaProperty createGetterMetaProperty(String propertyName, Method getter) throws PropertyException {
+        PropertyGetter annotation = getter.getAnnotation(PropertyGetter.class);
+        return new GetterSetterMetaProperty(propertyName, getter, annotation.isMonitorable());
+    }
 
-	@Override
-	protected GetterSetterMetaProperty createGetterSetterMetaProperty(String propertyName, Method getter, Method setter) throws PropertyException {
-		PropertyGetter annotation = getter.getAnnotation(PropertyGetter.class);
-		return new GetterSetterMetaProperty(propertyName, getter, setter, annotation.isMonitorable());
-	}
+    @Override
+    protected GetterSetterMetaProperty createSetterMetaProperty(String propertyName, Method setter) throws PropertyException {
+        return new GetterSetterMetaProperty(propertyName, setter);
+    }
 
-	@Override
-	protected GetterSetterMetaProperty createGetterMetaProperty(String propertyName, Method getter) throws PropertyException {
-		PropertyGetter annotation = getter.getAnnotation(PropertyGetter.class);
-		return new GetterSetterMetaProperty(propertyName, getter, annotation.isMonitorable());
-	}
+    @Override
+    protected String getFieldPropertyName(Field field) {
+        PropertyField annotation = field.getAnnotation(PropertyField.class);
+        return annotation != null ? annotation.propertyName() : null;
+    }
 
-	@Override
-	protected GetterSetterMetaProperty createSetterMetaProperty(String propertyName, Method setter) throws PropertyException {
-		return new GetterSetterMetaProperty(propertyName, setter);
-	}
+    @Override
+    protected FieldMetaProperty createFieldMetaProperty(Field field) throws PropertyException {
+        PropertyField annotation = field.getAnnotation(PropertyField.class);
+        return new FieldMetaProperty(annotation.propertyName(), field, annotation.isMonitorable());
+    }
 }

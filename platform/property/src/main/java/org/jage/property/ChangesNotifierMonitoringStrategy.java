@@ -31,87 +31,86 @@
 
 package org.jage.property;
 
+
 import org.jage.event.AbstractEvent;
 import org.jage.event.ObjectChangedEvent;
 import org.jage.monitor.IChangesNotifier;
 import org.jage.monitor.IChangesNotifierMonitor;
 
+
 /**
  * Strategy for IChangesNotifier type. This class is used by Property class.
  *
  * @author AGH AgE Team
- *
  */
 public class ChangesNotifierMonitoringStrategy extends PropertyValueMonitoringStrategy {
 
-	private ChangesNotifierMonitor monitor;
+    private ChangesNotifierMonitor monitor;
 
-	private IChangesNotifier monitoredPropertyValue;
+    private IChangesNotifier monitoredPropertyValue;
 
-	/**
-	 * Constructor.
-	 *
-	 * @param property
-	 *            property that uses this strategy.
-	 */
-	public ChangesNotifierMonitoringStrategy(Property property) {
-		super(property);
-		monitoredPropertyValue = (IChangesNotifier)property.getValue();
-		attachMonitor();
-	}
+    /**
+     * Constructor.
+     *
+     * @param property property that uses this strategy.
+     */
+    public ChangesNotifierMonitoringStrategy(Property property) {
+        super(property);
+        monitoredPropertyValue = (IChangesNotifier) property.getValue();
+        attachMonitor();
+    }
 
-	/**
-	 * Informs the strategy that property value has been changed.
-	 *
-	 * @param newValue
-	 *            new property value
-	 */
-	@Override
-	public void propertyValueChanged(Object newValue) {
-		if (newValue != getOldValue()) {
-			detachMonitor();
-			monitoredPropertyValue = (IChangesNotifier)newValue;
-			attachMonitor();
-			setOldValue(newValue);
-		}
-	}
+    private void attachMonitor() {
+        if(monitoredPropertyValue != null) {
+            monitor = new ChangesNotifierMonitor();
+            monitoredPropertyValue.addMonitor(monitor);
+        }
+    }
 
-	private void attachMonitor() {
-		if (monitoredPropertyValue != null) {
-			monitor = new ChangesNotifierMonitor();
-			monitoredPropertyValue.addMonitor(monitor);
-		}
-	}
+    /**
+     * Informs the strategy that property value has been changed.
+     *
+     * @param newValue new property value
+     */
+    @Override
+    public void propertyValueChanged(Object newValue) {
+        if(newValue != getOldValue()) {
+            detachMonitor();
+            monitoredPropertyValue = (IChangesNotifier) newValue;
+            attachMonitor();
+            setOldValue(newValue);
+        }
+    }
 
-	private void detachMonitor() {
-		if (monitoredPropertyValue != null) {
-			monitoredPropertyValue.removeMonitor(monitor);
-			monitor = null;
-		}
-	}
+    private void detachMonitor() {
+        if(monitoredPropertyValue != null) {
+            monitoredPropertyValue.removeMonitor(monitor);
+            monitor = null;
+        }
+    }
 
-	private void monitoredObjectChanged() {
-		getProperty().notifyMonitors(monitoredPropertyValue);
-	}
+    private void monitoredObjectChanged() {
+        getProperty().notifyMonitors(monitoredPropertyValue);
+    }
 
-	private void monitoredObjectDeleted() {
-		monitoredPropertyValue.removeMonitor(monitor);
-		monitor = null;
-	}
+    private void monitoredObjectDeleted() {
+        monitoredPropertyValue.removeMonitor(monitor);
+        monitor = null;
+    }
 
-	/**
-	 * A private implementation of {@link IChangesNotifierMonitor}.
-	 *
-	 * @author AGH AgE Team
-	 */
-	private class ChangesNotifierMonitor implements IChangesNotifierMonitor {
+    /**
+     * A private implementation of {@link IChangesNotifierMonitor}.
+     *
+     * @author AGH AgE Team
+     */
+    private class ChangesNotifierMonitor implements IChangesNotifierMonitor {
 
-		public void objectChanged(Object sender, ObjectChangedEvent event) {
-			monitoredObjectChanged();
-		}
+        public void objectChanged(Object sender, ObjectChangedEvent event) {
+            monitoredObjectChanged();
+        }
 
-		public void ownerDeleted(AbstractEvent event) {
-			monitoredObjectDeleted();
-		}
-	}
+        public void ownerDeleted(AbstractEvent event) {
+            monitoredObjectDeleted();
+        }
+    }
 }

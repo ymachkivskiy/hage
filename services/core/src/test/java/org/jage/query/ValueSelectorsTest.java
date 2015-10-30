@@ -31,38 +31,41 @@
 
 package org.jage.query;
 
+
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
+
 /**
  * Tests for the {@link ValueSelectors} class.
- * 
+ *
  * @author AGH AgE Team
  */
 public class ValueSelectorsTest {
 
-	/**
-	 * Tests the {@link org.jage.query.ValueSelectors#field(java.lang.String)} method.
-	 */
-	@Test
-	public void testField() {
-		class TestingClass {
-			private int field;
+    /**
+     * Tests the {@link org.jage.query.ValueSelectors#field(java.lang.String)} method.
+     */
+    @Test
+    public void testField() {
+        class TestingClass {
 
-			public TestingClass(int field) {
-				this.field = field;
-			}
+            private int field;
 
-			@SuppressWarnings("unused")
-			public int getField() {
-				return field;
-			}
-		}
+            public TestingClass(int field) {
+                this.field = field;
+            }
 
-		IValueSelector<TestingClass, Integer> testedSelector = ValueSelectors.field("field");
+            @SuppressWarnings("unused")
+            public int getField() {
+                return field;
+            }
+        }
 
-		assertEquals(new Integer(1), testedSelector.selectValue(new TestingClass(1)));
-	}
+        IValueSelector<TestingClass, Integer> testedSelector = ValueSelectors.field("field");
+
+        assertEquals(new Integer(1), testedSelector.selectValue(new TestingClass(1)));
+    }
 
 }

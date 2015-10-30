@@ -31,6 +31,7 @@
 
 package org.jage.lifecycle;
 
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -38,38 +39,38 @@ import org.mockito.runners.MockitoJUnitRunner;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
-
 import static org.jage.lifecycle.LifecycleMessages.createExit;
 import static org.jage.lifecycle.LifecycleMessages.createStart;
+import static org.junit.Assert.assertThat;
+
 
 /**
  * Tests for the {@link LifecycleMessages} class.
- * 
+ *
  * @author AGH AgE Team
  */
 @RunWith(MockitoJUnitRunner.class)
 public class LifecycleMessagesTest {
 
-	@Test
-	public void testCreateStart() {
-		// when
-		final LifecycleMessage message = createStart();
+    @Test
+    public void testCreateStart() {
+        // when
+        final LifecycleMessage message = createStart();
 
-		// then
-		assertThat(message, is(notNullValue()));
-		assertThat(message.getCommand(), is(LifecycleMessage.LifecycleCommand.START));
-		assertThat(message.getPayload(), is(nullValue()));
-	}
+        // then
+        assertThat(message, is(notNullValue()));
+        assertThat(message.getCommand(), is(LifecycleMessage.LifecycleCommand.START));
+        assertThat(message.getPayload(), is(nullValue()));
+    }
 
-	@Test
-	public void testCreateExit() {
-		// when
-		final LifecycleMessage message = createExit();
+    @Test
+    public void testCreateExit() {
+        // when
+        final LifecycleMessage message = createExit();
 
-		// then
-		assertThat(message, is(notNullValue()));
-		assertThat(message.getCommand(), is(LifecycleMessage.LifecycleCommand.EXIT));
-		assertThat(message.getPayload(), is(nullValue()));
-	}
+        // then
+        assertThat(message, is(notNullValue()));
+        assertThat(message.getCommand(), is(LifecycleMessage.LifecycleCommand.EXIT));
+        assertThat(message.getPayload(), is(nullValue()));
+    }
 }

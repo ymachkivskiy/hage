@@ -31,7 +31,9 @@
 
 package org.jage.problem.binary;
 
+
 import org.jage.problem.ParallelProblem;
+
 
 /**
  * CountProblem - counts set bits in solution.
@@ -40,13 +42,12 @@ import org.jage.problem.ParallelProblem;
  */
 public class BinaryProblem extends ParallelProblem<Boolean> {
 
-	/**
-	 * Creates a Count Problem.
-	 *
-	 * @param dimension
-	 *            The dimension of this problem.
-	 */
-	public BinaryProblem(final Integer dimension) {
-		super(dimension, Boolean.FALSE, Boolean.TRUE);
-	}
+    /**
+     * Creates a Count Problem.
+     *
+     * @param dimension The dimension of this problem.
+     */
+    public BinaryProblem(final Integer dimension) {
+        super(dimension, Boolean.FALSE, Boolean.TRUE);
+    }
 }

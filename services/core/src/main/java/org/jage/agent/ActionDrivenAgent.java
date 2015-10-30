@@ -31,77 +31,75 @@
 
 package org.jage.agent;
 
-import java.util.List;
-
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.jage.action.Action;
-import org.jage.action.preparators.IActionPreparator;
+import org.jage.action.preparers.IActionPreparer;
 import org.jage.address.agent.AgentAddress;
 import org.jage.address.agent.AgentAddressSupplier;
 import org.jage.property.PropertyField;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
+import java.util.List;
+
 
 /**
- * This agent implementation relies on a {@link IActionPreparator} to provide its actual behavior.
+ * This agent implementation relies on a {@link org.jage.action.preparers.IActionPreparer} to provide its actual behavior.
  * <p>
- *
- * Given the agent's state and environment, the {@link IActionPreparator} prepares an appropriate action, which is then
+ * <p>
+ * Given the agent's state and environment, the {@link org.jage.action.preparers.IActionPreparer} prepares an appropriate action, which is then
  * run by the agent.
  *
  * @author AGH AgE Team
  */
 public class ActionDrivenAgent extends SimpleAgent {
 
-	/**
-	 * ActionDrivenAgent properties.
-	 *
-	 * @author AGH AgE Team
-	 */
-	public static class Properties {
+    private static final long serialVersionUID = 1L;
+    private static final Logger LOG = LoggerFactory.getLogger(ActionDrivenAgent.class);
+    @Inject
+    private IActionPreparer<ActionDrivenAgent> actionPreparator;
+    @PropertyField(propertyName = Properties.STEP)
+    private long step = 0;
 
-		/**
-		 * The actual step of computation.
-		 */
-		public static final String STEP = "step";
-	}
-
-	public ActionDrivenAgent(final AgentAddress address) {
-	    super(address);
+    public ActionDrivenAgent(final AgentAddress address) {
+        super(address);
     }
 
-	@Inject
-	public ActionDrivenAgent(final AgentAddressSupplier supplier) {
-    	super(supplier.get());
+    @Inject
+    public ActionDrivenAgent(final AgentAddressSupplier supplier) {
+        super(supplier.get());
     }
-
-	private static final long serialVersionUID = 1L;
-
-	private static final Logger LOG = LoggerFactory.getLogger(ActionDrivenAgent.class);
-
-	@Inject
-	private IActionPreparator<ActionDrivenAgent> actionPreparator;
-
-	@PropertyField(propertyName = Properties.STEP)
-	private long step = 0;
 
     public long getStep() {
-	    return step;
+        return step;
     }
 
-	@Override
-	public void step() {
-		try {
-			final List<Action> actions = actionPreparator.prepareActions(this);
-			log.debug("Submitting actions: {}", actions);
-			doActions(actions);
-		} catch (final AgentException e) {
-			LOG.error("An exception occurred during the action call", e);
-		}
+    @Override
+    public void step() {
+        try {
+            final List<Action> actions = actionPreparator.prepareActions(this);
+            log.debug("Submitting actions: {}", actions);
+            doActions(actions);
+        } catch(final AgentException e) {
+            LOG.error("An exception occurred during the action call", e);
+        }
 
-		step++;
-		notifyMonitorsForChangedProperties();
-	}
+        step++;
+        notifyMonitorsForChangedProperties();
+    }
+
+
+    /**
+     * ActionDrivenAgent properties.
+     *
+     * @author AGH AgE Team
+     */
+    public static class Properties {
+
+        /**
+         * The actual step of computation.
+         */
+        public static final String STEP = "step";
+    }
 }

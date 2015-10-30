@@ -31,31 +31,31 @@
 
 package org.jage.evaluation;
 
-import javax.inject.Inject;
 
 import org.jage.population.IPopulation;
 import org.jage.property.ClassPropertyContainer;
 import org.jage.solution.ISolution;
 
+import javax.inject.Inject;
+
+
 /**
  * Simple {@link IPopulationEvaluator} strategy, which evaluates solutions sequentially, one by one.
  *
- * @param <S>
- *            The type of {@link ISolution} to be evaluated
- * @param <E>
- *            the type of evaluation
+ * @param <S> The type of {@link ISolution} to be evaluated
+ * @param <E> the type of evaluation
  * @author AGH AgE Team
  */
 public class SequentialPopulationEvaluator<S extends ISolution, E> extends ClassPropertyContainer implements
-        IPopulationEvaluator<S, E> {
+                                                                                                  IPopulationEvaluator<S, E> {
 
-	@Inject
-	private ISolutionEvaluator<S, E> evaluator;
+    @Inject
+    private ISolutionEvaluator<S, E> evaluator;
 
-	@Override
-	public void evaluatePopulation(final IPopulation<S, E> population) {
-		for (final S solution : population) {
-			population.setEvaluation(solution, evaluator.evaluate(solution));
-		}
-	}
+    @Override
+    public void evaluatePopulation(final IPopulation<S, E> population) {
+        for(final S solution : population) {
+            population.setEvaluation(solution, evaluator.evaluate(solution));
+        }
+    }
 }

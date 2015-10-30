@@ -33,14 +33,15 @@
 
 package org.jage.evaluation.binary;
 
+
+import it.unimi.dsi.fastutil.booleans.BooleanList;
 import org.jage.evaluation.ISolutionEvaluator;
 import org.jage.solution.IVectorSolution;
 
-import it.unimi.dsi.fastutil.booleans.BooleanList;
 
 /**
  * A deceptive multimodal function M7.
- *
+ * <p>
  * <p>
  * Function M7 has 32 global maxima of value equal to 5, and several million local maxima, the values of which are
  * between 3.203 and 4.641
@@ -49,41 +50,41 @@ import it.unimi.dsi.fastutil.booleans.BooleanList;
  */
 public class M7Evaluator implements ISolutionEvaluator<IVectorSolution<Boolean>, Double> {
 
-	@Override
-	public Double evaluate(final IVectorSolution<Boolean> solution) {
-		final BooleanList representation = (BooleanList)solution.getRepresentation();
+    @Override
+    public Double evaluate(final IVectorSolution<Boolean> solution) {
+        final BooleanList representation = (BooleanList) solution.getRepresentation();
 
-		double sum = 0;
-		for (int i = 0; i < 5; i++) {
-			int count = 0;
-			for (int j = 0; j < 6; j++) {
-				if (representation.getBoolean(6 * i + j)) {
-					count++;
-				}
-			}
-			sum += u(count);
-		}
+        double sum = 0;
+        for(int i = 0; i < 5; i++) {
+            int count = 0;
+            for(int j = 0; j < 6; j++) {
+                if(representation.getBoolean(6 * i + j)) {
+                    count++;
+                }
+            }
+            sum += u(count);
+        }
 
-		return sum;
-	}
+        return sum;
+    }
 
-	private double u(final int count) {
-		switch (count) {
-			case (0):
-				return 1;
-			case (1):
-				return 0;
-			case (2):
-				return 0.389049;
-			case (3):
-				return 0.640576;
-			case (4):
-				return 0.389049;
-			case (5):
-				return 0;
-			case (6):
-				return 1;
-		}
-		throw new IllegalStateException();
-	}
+    private double u(final int count) {
+        switch(count) {
+            case (0):
+                return 1;
+            case (1):
+                return 0;
+            case (2):
+                return 0.389049;
+            case (3):
+                return 0.640576;
+            case (4):
+                return 0.389049;
+            case (5):
+                return 0;
+            case (6):
+                return 1;
+        }
+        throw new IllegalStateException();
+    }
 }

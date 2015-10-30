@@ -31,12 +31,14 @@
 
 package org.jage.action.testHelpers;
 
+
 import org.jage.action.IActionContext;
 import org.jage.action.context.AgentActionContext;
-import org.jage.agent.IAgent;
 import org.jage.agent.ISimpleAgent;
 
-@AgentActionContext({ "doNotPassToParentAction" })
+
+@AgentActionContext({"doNotPassToParentAction"})
 public class DoNotPassToParentTestActionContext implements IActionContext {
-	public ISimpleAgent actionTarget;
+
+    public ISimpleAgent actionTarget;
 }

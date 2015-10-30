@@ -26,46 +26,49 @@
  */
 package org.jage.property.functions;
 
+
 import java.util.Iterator;
 import java.util.List;
 
+
 /**
  * Count property function.
- * @author Tomek
  *
+ * @author Tomek
  */
 public class CountFunction extends NumericFunction {
 
-	/**
-	 * Constructor.
-	 * @param functionName name of the function.
-	 * @param argumentsPattern pattern for arguments.
-	 */
-	public CountFunction(String functionName, String argumentsPattern) {
-		super(functionName, argumentsPattern);
-	}
+    /**
+     * Constructor.
+     *
+     * @param functionName     name of the function.
+     * @param argumentsPattern pattern for arguments.
+     */
+    public CountFunction(String functionName, String argumentsPattern) {
+        super(functionName, argumentsPattern);
+    }
 
-	/**
-	 * Computes function's value. It returns number of arguments.
-	 */
-	@Override
-	protected Object computeValue(List<FunctionArgument> arguments) {
-		int result = 0;
-		Iterator<FunctionArgument> iterator = arguments.iterator();
-		while (iterator.hasNext()) {
-			iterator.next();
-			result++;
-		}
-		return new Integer(result);
-	}
+    /**
+     * Computes function's value. It returns number of arguments.
+     */
+    @Override
+    protected Object computeValue(List<FunctionArgument> arguments) {
+        int result = 0;
+        Iterator<FunctionArgument> iterator = arguments.iterator();
+        while(iterator.hasNext()) {
+            iterator.next();
+            result++;
+        }
+        return new Integer(result);
+    }
 
-	/**
-	 * Returns Integer.class.
-	 */
-	@Override
-	protected Class<?> getReturnType() {
-		return Integer.class;
-	}
+    /**
+     * Returns Integer.class.
+     */
+    @Override
+    protected Class<?> getReturnType() {
+        return Integer.class;
+    }
 
 }
 

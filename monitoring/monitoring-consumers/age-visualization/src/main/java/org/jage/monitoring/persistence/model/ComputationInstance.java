@@ -26,6 +26,7 @@
  */
 package org.jage.monitoring.persistence.model;
 
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -37,66 +38,73 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+
 /**
  * Data model object represents computation instance.
- * 
+ *
  * @author AGH AgE Team
  */
 @Entity
 @Table(name = "compinstance")
 public class ComputationInstance {
 
-	@Column(name="compinstance_id")
-	@Id
-	@SequenceGenerator(name="compinstance_seq", sequenceName="compinstance_seq")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="compinstance_seq")
-	private long id;
-	
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="comptype_id")
-	private ComputationType computationType;
-	
-	private String name;
+    @Column(name = "compinstance_id")
+    @Id
+    @SequenceGenerator(name = "compinstance_seq", sequenceName = "compinstance_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "compinstance_seq")
+    private long id;
 
-	public ComputationInstance(){}
-	
-	public ComputationInstance(String name, ComputationType computationType) {
-		this.name = name;
-		this.computationType = computationType;
-	}
-	
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}
-	public ComputationType getComputationType() {
-		return computationType;
-	}
-	public void setComputationType(ComputationType computationType) {
-		this.computationType = computationType;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		if (!(obj instanceof ComputationInstance)) {
-			return false;
-		}
-		if (this == obj) {
-			return true;
-		}
-		ComputationInstance o = (ComputationInstance)obj;
-		if (this.name.equals(o.getName()) && this.computationType.equals(o.getComputationType())) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "comptype_id")
+    private ComputationType computationType;
+
+    private String name;
+
+    public ComputationInstance() {
+    }
+
+    public ComputationInstance(String name, ComputationType computationType) {
+        this.name = name;
+        this.computationType = computationType;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setComputationType(ComputationType computationType) {
+        this.computationType = computationType;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof ComputationInstance)) {
+            return false;
+        }
+        if(this == obj) {
+            return true;
+        }
+        ComputationInstance o = (ComputationInstance) obj;
+        if(this.name.equals(o.getName()) && this.computationType.equals(o.getComputationType())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public ComputationType getComputationType() {
+        return computationType;
+    }
 }

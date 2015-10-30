@@ -31,73 +31,70 @@
 
 package org.jage.event;
 
+
 import org.jage.property.Property;
+
 
 /**
  * Event informing that value of the property has changed.
  *
  * @author AGH AgE Team
- *
  */
 public class PropertyEvent extends AbstractEvent {
 
-	private Object oldValue;
+    private Object oldValue;
 
-	private Object newValue;
+    private Object newValue;
 
-	private Property property;
+    private Property property;
 
-	/**
-	 * Constructor.
-	 *
-	 * @param property
-	 *            property that has changed
-	 * @param oldValue
-	 *            old value of the property
-	 * @param newValue
-	 *            new value of the property
-	 */
-	public PropertyEvent(Property property, Object oldValue, Object newValue) {
-		this.property = property;
-		this.oldValue = oldValue;
-		this.newValue = newValue;
-	}
+    /**
+     * Constructor.
+     *
+     * @param property property that has changed
+     * @param oldValue old value of the property
+     * @param newValue new value of the property
+     */
+    public PropertyEvent(Property property, Object oldValue, Object newValue) {
+        this.property = property;
+        this.oldValue = oldValue;
+        this.newValue = newValue;
+    }
 
-	/**
-	 * Gets changed property.
-	 *
-	 * @return property that has changed
-	 */
-	public Property getProperty() {
-		return property;
-	}
+    /**
+     * Gets changed property.
+     *
+     * @return property that has changed
+     */
+    public Property getProperty() {
+        return property;
+    }
 
-	/**
-	 * Gets old value of the property.
-	 *
-	 * @return old value
-	 */
-	public Object getOldValue() {
-		return oldValue;
-	}
+    /**
+     * Gets old value of the property.
+     *
+     * @return old value
+     */
+    public Object getOldValue() {
+        return oldValue;
+    }
 
-	/**
-	 * Gets new value of the property.
-	 *
-	 * @return new value
-	 */
-	public Object getNewValue() {
-		return newValue;
-	}
+    /**
+     * Gets new value of the property.
+     *
+     * @return new value
+     */
+    public Object getNewValue() {
+        return newValue;
+    }
 
-	/**
-	 *
-	 * {@inheritDoc}
-	 *
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return property.getMetaProperty().getName() + " has changed.";
-	}
+    /**
+     * {@inheritDoc}
+     *
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return property.getMetaProperty().getName() + " has changed.";
+    }
 }

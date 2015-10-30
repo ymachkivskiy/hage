@@ -31,8 +31,10 @@
 
 package org.jage.genetic.action;
 
+
 import org.jage.action.IActionContext;
 import org.jage.action.context.AgentActionContext;
+
 
 /**
  * This context defines a evaluation action. To use it, you should declare a handler bean named 'evaluationAction'
@@ -42,15 +44,17 @@ import org.jage.action.context.AgentActionContext;
  */
 @AgentActionContext(EvaluationActionContext.Properties.EVALUATION_ACTION)
 public final class EvaluationActionContext implements IActionContext {
-	/**
-	 * EvaluationActionContext properties.
-	 *
-	 * @author AGH AgE Team
-	 */
-	public static class Properties {
-		/**
-		 * The action name.
-		 */
-		public static final String EVALUATION_ACTION = "evaluationAction";
-	}
+
+    /**
+     * EvaluationActionContext properties.
+     *
+     * @author AGH AgE Team
+     */
+    public static class Properties {
+
+        /**
+         * The action name.
+         */
+        public static final String EVALUATION_ACTION = "evaluationAction";
+    }
 }

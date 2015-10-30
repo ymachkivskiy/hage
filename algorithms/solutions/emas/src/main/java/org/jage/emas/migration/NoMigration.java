@@ -31,22 +31,22 @@
 
 package org.jage.emas.migration;
 
+
 import org.jage.agent.AgentException;
 import org.jage.agent.IAgent;
 import org.jage.property.ClassPropertyContainer;
 
+
 /**
  * No-migration strategy. Does nothing.
  *
- * @param <A>
- *            the type of agents
- *
+ * @param <A> the type of agents
  * @author AGH AgE Team
  */
 public class NoMigration<A extends IAgent> extends ClassPropertyContainer implements Migration<A> {
 
-	@Override
-	public void migrate(final A agent) throws AgentException {
-		// do nothing
-	}
+    @Override
+    public void migrate(final A agent) throws AgentException {
+        // do nothing
+    }
 }

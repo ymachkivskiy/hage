@@ -33,17 +33,20 @@
 
 package org.jage.monitoring.visualization.storage;
 
-import java.util.Collection;
 
-import org.jage.monitoring.visualization.storage.element.DescriptionElement;
 import org.jage.monitoring.visualization.storage.element.VisualDataStorage;
 
+import java.util.Collection;
+
+
 /**
- *
  * @author AGH AgE Team
  */
-public interface StorageChooserService{
-	public Collection<VisualDataStorage> getAndSaveVisualDataStorageCollection(StorageDescription storageDescription, String chartId, String numbersOfSelectedStorages);
-	public VisualDataStorage getAndSaveVisualDataStorage(StorageDescription storageDescription, String chartId);	
-	public Collection<VisualDataStorage> getAndSaveVisualDataStorageCollectionByWildcard(StorageDescription storageDescription, String chartId, String numbersOfSelectedStorages);
-	}
+public interface StorageChooserService {
+
+    public Collection<VisualDataStorage> getAndSaveVisualDataStorageCollection(StorageDescription storageDescription, String chartId, String numbersOfSelectedStorages);
+
+    public VisualDataStorage getAndSaveVisualDataStorage(StorageDescription storageDescription, String chartId);
+
+    public Collection<VisualDataStorage> getAndSaveVisualDataStorageCollectionByWildcard(StorageDescription storageDescription, String chartId, String numbersOfSelectedStorages);
+}

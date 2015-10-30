@@ -31,9 +31,11 @@
 
 package org.jage.address.node;
 
+
 import java.util.Objects;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+
 
 /**
  * A default implementation of a node address.
@@ -42,48 +44,45 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class HazelcastNodeAddress extends AbstractNodeAddress {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private final String uuid;
+    private final String uuid;
 
-	/**
-	 * Constructs a new {@code HazelcastNodeAddress} based on a UUID.
-	 *
-	 * @param uuid
-	 *            Hazelcast UUID for the node.
-	 *
-	 * @throws NullPointerException
-	 *             If {@code uuid} is {@code null}.
-	 */
-	public HazelcastNodeAddress(final String uuid) {
-		this.uuid = checkNotNull(uuid);
-	}
+    /**
+     * Constructs a new {@code HazelcastNodeAddress} based on a UUID.
+     *
+     * @param uuid Hazelcast UUID for the node.
+     * @throws NullPointerException If {@code uuid} is {@code null}.
+     */
+    public HazelcastNodeAddress(final String uuid) {
+        this.uuid = checkNotNull(uuid);
+    }
 
-	@Override
-	public String getIdentifier() {
-		return uuid;
-	}
+    @Override
+    public String getIdentifier() {
+        return uuid;
+    }
 
-	@Override
-	public String toString() {
-		return String.format("H[...%s]", uuid.substring(uuid.length()-4, uuid.length()));
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(uuid);
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hashCode(uuid);
-	}
+    @Override
+    public String toString() {
+        return String.format("H[...%s]", uuid.substring(uuid.length() - 4, uuid.length()));
+    }
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (!(obj instanceof  HazelcastNodeAddress)) {
-			return false;
-		}
+    @Override
+    public boolean equals(final Object obj) {
+        if(this == obj) {
+            return true;
+        }
+        if(!(obj instanceof HazelcastNodeAddress)) {
+            return false;
+        }
 
-		final HazelcastNodeAddress other = (HazelcastNodeAddress)obj;
-		return Objects.equals(uuid, other.uuid);
-	}
+        final HazelcastNodeAddress other = (HazelcastNodeAddress) obj;
+        return Objects.equals(uuid, other.uuid);
+    }
 }

@@ -31,10 +31,8 @@
 
 package org.jage.solution.integer;
 
-import java.util.List;
 
-import javax.inject.Inject;
-
+import it.unimi.dsi.fastutil.ints.IntArrayList;
 import org.jage.problem.IVectorProblem;
 import org.jage.property.ClassPropertyContainer;
 import org.jage.random.IIntRandomGenerator;
@@ -42,7 +40,9 @@ import org.jage.solution.ISolutionFactory;
 import org.jage.solution.IVectorSolution;
 import org.jage.solution.VectorSolution;
 
-import it.unimi.dsi.fastutil.ints.IntArrayList;
+import javax.inject.Inject;
+import java.util.List;
+
 
 /**
  * Factory for creating IVectorSolution<Integer> instances.
@@ -50,75 +50,75 @@ import it.unimi.dsi.fastutil.ints.IntArrayList;
  * @author AGH AgE Team
  */
 public final class IntegerSolutionFactory extends ClassPropertyContainer implements
-        ISolutionFactory<IVectorSolution<Integer>> {
+                                                                         ISolutionFactory<IVectorSolution<Integer>> {
 
-	@Inject
-	private IIntRandomGenerator rand;
+    @Inject
+    private IIntRandomGenerator rand;
 
-	@Inject
-	private IVectorProblem<Integer> problem;
+    @Inject
+    private IVectorProblem<Integer> problem;
 
-	@Override
-	public IVectorSolution<Integer> createEmptySolution() {
-		final int[] representation = new int[problem.getDimension()];
-		return new VectorSolution<Integer>(new FastIntArrayList(representation));
-	}
+    @Override
+    public IVectorSolution<Integer> createEmptySolution() {
+        final int[] representation = new int[problem.getDimension()];
+        return new VectorSolution<Integer>(new FastIntArrayList(representation));
+    }
 
-	@Override
-	public IVectorSolution<Integer> createInitializedSolution() {
-		final int[] representation = new int[problem.getDimension()];
-		for (int i = 0; i < problem.getDimension(); i++) {
-			representation[i] = problem.lowerBound(i)
-			        + rand.nextInt((problem.upperBound(i) + 1) - problem.lowerBound(i));
-		}
+    @Override
+    public IVectorSolution<Integer> createInitializedSolution() {
+        final int[] representation = new int[problem.getDimension()];
+        for(int i = 0; i < problem.getDimension(); i++) {
+            representation[i] = problem.lowerBound(i)
+                    + rand.nextInt((problem.upperBound(i) + 1) - problem.lowerBound(i));
+        }
 
-		return new VectorSolution<Integer>(new FastIntArrayList(representation));
-	}
+        return new VectorSolution<Integer>(new FastIntArrayList(representation));
+    }
 
-	@Override
-	public IVectorSolution<Integer> copySolution(final IVectorSolution<Integer> solution) {
-		final IntArrayList representation = (IntArrayList)solution.getRepresentation();
-		return new VectorSolution<Integer>(new FastIntArrayList(representation));
-	}
+    @Override
+    public IVectorSolution<Integer> copySolution(final IVectorSolution<Integer> solution) {
+        final IntArrayList representation = (IntArrayList) solution.getRepresentation();
+        return new VectorSolution<Integer>(new FastIntArrayList(representation));
+    }
 
-	/**
-	 * Helper class with faster equals and compareTo methods.
-	 *
-	 * @author AGH AgE Team
-	 */
-	private static class FastIntArrayList extends IntArrayList {
+    /**
+     * Helper class with faster equals and compareTo methods.
+     *
+     * @author AGH AgE Team
+     */
+    private static class FastIntArrayList extends IntArrayList {
 
         private static final long serialVersionUID = -2132234650006853053L;
 
-		public FastIntArrayList(final int[] representation) {
-	        super(representation);
+        public FastIntArrayList(final int[] representation) {
+            super(representation);
         }
 
-		public FastIntArrayList(final IntArrayList representation) {
-	        super(representation);
+        public FastIntArrayList(final IntArrayList representation) {
+            super(representation);
         }
 
-		@Override
-		public boolean equals(final Object o) {
-			if (o instanceof IntArrayList) {
-				return super.equals(o);
-			} else {
-				return super.equals(o);
-			}
-		}
+        @Override
+        public boolean equals(final Object o) {
+            if(o instanceof IntArrayList) {
+                return super.equals(o);
+            } else {
+                return super.equals(o);
+            }
+        }
 
-		@Override
-		public int hashCode() {
-		    return super.hashCode();
-		}
+        @Override
+        public int compareTo(final List<? extends Integer> l) {
+            if(l instanceof IntArrayList) {
+                return super.compareTo((IntArrayList) l);
+            } else {
+                return super.compareTo(l);
+            }
+        }
 
-		@Override
-		public int compareTo(final List<? extends Integer> l) {
-			if (l instanceof IntArrayList) {
-				return super.compareTo((IntArrayList)l);
-			} else {
-				return super.compareTo(l);
-			}
-		}
-	}
+        @Override
+        public int hashCode() {
+            return super.hashCode();
+        }
+    }
 }

@@ -31,41 +31,39 @@
 
 package org.jage.platform.reflect;
 
+
 import java.lang.reflect.Constructor;
 import java.util.List;
 
 import static java.util.Arrays.asList;
-
 import static org.jage.platform.reflect.Classes.isAssignable;
+
 
 /**
  * Constructor related reflection utilities.
  *
- * @since 2.6
  * @author AGH AgE Team
+ * @since 2.6
  */
 public final class Constructors {
 
-	/**
-	 * Checks whether the given actual parameters types match the formal parameters types of the given constructor. That
-	 * is, if the iterable of actual parameters types is assignable to the iterable of actual parameters types, as of
-	 * {@link Classes#isAssignable(Iterable, Iterable)}.
-	 *
-	 * @param constructor
-	 *            the given constructor
-	 * @param actualParameterTypes
-	 *            the actual parameters types.
-	 * @return true if the actual parameters match the formal ones
-	 *
-	 * @see Classes#isAssignable(Iterable, Iterable)
-	 * @since 2.6
-	 */
-	public static boolean isMatchingActualParameters(final Constructor<?> constructor,
-	        final List<Class<?>> actualParameterTypes) {
-		final List<Class<?>> formalParameterTypes = asList(constructor.getParameterTypes());
-		return isAssignable(actualParameterTypes, formalParameterTypes);
-	}
+    private Constructors() {
+    }
 
-	private Constructors() {
-	}
+    /**
+     * Checks whether the given actual parameters types match the formal parameters types of the given constructor. That
+     * is, if the iterable of actual parameters types is assignable to the iterable of actual parameters types, as of
+     * {@link Classes#isAssignable(Iterable, Iterable)}.
+     *
+     * @param constructor          the given constructor
+     * @param actualParameterTypes the actual parameters types.
+     * @return true if the actual parameters match the formal ones
+     * @see Classes#isAssignable(Iterable, Iterable)
+     * @since 2.6
+     */
+    public static boolean isMatchingActualParameters(final Constructor<?> constructor,
+            final List<Class<?>> actualParameterTypes) {
+        final List<Class<?>> formalParameterTypes = asList(constructor.getParameterTypes());
+        return isAssignable(actualParameterTypes, formalParameterTypes);
+    }
 }

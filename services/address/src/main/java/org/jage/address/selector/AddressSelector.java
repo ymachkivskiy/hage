@@ -32,29 +32,27 @@
 
 package org.jage.address.selector;
 
-import java.io.Serializable;
-
-import javax.annotation.concurrent.Immutable;
 
 import org.jage.address.Address;
+
+import javax.annotation.concurrent.Immutable;
+import java.io.Serializable;
+
 
 /**
  * A selector which selects one or more addresses according to some (implementation-dependent) rules.
  *
- * @param <T>
- * 		an address type.
- *
+ * @param <T> an address type.
  * @author AGH AgE Team
  */
 @Immutable
 public interface AddressSelector<T extends Address> extends Serializable {
-	/**
-	 * Checks whether the given address is selected by this selector.
-	 *
-	 * @param address
-	 * 		an address to check.
-	 *
-	 * @return true if the address is selected, false otherwise.
-	 */
-	boolean selects(T address);
+
+    /**
+     * Checks whether the given address is selected by this selector.
+     *
+     * @param address an address to check.
+     * @return true if the address is selected, false otherwise.
+     */
+    boolean selects(T address);
 }

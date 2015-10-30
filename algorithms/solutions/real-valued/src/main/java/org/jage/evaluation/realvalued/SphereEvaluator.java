@@ -31,11 +31,12 @@
 
 package org.jage.evaluation.realvalued;
 
+
+import it.unimi.dsi.fastutil.doubles.DoubleList;
 import org.jage.evaluation.ISolutionEvaluator;
 import org.jage.property.ClassPropertyContainer;
 import org.jage.solution.IVectorSolution;
 
-import it.unimi.dsi.fastutil.doubles.DoubleList;
 
 /**
  * This class represents floating-point coded Sphere function. <br />
@@ -48,18 +49,18 @@ import it.unimi.dsi.fastutil.doubles.DoubleList;
  * @author AGH AgE Team
  */
 public final class SphereEvaluator extends ClassPropertyContainer implements
-        ISolutionEvaluator<IVectorSolution<Double>, Double> {
+                                                                  ISolutionEvaluator<IVectorSolution<Double>, Double> {
 
-	@Override
-	public Double evaluate(IVectorSolution<Double> solution) {
-		DoubleList representation = (DoubleList)solution.getRepresentation();
+    @Override
+    public Double evaluate(IVectorSolution<Double> solution) {
+        DoubleList representation = (DoubleList) solution.getRepresentation();
 
-		double sum = 0.0;
-		for (int i = 0, n = representation.size(); i < n; i++) {
-			double value = representation.getDouble(i);
-			sum += value * value;
-		}
+        double sum = 0.0;
+        for(int i = 0, n = representation.size(); i < n; i++) {
+            double value = representation.getDouble(i);
+            sum += value * value;
+        }
 
-		return -sum;
-	}
+        return -sum;
+    }
 }

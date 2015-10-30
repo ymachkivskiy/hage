@@ -31,8 +31,10 @@
 
 package org.jage.services.core;
 
+
 import org.jage.platform.component.IStatefulComponent;
 import org.jage.platform.component.exception.ComponentException;
+
 
 /**
  * An interface which represents a core component responsible for the computation processing.
@@ -44,40 +46,38 @@ import org.jage.platform.component.exception.ComponentException;
  * <li>paused,
  * <li>stopped - after it has been finished.
  * </ol>
- * 
+ *
  * @author AGH AgE Team
- * 
  */
 public interface CoreComponent extends IStatefulComponent {
 
-	/**
-	 * Starts the computation. This method is executed after the component initialization and establishing initial
-	 * values of its properties.
-	 * 
-	 * @throws ComponentException
-	 *             occurs when the component cannot be started
-	 */
-	void start() throws ComponentException;
+    /**
+     * Starts the computation. This method is executed after the component initialization and establishing initial
+     * values of its properties.
+     *
+     * @throws ComponentException occurs when the component cannot be started
+     */
+    void start() throws ComponentException;
 
-	/**
-	 * Pauses the computation.
-	 */
-	void pause();
+    /**
+     * Pauses the computation.
+     */
+    void pause();
 
-	/**
-	 * Resumes the computation.
-	 */
-	void resume();
+    /**
+     * Resumes the computation.
+     */
+    void resume();
 
-	/**
-	 * Stops the computation.
-	 * <p>
-	 * Should be implemented asynchronously.
-	 */
-	void stop();
+    /**
+     * Stops the computation.
+     * <p>
+     * Should be implemented asynchronously.
+     */
+    void stop();
 
-	/**
-	 * Destroys the current configuration.
-	 */
-	void teardownConfiguration();
+    /**
+     * Destroys the current configuration.
+     */
+    void teardownConfiguration();
 }

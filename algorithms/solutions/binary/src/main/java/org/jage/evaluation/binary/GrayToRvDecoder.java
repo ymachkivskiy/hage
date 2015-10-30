@@ -31,7 +31,9 @@
 
 package org.jage.evaluation.binary;
 
+
 import it.unimi.dsi.fastutil.booleans.BooleanList;
+
 
 /**
  * Extends {@link BinaryToRvDecoder} one with Gray decoding.
@@ -40,22 +42,22 @@ import it.unimi.dsi.fastutil.booleans.BooleanList;
  */
 public final class GrayToRvDecoder extends BinaryToRvDecoder {
 
-	@Override
-	protected double binaryToDouble(BooleanList representation, int offset, int length) {
-		long longBits = graycodeToLongBits(representation, offset, length);
-		return Double.longBitsToDouble(longBits);
-	}
+    @Override
+    protected double binaryToDouble(BooleanList representation, int offset, int length) {
+        long longBits = graycodeToLongBits(representation, offset, length);
+        return Double.longBitsToDouble(longBits);
+    }
 
-	private long graycodeToLongBits(BooleanList representation, int offset, int length) {
-		boolean currentBit = representation.getBoolean(offset);
-		long longBits = currentBit ? 1 : 0;
+    private long graycodeToLongBits(BooleanList representation, int offset, int length) {
+        boolean currentBit = representation.getBoolean(offset);
+        long longBits = currentBit ? 1 : 0;
 
-		for (int i = offset + 1; i < offset + length; i++) {
-			currentBit = currentBit ^ representation.getBoolean(i);
-			longBits <<= 1;
-			longBits += currentBit ? 1 : 0;
-		}
+        for(int i = offset + 1; i < offset + length; i++) {
+            currentBit = currentBit ^ representation.getBoolean(i);
+            longBits <<= 1;
+            longBits += currentBit ? 1 : 0;
+        }
 
-		return longBits;
-	}
+        return longBits;
+    }
 }

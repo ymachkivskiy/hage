@@ -31,6 +31,7 @@
 
 package org.jage.examples.delegation;
 
+
 /**
  * Interface for agents that want to accept IEchoStrategy implementations.
  *
@@ -38,10 +39,10 @@ package org.jage.examples.delegation;
  */
 public interface IEchoStrategyAcceptingAgent {
 
-	/**
-	 * Accepts an <em>echo strategy</em> with the provided name.
-	 *
-	 * @param echoStrategyName A name of the strategy to use (a key in the configuration).
-	 */
-	void acceptEchoStrategy(String echoStrategyName);
+    /**
+     * Accepts an <em>echo strategy</em> with the provided name.
+     *
+     * @param echoStrategyName A name of the strategy to use (a key in the configuration).
+     */
+    void acceptEchoStrategy(String echoStrategyName);
 }

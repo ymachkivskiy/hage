@@ -31,8 +31,7 @@
 
 /**
  * Provides API of the standard communication mechanism (local and remote).
- * 
+ *
  * @since 2.6
  */
-@javax.annotation.ParametersAreNonnullByDefault
-package org.jage.communication;
+@javax.annotation.ParametersAreNonnullByDefault package org.jage.communication;

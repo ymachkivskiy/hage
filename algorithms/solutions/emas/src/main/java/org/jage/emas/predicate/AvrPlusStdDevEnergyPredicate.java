@@ -31,12 +31,14 @@
 
 package org.jage.emas.predicate;
 
+
+import org.jage.emas.agent.IndividualAgent;
+import org.jage.query.AgentEnvironmentQuery;
+
 import java.util.Collection;
 
 import static java.lang.Math.sqrt;
 
-import org.jage.emas.agent.IndividualAgent;
-import org.jage.query.AgentEnvironmentQuery;
 
 /**
  * Predicate applying to agents which energy is higher than {@code averageEnergy + stdDev * sigma} of their
@@ -46,35 +48,35 @@ import org.jage.query.AgentEnvironmentQuery;
  */
 public class AvrPlusStdDevEnergyPredicate implements IPredicate<IndividualAgent> {
 
-	private double sigma;
+    private double sigma;
 
     public void setSigma(final double sigma) {
-	    this.sigma = sigma;
+        this.sigma = sigma;
     }
 
-	@Override
-	public boolean apply(final IndividualAgent agent) {
-		Collection<IndividualAgent> agents = new AgentEnvironmentQuery<IndividualAgent, IndividualAgent>()
-		        .execute(agent.getEnvironment());
+    @Override
+    public boolean apply(final IndividualAgent agent) {
+        Collection<IndividualAgent> agents = new AgentEnvironmentQuery<IndividualAgent, IndividualAgent>()
+                .execute(agent.getEnvironment());
 
-		int agentsNumber = agents.size();
-		if (agentsNumber <= 1) {
-			return true;
-		}
+        int agentsNumber = agents.size();
+        if(agentsNumber <= 1) {
+            return true;
+        }
 
-		double energySum = 0.0;
-		double sumOfSquares = 0.0;
+        double energySum = 0.0;
+        double sumOfSquares = 0.0;
 
-		for (IndividualAgent other : agents) {
-			double energy = other.getEnergy();
-			energySum += energy;
-			sumOfSquares += energy * energy;
-		}
-		double averageEnergy = energySum / agentsNumber;
-		double stdDev = sqrt((agentsNumber / (agentsNumber - 1))
-		        * ((sumOfSquares / agentsNumber) - averageEnergy * averageEnergy));
+        for(IndividualAgent other : agents) {
+            double energy = other.getEnergy();
+            energySum += energy;
+            sumOfSquares += energy * energy;
+        }
+        double averageEnergy = energySum / agentsNumber;
+        double stdDev = sqrt((agentsNumber / (agentsNumber - 1))
+                                     * ((sumOfSquares / agentsNumber) - averageEnergy * averageEnergy));
 
-		double threshold = averageEnergy + stdDev * sigma;
-		return agent.getEnergy() >= threshold;
-	}
+        double threshold = averageEnergy + stdDev * sigma;
+        return agent.getEnergy() >= threshold;
+    }
 }

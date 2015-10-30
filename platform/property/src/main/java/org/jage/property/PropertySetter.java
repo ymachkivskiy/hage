@@ -26,20 +26,23 @@
  */
 package org.jage.property;
 
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+
 /**
  * This annotation is used to for methods that are property setters.
- * 
+ *
  * @author Tomek
  */
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface PropertySetter {
-	String propertyName();
+
+    String propertyName();
 }

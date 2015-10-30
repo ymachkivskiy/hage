@@ -31,12 +31,6 @@
 
 package org.jage.genetic.agent;
 
-import static java.lang.String.format;
-
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.jage.address.agent.AgentAddress;
 import org.jage.address.agent.AgentAddressSupplier;
@@ -46,6 +40,13 @@ import org.jage.population.IPopulation;
 import org.jage.population.IPopulation.Tuple;
 import org.jage.property.PropertyField;
 import org.jage.solution.ISolution;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
+
+import static java.lang.String.format;
+
 
 /**
  * A {@link ActionDrivenAgent} subclass, which adds several genetic properties. <br />
@@ -56,78 +57,73 @@ import org.jage.solution.ISolution;
  */
 public class GeneticActionDrivenAgent extends ActionDrivenAgent {
 
-	/**
-	 * GeneticActionDrivenAgent properties.
-	 *
-	 * @author AGH AgE Team
-	 */
-	public static class Properties extends ActionDrivenAgent.Properties {
+    private static final long serialVersionUID = 1L;
+    private static final Logger LOG = LoggerFactory.getLogger(GeneticActionDrivenAgent.class);
+    @SuppressWarnings("unused")
+    @PropertyField(propertyName = Properties.POPULATION)
+    private IPopulation<ISolution, ?> population;
+    @SuppressWarnings("unused")
+    @PropertyField(propertyName = Properties.CURRENT_BEST)
+    private Tuple<ISolution, ?> currentBest;
+    @PropertyField(propertyName = Properties.BEST_EVER)
+    private Tuple<ISolution, ?> bestEver;
+    @PropertyField(propertyName = Properties.BEST_EVER_STEP)
+    private long bestEverStep;
 
-		/**
-		 * The agent's current population.
-		 */
-		public static final String POPULATION = "population";
-
-		/**
-		 * The current best solution.
-		 */
-		public static final String CURRENT_BEST = "currentBest";
-
-		/**
-		 * The best solution ever.
-		 */
-		public static final String BEST_EVER = "bestEver";
-
-		/**
-		 * The step on which the best solution ever happened.
-		 */
-		public static final String BEST_EVER_STEP = "bestEverStep";
-	}
-
-	private static final long serialVersionUID = 1L;
-
-	private static final Logger LOG = LoggerFactory.getLogger(GeneticActionDrivenAgent.class);
-
-
-	public GeneticActionDrivenAgent(final AgentAddress address) {
-	    super(address);
+    public GeneticActionDrivenAgent(final AgentAddress address) {
+        super(address);
     }
 
-	@Inject
-	public GeneticActionDrivenAgent(final AgentAddressSupplier supplier) {
-	    super(supplier);
+    @Inject
+    public GeneticActionDrivenAgent(final AgentAddressSupplier supplier) {
+        super(supplier);
     }
 
-	@SuppressWarnings("unused")
-	@PropertyField(propertyName = Properties.POPULATION)
-	private IPopulation<ISolution, ?> population;
+    @Override
+    public void init() throws ComponentException {
+        super.init();
+        LOG.info("Agent {} initialized", this);
+    }
 
-	@SuppressWarnings("unused")
-	@PropertyField(propertyName = Properties.CURRENT_BEST)
-	private Tuple<ISolution, ?> currentBest;
+    @Override
+    public boolean finish() throws ComponentException {
+        LOG.info(getResultLog());
+        return super.finish();
+    }
 
-	@PropertyField(propertyName = Properties.BEST_EVER)
-	private Tuple<ISolution, ?> bestEver;
+    private String getResultLog() {
+        final StringBuilder builder = new StringBuilder("\n\t---=== Computation finished ===---");
+        builder.append(format("\n\tBest solution ever (evaluation = %1$.2f, at step = %2$d): %3$s",
+                              bestEver.getEvaluation(), bestEverStep, bestEver.getSolution()));
+        return builder.toString();
+    }
 
-	@PropertyField(propertyName = Properties.BEST_EVER_STEP)
-	private long bestEverStep;
 
-	@Override
-	public void init() throws ComponentException {
-		super.init();
-		LOG.info("Agent {} initialized", this);
-	}
+    /**
+     * GeneticActionDrivenAgent properties.
+     *
+     * @author AGH AgE Team
+     */
+    public static class Properties extends ActionDrivenAgent.Properties {
 
-	@Override
-	public boolean finish() throws ComponentException {
-		LOG.info(getResultLog());
-		return super.finish();
-	}
+        /**
+         * The agent's current population.
+         */
+        public static final String POPULATION = "population";
 
-	private String getResultLog() {
-		final StringBuilder builder = new StringBuilder("\n\t---=== Computation finished ===---");
-		builder.append(format("\n\tBest solution ever (evaluation = %1$.2f, at step = %2$d): %3$s",
-		        bestEver.getEvaluation(), bestEverStep, bestEver.getSolution()));
-		return builder.toString();
-	}
+        /**
+         * The current best solution.
+         */
+        public static final String CURRENT_BEST = "currentBest";
+
+        /**
+         * The best solution ever.
+         */
+        public static final String BEST_EVER = "bestEver";
+
+        /**
+         * The step on which the best solution ever happened.
+         */
+        public static final String BEST_EVER_STEP = "bestEverStep";
+    }
 }

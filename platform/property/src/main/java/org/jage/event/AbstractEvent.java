@@ -31,8 +31,10 @@
 
 package org.jage.event;
 
+
 import java.util.Calendar;
 import java.util.Date;
+
 
 /**
  * The base class for all events. It only contains information about the event creation time.
@@ -40,24 +42,25 @@ import java.util.Date;
  * @author AGH AgE Team
  */
 public abstract class AbstractEvent {
-	/**
-	 * The creation time of this event.
-	 */
-	private final Date creationTime;
 
-	/**
-	 * Constructor. It sets the creation time of this event.
-	 */
-	public AbstractEvent() {
-		creationTime = new Date(Calendar.getInstance().getTimeInMillis());
-	}
+    /**
+     * The creation time of this event.
+     */
+    private final Date creationTime;
 
-	/**
-	 * Returns the creation time of this event.
-	 *
-	 * @return the creation time of this event
-	 */
-	public final Date getCreationTime() {
-		return creationTime;
-	}
+    /**
+     * Constructor. It sets the creation time of this event.
+     */
+    public AbstractEvent() {
+        creationTime = new Date(Calendar.getInstance().getTimeInMillis());
+    }
+
+    /**
+     * Returns the creation time of this event.
+     *
+     * @return the creation time of this event
+     */
+    public final Date getCreationTime() {
+        return creationTime;
+    }
 }

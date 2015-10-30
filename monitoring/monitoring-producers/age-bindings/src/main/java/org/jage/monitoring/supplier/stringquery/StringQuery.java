@@ -26,13 +26,6 @@
  */
 package org.jage.monitoring.supplier.stringquery;
 
-import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Lists.newArrayListWithExpectedSize;
-import static org.jage.query.ValueFilters.address;
-import static org.jage.query.ValueFilters.pattern;
-
-import java.util.Collection;
-import java.util.List;
 
 import org.jage.agent.IAgent;
 import org.jage.monitoring.MonitoringException;
@@ -45,77 +38,85 @@ import org.jage.query.IQuery;
 import org.jage.query.IValueFilter;
 import org.jage.workplace.Workplace;
 
+import java.util.Collection;
+import java.util.List;
+
+import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Lists.newArrayListWithExpectedSize;
+import static org.jage.query.ValueFilters.address;
+import static org.jage.query.ValueFilters.pattern;
+
 
 /**
  * Based on agent string query, class performs hierarchical agent query.
- * 
+ *
  * @author AGH AgE Team
  */
 public class StringQuery implements IQuery<List<Workplace>, Object> {
 
-	private String stringQuery;
-	private ValueExtractor extractor = new DefaultValueExtractor();
-	private AgentStringQueryResultProcessor resultProcessor;
+    private String stringQuery;
+    private ValueExtractor extractor = new DefaultValueExtractor();
+    private AgentStringQueryResultProcessor resultProcessor;
 
-	@Override
-	public Object execute(List<Workplace> targetList)  {
-		QueryElementsProducer queryElementsSupplier = new QueryElementsProducer();
-		QueryElements queryElements = queryElementsSupplier.produceQueryElements(stringQuery);
+    public StringQuery(String stringQuery) {
+        this.stringQuery = stringQuery;
+    }
 
-		List<IAgent> agentList = newArrayListWithExpectedSize(targetList.size());
-		List<Object> resultList = newArrayList();
-		// for (Workplace workplace : targetList) {
-		// resultList.addAll(getValuesFromQueryElements(queryElements,
-		// workplace));
-		// }
-		for (Workplace workplace : targetList) {
-			agentList.add(workplace.getAgent());
-		}
-		resultList = getValuesFromQueryElements(queryElements, agentList);
-		Object processedResult = resultProcessor.processResult(resultList);
-		return processedResult;
-	}
+    @Override
+    public Object execute(List<Workplace> targetList) {
+        QueryElementsProducer queryElementsSupplier = new QueryElementsProducer();
+        QueryElements queryElements = queryElementsSupplier.produceQueryElements(stringQuery);
 
-	public StringQuery(String stringQuery) {
-		this.stringQuery = stringQuery;
-	}
+        List<IAgent> agentList = newArrayListWithExpectedSize(targetList.size());
+        List<Object> resultList = newArrayList();
+        // for (Workplace workplace : targetList) {
+        // resultList.addAll(getValuesFromQueryElements(queryElements,
+        // workplace));
+        // }
+        for(Workplace workplace : targetList) {
+            agentList.add(workplace.getAgent());
+        }
+        resultList = getValuesFromQueryElements(queryElements, agentList);
+        Object processedResult = resultProcessor.processResult(resultList);
+        return processedResult;
+    }
 
-	private List<Object> getValuesFromQueryElements(QueryElements queryElements, Collection<IAgent> target) {
+    private List<Object> getValuesFromQueryElements(QueryElements queryElements, Collection<IAgent> target) {
 
-		List<Object> resultList = newArrayList();
+        List<Object> resultList = newArrayList();
 
-		List<IValueFilter<? super IAgent>> valueFilterList = convertStringsToAddressValueFilterList(queryElements.getAddressList());
+        List<IValueFilter<? super IAgent>> valueFilterList = convertStringsToAddressValueFilterList(queryElements.getAddressList());
 
-		HierarchicalQuery hierarchicalQuery = new HierarchicalQuery();
-		Collection<IAgent> agentCollection = hierarchicalQuery.matching(valueFilterList).execute(target);
-		if(agentCollection.isEmpty()){
-			throw new MonitoringException("No agent found in path " + stringQuery);
-		}
-		for (IAgent agent : agentCollection) {
-			for (String propertyName : queryElements.getPropertyNameList()) {
-				try{
-					resultList.add(extractor.extract(agent, propertyName).get());
-				}catch(InvalidPropertyPathException ippe){
-					throw new MonitoringException("No value found in path " + stringQuery);
-				}
-			}
-		}
-		return resultList;
-	}
+        HierarchicalQuery hierarchicalQuery = new HierarchicalQuery();
+        Collection<IAgent> agentCollection = hierarchicalQuery.matching(valueFilterList).execute(target);
+        if(agentCollection.isEmpty()) {
+            throw new MonitoringException("No agent found in path " + stringQuery);
+        }
+        for(IAgent agent : agentCollection) {
+            for(String propertyName : queryElements.getPropertyNameList()) {
+                try {
+                    resultList.add(extractor.extract(agent, propertyName).get());
+                } catch(InvalidPropertyPathException ippe) {
+                    throw new MonitoringException("No value found in path " + stringQuery);
+                }
+            }
+        }
+        return resultList;
+    }
 
-	private List<IValueFilter<? super IAgent>> convertStringsToAddressValueFilterList(List<String> addressRegexList) {
-		List<IValueFilter<? super IAgent>> valueFilterList = newArrayList();
-		for (String addressRegex : addressRegexList) {
-			valueFilterList.add(address(pattern(addressRegex)));
-		}
-		return valueFilterList;
-	}
+    private List<IValueFilter<? super IAgent>> convertStringsToAddressValueFilterList(List<String> addressRegexList) {
+        List<IValueFilter<? super IAgent>> valueFilterList = newArrayList();
+        for(String addressRegex : addressRegexList) {
+            valueFilterList.add(address(pattern(addressRegex)));
+        }
+        return valueFilterList;
+    }
 
-	public void setExtractor(ValueExtractor extractor) {
-		this.extractor = extractor;
-	}
+    public void setExtractor(ValueExtractor extractor) {
+        this.extractor = extractor;
+    }
 
-	public void setResultProcessor(AgentStringQueryResultProcessor resultProcessor) {
-		this.resultProcessor = resultProcessor;
-	}
+    public void setResultProcessor(AgentStringQueryResultProcessor resultProcessor) {
+        this.resultProcessor = resultProcessor;
+    }
 }

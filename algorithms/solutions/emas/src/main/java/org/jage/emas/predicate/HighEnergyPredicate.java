@@ -31,23 +31,25 @@
 
 package org.jage.emas.predicate;
 
+
 import org.jage.emas.agent.IndividualAgent;
+
 
 /**
  * Predicate applying to agents which energy is higher than some threshold.
  *
  * @author AGH AgE Team
  */
-public class HighEnergyPredicate  implements IPredicate<IndividualAgent> {
+public class HighEnergyPredicate implements IPredicate<IndividualAgent> {
 
-	private double threshold;
+    private double threshold;
 
     public void setThreshold(final double threshold) {
-	    this.threshold = threshold;
+        this.threshold = threshold;
     }
 
-	@Override
-	public boolean apply(final IndividualAgent agent) {
-		return agent.getEnergy() >= threshold;
-	}
+    @Override
+    public boolean apply(final IndividualAgent agent) {
+        return agent.getEnergy() >= threshold;
+    }
 }

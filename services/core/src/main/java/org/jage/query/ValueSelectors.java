@@ -31,11 +31,13 @@
 
 package org.jage.query;
 
-import java.lang.reflect.Method;
 
 import org.jage.address.agent.AgentAddress;
 import org.jage.agent.IAgent;
 import org.jage.property.IPropertyContainer;
+
+import java.lang.reflect.Method;
+
 
 /**
  * Common implementations of {@link IValueSelector}.
@@ -44,75 +46,71 @@ import org.jage.property.IPropertyContainer;
  */
 public final class ValueSelectors {
 
-	/**
-	 * Creates a filter that matches a field of the Java Bean with the provided filter. This implementation uses
-	 * reflection.
-	 *
-	 * @param fieldName
-	 * 		A field to use.
-	 * @param <T>
-	 * 		A generic type of the checked object.
-	 * @param <S>
-	 * 		A generic type of the field to test.
-	 *
-	 * @return A new value filter.
-	 */
-	public static <T, S> IValueSelector<T, S> field(final String fieldName) {
-		return new IValueSelector<T, S>() {
+    private ValueSelectors() {
+        // Empty
+    }
 
-			@SuppressWarnings("unchecked") @Override
-			public S selectValue(T object) {
-				try {
-					String methodName = "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
-					Method method = object.getClass().getMethod(methodName, (Class<?>[])null);
-					S value = (S)method.invoke(object);
-					return value;
+    /**
+     * Creates a filter that matches a field of the Java Bean with the provided filter. This implementation uses
+     * reflection.
+     *
+     * @param fieldName A field to use.
+     * @param <T>       A generic type of the checked object.
+     * @param <S>       A generic type of the field to test.
+     * @return A new value filter.
+     */
+    public static <T, S> IValueSelector<T, S> field(final String fieldName) {
+        return new IValueSelector<T, S>() {
 
-				} catch (Exception e) {
-					throw new QueryException(e);
-				}
-			}
+            @SuppressWarnings("unchecked")
+            @Override
+            public S selectValue(T object) {
+                try {
+                    String methodName = "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+                    Method method = object.getClass().getMethod(methodName, (Class<?>[]) null);
+                    S value = (S) method.invoke(object);
+                    return value;
 
-		};
-	}
+                } catch(Exception e) {
+                    throw new QueryException(e);
+                }
+            }
 
-	/**
-	 * Creates a filter that matches a property of a property container with the provided filter.
-	 *
-	 * @param propertyName
-	 * 		a name of the property.
-	 * @param <T>
-	 * 		A generic type of the checked object.
-	 * @param <S>
-	 * 		A generic type of the property value.
-	 *
-	 * @return A new value filter.
-	 */
-	public static <T extends IPropertyContainer, S> IValueSelector<T, S> property(final String propertyName) {
-		return new IValueSelector<T, S>() {
+        };
+    }
 
-			@SuppressWarnings("unchecked") @Override
-			public S selectValue(T object) {
-				try {
-					return (S)object.getProperty(propertyName).getValue();
-				} catch (Exception e) {
-					throw new QueryException(e);
-				}
-			}
+    /**
+     * Creates a filter that matches a property of a property container with the provided filter.
+     *
+     * @param propertyName a name of the property.
+     * @param <T>          A generic type of the checked object.
+     * @param <S>          A generic type of the property value.
+     * @return A new value filter.
+     */
+    public static <T extends IPropertyContainer, S> IValueSelector<T, S> property(final String propertyName) {
+        return new IValueSelector<T, S>() {
 
-		};
-	}
+            @SuppressWarnings("unchecked")
+            @Override
+            public S selectValue(T object) {
+                try {
+                    return (S) object.getProperty(propertyName).getValue();
+                } catch(Exception e) {
+                    throw new QueryException(e);
+                }
+            }
 
-	public static <T extends IAgent> IValueSelector<T, AgentAddress> agentAddress() {
-		return new IValueSelector<T, AgentAddress>() {
-			@SuppressWarnings("unchecked") @Override
-			public AgentAddress selectValue(T object) {
-				return object.getAddress();
-			}
-		};
-	}
+        };
+    }
 
-	private ValueSelectors() {
-		// Empty
-	}
+    public static <T extends IAgent> IValueSelector<T, AgentAddress> agentAddress() {
+        return new IValueSelector<T, AgentAddress>() {
+
+            @SuppressWarnings("unchecked")
+            @Override
+            public AgentAddress selectValue(T object) {
+                return object.getAddress();
+            }
+        };
+    }
 }

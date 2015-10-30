@@ -26,55 +26,55 @@
  */
 package org.jage.monitoring.handler;
 
+
+import org.jage.monitoring.observer.ObservedData;
+import rx.Observable;
+import rx.functions.FuncN;
+import rx.schedulers.Timestamped;
+
 import java.math.BigInteger;
 import java.util.List;
 
-import org.jage.monitoring.observer.AbstractStatefulObserver;
-import org.jage.monitoring.observer.ObservedData;
-
-import rx.Observable;
-import rx.schedulers.Timestamped;
-import rx.functions.FuncN;
 
 /**
- * Handler computes the average from given Observables. 
- * 
- * @author AGH AgE Team
+ * Handler computes the average from given Observables.
  *
+ * @author AGH AgE Team
  */
 public class AvgHandlerFactory {
 
-	private static Avg avg = new Avg();
-	
-	/** 
-	 * Method creates Observable object which emits average value from the passed list of Observable objects.
-	 * The new Observable object is subscribed to Observers object passed in the list argument.
-	 * Time of new average value, is assigned new time which is also an average of time of each values. 
-	 * 
-	 * @param observables
-	 * @param observers
-	 * @param name The name of the handler. 
-	 */
-	public static Observable<ObservedData> create(List<Observable<Timestamped<Object>>> observables, final String name) {
-		Observable<Timestamped<Object>> zipped = Observable.zip(observables, avg);
-		Observable<ObservedData> mapped = Handlers.toObservedData(zipped, name);
-		return mapped;
-	}
+    private static Avg avg = new Avg();
 
-	static class Avg implements FuncN<Timestamped<Object>>{
-		@Override
-		public Timestamped<Object> call(Object... args) {
-			double val = 0;
-			BigInteger time = BigInteger.ZERO;
-			for (Object o : args) {
-				Timestamped<Object> to = (Timestamped<Object>) o;
-				val += (((Number)to.getValue()).doubleValue());
-				time = time.add(BigInteger.valueOf(to.getTimestampMillis()));
-			}
-			return new Timestamped<Object>(
-					time.divide(BigInteger.valueOf(args.length)).longValue(),
-					val /= args.length
-					);
-		}
-	}
+    /**
+     * Method creates Observable object which emits average value from the passed list of Observable objects.
+     * The new Observable object is subscribed to Observers object passed in the list argument.
+     * Time of new average value, is assigned new time which is also an average of time of each values.
+     *
+     * @param observables
+     * @param observers
+     * @param name        The name of the handler.
+     */
+    public static Observable<ObservedData> create(List<Observable<Timestamped<Object>>> observables, final String name) {
+        Observable<Timestamped<Object>> zipped = Observable.zip(observables, avg);
+        Observable<ObservedData> mapped = Handlers.toObservedData(zipped, name);
+        return mapped;
+    }
+
+    static class Avg implements FuncN<Timestamped<Object>> {
+
+        @Override
+        public Timestamped<Object> call(Object... args) {
+            double val = 0;
+            BigInteger time = BigInteger.ZERO;
+            for(Object o : args) {
+                Timestamped<Object> to = (Timestamped<Object>) o;
+                val += (((Number) to.getValue()).doubleValue());
+                time = time.add(BigInteger.valueOf(to.getTimestampMillis()));
+            }
+            return new Timestamped<Object>(
+                    time.divide(BigInteger.valueOf(args.length)).longValue(),
+                    val /= args.length
+            );
+        }
+    }
 }

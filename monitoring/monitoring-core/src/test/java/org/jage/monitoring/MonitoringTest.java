@@ -26,15 +26,8 @@
  */
 package org.jage.monitoring;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
-import java.util.Collection;
-import java.util.concurrent.TimeUnit;
-
+import com.google.common.base.Suppliers;
 import org.jage.monitoring.config.TypeSafeConfig;
 import org.jage.monitoring.config.XmlConfig;
 import org.jage.monitoring.observer.AbstractStatefulObserver;
@@ -44,112 +37,119 @@ import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.internal.util.collections.Sets;
-
 import rx.Observable;
 import rx.Observer;
 import rx.schedulers.Schedulers;
 import rx.schedulers.TestScheduler;
 import rx.schedulers.Timestamped;
 
-import com.google.common.base.Suppliers;
+import java.util.Collection;
+import java.util.concurrent.TimeUnit;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 
 public class MonitoringTest {
 
-	@Mock
-	private Observer<Timestamped<Object>> observer;
-	
-	@Mock
-	private AbstractStatefulObserver obs, obs2, obs3;
-	
-	@Mock
-	private XmlConfig xmlConfig;
-	
-	@Mock
-	private TypeSafeConfig typeSafeConfig;
-	
-	private TestScheduler testScheduler;
-	
-	@Before
-	public void setUp(){
-		MockitoAnnotations.initMocks(this);
-		testScheduler = Schedulers.test();
-	}
+    @Mock
+    private Observer<Timestamped<Object>> observer;
 
-	@Test
-	public void getAllObserversWithXmlAndTS(){
-		
-		// given
-		when(xmlConfig.getUsedObservers()).thenReturn(Sets.newSet(obs, obs2));
-		when(typeSafeConfig.getUsedObservers()).thenReturn(Sets.newSet(obs2, obs3));
-		Monitoring monitoring = new Monitoring(xmlConfig, typeSafeConfig);
-		
-		// when
-		Collection<AbstractStatefulObserver> observers = monitoring.getAllObservers();
-		
-		// then
-		assertEquals(3, observers.size());
-	}
-	
-	@Test
-	public void getAllObserversWithXml(){
+    @Mock
+    private AbstractStatefulObserver obs, obs2, obs3;
 
-		// given
-		when(xmlConfig.getUsedObservers()).thenReturn(Sets.newSet(obs, obs2));
-		Monitoring monitoring = new Monitoring(xmlConfig);
-		
-		// when
-		Collection<AbstractStatefulObserver> observers = monitoring.getAllObservers();
-		
-		// then
-		assertEquals(2, observers.size());
-	}
-	
-	@Test
-	public void getAllObserversWithTS(){
-		
-		// given
-		when(typeSafeConfig.getUsedObservers()).thenReturn(Sets.newSet(obs2, obs3));
-		Monitoring monitoring = new Monitoring(typeSafeConfig);
+    @Mock
+    private XmlConfig xmlConfig;
 
-		// when
-		Collection<AbstractStatefulObserver> observers = monitoring.getAllObservers();
-		
-		// then
-		assertEquals(2, observers.size());
-	}
-	
-	@Test
-	public void shouldCallTwiceObservableFromMethodCreateObservableFromSupplier() throws InterruptedException{
-		
-		//when
-		Observable<Timestamped<Object>> observable = Monitoring.createObservableFromSupplier(Suppliers.ofInstance(new Long(1)), 50, testScheduler);
-		observable.subscribe(observer);
-		testScheduler.advanceTimeTo(100, TimeUnit.MILLISECONDS);
-		//then
-		verify(observer, times(2)).onNext(Matchers.any(Timestamped.class));
-	}
+    @Mock
+    private TypeSafeConfig typeSafeConfig;
 
-	@Test
-	public void shouldCallOnceObservableFromMethodCreateObservableFromSupplier() throws InterruptedException{
-				
-		//when
-		Observable<Timestamped<Object>> observable = Monitoring.createObservableFromSupplier(Suppliers.ofInstance(new Long(1)), 50, testScheduler);
-		observable.subscribe(observer);
-		testScheduler.advanceTimeTo(50, TimeUnit.MILLISECONDS);
+    private TestScheduler testScheduler;
 
-		//then
-		verify(observer).onNext(Matchers.any(Timestamped.class));
-	}
+    @Before
+    public void setUp() {
+        MockitoAnnotations.initMocks(this);
+        testScheduler = Schedulers.test();
+    }
 
-	@Test
-	public void shouldStopProduceDataBeforeCreationOfAnyData() throws InterruptedException{
-		
-		//when
-		Observable<Timestamped<Object>> observable = Monitoring.createObservableFromSupplier(Suppliers.ofInstance(new Long(1)), 100, testScheduler);
-		observable.subscribe(observer);
-		testScheduler.advanceTimeTo(60, TimeUnit.MILLISECONDS);
+    @Test
+    public void getAllObserversWithXmlAndTS() {
 
-		//then
-		verify(observer, never()).onNext(Matchers.any(Timestamped.class));
-	}
+        // given
+        when(xmlConfig.getUsedObservers()).thenReturn(Sets.newSet(obs, obs2));
+        when(typeSafeConfig.getUsedObservers()).thenReturn(Sets.newSet(obs2, obs3));
+        Monitoring monitoring = new Monitoring(xmlConfig, typeSafeConfig);
+
+        // when
+        Collection<AbstractStatefulObserver> observers = monitoring.getAllObservers();
+
+        // then
+        assertEquals(3, observers.size());
+    }
+
+    @Test
+    public void getAllObserversWithXml() {
+
+        // given
+        when(xmlConfig.getUsedObservers()).thenReturn(Sets.newSet(obs, obs2));
+        Monitoring monitoring = new Monitoring(xmlConfig);
+
+        // when
+        Collection<AbstractStatefulObserver> observers = monitoring.getAllObservers();
+
+        // then
+        assertEquals(2, observers.size());
+    }
+
+    @Test
+    public void getAllObserversWithTS() {
+
+        // given
+        when(typeSafeConfig.getUsedObservers()).thenReturn(Sets.newSet(obs2, obs3));
+        Monitoring monitoring = new Monitoring(typeSafeConfig);
+
+        // when
+        Collection<AbstractStatefulObserver> observers = monitoring.getAllObservers();
+
+        // then
+        assertEquals(2, observers.size());
+    }
+
+    @Test
+    public void shouldCallTwiceObservableFromMethodCreateObservableFromSupplier() throws InterruptedException {
+
+        //when
+        Observable<Timestamped<Object>> observable = Monitoring.createObservableFromSupplier(Suppliers.ofInstance(new Long(1)), 50, testScheduler);
+        observable.subscribe(observer);
+        testScheduler.advanceTimeTo(100, TimeUnit.MILLISECONDS);
+        //then
+        verify(observer, times(2)).onNext(Matchers.any(Timestamped.class));
+    }
+
+    @Test
+    public void shouldCallOnceObservableFromMethodCreateObservableFromSupplier() throws InterruptedException {
+
+        //when
+        Observable<Timestamped<Object>> observable = Monitoring.createObservableFromSupplier(Suppliers.ofInstance(new Long(1)), 50, testScheduler);
+        observable.subscribe(observer);
+        testScheduler.advanceTimeTo(50, TimeUnit.MILLISECONDS);
+
+        //then
+        verify(observer).onNext(Matchers.any(Timestamped.class));
+    }
+
+    @Test
+    public void shouldStopProduceDataBeforeCreationOfAnyData() throws InterruptedException {
+
+        //when
+        Observable<Timestamped<Object>> observable = Monitoring.createObservableFromSupplier(Suppliers.ofInstance(new Long(1)), 100, testScheduler);
+        observable.subscribe(observer);
+        testScheduler.advanceTimeTo(60, TimeUnit.MILLISECONDS);
+
+        //then
+        verify(observer, never()).onNext(Matchers.any(Timestamped.class));
+    }
 }

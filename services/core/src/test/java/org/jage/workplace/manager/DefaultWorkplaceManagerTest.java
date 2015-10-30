@@ -31,9 +31,14 @@
 
 package org.jage.workplace.manager;
 
-import java.util.Collection;
-import java.util.List;
 
+import org.jage.address.node.NodeAddress;
+import org.jage.address.node.NodeAddressSupplier;
+import org.jage.platform.component.definition.ComponentDefinition;
+import org.jage.platform.component.exception.ComponentException;
+import org.jage.platform.component.pico.PicoComponentInstanceProvider;
+import org.jage.platform.component.pico.PicoComponentInstanceProviderFactory;
+import org.jage.services.core.LifecycleManager;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -46,21 +51,15 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
 
+import java.util.List;
+
+import static com.google.common.collect.Lists.newArrayList;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-import org.jage.address.node.NodeAddressSupplier;
-import org.jage.address.node.NodeAddress;
-import org.jage.platform.component.definition.ComponentDefinition;
-import org.jage.platform.component.exception.ComponentException;
-import org.jage.platform.component.pico.PicoComponentInstanceProvider;
-import org.jage.platform.component.pico.PicoComponentInstanceProviderFactory;
-import org.jage.services.core.LifecycleManager;
-
-import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * Tests for the {@link DefaultWorkplaceManager} class.
@@ -70,119 +69,116 @@ import static com.google.common.collect.Lists.newArrayList;
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultWorkplaceManagerTest {
 
-	@Mock
-	// (answer = Answers.CALLS_REAL_METHODS)
-	private NodeAddressSupplier addressProvider;
+    private static final String TEST_COMPONENT_KEY = "test";
+    private final PicoComponentInstanceProvider instanceProvider = (PicoComponentInstanceProvider) PicoComponentInstanceProviderFactory
+            .createInstanceProvider();
+    @Mock
+    // (answer = Answers.CALLS_REAL_METHODS)
+    private NodeAddressSupplier addressProvider;
+    @Mock
+    // (answer = Answers.CALLS_REAL_METHODS)
+    private LifecycleManager lifecycleManager;
 
-	@Mock
-	// (answer = Answers.CALLS_REAL_METHODS)
-	private LifecycleManager lifecycleManager;
+    @Before
+    public void setUp() throws ComponentException {
+        given(addressProvider.get()).willReturn(mock(NodeAddress.class));
 
-	private final PicoComponentInstanceProvider instanceProvider = (PicoComponentInstanceProvider)PicoComponentInstanceProviderFactory
-	        .createInstanceProvider();
+        //instanceProvider.addComponent(LoopbackCommunicationService.class);
+        instanceProvider.addComponentInstance(addressProvider);
+        instanceProvider.addComponentInstance(lifecycleManager);
+        instanceProvider.addComponent(DefaultWorkplaceManager.class);
+        instanceProvider.verify();
+    }
 
-	private static final String TEST_COMPONENT_KEY = "test";
+    @Test
+    @Ignore
+    public void shouldRecreateConfiguration() throws ComponentException {
+        // given
+        final DefaultWorkplaceManager instance = instanceProvider.getInstance(DefaultWorkplaceManager.class);
+        final ComponentDefinition componentDefinition = new ComponentDefinition(TEST_COMPONENT_KEY, Object.class, false);
 
-	@Before
-	public void setUp() throws ComponentException {
-		given(addressProvider.get()).willReturn(mock(NodeAddress.class));
+        // when
+        //instance.computationConfigurationUpdated((Collection)newArrayList(componentDefinition));
 
-		//instanceProvider.addComponent(LoopbackCommunicationService.class);
-		instanceProvider.addComponentInstance(addressProvider);
-		instanceProvider.addComponentInstance(lifecycleManager);
-		instanceProvider.addComponent(DefaultWorkplaceManager.class);
-		instanceProvider.verify();
-	}
+        instanceProvider.verify();
+        final Collector collectorBefore = new Collector();
+        instanceProvider.accept(collectorBefore);
 
-	@Test
-	@Ignore
-	public void shouldRecreateConfiguration() throws ComponentException {
-		// given
-		final DefaultWorkplaceManager instance = instanceProvider.getInstance(DefaultWorkplaceManager.class);
-		final ComponentDefinition componentDefinition = new ComponentDefinition(TEST_COMPONENT_KEY, Object.class, false);
+        instance.teardownConfiguration();
 
-		// when
-		//instance.computationConfigurationUpdated((Collection)newArrayList(componentDefinition));
+        instanceProvider.verify();
+        final Collector collectorAfter = new Collector();
+        instanceProvider.accept(collectorAfter);
 
-		instanceProvider.verify();
-		final Collector collectorBefore = new Collector();
-		instanceProvider.accept(collectorBefore);
+        //instance.computationConfigurationUpdated((Collection)newArrayList(componentDefinition));
+        instanceProvider.verify();
 
-		instance.teardownConfiguration();
+        final Collector collectorAfter2 = new Collector();
+        instanceProvider.accept(collectorAfter2);
 
-		instanceProvider.verify();
-		final Collector collectorAfter = new Collector();
-		instanceProvider.accept(collectorAfter);
+        // then
+        assertThat(collectorBefore.containers, hasSize(2));
+        assertThat(collectorAfter.containers, hasSize(1));
 
-		//instance.computationConfigurationUpdated((Collection)newArrayList(componentDefinition));
-		instanceProvider.verify();
+        boolean hasTest = false;
+        for(final ComponentAdapter<?> adapter : collectorBefore.adapters) {
+            if(!hasTest) {
+                hasTest = adapter.getComponentKey().equals(TEST_COMPONENT_KEY);
+            }
+        }
+        assertThat(hasTest, is(true));
 
-		final Collector collectorAfter2 = new Collector();
-		instanceProvider.accept(collectorAfter2);
+        hasTest = false;
+        for(final ComponentAdapter<?> adapter : collectorAfter.adapters) {
+            if(!hasTest) {
+                hasTest = adapter.getComponentKey().equals(TEST_COMPONENT_KEY);
+            }
+        }
+        assertThat(hasTest, is(false));
 
-		// then
-		assertThat(collectorBefore.containers, hasSize(2));
-		assertThat(collectorAfter.containers, hasSize(1));
+        hasTest = false;
+        for(final ComponentAdapter<?> adapter : collectorBefore.adapters) {
+            if(!hasTest) {
+                hasTest = adapter.getComponentKey().equals(TEST_COMPONENT_KEY);
+            }
+        }
+        assertThat(hasTest, is(true));
+    }
 
-		boolean hasTest = false;
-		for (final ComponentAdapter<?> adapter : collectorBefore.adapters) {
-			if (!hasTest) {
-				hasTest = adapter.getComponentKey().equals(TEST_COMPONENT_KEY);
-			}
-		}
-		assertThat(hasTest, is(true));
+    private class Collector implements PicoVisitor {
 
-		hasTest = false;
-		for (final ComponentAdapter<?> adapter : collectorAfter.adapters) {
-			if (!hasTest) {
-				hasTest = adapter.getComponentKey().equals(TEST_COMPONENT_KEY);
-			}
-		}
-		assertThat(hasTest, is(false));
+        private final List<Parameter> parameters = newArrayList();
 
-		hasTest = false;
-		for (final ComponentAdapter<?> adapter : collectorBefore.adapters) {
-			if (!hasTest) {
-				hasTest = adapter.getComponentKey().equals(TEST_COMPONENT_KEY);
-			}
-		}
-		assertThat(hasTest, is(true));
-	}
+        private final List<PicoContainer> containers = newArrayList();
 
-	private class Collector implements PicoVisitor {
+        private final List<ComponentFactory> factories = newArrayList();
 
-		private final List<Parameter> parameters = newArrayList();
+        private final List<ComponentAdapter<?>> adapters = newArrayList();
 
-		private final List<PicoContainer> containers = newArrayList();
+        @Override
+        public Object traverse(final Object node) {
+            return node;
+        }
 
-		private final List<ComponentFactory> factories = newArrayList();
+        @Override
+        public boolean visitContainer(final PicoContainer pico) {
+            containers.add(pico);
+            return CONTINUE_TRAVERSAL;
+        }
 
-		private final List<ComponentAdapter<?>> adapters = newArrayList();
+        @Override
+        public void visitComponentAdapter(final ComponentAdapter<?> componentAdapter) {
+            adapters.add(componentAdapter);
+        }
 
-		@Override
-		public void visitParameter(final Parameter parameter) {
-			parameters.add(parameter);
-		}
+        @Override
+        public void visitComponentFactory(final ComponentFactory componentFactory) {
+            factories.add(componentFactory);
+        }
 
-		@Override
-		public boolean visitContainer(final PicoContainer pico) {
-			containers.add(pico);
-			return CONTINUE_TRAVERSAL;
-		}
-
-		@Override
-		public void visitComponentFactory(final ComponentFactory componentFactory) {
-			factories.add(componentFactory);
-		}
-
-		@Override
-		public void visitComponentAdapter(final ComponentAdapter<?> componentAdapter) {
-			adapters.add(componentAdapter);
-		}
-
-		@Override
-		public Object traverse(final Object node) {
-			return node;
-		}
-	}
+        @Override
+        public void visitParameter(final Parameter parameter) {
+            parameters.add(parameter);
+        }
+    }
 }

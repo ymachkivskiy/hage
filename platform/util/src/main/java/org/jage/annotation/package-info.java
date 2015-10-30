@@ -31,9 +31,9 @@
 
 /**
  * AgE Annotations.
- * 
+ *
  * @since 2.6
- * 
+ *
  * @author AGH AgE Team
  */
 package org.jage.annotation;

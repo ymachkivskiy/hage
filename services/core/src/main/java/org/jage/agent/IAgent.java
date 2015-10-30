@@ -31,15 +31,16 @@
 
 package org.jage.agent;
 
-import java.io.Serializable;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import org.jage.address.agent.AgentAddress;
 import org.jage.communication.message.Message;
 import org.jage.platform.component.IStatefulComponent;
 import org.jage.property.IPropertyContainer;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.io.Serializable;
+
 
 /**
  * Interface of an agent.
@@ -48,29 +49,27 @@ import org.jage.property.IPropertyContainer;
  */
 public interface IAgent extends IPropertyContainer, IStatefulComponent, Serializable {
 
-	/**
-	 * Delivers a message to the agent.
-	 *
-	 * @param message
-	 *            A message to be delivered.
-	 */
-	void deliverMessage(@Nonnull Message<AgentAddress, ?> message);
+    /**
+     * Delivers a message to the agent.
+     *
+     * @param message A message to be delivered.
+     */
+    void deliverMessage(@Nonnull Message<AgentAddress, ?> message);
 
-	/**
-	 * Returns the agent's address. See also property address of this class.
-	 *
-	 * @return The agent's address.
-	 */
-	@Nonnull AgentAddress getAddress();
+    /**
+     * Returns the agent's address. See also property address of this class.
+     *
+     * @return The agent's address.
+     */
+    @Nonnull
+    AgentAddress getAddress();
 
-	/**
-	 * Sets new agent environment to this agent. Setting null means that an agent is removed from the environment. Agent
-	 * should not be moved to new environment without removing from previous one.
-	 *
-	 * @param agentEnvironment
-	 *            The environment for the agent.
-	 * @throws AgentException
-	 *             when environment is already set.
-	 */
-	void setAgentEnvironment(@Nullable IAgentEnvironment agentEnvironment);
+    /**
+     * Sets new agent environment to this agent. Setting null means that an agent is removed from the environment. Agent
+     * should not be moved to new environment without removing from previous one.
+     *
+     * @param agentEnvironment The environment for the agent.
+     * @throws AgentException when environment is already set.
+     */
+    void setAgentEnvironment(@Nullable IAgentEnvironment agentEnvironment);
 }

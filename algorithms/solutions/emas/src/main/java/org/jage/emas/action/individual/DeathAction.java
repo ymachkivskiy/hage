@@ -31,10 +31,6 @@
 
 package org.jage.emas.action.individual;
 
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.jage.action.SingleAction;
 import org.jage.action.context.KillAgentActionContext;
@@ -43,8 +39,13 @@ import org.jage.agent.AgentException;
 import org.jage.emas.agent.IndividualAgent;
 import org.jage.emas.predicate.IPredicate;
 import org.jage.emas.util.ChainingAction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
 
 import static org.jage.address.selector.Selectors.singleAddress;
+
 
 /**
  * This action handler performs death actions on agent. Depending on some predicate, an agent may die.
@@ -53,20 +54,20 @@ import static org.jage.address.selector.Selectors.singleAddress;
  */
 public final class DeathAction extends ChainingAction<IndividualAgent> {
 
-	private static final Logger log = LoggerFactory.getLogger(DeathAction.class);
+    private static final Logger log = LoggerFactory.getLogger(DeathAction.class);
 
-	@Inject
-	private IPredicate<IndividualAgent> deathPredicate;
+    @Inject
+    private IPredicate<IndividualAgent> deathPredicate;
 
-	@Override
-	protected void doPerform(final IndividualAgent agent) throws AgentException {
-		log.debug("Performing death action on {}", agent);
-		
-		if (deathPredicate.apply(agent)) {
-			log.debug("Agent {} is dying.", agent);
-			final AgentAddress agentAddress = agent.getAddress();
-			final SingleAction deathAction = new SingleAction(singleAddress(agentAddress), new KillAgentActionContext());
-			agent.getEnvironment().submitAction(deathAction);
-		}
-	}
+    @Override
+    protected void doPerform(final IndividualAgent agent) throws AgentException {
+        log.debug("Performing death action on {}", agent);
+
+        if(deathPredicate.apply(agent)) {
+            log.debug("Agent {} is dying.", agent);
+            final AgentAddress agentAddress = agent.getAddress();
+            final SingleAction deathAction = new SingleAction(singleAddress(agentAddress), new KillAgentActionContext());
+            agent.getEnvironment().submitAction(deathAction);
+        }
+    }
 }

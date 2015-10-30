@@ -31,11 +31,12 @@
 
 package org.jage.variation.mutation.binary;
 
-import java.util.List;
-
-import org.jage.variation.mutation.AbstractStochasticMutate;
 
 import it.unimi.dsi.fastutil.booleans.BooleanList;
+import org.jage.variation.mutation.AbstractStochasticMutate;
+
+import java.util.List;
+
 
 /**
  * Flips the given binary feature.
@@ -44,9 +45,9 @@ import it.unimi.dsi.fastutil.booleans.BooleanList;
  */
 public final class BinaryMutate extends AbstractStochasticMutate<Boolean> {
 
-	@Override
-	protected void doMutate(List<Boolean> representation, int index) {
-		BooleanList list = (BooleanList)representation;
-		list.set(index, !list.getBoolean(index));
-	}
+    @Override
+    protected void doMutate(List<Boolean> representation, int index) {
+        BooleanList list = (BooleanList) representation;
+        list.set(index, !list.getBoolean(index));
+    }
 }

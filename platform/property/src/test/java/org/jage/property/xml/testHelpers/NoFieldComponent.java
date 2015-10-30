@@ -25,36 +25,36 @@
  * along with AgE.  If not, see <http://www.gnu.org/licenses/>.
  */
 /**
- * 
+ *
  */
 package org.jage.property.xml.testHelpers;
 
+
 /**
  * @author Tomasz Lukasik
- * 
  */
 public class NoFieldComponent {
 
-	@SuppressWarnings("unused")
-	private static final String version = "1.0.0";
+    @SuppressWarnings("unused")
+    private static final String version = "1.0.0";
 
-	private int intProperty = 0;
-	private String stringProperty = "";
+    private int intProperty = 0;
+    private String stringProperty = "";
 
-	public int getIntProperty() {
-		return intProperty;
-	}
+    public int getIntProperty() {
+        return intProperty;
+    }
 
-	public void setIntProperty(int value) {
-		intProperty = value;
-	}
+    public void setIntProperty(int value) {
+        intProperty = value;
+    }
 
-	public String getStringProperty() {
-		return stringProperty;
-	}
+    public String getStringProperty() {
+        return stringProperty;
+    }
 
-	public void setStringProperty(String value) {
-		stringProperty = value;
-	}
+    public void setStringProperty(String value) {
+        stringProperty = value;
+    }
 
 }

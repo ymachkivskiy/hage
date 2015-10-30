@@ -26,39 +26,38 @@
  */
 package org.jage.monitoring.visualization.storage.mongodb.config;
 
-import java.net.UnknownHostException;
 
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
 
+import java.net.UnknownHostException;
+
 
 /**
- * 
  * @author AGH AgE Team
- *
  */
 public class MongoDBConfig {
 
-	public static final String host = "localhost";
-	public static final String schema = "age";
-	public static final int port = 27017;
-	private static MongoClient mongoClient = null; 
+    public static final String host = "localhost";
+    public static final String schema = "age";
+    public static final int port = 27017;
+    private static MongoClient mongoClient = null;
 
-	public static DB getMongoBase() throws UnknownHostException {
-		if(mongoClient == null){
-			mongoClient = new MongoClient(host, port);
-		}
-		return mongoClient.getDB(schema);
-	}
+    public static DB getMongoBase() throws UnknownHostException {
+        if(mongoClient == null) {
+            mongoClient = new MongoClient(host, port);
+        }
+        return mongoClient.getDB(schema);
+    }
 
-	public static DB getMongoBase(String host, String schema) {
+    public static DB getMongoBase(String host, String schema) {
 
-		MongoClient mongoClient = null;
-		try {
-			mongoClient = new MongoClient(host, 27017);
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		}
-		return mongoClient.getDB(schema);
-	}
+        MongoClient mongoClient = null;
+        try {
+            mongoClient = new MongoClient(host, 27017);
+        } catch(UnknownHostException e) {
+            e.printStackTrace();
+        }
+        return mongoClient.getDB(schema);
+    }
 }

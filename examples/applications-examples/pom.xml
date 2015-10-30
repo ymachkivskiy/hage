@@ -1,134 +1,127 @@
 <?xml version="1.0"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<artifactId>applications</artifactId>
+    <artifactId>applications</artifactId>
 
-	<name>AgE Examples - Applications</name>
-	<description>Configuration files for sample applications</description>
-	<url>http://age.iisg.agh.edu.pl/jage/applications/examples/</url>
+    <name>AgE Examples - Applications</name>
+    <description>Configuration files for sample applications</description>
+    <url>http://age.iisg.agh.edu.pl/jage/applications/examples/</url>
 
-	<parent>
-		<groupId>org.jage.student.examples</groupId>
-		<artifactId>examples</artifactId>
-		<version>2.7.0-SNAPSHOT</version>
-	</parent>
+    <parent>
+        <groupId>org.jage.student.examples</groupId>
+        <artifactId>examples</artifactId>
+        <version>2.7.0-SNAPSHOT</version>
+    </parent>
 
-	<properties>
-		<age.node.conf>classpath:examples/node.xml</age.node.conf>
-	</properties>
+    <dependencies>
 
-	<dependencies>
-		
-		<!-- AgE Modules -->
-		<dependency>
-			<groupId>org.jage.platform</groupId>
-			<artifactId>cli-bootstrapper</artifactId>
-			<version>${project.version}</version>
-		</dependency>
+        <!-- AgE Modules -->
+        <dependency>
+            <groupId>org.jage</groupId>
+            <artifactId>cli-bootstrapper</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
-		<dependency>
-			<groupId>org.jage.services</groupId>
-			<artifactId>configuration</artifactId>
-			<version>${project.version}</version>
-		</dependency>
+        <dependency>
+            <groupId>org.jage.services</groupId>
+            <artifactId>configuration</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
-		<dependency>
-			<groupId>org.jage.monitoring</groupId>
-			<artifactId>monitoring-core</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-			
-		<dependency>
-			<groupId>org.jage.monitoring</groupId>
-			<artifactId>age-visualization</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-			
-		<dependency>
-			<groupId>org.jage.monitoring</groupId>
-			<artifactId>age-bindings</artifactId>
-			<version>${project.version}</version>
-		</dependency>
+        <dependency>
+            <groupId>org.jage.monitoring</groupId>
+            <artifactId>monitoring-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
-		<!-- Solution Module -->
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>solutions</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		
-		<!-- Monitoring -->
-		<dependency>
-			<groupId>org.jage.monitoring</groupId>
-			<artifactId>graphite</artifactId>
-			<version>${project.version}</version>
-		</dependency>
+        <dependency>
+            <groupId>org.jage.monitoring</groupId>
+            <artifactId>age-visualization</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
-		<!-- logging -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>org.jage.monitoring</groupId>
+            <artifactId>age-bindings</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
-	<profiles>
-		<profile>
-			<id>examples</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>exec-maven-plugin</artifactId>
+        <!-- Solution Module -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>solutions</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
-						<configuration>
-							<mainClass>org.jage.platform.cli.CliNodeBootstrapper</mainClass>
-							<arguments>
-								<argument>-Dage.node.conf=${age.node.conf}</argument>
-								<argument>-Dage.computation.conf=${age.computation.conf}</argument>
-							</arguments>
-						</configuration>
+        <!-- Monitoring -->
+        <dependency>
+            <groupId>org.jage.monitoring</groupId>
+            <artifactId>graphite</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
-						<executions>
-							<execution>
-								<phase>verify</phase>
-								<goals>
-									<goal>java</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
+        <!-- logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+        </dependency>
+    </dependencies>
 
-		<profile>
-			<id>distributed</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>exec-maven-plugin</artifactId>
+    <profiles>
+        <profile>
+            <id>prop-comp</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
 
-						<configuration>
-							<mainClass>org.jage.platform.cli.CliNodeBootstrapper</mainClass>
-							<arguments>
-								<argument>-Dage.node.conf=${age.node.conf}</argument>
-							</arguments>
-						</configuration>
+                        <configuration>
+                            <mainClass>org.jage.cli.CliNodeBootstrapper</mainClass>
+                            <arguments>
+                                <argument>-Dage.computation.conf=classpath:examples/hage/distr_conf.xml</argument>
+                            </arguments>
+                        </configuration>
 
-						<executions>
-							<execution>
-								<phase>verify</phase>
-								<goals>
-									<goal>java</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
+                        <executions>
+                            <execution>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>java</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>slave</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+
+                        <configuration>
+                            <mainClass>org.jage.cli.CliNodeBootstrapper</mainClass>
+                        </configuration>
+
+                        <executions>
+                            <execution>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>java</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>

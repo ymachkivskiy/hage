@@ -31,8 +31,10 @@
 
 package org.jage.genetic.action;
 
+
 import org.jage.action.IActionContext;
 import org.jage.action.context.AgentActionContext;
+
 
 /**
  * This context defines a initialization action. To use it, you should declare a handler bean named 'initializationAction'
@@ -42,15 +44,17 @@ import org.jage.action.context.AgentActionContext;
  */
 @AgentActionContext(InitializationActionContext.Properties.INITIALIZATION_ACTION)
 public final class InitializationActionContext implements IActionContext {
-	/**
-	 * InitializationActionContext properties.
-	 *
-	 * @author AGH AgE Team
-	 */
-	public static class Properties {
-		/**
-		 * The action name.
-		 */
-		public static final String INITIALIZATION_ACTION = "initializationAction";
-	}
+
+    /**
+     * InitializationActionContext properties.
+     *
+     * @author AGH AgE Team
+     */
+    public static class Properties {
+
+        /**
+         * The action name.
+         */
+        public static final String INITIALIZATION_ACTION = "initializationAction";
+    }
 }

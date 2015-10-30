@@ -31,11 +31,12 @@
 
 package org.jage.emas.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.jage.agent.AgentException;
 import org.jage.emas.agent.EmasAgent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * Utility action to skip one action execution. Its purpose is to properly interleave migration action, so that they
@@ -43,18 +44,16 @@ import org.jage.emas.agent.EmasAgent;
  * <p>
  * This class can be removed when proper interleaving of actions is implemented.
  *
- * @param <A>
- *            the type of agent to perform the action on
- *
+ * @param <A> the type of agent to perform the action on
  * @author AGH AgE Team
  */
 public class SkippingAction<A extends EmasAgent> extends ChainingAction<A> {
 
-	private static final Logger log = LoggerFactory.getLogger(SkippingAction.class);
+    private static final Logger log = LoggerFactory.getLogger(SkippingAction.class);
 
-	@Override
-	protected void doPerform(final A agent) throws AgentException {
-		// do nothing
-		log.debug("Performing skipping action on {}", agent);
-	}
+    @Override
+    protected void doPerform(final A agent) throws AgentException {
+        // do nothing
+        log.debug("Performing skipping action on {}", agent);
+    }
 }

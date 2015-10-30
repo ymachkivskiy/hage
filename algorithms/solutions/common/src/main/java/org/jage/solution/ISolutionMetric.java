@@ -31,26 +31,24 @@
 
 package org.jage.solution;
 
+
 import org.jage.strategy.IStrategy;
+
 
 /**
  * Strategy interface for computing the distance between two {@link ISolution}.
  *
- * @param <S>
- *            The type of solutions to be measured.
- *
+ * @param <S> The type of solutions to be measured.
  * @author AGH AgE Team
  */
 public interface ISolutionMetric<S extends ISolution> extends IStrategy {
 
-	/**
-	 * Computes the distance between two solutions, according to some metric.
-	 *
-	 * @param solution1
-	 *            the first solution
-	 * @param solution2
-	 *            the second solution
-	 * @return the distance between these solutions
-	 */
-	public double getDistance(S solution1, S solution2);
+    /**
+     * Computes the distance between two solutions, according to some metric.
+     *
+     * @param solution1 the first solution
+     * @param solution2 the second solution
+     * @return the distance between these solutions
+     */
+    public double getDistance(S solution1, S solution2);
 }

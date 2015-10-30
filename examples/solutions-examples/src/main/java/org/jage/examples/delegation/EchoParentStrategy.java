@@ -31,8 +31,10 @@
 
 package org.jage.examples.delegation;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 /**
  * Strategy for adding a "My parent is" to a text and printing it.
@@ -41,10 +43,10 @@ import org.slf4j.LoggerFactory;
  */
 public class EchoParentStrategy implements IEchoStrategy {
 
-	private static final Logger log = LoggerFactory.getLogger(EchoParentStrategy.class);
+    private static final Logger log = LoggerFactory.getLogger(EchoParentStrategy.class);
 
-	@Override
+    @Override
     public void echo(final String parentAddress) {
-		log.info("My parent is {}", parentAddress);
-	}
+        log.info("My parent is {}", parentAddress);
+    }
 }

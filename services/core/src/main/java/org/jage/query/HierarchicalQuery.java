@@ -27,112 +27,111 @@
 
 package org.jage.query;
 
-import static com.google.common.collect.Sets.newHashSet;
+
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Sets;
+import org.jage.agent.IAgent;
+import org.jage.agent.IAggregate;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.jage.agent.IAgent;
-import org.jage.agent.IAggregate;
-import org.jage.agent.ISimpleAggregate;
+import static com.google.common.collect.Sets.newHashSet;
 
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Sets;
 
 /**
- * 
  * @author AGH AgE Team
  */
 public class HierarchicalQuery implements IQuery<Collection<IAgent>, Collection<IAgent>> {
 
-	List<IValueFilter<? super IAgent>> valueFilterList;
+    List<IValueFilter<? super IAgent>> valueFilterList;
 
-	public HierarchicalQuery() {
-		valueFilterList = new ArrayList<IValueFilter<? super IAgent>>();
-	}
+    public HierarchicalQuery() {
+        valueFilterList = new ArrayList<IValueFilter<? super IAgent>>();
+    }
 
-	public HierarchicalQuery(IValueFilter<? super IAgent>... valueFilters) {
-		valueFilterList = new ArrayList<IValueFilter<? super IAgent>>();
-		for (IValueFilter<? super IAgent> iValueFilter : valueFilters) {
-			valueFilterList.add(iValueFilter);
-		}
-	}
+    public HierarchicalQuery(IValueFilter<? super IAgent>... valueFilters) {
+        valueFilterList = new ArrayList<IValueFilter<? super IAgent>>();
+        for(IValueFilter<? super IAgent> iValueFilter : valueFilters) {
+            valueFilterList.add(iValueFilter);
+        }
+    }
 
-	public HierarchicalQuery(List<IValueFilter<? super IAgent>> valueFilterList) {
-		this.valueFilterList = valueFilterList;
-	}
+    public HierarchicalQuery(List<IValueFilter<? super IAgent>> valueFilterList) {
+        this.valueFilterList = valueFilterList;
+    }
 
-	public HierarchicalQuery matching(IValueFilter<? super IAgent> valueFfilter) {
-		valueFilterList.add(valueFfilter);
-		return this;
-	}
+    public HierarchicalQuery matching(IValueFilter<? super IAgent> valueFfilter) {
+        valueFilterList.add(valueFfilter);
+        return this;
+    }
 
-	public HierarchicalQuery matching(List<IValueFilter<? super IAgent>> valueFilterList) {
-		this.valueFilterList = valueFilterList;
-		return this;
-	}
+    public HierarchicalQuery matching(List<IValueFilter<? super IAgent>> valueFilterList) {
+        this.valueFilterList = valueFilterList;
+        return this;
+    }
 
-	@Override
-	public Collection<IAgent> execute(Collection<IAgent> target) {
-		return hierarchicalQueryAgentsByValueFilter(target, valueFilterList);
-	}
+    @Override
+    public Collection<IAgent> execute(Collection<IAgent> target) {
+        return hierarchicalQueryAgentsByValueFilter(target, valueFilterList);
+    }
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private Collection hierarchicalQueryAgentsByValueFilter(Collection collection, List<IValueFilter<? super IAgent>> filters) {
-		Collection result = newHashSet();
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private Collection hierarchicalQueryAgentsByValueFilter(Collection collection, List<IValueFilter<? super IAgent>> filters) {
+        Collection result = newHashSet();
 
-		if (!filters.isEmpty()) {
-			IValueFilter head = filters.get(0);
-			List<IValueFilter<? super IAgent>> tail = filters.subList(1, filters.size());
+        if(!filters.isEmpty()) {
+            IValueFilter head = filters.get(0);
+            List<IValueFilter<? super IAgent>> tail = filters.subList(1, filters.size());
 
-			Collection matchingElements = Sets.newHashSet();
+            Collection matchingElements = Sets.newHashSet();
 
-			for (Object o : collection) {
-				if (head.matches(o)) {
-					matchingElements.add(o);
-				}
-			}
+            for(Object o : collection) {
+                if(head.matches(o)) {
+                    matchingElements.add(o);
+                }
+            }
 
-			if (tail.isEmpty()) {
-				result = matchingElements;
-			} else {
-				for (IAggregate c : Iterables.filter(matchingElements, IAggregate.class)) {
-					result.addAll(hierarchicalQueryAgentsByValueFilter(c, tail));
-				}
-			}
-		}
+            if(tail.isEmpty()) {
+                result = matchingElements;
+            } else {
+                for(IAggregate c : Iterables.filter(matchingElements, IAggregate.class)) {
+                    result.addAll(hierarchicalQueryAgentsByValueFilter(c, tail));
+                }
+            }
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	// @SuppressWarnings({ "rawtypes", "unchecked" })
-	// private Collection hierarchicalQueryAgentsByValueFilter(Collection
-	// collection, List<IValueFilter<? super IAgent>> filters) {
-	// Collection result = newHashSet();
-	//
-	// if(!filters.isEmpty()) {
-	// IValueFilter head = filters.get(0);
-	// List<IValueFilter<? super IAgent>> tail = filters.subList(1,
-	// filters.size());
-	// Collection matchingElements = Sets.newHashSet();
-	// for(Object o : collection) {
-	// if(head.matches(o)) {
-	// matchingElements.add(o);
-	// }
-	// }
-	//
-	// if(tail.isEmpty()) {
-	// result = matchingElements;
-	// } else {
-	// for(Collection c : Iterables.filter(matchingElements, Collection.class))
-	// {
-	// result.add(hierarchicalQueryAgentsByValueFilter(c, tail));
-	// }
-	// }
-	// }
-	//
-	// return result;
-	// }
+    // @SuppressWarnings({ "rawtypes", "unchecked" })
+    // private Collection hierarchicalQueryAgentsByValueFilter(Collection
+    // collection, List<IValueFilter<? super IAgent>> filters) {
+    // Collection result = newHashSet();
+    //
+    // if(!filters.isEmpty()) {
+    // IValueFilter head = filters.get(0);
+    // List<IValueFilter<? super IAgent>> tail = filters.subList(1,
+    // filters.size());
+    // Collection matchingElements = Sets.newHashSet();
+    // for(Object o : collection) {
+    // if(head.matches(o)) {
+    // matchingElements.add(o);
+    // }
+    // }
+    //
+    // if(tail.isEmpty()) {
+    // result = matchingElements;
+    // } else {
+    // for(Collection c : Iterables.filter(matchingElements, Collection.class))
+    // {
+    // result.add(hierarchicalQueryAgentsByValueFilter(c, tail));
+    // }
+    // }
+    // }
+    //
+    // return result;
+    // }
 
 }

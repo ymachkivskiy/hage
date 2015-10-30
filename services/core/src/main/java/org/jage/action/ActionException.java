@@ -31,7 +31,9 @@
 
 package org.jage.action;
 
+
 import org.jage.exception.AgeException;
+
 
 /**
  * {@code ActionException} is thrown whenever there is problem with actions.
@@ -40,38 +42,34 @@ import org.jage.exception.AgeException;
  */
 public class ActionException extends AgeException {
 
-	private static final long serialVersionUID = 2267833332760534798L;
+    private static final long serialVersionUID = 2267833332760534798L;
 
-	/**
-	 * Constructs a new action exception.
-	 *
-	 * @param message
-	 *            the detail message.
-	 * @param cause
-	 *            the cause of this exception.
-	 */
-	public ActionException(final String message, final Throwable cause) {
-		super(message, cause);
-	}
+    /**
+     * Constructs a new action exception.
+     *
+     * @param message the detail message.
+     * @param cause   the cause of this exception.
+     */
+    public ActionException(final String message, final Throwable cause) {
+        super(message, cause);
+    }
 
-	/**
-	 * Constructs a new action exception.
-	 *
-	 * @param message
-	 *            the detail message.
-	 */
-	public ActionException(final String message) {
-		super(message);
-	}
+    /**
+     * Constructs a new action exception.
+     *
+     * @param message the detail message.
+     */
+    public ActionException(final String message) {
+        super(message);
+    }
 
-	/**
-	 * Constructs a new action exception with <code>null</code> as its detail message.
-	 *
-	 * @param cause
-	 *            the cause of this exception.
-	 */
-	public ActionException(final Throwable cause) {
-		super(cause);
-	}
+    /**
+     * Constructs a new action exception with <code>null</code> as its detail message.
+     *
+     * @param cause the cause of this exception.
+     */
+    public ActionException(final Throwable cause) {
+        super(cause);
+    }
 
 }

@@ -33,9 +33,9 @@
  * Contains address selectors dedicated for {@link org.jage.address.agent.AgentAddress}.
  */
 @ReturnValuesAreNonnullByDefault
-@ParametersAreNonnullByDefault
-package org.jage.address.selector.agent;
+@ParametersAreNonnullByDefault package org.jage.address.selector.agent;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 
 import org.jage.annotation.ReturnValuesAreNonnullByDefault;
+
+import javax.annotation.ParametersAreNonnullByDefault;

@@ -26,83 +26,84 @@
  */
 package org.jage.monitoring.observer;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-
-import javax.inject.Inject;
 
 import org.jage.monitoring.config.ExecutorProvider;
 import org.jage.platform.component.IStatefulComponent;
 import org.jage.platform.component.exception.ComponentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import rx.Observable;
 import rx.Observer;
 import rx.subjects.ReplaySubject;
 import rx.subjects.Subject;
 
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+
+
 /**
- * Abstract base class for all Observers used in monitoring. 
- * 
+ * Abstract base class for all Observers used in monitoring.
+ *
  * @author AGH AgE Team
  */
-public abstract class AbstractStatefulObserver implements Observer<ObservedData>, ICompletable, IStatefulComponent{
-	
-	protected static final Logger log = LoggerFactory.getLogger(AbstractStatefulObserver.class);
-	
-	@Inject
-	protected ExecutorProvider executorProvider;
-	protected ExecutorService executor;
-	private List<Observable<ObservedData>> observables;
-	private Subject<Object, Object> isCompleted;
-	
-	public AbstractStatefulObserver(){
-		observables = new ArrayList<>();
-		isCompleted = ReplaySubject.create();
-	}
-	
-	@Override
-	public void init() throws ComponentException {
-		executor = executorProvider.getExecutor();
-	}
-	
-	@Override
-	public void onCompleted() {
-		log.info("{} has completed", getClass().getName());
-		isCompleted.onCompleted();
-	}
+public abstract class AbstractStatefulObserver implements Observer<ObservedData>, ICompletable, IStatefulComponent {
 
-	@Override
-	public void onError(Throwable e) {
-		log.error("The following error occured:", e);
-	}
-	
-	@Override
-	public Observable<Object> isCompleted(){
-		return isCompleted;
-	}
-	
-	@Override
-	public boolean finish() throws ComponentException {
-		return false;
-	}
-	
-	/**
-	 * Adds argument to list of observables. 
-	 * 
-	 * @param observable
-	 */
-	public void addObservable(Observable<ObservedData> observable){
-		observables.add(observable);
-	}
-	
-	/**
-	 * Returns list of elements which would be observed by this observer.
-	 * @return list of observables.
-	 */
-	public List<Observable<ObservedData>> getObservables() {
-		return observables;
-	}
+    protected static final Logger log = LoggerFactory.getLogger(AbstractStatefulObserver.class);
+
+    @Inject
+    protected ExecutorProvider executorProvider;
+    protected ExecutorService executor;
+    private List<Observable<ObservedData>> observables;
+    private Subject<Object, Object> isCompleted;
+
+    public AbstractStatefulObserver() {
+        observables = new ArrayList<>();
+        isCompleted = ReplaySubject.create();
+    }
+
+    @Override
+    public void init() throws ComponentException {
+        executor = executorProvider.getExecutor();
+    }
+
+    @Override
+    public boolean finish() throws ComponentException {
+        return false;
+    }
+
+    @Override
+    public void onCompleted() {
+        log.info("{} has completed", getClass().getName());
+        isCompleted.onCompleted();
+    }
+
+    @Override
+    public void onError(Throwable e) {
+        log.error("The following error occured:", e);
+    }
+
+    @Override
+    public Observable<Object> isCompleted() {
+        return isCompleted;
+    }
+
+    /**
+     * Adds argument to list of observables.
+     *
+     * @param observable
+     */
+    public void addObservable(Observable<ObservedData> observable) {
+        observables.add(observable);
+    }
+
+    /**
+     * Returns list of elements which would be observed by this observer.
+     *
+     * @return list of observables.
+     */
+    public List<Observable<ObservedData>> getObservables() {
+        return observables;
+    }
 }
