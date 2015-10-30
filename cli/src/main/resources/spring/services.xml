@@ -23,21 +23,14 @@
     <bean id="hage.service.performance.NodePerformanceManager" class="org.jage.performance.node.CombinedNodePerformanceManager">
         <property name="measurers">
             <list>
-                <ref bean="hage.service.performance.CPUMeasurer"/>
-                <ref bean="hage.service.performance.MemoryMeasurer"/>
-                <ref bean="hage.service.performance.DiskMeasurer"/>
+                <bean class="org.jage.performance.node.measure.impl.MaxMemoryPerformanceMeasurer"/>
+                <bean class="org.jage.performance.node.measure.impl.ConcurrencyPerformanceMeasurer"/>
             </list>
         </property>
     </bean>
 
     <bean id="hage.service.performance.normalizer.scaled"
           class="org.jage.performance.node.normalize.scaled.ScaledNormalizerProvider"/>
-
-    <bean id="hage.service.performance.CPUMeasurer" class="org.jage.performance.node.measure.impl.CpuPerformanceMeasurer"/>
-
-    <bean id="hage.service.performance.MemoryMeasurer" class="org.jage.performance.node.measure.impl.MemoryPerformanceMeasurer"/>
-
-    <bean id="hage.service.performance.DiskMeasurer" class="org.jage.performance.node.measure.impl.DiskPerformanceMeasurer"/>
 
     <bean id="hage.service.performance.ClusterPerformanceManager" class="org.jage.performance.cluster.CombinedClusterPerformanceManager"/>
 
