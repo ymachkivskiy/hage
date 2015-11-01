@@ -72,7 +72,7 @@ public class HelloWorldSimpleAgent extends SimpleAgent {
      * {@inheritDoc}
      *
      * @throws ComponentException Thrown when initialisation fails.
-     * @see org.jage.agent.AbstractAgent${symbol_pound}init()
+     * @see org.hage.agent.AbstractAgent${symbol_pound}init()
      */
     @Override
     public void init() {
@@ -85,7 +85,7 @@ public class HelloWorldSimpleAgent extends SimpleAgent {
      * <p>
      * {@inheritDoc}
      *
-     * @see org.jage.agent.SimpleAgent${symbol_pound}step()
+     * @see org.hage.agent.SimpleAgent${symbol_pound}step()
      */
     @Override
     public void step() {
@@ -102,7 +102,7 @@ public class HelloWorldSimpleAgent extends SimpleAgent {
      * <p>
      * {@inheritDoc}
      *
-     * @see org.jage.agent.AbstractAgent${symbol_pound}finish()
+     * @see org.hage.agent.AbstractAgent${symbol_pound}finish()
      */
     @Override
     public boolean finish() {

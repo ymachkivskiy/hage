@@ -10,7 +10,7 @@
         </layout>
     </appender>
 
-    <logger name="org.jage">
+    <logger name="org.hage">
         <level value="info"/>
     </logger>
 

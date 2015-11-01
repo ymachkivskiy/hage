@@ -5,46 +5,46 @@
 
     <include file="classpath:examples/common.xml">
         <block name="workplaces">
-            <component name="workplace" class="org.jage.workplace.SimpleWorkplace" isSingleton="false">
+            <component name="workplace" class="org.hage.workplace.SimpleWorkplace" isSingleton="false">
                 <property name="agent">
-                    <agent name="action" class="org.jage.agent.SimpleAggregate">
+                    <agent name="action" class="org.hage.agent.SimpleAggregate">
                         <property name="agents">
                             <list>
-                                <agent name="list" class="org.jage.examples.configuration.ListAgent">
+                                <agent name="list" class="org.hage.examples.configuration.ListAgent">
                                     <list name="object-example">
-                                        <component class="org.jage.examples.configuration.ExampleClass"
+                                        <component class="org.hage.examples.configuration.ExampleClass"
                                                    isSingleton="false">
                                             <constructor-arg value="First object"/>
                                         </component>
 
-                                        <component class="org.jage.examples.configuration.ExampleClass"
+                                        <component class="org.hage.examples.configuration.ExampleClass"
                                                    isSingleton="false">
                                             <constructor-arg value="Second object"/>
                                         </component>
 
-                                        <component class="org.jage.examples.configuration.ExampleClass"
+                                        <component class="org.hage.examples.configuration.ExampleClass"
                                                    isSingleton="false">
                                             <constructor-arg value="Third object"/>
                                         </component>
                                     </list>
                                 </agent>
 
-                                <agent name="map" class="org.jage.examples.configuration.MapAgent">
+                                <agent name="map" class="org.hage.examples.configuration.MapAgent">
                                     <map name="object-example">
                                         <entry key="example-1">
-                                            <component class="org.jage.examples.configuration.ExampleClass"
+                                            <component class="org.hage.examples.configuration.ExampleClass"
                                                        isSingleton="false">
                                                 <constructor-arg value="First object"/>
                                             </component>
                                         </entry>
                                         <entry key="example-2">
-                                            <component class="org.jage.examples.configuration.ExampleClass"
+                                            <component class="org.hage.examples.configuration.ExampleClass"
                                                        isSingleton="false">
                                                 <constructor-arg value="Second object"/>
                                             </component>
                                         </entry>
                                         <entry key="example-3">
-                                            <component class="org.jage.examples.configuration.ExampleClass"
+                                            <component class="org.hage.examples.configuration.ExampleClass"
                                                        isSingleton="false">
                                                 <constructor-arg value="Third object"/>
                                             </component>
@@ -59,7 +59,7 @@
         </block>
 
         <block name="stopCondition">
-            <component name="stopCondition" class="org.jage.workplace.FixedStepCountStopCondition">
+            <component name="stopCondition" class="org.hage.workplace.FixedStepCountStopCondition">
                 <constructor-arg type="Long" value="1"/>
             </component>
         </block>

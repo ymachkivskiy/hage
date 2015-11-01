@@ -4,18 +4,18 @@
 
     <include file="classpath:examples/common.xml">
         <block name="workplaces">
-            <component name="workplace" class="org.jage.workplace.SimpleWorkplace" isSingleton="false">
+            <component name="workplace" class="org.hage.workplace.SimpleWorkplace" isSingleton="false">
                 <property name="agent">
-                    <agent name="root" class="org.jage.examples.delegation.DelegationSimpleAggregate">
-                        <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                    <agent name="root" class="org.hage.examples.delegation.DelegationSimpleAggregate">
+                        <component class="org.hage.address.agent.DefaultAgentAddressSupplier">
                             <constructor-arg name="nameTemplate" value="Root"/>
                         </component>
                         <property name="echoStrategy" ref="parentStrategy"/>
                         <property name="agents">
                             <list>
                                 <agent name="level-1"
-                                       class="org.jage.examples.delegation.DelegationSimpleAggregate">
-                                    <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                                       class="org.hage.examples.delegation.DelegationSimpleAggregate">
+                                    <component class="org.hage.address.agent.DefaultAgentAddressSupplier">
                                         <constructor-arg name="nameTemplate" value="Level-1"/>
                                     </component>
                                     <property name="echoStrategy" ref="parentStrategy"/>
@@ -24,16 +24,16 @@
                                     <property name="agents">
                                         <list>
                                             <agent name="level-1-1"
-                                                   class="org.jage.examples.delegation.DelegationSimpleLeaf">
+                                                   class="org.hage.examples.delegation.DelegationSimpleLeaf">
                                                 <component
-                                                        class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                                                        class="org.hage.address.agent.DefaultAgentAddressSupplier">
                                                     <constructor-arg name="nameTemplate" value="Level-1-1"/>
                                                 </component>
                                             </agent>
                                             <agent name="level-1-2"
-                                                   class="org.jage.examples.delegation.DelegationSimpleLeaf">
+                                                   class="org.hage.examples.delegation.DelegationSimpleLeaf">
                                                 <component
-                                                        class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                                                        class="org.hage.address.agent.DefaultAgentAddressSupplier">
                                                     <constructor-arg name="nameTemplate" value="Level-1-2"/>
                                                 </component>
                                             </agent>
@@ -42,8 +42,8 @@
                                 </agent>
 
                                 <agent name="level-2"
-                                       class="org.jage.examples.delegation.DelegationSimpleAggregate">
-                                    <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                                       class="org.hage.examples.delegation.DelegationSimpleAggregate">
+                                    <component class="org.hage.address.agent.DefaultAgentAddressSupplier">
                                         <constructor-arg name="nameTemplate" value="Level-2"/>
                                     </component>
                                     <property name="echoStrategy" ref="helloStrategy"/>
@@ -52,9 +52,9 @@
                                     <property name="agents">
                                         <list>
                                             <agent name="level-2-1"
-                                                   class="org.jage.examples.delegation.DelegationSimpleLeaf">
+                                                   class="org.hage.examples.delegation.DelegationSimpleLeaf">
                                                 <component
-                                                        class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                                                        class="org.hage.address.agent.DefaultAgentAddressSupplier">
                                                     <constructor-arg name="nameTemplate" value="Level-2-1"/>
                                                 </component>
                                             </agent>
@@ -68,8 +68,8 @@
             </component>
         </block>
         <block name="workplaceComponents" override="false">
-            <strategy name="parentStrategy" class="org.jage.examples.delegation.EchoParentStrategy"/>
-            <strategy name="helloStrategy" class="org.jage.examples.delegation.EchoHelloStrategy"/>
+            <strategy name="parentStrategy" class="org.hage.examples.delegation.EchoParentStrategy"/>
+            <strategy name="helloStrategy" class="org.hage.examples.delegation.EchoHelloStrategy"/>
         </block>
     </include>
 </configuration>

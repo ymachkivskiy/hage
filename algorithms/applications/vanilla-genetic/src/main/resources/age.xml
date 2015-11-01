@@ -4,75 +4,75 @@
 
     <include file="classpath:common.xml">
         <block name="workplaces">
-            <component name="workplace" class="org.jage.workplace.SimpleWorkplace" isSingleton="false">
+            <component name="workplace" class="org.hage.workplace.SimpleWorkplace" isSingleton="false">
                 <property name="agent">
-                    <agent name="action" class="org.jage.agent.SimpleAggregate">
+                    <agent name="action" class="org.hage.agent.SimpleAggregate">
                         <property name="agents">
                             <list>
-                                <agent name="agent" class="org.jage.genetic.agent.GeneticActionDrivenAgent"/>
+                                <agent name="agent" class="org.hage.genetic.agent.GeneticActionDrivenAgent"/>
                             </list>
                         </property>
 
                         <!-- Action Strategies -->
                         <strategy name="geneticActionPreparator"
-                                  class="org.jage.genetic.action.GeneticActionPreparer"/>
+                                  class="org.hage.genetic.action.GeneticActionPreparer"/>
                         <strategy name="geneticActionComparator"
-                                  class="org.jage.genetic.action.GeneticActionComparator"/>
+                                  class="org.hage.genetic.action.GeneticActionComparator"/>
 
                         <strategy name="initializationAction"
-                                  class="org.jage.genetic.action.InitializationActionStrategy"/>
-                        <strategy name="preselectionAction" class="org.jage.genetic.action.PreselectionActionStrategy"/>
-                        <strategy name="variationAction" class="org.jage.genetic.action.VariationActionStrategy"/>
-                        <strategy name="evaluationAction" class="org.jage.genetic.action.EvaluationActionStrategy"/>
+                                  class="org.hage.genetic.action.InitializationActionStrategy"/>
+                        <strategy name="preselectionAction" class="org.hage.genetic.action.PreselectionActionStrategy"/>
+                        <strategy name="variationAction" class="org.hage.genetic.action.VariationActionStrategy"/>
+                        <strategy name="evaluationAction" class="org.hage.genetic.action.EvaluationActionStrategy"/>
                         <strategy name="statisticsUpdateAction"
-                                  class="org.jage.genetic.action.StatisticsUpdateActionStrategy"/>
+                                  class="org.hage.genetic.action.StatisticsUpdateActionStrategy"/>
                     </agent>
                 </property>
             </component>
         </block>
 
         <block name="propertygatherer">
-            <component class="org.jage.monitoring.gatherer.DefaultComputationInstanceProvider"/>
-            <component class="org.jage.monitoring.typesafe.TypeSafeConfigMonitoring">
+            <component class="org.hage.monitoring.gatherer.DefaultComputationInstanceProvider"/>
+            <component class="org.hage.monitoring.typesafe.TypeSafeConfigMonitoring">
                 <property name="config" value="monitoring"/>
             </component>
         </block>
 
         <block name="workplaceComponents" override="false">
             <!-- General Strategies -->
-            <strategy name="populationFactory" class="org.jage.population.PopulationFactory">
+            <strategy name="populationFactory" class="org.hage.population.PopulationFactory">
                 <property name="populationSize" type="Integer" value="${population.size}"/>
             </strategy>
-            <strategy name="solutionFactory" class="org.jage.solution.realvalued.RealValuedSolutionFactory"/>
+            <strategy name="solutionFactory" class="org.hage.solution.realvalued.RealValuedSolutionFactory"/>
 
-            <strategy name="populationEvaluator" class="org.jage.evaluation.SequentialPopulationEvaluator"/>
-            <strategy name="solutionEvaluator" class="org.jage.evaluation.realvalued.RastriginEvaluator"/>
-            <strategy name="problem" class="org.jage.problem.realvalued.RastriginProblem">
+            <strategy name="populationEvaluator" class="org.hage.evaluation.SequentialPopulationEvaluator"/>
+            <strategy name="solutionEvaluator" class="org.hage.evaluation.realvalued.RastriginEvaluator"/>
+            <strategy name="problem" class="org.hage.problem.realvalued.RastriginProblem">
                 <constructor-arg type="Integer" value="${problem.size}"/>
             </strategy>
 
-            <strategy name="rand" class="org.jage.random.SimpleGenerator">
+            <strategy name="rand" class="org.hage.random.SimpleGenerator">
                 <constructor-arg type="Long" value="1234567890"/>
             </strategy>
 
             <!-- Genetic Strategies -->
 
-            <strategy name="rankPreselection" class="org.jage.genetic.preselection.RankPreselection">
-                <strategy name="preselection" class="org.jage.genetic.preselection.StochasticPreselection">
-                    <strategy name="scaling" class="org.jage.genetic.scaling.SimpleScaling"/>
+            <strategy name="rankPreselection" class="org.hage.genetic.preselection.RankPreselection">
+                <strategy name="preselection" class="org.hage.genetic.preselection.StochasticPreselection">
+                    <strategy name="scaling" class="org.hage.genetic.scaling.SimpleScaling"/>
                 </strategy>
             </strategy>
 
-            <strategy name="geneticOperators" class="org.jage.variation.VariationOperator">
-                <strategy name="recombinePopulation" class="org.jage.variation.recombination.PairedRecombinePopulation">
+            <strategy name="geneticOperators" class="org.hage.variation.VariationOperator">
+                <strategy name="recombinePopulation" class="org.hage.variation.recombination.PairedRecombinePopulation">
                     <property name="chanceToRecombine" type="Double" value="${individual.chanceToRecombine}"/>
                     <strategy name="recombineSolutions"
-                              class="org.jage.variation.recombination.realvalued.AverageRecombine"/>
+                              class="org.hage.variation.recombination.realvalued.AverageRecombine"/>
                 </strategy>
-                <strategy name="mutatePopulation" class="org.jage.variation.mutation.IndividuallyMutatePopulation">
+                <strategy name="mutatePopulation" class="org.hage.variation.mutation.IndividuallyMutatePopulation">
                     <property name="chanceToMutate" type="Double" value="${individual.chanceToMutate}"/>
                     <strategy name="mutateSolution"
-                              class="org.jage.variation.mutation.realvalued.NormalMicroMacroMutate">
+                              class="org.hage.variation.mutation.realvalued.NormalMicroMacroMutate">
                         <property name="chanceToMutate" type="Double" value="${feature.chanceToMutate}"/>
                         <property name="mutationRange" type="Double" value="${feature.mutationRange}"/>
                     </strategy>

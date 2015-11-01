@@ -4,22 +4,22 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="hage.platform.communication"
-          class="org.jage.communication.hazelcast.HazelcastRemoteCommunicationManager"/>
+          class="org.hage.communication.hazelcast.HazelcastRemoteCommunicationManager"/>
 
-    <bean id="hage.platform.bus" class="org.jage.bus.EventBus">
+    <bean id="hage.platform.bus" class="org.hage.bus.EventBus">
         <constructor-arg value="mainHageBus"/>
     </bean>
 
     <bean id="hage.service.configuration.communication.remote"
-          class="org.jage.configuration.communication.ConfigurationRemoteChanel"
+          class="org.hage.configuration.communication.ConfigurationRemoteChanel"
           parent="hage.component.stateful.base"/>
 
     <bean id="hage.service.lifecycle.communication.remote"
-          class="org.jage.lifecycle.communication.LifecycleManagerRemoteChanel"
+          class="org.hage.lifecycle.communication.LifecycleManagerRemoteChanel"
           parent="hage.component.stateful.base"/>
 
     <bean id="hage.service.performance.communication.remote"
-          class="org.jage.performance.cluster.communication.PerformanceRemoteChanel"
+          class="org.hage.performance.cluster.communication.PerformanceRemoteChanel"
           parent="hage.component.stateful.base"/>
 
 </beans>

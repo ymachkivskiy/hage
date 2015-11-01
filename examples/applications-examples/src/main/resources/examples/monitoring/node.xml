@@ -3,47 +3,47 @@
                xmlns="http://age.iisg.agh.edu.pl/schema/age"
                xsi:schemaLocation="http://age.iisg.agh.edu.pl/schema/age http://age.iisg.agh.edu.pl/schema/age/age.xsd">
 
-    <component class="org.jage.communication.HazelcastCommunicationManager"/>
-    <component class="org.jage.configuration.service.ConfigurationStorageService"/>
-    <component class="org.jage.configuration.service.ConfigurationLoaderService"/>
-    <component class="org.jage.bus.EventBus">
+    <component class="org.hage.communication.HazelcastCommunicationManager"/>
+    <component class="org.hage.configuration.service.ConfigurationStorageService"/>
+    <component class="org.hage.configuration.service.ConfigurationLoaderService"/>
+    <component class="org.hage.bus.EventBus">
         <constructor-arg name="name" type="String" value="mainBus"/>
     </component>
 
-    <component name="workplaceManager" class="org.jage.workplace.manager.DefaultWorkplaceManager"/>
-    <component class="org.jage.lifecycle.AutoExitHook"/>
+    <component name="workplaceManager" class="org.hage.workplace.manager.DefaultWorkplaceManager"/>
+    <component class="org.hage.lifecycle.AutoExitHook"/>
 
     <block name="monitoring">
-        <component class="org.jage.monitoring.Monitoring">
-            <component class="org.jage.monitoring.config.DefaultComputationInstanceProvider"/>
-            <component class="org.jage.monitoring.config.ExecutorProvider"/>
-            <component class="org.jage.monitoring.config.ExecutorShutdownCaller"/>
-            <component class="org.jage.monitoring.config.RxComputationSchedulerProvider"/>
+        <component class="org.hage.monitoring.Monitoring">
+            <component class="org.hage.monitoring.config.DefaultComputationInstanceProvider"/>
+            <component class="org.hage.monitoring.config.ExecutorProvider"/>
+            <component class="org.hage.monitoring.config.ExecutorShutdownCaller"/>
+            <component class="org.hage.monitoring.config.RxComputationSchedulerProvider"/>
 
-            <component name="stringQuery" class="org.jage.monitoring.supplier.AgentStringQuerySupplier">
+            <component name="stringQuery" class="org.hage.monitoring.supplier.AgentStringQuerySupplier">
                 <constructor-arg name="query" value="/TheXFiles/Scully@alienAbductions"/>
             </component>
 
-            <component name="random" class="org.jage.monitoring.supplier.RandomSupplier"/>
+            <component name="random" class="org.hage.monitoring.supplier.RandomSupplier"/>
 
-            <component name="randomProvider" class="org.jage.monitoring.observable.ObservableProvider">
+            <component name="randomProvider" class="org.hage.monitoring.observable.ObservableProvider">
                 <constructor-arg name="supplier" ref="random"/>
                 <constructor-arg name="rate" value="1000" type="Long"/>
             </component>
 
-            <component name="queryProvider" class="org.jage.monitoring.observable.ObservableProvider">
+            <component name="queryProvider" class="org.hage.monitoring.observable.ObservableProvider">
                 <constructor-arg name="supplier" ref="stringQuery"/>
                 <constructor-arg name="rate" value="1000" type="Long"/>
             </component>
 
             <list name="observers">
-                <component name="logging" class="org.jage.monitoring.observer.LoggingObserver"/>
+                <component name="logging" class="org.hage.monitoring.observer.LoggingObserver"/>
             </list>
             <constructor-arg>
-                <component class="org.jage.monitoring.config.XmlConfig">
+                <component class="org.hage.monitoring.config.XmlConfig">
                     <constructor-arg>
                         <list>
-                            <component name="handler1" class="org.jage.monitoring.handler.HandlerFactoryProvider">
+                            <component name="handler1" class="org.hage.monitoring.handler.HandlerFactoryProvider">
                                 <constructor-arg name="name" value="handler1"/>
                                 <constructor-arg name="observableProviders">
                                     <list name="observableProviders">
@@ -52,11 +52,11 @@
                                     </list>
                                 </constructor-arg>
                                 <constructor-arg name="observers" ref="observers"/>
-                                <constructor-arg name="clazz" value="org.jage.monitoring.handler.AvgHandlerFactory"/>
+                                <constructor-arg name="clazz" value="org.hage.monitoring.handler.AvgHandlerFactory"/>
                                 <constructor-arg name="method" value="create"/>
                             </component>
 
-                            <component name="handler2" class="org.jage.monitoring.handler.HandlerFactoryProvider">
+                            <component name="handler2" class="org.hage.monitoring.handler.HandlerFactoryProvider">
                                 <constructor-arg name="name" value="handler2"/>
                                 <constructor-arg name="observableProviders">
                                     <list>
@@ -64,7 +64,7 @@
                                     </list>
                                 </constructor-arg>
                                 <constructor-arg name="observers" ref="observers"/>
-                                <constructor-arg name="clazz" value="org.jage.monitoring.handler.BasicHandlerFactory"/>
+                                <constructor-arg name="clazz" value="org.hage.monitoring.handler.BasicHandlerFactory"/>
                                 <constructor-arg name="method" value="create"/>
                             </component>
                         </list>
@@ -73,7 +73,7 @@
             </constructor-arg>
 
             <constructor-arg>
-                <component class="org.jage.monitoring.config.TypeSafeConfig">
+                <component class="org.hage.monitoring.config.TypeSafeConfig">
                     <constructor-arg value="examples/monitoring/monitoring"/>
                 </component>
             </constructor-arg>

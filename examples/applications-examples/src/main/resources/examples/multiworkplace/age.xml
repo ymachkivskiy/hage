@@ -5,21 +5,21 @@
     <include file="classpath:examples/common.xml">
         <block name="workplaces">
             <!-- Workplace 1 -->
-            <component name="workplace1" class="org.jage.workplace.SimpleWorkplace" isSingleton="false">
+            <component name="workplace1" class="org.hage.workplace.SimpleWorkplace" isSingleton="false">
                 <property name="agent">
-                    <agent name="action" class="org.jage.agent.SimpleAggregate">
-                        <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                    <agent name="action" class="org.hage.agent.SimpleAggregate">
+                        <component class="org.hage.address.agent.DefaultAgentAddressSupplier">
                             <constructor-arg name="nameTemplate" value="TheXFiles"/>
                         </component>
                         <property name="agents">
                             <list>
-                                <agent name="scully" class="org.jage.examples.multiworkplace.MultiworkplaceSimpleAgent">
-                                    <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                                <agent name="scully" class="org.hage.examples.multiworkplace.MultiworkplaceSimpleAgent">
+                                    <component class="org.hage.address.agent.DefaultAgentAddressSupplier">
                                         <constructor-arg name="nameTemplate" value="Scully"/>
                                     </component>
                                 </agent>
-                                <agent name="mulder" class="org.jage.examples.multiworkplace.MultiworkplaceSimpleAgent">
-                                    <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                                <agent name="mulder" class="org.hage.examples.multiworkplace.MultiworkplaceSimpleAgent">
+                                    <component class="org.hage.address.agent.DefaultAgentAddressSupplier">
                                         <constructor-arg name="nameTemplate" value="Mulder"/>
                                     </component>
                                 </agent>
@@ -29,23 +29,23 @@
                 </property>
                 <!--<property name="queries">
                     <list>
-                        <component class="org.jage.examples.multiworkplace.MultiworkplacePropertiesQuery"
+                        <component class="org.hage.examples.multiworkplace.MultiworkplacePropertiesQuery"
                                    isSingleton="false"/>
                     </list>
                 </property>-->
             </component>
 
             <!-- Workplace 2 -->
-            <component name="workplace2" class="org.jage.workplace.SimpleWorkplace" isSingleton="false">
+            <component name="workplace2" class="org.hage.workplace.SimpleWorkplace" isSingleton="false">
                 <property name="agent">
-                    <agent class="org.jage.agent.SimpleAggregate">
-                        <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                    <agent class="org.hage.agent.SimpleAggregate">
+                        <component class="org.hage.address.agent.DefaultAgentAddressSupplier">
                             <constructor-arg name="nameTemplate" value="GoldenEye"/>
                         </component>
                         <property name="agents">
                             <list>
-                                <agent name="bond" class="org.jage.examples.multiworkplace.MultiworkplaceSimpleAgent">
-                                    <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                                <agent name="bond" class="org.hage.examples.multiworkplace.MultiworkplaceSimpleAgent">
+                                    <component class="org.hage.address.agent.DefaultAgentAddressSupplier">
                                         <constructor-arg name="nameTemplate" value="JamesBond"/>
                                     </component>
                                 </agent>
@@ -55,7 +55,7 @@
                 </property>
                 <!--<property name="queries">
                     <list>
-                        <component class="org.jage.examples.multiworkplace.MultiworkplacePropertiesQuery"
+                        <component class="org.hage.examples.multiworkplace.MultiworkplacePropertiesQuery"
                                    isSingleton="false"/>
                     </list>
                 </property>-->

@@ -5,16 +5,16 @@
 
     <include file="classpath:examples/common.xml">
         <block name="workplaces">
-            <component name="workplace" class="org.jage.workplace.SimpleWorkplace" isSingleton="false">
+            <component name="workplace" class="org.hage.workplace.SimpleWorkplace" isSingleton="false">
                 <property name="agent">
-                    <agent name="action" class="org.jage.agent.SimpleAggregate">
+                    <agent name="action" class="org.hage.agent.SimpleAggregate">
                         <property name="agents">
                             <list>
-                                <agent name="firstAgent" class="org.jage.examples.actions.ActionSimpleAgent"/>
-                                <agent name="secondAgent" class="org.jage.examples.actions.ActionSimpleAgent"/>
+                                <agent name="firstAgent" class="org.hage.examples.actions.ActionSimpleAgent"/>
+                                <agent name="secondAgent" class="org.hage.examples.actions.ActionSimpleAgent"/>
                             </list>
                         </property>
-                        <strategy name="sampleAction" class="org.jage.examples.actions.SampleActionStrategy"/>
+                        <strategy name="sampleAction" class="org.hage.examples.actions.SampleActionStrategy"/>
                     </agent>
                 </property>
             </component>

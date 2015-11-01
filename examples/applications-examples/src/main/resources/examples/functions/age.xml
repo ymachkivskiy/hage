@@ -4,13 +4,13 @@
 
     <include file="classpath:examples/common.xml">
         <block name="workplaces">
-            <component name="workplace" class="org.jage.workplace.SimpleWorkplace" isSingleton="false">
+            <component name="workplace" class="org.hage.workplace.SimpleWorkplace" isSingleton="false">
                 <property name="agent">
-                    <agent name="workplace" class="org.jage.examples.functions.FunctionsSimpleAggregate">
+                    <agent name="workplace" class="org.hage.examples.functions.FunctionsSimpleAggregate">
                         <property name="agents">
                             <list>
-                                <agent class="org.jage.examples.functions.FunctionsSimpleAgent"/>
-                                <agent class="org.jage.examples.functions.FunctionsSimpleAgent"/>
+                                <agent class="org.hage.examples.functions.FunctionsSimpleAgent"/>
+                                <agent class="org.hage.examples.functions.FunctionsSimpleAgent"/>
                             </list>
                         </property>
                     </agent>

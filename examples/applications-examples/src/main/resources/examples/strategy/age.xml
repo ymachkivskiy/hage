@@ -4,28 +4,28 @@
 
     <include file="classpath:examples/common.xml">
         <block name="workplaces">
-            <component name="workplace" class="org.jage.workplace.SimpleWorkplace" isSingleton="false">
+            <component name="workplace" class="org.hage.workplace.SimpleWorkplace" isSingleton="false">
                 <property name="agent">
-                    <agent name="action" class="org.jage.agent.SimpleAggregate">
-                        <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                    <agent name="action" class="org.hage.agent.SimpleAggregate">
+                        <component class="org.hage.address.agent.DefaultAgentAddressSupplier">
                             <constructor-arg name="nameTemplate" value="TheXFiles"/>
                         </component>
 
                         <list name="agents">
-                            <agent name="echo123" class="org.jage.examples.strategy.StrategySimpleAgent">
-                                <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                            <agent name="echo123" class="org.hage.examples.strategy.StrategySimpleAgent">
+                                <component class="org.hage.address.agent.DefaultAgentAddressSupplier">
                                     <constructor-arg name="nameTemplate" value="echoEvery1"/>
                                 </component>
                                 <property name="echoStrategy" ref="customCounter"/>
                             </agent>
-                            <agent name="echoABC" class="org.jage.examples.strategy.StrategySimpleAgent">
-                                <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                            <agent name="echoABC" class="org.hage.examples.strategy.StrategySimpleAgent">
+                                <component class="org.hage.address.agent.DefaultAgentAddressSupplier">
                                     <constructor-arg name="nameTemplate" value="echoEvery2"/>
                                 </component>
                                 <property name="echoStrategy" ref="customCounter2"/>
                             </agent>
-                            <agent name="echoEcho" class="org.jage.examples.strategy.StrategySimpleAgent">
-                                <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                            <agent name="echoEcho" class="org.hage.examples.strategy.StrategySimpleAgent">
+                                <component class="org.hage.address.agent.DefaultAgentAddressSupplier">
                                     <constructor-arg name="nameTemplate" value="EchoABC"/>
                                 </component>
                                 <property name="echoStrategy" ref="echoAbcStrategy"/>
@@ -33,13 +33,13 @@
                         </list>
                         <property name="agents" ref="agents"/>
 
-                        <strategy name="echo123Strategy" class="org.jage.examples.strategy.Echo123Strategy"/>
-                        <strategy name="echoAbcStrategy" class="org.jage.examples.strategy.EchoAbcStrategy"/>
-                        <strategy name="counterStrategy" class="org.jage.examples.strategy.CounterEchoStrategy"/>
-                        <strategy name="customCounter2" class="org.jage.examples.strategy.CustomCounterEchoStrategy">
+                        <strategy name="echo123Strategy" class="org.hage.examples.strategy.Echo123Strategy"/>
+                        <strategy name="echoAbcStrategy" class="org.hage.examples.strategy.EchoAbcStrategy"/>
+                        <strategy name="counterStrategy" class="org.hage.examples.strategy.CounterEchoStrategy"/>
+                        <strategy name="customCounter2" class="org.hage.examples.strategy.CustomCounterEchoStrategy">
                             <property name="increment" type="Integer" value="2"/>
                         </strategy>
-                        <strategy name="customCounter" class="org.jage.examples.strategy.CustomCounterEchoStrategy"/>
+                        <strategy name="customCounter" class="org.hage.examples.strategy.CustomCounterEchoStrategy"/>
                     </agent>
                 </property>
             </component>

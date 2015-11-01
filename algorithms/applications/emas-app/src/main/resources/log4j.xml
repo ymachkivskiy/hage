@@ -10,15 +10,15 @@
         </layout>
     </appender>
 
-    <logger name="org.jage.emas">
+    <logger name="org.hage.emas">
         <level value="info"/>
     </logger>
 
-    <logger name="org.jage.agent">
+    <logger name="org.hage.agent">
         <level value="info"/>
     </logger>
 
-    <logger name="org.jage.action">
+    <logger name="org.hage.action">
         <level value="info"/>
     </logger>
 

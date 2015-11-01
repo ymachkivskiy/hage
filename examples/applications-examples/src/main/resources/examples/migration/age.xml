@@ -4,26 +4,26 @@
 
     <include file="classpath:examples/common.xml">
         <block name="workplaces">
-            <component name="workplace" class="org.jage.workplace.SimpleWorkplace" isSingleton="false">
+            <component name="workplace" class="org.hage.workplace.SimpleWorkplace" isSingleton="false">
                 <property name="agent">
-                    <agent name="rootSimpleAggregate" class="org.jage.agent.SimpleAggregate">
-                        <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                    <agent name="rootSimpleAggregate" class="org.hage.agent.SimpleAggregate">
+                        <component class="org.hage.address.agent.DefaultAgentAddressSupplier">
                             <constructor-arg name="nameTemplate" value="TheXFiles"/>
                         </component>
                         <list name="simpleAgents">
-                            <agent name="squeeze" class="org.jage.agent.SimpleAggregate">
-                                <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                            <agent name="squeeze" class="org.hage.agent.SimpleAggregate">
+                                <component class="org.hage.address.agent.DefaultAgentAddressSupplier">
                                     <constructor-arg name="nameTemplate" value="Squeeze"/>
                                 </component>
                                 <property name="agents">
                                     <list name="agents">
-                                        <agent name="scully" class="org.jage.examples.migration.CrawlingSimpleAgent">
-                                            <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                                        <agent name="scully" class="org.hage.examples.migration.CrawlingSimpleAgent">
+                                            <component class="org.hage.address.agent.DefaultAgentAddressSupplier">
                                                 <constructor-arg name="nameTemplate" value="Scully"/>
                                             </component>
                                         </agent>
-                                        <agent name="mulder" class="org.jage.examples.migration.CrawlingSimpleAgent">
-                                            <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                                        <agent name="mulder" class="org.hage.examples.migration.CrawlingSimpleAgent">
+                                            <component class="org.hage.address.agent.DefaultAgentAddressSupplier">
                                                 <constructor-arg name="nameTemplate" value="Mulder"/>
                                             </component>
                                         </agent>
@@ -31,15 +31,15 @@
                                 </property>
                             </agent>
 
-                            <agent name="shadows" class="org.jage.agent.SimpleAggregate">
-                                <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                            <agent name="shadows" class="org.hage.agent.SimpleAggregate">
+                                <component class="org.hage.address.agent.DefaultAgentAddressSupplier">
                                     <constructor-arg name="nameTemplate" value="Shadows"/>
                                 </component>
 
                                 <property name="agents">
                                     <list name="agents">
-                                        <agent name="skinner" class="org.jage.examples.migration.CrawlingSimpleAgent">
-                                            <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                                        <agent name="skinner" class="org.hage.examples.migration.CrawlingSimpleAgent">
+                                            <component class="org.hage.address.agent.DefaultAgentAddressSupplier">
                                                 <constructor-arg name="nameTemplate" value="Skinner"/>
                                             </component>
                                         </agent>
@@ -47,15 +47,15 @@
                                 </property>
                             </agent>
 
-                            <agent name="space" class="org.jage.agent.SimpleAggregate">
-                                <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                            <agent name="space" class="org.hage.agent.SimpleAggregate">
+                                <component class="org.hage.address.agent.DefaultAgentAddressSupplier">
                                     <constructor-arg name="nameTemplate" value="Space"/>
                                 </component>
 
                                 <property name="agents">
                                     <list name="agents">
-                                        <agent name="doggett" class="org.jage.examples.migration.CrawlingSimpleAgent">
-                                            <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                                        <agent name="doggett" class="org.hage.examples.migration.CrawlingSimpleAgent">
+                                            <component class="org.hage.address.agent.DefaultAgentAddressSupplier">
                                                 <constructor-arg name="nameTemplate" value="Doggett"/>
                                             </component>
                                         </agent>

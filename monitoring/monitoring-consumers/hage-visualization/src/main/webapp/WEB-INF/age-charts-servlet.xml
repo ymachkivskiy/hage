@@ -10,12 +10,12 @@
         http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 
-    <context:component-scan base-package="org.jage.monitoring.visualization.spring.controller"/>
+    <context:component-scan base-package="org.hage.monitoring.visualization.spring.controller"/>
 
     <mvc:annotation-driven/>
     <context:annotation-config/>
 
-    <bean name="starter" init-method="initStorages" class="org.jage.monitoring.visualization.StartupBean"
+    <bean name="starter" init-method="initStorages" class="org.hage.monitoring.visualization.StartupBean"
           lazy-init="false"/>
 
     <bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">

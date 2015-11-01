@@ -5,22 +5,22 @@
 
     <include file="classpath:common.xml">
         <block name="workplaces">
-            <component name="workplace" class="org.jage.workplace.SimpleWorkplace" isSingleton="false">
+            <component name="workplace" class="org.hage.workplace.SimpleWorkplace" isSingleton="false">
                 <property name="agent">
-                    <agent name="action" class="org.jage.agent.SimpleAggregate">
-                        <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                    <agent name="action" class="org.hage.agent.SimpleAggregate">
+                        <component class="org.hage.address.agent.DefaultAgentAddressSupplier">
                             <constructor-arg name="nameTemplate" value="TheXFiles"/>
                         </component>
 
                         <property name="agents">
                             <list>
                                 <agent name="scully" class="${package}.HelloWorldSimpleAgent">
-                                    <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                                    <component class="org.hage.address.agent.DefaultAgentAddressSupplier">
                                         <constructor-arg name="nameTemplate" value="Scully"/>
                                     </component>
                                 </agent>
                                 <agent name="mulder" class="${package}.HelloWorldSimpleAgent">
-                                    <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                                    <component class="org.hage.address.agent.DefaultAgentAddressSupplier">
                                         <constructor-arg name="nameTemplate" value="Mulder"/>
                                     </component>
                                 </agent>

@@ -4,38 +4,38 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="hage.platform.di.container"
-          class="org.jage.platform.component.pico.PicoComponentInstanceProviderFactory"
+          class="org.hage.platform.component.pico.PicoComponentInstanceProviderFactory"
           factory-method="createInstanceProvider"/>
 
     <bean id="hage.platform.component.core"
-          class="org.jage.workplace.manager.DefaultWorkplaceManager"
+          class="org.hage.workplace.manager.DefaultWorkplaceManager"
           parent="hage.component.stateful.base"/>
 
     <bean id="hage.platform.lifecycle.exitHook"
-          class="org.jage.lifecycle.AutoExitHook"/>
+          class="org.hage.lifecycle.AutoExitHook"/>
 
     <bean id="hage.platform.lifecycle"
-          class="org.jage.lifecycle.DefaultLifecycleManager"/>
+          class="org.hage.lifecycle.DefaultLifecycleManager"/>
 
     <bean id="hage.platform.configuration.loader"
-          class="org.jage.platform.config.xml.XmlConfigurationLoader"/>
+          class="org.hage.platform.config.xml.XmlConfigurationLoader"/>
 
     <bean id="hage.platform.addressSupplier.agent"
-          class="org.jage.address.agent.DefaultAgentAddressSupplier"/>
+          class="org.hage.address.agent.DefaultAgentAddressSupplier"/>
 
     <bean id="hage.platform.stopCondition"
-          class="org.jage.workplace.FixedStepCountStopCondition"
+          class="org.hage.workplace.FixedStepCountStopCondition"
           parent="hage.component.stateful.base"/>
 
     <bean id="hage.platform.actionComparator"
-          class="org.jage.action.ordering.DefaultActionComparator"
+          class="org.hage.action.ordering.DefaultActionComparator"
           scope="prototype"/>
 
-    <bean class="org.jage.platform.config.ConfigurationConversionService"/>
+    <bean class="org.hage.platform.config.ConfigurationConversionService"/>
 
     <alias name="hage.platform.communication" alias="hage.platform.addressSupplier.node"/>
 
-    <bean class="org.jage.platform.containermerge.ContainerComponentShare" init-method="shareComponents">
+    <bean class="org.hage.platform.containermerge.ContainerComponentShare" init-method="shareComponents">
         <property name="componentsForSharing">
             <list>
                 <ref bean="hage.platform.addressSupplier.node"/>

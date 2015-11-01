@@ -10,7 +10,7 @@
         </layout>
     </appender>
 
-    <logger name="org.jage.platform.component.pico">
+    <logger name="org.hage.platform.component.pico">
         <level value="warn"/>
     </logger>
 

@@ -8,23 +8,23 @@
 
     <include file="classpath:examples/common.xml">
         <block name="workplaces">
-            <component name="workplace" class="org.jage.workplace.SimpleWorkplace" isSingleton="false">
+            <component name="workplace" class="org.hage.workplace.SimpleWorkplace" isSingleton="false">
                 <property name="agent">
-                    <agent name="action" class="org.jage.agent.SimpleAggregate">
-                        <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                    <agent name="action" class="org.hage.agent.SimpleAggregate">
+                        <component class="org.hage.address.agent.DefaultAgentAddressSupplier">
                             <constructor-arg name="nameTemplate" value="TheXFiles"/>
                         </component>
 
                         <property name="agents">
                             <list>
                                 <agent name="scully"
-                                       class="org.jage.examples.properties.xml.XMLContractHelloWorldSimpleAgent">
-                                    <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                                       class="org.hage.examples.properties.xml.XMLContractHelloWorldSimpleAgent">
+                                    <component class="org.hage.address.agent.DefaultAgentAddressSupplier">
                                         <constructor-arg name="nameTemplate" value="Scully"/>
                                     </component>
                                     <property name="exampleComponent">
                                         <agent name="exampleComponentForScully"
-                                               class="org.jage.examples.properties.xml.ExampleComponent">
+                                               class="org.hage.examples.properties.xml.ExampleComponent">
                                             <property name="name" value="Scully's component"/>
                                             <property name="version" value="1" type="Integer"/>
                                             <property name="holder">
@@ -34,13 +34,13 @@
                                     </property>
                                 </agent>
                                 <agent name="mulder"
-                                       class="org.jage.examples.properties.xml.XMLContractHelloWorldSimpleAgent">
-                                    <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                                       class="org.hage.examples.properties.xml.XMLContractHelloWorldSimpleAgent">
+                                    <component class="org.hage.address.agent.DefaultAgentAddressSupplier">
                                         <constructor-arg name="nameTemplate" value="Mulder"/>
                                     </component>
                                     <property name="exampleComponent">
                                         <agent name="exampleComponentForMulder"
-                                               class="org.jage.examples.properties.xml.ExampleComponent">
+                                               class="org.hage.examples.properties.xml.ExampleComponent">
                                             <property name="name" value="Mulder's component"/>
                                             <property name="version" value="777" type="Integer"/>
                                             <property name="holder">

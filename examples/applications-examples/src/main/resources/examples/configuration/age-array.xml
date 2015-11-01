@@ -4,23 +4,23 @@
 
     <include file="classpath:examples/common.xml">
         <block name="workplaces">
-            <component name="workplace" class="org.jage.workplace.SimpleWorkplace" isSingleton="false">
+            <component name="workplace" class="org.hage.workplace.SimpleWorkplace" isSingleton="false">
                 <property name="agent">
-                    <agent name="action" class="org.jage.agent.SimpleAggregate">
+                    <agent name="action" class="org.hage.agent.SimpleAggregate">
                         <property name="agents">
                             <list>
-                                <agent name="scully" class="org.jage.examples.configuration.ArrayAgent">
+                                <agent name="scully" class="org.hage.examples.configuration.ArrayAgent">
                                     <array name="object-example"
-                                           value-type="org.jage.examples.configuration.ExampleClass">
-                                        <component name="example-1" class="org.jage.examples.configuration.ExampleClass"
+                                           value-type="org.hage.examples.configuration.ExampleClass">
+                                        <component name="example-1" class="org.hage.examples.configuration.ExampleClass"
                                                    isSingleton="false">
                                             <constructor-arg value="First object"/>
                                         </component>
-                                        <component name="example-2" class="org.jage.examples.configuration.ExampleClass"
+                                        <component name="example-2" class="org.hage.examples.configuration.ExampleClass"
                                                    isSingleton="false">
                                             <constructor-arg value="Second object"/>
                                         </component>
-                                        <component name="example-3" class="org.jage.examples.configuration.ExampleClass"
+                                        <component name="example-3" class="org.hage.examples.configuration.ExampleClass"
                                                    isSingleton="false">
                                             <constructor-arg value="Third object"/>
                                         </component>
@@ -40,7 +40,7 @@
         </block>
 
         <block name="stopCondition">
-            <component name="stopCondition" class="org.jage.workplace.FixedStepCountStopCondition">
+            <component name="stopCondition" class="org.hage.workplace.FixedStepCountStopCondition">
                 <constructor-arg type="Long" value="1"/>
             </component>
         </block>

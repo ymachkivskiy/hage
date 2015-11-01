@@ -1,0 +1,2 @@
+hage.monitoring.observer.LoggingObserverProvider
+hage.monitoring.observer.ObserverUnderTestProvider

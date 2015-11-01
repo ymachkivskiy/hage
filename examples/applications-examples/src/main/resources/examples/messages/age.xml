@@ -4,24 +4,24 @@
 
     <include file="classpath:examples/common.xml">
         <block name="workplaces">
-            <component name="workplace" class="org.jage.workplace.SimpleWorkplace" isSingleton="false">
+            <component name="workplace" class="org.hage.workplace.SimpleWorkplace" isSingleton="false">
                 <property name="agent">
-                    <agent name="xfiles" class="org.jage.agent.SimpleAggregate">
-                        <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                    <agent name="xfiles" class="org.hage.agent.SimpleAggregate">
+                        <component class="org.hage.address.agent.DefaultAgentAddressSupplier">
                             <constructor-arg name="nameTemplate" value="TheXFiles"/>
                         </component>
 
                         <property name="agents">
                             <list>
-                                <agent name="scully" class="org.jage.examples.messages.MessagesSimpleAgent">
-                                    <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                                <agent name="scully" class="org.hage.examples.messages.MessagesSimpleAgent">
+                                    <component class="org.hage.address.agent.DefaultAgentAddressSupplier">
                                         <constructor-arg name="nameTemplate" value="Scully"/>
                                     </component>
                                     <property name="messageToSend" value="The Truth is Out There"/>
                                     <property name="receiver" value="Mulder"/>
                                 </agent>
-                                <agent name="mulder" class="org.jage.examples.messages.MessagesSimpleAgent">
-                                    <component class="org.jage.address.agent.DefaultAgentAddressSupplier">
+                                <agent name="mulder" class="org.hage.examples.messages.MessagesSimpleAgent">
+                                    <component class="org.hage.address.agent.DefaultAgentAddressSupplier">
                                         <constructor-arg name="nameTemplate" value="Mulder"/>
                                     </component>
                                     <property name="messageToSend" value="I want to believe"/>

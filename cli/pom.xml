@@ -14,7 +14,7 @@
     <description>CLI-based bootstrapper for HAgE nodes</description>
 
     <dependencies>
-        <!-- AgE Platform dependencies -->
+        <!-- HAgE Platform dependencies -->
         <dependency>
             <groupId>org.hage.platform</groupId>
             <artifactId>arguments</artifactId>
@@ -69,7 +69,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>org.jage.cli.CliNodeBootstrapper</mainClass>
+                            <mainClass>org.hage.cli.CliNodeBootstrapper</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
