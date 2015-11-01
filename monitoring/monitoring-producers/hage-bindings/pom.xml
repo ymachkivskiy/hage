@@ -11,7 +11,7 @@
 
     <artifactId>hage-bindings</artifactId>
 
-    <name>\HAgE::Monitoring::Producers::Bindings</name>
+    <name>HAgE::Monitoring::Producers::Bindings</name>
     <description>HAgE monitoring bindings</description>
 
 
