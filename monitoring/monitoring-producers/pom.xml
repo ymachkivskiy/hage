@@ -3,19 +3,20 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>monitoring-producers</artifactId>
-    <packaging>pom</packaging>
-
-    <name>AgE Monitoring Producers</name>
-    <description>AgE monitoring producers</description>
-
     <parent>
-        <groupId>org.jage.monitoring</groupId>
+        <groupId>org.hage.monitoring</groupId>
         <artifactId>monitoring</artifactId>
         <version>0.1.0</version>
     </parent>
 
+    <artifactId>monitoring-producers</artifactId>
+    <packaging>pom</packaging>
+
+    <name>HAgE::Monitoring::Producers</name>
+    <description>HAgE monitoring producers</description>
+
+
     <modules>
-        <module>age-bindings</module>
+        <module>hage-bindings</module>
     </modules>
 </project>

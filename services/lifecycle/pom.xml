@@ -2,56 +2,57 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>lifecycle</artifactId>
-
-    <name>AgE Lifecycle Manager</name>
-    <description>AgE service that manages the node lifecycle</description>
-
     <parent>
-        <groupId>org.jage.services</groupId>
+        <groupId>org.hage.services</groupId>
         <artifactId>services</artifactId>
         <version>0.1.0</version>
     </parent>
 
+    <artifactId>lifecycle</artifactId>
+
+    <name>HAgE::Services::Lifecycle</name>
+    <description>HAgE service that manages the node lifecycle</description>
+
+
     <dependencies>
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>org.hage.services</groupId>
             <artifactId>core</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.jage.platform</groupId>
+            <groupId>org.hage.platform</groupId>
             <artifactId>component</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.jage.platform</groupId>
+            <groupId>org.hage.platform</groupId>
             <artifactId>arguments</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.jage.platform</groupId>
+            <groupId>org.hage.platform</groupId>
             <artifactId>configuration-xml</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.jage.services</groupId>
+            <groupId>org.hage.services</groupId>
             <artifactId>configuration</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.jage.services</groupId>
+            <groupId>org.hage.services</groupId>
             <artifactId>performance</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>org.hage.services</groupId>
             <artifactId>communication</artifactId>
             <version>${project.version}</version>
             <type>test-jar</type>

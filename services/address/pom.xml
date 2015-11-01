@@ -2,17 +2,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>address</artifactId>
-
-    <name>AgE Addressing Service</name>
-    <description>AgE address interfaces and classes</description>
-    <url>http://age.iisg.agh.edu.pl/jage/services/address/</url>
-
     <parent>
-        <groupId>org.jage.services</groupId>
+        <groupId>org.hage.services</groupId>
         <artifactId>services</artifactId>
         <version>0.1.0</version>
     </parent>
+
+    <artifactId>address</artifactId>
+
+    <name>HAgE::Services::Address</name>
+    <description>HAgE address interfaces and classes</description>
 
     <dependencies>
         <dependency>

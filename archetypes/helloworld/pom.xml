@@ -3,15 +3,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>helloworld</artifactId>
-    <packaging>maven-archetype</packaging>
-
-    <name>AgE Helloworld Archetype</name>
-    <description>AgE helloworld archetype</description>
-
     <parent>
-        <groupId>org.jage.archetypes</groupId>
+        <groupId>org.hage.archetypes</groupId>
         <artifactId>archetypes</artifactId>
         <version>0.1.0</version>
     </parent>
+
+    <artifactId>helloworld</artifactId>
+    <packaging>maven-archetype</packaging>
+
+    <name>HAgE::Helloworld::Archetype</name>
+    <description>HAgE Helloworld archetype</description>
+
 </project>

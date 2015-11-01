@@ -3,19 +3,18 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.jage.services</groupId>
+    <parent>
+        <groupId>org.hage</groupId>
+        <artifactId>hage</artifactId>
+        <version>0.1.0</version>
+    </parent>
+
+    <groupId>org.hage.services</groupId>
     <artifactId>services</artifactId>
     <packaging>pom</packaging>
 
-    <name>AgE Services</name>
-    <description>AgE services</description>
-    <url>http://age.iisg.agh.edu.pl/jage/services/</url>
-
-    <parent>
-        <groupId>org.jage</groupId>
-        <artifactId>jage</artifactId>
-        <version>0.1.0</version>
-    </parent>
+    <name>HAgE::Services</name>
+    <description>HAgE services</description>
 
     <modules>
         <module>core</module>
@@ -27,16 +26,12 @@
     </modules>
 
     <dependencies>
+
         <dependency>
-            <groupId>org.jage.platform</groupId>
+            <groupId>org.hage.platform</groupId>
             <artifactId>util</artifactId>
             <version>${project.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>javax.inject</groupId>
-            <artifactId>javax.inject</artifactId>
-            <version>1</version>
-        </dependency>
     </dependencies>
 </project>

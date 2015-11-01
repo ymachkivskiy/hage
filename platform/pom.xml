@@ -3,21 +3,19 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.jage.platform</groupId>
-    <artifactId>platform</artifactId>
-    <packaging>pom</packaging>
-
-    <name>AgE Platform Components</name>
-    <description>Components for the AgE platform</description>
-    <url>http://age.iisg.agh.edu.pl/jage/platform/</url>
-
     <parent>
-        <groupId>org.jage</groupId>
-        <artifactId>jage</artifactId>
+        <groupId>org.hage</groupId>
+        <artifactId>hage</artifactId>
         <version>0.1.0</version>
     </parent>
 
-    <!-- system components -->
+    <groupId>org.hage.platform</groupId>
+    <artifactId>platform</artifactId>
+    <packaging>pom</packaging>
+
+    <name>HAgE::Platform</name>
+    <description>Components for the HAgE platform</description>
+
     <modules>
         <module>util</module>
         <module>property</module>
@@ -28,4 +26,5 @@
         <module>arguments</module>
         <module>container-merge</module>
     </modules>
+
 </project>

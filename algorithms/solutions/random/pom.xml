@@ -3,21 +3,20 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>random</artifactId>
-
-    <name>AgE algorithms solutions random generators</name>
-    <description>Random generator classes for algorithms solutions</description>
-    <url>http://age.iisg.agh.edu.pl/jage/algorithms/solutions/random/</url>
-
     <parent>
-        <groupId>org.jage.algorithms</groupId>
+        <groupId>org.hage.algorithms</groupId>
         <artifactId>solutions</artifactId>
         <version>0.1.0</version>
     </parent>
 
+    <artifactId>random</artifactId>
+
+    <name>HAgE::Algorithms::Solutions::Random</name>
+    <description>Random generator classes for algorithms solutions</description>
+
     <dependencies>
         <dependency>
-            <groupId>org.jage.services</groupId>
+            <groupId>org.hage.services</groupId>
             <artifactId>core</artifactId>
             <version>${project.version}</version>
         </dependency>

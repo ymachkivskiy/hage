@@ -2,28 +2,27 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>component-pico</artifactId>
-
-    <name>AgE PicoContainer Modules</name>
-    <description>The AgE components implementation based on PicoContainer</description>
-    <url>http://age.iisg.agh.edu.pl/jage/platform/component-pico/</url>
-
     <parent>
-        <groupId>org.jage.platform</groupId>
+        <groupId>org.hage.platform</groupId>
         <artifactId>platform</artifactId>
         <version>0.1.0</version>
     </parent>
 
+    <artifactId>component-pico</artifactId>
+
+    <name>HAgE::Platform::Component-Pico</name>
+    <description>The HAgE components implementation based on PicoContainer</description>
+
     <dependencies>
         <!-- AgE Platform dependencies -->
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>org.hage.platform</groupId>
             <artifactId>util</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>org.hage.platform</groupId>
             <artifactId>component</artifactId>
             <version>${project.version}</version>
         </dependency>

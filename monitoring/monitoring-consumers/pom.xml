@@ -3,20 +3,22 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>monitoring-consumers</artifactId>
-    <packaging>pom</packaging>
-
-    <name>AgE Monitoring Consumers</name>
-    <description>AgE monitoring consumers</description>
-
     <parent>
-        <groupId>org.jage.monitoring</groupId>
+        <groupId>org.hage.monitoring</groupId>
         <artifactId>monitoring</artifactId>
         <version>0.1.0</version>
     </parent>
 
+    <artifactId>monitoring-consumers</artifactId>
+    <packaging>pom</packaging>
+
+    <name>HAgE::Monitoring::Consumers</name>
+    <description>HAgE monitoring consumers</description>
+
+
     <modules>
-        <module>age-visualization</module>
+        <module>hage-visualization</module>
         <module>graphite</module>
     </modules>
+
 </project>

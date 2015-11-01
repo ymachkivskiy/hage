@@ -2,23 +2,23 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>arguments</artifactId>
-
-    <name>AgE Node Arguments Service</name>
-    <description>Interfaces for node runtime arguments service</description>
-    <url>http://age.iisg.agh.edu.pl/jage/platform/arguments/</url>
-
     <parent>
-        <groupId>org.jage.platform</groupId>
+        <groupId>org.hage.platform</groupId>
         <artifactId>platform</artifactId>
         <version>0.1.0</version>
     </parent>
 
+    <artifactId>arguments</artifactId>
+
+    <name>HAgE::Platform::Arguments</name>
+    <description>Interfaces for node runtime arguments service</description>
+
     <dependencies>
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>org.hage.platform</groupId>
             <artifactId>util</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
+
 </project>

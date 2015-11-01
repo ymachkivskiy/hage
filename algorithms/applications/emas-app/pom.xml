@@ -3,47 +3,39 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>emas-app</artifactId>
-
-    <name>AgE algorithms applications emas</name>
-    <description>EMAS algorithm</description>
-    <url>http://age.iisg.agh.edu.pl/jage/algorithms/applications/emas-app/</url>
-
     <parent>
-        <groupId>org.jage.algorithms</groupId>
+        <groupId>org.hage.algorithms</groupId>
         <artifactId>applications</artifactId>
         <version>0.1.0</version>
     </parent>
 
+    <artifactId>emas-app</artifactId>
+
+    <name>HAgE::Algorithms::Applications::EMAS</name>
+    <description>EMAS algorithm</description>
+
     <dependencies>
-        <!--
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>flock</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        -->
 
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>org.hage.algorithms</groupId>
             <artifactId>emas</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>org.hage.algorithms</groupId>
             <artifactId>real-valued</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>org.hage.algorithms</groupId>
             <artifactId>genetic</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>org.hage.algorithms</groupId>
             <artifactId>random</artifactId>
             <version>${project.version}</version>
         </dependency>

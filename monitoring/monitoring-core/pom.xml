@@ -3,32 +3,37 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>monitoring-core</artifactId>
-
-    <name>AgE Monitoring Core</name>
-    <description>AgE monitoring core</description>
-
     <parent>
-        <groupId>org.jage.monitoring</groupId>
+        <groupId>org.hage.monitoring</groupId>
         <artifactId>monitoring</artifactId>
         <version>0.1.0</version>
     </parent>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>test-jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+
+    <artifactId>monitoring-core</artifactId>
+
+    <name>HAgE::Monitoring::Core</name>
+    <description>HAgE monitoring core</description>
+
     <dependencies>
+
+        <!-- Internal -->
+
+        <dependency>
+            <groupId>org.hage</groupId>
+            <artifactId>cli-bootstrapper</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hage.services</groupId>
+            <artifactId>configuration</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- External -->
+
         <dependency>
             <groupId>com.typesafe</groupId>
             <artifactId>config</artifactId>
@@ -40,23 +45,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.jage.services</groupId>
+            <groupId>org.hage.services</groupId>
             <artifactId>core</artifactId>
             <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jage</groupId>
-            <artifactId>cli-bootstrapper</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jage.services</groupId>
-            <artifactId>configuration</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
         </dependency>
 
         <dependency>
@@ -75,4 +66,22 @@
         </dependency>
 
     </dependencies>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>

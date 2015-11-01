@@ -2,34 +2,34 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>configuration-xml</artifactId>
-
-    <name>AgE XML-based Configuration Loader</name>
-    <description>The configuration loader based on XML</description>
-    <url>http://age.iisg.agh.edu.pl/jage/platform/config-loader-xml/</url>
-
     <parent>
-        <groupId>org.jage.platform</groupId>
+        <groupId>org.hage.platform</groupId>
         <artifactId>platform</artifactId>
         <version>0.1.0</version>
     </parent>
 
+    <artifactId>configuration-xml</artifactId>
+
+    <name>HAgE::Platform::Configuration-XML</name>
+    <description>HAgE configuration loader based on XML</description>
+
+
     <dependencies>
         <!-- AgE Platform dependencies -->
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>org.hage.platform</groupId>
             <artifactId>configuration-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>org.hage.platform</groupId>
             <artifactId>util</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>org.hage.platform</groupId>
             <artifactId>component</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -56,11 +56,12 @@
 
         <!-- Tests dependencies -->
         <dependency>
-            <groupId>org.jage.platform</groupId>
+            <groupId>org.hage.platform</groupId>
             <artifactId>component</artifactId>
             <version>${project.version}</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
     </dependencies>
+
 </project>

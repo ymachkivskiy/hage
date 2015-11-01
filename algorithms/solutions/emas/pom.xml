@@ -3,39 +3,38 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>emas</artifactId>
-
-    <name>AgE algorithms solutions EMAS</name>
-    <description>EMAS algorithm</description>
-    <url>http://age.iisg.agh.edu.pl/jage/algorithms/solutions/emas/</url>
-
     <parent>
-        <groupId>org.jage.algorithms</groupId>
+        <groupId>org.hage.algorithms</groupId>
         <artifactId>solutions</artifactId>
         <version>0.1.0</version>
     </parent>
 
+    <artifactId>emas</artifactId>
+
+    <name>HAgE::Algorithms::Solutions::EMAS</name>
+    <description>EMAS algorithm</description>
+
     <dependencies>
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>org.hage.algorithms</groupId>
             <artifactId>common</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>org.hage.algorithms</groupId>
             <artifactId>random</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.jage.services</groupId>
+            <groupId>org.hage.services</groupId>
             <artifactId>core</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.jage.services</groupId>
+            <groupId>org.hage.services</groupId>
             <artifactId>address</artifactId>
             <version>${project.version}</version>
         </dependency>

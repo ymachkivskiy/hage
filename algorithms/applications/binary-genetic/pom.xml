@@ -3,26 +3,25 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>binary-genetic</artifactId>
-
-    <name>AgE algorithms applications binary-genetic</name>
-    <description>Binary genetic algorithms</description>
-    <url>http://age.iisg.agh.edu.pl/jage/algorithms/applications/binary-genetic/</url>
-
     <parent>
-        <groupId>org.jage.algorithms</groupId>
+        <groupId>org.hage.algorithms</groupId>
         <artifactId>applications</artifactId>
         <version>0.1.0</version>
     </parent>
 
+    <artifactId>binary-genetic</artifactId>
+
+    <name>HAgE::Algorithms::Applications::Binary-Genetic</name>
+    <description>Binary genetic algorithms</description>
+
     <dependencies>
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>org.hage.algorithms</groupId>
             <artifactId>genetic</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>org.hage.algorithms</groupId>
             <artifactId>binary</artifactId>
             <version>${project.version}</version>
         </dependency>

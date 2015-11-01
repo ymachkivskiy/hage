@@ -3,35 +3,34 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>solutions</artifactId>
-
-    <name>AgE Examples - Solutions</name>
-    <description>Implementations of various sample components</description>
-    <url>http://age.iisg.agh.edu.pl/jage/solutions/examples/</url>
-
     <parent>
-        <groupId>org.jage.student.examples</groupId>
+        <groupId>org.hage.student.examples</groupId>
         <artifactId>examples</artifactId>
         <version>0.1.0</version>
     </parent>
 
+    <artifactId>solutions</artifactId>
+
+    <name>HAgE::Examples::Solutions</name>
+    <description>Implementations of various sample components</description>
+
     <dependencies>
 
-        <!-- AgE Modules -->
+        <!-- HAgE Modules -->
         <dependency>
-            <groupId>org.jage.services</groupId>
+            <groupId>org.hage.services</groupId>
             <artifactId>core</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.jage.monitoring</groupId>
+            <groupId>org.hage.monitoring</groupId>
             <artifactId>monitoring-core</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.jage.services</groupId>
+            <groupId>org.hage.services</groupId>
             <artifactId>core</artifactId>
             <version>${project.version}</version>
             <type>test-jar</type>

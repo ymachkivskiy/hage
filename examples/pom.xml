@@ -3,18 +3,18 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.jage.student.examples</groupId>
+    <parent>
+        <groupId>org.hage</groupId>
+        <artifactId>hage</artifactId>
+        <version>0.1.0</version>
+    </parent>
+
+    <groupId>org.hage.student.examples</groupId>
     <artifactId>examples</artifactId>
     <packaging>pom</packaging>
 
-    <name>AgE Example Applications</name>
-    <description>Applications showing AgE capabilities</description>
-
-    <parent>
-        <groupId>org.jage</groupId>
-        <artifactId>jage</artifactId>
-        <version>0.1.0</version>
-    </parent>
+    <name>HAgE::Examples</name>
+    <description>Applications showing HAgE capabilities</description>
 
     <modules>
         <module>solutions-examples</module>

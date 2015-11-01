@@ -3,61 +3,60 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>applications</artifactId>
-
-    <name>AgE Examples - Applications</name>
-    <description>Configuration files for sample applications</description>
-    <url>http://age.iisg.agh.edu.pl/jage/applications/examples/</url>
-
     <parent>
-        <groupId>org.jage.student.examples</groupId>
+        <groupId>org.hage.student.examples</groupId>
         <artifactId>examples</artifactId>
         <version>0.1.0</version>
     </parent>
+
+    <artifactId>applications</artifactId>
+
+    <name>HAgE::Examples::Applications</name>
+    <description>Configuration files for sample applications</description>
 
     <dependencies>
 
         <!-- AgE Modules -->
         <dependency>
-            <groupId>org.jage</groupId>
+            <groupId>org.hage</groupId>
             <artifactId>cli-bootstrapper</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.jage.services</groupId>
+            <groupId>org.hage.services</groupId>
             <artifactId>configuration</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.jage.monitoring</groupId>
+            <groupId>org.hage.monitoring</groupId>
             <artifactId>monitoring-core</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.jage.monitoring</groupId>
+            <groupId>org.hage.monitoring</groupId>
             <artifactId>age-visualization</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.jage.monitoring</groupId>
-            <artifactId>age-bindings</artifactId>
+            <groupId>org.hage.monitoring</groupId>
+            <artifactId>hage-bindings</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <!-- Solution Module -->
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>org.hage.student.examples</groupId>
             <artifactId>solutions</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <!-- Monitoring -->
         <dependency>
-            <groupId>org.jage.monitoring</groupId>
+            <groupId>org.hage.monitoring</groupId>
             <artifactId>graphite</artifactId>
             <version>${project.version}</version>
         </dependency>

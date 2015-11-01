@@ -3,20 +3,21 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>age-visualization</artifactId>
-
-    <name>AgE Monitoring Visualization</name>
-    <description>AgE monitoring vizualization</description>
-
     <parent>
-        <groupId>org.jage.monitoring</groupId>
+        <groupId>org.hage.monitoring</groupId>
         <artifactId>monitoring-consumers</artifactId>
         <version>0.1.0</version>
     </parent>
 
+    <artifactId>age-visualization</artifactId>
+
+    <name>HAgE::Monitoring::Consumers::Visualization</name>
+    <description>HAgE monitoring vizualization</description>
+
+
     <dependencies>
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>org.hage.monitoring</groupId>
             <artifactId>monitoring-core</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -54,11 +55,6 @@
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
         </dependency>
 
         <dependency>

@@ -3,19 +3,18 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.jage.algorithms</groupId>
+    <parent>
+        <groupId>org.hage</groupId>
+        <artifactId>hage</artifactId>
+        <version>0.1.0</version>
+    </parent>
+
+    <groupId>org.hage.algorithms</groupId>
     <artifactId>algorithms</artifactId>
     <packaging>pom</packaging>
 
-    <name>AgE Algorithms</name>
-    <description>AgE algorithms module</description>
-    <url>http://age.iisg.agh.edu.pl/jage/algorithms/</url>
-
-    <parent>
-        <groupId>org.jage</groupId>
-        <artifactId>jage</artifactId>
-        <version>0.1.0</version>
-    </parent>
+    <name>HAgE::Algorithms</name>
+    <description>HAgE algorithms module</description>
 
     <modules>
         <module>solutions</module>

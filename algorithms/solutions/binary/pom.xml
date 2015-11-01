@@ -3,27 +3,26 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>binary</artifactId>
-
-    <name>AgE algorithms solutions binary operators</name>
-    <description>Binary representations and operators</description>
-    <url>http://age.iisg.agh.edu.pl/jage/algorithms/solutions/binary/</url>
-
     <parent>
-        <groupId>org.jage.algorithms</groupId>
+        <groupId>org.hage.algorithms</groupId>
         <artifactId>solutions</artifactId>
         <version>0.1.0</version>
     </parent>
 
+    <artifactId>binary</artifactId>
+
+    <name>HAgE::Algorithms::Solutions::Binary</name>
+    <description>Binary representations and operators</description>
+
     <dependencies>
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>org.hage.algorithms</groupId>
             <artifactId>common</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>org.hage.algorithms</groupId>
             <artifactId>random</artifactId>
             <version>${project.version}</version>
         </dependency>

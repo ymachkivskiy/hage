@@ -3,26 +3,27 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>age-bindings</artifactId>
-
-    <name>AgE Monitoring Bindings</name>
-    <description>AgE monitoring bindings</description>
-
     <parent>
-        <groupId>org.jage.monitoring</groupId>
+        <groupId>org.hage.monitoring</groupId>
         <artifactId>monitoring-producers</artifactId>
         <version>0.1.0</version>
     </parent>
 
+    <artifactId>hage-bindings</artifactId>
+
+    <name>\HAgE::Monitoring::Producers::Bindings</name>
+    <description>HAgE monitoring bindings</description>
+
+
     <dependencies>
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>org.hage.monitoring</groupId>
             <artifactId>monitoring-core</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>org.hage.monitoring</groupId>
             <artifactId>monitoring-core</artifactId>
             <version>${project.version}</version>
             <type>test-jar</type>

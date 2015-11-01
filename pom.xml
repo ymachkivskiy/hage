@@ -3,19 +3,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- Maven project information -->
-    <groupId>org.jage</groupId>
-    <artifactId>jage</artifactId>
+    <groupId>org.hage</groupId>
+    <artifactId>hage</artifactId>
     <packaging>pom</packaging>
     <version>0.1.0</version>
 
-    <!-- basic project information -->
     <name>HAgE</name>
     <description>
         Habitat Agent platform for evolution algorithms - HAgE (Based on AgE)
     </description>
 
-    <!-- system components -->
     <modules>
         <module>platform</module>
         <module>services</module>
@@ -268,19 +265,6 @@
             </plugin>
         </plugins>
     </build>
-
-    <distributionManagement>
-        <repository>
-            <id>age</id>
-            <name>AgE IISG Maven Repository</name>
-            <url>scp://age.iisg.agh.edu.pl/home/proj/age/public_html/maven2/</url>
-        </repository>
-        <site>
-            <id>age-site</id>
-            <name>AgE IISG Website</name>
-            <url>scp://age.iisg.agh.edu.pl/home/proj/age/public_html/jage/</url>
-        </site>
-    </distributionManagement>
 
     <dependencyManagement>
         <dependencies>

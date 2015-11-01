@@ -3,18 +3,17 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>solutions</artifactId>
-    <packaging>pom</packaging>
-
-    <name>AgE algorithms solutions</name>
-    <description>AgE algorithms components, such as representations, operators, etc.</description>
-    <url>http://age.iisg.agh.edu.pl/jage/algorithms/solutions/</url>
-
     <parent>
-        <groupId>org.jage.algorithms</groupId>
+        <groupId>org.hage.algorithms</groupId>
         <artifactId>algorithms</artifactId>
         <version>0.1.0</version>
     </parent>
+
+    <artifactId>solutions</artifactId>
+    <packaging>pom</packaging>
+
+    <name>HAgE::Algorithms::Solutions</name>
+    <description>HAgE algorithms components, such as representations, operators, etc.</description>
 
     <modules>
         <module>common</module>
@@ -31,13 +30,13 @@
     <dependencies>
         <!-- AgE Platform and Services -->
         <dependency>
-            <groupId>org.jage.platform</groupId>
+            <groupId>org.hage.platform</groupId>
             <artifactId>component</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.jage.platform</groupId>
+            <groupId>org.hage.platform</groupId>
             <artifactId>property</artifactId>
             <version>${project.version}</version>
         </dependency>
