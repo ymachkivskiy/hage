@@ -11,7 +11,7 @@
     <parent>
         <artifactId>platform</artifactId>
         <groupId>org.jage.platform</groupId>
-        <version>2.7.0-SNAPSHOT</version>
+        <version>0.1.0</version>
     </parent>
 
     <dependencies>

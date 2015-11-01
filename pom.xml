@@ -7,26 +7,13 @@
     <groupId>org.jage</groupId>
     <artifactId>jage</artifactId>
     <packaging>pom</packaging>
-    <version>2.7.0-SNAPSHOT</version>
+    <version>0.1.0</version>
 
     <!-- basic project information -->
-    <name>AgE</name>
+    <name>HAgE</name>
     <description>
-        Agent platform for evolution algorithms - AgE
+        Habitat Agent platform for evolution algorithms - HAgE (Based on AgE)
     </description>
-    <url>http://age.iisg.agh.edu.pl/jage/</url>
-    <inceptionYear>2006</inceptionYear>
-    <organization>
-        <name>AGH University of Science and Technology</name>
-        <url>http://www.agh.edu.pl</url>
-    </organization>
-
-    <licenses>
-        <license>
-            <name>GNU General Public License Version 3</name>
-            <url>LICENSE.txt</url>
-        </license>
-    </licenses>
 
     <!-- system components -->
     <modules>
@@ -39,22 +26,8 @@
         <module>cli</module>
     </modules>
 
-    <!-- minimal required Maven version set to 3.0.0 because of maven-site-plugin-3.0 requirements -->
-    <prerequisites>
-        <maven>3.0.0</maven>
-    </prerequisites>
-
-
-    <!-- Continuous Integration Management -->
-    <ciManagement>
-        <system>bamboo</system>
-        <url>https://age.iisg.agh.edu.pl/bamboo/browse/AGE</url>
-    </ciManagement>
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <scm.base-url>https://github.com/ymachkivskiy/hage.git</scm.base-url>
-        <scm.base-public-url>https://github.com/ymachkivskiy/hage.git</scm.base-public-url>
     </properties>
 
     <!-- plugin repositories -->
@@ -145,13 +118,6 @@
                 <enabled>true</enabled>
             </releases>
         </pluginRepository>
-
-        <!-- for confluence plugin for doxia developed by AGH -->
-        <pluginRepository>
-            <id>herman dev</id>
-            <url>http://herman.iisg.agh.edu.pl/proj/dev/maven2</url>
-            <layout>default</layout>
-        </pluginRepository>
     </pluginRepositories>
 
     <build>
@@ -188,11 +154,6 @@
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-release-plugin</artifactId>
-                    <version>2.4.2</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
                     <version>2.4</version>
                 </plugin>
@@ -214,6 +175,11 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-enforcer-plugin</artifactId>
                     <version>1.4.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>versions-maven-plugin</artifactId>
+                    <version>2.2</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -252,15 +218,6 @@
                 </executions>
             </plugin>
 
-            <!-- release manager -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <configuration>
-                    <branchBase>${scm.base-url}/branches/releases/</branchBase>
-                    <autoVersionSubmodules>true</autoVersionSubmodules>
-                </configuration>
-            </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -272,6 +229,11 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
             </plugin>
 
             <plugin>
