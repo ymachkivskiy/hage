@@ -3,22 +3,22 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.hage.platform</groupId>
-        <artifactId>platform</artifactId>
+        <groupId>org.hage.platform.configuration</groupId>
+        <artifactId>configuration-parent</artifactId>
         <version>0.2.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>configuration-xml</artifactId>
+    <artifactId>xml</artifactId>
 
-    <name>HAgE::Platform::Configuration-XML</name>
+    <name>HAgE::Platform::Configuration::XML</name>
     <description>HAgE configuration loader based on XML</description>
 
 
     <dependencies>
         <!-- AgE Platform dependencies -->
         <dependency>
-            <groupId>org.hage.platform</groupId>
-            <artifactId>configuration-api</artifactId>
+            <groupId>org.hage.platform.configuration</groupId>
+            <artifactId>core</artifactId>
             <version>${project.version}</version>
         </dependency>
 

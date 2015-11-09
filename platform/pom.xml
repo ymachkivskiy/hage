@@ -21,10 +21,9 @@
         <module>property</module>
         <module>component</module>
         <module>component-pico</module>
-        <module>configuration-api</module>
-        <module>configuration-xml</module>
         <module>arguments</module>
         <module>container-merge</module>
+        <module>configuration</module>
     </modules>
 
 </project>

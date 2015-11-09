@@ -39,8 +39,8 @@
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform</groupId>
-            <artifactId>configuration-api</artifactId>
+            <groupId>org.hage.platform.configuration</groupId>
+            <artifactId>core</artifactId>
             <version>${project.version}</version>
         </dependency>
 
