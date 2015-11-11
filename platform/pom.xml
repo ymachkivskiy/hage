@@ -24,6 +24,7 @@
         <module>arguments</module>
         <module>container-merge</module>
         <module>configuration</module>
+        <module>habitat</module>
     </modules>
 
 </project>
