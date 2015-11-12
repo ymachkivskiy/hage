@@ -2,6 +2,7 @@ package org.hage.platform.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.component.definition.IComponentDefinition;
+import org.hage.platform.config.loader.Configuration;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -26,12 +27,12 @@ public class ConfigurationConversionService {
         }
     }
 
-    public ComputationConfiguration convert(Collection<IComponentDefinition> componentDefinitionCollection) {
+    public Configuration convert(Collection<IComponentDefinition> componentDefinitionCollection) {
 
         List<IComponentDefinition> localComponents = componentDefinitionCollection.stream().filter(this::isLocalComponent).collect(toList());
         List<IComponentDefinition> globalComponents = componentDefinitionCollection.stream().filter(this::isGlobalComponent).collect(toList());
 
-        return ComputationConfiguration
+        return Configuration
                 .builder()
                 .localComponents(localComponents)
                 .globalComponents(globalComponents)

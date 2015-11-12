@@ -11,6 +11,9 @@
           class="org.hage.workplace.manager.DefaultWorkplaceManager"
           parent="hage.component.stateful.base"/>
 
+    <bean id="hage.platform.configuration.translator"
+          class="org.hage.platform.config.SimpleConfigurationTranslator"/>
+
     <bean id="hage.platform.lifecycle.exitHook"
           class="org.hage.lifecycle.AutoExitHook"/>
 

@@ -9,17 +9,22 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>core</artifactId>
+    <artifactId>external-core</artifactId>
 
     <dependencies>
         <dependency>
-            <groupId>org.hage.platform.configuration</groupId>
-            <artifactId>internal-core</artifactId>
+            <groupId>org.hage.platform</groupId>
+            <artifactId>component</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.hage.platform.configuration</groupId>
-            <artifactId>external-core</artifactId>
+            <groupId>org.hage.platform.habitat</groupId>
+            <artifactId>core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hage.platform.habitat</groupId>
+            <artifactId>structure</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

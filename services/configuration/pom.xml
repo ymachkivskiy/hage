@@ -17,6 +17,15 @@
     <description>HAgE service that configures nodes and the environment</description>
 
     <dependencies>
+
+
+
+        <dependency>
+            <groupId>org.hage.platform.configuration</groupId>
+            <artifactId>core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.hage.platform.configuration</groupId>
             <artifactId>xml</artifactId>

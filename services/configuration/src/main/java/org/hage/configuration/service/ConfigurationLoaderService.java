@@ -11,6 +11,8 @@ import org.hage.platform.component.IStatefulComponent;
 import org.hage.platform.component.definition.ConfigurationException;
 import org.hage.platform.component.exception.ComponentException;
 import org.hage.platform.config.ComputationConfiguration;
+import org.hage.platform.config.ConfigurationTranslator;
+import org.hage.platform.config.loader.Configuration;
 import org.hage.platform.config.loader.ConfigurationSource;
 import org.hage.platform.config.loader.IConfigurationLoader;
 import org.hage.platform.config.xml.FileConfigurationSource;
@@ -30,6 +32,8 @@ public class ConfigurationLoaderService implements IStatefulComponent {
     private RuntimeArgumentsService argumentsService;
     @Autowired
     private IConfigurationLoader<ConfigurationSource> configurationLoader;
+    @Autowired
+    private ConfigurationTranslator configurationTranslator;
     @Autowired
     private EventBus eventBus;
 
@@ -67,11 +71,17 @@ public class ConfigurationLoaderService implements IStatefulComponent {
         log.info("Loading computation configuration from {}.", configFilePath);
 
         try {
-            return configurationLoader.loadConfiguration(new FileConfigurationSource(configFilePath));
+            return getComputationConfiguration(configFilePath);
         } catch (final ConfigurationException e) {
             log.error("Cannot load configuration from {}.", configFilePath, e);
             throw new ComponentException(e);
         }
+    }
+
+    private ComputationConfiguration getComputationConfiguration(String configFilePath) throws ConfigurationException {
+        FileConfigurationSource configurationSource = new FileConfigurationSource(configFilePath);
+        Configuration configuration = configurationLoader.loadConfiguration(configurationSource);
+        return configurationTranslator.translate(configuration);
     }
 
     private void notifyConfigurationLoaded(ComputationConfiguration configuration) {

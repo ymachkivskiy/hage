@@ -4,8 +4,8 @@ package org.hage.platform.config.xml;
 import org.dom4j.Document;
 import org.hage.platform.component.definition.ConfigurationException;
 import org.hage.platform.component.definition.IComponentDefinition;
-import org.hage.platform.config.ComputationConfiguration;
 import org.hage.platform.config.ConfigurationConversionService;
+import org.hage.platform.config.loader.Configuration;
 import org.hage.platform.config.loader.ConfigurationSource;
 import org.hage.platform.config.loader.IConfigurationLoader;
 import org.hage.platform.config.xml.loaders.*;
@@ -48,7 +48,7 @@ public final class XmlConfigurationLoader implements IConfigurationLoader {
     }
 
     @Override
-    public ComputationConfiguration loadConfiguration(ConfigurationSource source) throws ConfigurationException {
+    public Configuration loadConfiguration(ConfigurationSource source) throws ConfigurationException {
         final String path = source.sourceLocation();
 
         LOG.debug("Loading document from '{}'", path);

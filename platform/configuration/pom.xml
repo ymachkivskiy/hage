@@ -16,8 +16,10 @@
     <name>HAgE::Platform::Configuration</name>
 
     <modules>
-        <module>core</module>
+        <module>internal-core</module>
         <module>xml</module>
+        <module>external-core</module>
+        <module>core</module>
     </modules>
 
 </project>

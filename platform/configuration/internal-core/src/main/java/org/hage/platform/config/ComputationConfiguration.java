@@ -2,7 +2,7 @@ package org.hage.platform.config;
 
 import lombok.Builder;
 import org.hage.platform.component.definition.IComponentDefinition;
-import org.hage.platform.config.habitat.HabitatConfiguration;
+import org.hage.platform.config.def.HabitatInternalConfiguration;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -14,11 +14,11 @@ import static java.util.stream.Stream.concat;
 import static java.util.stream.Stream.empty;
 
 @Builder
-public class ComputationConfiguration implements Serializable {
+public final class ComputationConfiguration implements Serializable {
 
     private final Collection<IComponentDefinition> globalComponents;
     private final Collection<IComponentDefinition> localComponents;
-    private final HabitatConfiguration habitatConfiguration;
+    private final HabitatInternalConfiguration habitatConfiguration;
 
     public Collection<IComponentDefinition> getComponentsDefinitions() {
         return concat(
@@ -33,11 +33,5 @@ public class ComputationConfiguration implements Serializable {
 
     public Collection<IComponentDefinition> getLocalComponents() {
         return unmodifiableCollection(localComponents);
-    }
-
-    @Override
-    public String toString() {
-        //TODO implement computation configuration description
-        return super.toString();
     }
 }
