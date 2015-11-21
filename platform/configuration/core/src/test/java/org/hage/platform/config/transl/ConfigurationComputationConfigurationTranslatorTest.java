@@ -18,10 +18,10 @@ import static org.mockito.Mockito.when;
 
 
 @RunWith(MockitoJUnitRunner.class)
-public class ConfigurationTranslatorTest {
+public class ConfigurationComputationConfigurationTranslatorTest {
 
     @InjectMocks
-    private ConfigurationTranslator tested;
+    private ConfigurationComputationConfigurationTranslator tested;
     @Mock
     private HabitatConfigurationTranslator habitatConfigurationTranslatorMock;
 

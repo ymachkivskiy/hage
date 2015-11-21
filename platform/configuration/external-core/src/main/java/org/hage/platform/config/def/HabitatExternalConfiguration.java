@@ -1,15 +1,12 @@
 package org.hage.platform.config.def;
 
-import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import org.hage.platform.habitat.structure.StructureDefinition;
 
 import java.util.List;
 
-@Builder
-public class HabitatExternalConfiguration {
-    @Getter
+@Data
+public final class HabitatExternalConfiguration {
     private final StructureDefinition structureDefinition;
-    @Getter
-    private final List<PopulationQualifier> populationDistribution;
+    private final List<ChunkPopulationQualifier> chunkPopulationQualifiers;
 }

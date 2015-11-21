@@ -12,7 +12,10 @@
           parent="hage.component.stateful.base"/>
 
     <bean id="hage.platform.configuration.translator"
-          class="org.hage.platform.config.transl.ConfigurationTranslator"/>
+          class="org.hage.platform.config.transl.ConfigurationComputationConfigurationTranslator"/>
+
+    <bean id="hage.platform.configuration.translator.habitat"
+          class="org.hage.platform.config.transl.HabitatConfigurationTranslator"/>
 
     <bean id="hage.platform.lifecycle.exitHook"
           class="org.hage.lifecycle.AutoExitHook"/>

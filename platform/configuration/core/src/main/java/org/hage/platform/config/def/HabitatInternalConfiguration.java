@@ -6,5 +6,5 @@ import org.hage.platform.habitat.structure.StructureDefinition;
 @Data
 public class HabitatInternalConfiguration {
     private final StructureDefinition structureDefinition;
-    private final PopulationDistribution populationDistribution;
+    private final PopulationDistributionMap populationDistributionMap;
 }

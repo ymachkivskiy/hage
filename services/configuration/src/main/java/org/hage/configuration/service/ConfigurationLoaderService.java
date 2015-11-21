@@ -11,7 +11,7 @@ import org.hage.platform.component.IStatefulComponent;
 import org.hage.platform.component.definition.ConfigurationException;
 import org.hage.platform.component.exception.ComponentException;
 import org.hage.platform.config.ComputationConfiguration;
-import org.hage.platform.config.transl.ConfigurationTranslator;
+import org.hage.platform.config.transl.ConfigurationComputationConfigurationTranslator;
 import org.hage.platform.config.loader.Configuration;
 import org.hage.platform.config.loader.ConfigurationSource;
 import org.hage.platform.config.loader.IConfigurationLoader;
@@ -33,7 +33,7 @@ public class ConfigurationLoaderService implements IStatefulComponent {
     @Autowired
     private IConfigurationLoader<ConfigurationSource> configurationLoader;
     @Autowired
-    private ConfigurationTranslator configurationTranslator;
+    private ConfigurationComputationConfigurationTranslator configurationTranslator;
     @Autowired
     private EventBus eventBus;
 
