@@ -7,7 +7,7 @@ import org.hage.platform.config.def.HabitatExternalConfiguration;
 
 import java.util.Collection;
 
-@Builder
+@Builder//TODO
 public final class Configuration {
     @Getter
     private final Collection<IComponentDefinition> globalComponents;

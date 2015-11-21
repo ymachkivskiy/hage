@@ -3,36 +3,21 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.hage.platform.configuration</groupId>
-        <artifactId>configuration-parent</artifactId>
+        <groupId>org.hage.platform.configuration.loader</groupId>
+        <artifactId>loaders-parent</artifactId>
         <version>0.2.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>xml</artifactId>
+    <artifactId>loader-xml</artifactId>
 
-    <name>HAgE::Platform::Configuration::XML</name>
+    <name>HAgE::Platform::Configuration::Loaders::XML</name>
     <description>HAgE configuration loader based on XML</description>
 
 
     <dependencies>
         <!-- AgE Platform dependencies -->
-        <dependency>
-            <groupId>org.hage.platform.configuration</groupId>
-            <artifactId>core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
 
-        <dependency>
-            <groupId>org.hage.platform</groupId>
-            <artifactId>util</artifactId>
-            <version>${project.version}</version>
-        </dependency>
 
-        <dependency>
-            <groupId>org.hage.platform</groupId>
-            <artifactId>component</artifactId>
-            <version>${project.version}</version>
-        </dependency>
 
         <dependency>
             <groupId>dom4j</groupId>
@@ -54,14 +39,7 @@
             </exclusions>
         </dependency>
 
-        <!-- Tests dependencies -->
-        <dependency>
-            <groupId>org.hage.platform</groupId>
-            <artifactId>component</artifactId>
-            <version>${project.version}</version>
-            <type>test-jar</type>
-            <scope>test</scope>
-        </dependency>
+
     </dependencies>
 
 </project>

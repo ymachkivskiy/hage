@@ -11,7 +11,7 @@ import org.hage.platform.component.IStatefulComponent;
 import org.hage.platform.component.definition.ConfigurationException;
 import org.hage.platform.component.exception.ComponentException;
 import org.hage.platform.config.ComputationConfiguration;
-import org.hage.platform.config.ConfigurationTranslator;
+import org.hage.platform.config.transl.ConfigurationTranslator;
 import org.hage.platform.config.loader.Configuration;
 import org.hage.platform.config.loader.ConfigurationSource;
 import org.hage.platform.config.loader.IConfigurationLoader;
@@ -81,7 +81,7 @@ public class ConfigurationLoaderService implements IStatefulComponent {
     private ComputationConfiguration getComputationConfiguration(String configFilePath) throws ConfigurationException {
         FileConfigurationSource configurationSource = new FileConfigurationSource(configFilePath);
         Configuration configuration = configurationLoader.loadConfiguration(configurationSource);
-        return configurationTranslator.translate(configuration);
+        return configurationTranslator.translate(configuration); //TODO wrapp  to some source
     }
 
     private void notifyConfigurationLoaded(ComputationConfiguration configuration) {

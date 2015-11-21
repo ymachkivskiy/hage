@@ -1,25 +1,32 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>configuration-parent</artifactId>
-        <groupId>org.hage.platform.configuration</groupId>
-        <version>0.2.0-SNAPSHOT</version>
-    </parent>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>org.hage.platform.configuration</groupId>
+        <artifactId>configuration-parent</artifactId>
+        <version>0.2.0-SNAPSHOT</version>
+    </parent>
+
     <artifactId>core</artifactId>
+
+    <name>HAgE::Platform::Configuration::Core</name>
+    <description>The HAgE configuration loader and provider interfaces</description>
 
     <dependencies>
         <dependency>
             <groupId>org.hage.platform.configuration</groupId>
-            <artifactId>internal-core</artifactId>
+            <artifactId>external-core</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.hage.platform.configuration</groupId>
-            <artifactId>external-core</artifactId>
+            <groupId>org.hage.platform.habitat</groupId>
+            <artifactId>core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hage.platform.habitat</groupId>
+            <artifactId>structure</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

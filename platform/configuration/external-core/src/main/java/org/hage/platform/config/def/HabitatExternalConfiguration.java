@@ -7,7 +7,7 @@ import org.hage.platform.habitat.structure.StructureDefinition;
 import java.util.List;
 
 @Builder
-public final class HabitatExternalConfiguration {
+public class HabitatExternalConfiguration {
     @Getter
     private final StructureDefinition structureDefinition;
     @Getter

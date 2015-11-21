@@ -27,8 +27,8 @@
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.configuration</groupId>
-            <artifactId>xml</artifactId>
+            <groupId>org.hage.platform.configuration.loader</groupId>
+            <artifactId>loader-xml</artifactId>
             <version>${project.version}</version>
         </dependency>
 

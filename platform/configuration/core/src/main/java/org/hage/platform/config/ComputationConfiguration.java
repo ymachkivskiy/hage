@@ -1,6 +1,7 @@
 package org.hage.platform.config;
 
 import lombok.Builder;
+import lombok.Getter;
 import org.hage.platform.component.definition.IComponentDefinition;
 import org.hage.platform.config.def.HabitatInternalConfiguration;
 
@@ -18,6 +19,7 @@ public final class ComputationConfiguration implements Serializable {
 
     private final Collection<IComponentDefinition> globalComponents;
     private final Collection<IComponentDefinition> localComponents;
+    @Getter
     private final HabitatInternalConfiguration habitatConfiguration;
 
     public Collection<IComponentDefinition> getComponentsDefinitions() {
