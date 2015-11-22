@@ -7,7 +7,6 @@ import lombok.ToString;
 import javax.annotation.concurrent.Immutable;
 
 @Immutable
-@EqualsAndHashCode(doNotUseGetters = true)
 @Data(staticConstructor = "definedBy")
 public final class InternalPosition {
     private final int xPos;
