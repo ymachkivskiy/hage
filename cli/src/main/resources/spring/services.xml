@@ -13,6 +13,9 @@
           class="org.hage.configuration.service.ConfigurationLoaderService"
           parent="hage.component.stateful.base"/>
 
+    <bean id="hage.configurationProvider"
+          class="org.hage.cli.ArgumentBasedXmlConfigurationProvider"/>
+
     <bean id="hage.service.configurationSplitter"
           class="org.hage.configuration.service.ConfigurationSplitService"
           parent="hage.component.stateful.base"/>

@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-public final class XmlConfigurationLoader implements IConfigurationLoader {
+public final class XmlConfigurationLoader implements IConfigurationLoader<FileConfigurationSource> {
 
     private static final Logger LOG = LoggerFactory.getLogger(XmlConfigurationLoader.class);
 
@@ -48,7 +48,7 @@ public final class XmlConfigurationLoader implements IConfigurationLoader {
     }
 
     @Override
-    public Configuration loadConfiguration(ConfigurationSource source) throws ConfigurationException {
+    public Configuration loadConfiguration(FileConfigurationSource source) throws ConfigurationException {
         final String path = source.sourceLocation();
 
         LOG.debug("Loading document from '{}'", path);
@@ -57,6 +57,6 @@ public final class XmlConfigurationLoader implements IConfigurationLoader {
         final List<IComponentDefinition> definitions = reader.readDocument(document);
         LOG.debug("Read {} component definitions.", definitions.size());
 
-        return configurationConversionService.convert(definitions);
+        return configurationConversionService.convert(definitions);//TODO temporary
     }
 }

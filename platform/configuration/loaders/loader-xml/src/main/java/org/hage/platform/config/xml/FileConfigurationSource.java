@@ -1,13 +1,13 @@
 package org.hage.platform.config.xml;
 
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import org.hage.platform.config.loader.ConfigurationSource;
 
+@ToString
+@RequiredArgsConstructor
 public class FileConfigurationSource implements ConfigurationSource {
     private final String filePath;
-
-    public FileConfigurationSource(String filePath) {
-        this.filePath = filePath;
-    }
 
     @Override
     public String sourceLocation() {
