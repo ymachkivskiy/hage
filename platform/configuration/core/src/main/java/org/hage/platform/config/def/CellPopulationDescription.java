@@ -1,5 +1,6 @@
 package org.hage.platform.config.def;
 
+import com.google.common.collect.ImmutableMap;
 import lombok.EqualsAndHashCode;
 import org.hage.platform.habitat.AgentDefinition;
 
@@ -7,6 +8,8 @@ import javax.annotation.concurrent.Immutable;
 import java.util.*;
 
 import static java.util.Collections.emptyMap;
+import static java.util.Collections.singletonMap;
+import static java.util.Collections.unmodifiableMap;
 
 @Immutable
 @EqualsAndHashCode
@@ -16,7 +19,7 @@ public class CellPopulationDescription {
     private final Map<AgentDefinition, Integer> agentCountMap;
 
     private CellPopulationDescription(Map<AgentDefinition, Integer> agentCountMap) {
-        this.agentCountMap = Collections.unmodifiableMap(agentCountMap);
+        this.agentCountMap = unmodifiableMap(agentCountMap);
     }
 
     public static CellPopulationDescription empty() {
@@ -25,6 +28,10 @@ public class CellPopulationDescription {
 
     public static CellPopulationDescription fromMap(Map<AgentDefinition, Integer> agentCountMap) {
         return new CellPopulationDescription(agentCountMap);
+    }
+
+    public static CellPopulationDescription fromPair(AgentDefinition agentDefinition, Integer agentCount) {
+        return new CellPopulationDescription(singletonMap(agentDefinition, agentCount));
     }
 
     public List<AgentDefinition> getAgentDefinitions() {
@@ -43,7 +50,22 @@ public class CellPopulationDescription {
     }
 
     public CellPopulationDescription merge(CellPopulationDescription other) {
-        return EMPTY;
+        if (this.getAgentDefinitions().isEmpty()) {
+            return other;
+        }
+        if (other.getAgentDefinitions().isEmpty()) {
+            return this;
+        }
+
+        Map<AgentDefinition, Integer> mergingMap = new HashMap<>(agentCountMap);
+
+        for (AgentDefinition agentDefinition : other.getAgentDefinitions()) {
+            int count = other.getAgentCountForDefinition(agentDefinition);
+            Integer currentCount = mergingMap.getOrDefault(agentDefinition, 0);
+            mergingMap.put(agentDefinition, currentCount + count);
+        }
+
+        return fromMap(mergingMap);
     }
 
     public boolean isEmpty() {

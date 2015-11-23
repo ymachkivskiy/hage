@@ -7,19 +7,19 @@ import org.hage.platform.config.def.PopulationDistributionMap;
 import org.hage.platform.config.loader.Configuration;
 import org.hage.platform.habitat.structure.StructureDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 
 public class ConfigurationComputationConfigurationTranslator {
 
-    @Autowired
     private PopulationDistributionMapCreator distributionMapCreator;
 
 
     public ComputationConfiguration translate(Configuration configuration) {
         return ComputationConfiguration.builder()
-                .localComponents(configuration.getLocalComponents())
-                .globalComponents(configuration.getGlobalComponents())
-                .habitatConfiguration(translateHabitatConfiguration(configuration.getHabitatConfiguration()))
-                .build();
+            .localComponents(configuration.getLocalComponents())
+            .globalComponents(configuration.getGlobalComponents())
+            .habitatConfiguration(translateHabitatConfiguration(configuration.getHabitatConfiguration()))
+            .build();
     }
 
 
@@ -33,9 +33,14 @@ public class ConfigurationComputationConfigurationTranslator {
 
     private PopulationDistributionMap getPopulationDistribution(HabitatExternalConfiguration source) {
         return source.getChunkPopulationQualifiers()
-                .stream()
-                .map(distributionMapCreator::createMap)
-                .reduce(PopulationDistributionMap.empty(), PopulationDistributionMap::merge)
-                ;
+            .stream()
+            .map(distributionMapCreator::createMap)
+            .reduce(PopulationDistributionMap.empty(), PopulationDistributionMap::merge)
+            ;
+    }
+
+    @Required
+    public void setDistributionMapCreator(PopulationDistributionMapCreator distributionMapCreator) {
+        this.distributionMapCreator = distributionMapCreator;
     }
 }

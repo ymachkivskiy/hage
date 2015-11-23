@@ -88,7 +88,9 @@ public class ConfigurationComputationConfigurationTranslatorTest {
         when(populationDistributionMapCreatorMock.createMap(secondPopQ)).thenReturn(secondPopDistrMap);
 
 
-        final Configuration configuration = Configuration.builder().habitatConfiguration(new HabitatExternalConfiguration(mock(StructureDefinition.class), chunkPopulationQualifiers)).build();
+        final Configuration configuration = Configuration.builder()
+            .habitatConfiguration(new HabitatExternalConfiguration(mock(StructureDefinition.class), chunkPopulationQualifiers))
+            .build();
 
 
         // when

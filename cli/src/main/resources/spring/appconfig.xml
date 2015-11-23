@@ -5,6 +5,8 @@
 
     <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
 
+    <import resource="classpath*:org/hage/**/module-spring-conf.xml"/>
+
     <bean id="hage.component.stateful.base" abstract="true" init-method="init" destroy-method="finish"/>
 
     <import resource="classpath:spring/platform.xml"/>

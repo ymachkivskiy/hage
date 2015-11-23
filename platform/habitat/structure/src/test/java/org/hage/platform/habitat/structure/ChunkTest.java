@@ -1,9 +1,7 @@
 package org.hage.platform.habitat.structure;
 
-import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.List;
 import java.util.Set;
 
 import static org.fest.assertions.Assertions.assertThat;
@@ -19,7 +17,7 @@ public class ChunkTest {
         // given
 
         final Chunk tested = new Chunk(
-                InternalPosition.definedBy(0, 2, 0), Dimensions.of(5, 5, 5)
+            InternalPosition.definedBy(0, 2, 0), Dimensions.of(5, 5, 5)
         );
 
         // when
@@ -38,7 +36,7 @@ public class ChunkTest {
         // given
 
         final Chunk tested = new Chunk(
-                InternalPosition.definedBy(1, 2, 3), Dimensions.of(7, 2, 100)
+            InternalPosition.definedBy(1, 2, 3), Dimensions.of(7, 2, 100)
         );
 
         // when
@@ -57,7 +55,7 @@ public class ChunkTest {
         // given
 
         final Chunk tested = new Chunk(
-                InternalPosition.definedBy(0, 2, 0), Dimensions.of(5, 5, 5)
+            InternalPosition.definedBy(0, 2, 0), Dimensions.of(5, 5, 5)
         );
 
         // when
@@ -89,7 +87,7 @@ public class ChunkTest {
 
 
         final Chunk tested = new Chunk(
-                pos__0_1_2, Dimensions.of(2, 2, 3)
+            pos__0_1_2, Dimensions.of(2, 2, 3)
         );
 
         // when
@@ -99,19 +97,86 @@ public class ChunkTest {
         // then
 
         assertThat(actualInternalPositions).containsOnly(
-                pos__0_1_2,
-                pos__1_1_2,
-                pos__0_1_3,
-                pos__1_1_3,
-                pos__0_1_4,
-                pos__1_1_4,
-                pos__0_2_2,
-                pos__1_2_2,
-                pos__0_2_3,
-                pos__1_2_3,
-                pos__0_2_4,
-                pos__1_2_4
+            pos__0_1_2,
+            pos__1_1_2,
+            pos__0_1_3,
+            pos__1_1_3,
+            pos__0_1_4,
+            pos__1_1_4,
+            pos__0_2_2,
+            pos__1_2_2,
+            pos__0_2_3,
+            pos__1_2_3,
+            pos__0_2_4,
+            pos__1_2_4
         );
+
+    }
+
+    @Test
+    public void shouldReturnAllPositionsWhenCountIsGreaterEqualThanInternalPositionsCount() throws Exception {
+
+        // given
+
+        final InternalPosition pos__0_0_0 = InternalPosition.definedBy(0, 0, 0);
+        final InternalPosition pos__0_0_1 = InternalPosition.definedBy(0, 0, 1);
+        final InternalPosition pos__0_1_0 = InternalPosition.definedBy(0, 1, 0);
+        final InternalPosition pos__0_1_1 = InternalPosition.definedBy(0, 1, 1);
+
+        final Chunk tested = new Chunk(
+            InternalPosition.definedBy(0, 0, 0), Dimensions.of(1, 2, 2)
+        );
+
+        // when
+
+        Set<InternalPosition> randomPositions = tested.getRandomPositions(7L);
+
+        // then
+
+        assertThat(randomPositions).containsOnly(pos__0_0_0, pos__0_0_1, pos__0_1_0, pos__0_1_1);
+
+    }
+
+    @Test
+    public void shouldReturnNoInternalPositionsWhenCountIsZero() throws Exception {
+
+        // given
+
+        final Chunk tested = new Chunk(
+            InternalPosition.definedBy(1, 2, 3), Dimensions.of(32, 12, 66)
+        );
+
+        // when
+
+        Set<InternalPosition> randomPositions = tested.getRandomPositions(0L);
+
+        // then
+
+        assertThat(randomPositions).isEmpty();
+
+
+    }
+
+    @Test
+    public void shouldReturnFixedNumberOfRandomInternalPositions() throws Exception {
+
+        // given
+
+        final long positionsCount = 967;
+        final Chunk tested = new Chunk(
+            InternalPosition.definedBy(0, 2, 3), Dimensions.of(32, 12, 17)
+        );
+
+        // when
+
+        Set<InternalPosition> randomInternalPositions = tested.getRandomPositions(positionsCount);
+
+        // then
+
+        assertThat(randomInternalPositions).hasSize((int) positionsCount);
+        for (InternalPosition pos : randomInternalPositions) {
+            assertTrue(tested.containsPosition(pos));
+        }
 
     }
 }

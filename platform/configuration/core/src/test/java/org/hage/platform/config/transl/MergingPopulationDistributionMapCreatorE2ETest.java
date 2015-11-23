@@ -10,9 +10,11 @@ import org.hage.platform.config.def.agent.InternalPositionsSelectionData;
 import org.hage.platform.habitat.AgentDefinition;
 import org.hage.platform.habitat.structure.Chunk;
 import org.hage.platform.habitat.structure.InternalPosition;
-import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Collection;
 import java.util.function.Predicate;
@@ -26,15 +28,12 @@ import static org.hage.platform.habitat.structure.Dimensions.of;
 import static org.hage.platform.habitat.structure.InternalPosition.definedBy;
 import static org.mockito.Mockito.mock;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = "classpath:/org/hage/platform/config/core/module-spring-conf.xml")
+public class MergingPopulationDistributionMapCreatorE2ETest {
 
-public class PopulationDistributionMapCreatorImplTest {
-
-    private PopulationDistributionMapCreatorImpl tested;
-
-    @Before
-    public void setUp() throws Exception {
-        tested = new PopulationDistributionMapCreatorImpl();
-    }
+    @Autowired
+    private MergingPopulationDistributionMapCreator tested;
 
     // region no chunkAgentDistribution
 
@@ -67,12 +66,12 @@ public class PopulationDistributionMapCreatorImplTest {
         final AgentDefinition expectedAgentDefinition = mock(AgentDefinition.class);
 
         final ChunkPopulationQualifier qualifier = CREATE_QUALIFIER(
-                new Chunk(definedBy(31, 10, 0), of(52, 11, 27)),
-                new ChunkAgentDistribution(
-                        expectedAgentDefinition,
-                        fixedCount(1),
-                        allPositions()
-                )
+            new Chunk(definedBy(31, 10, 0), of(52, 11, 27)),
+            new ChunkAgentDistribution(
+                expectedAgentDefinition,
+                fixedCount(1),
+                allPositions()
+            )
         );
 
         // when
@@ -83,7 +82,7 @@ public class PopulationDistributionMapCreatorImplTest {
 
 
         assertThat(distributionMap).satisfies(ALL_CELL_POPULATIONS_IN_MAP_IS_MATCHING(
-                celPopDescr -> celPopDescr.getAgentDefinitions().size() == 1 && celPopDescr.getAgentDefinitions().contains(expectedAgentDefinition)
+            celPopDescr -> celPopDescr.getAgentDefinitions().size() == 1 && celPopDescr.getAgentDefinitions().contains(expectedAgentDefinition)
         ));
 
     }
@@ -98,12 +97,12 @@ public class PopulationDistributionMapCreatorImplTest {
 
         final AgentDefinition agentDefinition = mock(AgentDefinition.class);
         final ChunkPopulationQualifier qualifier = CREATE_QUALIFIER(
-                new Chunk(definedBy(0, 10, 0), of(22, 7, 5)),
-                new ChunkAgentDistribution(
-                        agentDefinition,
-                        COUNT_DATA,
-                        allPositions()
-                )
+            new Chunk(definedBy(0, 10, 0), of(22, 7, 5)),
+            new ChunkAgentDistribution(
+                agentDefinition,
+                COUNT_DATA,
+                allPositions()
+            )
         );
 
         // when
@@ -113,9 +112,9 @@ public class PopulationDistributionMapCreatorImplTest {
         // then
 
         assertThat(distributionMap)
-                .satisfies(ALL_CELL_POPULATIONS_IN_MAP_IS_MATCHING(
-                        popDescr -> popDescr.getAgentCountForDefinition(agentDefinition) == expectedAgentCount
-                ));
+            .satisfies(ALL_CELL_POPULATIONS_IN_MAP_IS_MATCHING(
+                popDescr -> popDescr.getAgentCountForDefinition(agentDefinition) == expectedAgentCount
+            ));
     }
 
     @Test
@@ -128,12 +127,12 @@ public class PopulationDistributionMapCreatorImplTest {
 
         final AgentDefinition agentDefinition = mock(AgentDefinition.class);
         final ChunkPopulationQualifier qualifier = CREATE_QUALIFIER(
-                new Chunk(definedBy(0, 0, 13), of(2, 10, 31)),
-                new ChunkAgentDistribution(
-                        agentDefinition,
-                        COUNT_DATA,
-                        allPositions()
-                )
+            new Chunk(definedBy(0, 0, 13), of(2, 10, 31)),
+            new ChunkAgentDistribution(
+                agentDefinition,
+                COUNT_DATA,
+                allPositions()
+            )
         );
 
         // when
@@ -143,9 +142,9 @@ public class PopulationDistributionMapCreatorImplTest {
         // then
 
         assertThat(distributionMap)
-                .satisfies(ALL_CELL_POPULATIONS_IN_MAP_IS_MATCHING(
-                        popDescr -> popDescr.getAgentCountForDefinition(agentDefinition) >= minExpectedAgentsCount
-                ));
+            .satisfies(ALL_CELL_POPULATIONS_IN_MAP_IS_MATCHING(
+                popDescr -> popDescr.getAgentCountForDefinition(agentDefinition) >= minExpectedAgentsCount
+            ));
 
     }
 
@@ -160,12 +159,12 @@ public class PopulationDistributionMapCreatorImplTest {
 
         final AgentDefinition agentDefinition = mock(AgentDefinition.class);
         final ChunkPopulationQualifier qualifier = CREATE_QUALIFIER(
-                new Chunk(definedBy(112, 17, 13), of(53, 13, 3)),
-                new ChunkAgentDistribution(
-                        agentDefinition,
-                        COUNT_DATA,
-                        allPositions()
-                )
+            new Chunk(definedBy(112, 17, 13), of(53, 13, 3)),
+            new ChunkAgentDistribution(
+                agentDefinition,
+                COUNT_DATA,
+                allPositions()
+            )
         );
 
         // when
@@ -175,9 +174,9 @@ public class PopulationDistributionMapCreatorImplTest {
         // then
 
         assertThat(distributionMap)
-                .satisfies(ALL_CELL_POPULATIONS_IN_MAP_IS_MATCHING(
-                        popDescr -> popDescr.getAgentCountForDefinition(agentDefinition) > 0 && popDescr.getAgentCountForDefinition(agentDefinition) <= maxExpectingAgents
-                ));
+            .satisfies(ALL_CELL_POPULATIONS_IN_MAP_IS_MATCHING(
+                popDescr -> popDescr.getAgentCountForDefinition(agentDefinition) > 0 && popDescr.getAgentCountForDefinition(agentDefinition) <= maxExpectingAgents
+            ));
 
     }
 
@@ -192,12 +191,12 @@ public class PopulationDistributionMapCreatorImplTest {
 
         final AgentDefinition agentDefinition = mock(AgentDefinition.class);
         final ChunkPopulationQualifier qualifier = CREATE_QUALIFIER(
-                new Chunk(definedBy(112, 7, 13), of(43, 13, 3)),
-                new ChunkAgentDistribution(
-                        agentDefinition,
-                        COUNT_DATA,
-                        allPositions()
-                )
+            new Chunk(definedBy(112, 7, 13), of(43, 13, 3)),
+            new ChunkAgentDistribution(
+                agentDefinition,
+                COUNT_DATA,
+                allPositions()
+            )
         );
 
         // when
@@ -207,9 +206,9 @@ public class PopulationDistributionMapCreatorImplTest {
         // then
 
         assertThat(distributionMap)
-                .satisfies(ALL_CELL_POPULATIONS_IN_MAP_IS_MATCHING(
-                        popDescr -> popDescr.getAgentCountForDefinition(agentDefinition) >= minExpectingAgents && popDescr.getAgentCountForDefinition(agentDefinition) <= maxExpectingAgents
-                ));
+            .satisfies(ALL_CELL_POPULATIONS_IN_MAP_IS_MATCHING(
+                popDescr -> popDescr.getAgentCountForDefinition(agentDefinition) >= minExpectingAgents && popDescr.getAgentCountForDefinition(agentDefinition) <= maxExpectingAgents
+            ));
 
 
     }
@@ -223,12 +222,12 @@ public class PopulationDistributionMapCreatorImplTest {
 
         final AgentDefinition agentDefinition = mock(AgentDefinition.class);
         final ChunkPopulationQualifier qualifier = CREATE_QUALIFIER(
-                new Chunk(definedBy(12, 171, 133), of(3, 33, 12)),
-                new ChunkAgentDistribution(
-                        agentDefinition,
-                        COUNT_DATA,
-                        allPositions()
-                )
+            new Chunk(definedBy(12, 171, 133), of(3, 33, 12)),
+            new ChunkAgentDistribution(
+                agentDefinition,
+                COUNT_DATA,
+                allPositions()
+            )
         );
 
         // when
@@ -238,9 +237,9 @@ public class PopulationDistributionMapCreatorImplTest {
         // then
 
         assertThat(distributionMap)
-                .satisfies(ALL_CELL_POPULATIONS_IN_MAP_IS_MATCHING(
-                        popDescr -> popDescr.getAgentCountForDefinition(agentDefinition) >= 0
-                ));
+            .satisfies(ALL_CELL_POPULATIONS_IN_MAP_IS_MATCHING(
+                popDescr -> popDescr.getAgentCountForDefinition(agentDefinition) >= 0
+            ));
 
 
     }
@@ -254,12 +253,12 @@ public class PopulationDistributionMapCreatorImplTest {
         final Chunk chunk = new Chunk(definedBy(12, 171, 133), of(32, 33, 12));
 
         final ChunkPopulationQualifier qualifier = CREATE_QUALIFIER(
-                chunk,
-                new ChunkAgentDistribution(
-                        mock(AgentDefinition.class),
-                        fixedCount(1),
-                        POSITIONS_SELECTION_DATA
-                )
+            chunk,
+            new ChunkAgentDistribution(
+                mock(AgentDefinition.class),
+                fixedCount(1),
+                POSITIONS_SELECTION_DATA
+            )
         );
 
         // when
@@ -281,12 +280,12 @@ public class PopulationDistributionMapCreatorImplTest {
         final Chunk chunk = new Chunk(definedBy(1222, 11, 1), of(2, 323, 112));
 
         final ChunkPopulationQualifier qualifier = CREATE_QUALIFIER(
-                chunk,
-                new ChunkAgentDistribution(
-                        mock(AgentDefinition.class),
-                        fixedCount(1),
-                        POSITIONS_SELECTION_DATA
-                )
+            chunk,
+            new ChunkAgentDistribution(
+                mock(AgentDefinition.class),
+                fixedCount(1),
+                POSITIONS_SELECTION_DATA
+            )
         );
 
         // when
@@ -310,12 +309,12 @@ public class PopulationDistributionMapCreatorImplTest {
         final Chunk chunk = new Chunk(definedBy(1222, 11, 1), of(2, 323, 112));
 
         final ChunkPopulationQualifier qualifier = CREATE_QUALIFIER(
-                chunk,
-                new ChunkAgentDistribution(
-                        mock(AgentDefinition.class),
-                        fixedCount(1),
-                        POSITIONS_SELECTION_DATA
-                )
+            chunk,
+            new ChunkAgentDistribution(
+                mock(AgentDefinition.class),
+                fixedCount(1),
+                POSITIONS_SELECTION_DATA
+            )
         );
 
         // when
@@ -340,12 +339,12 @@ public class PopulationDistributionMapCreatorImplTest {
         final InternalPositionsSelectionData POSITIONS_SELECTION_DATA = randomPositions(numberOfPositions);
 
         final ChunkPopulationQualifier qualifier = CREATE_QUALIFIER(
-                chunk,
-                new ChunkAgentDistribution(
-                        mock(AgentDefinition.class),
-                        fixedCount(1),
-                        POSITIONS_SELECTION_DATA
-                )
+            chunk,
+            new ChunkAgentDistribution(
+                mock(AgentDefinition.class),
+                fixedCount(1),
+                POSITIONS_SELECTION_DATA
+            )
         );
 
         // when
@@ -375,12 +374,12 @@ public class PopulationDistributionMapCreatorImplTest {
         final AgentDefinition agentDefinition = mock(AgentDefinition.class);
 
         final ChunkPopulationQualifier qualifier = CREATE_QUALIFIER(
-                chunk,
-                new ChunkAgentDistribution(
-                        agentDefinition,
-                        COUNT_DATA,
-                        POSITIONS_SELECTION_DATA
-                )
+            chunk,
+            new ChunkAgentDistribution(
+                agentDefinition,
+                COUNT_DATA,
+                POSITIONS_SELECTION_DATA
+            )
         );
 
         // when
@@ -392,9 +391,9 @@ public class PopulationDistributionMapCreatorImplTest {
         assertThat(distributionMap.getInternalPositions().size()).isEqualTo((int) numberOfPositions);
         assertThat(distributionMap.getInternalPositions()).satisfies(HAS_GOOD_POSITIONS(chunk));
         assertThat(distributionMap)
-                .satisfies(ALL_CELL_POPULATIONS_IN_MAP_IS_MATCHING(
-                        popDescr -> popDescr.getAgentCountForDefinition(agentDefinition) >= minCount && popDescr.getAgentCountForDefinition(agentDefinition) <= maxCount
-                ));
+            .satisfies(ALL_CELL_POPULATIONS_IN_MAP_IS_MATCHING(
+                popDescr -> popDescr.getAgentCountForDefinition(agentDefinition) >= minCount && popDescr.getAgentCountForDefinition(agentDefinition) <= maxCount
+            ));
 
     }
 
@@ -412,12 +411,12 @@ public class PopulationDistributionMapCreatorImplTest {
         final AgentDefinition agentDefinition = mock(AgentDefinition.class);
 
         final ChunkPopulationQualifier qualifier = CREATE_QUALIFIER(
-                chunk,
-                new ChunkAgentDistribution(
-                        agentDefinition,
-                        COUNT_DATA,
-                        POSITIONS_SELECTION_DATA
-                )
+            chunk,
+            new ChunkAgentDistribution(
+                agentDefinition,
+                COUNT_DATA,
+                POSITIONS_SELECTION_DATA
+            )
         );
 
         // when
@@ -429,9 +428,9 @@ public class PopulationDistributionMapCreatorImplTest {
         assertThat(distributionMap.getInternalPositions().size()).isGreaterThanOrEqualTo(1);
         assertThat(distributionMap.getInternalPositions()).satisfies(HAS_GOOD_POSITIONS(chunk));
         assertThat(distributionMap)
-                .satisfies(ALL_CELL_POPULATIONS_IN_MAP_IS_MATCHING(
-                        popDescr -> popDescr.getAgentCountForDefinition(agentDefinition) >= minCount
-                ));
+            .satisfies(ALL_CELL_POPULATIONS_IN_MAP_IS_MATCHING(
+                popDescr -> popDescr.getAgentCountForDefinition(agentDefinition) >= minCount
+            ));
 
     }
 
@@ -453,17 +452,17 @@ public class PopulationDistributionMapCreatorImplTest {
 
 
         final ChunkPopulationQualifier qualifier = CREATE_QUALIFIER(
-                new Chunk(definedBy(2, 11, 1), of(77, 5, 17)),
-                new ChunkAgentDistribution(
-                        firstAgentDefinition,
-                        fixedCount(firstAgentsCount),
-                        allPositions()
-                ),
-                new ChunkAgentDistribution(
-                        secondAgentDefinition,
-                        fixedCount(secondAgentsCount),
-                        allPositions()
-                )
+            new Chunk(definedBy(2, 11, 1), of(77, 5, 17)),
+            new ChunkAgentDistribution(
+                firstAgentDefinition,
+                fixedCount(firstAgentsCount),
+                allPositions()
+            ),
+            new ChunkAgentDistribution(
+                secondAgentDefinition,
+                fixedCount(secondAgentsCount),
+                allPositions()
+            )
         );
 
         // when
@@ -473,10 +472,10 @@ public class PopulationDistributionMapCreatorImplTest {
         // then
 
         assertThat(distributionMap).satisfies(ALL_CELL_POPULATIONS_IN_MAP_IS_MATCHING(
-                popDescr ->
-                        popDescr.getAgentCountForDefinition(firstAgentDefinition) == firstAgentsCount
-                                &&
-                                popDescr.getAgentCountForDefinition(secondAgentDefinition) == secondAgentsCount
+            popDescr ->
+                popDescr.getAgentCountForDefinition(firstAgentDefinition) == firstAgentsCount
+                    &&
+                    popDescr.getAgentCountForDefinition(secondAgentDefinition) == secondAgentsCount
         ));
 
     }
@@ -491,17 +490,17 @@ public class PopulationDistributionMapCreatorImplTest {
 
 
         final ChunkPopulationQualifier qualifier = CREATE_QUALIFIER(
-                new Chunk(definedBy(2, 11, 1), of(77, 5, 17)),
-                new ChunkAgentDistribution(
-                        firstAgentDefinition,
-                        random(),
-                        allPositions()
-                ),
-                new ChunkAgentDistribution(
-                        secondAgentDefinition,
-                        random(),
-                        allPositions()
-                )
+            new Chunk(definedBy(2, 11, 1), of(77, 5, 17)),
+            new ChunkAgentDistribution(
+                firstAgentDefinition,
+                random(),
+                allPositions()
+            ),
+            new ChunkAgentDistribution(
+                secondAgentDefinition,
+                random(),
+                allPositions()
+            )
         );
 
         // when
@@ -511,10 +510,10 @@ public class PopulationDistributionMapCreatorImplTest {
         // then
 
         assertThat(distributionMap).satisfies(ALL_CELL_POPULATIONS_IN_MAP_IS_MATCHING(
-                popDescr ->
-                        popDescr.getAgentCountForDefinition(firstAgentDefinition) > 0
-                        &&
-                        popDescr.getAgentCountForDefinition(secondAgentDefinition) > 0
+            popDescr ->
+                popDescr.getAgentCountForDefinition(firstAgentDefinition) > 0
+                    &&
+                    popDescr.getAgentCountForDefinition(secondAgentDefinition) > 0
         ));
 
 
@@ -533,22 +532,22 @@ public class PopulationDistributionMapCreatorImplTest {
         final int thirdMax = 18;
 
         final ChunkPopulationQualifier qualifier = CREATE_QUALIFIER(
-                new Chunk(definedBy(2, 11, 1), of(77, 5, 17)),
-                new ChunkAgentDistribution(
-                        firstAgentDefinition,
-                        fixedCount(firstAgentsCount),
-                        allPositions()
-                ),
-                new ChunkAgentDistribution(
-                        secondAgentDefinition,
-                        random(),
-                        allPositions()
-                ),
-                new ChunkAgentDistribution(
-                        secondAgentDefinition,
-                        between(thirdMin, thirdMax),
-                        allPositions()
-                )
+            new Chunk(definedBy(2, 11, 1), of(77, 5, 17)),
+            new ChunkAgentDistribution(
+                firstAgentDefinition,
+                fixedCount(firstAgentsCount),
+                allPositions()
+            ),
+            new ChunkAgentDistribution(
+                secondAgentDefinition,
+                random(),
+                allPositions()
+            ),
+            new ChunkAgentDistribution(
+                secondAgentDefinition,
+                between(thirdMin, thirdMax),
+                allPositions()
+            )
         );
 
         // when
@@ -558,12 +557,12 @@ public class PopulationDistributionMapCreatorImplTest {
         // then
 
         assertThat(distributionMap).satisfies(ALL_CELL_POPULATIONS_IN_MAP_IS_MATCHING(
-                popDescr ->
-                        popDescr.getAgentCountForDefinition(firstAgentDefinition) == firstAgentsCount
-                        &&
-                        popDescr.getAgentCountForDefinition(secondAgentDefinition) > 0
-                        &&
-                        popDescr.getAgentCountForDefinition(thirdAgentDefinition) >= thirdMin && popDescr.getAgentCountForDefinition(thirdAgentDefinition) <= thirdMax
+            popDescr ->
+                popDescr.getAgentCountForDefinition(firstAgentDefinition) == firstAgentsCount
+                    &&
+                    popDescr.getAgentCountForDefinition(secondAgentDefinition) > 0
+                    &&
+                    popDescr.getAgentCountForDefinition(thirdAgentDefinition) >= thirdMin && popDescr.getAgentCountForDefinition(thirdAgentDefinition) <= thirdMax
         ));
 
     }

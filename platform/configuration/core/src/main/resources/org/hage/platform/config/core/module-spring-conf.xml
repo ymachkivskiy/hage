@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <bean id="platform.config.translation.ConfigurationTranslator"
+          class="org.hage.platform.config.transl.ConfigurationComputationConfigurationTranslator">
+        <property name="distributionMapCreator" ref="platform.config.translation.PopulationDistributionMapCreator"/>
+    </bean>
+
+    <bean id="platform.config.translation.PopulationDistributionMapCreator"
+          class="org.hage.platform.config.transl.MergingPopulationDistributionMapCreator">
+        <property name="countProvider" ref="platform.config.translation.agentsCount"/>
+        <property name="positionsSelector" ref="platform.config.translation.positionsSelector"/>
+    </bean>
+
+    <bean id="platform.config.translation.agentsCount"
+          class="org.hage.platform.config.transl.count.CompositeCountProvider">
+        <property name="atLeastCountProvider" ref="platform.config.translation.agentsCount.atLeast"/>
+        <property name="atMostCountProvider" ref="platform.config.translation.agentsCount.atMost"/>
+        <property name="betweenCountProvider" ref="platform.config.translation.agentsCount.between"/>
+        <property name="fixedCountProvider" ref="platform.config.translation.agentsCount.fixed"/>
+        <property name="randomCountProvider" ref="platform.config.translation.agentsCount.random"/>
+    </bean>
+
+    <bean id="platform.config.translation.agentsCount.atLeast"
+          class="org.hage.platform.config.transl.count.AtLeastCountProvider"/>
+
+    <bean id="platform.config.translation.agentsCount.atMost"
+          class="org.hage.platform.config.transl.count.AtMostCountProvider"/>
+
+    <bean id="platform.config.translation.agentsCount.between"
+          class="org.hage.platform.config.transl.count.BetweenAgentCountProvider"/>
+
+    <bean id="platform.config.translation.agentsCount.fixed"
+          class="org.hage.platform.config.transl.count.FixedCountProvider"/>
+
+    <bean id="platform.config.translation.agentsCount.random"
+          class="org.hage.platform.config.transl.count.RandomCountProvider"/>
+
+
+    <bean id="platform.config.translation.positionsSelector"
+          class="org.hage.platform.config.transl.select.CompositePositionsSelector">
+        <property name="allSelector" ref="platform.config.translation.positionsSelector.all"/>
+        <property name="randomPositionsRandomNumberSelector"
+                  ref="platform.config.translation.positionsSelector.randomSelectionRandomNumber"/>
+        <property name="randomPositionsFixedNumberSelector"
+                  ref="platform.config.translation.positionsSelector.randomSelectionFixedNumber"/>
+    </bean>
+
+    <bean id="platform.config.translation.positionsSelector.all"
+          class="org.hage.platform.config.transl.select.AllPositionsSelector"/>
+
+    <bean id="platform.config.translation.positionsSelector.randomSelectionFixedNumber"
+          class="org.hage.platform.config.transl.select.RandomSelectionFixedNumberSelector"/>
+
+    <bean id="platform.config.translation.positionsSelector.randomSelectionRandomNumber"
+          class="org.hage.platform.config.transl.select.RandomSelectionRandomNumberSelector"/>
+
+</beans>

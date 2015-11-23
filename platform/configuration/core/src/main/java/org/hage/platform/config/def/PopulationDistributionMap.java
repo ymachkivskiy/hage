@@ -5,14 +5,13 @@ import lombok.ToString;
 import org.hage.platform.habitat.structure.InternalPosition;
 
 import javax.annotation.concurrent.Immutable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.*;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 
 @Immutable
 @EqualsAndHashCode
@@ -26,6 +25,14 @@ public class PopulationDistributionMap {
         this.distributionMap = unmodifiableMap(distributionMap);
     }
 
+    public static PopulationDistributionMap empty() {
+        return EMPTY;
+    }
+
+    public static PopulationDistributionMap fromMap(Map<InternalPosition, CellPopulationDescription> distributionMap) {
+        return new PopulationDistributionMap(distributionMap);
+    }
+
     public CellPopulationDescription getPopulationFor(InternalPosition internalPosition) {
         return distributionMap.getOrDefault(internalPosition, CellPopulationDescription.empty());
     }
@@ -35,18 +42,39 @@ public class PopulationDistributionMap {
     }
 
     public List<PopulationDistributionMap> split(List<Set<InternalPosition>> splitPositionsGrouping) {
-        return splitPositionsGrouping.stream().map(s -> empty()).collect(toList());
+        return splitPositionsGrouping
+            .stream()
+            .map(internalPositions ->
+                fromMap(
+                    internalPositions
+                        .stream()
+                        .collect(toMap(
+                            Function.identity(),
+                            distributionMap::get
+                        ))
+                )
+            )
+            .collect(toList());
     }
 
     public PopulationDistributionMap merge(PopulationDistributionMap otherMap) {
-        return new PopulationDistributionMap(emptyMap());
-    }
+        if (getInternalPositions().isEmpty()) {
+            return otherMap;
+        }
 
-    public static PopulationDistributionMap empty() {
-        return EMPTY;
-    }
+        if (otherMap.getInternalPositions().isEmpty()) {
+            return this;
+        }
 
-    public static PopulationDistributionMap fromMap(Map<InternalPosition, CellPopulationDescription> distributionMap) {
-        return new PopulationDistributionMap(distributionMap);
+        HashMap<InternalPosition, CellPopulationDescription> mergeMap = new HashMap<>(distributionMap);
+
+        for (InternalPosition internalPosition : otherMap.getInternalPositions()) {
+            CellPopulationDescription cellPopulation = otherMap.getPopulationFor(internalPosition);
+            CellPopulationDescription existingCellPopulation = mergeMap.getOrDefault(internalPosition, CellPopulationDescription.empty());
+
+            mergeMap.put(internalPosition, existingCellPopulation.merge(cellPopulation));
+        }
+
+        return fromMap(mergeMap);
     }
 }
