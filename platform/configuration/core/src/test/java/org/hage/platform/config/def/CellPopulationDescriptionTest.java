@@ -22,19 +22,19 @@ public class CellPopulationDescriptionTest {
         final Integer secondAgentCount = 110;
 
         final CellPopulationDescription firstDescr = CellPopulationDescription.fromMap(
-                ImmutableMap.of(
-                        firstAgentDefinition, firstAgentCount,
-                        secondAgentDefinition, secondAgentCount
-                )
+            ImmutableMap.of(
+                firstAgentDefinition, firstAgentCount,
+                secondAgentDefinition, secondAgentCount
+            )
         );
 
         final AgentDefinition thirdAgentDefinition = mock(AgentDefinition.class);
         final Integer thirdAgentCount = 17;
 
         final CellPopulationDescription secondDescr = CellPopulationDescription.fromMap(
-                ImmutableMap.of(
-                        thirdAgentDefinition, thirdAgentCount
-                )
+            ImmutableMap.of(
+                thirdAgentDefinition, thirdAgentCount
+            )
         );
 
         // when
@@ -52,6 +52,39 @@ public class CellPopulationDescriptionTest {
 
     }
 
+    @Test
+    public void shouldMergeCellPopulationDescriptionsWithSameAgentDefinitions() throws Exception {
+
+        // given
+
+        final AgentDefinition commonDef = mock(AgentDefinition.class);
+        final AgentDefinition firstAgentDef = mock(AgentDefinition.class);
+
+        final Integer firstCommonAgentCount = 110;
+        final CellPopulationDescription firstDescr = CellPopulationDescription.fromMap(
+            ImmutableMap.of(
+                firstAgentDef, 13,
+                commonDef, firstCommonAgentCount
+            )
+        );
+
+        final Integer secondCommonAgentCount = 17;
+        final CellPopulationDescription secondDescr = CellPopulationDescription.fromMap(
+            ImmutableMap.of(
+                commonDef, secondCommonAgentCount
+            )
+        );
+
+        // when
+
+        CellPopulationDescription mergedDef = firstDescr.merge(secondDescr);
+
+        // then
+
+
+        assertThat(mergedDef.getAgentCountForDefinition(commonDef)).isEqualTo(firstCommonAgentCount + secondCommonAgentCount);
+        assertThat(mergedDef.getAgentDefinitions()).containsOnly(firstAgentDef, commonDef);
+    }
 
     @Test
     public void shouldMergeCellPopulationDescriptionWithEmptyCellPopulationDescription() throws Exception {
@@ -62,7 +95,7 @@ public class CellPopulationDescriptionTest {
         final Integer agentCount = 13;
 
         final CellPopulationDescription firstDef = CellPopulationDescription.fromMap(
-                ImmutableMap.of(agentDefinition, agentCount)
+            ImmutableMap.of(agentDefinition, agentCount)
         );
 
         // when
@@ -85,7 +118,7 @@ public class CellPopulationDescriptionTest {
         final Integer agentCount = 13;
 
         final CellPopulationDescription firstDef = CellPopulationDescription.fromMap(
-                ImmutableMap.of(agentDefinition, agentCount)
+            ImmutableMap.of(agentDefinition, agentCount)
         );
 
         // when
@@ -123,7 +156,7 @@ public class CellPopulationDescriptionTest {
         final AgentDefinition agentDefinition = mock(AgentDefinition.class);
 
         final CellPopulationDescription description = CellPopulationDescription.fromMap(
-                ImmutableMap.of(agentDefinition, 13)
+            ImmutableMap.of(agentDefinition, 13)
         );
 
         // when
@@ -161,7 +194,7 @@ public class CellPopulationDescriptionTest {
         final int agentsCount = 13;
 
         final CellPopulationDescription description = CellPopulationDescription.fromMap(
-                ImmutableMap.of(agentDefinition, agentsCount)
+            ImmutableMap.of(agentDefinition, agentsCount)
         );
 
         // when
@@ -183,10 +216,10 @@ public class CellPopulationDescriptionTest {
         final int secondAgentsCount = 124;
 
         final CellPopulationDescription description = CellPopulationDescription.fromMap(
-                ImmutableMap.of(
-                        mock(AgentDefinition.class), firstAgentsCount,
-                        mock(AgentDefinition.class), secondAgentsCount
-                )
+            ImmutableMap.of(
+                mock(AgentDefinition.class), firstAgentsCount,
+                mock(AgentDefinition.class), secondAgentsCount
+            )
         );
 
         // when

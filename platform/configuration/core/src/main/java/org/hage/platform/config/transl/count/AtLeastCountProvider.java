@@ -10,7 +10,7 @@ class AtLeastCountProvider extends AbstractCountProvider {
 
     @Override
     protected Integer getCountInternal(AgentCountData countData) {
-        return rand.nextInt() + countData.getValue().get();
+        return Math.abs(rand.nextInt()) + countData.getValue().get();
     }
 
 }

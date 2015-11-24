@@ -7,7 +7,7 @@ import org.hage.platform.habitat.structure.Chunk;
 import java.util.List;
 
 @Data
-public final class ChunkPopulationQualifier {
+public class ChunkPopulationQualifier {
     private final Chunk chunk;
     private final List<ChunkAgentDistribution> chunkAgentDistributions;
 }

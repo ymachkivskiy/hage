@@ -1,6 +1,7 @@
 package org.hage.platform.config.transl;
 
 import com.google.common.collect.ImmutableMap;
+import org.hage.platform.component.definition.AbstractComponentDefinition;
 import org.hage.platform.component.definition.IComponentDefinition;
 import org.hage.platform.config.ComputationConfiguration;
 import org.hage.platform.config.def.CellPopulationDescription;
@@ -8,6 +9,8 @@ import org.hage.platform.config.def.ChunkPopulationQualifier;
 import org.hage.platform.config.def.HabitatExternalConfiguration;
 import org.hage.platform.config.def.PopulationDistributionMap;
 import org.hage.platform.config.loader.Configuration;
+import org.hage.platform.habitat.AgentDefinition;
+import org.hage.platform.habitat.structure.Chunk;
 import org.hage.platform.habitat.structure.InternalPosition;
 import org.hage.platform.habitat.structure.StructureDefinition;
 import org.junit.Test;
@@ -21,6 +24,7 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static org.fest.assertions.Assertions.assertThat;
+import static org.hage.platform.config.def.CellPopulationDescription.fromPair;
 import static org.hage.platform.config.def.PopulationDistributionMap.fromMap;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -66,18 +70,18 @@ public class ConfigurationComputationConfigurationTranslatorTest {
 
         final PopulationDistributionMap firstPopDistrMap = fromMap(
                 ImmutableMap.of(
-                        InternalPosition.definedBy(1, 2, 3), mock(CellPopulationDescription.class)
+                        InternalPosition.definedBy(1, 2, 3), fromPair(mock(AgentDefinition.class), 1)
                 )
         );
 
         final PopulationDistributionMap secondPopDistrMap = fromMap(
                 ImmutableMap.of(
-                        InternalPosition.definedBy(3, 2, 1), mock(CellPopulationDescription.class)
+                        InternalPosition.definedBy(3, 2, 1), fromPair(mock(AgentDefinition.class), 3)
                 )
         );
 
-        final ChunkPopulationQualifier firstPopQ = new ChunkPopulationQualifier(null, null);
-        final ChunkPopulationQualifier secondPopQ = new ChunkPopulationQualifier(null, null);
+        final ChunkPopulationQualifier firstPopQ = mock(ChunkPopulationQualifier.class);
+        final ChunkPopulationQualifier secondPopQ = mock(ChunkPopulationQualifier.class);
 
         final List<ChunkPopulationQualifier> chunkPopulationQualifiers = asList(
                 firstPopQ,

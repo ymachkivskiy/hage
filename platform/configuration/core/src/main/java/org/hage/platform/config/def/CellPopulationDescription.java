@@ -1,18 +1,20 @@
 package org.hage.platform.config.def;
 
-import com.google.common.collect.ImmutableMap;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.hage.platform.habitat.AgentDefinition;
 
 import javax.annotation.concurrent.Immutable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import static java.util.Collections.emptyMap;
-import static java.util.Collections.singletonMap;
-import static java.util.Collections.unmodifiableMap;
+import static java.util.Collections.*;
 
 @Immutable
 @EqualsAndHashCode
+@ToString
 public class CellPopulationDescription {
     private static final CellPopulationDescription EMPTY = new CellPopulationDescription(emptyMap());
 

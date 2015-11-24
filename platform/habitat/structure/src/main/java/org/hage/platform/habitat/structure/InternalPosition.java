@@ -9,6 +9,8 @@ import javax.annotation.concurrent.Immutable;
 @Immutable
 @Data(staticConstructor = "definedBy")
 public final class InternalPosition {
+    public static final InternalPosition ZERO = definedBy(0, 0, 0);
+
     private final int xPos;
     private final int yPos;
     private final int zPos;

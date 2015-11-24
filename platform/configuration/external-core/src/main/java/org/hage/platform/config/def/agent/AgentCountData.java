@@ -31,7 +31,7 @@ public final class AgentCountData {
         this(agentCountMode, value, null);
     }
 
-    public static AgentCountData fixedCount(int number) {
+    public static AgentCountData fixed(int number) {
         return new AgentCountData(AgentCountMode.FIXED, number);
     }
 

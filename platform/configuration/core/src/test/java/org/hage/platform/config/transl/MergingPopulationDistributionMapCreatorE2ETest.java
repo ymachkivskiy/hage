@@ -6,7 +6,7 @@ import org.hage.platform.config.def.ChunkPopulationQualifier;
 import org.hage.platform.config.def.PopulationDistributionMap;
 import org.hage.platform.config.def.agent.AgentCountData;
 import org.hage.platform.config.def.agent.ChunkAgentDistribution;
-import org.hage.platform.config.def.agent.InternalPositionsSelectionData;
+import org.hage.platform.config.def.agent.PositionsSelectionData;
 import org.hage.platform.habitat.AgentDefinition;
 import org.hage.platform.habitat.structure.Chunk;
 import org.hage.platform.habitat.structure.InternalPosition;
@@ -16,14 +16,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.Collection;
 import java.util.function.Predicate;
 
 import static java.util.Arrays.asList;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.hage.platform.config.def.agent.AgentCountData.*;
-import static org.hage.platform.config.def.agent.InternalPositionsSelectionData.allPositions;
-import static org.hage.platform.config.def.agent.InternalPositionsSelectionData.randomPositions;
+import static org.hage.platform.config.def.agent.PositionsSelectionData.allPositions;
+import static org.hage.platform.config.def.agent.PositionsSelectionData.randomPositions;
+import static org.hage.platform.config.util.ChunkPositionsConditions.ALL_POSITIONS_BELONGS_TO_CHUNK;
 import static org.hage.platform.habitat.structure.Dimensions.of;
 import static org.hage.platform.habitat.structure.InternalPosition.definedBy;
 import static org.mockito.Mockito.mock;
@@ -69,7 +69,7 @@ public class MergingPopulationDistributionMapCreatorE2ETest {
             new Chunk(definedBy(31, 10, 0), of(52, 11, 27)),
             new ChunkAgentDistribution(
                 expectedAgentDefinition,
-                fixedCount(1),
+                fixed(1),
                 allPositions()
             )
         );
@@ -93,7 +93,7 @@ public class MergingPopulationDistributionMapCreatorE2ETest {
         // given
 
         final int expectedAgentCount = 100;
-        final AgentCountData COUNT_DATA = fixedCount(expectedAgentCount);
+        final AgentCountData COUNT_DATA = fixed(expectedAgentCount);
 
         final AgentDefinition agentDefinition = mock(AgentDefinition.class);
         final ChunkPopulationQualifier qualifier = CREATE_QUALIFIER(
@@ -249,14 +249,14 @@ public class MergingPopulationDistributionMapCreatorE2ETest {
 
         // given
 
-        final InternalPositionsSelectionData POSITIONS_SELECTION_DATA = allPositions();
+        final PositionsSelectionData POSITIONS_SELECTION_DATA = allPositions();
         final Chunk chunk = new Chunk(definedBy(12, 171, 133), of(32, 33, 12));
 
         final ChunkPopulationQualifier qualifier = CREATE_QUALIFIER(
             chunk,
             new ChunkAgentDistribution(
                 mock(AgentDefinition.class),
-                fixedCount(1),
+                fixed(1),
                 POSITIONS_SELECTION_DATA
             )
         );
@@ -276,14 +276,14 @@ public class MergingPopulationDistributionMapCreatorE2ETest {
 
         // given
 
-        final InternalPositionsSelectionData POSITIONS_SELECTION_DATA = randomPositions();
+        final PositionsSelectionData POSITIONS_SELECTION_DATA = randomPositions();
         final Chunk chunk = new Chunk(definedBy(1222, 11, 1), of(2, 323, 112));
 
         final ChunkPopulationQualifier qualifier = CREATE_QUALIFIER(
             chunk,
             new ChunkAgentDistribution(
                 mock(AgentDefinition.class),
-                fixedCount(1),
+                fixed(1),
                 POSITIONS_SELECTION_DATA
             )
         );
@@ -295,7 +295,7 @@ public class MergingPopulationDistributionMapCreatorE2ETest {
         // then
 
         assertThat(distributionMap.getInternalPositions().size()).isGreaterThanOrEqualTo(1);
-        assertThat(distributionMap.getInternalPositions()).satisfies(HAS_GOOD_POSITIONS(chunk));
+        assertThat(distributionMap.getInternalPositions()).satisfies(ALL_POSITIONS_BELONGS_TO_CHUNK(chunk));
 
     }
 
@@ -305,14 +305,14 @@ public class MergingPopulationDistributionMapCreatorE2ETest {
         // given
 
         final int numberOfPositions = 105;
-        final InternalPositionsSelectionData POSITIONS_SELECTION_DATA = randomPositions(numberOfPositions);
+        final PositionsSelectionData POSITIONS_SELECTION_DATA = randomPositions(numberOfPositions);
         final Chunk chunk = new Chunk(definedBy(1222, 11, 1), of(2, 323, 112));
 
         final ChunkPopulationQualifier qualifier = CREATE_QUALIFIER(
             chunk,
             new ChunkAgentDistribution(
                 mock(AgentDefinition.class),
-                fixedCount(1),
+                fixed(1),
                 POSITIONS_SELECTION_DATA
             )
         );
@@ -324,7 +324,7 @@ public class MergingPopulationDistributionMapCreatorE2ETest {
         // then
 
         assertThat(distributionMap.getInternalPositions().size()).isGreaterThanOrEqualTo(numberOfPositions);
-        assertThat(distributionMap.getInternalPositions()).satisfies(HAS_GOOD_POSITIONS(chunk));
+        assertThat(distributionMap.getInternalPositions()).satisfies(ALL_POSITIONS_BELONGS_TO_CHUNK(chunk));
 
 
     }
@@ -336,13 +336,13 @@ public class MergingPopulationDistributionMapCreatorE2ETest {
 
         final Chunk chunk = new Chunk(definedBy(1222, 11, 1), of(2, 33, 12));
         final long numberOfPositions = chunk.getSize() + 10;
-        final InternalPositionsSelectionData POSITIONS_SELECTION_DATA = randomPositions(numberOfPositions);
+        final PositionsSelectionData POSITIONS_SELECTION_DATA = randomPositions(numberOfPositions);
 
         final ChunkPopulationQualifier qualifier = CREATE_QUALIFIER(
             chunk,
             new ChunkAgentDistribution(
                 mock(AgentDefinition.class),
-                fixedCount(1),
+                fixed(1),
                 POSITIONS_SELECTION_DATA
             )
         );
@@ -368,7 +368,7 @@ public class MergingPopulationDistributionMapCreatorE2ETest {
         final int maxCount = 17;
         long numberOfPositions = 109;
 
-        final InternalPositionsSelectionData POSITIONS_SELECTION_DATA = randomPositions(numberOfPositions);
+        final PositionsSelectionData POSITIONS_SELECTION_DATA = randomPositions(numberOfPositions);
         final AgentCountData COUNT_DATA = between(minCount, maxCount);
         final Chunk chunk = new Chunk(definedBy(2, 11, 1), of(17, 33, 12));
         final AgentDefinition agentDefinition = mock(AgentDefinition.class);
@@ -389,7 +389,7 @@ public class MergingPopulationDistributionMapCreatorE2ETest {
         // then
 
         assertThat(distributionMap.getInternalPositions().size()).isEqualTo((int) numberOfPositions);
-        assertThat(distributionMap.getInternalPositions()).satisfies(HAS_GOOD_POSITIONS(chunk));
+        assertThat(distributionMap.getInternalPositions()).satisfies(ALL_POSITIONS_BELONGS_TO_CHUNK(chunk));
         assertThat(distributionMap)
             .satisfies(ALL_CELL_POPULATIONS_IN_MAP_IS_MATCHING(
                 popDescr -> popDescr.getAgentCountForDefinition(agentDefinition) >= minCount && popDescr.getAgentCountForDefinition(agentDefinition) <= maxCount
@@ -405,7 +405,7 @@ public class MergingPopulationDistributionMapCreatorE2ETest {
 
         final int minCount = 133;
 
-        final InternalPositionsSelectionData POSITIONS_SELECTION_DATA = randomPositions();
+        final PositionsSelectionData POSITIONS_SELECTION_DATA = randomPositions();
         final AgentCountData COUNT_DATA = atLeast(minCount);
         final Chunk chunk = new Chunk(definedBy(2, 11, 1), of(177, 3, 7));
         final AgentDefinition agentDefinition = mock(AgentDefinition.class);
@@ -426,7 +426,7 @@ public class MergingPopulationDistributionMapCreatorE2ETest {
         // then
 
         assertThat(distributionMap.getInternalPositions().size()).isGreaterThanOrEqualTo(1);
-        assertThat(distributionMap.getInternalPositions()).satisfies(HAS_GOOD_POSITIONS(chunk));
+        assertThat(distributionMap.getInternalPositions()).satisfies(ALL_POSITIONS_BELONGS_TO_CHUNK(chunk));
         assertThat(distributionMap)
             .satisfies(ALL_CELL_POPULATIONS_IN_MAP_IS_MATCHING(
                 popDescr -> popDescr.getAgentCountForDefinition(agentDefinition) >= minCount
@@ -455,12 +455,12 @@ public class MergingPopulationDistributionMapCreatorE2ETest {
             new Chunk(definedBy(2, 11, 1), of(77, 5, 17)),
             new ChunkAgentDistribution(
                 firstAgentDefinition,
-                fixedCount(firstAgentsCount),
+                fixed(firstAgentsCount),
                 allPositions()
             ),
             new ChunkAgentDistribution(
                 secondAgentDefinition,
-                fixedCount(secondAgentsCount),
+                fixed(secondAgentsCount),
                 allPositions()
             )
         );
@@ -535,7 +535,7 @@ public class MergingPopulationDistributionMapCreatorE2ETest {
             new Chunk(definedBy(2, 11, 1), of(77, 5, 17)),
             new ChunkAgentDistribution(
                 firstAgentDefinition,
-                fixedCount(firstAgentsCount),
+                fixed(firstAgentsCount),
                 allPositions()
             ),
             new ChunkAgentDistribution(
@@ -544,7 +544,7 @@ public class MergingPopulationDistributionMapCreatorE2ETest {
                 allPositions()
             ),
             new ChunkAgentDistribution(
-                secondAgentDefinition,
+                thirdAgentDefinition,
                 between(thirdMin, thirdMax),
                 allPositions()
             )
@@ -590,18 +590,5 @@ public class MergingPopulationDistributionMapCreatorE2ETest {
     }
 
 
-    private Condition<Collection<?>> HAS_GOOD_POSITIONS(Chunk chunk) {
-        return new Condition<Collection<?>>() {
-            @Override
-            public boolean matches(Collection<?> objects) {
-                Collection<InternalPosition> internalPositions = (Collection<InternalPosition>) objects;
 
-                for (InternalPosition internalPosition : internalPositions) {
-                    if (!chunk.containsPosition(internalPosition)) return false;
-                }
-
-                return true;
-            }
-        };
-    }
 }

@@ -58,11 +58,11 @@ public class PopulationDistributionMap {
     }
 
     public PopulationDistributionMap merge(PopulationDistributionMap otherMap) {
-        if (getInternalPositions().isEmpty()) {
+        if (distributionMap.isEmpty()) {
             return otherMap;
         }
 
-        if (otherMap.getInternalPositions().isEmpty()) {
+        if (otherMap.distributionMap.isEmpty()) {
             return this;
         }
 

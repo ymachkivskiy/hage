@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.NotImplementedException;
 import org.hage.platform.config.def.agent.AgentCountData;
 import org.hage.platform.config.def.agent.AgentCountMode;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -28,6 +29,7 @@ class CompositeCountProvider implements AgentCountProvider {
         providersMap.put(mode, provider);
     }
 
+    @Required
     public void setFixedCountProvider(AgentCountProvider fixedCountProvider) {
         setCountProviderForMode(fixedCountProvider, AgentCountMode.FIXED);
     }
