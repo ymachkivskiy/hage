@@ -2,8 +2,6 @@ package org.hage.cli;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.argument.InvalidRuntimeArgumentsException;
-import org.hage.platform.argument.RuntimeArgumentsService;
 import org.hage.services.core.LifecycleManager;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -23,7 +21,7 @@ public class CliNodeBootstrapper {
                     + "|Hh  hH          ggggg          |\n"
                     + "+-------------------------------+\n\n";
 
-    private final RuntimeArgumentsService argumentsService;
+    private final CommandLineArgumentsService argumentsService;
     private final ClassPathXmlApplicationContext applicationContext;
 
     public CliNodeBootstrapper(final String[] args) {
@@ -31,7 +29,7 @@ public class CliNodeBootstrapper {
 
         applicationContext = new ClassPathXmlApplicationContext(APP_CONTEXT);
 
-        argumentsService = applicationContext.getBean(RuntimeArgumentsService.class);
+        argumentsService = applicationContext.getBean(CommandLineArgumentsService.class);
         argumentsService.parse(getClass().getName(), args);
 
     }

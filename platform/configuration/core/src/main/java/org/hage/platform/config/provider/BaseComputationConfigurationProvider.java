@@ -18,7 +18,7 @@ import static java.util.Optional.of;
 public abstract class BaseComputationConfigurationProvider implements ComputationConfigurationProvider {
 
     @Autowired
-    private IConfigurationLoader<ConfigurationSource> configurationLoader;
+    private IConfigurationLoader configurationLoader;
     @Autowired
     private ConfigurationComputationConfigurationTranslator configurationTranslator;
 

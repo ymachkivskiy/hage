@@ -15,11 +15,6 @@
 
     <dependencies>
         <!-- HAgE Platform dependencies -->
-        <dependency>
-            <groupId>org.hage.platform</groupId>
-            <artifactId>arguments</artifactId>
-            <version>${project.version}</version>
-        </dependency>
 
         <dependency>
             <groupId>org.hage.platform</groupId>

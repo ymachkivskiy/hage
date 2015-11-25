@@ -3,8 +3,6 @@
        xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="hage.service.commandLine.arguments" class="org.hage.cli.CommandLineArgumentsService"/>
-
     <bean id="hage.service.configuration"
           class="org.hage.configuration.service.ConfigurationStorageService"
           parent="hage.component.stateful.base"/>
@@ -12,9 +10,6 @@
     <bean id="hage.service.configurationLoader"
           class="org.hage.configuration.service.ConfigurationLoaderService"
           parent="hage.component.stateful.base"/>
-
-    <bean id="hage.configurationProvider"
-          class="org.hage.cli.ArgumentBasedXmlConfigurationProvider"/>
 
     <bean id="hage.service.configurationSplitter"
           class="org.hage.configuration.service.ConfigurationSplitService"

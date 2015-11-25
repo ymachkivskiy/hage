@@ -28,18 +28,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform</groupId>
-            <artifactId>arguments</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <!--<dependency>-->
-            <!--<groupId>org.hage.platform.configuration.loader</groupId>-->
-            <!--<artifactId>loader-xml</artifactId>-->
-            <!--<version>${project.version}</version>-->
-        <!--</dependency>-->
-
-        <dependency>
             <groupId>org.hage.services</groupId>
             <artifactId>configuration</artifactId>
             <version>${project.version}</version>
