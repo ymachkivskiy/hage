@@ -21,6 +21,7 @@
         <module>algorithms</module>
         <module>archetypes</module>
         <module>cli</module>
+        <module>common-lib</module>
     </modules>
 
     <properties>
