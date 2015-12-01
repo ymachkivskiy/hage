@@ -4,7 +4,7 @@ import lombok.Data;
 import org.hage.platform.habitat.structure.StructureDefinition;
 
 @Data
-public class HabitatInternalConfiguration {
+public class HabitatGeography {
     private final StructureDefinition structureDefinition;
     private final PopulationDistributionMap populationDistributionMap;
 }

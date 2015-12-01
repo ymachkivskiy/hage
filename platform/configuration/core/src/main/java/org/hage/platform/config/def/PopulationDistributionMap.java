@@ -7,7 +7,6 @@ import org.hage.platform.habitat.structure.InternalPosition;
 import javax.annotation.concurrent.Immutable;
 import java.util.*;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static java.util.Collections.*;
 import static java.util.stream.Collectors.toList;
@@ -25,16 +24,16 @@ public class PopulationDistributionMap {
         this.distributionMap = unmodifiableMap(distributionMap);
     }
 
-    public static PopulationDistributionMap empty() {
+    public static PopulationDistributionMap emptyDistributionMap() {
         return EMPTY;
     }
 
-    public static PopulationDistributionMap fromMap(Map<InternalPosition, CellPopulationDescription> distributionMap) {
-        return new PopulationDistributionMap(distributionMap);
+    public static PopulationDistributionMap distributionFromMap(Map<InternalPosition, CellPopulationDescription> distributionMap) {
+        return new PopulationDistributionMap(new HashMap<>(distributionMap));
     }
 
     public CellPopulationDescription getPopulationFor(InternalPosition internalPosition) {
-        return distributionMap.getOrDefault(internalPosition, CellPopulationDescription.empty());
+        return distributionMap.getOrDefault(internalPosition, CellPopulationDescription.emptyPopulation());
     }
 
     public Set<InternalPosition> getInternalPositions() {
@@ -45,7 +44,7 @@ public class PopulationDistributionMap {
         return splitPositionsGrouping
             .stream()
             .map(internalPositions ->
-                fromMap(
+                distributionFromMap(
                     internalPositions
                         .stream()
                         .collect(toMap(
@@ -55,6 +54,13 @@ public class PopulationDistributionMap {
                 )
             )
             .collect(toList());
+    }
+
+    public Long getNumberOfAgents(){
+        return distributionMap.values()
+            .stream()
+            .mapToLong(CellPopulationDescription::getAgentsCount)
+            .sum();
     }
 
     public PopulationDistributionMap merge(PopulationDistributionMap otherMap) {
@@ -70,11 +76,11 @@ public class PopulationDistributionMap {
 
         for (InternalPosition internalPosition : otherMap.getInternalPositions()) {
             CellPopulationDescription cellPopulation = otherMap.getPopulationFor(internalPosition);
-            CellPopulationDescription existingCellPopulation = mergeMap.getOrDefault(internalPosition, CellPopulationDescription.empty());
+            CellPopulationDescription existingCellPopulation = mergeMap.getOrDefault(internalPosition, CellPopulationDescription.emptyPopulation());
 
             mergeMap.put(internalPosition, existingCellPopulation.merge(cellPopulation));
         }
 
-        return fromMap(mergeMap);
+        return distributionFromMap(mergeMap);
     }
 }

@@ -6,7 +6,7 @@ import org.hage.platform.habitat.structure.StructureDefinition;
 import java.util.List;
 
 @Data
-public final class HabitatExternalConfiguration {
+public final class HabitatOrganizationDefinition {
     private final StructureDefinition structureDefinition;
     private final List<ChunkPopulationQualifier> chunkPopulationQualifiers;
 }

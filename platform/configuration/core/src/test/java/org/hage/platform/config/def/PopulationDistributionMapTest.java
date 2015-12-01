@@ -1,16 +1,19 @@
 package org.hage.platform.config.def;
 
-import com.google.common.collect.ImmutableMap;
+import org.hage.platform.habitat.AgentDefinition;
 import org.hage.platform.habitat.structure.InternalPosition;
 import org.junit.Test;
 
 import java.util.List;
 import java.util.Set;
 
+import static com.google.common.collect.ImmutableMap.*;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.util.Collections.set;
+import static org.hage.platform.config.def.CellPopulationDescription.populationFromMap;
+import static org.hage.platform.config.def.CellPopulationDescription.populationFromPair;
 import static org.hage.platform.habitat.structure.InternalPosition.definedBy;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -27,8 +30,8 @@ public class PopulationDistributionMapTest {
         final InternalPosition pos3 = definedBy(0, 0, 3);
         final InternalPosition pos4 = definedBy(4, 0, 4);
 
-        final PopulationDistributionMap originalDistributionMap = PopulationDistributionMap.fromMap(
-                ImmutableMap.of(
+        final PopulationDistributionMap originalDistributionMap = PopulationDistributionMap.distributionFromMap(
+                of(
                         pos1, mock(CellPopulationDescription.class),
                         pos2, mock(CellPopulationDescription.class),
                         pos3, mock(CellPopulationDescription.class),
@@ -38,7 +41,7 @@ public class PopulationDistributionMapTest {
 
         // when
 
-        PopulationDistributionMap mergedMap = originalDistributionMap.merge(PopulationDistributionMap.empty());
+        PopulationDistributionMap mergedMap = originalDistributionMap.merge(PopulationDistributionMap.emptyDistributionMap());
 
         // then
 
@@ -56,8 +59,8 @@ public class PopulationDistributionMapTest {
         final InternalPosition pos3 = definedBy(0, 0, 3);
         final InternalPosition pos4 = definedBy(4, 0, 4);
 
-        final PopulationDistributionMap originalDistributionMap = PopulationDistributionMap.fromMap(
-                ImmutableMap.of(
+        final PopulationDistributionMap originalDistributionMap = PopulationDistributionMap.distributionFromMap(
+                of(
                         pos1, mock(CellPopulationDescription.class),
                         pos2, mock(CellPopulationDescription.class),
                         pos3, mock(CellPopulationDescription.class),
@@ -67,7 +70,7 @@ public class PopulationDistributionMapTest {
 
         // when
 
-        PopulationDistributionMap mergedMap = PopulationDistributionMap.empty().merge(originalDistributionMap);
+        PopulationDistributionMap mergedMap = PopulationDistributionMap.emptyDistributionMap().merge(originalDistributionMap);
 
         // then
 
@@ -87,15 +90,15 @@ public class PopulationDistributionMapTest {
         final InternalPosition pos2Map2 = definedBy(4, 0, 4);
         final InternalPosition pos3Map2 = definedBy(5, 1, 5);
 
-        final PopulationDistributionMap firstMap = PopulationDistributionMap.fromMap(
-                ImmutableMap.of(
+        final PopulationDistributionMap firstMap = PopulationDistributionMap.distributionFromMap(
+                of(
                         pos1Map1, mock(CellPopulationDescription.class),
                         pos2Map1, mock(CellPopulationDescription.class)
                 )
         );
 
-        final PopulationDistributionMap secondMap = PopulationDistributionMap.fromMap(
-                ImmutableMap.of(
+        final PopulationDistributionMap secondMap = PopulationDistributionMap.distributionFromMap(
+                of(
                         pos1Map2, mock(CellPopulationDescription.class),
                         pos2Map2, mock(CellPopulationDescription.class),
                         pos3Map2, mock(CellPopulationDescription.class)
@@ -119,8 +122,8 @@ public class PopulationDistributionMapTest {
 
         // given
 
-        PopulationDistributionMap tested = PopulationDistributionMap.fromMap(
-                ImmutableMap.of(
+        PopulationDistributionMap tested = PopulationDistributionMap.distributionFromMap(
+                of(
                         definedBy(0, 0, 1), mock(CellPopulationDescription.class),
                         definedBy(0, 1, 0), mock(CellPopulationDescription.class),
                         definedBy(1, 0, 1), mock(CellPopulationDescription.class),
@@ -148,8 +151,8 @@ public class PopulationDistributionMapTest {
         final InternalPosition pos3 = definedBy(1, 0, 1);
         final InternalPosition pos4 = definedBy(1, 1, 0);
 
-        final PopulationDistributionMap originalMap = PopulationDistributionMap.fromMap(
-                ImmutableMap.of(
+        final PopulationDistributionMap originalMap = PopulationDistributionMap.distributionFromMap(
+                of(
                         pos1, mock(CellPopulationDescription.class),
                         pos2, mock(CellPopulationDescription.class),
                         pos3, mock(CellPopulationDescription.class),
@@ -181,8 +184,8 @@ public class PopulationDistributionMapTest {
         final InternalPosition pos3 = definedBy(1, 0, 1);
         final InternalPosition pos4 = definedBy(1, 1, 0);
 
-        final PopulationDistributionMap originalMap = PopulationDistributionMap.fromMap(
-                ImmutableMap.of(
+        final PopulationDistributionMap originalMap = PopulationDistributionMap.distributionFromMap(
+                of(
                         pos1, mock(CellPopulationDescription.class),
                         pos2, mock(CellPopulationDescription.class),
                         pos3, mock(CellPopulationDescription.class),
@@ -206,6 +209,49 @@ public class PopulationDistributionMapTest {
     }
 
     @Test
+    public void shouldReturnNumberOfAllConfiguredAgents() throws Exception {
+
+        // given
+
+        final int count1 = 1;
+        final int count2 = 23;
+        final int count3 = 6;
+        final int count4 = 231;
+        final int count5 = 12;
+        final int count6 = 22;
+        final int count7 = 17;
+        final int count8 = 72;
+
+        final PopulationDistributionMap distributionMap = PopulationDistributionMap.distributionFromMap(
+            of(
+                definedBy(0, 0, 1), populationFromMap(of(
+                    mock(AgentDefinition.class), count1,
+                    mock(AgentDefinition.class), count2
+                )),
+                definedBy(0, 1, 0), populationFromMap(of(
+                    mock(AgentDefinition.class), count3,
+                    mock(AgentDefinition.class), count4
+                )),
+                definedBy(1, 0, 1), populationFromPair(mock(AgentDefinition.class), count5),
+                definedBy(1, 1, 0), populationFromMap(of(
+                    mock(AgentDefinition.class), count6,
+                    mock(AgentDefinition.class), count7,
+                    mock(AgentDefinition.class), count8
+                ))
+            )
+        );
+
+        // when
+
+        Long numberOfConfiguredAgents = distributionMap.getNumberOfAgents();
+
+        // then
+
+        assertThat(numberOfConfiguredAgents).isEqualTo(count1 + count2 + count3 + count4 + count5 + count6 + count7 + count8);
+
+    }
+
+    @Test
     public void shouldUpdatePopulationForCommonInternalPositionsDuringMergingMaps() throws Exception {
 
         // given
@@ -219,15 +265,15 @@ public class PopulationDistributionMapTest {
         when(firstMapCommonCellPopulationDescription.merge(secondMapCommonCellPopulationDescription)).thenReturn(expectedMergedCellPopulationDescription);
         when(secondMapCommonCellPopulationDescription.merge(firstMapCommonCellPopulationDescription)).thenReturn(expectedMergedCellPopulationDescription);
 
-        final PopulationDistributionMap firstMap = PopulationDistributionMap.fromMap(
-                ImmutableMap.of(
+        final PopulationDistributionMap firstMap = PopulationDistributionMap.distributionFromMap(
+                of(
                         definedBy(0, 0, 1), mock(CellPopulationDescription.class),
                         commonInternalPos, firstMapCommonCellPopulationDescription
                 )
         );
 
-        final PopulationDistributionMap secondMap = PopulationDistributionMap.fromMap(
-                ImmutableMap.of(
+        final PopulationDistributionMap secondMap = PopulationDistributionMap.distributionFromMap(
+                of(
                         commonInternalPos, secondMapCommonCellPopulationDescription,
                         definedBy(4, 0, 4), mock(CellPopulationDescription.class)
                 )
@@ -249,7 +295,7 @@ public class PopulationDistributionMapTest {
 
         // given
 
-        final PopulationDistributionMap tested = PopulationDistributionMap.empty();
+        final PopulationDistributionMap tested = PopulationDistributionMap.emptyDistributionMap();
 
         // when
 
@@ -271,12 +317,12 @@ public class PopulationDistributionMapTest {
         final InternalPosition pos2 = definedBy(2, 0, 0);
         final InternalPosition pos3 = definedBy(4, 0, 4);
 
-        final PopulationDistributionMap testedMap = PopulationDistributionMap.fromMap(
-                ImmutableMap.of(
-                        pos1, mock(CellPopulationDescription.class),
-                        pos2, mock(CellPopulationDescription.class),
-                        pos3, mock(CellPopulationDescription.class)
-                )
+        final PopulationDistributionMap testedMap = PopulationDistributionMap.distributionFromMap(
+            of(
+                pos1, mock(CellPopulationDescription.class),
+                pos2, mock(CellPopulationDescription.class),
+                pos3, mock(CellPopulationDescription.class)
+            )
         );
 
 
@@ -296,8 +342,8 @@ public class PopulationDistributionMapTest {
 
         // given
 
-        final PopulationDistributionMap tested = PopulationDistributionMap.fromMap(
-                ImmutableMap.of(
+        final PopulationDistributionMap tested = PopulationDistributionMap.distributionFromMap(
+                of(
                         definedBy(1, 2, 3), mock(CellPopulationDescription.class),
                         definedBy(1, 1, 3), mock(CellPopulationDescription.class)
                 )
@@ -309,7 +355,7 @@ public class PopulationDistributionMapTest {
 
         // then
 
-        assertThat(populationDescription).isSameAs(CellPopulationDescription.empty());
+        assertThat(populationDescription).isSameAs(CellPopulationDescription.emptyPopulation());
 
     }
 
@@ -326,8 +372,8 @@ public class PopulationDistributionMapTest {
         final CellPopulationDescription pos2Population = mock(CellPopulationDescription.class);
         final CellPopulationDescription pos3Population = mock(CellPopulationDescription.class);
 
-        final PopulationDistributionMap testedMap = PopulationDistributionMap.fromMap(
-                ImmutableMap.of(
+        final PopulationDistributionMap testedMap = PopulationDistributionMap.distributionFromMap(
+                of(
                         pos1, pos1Population,
                         pos2, pos2Population,
                         pos3, pos3Population

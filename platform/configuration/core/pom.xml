@@ -15,6 +15,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.hage</groupId>
+            <artifactId>common-lib</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.hage.platform.configuration</groupId>
             <artifactId>external-core</artifactId>
             <version>${project.version}</version>

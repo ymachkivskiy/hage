@@ -3,7 +3,7 @@ package org.hage.platform.config.loader;
 import lombok.Builder;
 import lombok.Getter;
 import org.hage.platform.component.definition.IComponentDefinition;
-import org.hage.platform.config.def.HabitatExternalConfiguration;
+import org.hage.platform.config.def.HabitatOrganizationDefinition;
 
 import java.util.Collection;
 
@@ -14,5 +14,5 @@ public final class Configuration {
     @Getter
     private final Collection<IComponentDefinition> localComponents;
     @Getter
-    private final HabitatExternalConfiguration habitatConfiguration;
+    private final HabitatOrganizationDefinition habitatConfiguration;
 }

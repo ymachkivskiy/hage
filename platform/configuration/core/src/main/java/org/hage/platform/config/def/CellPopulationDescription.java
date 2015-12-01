@@ -24,15 +24,15 @@ public class CellPopulationDescription {
         this.agentCountMap = unmodifiableMap(agentCountMap);
     }
 
-    public static CellPopulationDescription empty() {
+    public static CellPopulationDescription emptyPopulation() {
         return EMPTY;
     }
 
-    public static CellPopulationDescription fromMap(Map<AgentDefinition, Integer> agentCountMap) {
+    public static CellPopulationDescription populationFromMap(Map<AgentDefinition, Integer> agentCountMap) {
         return new CellPopulationDescription(agentCountMap);
     }
 
-    public static CellPopulationDescription fromPair(AgentDefinition agentDefinition, Integer agentCount) {
+    public static CellPopulationDescription populationFromPair(AgentDefinition agentDefinition, Integer agentCount) {
         return new CellPopulationDescription(singletonMap(agentDefinition, agentCount));
     }
 
@@ -67,7 +67,7 @@ public class CellPopulationDescription {
             mergingMap.put(agentDefinition, currentCount + count);
         }
 
-        return fromMap(mergingMap);
+        return populationFromMap(mergingMap);
     }
 
     public boolean isEmpty() {

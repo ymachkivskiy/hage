@@ -2,7 +2,7 @@ package org.hage.platform.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.component.definition.IComponentDefinition;
-import org.hage.platform.config.def.HabitatExternalConfiguration;
+import org.hage.platform.config.def.HabitatOrganizationDefinition;
 import org.hage.platform.config.loader.Configuration;
 import org.hage.platform.habitat.structure.BoundaryConditions;
 import org.hage.platform.habitat.structure.Dimensions;
@@ -21,7 +21,7 @@ import static java.util.stream.Collectors.toList;
 @Slf4j
 public class ConfigurationConversionService {
 
-    private static final HabitatExternalConfiguration HABITAT_EXTERNAL_CONFIGURATION = new HabitatExternalConfiguration(
+    private static final HabitatOrganizationDefinition HABITAT_EXTERNAL_CONFIGURATION = new HabitatOrganizationDefinition(
             new StructureDefinition(Dimensions.of(3, 3, 3), BoundaryConditions.CLOSED, BigDecimal.TEN),
             emptyList() //TODO do not forget about it
 

@@ -1,16 +1,13 @@
 package org.hage.platform.config.transl;
 
 import com.google.common.collect.ImmutableMap;
-import org.hage.platform.component.definition.AbstractComponentDefinition;
 import org.hage.platform.component.definition.IComponentDefinition;
 import org.hage.platform.config.ComputationConfiguration;
-import org.hage.platform.config.def.CellPopulationDescription;
 import org.hage.platform.config.def.ChunkPopulationQualifier;
-import org.hage.platform.config.def.HabitatExternalConfiguration;
+import org.hage.platform.config.def.HabitatOrganizationDefinition;
 import org.hage.platform.config.def.PopulationDistributionMap;
 import org.hage.platform.config.loader.Configuration;
 import org.hage.platform.habitat.AgentDefinition;
-import org.hage.platform.habitat.structure.Chunk;
 import org.hage.platform.habitat.structure.InternalPosition;
 import org.hage.platform.habitat.structure.StructureDefinition;
 import org.junit.Test;
@@ -24,8 +21,8 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static org.fest.assertions.Assertions.assertThat;
-import static org.hage.platform.config.def.CellPopulationDescription.fromPair;
-import static org.hage.platform.config.def.PopulationDistributionMap.fromMap;
+import static org.hage.platform.config.def.CellPopulationDescription.populationFromPair;
+import static org.hage.platform.config.def.PopulationDistributionMap.distributionFromMap;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -46,7 +43,7 @@ public class ConfigurationComputationConfigurationTranslatorTest {
         IComponentDefinition secondComponentDefinition = mock(IComponentDefinition.class);
 
         final Configuration configuration = Configuration.builder()
-                .habitatConfiguration(new HabitatExternalConfiguration(null, emptyList()))
+                .habitatConfiguration(new HabitatOrganizationDefinition(null, emptyList()))
                 .globalComponents(asList(
                     firstComponentDefinition,
                     secondComponentDefinition
@@ -68,15 +65,15 @@ public class ConfigurationComputationConfigurationTranslatorTest {
 
         // given
 
-        final PopulationDistributionMap firstPopDistrMap = fromMap(
+        final PopulationDistributionMap firstPopDistrMap = distributionFromMap(
                 ImmutableMap.of(
-                        InternalPosition.definedBy(1, 2, 3), fromPair(mock(AgentDefinition.class), 1)
+                        InternalPosition.definedBy(1, 2, 3), populationFromPair(mock(AgentDefinition.class), 1)
                 )
         );
 
-        final PopulationDistributionMap secondPopDistrMap = fromMap(
+        final PopulationDistributionMap secondPopDistrMap = distributionFromMap(
                 ImmutableMap.of(
-                        InternalPosition.definedBy(3, 2, 1), fromPair(mock(AgentDefinition.class), 3)
+                        InternalPosition.definedBy(3, 2, 1), populationFromPair(mock(AgentDefinition.class), 3)
                 )
         );
 
@@ -93,7 +90,7 @@ public class ConfigurationComputationConfigurationTranslatorTest {
 
 
         final Configuration configuration = Configuration.builder()
-            .habitatConfiguration(new HabitatExternalConfiguration(mock(StructureDefinition.class), chunkPopulationQualifiers))
+            .habitatConfiguration(new HabitatOrganizationDefinition(mock(StructureDefinition.class), chunkPopulationQualifiers))
             .build();
 
 
@@ -103,7 +100,7 @@ public class ConfigurationComputationConfigurationTranslatorTest {
 
         // then
 
-        assertThat(translatedConf.getHabitatConfiguration().getPopulationDistributionMap()).isEqualTo(firstPopDistrMap.merge(secondPopDistrMap));
+        assertThat(translatedConf.getHabitatGeography().getPopulationDistributionMap()).isEqualTo(firstPopDistrMap.merge(secondPopDistrMap));
 
     }
 
@@ -113,7 +110,7 @@ public class ConfigurationComputationConfigurationTranslatorTest {
         // given
 
         StructureDefinition expectedStructureDefinition = mock(StructureDefinition.class);
-        final HabitatExternalConfiguration externalConf = new HabitatExternalConfiguration(expectedStructureDefinition, emptyList());
+        final HabitatOrganizationDefinition externalConf = new HabitatOrganizationDefinition(expectedStructureDefinition, emptyList());
         final Configuration configuration = Configuration.builder().habitatConfiguration(externalConf).build();
 
         // when
@@ -122,7 +119,7 @@ public class ConfigurationComputationConfigurationTranslatorTest {
 
         // then
 
-        assertThat(translatedConf.getHabitatConfiguration().getStructureDefinition()).isSameAs(expectedStructureDefinition);
+        assertThat(translatedConf.getHabitatGeography().getStructureDefinition()).isSameAs(expectedStructureDefinition);
 
     }
 }

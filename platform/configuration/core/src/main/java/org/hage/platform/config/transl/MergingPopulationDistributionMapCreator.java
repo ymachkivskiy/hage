@@ -17,8 +17,8 @@ import java.util.Map;
 import java.util.Set;
 
 import static java.util.stream.Collectors.toMap;
-import static org.hage.platform.config.def.CellPopulationDescription.fromPair;
-import static org.hage.platform.config.def.PopulationDistributionMap.fromMap;
+import static org.hage.platform.config.def.CellPopulationDescription.populationFromPair;
+import static org.hage.platform.config.def.PopulationDistributionMap.distributionFromMap;
 
 class MergingPopulationDistributionMapCreator implements PopulationDistributionMapCreator {
 
@@ -30,12 +30,12 @@ class MergingPopulationDistributionMapCreator implements PopulationDistributionM
         return populationQualifier.getChunkAgentDistributions()
             .stream()
             .map(agentDistribution -> createDistributionMapFor(populationQualifier.getChunk(), agentDistribution))
-            .reduce(PopulationDistributionMap.empty(), PopulationDistributionMap::merge);
+            .reduce(PopulationDistributionMap.emptyDistributionMap(), PopulationDistributionMap::merge);
     }
 
     private PopulationDistributionMap createDistributionMapFor(Chunk chunk, ChunkAgentDistribution agentDistribution) {
         Set<InternalPosition> selectedInternalPositions = getSelectedInternalPositions(chunk, agentDistribution);
-        return fromMap(createPopulationMapForSelectedPositions(selectedInternalPositions, agentDistribution));
+        return distributionFromMap(createPopulationMapForSelectedPositions(selectedInternalPositions, agentDistribution));
     }
 
     private Set<InternalPosition> getSelectedInternalPositions(Chunk chunk, ChunkAgentDistribution agentDistribution) {
@@ -50,7 +50,7 @@ class MergingPopulationDistributionMapCreator implements PopulationDistributionM
             .stream()
             .collect(toMap(
                 (x) -> x,
-                (x) -> fromPair(agentDef, countProvider.getAgentCount(countData))
+                (x) -> populationFromPair(agentDef, countProvider.getAgentCount(countData))
             ));
     }
 

@@ -2,29 +2,40 @@ package org.hage.util.proportion;
 
 import com.google.common.primitives.UnsignedInteger;
 import org.hamcrest.MatcherAssert;
-import org.hamcrest.number.BigDecimalCloseTo;
-import org.jetbrains.annotations.NotNull;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.IntStream;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.IntStream.rangeClosed;
-import static org.fest.assertions.Assertions.*;
+import static org.fest.assertions.Assertions.assertThat;
 import static org.hage.util.proportion.Proportions.forCountable;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.number.BigDecimalCloseTo.closeTo;
-import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class ProportionsTest {
+
+    @Test
+    public void shouldCreateProportionsWithoutElements() throws Exception {
+
+        // given
+
+        // when
+
+        Proportions tested = forCountable(emptyList());
+
+        // then
+
+        assertThat(tested.getElements()).isEmpty();
+
+    }
 
     @Test
     public void shouldContainAllOriginalElements() throws Exception {

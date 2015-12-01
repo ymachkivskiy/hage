@@ -2,9 +2,7 @@ package org.hage.platform.config.def;
 
 import com.google.common.collect.ImmutableMap;
 import org.hage.platform.habitat.AgentDefinition;
-import org.junit.Assert;
 import org.junit.Test;
-import sun.management.Agent;
 
 import static org.fest.assertions.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -21,7 +19,7 @@ public class CellPopulationDescriptionTest {
         final AgentDefinition secondAgentDefinition = mock(AgentDefinition.class);
         final Integer secondAgentCount = 110;
 
-        final CellPopulationDescription firstDescr = CellPopulationDescription.fromMap(
+        final CellPopulationDescription firstDescr = CellPopulationDescription.populationFromMap(
             ImmutableMap.of(
                 firstAgentDefinition, firstAgentCount,
                 secondAgentDefinition, secondAgentCount
@@ -31,7 +29,7 @@ public class CellPopulationDescriptionTest {
         final AgentDefinition thirdAgentDefinition = mock(AgentDefinition.class);
         final Integer thirdAgentCount = 17;
 
-        final CellPopulationDescription secondDescr = CellPopulationDescription.fromMap(
+        final CellPopulationDescription secondDescr = CellPopulationDescription.populationFromMap(
             ImmutableMap.of(
                 thirdAgentDefinition, thirdAgentCount
             )
@@ -61,7 +59,7 @@ public class CellPopulationDescriptionTest {
         final AgentDefinition firstAgentDef = mock(AgentDefinition.class);
 
         final Integer firstCommonAgentCount = 110;
-        final CellPopulationDescription firstDescr = CellPopulationDescription.fromMap(
+        final CellPopulationDescription firstDescr = CellPopulationDescription.populationFromMap(
             ImmutableMap.of(
                 firstAgentDef, 13,
                 commonDef, firstCommonAgentCount
@@ -69,7 +67,7 @@ public class CellPopulationDescriptionTest {
         );
 
         final Integer secondCommonAgentCount = 17;
-        final CellPopulationDescription secondDescr = CellPopulationDescription.fromMap(
+        final CellPopulationDescription secondDescr = CellPopulationDescription.populationFromMap(
             ImmutableMap.of(
                 commonDef, secondCommonAgentCount
             )
@@ -94,13 +92,13 @@ public class CellPopulationDescriptionTest {
         final AgentDefinition agentDefinition = mock(AgentDefinition.class);
         final Integer agentCount = 13;
 
-        final CellPopulationDescription firstDef = CellPopulationDescription.fromMap(
+        final CellPopulationDescription firstDef = CellPopulationDescription.populationFromMap(
             ImmutableMap.of(agentDefinition, agentCount)
         );
 
         // when
 
-        CellPopulationDescription mergedDef = firstDef.merge(CellPopulationDescription.empty());
+        CellPopulationDescription mergedDef = firstDef.merge(CellPopulationDescription.emptyPopulation());
 
         // then
 
@@ -117,13 +115,13 @@ public class CellPopulationDescriptionTest {
         final AgentDefinition agentDefinition = mock(AgentDefinition.class);
         final Integer agentCount = 13;
 
-        final CellPopulationDescription firstDef = CellPopulationDescription.fromMap(
+        final CellPopulationDescription firstDef = CellPopulationDescription.populationFromMap(
             ImmutableMap.of(agentDefinition, agentCount)
         );
 
         // when
 
-        CellPopulationDescription mergedDef = CellPopulationDescription.empty().merge(firstDef);
+        CellPopulationDescription mergedDef = CellPopulationDescription.emptyPopulation().merge(firstDef);
 
         // then
 
@@ -138,7 +136,7 @@ public class CellPopulationDescriptionTest {
 
         // given
 
-        final CellPopulationDescription populationDescription = CellPopulationDescription.empty();
+        final CellPopulationDescription populationDescription = CellPopulationDescription.emptyPopulation();
 
         // when
 
@@ -155,7 +153,7 @@ public class CellPopulationDescriptionTest {
 
         final AgentDefinition agentDefinition = mock(AgentDefinition.class);
 
-        final CellPopulationDescription description = CellPopulationDescription.fromMap(
+        final CellPopulationDescription description = CellPopulationDescription.populationFromMap(
             ImmutableMap.of(agentDefinition, 13)
         );
 
@@ -174,7 +172,7 @@ public class CellPopulationDescriptionTest {
 
         // given
 
-        final CellPopulationDescription description = CellPopulationDescription.empty();
+        final CellPopulationDescription description = CellPopulationDescription.emptyPopulation();
 
         // when
 
@@ -193,7 +191,7 @@ public class CellPopulationDescriptionTest {
         final AgentDefinition agentDefinition = mock(AgentDefinition.class);
         final int agentsCount = 13;
 
-        final CellPopulationDescription description = CellPopulationDescription.fromMap(
+        final CellPopulationDescription description = CellPopulationDescription.populationFromMap(
             ImmutableMap.of(agentDefinition, agentsCount)
         );
 
@@ -215,7 +213,7 @@ public class CellPopulationDescriptionTest {
         final int firstAgentsCount = 13;
         final int secondAgentsCount = 124;
 
-        final CellPopulationDescription description = CellPopulationDescription.fromMap(
+        final CellPopulationDescription description = CellPopulationDescription.populationFromMap(
             ImmutableMap.of(
                 mock(AgentDefinition.class), firstAgentsCount,
                 mock(AgentDefinition.class), secondAgentsCount

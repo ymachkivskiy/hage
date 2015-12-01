@@ -1,9 +1,10 @@
 package org.hage.platform.config;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.hage.platform.component.definition.IComponentDefinition;
-import org.hage.platform.config.def.HabitatInternalConfiguration;
+import org.hage.platform.config.def.HabitatGeography;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -15,12 +16,13 @@ import static java.util.stream.Stream.concat;
 import static java.util.stream.Stream.empty;
 
 @Builder
+@EqualsAndHashCode
 public final class ComputationConfiguration implements Serializable {
 
     private final Collection<IComponentDefinition> globalComponents;
     private final Collection<IComponentDefinition> localComponents;
     @Getter
-    private final HabitatInternalConfiguration habitatConfiguration;
+    private final HabitatGeography habitatGeography;
 
     public Collection<IComponentDefinition> getComponentsDefinitions() {
         return concat(
@@ -30,10 +32,10 @@ public final class ComputationConfiguration implements Serializable {
     }
 
     public Collection<IComponentDefinition> getGlobalComponents() {
-        return unmodifiableCollection(globalComponents);
+        return globalComponents;
     }
 
     public Collection<IComponentDefinition> getLocalComponents() {
-        return unmodifiableCollection(localComponents);
+        return localComponents;
     }
 }
