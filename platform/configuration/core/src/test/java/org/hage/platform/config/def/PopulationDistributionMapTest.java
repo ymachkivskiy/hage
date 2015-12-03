@@ -2,6 +2,7 @@ package org.hage.platform.config.def;
 
 import org.hage.platform.habitat.AgentDefinition;
 import org.hage.platform.habitat.structure.InternalPosition;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.List;
@@ -10,10 +11,13 @@ import java.util.Set;
 import static com.google.common.collect.ImmutableMap.*;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
+import static java.util.Collections.emptySet;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.util.Collections.set;
+import static org.hage.platform.config.def.CellPopulationDescription.emptyPopulation;
 import static org.hage.platform.config.def.CellPopulationDescription.populationFromMap;
 import static org.hage.platform.config.def.CellPopulationDescription.populationFromPair;
+import static org.hage.platform.config.def.PopulationDistributionMap.emptyDistributionMap;
 import static org.hage.platform.habitat.structure.InternalPosition.definedBy;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -41,7 +45,7 @@ public class PopulationDistributionMapTest {
 
         // when
 
-        PopulationDistributionMap mergedMap = originalDistributionMap.merge(PopulationDistributionMap.emptyDistributionMap());
+        PopulationDistributionMap mergedMap = originalDistributionMap.merge(emptyDistributionMap());
 
         // then
 
@@ -70,7 +74,7 @@ public class PopulationDistributionMapTest {
 
         // when
 
-        PopulationDistributionMap mergedMap = PopulationDistributionMap.emptyDistributionMap().merge(originalDistributionMap);
+        PopulationDistributionMap mergedMap = emptyDistributionMap().merge(originalDistributionMap);
 
         // then
 
@@ -209,6 +213,55 @@ public class PopulationDistributionMapTest {
     }
 
     @Test
+    public void shouldSplitIntoEmptyMapsForEmptyListOfSplitCriteria() throws Exception {
+
+        //given
+
+        final PopulationDistributionMap originalMap = PopulationDistributionMap.distributionFromMap(
+            of(
+                definedBy(0, 0, 1), mock(CellPopulationDescription.class),
+                definedBy(0, 1, 0), mock(CellPopulationDescription.class),
+                definedBy(1, 0, 1), mock(CellPopulationDescription.class),
+                definedBy(1, 1, 0), mock(CellPopulationDescription.class)
+            )
+        );
+
+        // when
+
+        List<PopulationDistributionMap> splitted = originalMap.split(asList(emptySet(), emptySet()));
+
+        // then
+
+        assertThat(splitted).hasSize(2);
+        assertThat(splitted.get(0)).isEqualTo(emptyDistributionMap());
+        assertThat(splitted.get(1)).isEqualTo(emptyDistributionMap());
+
+    }
+
+    @Test
+    public void shouldReturnEmptyListOfSplittedPopulationsForEmptyInputSplitList() throws Exception {
+
+        // given
+
+        final PopulationDistributionMap originalMap = PopulationDistributionMap.distributionFromMap(
+            of(
+                definedBy(0, 0, 1), mock(CellPopulationDescription.class),
+                definedBy(0, 1, 0), mock(CellPopulationDescription.class),
+                definedBy(1, 0, 1), mock(CellPopulationDescription.class),
+                definedBy(1, 1, 0), mock(CellPopulationDescription.class)
+            )
+        );
+
+        // when
+
+        List<PopulationDistributionMap> splitted = originalMap.split(emptyList());
+
+        // then
+
+        assertThat(splitted).isEmpty();
+    }
+
+    @Test
     public void shouldReturnNumberOfAllConfiguredAgents() throws Exception {
 
         // given
@@ -295,7 +348,7 @@ public class PopulationDistributionMapTest {
 
         // given
 
-        final PopulationDistributionMap tested = PopulationDistributionMap.emptyDistributionMap();
+        final PopulationDistributionMap tested = emptyDistributionMap();
 
         // when
 
