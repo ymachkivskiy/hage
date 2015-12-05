@@ -20,6 +20,9 @@
     <bean id="hage.platform.configuration.loader"
           class="org.hage.platform.config.xml.XmlConfigurationLoader"/>
 
+    <bean id="hage.platform.configuration.splitter"
+          class="org.hage.platform.config.split.SimpleConfigurationSplitter"/>
+
     <bean id="hage.platform.addressSupplier.agent"
           class="org.hage.address.agent.DefaultAgentAddressSupplier"/>
 

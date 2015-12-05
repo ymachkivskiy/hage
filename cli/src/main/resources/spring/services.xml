@@ -16,7 +16,7 @@
           parent="hage.component.stateful.base"/>
 
     <bean id="hage.service.configurationSplitter.ConfSplitterWorker"
-            class="org.hage.configuration.split.SimplePerformanceBasedConfigurationSplitAllocator"/>
+            class="org.hage.configuration.split.PerformanceProportionsBasedConfigurationSplitAllocator"/>
 
     <bean id="hage.service.performance.NodePerformanceManager" class="org.hage.performance.node.CombinedNodePerformanceManager">
         <property name="measurers">

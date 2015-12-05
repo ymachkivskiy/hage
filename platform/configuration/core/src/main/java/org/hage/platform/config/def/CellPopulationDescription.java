@@ -5,6 +5,7 @@ import lombok.ToString;
 import org.hage.platform.habitat.AgentDefinition;
 
 import javax.annotation.concurrent.Immutable;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +16,7 @@ import static java.util.Collections.*;
 @Immutable
 @EqualsAndHashCode
 @ToString
-public class CellPopulationDescription {
+public class CellPopulationDescription implements Serializable {
     private static final CellPopulationDescription EMPTY = new CellPopulationDescription(emptyMap());
 
     private final Map<AgentDefinition, Integer> agentCountMap;

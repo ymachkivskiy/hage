@@ -5,10 +5,11 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.annotation.concurrent.Immutable;
+import java.io.Serializable;
 
 @Immutable
 @Data(staticConstructor = "definedBy")
-public final class InternalPosition {
+public final class InternalPosition implements Serializable {
     public static final InternalPosition ZERO = definedBy(0, 0, 0);
 
     private final int xPos;

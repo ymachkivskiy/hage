@@ -28,7 +28,7 @@ public class Proportions {
         return fractionsMap.getOrDefault(countable, BigDecimal.ZERO);
     }
 
-    public static Proportions forCountable(Collection<Countable> countable) {
+    public static Proportions forCountable(Collection<? extends Countable> countable) {
         BigInteger summary = countable
             .stream()
             .map(Countable::getCount)

@@ -36,7 +36,6 @@ public class SimpleConfigurationSplitterTest {
     private SimpleConfigurationSplitter tested;
 
     final ComputationConfiguration DEFAULT_CONFIG = ComputationConfiguration.builder()
-        .localComponents(emptyList())
         .globalComponents(emptyList())
         .habitatGeography(new HabitatGeography(mock(StructureDefinition.class), emptyDistributionMap()))
         .build();

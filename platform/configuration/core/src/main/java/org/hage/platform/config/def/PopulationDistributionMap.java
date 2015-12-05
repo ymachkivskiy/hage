@@ -5,6 +5,7 @@ import lombok.ToString;
 import org.hage.platform.habitat.structure.InternalPosition;
 
 import javax.annotation.concurrent.Immutable;
+import java.io.Serializable;
 import java.util.*;
 import java.util.function.Function;
 
@@ -15,7 +16,7 @@ import static java.util.stream.Collectors.toMap;
 @Immutable
 @EqualsAndHashCode
 @ToString
-public class PopulationDistributionMap {
+public class PopulationDistributionMap implements Serializable {
     private static final PopulationDistributionMap EMPTY = new PopulationDistributionMap(emptyMap());
 
     private final Map<InternalPosition, CellPopulationDescription> distributionMap;
