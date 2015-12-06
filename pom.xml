@@ -19,7 +19,6 @@
         <module>monitoring</module>
         <module>examples</module>
         <module>algorithms</module>
-        <module>archetypes</module>
         <module>cli</module>
         <module>common-lib</module>
     </modules>
