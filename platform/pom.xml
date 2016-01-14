@@ -25,6 +25,7 @@
         <module>configuration</module>
         <module>habitat</module>
         <module>utils</module>
+        <module>platform-assembly</module>
     </modules>
 
 </project>

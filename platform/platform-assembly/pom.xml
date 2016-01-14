@@ -3,20 +3,23 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>util-parent</artifactId>
-        <groupId>org.hage.platform.util</groupId>
+        <artifactId>platform</artifactId>
+        <groupId>org.hage.platform</groupId>
         <version>0.2.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.hage.platform.util</groupId>
-    <artifactId>event-bus</artifactId>
+    <groupId>org.hage.platform</groupId>
+    <artifactId>platform-assembly</artifactId>
 
     <dependencies>
         <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
+            <groupId>org.hage.platform.util</groupId>
+            <artifactId>utils-all</artifactId>
+            <version>${project.version}</version>
         </dependency>
+
     </dependencies>
+
 
 </project>
