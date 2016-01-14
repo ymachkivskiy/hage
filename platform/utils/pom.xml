@@ -10,4 +10,7 @@
     <artifactId>util-parent</artifactId>
     <packaging>pom</packaging>
     <name>util-parent</name>
+    <modules>
+        <module>event-bus</module>
+    </modules>
 </project>
