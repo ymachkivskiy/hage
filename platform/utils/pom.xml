@@ -12,5 +12,6 @@
     <name>util-parent</name>
     <modules>
         <module>event-bus</module>
+        <module>utils-all</module>
     </modules>
 </project>
