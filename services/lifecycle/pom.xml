@@ -47,9 +47,14 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.hage.platform.util</groupId>
+            <groupId>org.hage.platform.common</groupId>
             <artifactId>tools</artifactId>
-            <version>0.2.0-SNAPSHOT</version>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hage.platform.common</groupId>
+            <artifactId>state-machine</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
     </dependencies>

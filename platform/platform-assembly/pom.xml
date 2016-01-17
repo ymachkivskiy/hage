@@ -13,9 +13,34 @@
     <artifactId>platform-assembly</artifactId>
 
     <dependencies>
+
         <dependency>
-            <groupId>org.hage.platform.util</groupId>
+            <groupId>org.hage.platform.common</groupId>
             <artifactId>utils-all</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hage.platform</groupId>
+            <artifactId>component</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hage.services</groupId>
+            <artifactId>configuration</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hage.services</groupId>
+            <artifactId>lifecycle</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hage.platform</groupId>
+            <artifactId>container-merge</artifactId>
             <version>${project.version}</version>
         </dependency>
 

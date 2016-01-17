@@ -16,7 +16,7 @@
     <dependencies>
         <!-- AgE Platform dependencies -->
         <dependency>
-            <groupId>org.hage.platform.util</groupId>
+            <groupId>org.hage.platform.common</groupId>
             <artifactId>reflection</artifactId>
             <version>${project.version}</version>
         </dependency>

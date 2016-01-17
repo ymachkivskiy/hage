@@ -5,7 +5,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
-import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.common.util.concurrent.ListeningScheduledExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
@@ -29,6 +28,7 @@ import org.hage.platform.component.exception.ComponentException;
 import org.hage.platform.component.pico.IPicoComponentInstanceProvider;
 import org.hage.platform.component.pico.PicoComponentInstanceProvider;
 import org.hage.platform.util.Locks;
+import org.hage.platform.util.bus.EventBus;
 import org.hage.query.AgentEnvironmentQuery;
 import org.hage.query.IQuery;
 import org.hage.services.core.CoreComponentEvent;
@@ -61,12 +61,6 @@ import static com.google.common.collect.Sets.newHashSet;
 import static java.util.Objects.requireNonNull;
 
 
-/**
- * Default implementation of {@link WorkplaceManager}.
- * <p>
- *
- * @author AGH AgE Team
- */
 @ParametersAreNonnullByDefault
 @Slf4j
 public class DefaultWorkplaceManager implements WorkplaceManager,
@@ -107,7 +101,6 @@ public class DefaultWorkplaceManager implements WorkplaceManager,
     public void init() {
         communicationChannel = communicationManager.getCommunicationChannelForService(SERVICE_NAME);
         communicationChannel.subscribeChannel(this);
-        eventBus.register(this);
         workplacesMap = communicationManager.getDistributedMap(WORKPLACES_MAP_NAME);
         queryCache = communicationManager.getDistributedMap(QUERY_CACHE_NAME);
     }

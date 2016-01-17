@@ -19,7 +19,7 @@
         <!-- HAgE Modules -->
 
         <dependency>
-            <groupId>org.hage.platform.util</groupId>
+            <groupId>org.hage.platform.common</groupId>
             <artifactId>state-machine</artifactId>
             <version>${project.version}</version>
         </dependency>

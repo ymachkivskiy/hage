@@ -23,17 +23,8 @@
         <module>container-merge</module>
         <module>configuration</module>
         <module>habitat</module>
-        <module>utils</module>
-        <module>platform-assembly</module>
         <module>common</module>
+        <module>platform-assembly</module>
     </modules>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.hage.platform</groupId>
-            <artifactId>common</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-    </dependencies>
 
 </project>

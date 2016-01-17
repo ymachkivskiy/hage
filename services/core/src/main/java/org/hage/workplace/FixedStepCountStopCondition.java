@@ -1,11 +1,11 @@
 package org.hage.workplace;
 
 
-import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.common.util.concurrent.ListeningScheduledExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 import lombok.extern.slf4j.Slf4j;
+import org.hage.platform.util.bus.EventBus;
 import org.hage.query.CollectionQuery;
 import org.hage.services.core.CoreComponentEvent;
 import org.hage.workplace.manager.WorkplaceManager;
@@ -91,7 +91,6 @@ public class FixedStepCountStopCondition
 
     @Override
     public void init() {
-        eventBus.register(this);
     }
 
     @Override
