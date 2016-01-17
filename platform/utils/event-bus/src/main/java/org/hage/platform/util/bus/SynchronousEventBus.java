@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 class SynchronousEventBus extends BaseEventBus {
     private static final String BUS_NAME = "HageSynchEventBus";
 
-    protected SynchronousEventBus() {
+    public SynchronousEventBus() {
         super(new EventBus(BUS_NAME));
     }
 

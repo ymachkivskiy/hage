@@ -1,34 +1,3 @@
-/**
- * Copyright (C) 2006 - 2012
- *   Pawel Kedzior
- *   Tomasz Kmiecik
- *   Kamil Pietak
- *   Krzysztof Sikora
- *   Adam Wos
- *   Lukasz Faber
- *   Daniel Krzywicki
- *   and other students of AGH University of Science and Technology.
- *
- * This file is part of AgE.
- *
- * AgE is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * AgE is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with AgE.  If not, see <http://www.gnu.org/licenses/>.
- */
-/*
- * Created: 2012-01-28
- * $Id$
- */
-
 package org.hage.platform.config.xml.loaders;
 
 
@@ -37,9 +6,9 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.io.SAXReader;
 import org.hage.platform.component.definition.ConfigurationException;
-import org.hage.util.io.IncorrectUriException;
-import org.hage.util.io.Resource;
-import org.hage.util.io.ResourceLoader;
+import org.hage.platform.util.io.IncorrectUriException;
+import org.hage.platform.util.io.Resource;
+import org.hage.platform.util.io.ResourceLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.ErrorHandler;
@@ -55,23 +24,12 @@ import java.io.InputStream;
 import static java.lang.String.format;
 
 
-/**
- * Loads a raw DOM document from the provided resource path. Uses {@link ResourceLoader} to locate the actual resource.
- * It does not requires any delegate and should typically be used as the head of the chain.
- *
- * @author AGH AgE Team
- */
 public final class RawDocumentLoader extends AbstractDocumentLoader {
 
     private static final Logger LOG = LoggerFactory.getLogger(RawDocumentLoader.class);
 
     private final SAXReader reader;
 
-    /**
-     * Creates a {@link RawDocumentLoader}.
-     *
-     * @throws ConfigurationException if an error happens when configuring the SAXReader.
-     */
     public RawDocumentLoader() throws ConfigurationException {
         try {
             SAXParserFactory factory = SAXParserFactory.newInstance();

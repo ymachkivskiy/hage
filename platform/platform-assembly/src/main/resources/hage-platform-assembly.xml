@@ -13,4 +13,105 @@
 
     <context:component-scan base-package="org.hage.platform" />
 
+
+
+
+
+
+    <!--old app config-->
+
+    <!--old communication-->
+
+    <bean id="hage.platform.communication"
+          class="org.hage.communication.hazelcast.HazelcastRemoteCommunicationManager"/>
+
+    <bean id="hage.service.configuration.communication.remote"
+          class="org.hage.configuration.communication.ConfigurationRemoteChanel"
+          parent="hage.component.stateful.base"/>
+
+    <bean id="hage.service.lifecycle.communication.remote"
+          class="org.hage.lifecycle.communication.LifecycleManagerRemoteChanel"
+          parent="hage.component.stateful.base"/>
+
+    <bean id="hage.service.performance.communication.remote"
+          class="org.hage.performance.cluster.communication.PerformanceRemoteChanel"
+          parent="hage.component.stateful.base"/>
+
+    <!--old platform -->
+
+    <bean id="hage.platform.di.container"
+          class="org.hage.platform.component.pico.PicoComponentInstanceProviderFactory"
+          factory-method="createInstanceProvider"/>
+
+    <bean id="hage.platform.component.core"
+          class="org.hage.workplace.manager.DefaultWorkplaceManager"
+          parent="hage.component.stateful.base"/>
+
+    <bean id="hage.platform.lifecycle.exitHook"
+          class="org.hage.lifecycle.AutoExitHook"/>
+
+    <bean id="hage.platform.lifecycle"
+          class="org.hage.lifecycle.DefaultLifecycleManager"/>
+
+    <bean id="hage.platform.configuration.loader"
+          class="org.hage.platform.config.xml.XmlConfigurationLoader"/>
+
+    <bean id="hage.platform.configuration.splitter"
+          class="org.hage.platform.config.split.SimpleConfigurationSplitter"/>
+
+    <bean id="hage.platform.addressSupplier.agent"
+          class="org.hage.address.agent.DefaultAgentAddressSupplier"/>
+
+    <bean id="hage.platform.stopCondition"
+          class="org.hage.workplace.FixedStepCountStopCondition"
+          parent="hage.component.stateful.base"/>
+
+    <bean id="hage.platform.actionComparator"
+          class="org.hage.action.ordering.DefaultActionComparator"
+          scope="prototype"/>
+
+    <bean class="org.hage.platform.config.ConfigurationConversionService"/>
+
+    <alias name="hage.platform.communication" alias="hage.platform.addressSupplier.node"/>
+
+    <bean class="org.hage.platform.containermerge.ContainerComponentShare" init-method="shareComponents">
+        <property name="componentsForSharing">
+            <list>
+                <ref bean="hage.platform.addressSupplier.node"/>
+                <ref bean="hage.platform.addressSupplier.agent"/>
+            </list>
+        </property>
+    </bean>
+
+    <!--old services-->
+
+    <bean id="hage.service.configuration"
+          class="org.hage.configuration.service.ConfigurationStorageService"
+          parent="hage.component.stateful.base"/>
+
+    <bean id="hage.service.configurationLoader"
+          class="org.hage.configuration.service.ConfigurationLoaderService"
+          parent="hage.component.stateful.base"/>
+
+    <bean id="hage.service.configurationSplitter"
+          class="org.hage.configuration.service.ConfigurationSplitService"
+          parent="hage.component.stateful.base"/>
+
+    <bean id="hage.service.configurationSplitter.ConfSplitterWorker"
+          class="org.hage.configuration.split.PerformanceProportionsBasedConfigurationSplitAllocator"/>
+
+    <bean id="hage.service.performance.NodePerformanceManager" class="org.hage.performance.node.CombinedNodePerformanceManager">
+        <property name="measurers">
+            <list>
+                <bean class="org.hage.performance.node.measure.impl.MaxMemoryPerformanceMeasurer"/>
+                <bean class="org.hage.performance.node.measure.impl.ConcurrencyPerformanceMeasurer"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="hage.service.performance.normalizer.scaled"
+          class="org.hage.performance.node.normalize.scaled.ScaledNormalizerProvider"/>
+
+    <bean id="hage.service.performance.ClusterPerformanceManager" class="org.hage.performance.cluster.CombinedClusterPerformanceManager"/>
+
 </beans>

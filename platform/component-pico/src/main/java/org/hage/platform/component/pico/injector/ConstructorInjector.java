@@ -1,34 +1,3 @@
-/**
- * Copyright (C) 2006 - 2012
- *   Pawel Kedzior
- *   Tomasz Kmiecik
- *   Kamil Pietak
- *   Krzysztof Sikora
- *   Adam Wos
- *   Lukasz Faber
- *   Daniel Krzywicki
- *   and other students of AGH University of Science and Technology.
- *
- * This file is part of AgE.
- *
- * AgE is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * AgE is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with AgE.  If not, see <http://www.gnu.org/licenses/>.
- */
-/*
- * Created: 2012-03-12
- * $Id$
- */
-
 package org.hage.platform.component.pico.injector;
 
 
@@ -54,22 +23,11 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.newArrayListWithCapacity;
 import static java.util.Arrays.asList;
 import static org.hage.platform.component.pico.injector.Parameters.fromList;
-import static org.hage.platform.reflect.Classes.getDeclaredConstructors;
-import static org.hage.platform.reflect.predicates.ConstructorPredicates.matchingActualParameters;
-import static org.hage.platform.reflect.predicates.ConstructorPredicates.withAnnotation;
+import static org.hage.platform.util.reflect.Classes.getDeclaredConstructors;
+import static org.hage.platform.util.reflect.predicates.ConstructorPredicates.matchingActualParameters;
+import static org.hage.platform.util.reflect.predicates.ConstructorPredicates.withAnnotation;
 
 
-/**
- * A constructor injector. It injects dependencies using explicit arguments, if such are provided, or tries to autowire
- * them, if some constructor is marked for autowiring, or falls back on an empty, default constructor otherwise.
- * <p>
- * When looking for constructors matching some list of parameters, an isAssignableTo relation is used instead of an
- * equality one. This way, actual parameters can be upcasted to match more general formal ones. Auto boxing/unboxing
- * primitives is also supported.
- *
- * @param <T> the type of components this injector can create
- * @author AGH AgE Team
- */
 public final class ConstructorInjector<T> extends AbstractInjector<T> {
 
     private static final long serialVersionUID = 1L;
@@ -80,12 +38,7 @@ public final class ConstructorInjector<T> extends AbstractInjector<T> {
 
     private String postponedError;
 
-    /**
-     * Constructs a new ConstructorInjector that uses a given component definition.
-     *
-     * @param definition the component definition to use to create components
-     */
-    public ConstructorInjector(final ComponentDefinition definition) {
+     public ConstructorInjector(final ComponentDefinition definition) {
         super(definition);
         parameters = initializeParameters(definition);
     }

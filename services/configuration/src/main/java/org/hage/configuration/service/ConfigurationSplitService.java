@@ -3,16 +3,16 @@ package org.hage.configuration.service;
 import com.google.common.eventbus.Subscribe;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.address.node.NodeAddress;
-import org.hage.bus.EventBus;
 import org.hage.configuration.communication.ConfigurationRemoteChanel;
 import org.hage.configuration.event.ConfigurationLoadedEvent;
-import org.hage.configuration.split.ConfigurationSplitAllocator;
 import org.hage.configuration.split.ConfigurationAllocation;
+import org.hage.configuration.split.ConfigurationSplitAllocator;
 import org.hage.performance.cluster.AggregatedPerformanceMeasurements;
 import org.hage.performance.cluster.ClusterPerformanceManager;
 import org.hage.platform.component.IStatefulComponent;
 import org.hage.platform.component.exception.ComponentException;
 import org.hage.platform.config.ComputationConfiguration;
+import org.hage.platform.util.bus.EventBus;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.Nonnull;
@@ -32,12 +32,10 @@ public class ConfigurationSplitService implements IStatefulComponent {
 
     @Override
     public void init() throws ComponentException {
-        eventBus.register(this);
     }
 
     @Override
     public boolean finish() throws ComponentException {
-        eventBus.unregister(this);
         return false;
     }
 

@@ -1,34 +1,3 @@
-/**
- * Copyright (C) 2006 - 2012
- *   Pawel Kedzior
- *   Tomasz Kmiecik
- *   Kamil Pietak
- *   Krzysztof Sikora
- *   Adam Wos
- *   Lukasz Faber
- *   Daniel Krzywicki
- *   and other students of AGH University of Science and Technology.
- *
- * This file is part of AgE.
- *
- * AgE is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * AgE is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with AgE.  If not, see <http://www.gnu.org/licenses/>.
- */
-/*
- * Created: 2012-03-12
- * $Id$
- */
-
 package org.hage.platform.component.pico.injector;
 
 
@@ -37,7 +6,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import org.hage.platform.component.definition.ComponentDefinition;
-import org.hage.platform.reflect.predicates.MethodPredicates;
+import org.hage.platform.util.reflect.predicates.MethodPredicates;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
@@ -61,17 +30,10 @@ import static java.lang.String.format;
 import static java.lang.reflect.Modifier.isAbstract;
 import static java.lang.reflect.Modifier.isFinal;
 import static java.util.Collections.emptyList;
-import static org.hage.platform.reflect.Methods.getSetterName;
-import static org.hage.platform.reflect.Methods.isSetter;
+import static org.hage.platform.util.reflect.Methods.getSetterName;
+import static org.hage.platform.util.reflect.Methods.isSetter;
 
 
-/**
- * An injector for autowiring annotation-based injection. This implementation is compliant with the JSR-330
- * specification. It does however currently not support {@code Provider<T>} and {@code @Qualifier}s.
- *
- * @param <T> the type of components this injector can inject into
- * @author AGH AgE Team
- */
 public final class AutowiringInjector<T> extends AbstractInjector<T> {
 
     private static final Logger log = LoggerFactory.getLogger(AutowiringInjector.class);
@@ -84,11 +46,6 @@ public final class AutowiringInjector<T> extends AbstractInjector<T> {
 
     private final Map<Method, Parameter[]> methods;
 
-    /**
-     * Creates an AutowiringInjector using a given component definition.
-     *
-     * @param definition the component definition to use
-     */
     public AutowiringInjector(final ComponentDefinition definition) {
         super(definition);
 
@@ -100,7 +57,7 @@ public final class AutowiringInjector<T> extends AbstractInjector<T> {
     private Map<Field, Parameter> initializeFields(final Set<String> names) {
         final Class<?> componentType = getComponentImplementation();
         final Map<Field, Parameter> fields = newLinkedHashMap();
-        for(final Field field : Introspector.getFilteredInjectableFields(componentType, names)) {
+        for (final Field field : Introspector.getFilteredInjectableFields(componentType, names)) {
             fields.put(field, Parameters.from(field.getType()));
         }
         return fields;
@@ -109,7 +66,7 @@ public final class AutowiringInjector<T> extends AbstractInjector<T> {
     private Map<Method, Parameter[]> initializeMethods(final Set<String> names) {
         final Class<?> componentType = getComponentImplementation();
         final Map<Method, Parameter[]> methods = newLinkedHashMap();
-        for(final Method method : Introspector.getFilteredInjectableMethods(componentType, names)) {
+        for (final Method method : Introspector.getFilteredInjectableMethods(componentType, names)) {
             methods.put(method, Parameters.from(method.getParameterTypes()));
         }
         return methods;
@@ -117,24 +74,24 @@ public final class AutowiringInjector<T> extends AbstractInjector<T> {
 
     @Override
     protected void doVerify(final PicoContainer container) {
-        for(final Field field : fields.keySet()) {
+        for (final Field field : fields.keySet()) {
             final Parameter parameter = fields.get(field);
             try {
                 parameter.verify(container, this, field.getType(), null, false, null);
-            } catch(final PicoCompositionException e) {
+            } catch (final PicoCompositionException e) {
                 throw new PicoCompositionException(format("field '%1$s': %2$s", field.getName(), e.getMessage()), e);
             }
         }
 
-        for(final Method method : methods.keySet()) {
+        for (final Method method : methods.keySet()) {
             final Parameter[] parameters = methods.get(method);
             final Class<?>[] types = method.getParameterTypes();
-            for(int i = 0; i < parameters.length; i++) {
+            for (int i = 0; i < parameters.length; i++) {
                 try {
                     parameters[i].verify(container, this, types[i], null, false, null);
-                } catch(final PicoCompositionException e) {
+                } catch (final PicoCompositionException e) {
                     throw new PicoCompositionException(format("argument %1$s of method '%2$s': %3$s", i,
-                                                              method.getName(), e.getMessage()), e);
+                            method.getName(), e.getMessage()), e);
                 }
             }
         }
@@ -144,12 +101,12 @@ public final class AutowiringInjector<T> extends AbstractInjector<T> {
     public void doInject(final PicoContainer container, final T instance) throws PicoCompositionException {
         log.debug("Will autowire instance {}", instance);
 
-        for(final Field field : fields.keySet()) {
+        for (final Field field : fields.keySet()) {
             final Object value = doResolve(fields.get(field), container, field.getType());
             injectField(instance, field, value);
         }
 
-        for(final Method method : methods.keySet()) {
+        for (final Method method : methods.keySet()) {
             final Object[] values = doResolveAll(methods.get(method), container, method.getParameterTypes());
             injectMethod(instance, method, values);
         }
@@ -164,18 +121,18 @@ public final class AutowiringInjector<T> extends AbstractInjector<T> {
         try {
             field.setAccessible(true);
             field.set(instance, argument);
-        } catch(final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             throw new AssertionError(); // should not happen
-        } catch(final IllegalAccessException e) {
+        } catch (final IllegalAccessException e) {
             throw new PicoCompositionException(format("Unable to autowire field '%1$s' of %2$s: access denied.", field,
-                                                      instance), e);
+                    instance), e);
         }
     }
 
     private Object[] doResolveAll(final Parameter[] parameters, final PicoContainer container,
-            final Type[] expectedTypes) {
+                                  final Type[] expectedTypes) {
         final Object[] values = new Object[parameters.length];
-        for(int i = 0; i < values.length; i++) {
+        for (int i = 0; i < values.length; i++) {
             values[i] = doResolve(parameters[i], container, expectedTypes[i]);
         }
         return values;
@@ -186,12 +143,12 @@ public final class AutowiringInjector<T> extends AbstractInjector<T> {
         try {
             method.setAccessible(true);
             method.invoke(instance, arguments);
-        } catch(final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             throw new AssertionError(); // should not happen
-        } catch(final IllegalAccessException e) {
+        } catch (final IllegalAccessException e) {
             throw new PicoCompositionException(format("Unable to autowire method '%1$s' of %2$s: access denied.",
-                                                      method, instance), e);
-        } catch(final InvocationTargetException e) {
+                    method, instance), e);
+        } catch (final InvocationTargetException e) {
             throw new PicoCompositionException(format(
                     "Unable to autowire method '%1$s' of %2$s: an exception happened.", method, instance), e);
         }
@@ -202,11 +159,6 @@ public final class AutowiringInjector<T> extends AbstractInjector<T> {
         return "Autowiring injector";
     }
 
-    /**
-     * Helper class encapsulating class introspection.
-     *
-     * @author AGH AgE Team
-     */
     private static class Introspector {
 
         /**
@@ -227,7 +179,7 @@ public final class AutowiringInjector<T> extends AbstractInjector<T> {
          * Return all injectable methods for the given class, without setters which names are in the given set.
          */
         public static Iterable<Method> getFilteredInjectableMethods(final Class<?> clazz,
-                final Set<String> filteringNames) {
+                                                                    final Set<String> filteringNames) {
             final List<Method> injectableMethods = getInjectableMethods(clazz);
             return Iterables.filter(injectableMethods, new Predicate<Method>() {
 
@@ -244,14 +196,14 @@ public final class AutowiringInjector<T> extends AbstractInjector<T> {
          */
         public static List<Field> getInjectableFields(final Class<?> clazz) {
             // recursive stop condition
-            if(clazz == null) {
+            if (clazz == null) {
                 return emptyList();
             }
 
             // recursively get injectable fields from superclass
             final List<Field> injectableFields = newArrayList(getInjectableFields(clazz.getSuperclass()));
-            for(final Field field : clazz.getDeclaredFields()) {
-                if(isInjectable(field)) {
+            for (final Field field : clazz.getDeclaredFields()) {
+                if (isInjectable(field)) {
                     injectableFields.add(field);
                 }
             }
@@ -269,7 +221,7 @@ public final class AutowiringInjector<T> extends AbstractInjector<T> {
          */
         public static List<Method> getInjectableMethods(final Class<?> clazz) {
             // recursive stop condition
-            if(clazz == null) {
+            if (clazz == null) {
                 return emptyList();
             }
 
@@ -278,9 +230,9 @@ public final class AutowiringInjector<T> extends AbstractInjector<T> {
             final List<Method> injectableMethods = newArrayList();
 
             // any overridden method will be present in the final list only if it is injectable in clazz
-            for(final Method method : clazz.getDeclaredMethods()) {
+            for (final Method method : clazz.getDeclaredMethods()) {
                 removeIf(allInjectableMethods, MethodPredicates.overriddenBy(method));
-                if(isInjectable(method)) {
+                if (isInjectable(method)) {
                     injectableMethods.add(method);
                 }
             }

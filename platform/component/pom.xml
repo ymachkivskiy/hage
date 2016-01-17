@@ -4,7 +4,7 @@
 
     <parent>
         <groupId>org.hage.platform</groupId>
-        <artifactId>platform</artifactId>
+        <artifactId>platform-parent</artifactId>
         <version>0.2.0-SNAPSHOT</version>
     </parent>
 

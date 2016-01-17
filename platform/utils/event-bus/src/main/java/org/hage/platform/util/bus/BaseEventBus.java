@@ -12,21 +12,21 @@ abstract class BaseEventBus implements EventBus {
     }
 
     @Override
-    public void postEvent(Event event) {
+    public void post(Event event) {
         log.debug("post event {}", event);
 
         eventBus.post(event);
     }
 
     @Override
-    public void registerSubscriber(EventSubscriber subscriber) {
+    public void register(EventSubscriber subscriber) {
         log.debug("register subscriber {}", subscriber);
 
         eventBus.register(subscriber.getEventListener());
     }
 
     @Override
-    public void unregisterSubscriber(EventSubscriber subscriber) {
+    public void unregister(EventSubscriber subscriber) {
         log.debug("unregister subscriber {}", subscriber);
 
         eventBus.unregister(subscriber.getEventListener());

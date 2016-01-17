@@ -3,10 +3,10 @@ package org.hage.configuration.service;
 
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
-import org.hage.bus.EventBus;
 import org.hage.configuration.event.ConfigurationUpdatedEvent;
 import org.hage.platform.component.IStatefulComponent;
 import org.hage.platform.config.ComputationConfiguration;
+import org.hage.platform.util.bus.EventBus;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.concurrent.ThreadSafe;
@@ -28,12 +28,10 @@ public class ConfigurationStorageService implements IStatefulComponent {
 
     @Override
     public void init() {
-        eventBus.register(this);
     }
 
     @Override
     public boolean finish() {
-        eventBus.unregister(this);
         return true;
     }
 

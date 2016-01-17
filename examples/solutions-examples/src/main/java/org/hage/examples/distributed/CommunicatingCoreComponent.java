@@ -32,8 +32,8 @@
 package org.hage.examples.distributed;
 
 
+import com.google.common.eventbus.EventBus;
 import org.hage.address.node.NodeAddressSupplier;
-import org.hage.bus.EventBus;
 import org.hage.platform.component.exception.ComponentException;
 import org.hage.services.core.CoreComponent;
 import org.hage.services.core.CoreComponentEvent;

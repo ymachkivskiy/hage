@@ -17,6 +17,13 @@
     <dependencies>
 
         <!-- HAgE Modules -->
+
+        <dependency>
+            <groupId>org.hage.platform.util</groupId>
+            <artifactId>state-machine</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.hage.services</groupId>
             <artifactId>core</artifactId>

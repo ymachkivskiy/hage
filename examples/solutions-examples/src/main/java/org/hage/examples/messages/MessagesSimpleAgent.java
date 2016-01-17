@@ -42,7 +42,7 @@ import org.hage.agent.SimpleAgent;
 import org.hage.communication.message.Message;
 import org.hage.communication.message.SimpleHeader;
 import org.hage.communication.message.SimpleMessage;
-import org.hage.exception.AgeException;
+import org.hage.platform.HageException;
 import org.hage.query.AgentEnvironmentQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -112,7 +112,7 @@ public class MessagesSimpleAgent extends SimpleAgent {
                         receiverAddress = agentAddress;
                     }
                 }
-            } catch(final AgeException e) {
+            } catch(final HageException e) {
                 log.error("Agent exception", e);
             }
         }

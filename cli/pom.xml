@@ -51,6 +51,12 @@
             <artifactId>slf4j-log4j12</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.hage.platform</groupId>
+            <artifactId>platform-assembly</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>

@@ -3,17 +3,16 @@ package org.hage.configuration.service;
 
 import com.google.common.eventbus.Subscribe;
 import lombok.extern.slf4j.Slf4j;
-import org.hage.bus.EventBus;
 import org.hage.configuration.event.ConfigurationLoadRequestEvent;
 import org.hage.configuration.event.ConfigurationLoadedEvent;
 import org.hage.platform.component.IStatefulComponent;
 import org.hage.platform.config.ComputationConfiguration;
 import org.hage.platform.config.provider.ComputationConfigurationProvider;
+import org.hage.platform.util.bus.EventBus;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
-import java.util.Optional;
 
 
 @ThreadSafe
@@ -28,12 +27,10 @@ public class ConfigurationLoaderService implements IStatefulComponent {
 
     @Override
     public void init() {
-        eventBus.register(this);
     }
 
     @Override
     public boolean finish() {
-        eventBus.unregister(this);
         return true;
     }
 

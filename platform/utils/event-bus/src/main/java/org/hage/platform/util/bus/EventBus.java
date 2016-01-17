@@ -1,9 +1,9 @@
 package org.hage.platform.util.bus;
 
 public interface EventBus {
-    void postEvent(Event event);
+    void post(Event event);
 
-    void registerSubscriber(EventSubscriber subscriber);
+    void register(EventSubscriber subscriber);
 
-    void unregisterSubscriber(EventSubscriber subscriber);
+    void unregister(EventSubscriber subscriber);
 }

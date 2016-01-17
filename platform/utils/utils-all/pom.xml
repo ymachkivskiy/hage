@@ -18,6 +18,21 @@
             <artifactId>event-bus</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.hage.platform.util</groupId>
+            <artifactId>state-machine</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hage.platform.util</groupId>
+            <artifactId>tools</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hage.platform.util</groupId>
+            <artifactId>reflection</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

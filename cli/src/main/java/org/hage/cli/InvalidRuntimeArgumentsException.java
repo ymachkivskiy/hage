@@ -1,10 +1,9 @@
 package org.hage.cli;
 
 
-import org.hage.exception.AgeException;
+import org.hage.platform.HageException;
 
-
-public class InvalidRuntimeArgumentsException extends AgeException {
+public class InvalidRuntimeArgumentsException extends HageException {
 
     private static final long serialVersionUID = 2L;
 

@@ -3,7 +3,6 @@ package org.hage.lifecycle;
 
 import com.google.common.eventbus.Subscribe;
 import lombok.extern.slf4j.Slf4j;
-import org.hage.bus.EventBus;
 import org.hage.configuration.event.ConfigurationUpdatedEvent;
 import org.hage.lifecycle.LifecycleMessage.LifecycleCommand;
 import org.hage.platform.component.IStatefulComponent;
@@ -11,9 +10,10 @@ import org.hage.platform.component.exception.ComponentException;
 import org.hage.platform.component.pico.visitor.StatefulComponentFinisher;
 import org.hage.platform.component.pico.visitor.StatefulComponentInitializer;
 import org.hage.platform.component.provider.IMutableComponentInstanceProvider;
-import org.hage.platform.fsm.CallableWithParameters;
-import org.hage.platform.fsm.StateMachineService;
-import org.hage.platform.fsm.StateMachineServiceBuilder;
+import org.hage.platform.util.bus.EventBus;
+import org.hage.platform.util.fsm.CallableWithParameters;
+import org.hage.platform.util.fsm.StateMachineService;
+import org.hage.platform.util.fsm.StateMachineServiceBuilder;
 import org.hage.services.core.CoreComponent;
 import org.hage.services.core.CoreComponentEvent;
 import org.hage.services.core.LifecycleManager;
@@ -22,6 +22,7 @@ import org.picocontainer.PicoContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.Nonnull;
+import javax.annotation.PostConstruct;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -33,7 +34,7 @@ import static org.hage.configuration.event.ConfigurationLoadRequestEvent.configu
 @Slf4j
 public class DefaultLifecycleManager implements LifecycleManager {
 
-    private final StateMachineService<State, Event> service;
+    private StateMachineService<State, Event> service;
 
     @Autowired
     private IMutableComponentInstanceProvider instanceProvider;
@@ -43,11 +44,11 @@ public class DefaultLifecycleManager implements LifecycleManager {
     private EventBus eventBus;
 
 
-    public DefaultLifecycleManager() {
-        final StateMachineServiceBuilder<State, Event> builder = StateMachineServiceBuilder.create();
+    @PostConstruct
+    private void initializeLifecycle() {
 
         //@formatter:off
-        builder
+        service = StateMachineServiceBuilder.<State, Event>create()
                 .states(State.class).events(Event.class)
                 .startWith(State.OFFLINE)
                 .terminateIn(State.TERMINATED)
@@ -74,11 +75,10 @@ public class DefaultLifecycleManager implements LifecycleManager {
 
                 .ifFailed()
                 .fire(Event.ERROR)
-
-                .notifyWithType(LifecycleStateChangedEvent.class)
-                .shutdownWhenTerminated();
-
-        service = builder.build();
+                .notificationCreator(new LifecycleStateNotificationCreator())
+                .withEventBus(eventBus)
+                .shutdownWhenTerminated()
+                .build();
         //@formatter:on
 
         // Register shutdown hook, so we will be able to do a clean shutdown
@@ -112,6 +112,7 @@ public class DefaultLifecycleManager implements LifecycleManager {
     public void start() {
         service.fire(Event.INITIALIZE);
     }
+
 
     @Subscribe
     public void onConfigurationUpdated(@Nonnull final ConfigurationUpdatedEvent event) {
@@ -148,6 +149,7 @@ public class DefaultLifecycleManager implements LifecycleManager {
         service.fire(Event.EXIT);
     }
 
+
     @Override
     public String toString() {
         return toStringHelper(this).addValue(service).toString();
@@ -162,7 +164,6 @@ public class DefaultLifecycleManager implements LifecycleManager {
         public void run() {
             log.debug("Initializing LifecycleManager.");
 
-            initializeEventBus();
             notifyConfigurationCanBeLoaded();
 
             log.debug("Node has finished initialization.");
@@ -170,13 +171,6 @@ public class DefaultLifecycleManager implements LifecycleManager {
 
         private void notifyConfigurationCanBeLoaded() {
             eventBus.post(configurationLoadRequest());
-        }
-
-
-        private void initializeEventBus() {
-            service.setEventBus(eventBus);
-            eventBus.register(DefaultLifecycleManager.this);
-            log.debug("Event bus: {}.", eventBus);
         }
 
     }

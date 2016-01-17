@@ -23,8 +23,8 @@
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform</groupId>
-            <artifactId>util</artifactId>
+            <groupId>org.hage.platform.util</groupId>
+            <artifactId>tools</artifactId>
             <version>${project.version}</version>
         </dependency>
 

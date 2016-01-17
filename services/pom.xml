@@ -28,8 +28,14 @@
     <dependencies>
 
         <dependency>
+            <groupId>org.hage.platform.util</groupId>
+            <artifactId>utils-all</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.hage.platform</groupId>
-            <artifactId>util</artifactId>
+            <artifactId>common</artifactId>
             <version>${project.version}</version>
         </dependency>
 
