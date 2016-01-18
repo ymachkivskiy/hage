@@ -9,40 +9,30 @@ import org.hage.configuration.split.ConfigurationAllocation;
 import org.hage.configuration.split.ConfigurationSplitAllocator;
 import org.hage.performance.cluster.AggregatedPerformanceMeasurements;
 import org.hage.performance.cluster.ClusterPerformanceManager;
-import org.hage.platform.component.IStatefulComponent;
-import org.hage.platform.component.exception.ComponentException;
 import org.hage.platform.config.ComputationConfiguration;
-import org.hage.platform.util.bus.EventBus;
+import org.hage.platform.util.bus.EventListener;
+import org.hage.platform.util.bus.EventSubscriber;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Set;
 
 @Slf4j
-public class ConfigurationSplitService implements IStatefulComponent {
+public class ConfigurationSplitService implements EventSubscriber {
+
+    private final EventListener eventListener = new PrivateEventListener();
+
     @Autowired
     private ConfigurationRemoteChanel configurationChanel;
-    @Autowired
-    private EventBus eventBus;
+
     @Autowired
     private ClusterPerformanceManager clusterPerformanceManager;
+
     @Autowired
     private ConfigurationSplitAllocator configurationSplitter;
 
-    @Override
-    public void init() throws ComponentException {
-    }
 
-    @Override
-    public boolean finish() throws ComponentException {
-        return false;
-    }
-
-    @Subscribe
-    public void onConfigurationLoaded(@Nonnull final ConfigurationLoadedEvent event) {
-        final ComputationConfiguration configuration = event.getComputationConfiguration();
-
+    private void splitAndSendConfiguration(ComputationConfiguration configuration) {
         log.info("Configuration has been loaded {}. Looking for nodes which require computation configuration", configuration);
 
         Set<NodeAddress> nodesWhichRequireConfiguration = configurationChanel.getNodesAvailableForComputations();
@@ -59,4 +49,19 @@ public class ConfigurationSplitService implements IStatefulComponent {
 
         allocatedConfiguration.forEach(configurationChanel::sendConfiguration);
     }
+
+    @Override
+    public EventListener getEventListener() {
+        return eventListener;
+    }
+
+    private class PrivateEventListener implements EventListener {
+
+        @Subscribe
+        public void onConfigurationLoaded(ConfigurationLoadedEvent event) {
+            splitAndSendConfiguration(event.getComputationConfiguration());
+        }
+
+    }
+
 }

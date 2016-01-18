@@ -11,6 +11,8 @@ import org.hage.platform.component.pico.visitor.StatefulComponentFinisher;
 import org.hage.platform.component.pico.visitor.StatefulComponentInitializer;
 import org.hage.platform.component.provider.IMutableComponentInstanceProvider;
 import org.hage.platform.util.bus.EventBus;
+import org.hage.platform.util.bus.EventListener;
+import org.hage.platform.util.bus.EventSubscriber;
 import org.hage.platform.util.fsm.CallableWithParameters;
 import org.hage.platform.util.fsm.StateMachineService;
 import org.hage.platform.util.fsm.StateMachineServiceBuilder;
@@ -21,7 +23,6 @@ import org.hage.workplace.StopConditionFulfilledEvent;
 import org.picocontainer.PicoContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.Nonnull;
 import javax.annotation.PostConstruct;
 import java.util.Collection;
 import java.util.Map;
@@ -32,14 +33,18 @@ import static org.hage.configuration.event.ConfigurationLoadRequestEvent.configu
 
 
 @Slf4j
-public class DefaultLifecycleManager implements LifecycleManager {
+public class DefaultLifecycleManager implements LifecycleManager, EventSubscriber {
+
+    private final EventListener eventListener = new PrivateEventListener();
 
     private StateMachineService<State, Event> service;
 
     @Autowired
     private IMutableComponentInstanceProvider instanceProvider;
+
     @Autowired
     private CoreComponent coreComponent;
+
     @Autowired
     private EventBus eventBus;
 
@@ -113,46 +118,53 @@ public class DefaultLifecycleManager implements LifecycleManager {
         service.fire(Event.INITIALIZE);
     }
 
-
-    @Subscribe
-    public void onConfigurationUpdated(@Nonnull final ConfigurationUpdatedEvent event) {
-        log.debug("Configuration updated event: {}.", event);
-        service.fire(Event.CONFIGURE);
-    }
-
-    @Subscribe
-    public void onCoreComponentEvent(@Nonnull final CoreComponentEvent event) {
-        log.debug("Core component Event: {}.", event);
-        switch (event.getType()) {
-            case CONFIGURED:
-                service.fire(Event.START_COMMAND);
-                break;
-            case STARTING:
-                service.fire(Event.CORE_STARTING);
-                break;
-            case STOPPED:
-                service.fire(Event.CORE_STOPPED);
-                break;
-        }
-
-    }
-
-    @Subscribe
-    public void onStopConditionFulfilledEvent(@Nonnull final StopConditionFulfilledEvent event) {
-        log.debug("Stop condition fulfilled event: {}.", event);
-        service.fire(Event.STOP_COMMAND);
-    }
-
-    @Subscribe
-    public void onExitRequestedEvent(@Nonnull final ExitRequestedEvent event) {
-        log.debug("Exit requested by event: {}.", event);
-        service.fire(Event.EXIT);
-    }
-
-
     @Override
     public String toString() {
         return toStringHelper(this).addValue(service).toString();
+    }
+
+    @Override
+    public EventListener getEventListener() {
+        return eventListener;
+    }
+
+    private class PrivateEventListener implements EventListener {
+
+        @Subscribe
+        public void onConfigurationUpdated(ConfigurationUpdatedEvent event) {
+            log.debug("Configuration updated event: {}.", event);
+            service.fire(Event.CONFIGURE);
+        }
+
+        @Subscribe
+        public void onCoreComponentEvent(CoreComponentEvent event) {
+            log.debug("Core component Event: {}.", event);
+            switch (event.getType()) {
+                case CONFIGURED:
+                    service.fire(Event.START_COMMAND);
+                    break;
+                case STARTING:
+                    service.fire(Event.CORE_STARTING);
+                    break;
+                case STOPPED:
+                    service.fire(Event.CORE_STOPPED);
+                    break;
+            }
+
+        }
+
+        @Subscribe
+        public void onStopConditionFulfilledEvent(StopConditionFulfilledEvent event) {
+            log.debug("Stop condition fulfilled event: {}.", event);
+            service.fire(Event.STOP_COMMAND);
+        }
+
+        @Subscribe
+        public void onExitRequestedEvent(ExitRequestedEvent event) {
+            log.debug("Exit requested by event: {}.", event);
+            service.fire(Event.EXIT);
+        }
+
     }
 
     // Implementations of actions
@@ -198,6 +210,7 @@ public class DefaultLifecycleManager implements LifecycleManager {
                 //fallback for other potential implementations
                 instanceProvider.getInstances(IStatefulComponent.class);
             }
+            boolean a = false;
         }
 
     }

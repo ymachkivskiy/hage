@@ -29,6 +29,8 @@ import org.hage.platform.component.pico.IPicoComponentInstanceProvider;
 import org.hage.platform.component.pico.PicoComponentInstanceProvider;
 import org.hage.platform.util.Locks;
 import org.hage.platform.util.bus.EventBus;
+import org.hage.platform.util.bus.EventListener;
+import org.hage.platform.util.bus.EventSubscriber;
 import org.hage.query.AgentEnvironmentQuery;
 import org.hage.query.IQuery;
 import org.hage.services.core.CoreComponentEvent;
@@ -63,11 +65,15 @@ import static java.util.Objects.requireNonNull;
 
 @ParametersAreNonnullByDefault
 @Slf4j
-public class DefaultWorkplaceManager implements WorkplaceManager,
-                                                RemoteMessageSubscriber<WorkplaceManagerMessage> {
+public class DefaultWorkplaceManager implements
+        WorkplaceManager,
+        RemoteMessageSubscriber<WorkplaceManagerMessage>,
+        EventSubscriber {
 
     public static final String QUERY_CACHE_NAME = "queryCache";
     public static final String WORKPLACES_MAP_NAME = "workplaces";
+
+    private final EventListener eventListener = new PrivateEventListener();
 
     @GuardedBy("workplacesLock")
     @Nonnull
@@ -108,9 +114,9 @@ public class DefaultWorkplaceManager implements WorkplaceManager,
     @Override
     public boolean finish() {
         withReadLock(() -> {
-            for(final Workplace workplace : initializedWorkplaces.values()) {
-                synchronized(workplace) {
-                    if(workplace.isStopped()) {
+            for (final Workplace workplace : initializedWorkplaces.values()) {
+                synchronized (workplace) {
+                    if (workplace.isStopped()) {
                         workplace.terminate();
                         log.info("Workplace {} finished", workplace);
                     } else {
@@ -145,7 +151,7 @@ public class DefaultWorkplaceManager implements WorkplaceManager,
         withReadLock(() -> {
             checkState(!initializedWorkplaces.isEmpty(), "There is no workplace to run.");
 
-            for(final Workplace workplace : initializedWorkplaces.values()) {
+            for (final Workplace workplace : initializedWorkplaces.values()) {
                 workplace.start();
                 activeWorkplaces.add(workplace);
                 log.info("Workplace {} started.", workplace);
@@ -158,9 +164,9 @@ public class DefaultWorkplaceManager implements WorkplaceManager,
     public void pause() {
         log.debug("Workplace manager is pausing computation.");
         withReadLock(() -> {
-            for(final Workplace workplace : initializedWorkplaces.values()) {
-                synchronized(workplace) {
-                    if(workplace.isRunning()) {
+            for (final Workplace workplace : initializedWorkplaces.values()) {
+                synchronized (workplace) {
+                    if (workplace.isRunning()) {
                         workplace.pause();
                     } else {
                         log.warn("Trying to pause not running workplace: {}.", workplace);
@@ -176,9 +182,9 @@ public class DefaultWorkplaceManager implements WorkplaceManager,
     public void resume() {
         log.debug("Workplace manager is resuming computation.");
         withReadLock(() -> {
-            for(final Workplace workplace : initializedWorkplaces.values()) {
-                synchronized(workplace) {
-                    if(workplace.isPaused()) {
+            for (final Workplace workplace : initializedWorkplaces.values()) {
+                synchronized (workplace) {
+                    if (workplace.isPaused()) {
                         workplace.resume();
                     } else {
                         log.warn("Trying to resume not paused workplace: {}.", workplace);
@@ -192,9 +198,9 @@ public class DefaultWorkplaceManager implements WorkplaceManager,
     public void stop() {
         log.debug("Workplace manager is stopping.");
         withReadLock(() -> {
-            for(final Workplace workplace : initializedWorkplaces.values()) {
-                synchronized(workplace) {
-                    if(workplace.isRunning() || workplace.isPaused()) {
+            for (final Workplace workplace : initializedWorkplaces.values()) {
+                synchronized (workplace) {
+                    if (workplace.isRunning() || workplace.isPaused()) {
                         workplace.stop();
                     } else {
                         log.warn("Trying to stop not running workplace: {}.", workplace);
@@ -227,14 +233,14 @@ public class DefaultWorkplaceManager implements WorkplaceManager,
 	/* Workplace environment methods. */
 
     private void initializeWorkplaces() {
-        if(configuredWorkplaces == null || configuredWorkplaces.isEmpty()) {
+        if (configuredWorkplaces == null || configuredWorkplaces.isEmpty()) {
             throw new ComponentException("There is no workplace defined. Cannot run the computation.");
         }
 
         log.info("Created {} workplace(s).", configuredWorkplaces.size());
 
         withWriteLock(() -> {
-            for(final Workplace workplace : configuredWorkplaces) {
+            for (final Workplace workplace : configuredWorkplaces) {
                 final AgentAddress agentAddress = workplace.getAddress();
 
                 // We call setEnvironment() relying on the fact, that all agents and workplaces were
@@ -243,7 +249,7 @@ public class DefaultWorkplaceManager implements WorkplaceManager,
                     initializedWorkplaces.put(agentAddress, workplace);
                     workplace.setEnvironment(DefaultWorkplaceManager.this);
                     log.info("Workplace {} initialized.", agentAddress);
-                } catch(final WorkplaceException e) {
+                } catch (final WorkplaceException e) {
                     initializedWorkplaces.remove(
                             agentAddress); // Do not leave not configured workplace in the manager
                     throw new ComponentException(
@@ -255,7 +261,7 @@ public class DefaultWorkplaceManager implements WorkplaceManager,
 
     private void updateWorkplacesCache() {
         log.debug("Updating workplaces in global map {} - {}.", nodeAddressProvider.get(),
-                  getAddressesOfLocalWorkplaces());
+                getAddressesOfLocalWorkplaces());
         workplacesMap.put(nodeAddressProvider.get(), getAddressesOfLocalWorkplaces());
     }
 
@@ -276,13 +282,13 @@ public class DefaultWorkplaceManager implements WorkplaceManager,
     }
 
     protected final <V, E extends Exception> V withWriteLockThrowing(final Callable<V> action,
-            final Class<E> exceptionClass) throws E {
+                                                                     final Class<E> exceptionClass) throws E {
         assert (action != null && exceptionClass != null);
         return Locks.withWriteLockThrowing(workplacesLock, action, exceptionClass);
     }
 
     protected final <V, E extends Exception> V withReadLockThrowing(final Callable<V> action,
-            final Class<E> exceptionClass) throws E {
+                                                                    final Class<E> exceptionClass) throws E {
         assert (action != null && exceptionClass != null);
         return Locks.withReadLockThrowing(workplacesLock, action, exceptionClass);
     }
@@ -291,14 +297,14 @@ public class DefaultWorkplaceManager implements WorkplaceManager,
     @Override
     public void onWorkplaceStop(@Nonnull final Workplace workplace) {
         log.debug("Get stopped notification from {}", workplace.getAddress());
-        if(activeWorkplaces.contains(workplace)) {
+        if (activeWorkplaces.contains(workplace)) {
             activeWorkplaces.remove(workplace);
         } else {
             log.error("Received event notify stopped from workplace {} which is already stopped",
-                      workplace.getAddress());
+                    workplace.getAddress());
         }
 
-        if(activeWorkplaces.isEmpty()) {
+        if (activeWorkplaces.isEmpty()) {
             eventBus.post(new CoreComponentEvent(CoreComponentEvent.Type.STOPPED));
         }
     }
@@ -308,7 +314,7 @@ public class DefaultWorkplaceManager implements WorkplaceManager,
     @Nonnull
     public <E extends IAgent, T> Collection<T> queryWorkplaces(final AgentEnvironmentQuery<E, T> query) {
         final Set<Object> results = newHashSet();
-        for(final Map<String, Iterable<?>> value : queryCache.values()) {
+        for (final Map<String, Iterable<?>> value : queryCache.values()) {
             Iterables.addAll(results, value.get(query.getClass().getCanonicalName()));
         }
         log.debug("Global query {} -> {}.", query, results);
@@ -340,14 +346,14 @@ public class DefaultWorkplaceManager implements WorkplaceManager,
 
     @Override
     public void cacheQueryResults(@Nonnull final AgentAddress address, @Nonnull final IQuery<?, ?> query,
-            final Iterable<?> results) {
+                                  final Iterable<?> results) {
 
         log.debug("Caching {} for {} with {}.", query, address, results);
         try {
             queryCache.lock(address);
             log.debug("{} lock acquired.", address);
-            if(!queryCache.containsKey(address)) {
-                queryCache.set(address, Maps.<String, Iterable<?>> newHashMap());
+            if (!queryCache.containsKey(address)) {
+                queryCache.set(address, Maps.<String, Iterable<?>>newHashMap());
             }
             final Map<String, Iterable<?>> map = queryCache.get(address);
             assert map != null;
@@ -372,9 +378,9 @@ public class DefaultWorkplaceManager implements WorkplaceManager,
     public void addWorkplace(final Workplace workplace) {
         withWriteLock(() -> {
             final AgentAddress agentAddress = workplace.getAddress();
-            if(!initializedWorkplaces.containsKey(agentAddress)) {
+            if (!initializedWorkplaces.containsKey(agentAddress)) {
                 initializedWorkplaces.put(agentAddress, workplace);
-                if(workplace.isRunning() && !activeWorkplaces.contains(workplace)) {
+                if (workplace.isRunning() && !activeWorkplaces.contains(workplace)) {
                     workplace.setEnvironment(DefaultWorkplaceManager.this);
                     activeWorkplaces.add(workplace);
                 }
@@ -402,38 +408,20 @@ public class DefaultWorkplaceManager implements WorkplaceManager,
         withReadLock(() -> {
             final AddressSelector<AgentAddress> receiverSelector = message.getHeader().getReceiverSelector();
             final Set<AgentAddress> addresses = Selectors.filter(getAddressesOfLocalWorkplaces(), receiverSelector);
-            for(final AgentAddress agentAddress : addresses) {
+            for (final AgentAddress agentAddress : addresses) {
                 log.debug("Delivering to {}.", agentAddress);
                 getLocalWorkplace(agentAddress).deliverMessage(message);
             }
         });
     }
 
-    @Subscribe
-    public void onConfigurationUpdated(@Nonnull final ConfigurationUpdatedEvent event) {
-        log.debug("Event: {}.", event);
-        checkState(configuredWorkplaces == null, "The core component is already configured.");
-
-        final Collection<IComponentDefinition> componentDefinitions = event.getComputationConfiguration().getComponentsDefinitions();
-
-        childContainer = instanceProvider.makeChildContainer();
-        for(final IComponentDefinition def : componentDefinitions) {
-            childContainer.addComponent(def);
-        }
-        childContainer.verify();
-
-        configuredWorkplaces = newArrayList(childContainer.getInstances(Workplace.class));
-
-        log.info("Configured workplaces: {}.", configuredWorkplaces);
-        eventBus.post(new CoreComponentEvent(CoreComponentEvent.Type.CONFIGURED));
-    }
 
     @Override
     public void onRemoteMessage(@Nonnull final WorkplaceManagerMessage message) {
         final Serializable payload = message.getPayload();
-        switch(message.getType()) {
+        switch (message.getType()) {
             case AGENT_MESSAGE:
-                if(!(payload instanceof Message)) {
+                if (!(payload instanceof Message)) {
                     log.error("Unrecognizable payload {}.", payload);
                     return;
                 }
@@ -442,7 +430,7 @@ public class DefaultWorkplaceManager implements WorkplaceManager,
                 break;
 
             case MIGRATE_AGENT:
-                if(!(payload instanceof Map)) {
+                if (!(payload instanceof Map)) {
                     log.error("Unrecognizable payload {}.", payload);
                     return;
                 }
@@ -451,7 +439,7 @@ public class DefaultWorkplaceManager implements WorkplaceManager,
                         (AddressSelector<AgentAddress>) migrationData.get("target");
                 final ISimpleAgent agent = (ISimpleAgent) migrationData.get("agent");
                 final Set<AgentAddress> addresses = Selectors.filter(getAddressesOfLocalWorkplaces(), targetSelector);
-                if(addresses.size() == 1) {//TODO : strange construction
+                if (addresses.size() == 1) {//TODO : strange construction
                     getLocalWorkplace(addresses.iterator().next()).sendAgent(agent);
                 }
                 break;
@@ -463,4 +451,33 @@ public class DefaultWorkplaceManager implements WorkplaceManager,
     public String toString() {
         return toStringHelper(this).toString();
     }
+
+    @Override
+    public EventListener getEventListener() {
+        return eventListener;
+    }
+
+    private class PrivateEventListener implements EventListener {
+
+        @Subscribe
+        public void onConfigurationUpdated(ConfigurationUpdatedEvent event) {
+            log.debug("Event: {}.", event);
+            checkState(configuredWorkplaces == null, "The core component is already configured.");
+
+            final Collection<IComponentDefinition> componentDefinitions = event.getComputationConfiguration().getComponentsDefinitions();
+
+            childContainer = instanceProvider.makeChildContainer();
+            for (final IComponentDefinition def : componentDefinitions) {
+                childContainer.addComponent(def);
+            }
+            childContainer.verify();
+
+            configuredWorkplaces = newArrayList(childContainer.getInstances(Workplace.class));
+
+            log.info("Configured workplaces: {}.", configuredWorkplaces);
+            eventBus.post(new CoreComponentEvent(CoreComponentEvent.Type.CONFIGURED));
+        }
+
+    }
+
 }

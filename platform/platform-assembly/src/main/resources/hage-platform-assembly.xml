@@ -15,11 +15,6 @@
 
 
 
-
-
-
-    <!--old app config-->
-
     <!--old communication-->
 
     <bean id="hage.platform.communication"
@@ -86,16 +81,13 @@
     <!--old services-->
 
     <bean id="hage.service.configuration"
-          class="org.hage.configuration.service.ConfigurationStorageService"
-          parent="hage.component.stateful.base"/>
+          class="org.hage.configuration.service.ConfigurationStorageService"/>
 
     <bean id="hage.service.configurationLoader"
-          class="org.hage.configuration.service.ConfigurationLoaderService"
-          parent="hage.component.stateful.base"/>
+          class="org.hage.configuration.service.ConfigurationLoaderService"/>
 
     <bean id="hage.service.configurationSplitter"
-          class="org.hage.configuration.service.ConfigurationSplitService"
-          parent="hage.component.stateful.base"/>
+          class="org.hage.configuration.service.ConfigurationSplitService"/>
 
     <bean id="hage.service.configurationSplitter.ConfSplitterWorker"
           class="org.hage.configuration.split.PerformanceProportionsBasedConfigurationSplitAllocator"/>
@@ -109,8 +101,7 @@
         </property>
     </bean>
 
-    <bean id="hage.service.performance.normalizer.scaled"
-          class="org.hage.performance.node.normalize.scaled.ScaledNormalizerProvider"/>
+    <bean id="hage.service.performance.normalizer.scaled" class="org.hage.performance.node.normalize.scaled.ScaledNormalizerProvider"/>
 
     <bean id="hage.service.performance.ClusterPerformanceManager" class="org.hage.performance.cluster.CombinedClusterPerformanceManager"/>
 

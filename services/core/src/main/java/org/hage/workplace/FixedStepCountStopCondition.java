@@ -6,12 +6,13 @@ import com.google.common.util.concurrent.ListeningScheduledExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.util.bus.EventBus;
+import org.hage.platform.util.bus.EventListener;
+import org.hage.platform.util.bus.EventSubscriber;
 import org.hage.query.CollectionQuery;
 import org.hage.services.core.CoreComponentEvent;
 import org.hage.workplace.manager.WorkplaceManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledFuture;
@@ -24,8 +25,12 @@ import static org.hage.query.ValueFilters.lessThan;
 import static org.hage.query.ValueSelectors.field;
 
 @Slf4j
-public class FixedStepCountStopCondition
-        implements IStopCondition { //TODO : re-implement and extract some base class with event posting etc.
+public class FixedStepCountStopCondition implements
+        IStopCondition,
+        EventSubscriber
+{ //TODO : re-implement and extract some base class with event posting etc.
+
+    private final EventListener eventListener = new PrivateEventListener();
 
     private static final long DEFAULT_STEP_COUNT = 2;
 
@@ -40,8 +45,11 @@ public class FixedStepCountStopCondition
 
     @Autowired
     private EventBus eventBus;
+
     @Autowired
     private WorkplaceManager workplaceManager;
+
+
     private Runnable observer = new Runnable() {
 
         @Override
@@ -75,19 +83,6 @@ public class FixedStepCountStopCondition
         log.info("Fixed step stop condition created with step set to: {}.", this.stepCount);
     }
 
-    @Subscribe
-    public void onCoreComponentEvent(@Nonnull final CoreComponentEvent event) {
-        log.debug("Event: {}.", event);
-        switch(event.getType()) {
-            case STARTING:
-                future = executor.scheduleWithFixedDelay(observer, 0, 50, TimeUnit.MILLISECONDS);
-                break;
-            case STOPPED:
-                future.cancel(true);
-                break;
-        }
-
-    }
 
     @Override
     public void init() {
@@ -106,6 +101,28 @@ public class FixedStepCountStopCondition
                 .select(field("step")).execute(workplaceManager.getLocalWorkplaces());
 //        log.info("Q={}", results);
         return results.isEmpty();
+    }
+
+    @Override
+    public EventListener getEventListener() {
+        return eventListener;
+    }
+
+    private class PrivateEventListener implements EventListener {
+
+        @Subscribe
+        public void onCoreComponentEvent(CoreComponentEvent event) {
+            log.debug("Event: {}.", event);
+            switch(event.getType()) {
+                case STARTING:
+                    future = executor.scheduleWithFixedDelay(observer, 0, 50, TimeUnit.MILLISECONDS);
+                    break;
+                case STOPPED:
+                    future.cancel(true);
+                    break;
+            }
+        }
+
     }
 
 }
