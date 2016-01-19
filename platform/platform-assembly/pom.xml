@@ -39,6 +39,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>rate</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.hage.platform</groupId>
             <artifactId>container-merge</artifactId>
             <version>${project.version}</version>

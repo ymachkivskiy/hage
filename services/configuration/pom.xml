@@ -37,8 +37,8 @@
         </dependency>
 
         <dependency>
-            <groupId>org.hage.services</groupId>
-            <artifactId>performance</artifactId>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>rate</artifactId>
             <version>${project.version}</version>
         </dependency>
 

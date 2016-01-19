@@ -20,7 +20,6 @@
         <module>address</module>
         <module>communication</module>
         <module>configuration</module>
-        <module>performance</module>
     </modules>
 
     <dependencies>

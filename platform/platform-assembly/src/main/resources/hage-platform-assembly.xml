@@ -29,7 +29,7 @@
           parent="hage.component.stateful.base"/>
 
     <bean id="hage.service.performance.communication.remote"
-          class="org.hage.performance.cluster.communication.PerformanceRemoteChanel"
+          class="org.hage.platform.component.rate.cluster.communication.PerformanceRemoteChanel"
           parent="hage.component.stateful.base"/>
 
     <!--old platform -->
@@ -92,17 +92,17 @@
     <bean id="hage.service.configurationSplitter.ConfSplitterWorker"
           class="org.hage.configuration.split.PerformanceProportionsBasedConfigurationSplitAllocator"/>
 
-    <bean id="hage.service.performance.NodePerformanceManager" class="org.hage.performance.node.CombinedNodePerformanceManager">
+    <bean id="hage.service.performance.NodePerformanceManager" class="org.hage.platform.component.rate.node.CombinedNodePerformanceManager">
         <property name="measurers">
             <list>
-                <bean class="org.hage.performance.node.measure.impl.MaxMemoryPerformanceMeasurer"/>
-                <bean class="org.hage.performance.node.measure.impl.ConcurrencyPerformanceMeasurer"/>
+                <bean class="org.hage.platform.component.rate.node.measure.impl.MaxMemoryPerformanceMeasurer"/>
+                <bean class="org.hage.platform.component.rate.node.measure.impl.ConcurrencyPerformanceMeasurer"/>
             </list>
         </property>
     </bean>
 
-    <bean id="hage.service.performance.normalizer.scaled" class="org.hage.performance.node.normalize.scaled.ScaledNormalizerProvider"/>
+    <bean id="hage.service.performance.normalizer.scaled" class="org.hage.platform.component.rate.node.normalize.scaled.ScaledNormalizerProvider"/>
 
-    <bean id="hage.service.performance.ClusterPerformanceManager" class="org.hage.performance.cluster.CombinedClusterPerformanceManager"/>
+    <bean id="hage.service.performance.ClusterPerformanceManager" class="org.hage.platform.component.rate.cluster.CombinedClusterPerformanceManager"/>
 
 </beans>
