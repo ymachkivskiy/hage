@@ -16,7 +16,6 @@
         <module>event-bus</module>
         <module>utils-all</module>
         <module>state-machine</module>
-        <module>tools</module>
         <module>reflection</module>
         <module>core</module>
     </modules>

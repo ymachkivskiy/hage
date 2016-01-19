@@ -24,11 +24,6 @@
         </dependency>
         <dependency>
             <groupId>org.hage.platform.common</groupId>
-            <artifactId>tools</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.hage.platform.common</groupId>
             <artifactId>reflection</artifactId>
             <version>${project.version}</version>
         </dependency>

@@ -4,8 +4,8 @@ package org.hage.platform.util.fsm;
 import com.google.common.collect.Table;
 import com.google.common.util.concurrent.*;
 import org.hage.platform.annotation.FieldsAreNonnullByDefault;
-import org.hage.platform.util.Locks;
 import org.hage.platform.util.bus.EventBus;
+import org.hage.util.Locks;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

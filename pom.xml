@@ -20,7 +20,7 @@
         <module>examples</module>
         <module>algorithms</module>
         <module>cli</module>
-        <module>common-lib</module>
+        <module>common-utils</module>
     </modules>
 
     <properties>

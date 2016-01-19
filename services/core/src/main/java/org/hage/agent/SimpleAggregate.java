@@ -12,10 +12,10 @@ import org.hage.communication.message.Message;
 import org.hage.platform.component.exception.ComponentException;
 import org.hage.platform.component.provider.IComponentInstanceProvider;
 import org.hage.platform.component.provider.IComponentInstanceProviderAware;
-import org.hage.platform.util.Locks;
 import org.hage.property.PropertyGetter;
 import org.hage.property.PropertySetter;
 import org.hage.query.AgentEnvironmentQuery;
+import org.hage.util.Locks;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

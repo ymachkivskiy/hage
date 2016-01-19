@@ -7,9 +7,9 @@ import org.dom4j.Node;
 import org.dom4j.XPath;
 import org.hage.platform.component.definition.ConfigurationException;
 import org.hage.platform.config.xml.ConfigNamespaces;
-import org.hage.platform.util.io.IncorrectUriException;
-import org.hage.platform.util.io.Resource;
-import org.hage.platform.util.io.ResourceLoader;
+import org.hage.util.io.IncorrectUriException;
+import org.hage.util.io.Resource;
+import org.hage.util.io.ResourceLoader;
 
 import java.io.IOException;
 import java.io.InputStreamReader;

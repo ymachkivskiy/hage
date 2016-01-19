@@ -27,4 +27,12 @@
         <module>platform-assembly</module>
     </modules>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.hage</groupId>
+            <artifactId>common-utils</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+
 </project>
