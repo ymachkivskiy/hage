@@ -32,8 +32,7 @@
 package org.hage.examples.strategy;
 
 
-import org.hage.strategy.IStrategy;
-
+import org.hage.platform.component.strategy.IStrategy;
 
 /**
  * A strategy that generates some string on standard output.

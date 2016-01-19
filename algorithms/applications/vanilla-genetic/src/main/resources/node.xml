@@ -8,6 +8,6 @@
     <component class="org.hage.configuration.service.ConfigurationLoaderService"/>
     <component class="org.hage.bus.EventBus"/>
 
-    <component name="workplaceManager" class="org.hage.workplace.manager.DefaultWorkplaceManager"/>
+    <component name="workplaceManager" class="org.hage.platform.component.workplace.manager.DefaultWorkplaceManager"/>
 
 </configuration>

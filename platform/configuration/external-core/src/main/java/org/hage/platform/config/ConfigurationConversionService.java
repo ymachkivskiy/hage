@@ -18,7 +18,6 @@ import java.util.List;
 
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
-import static java.util.stream.Collectors.toList;
 import static org.hage.platform.config.def.agent.AgentCountData.fixed;
 import static org.hage.platform.config.def.agent.PositionsSelectionData.allPositions;
 
@@ -84,7 +83,7 @@ public class ConfigurationConversionService {
 
     public ConfigurationConversionService() {
         try {
-            this.localComponents.add(Class.forName("org.hage.workplace.Workplace"));
+            this.localComponents.add(Class.forName("org.hage.platform.component.workplace.Workplace"));
         } catch (ClassNotFoundException e) {
             log.error("Error while converting component definition into computation config", e);
             System.exit(-1);

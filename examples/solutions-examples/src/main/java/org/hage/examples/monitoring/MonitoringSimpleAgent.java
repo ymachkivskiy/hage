@@ -36,7 +36,7 @@ package org.hage.examples.monitoring;
 
 import org.hage.address.agent.AgentAddress;
 import org.hage.address.agent.AgentAddressSupplier;
-import org.hage.agent.SimpleAgent;
+import org.hage.platform.component.agent.SimpleAgent;
 import org.hage.property.PropertyGetter;
 import org.hage.property.PropertySetter;
 import org.slf4j.Logger;

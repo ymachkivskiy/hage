@@ -34,15 +34,11 @@ package org.hage.examples.functions;
 
 import org.hage.address.agent.AgentAddress;
 import org.hage.address.agent.AgentAddressSupplier;
-import org.hage.agent.SimpleAggregate;
+import org.hage.platform.component.agent.SimpleAggregate;
 import org.hage.platform.component.exception.ComponentException;
 import org.hage.property.DuplicatePropertyNameException;
 import org.hage.property.InvalidPropertyPathException;
-import org.hage.property.functions.AvgFunction;
-import org.hage.property.functions.CountFunction;
-import org.hage.property.functions.MaxFunction;
-import org.hage.property.functions.MinFunction;
-import org.hage.property.functions.SumFunction;
+import org.hage.property.functions.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

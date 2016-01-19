@@ -4,18 +4,18 @@
                xsi:schemaLocation="http://age.iisg.agh.edu.pl/schema/age http://age.iisg.agh.edu.pl/schema/age/age.xsd">
     <block name="workplaceManagerComponents">
         <component name="defaultAgentAddressSupplier" class="org.hage.address.agent.DefaultAgentAddressSupplier"/>
-        <component name="comparator" class="org.hage.action.ordering.DefaultActionComparator" isSingleton="false"/>
+        <component name="comparator" class="org.hage.platform.component.action.ordering.DefaultActionComparator" isSingleton="false"/>
     </block>
 
     <block name="workplaceComponents">
-        <component name="aggregateActionService" class="org.hage.agent.AggregateActionService" isSingleton="false"/>
-        <component name="aggregateQueryService" class="org.hage.agent.AggregateQueryService" isSingleton="false"/>
-        <component name="aggregateMessagingService" class="org.hage.agent.AggregateMessagingService"
+        <component name="aggregateActionService" class="org.hage.platform.component.agent.AggregateActionService" isSingleton="false"/>
+        <component name="aggregateQueryService" class="org.hage.platform.component.agent.AggregateQueryService" isSingleton="false"/>
+        <component name="aggregateMessagingService" class="org.hage.platform.component.agent.AggregateMessagingService"
                    isSingleton="false"/>
     </block>
 
     <block name="stopCondition">
-        <component name="stopCondition" class="org.hage.workplace.FixedStepCountStopCondition">
+        <component name="stopCondition" class="org.hage.platform.component.workplace.FixedStepCountStopCondition">
             <constructor-arg type="Long" value="1000"/>
         </component>
     </block>

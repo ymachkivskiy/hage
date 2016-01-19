@@ -35,8 +35,8 @@ package org.hage.examples.distributed;
 import com.google.common.eventbus.EventBus;
 import org.hage.address.node.NodeAddressSupplier;
 import org.hage.platform.component.exception.ComponentException;
-import org.hage.services.core.CoreComponent;
-import org.hage.services.core.CoreComponentEvent;
+import org.hage.platform.component.services.core.CoreComponent;
+import org.hage.platform.component.services.core.CoreComponentEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

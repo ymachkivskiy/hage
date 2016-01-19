@@ -32,9 +32,8 @@
 package org.hage.examples.multiworkplace;
 
 
-import org.hage.agent.ISimpleAgent;
-import org.hage.query.AgentEnvironmentQuery;
-
+import org.hage.platform.component.agent.ISimpleAgent;
+import org.hage.platform.component.query.AgentEnvironmentQuery;
 
 public class MultiworkplacePropertiesQuery extends AgentEnvironmentQuery<ISimpleAgent, Object> {
 

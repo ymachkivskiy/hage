@@ -32,12 +32,12 @@
 package org.hage.examples.actions;
 
 
-import org.hage.action.SingleAction;
 import org.hage.address.agent.AgentAddress;
 import org.hage.address.agent.AgentAddressSupplier;
 import org.hage.address.selector.Selectors;
-import org.hage.agent.AgentException;
-import org.hage.agent.SimpleAgent;
+import org.hage.platform.component.action.SingleAction;
+import org.hage.platform.component.agent.AgentException;
+import org.hage.platform.component.agent.SimpleAgent;
 import org.hage.platform.component.exception.ComponentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -45,7 +45,7 @@
         </dependency>
 
         <dependency>
-            <groupId>org.hage.services</groupId>
+            <groupId>org.hage.platform.component</groupId>
             <artifactId>core</artifactId>
             <version>${project.version}</version>
         </dependency>

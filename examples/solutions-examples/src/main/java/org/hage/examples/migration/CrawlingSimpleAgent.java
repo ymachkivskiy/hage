@@ -32,13 +32,13 @@
 package org.hage.examples.migration;
 
 
-import org.hage.action.AgentActions;
 import org.hage.address.agent.AgentAddress;
 import org.hage.address.agent.AgentAddressSupplier;
-import org.hage.agent.AgentException;
-import org.hage.agent.SimpleAgent;
+import org.hage.platform.component.action.AgentActions;
+import org.hage.platform.component.agent.AgentException;
+import org.hage.platform.component.agent.SimpleAgent;
+import org.hage.platform.component.query.EnvironmentAddressesQuery;
 import org.hage.property.InvalidPropertyPathException;
-import org.hage.query.EnvironmentAddressesQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -5,9 +5,9 @@
     <include file="classpath:examples/common.xml">
         <block name="workplaces">
             <!-- Workplace 1 -->
-            <component name="workplace1" class="org.hage.workplace.SimpleWorkplace" isSingleton="false">
+            <component name="workplace1" class="org.hage.platform.component.workplace.SimpleWorkplace" isSingleton="false">
                 <property name="agent">
-                    <agent name="action" class="org.hage.agent.SimpleAggregate">
+                    <agent name="action" class="org.hage.platform.component.agent.SimpleAggregate">
                         <component class="org.hage.address.agent.DefaultAgentAddressSupplier">
                             <constructor-arg name="nameTemplate" value="TheXFiles"/>
                         </component>
@@ -36,9 +36,9 @@
             </component>
 
             <!-- Workplace 2 -->
-            <component name="workplace2" class="org.hage.workplace.SimpleWorkplace" isSingleton="false">
+            <component name="workplace2" class="org.hage.platform.component.workplace.SimpleWorkplace" isSingleton="false">
                 <property name="agent">
-                    <agent class="org.hage.agent.SimpleAggregate">
+                    <agent class="org.hage.platform.component.agent.SimpleAggregate">
                         <component class="org.hage.address.agent.DefaultAgentAddressSupplier">
                             <constructor-arg name="nameTemplate" value="GoldenEye"/>
                         </component>

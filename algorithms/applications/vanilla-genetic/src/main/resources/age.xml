@@ -4,9 +4,9 @@
 
     <include file="classpath:common.xml">
         <block name="workplaces">
-            <component name="workplace" class="org.hage.workplace.SimpleWorkplace" isSingleton="false">
+            <component name="workplace" class="org.hage.platform.component.workplace.SimpleWorkplace" isSingleton="false">
                 <property name="agent">
-                    <agent name="action" class="org.hage.agent.SimpleAggregate">
+                    <agent name="action" class="org.hage.platform.component.agent.SimpleAggregate">
                         <property name="agents">
                             <list>
                                 <agent name="agent" class="org.hage.genetic.agent.GeneticActionDrivenAgent"/>

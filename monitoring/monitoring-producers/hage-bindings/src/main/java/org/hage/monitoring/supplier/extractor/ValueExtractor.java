@@ -28,7 +28,7 @@ package org.hage.monitoring.supplier.extractor;
 
 
 import com.google.common.base.Optional;
-import org.hage.agent.IAgent;
+import org.hage.platform.component.agent.IAgent;
 
 
 /**
@@ -43,5 +43,5 @@ public interface ValueExtractor {
      * @param propertyName
      * @return Optional object which contains wanted property value or Optional with no value.
      */
-    public Optional<Object> extract(IAgent agent, String propertyName);
+    Optional<Object> extract(IAgent agent, String propertyName);
 }

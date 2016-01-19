@@ -39,7 +39,7 @@
           factory-method="createInstanceProvider"/>
 
     <bean id="hage.platform.component.core"
-          class="org.hage.workplace.manager.DefaultWorkplaceManager"
+          class="org.hage.platform.component.workplace.manager.DefaultWorkplaceManager"
           parent="hage.component.stateful.base"/>
 
     <bean id="hage.platform.lifecycle.exitHook"
@@ -58,11 +58,11 @@
           class="org.hage.address.agent.DefaultAgentAddressSupplier"/>
 
     <bean id="hage.platform.stopCondition"
-          class="org.hage.workplace.FixedStepCountStopCondition"
+          class="org.hage.platform.component.workplace.FixedStepCountStopCondition"
           parent="hage.component.stateful.base"/>
 
     <bean id="hage.platform.actionComparator"
-          class="org.hage.action.ordering.DefaultActionComparator"
+          class="org.hage.platform.component.action.ordering.DefaultActionComparator"
           scope="prototype"/>
 
     <bean class="org.hage.platform.config.ConfigurationConversionService"/>

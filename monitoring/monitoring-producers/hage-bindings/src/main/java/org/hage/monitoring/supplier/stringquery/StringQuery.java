@@ -27,24 +27,24 @@
 package org.hage.monitoring.supplier.stringquery;
 
 
-import org.hage.agent.IAgent;
 import org.hage.monitoring.MonitoringException;
 import org.hage.monitoring.supplier.extractor.DefaultValueExtractor;
 import org.hage.monitoring.supplier.extractor.ValueExtractor;
 import org.hage.monitoring.supplier.resultprocessor.AgentStringQueryResultProcessor;
+import org.hage.platform.component.agent.IAgent;
+import org.hage.platform.component.query.HierarchicalQuery;
+import org.hage.platform.component.query.IQuery;
+import org.hage.platform.component.query.IValueFilter;
+import org.hage.platform.component.workplace.Workplace;
 import org.hage.property.InvalidPropertyPathException;
-import org.hage.query.HierarchicalQuery;
-import org.hage.query.IQuery;
-import org.hage.query.IValueFilter;
-import org.hage.workplace.Workplace;
 
 import java.util.Collection;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.newArrayListWithExpectedSize;
-import static org.hage.query.ValueFilters.address;
-import static org.hage.query.ValueFilters.pattern;
+import static org.hage.platform.component.query.ValueFilters.address;
+import static org.hage.platform.component.query.ValueFilters.pattern;
 
 
 /**

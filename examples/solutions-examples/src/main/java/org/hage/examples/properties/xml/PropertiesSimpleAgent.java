@@ -34,15 +34,15 @@ package org.hage.examples.properties.xml;
 
 import org.hage.address.agent.AgentAddress;
 import org.hage.address.agent.AgentAddressSupplier;
-import org.hage.agent.AbstractAgent;
-import org.hage.agent.AgentException;
-import org.hage.agent.SimpleAgent;
+import org.hage.platform.component.agent.AbstractAgent;
+import org.hage.platform.component.agent.AgentException;
+import org.hage.platform.component.agent.SimpleAgent;
 import org.hage.platform.component.exception.ComponentException;
+import org.hage.platform.component.query.AgentEnvironmentQuery;
 import org.hage.property.InvalidPropertyPathException;
 import org.hage.property.Property;
 import org.hage.property.PropertyGetter;
 import org.hage.property.PropertySetter;
-import org.hage.query.AgentEnvironmentQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

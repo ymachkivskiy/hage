@@ -36,7 +36,7 @@ package org.hage.monitoring.supplier.extractor;
 
 import com.google.common.base.Optional;
 import org.apache.commons.beanutils.PropertyUtils;
-import org.hage.agent.IAgent;
+import org.hage.platform.component.agent.IAgent;
 import org.hage.property.Property;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

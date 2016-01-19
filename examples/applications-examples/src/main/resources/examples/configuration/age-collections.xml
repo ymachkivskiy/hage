@@ -5,9 +5,9 @@
 
     <include file="classpath:examples/common.xml">
         <block name="workplaces">
-            <component name="workplace" class="org.hage.workplace.SimpleWorkplace" isSingleton="false">
+            <component name="workplace" class="org.hage.platform.component.workplace.SimpleWorkplace" isSingleton="false">
                 <property name="agent">
-                    <agent name="action" class="org.hage.agent.SimpleAggregate">
+                    <agent name="action" class="org.hage.platform.component.agent.SimpleAggregate">
                         <property name="agents">
                             <list>
                                 <agent name="list" class="org.hage.examples.configuration.ListAgent">
@@ -59,7 +59,7 @@
         </block>
 
         <block name="stopCondition">
-            <component name="stopCondition" class="org.hage.workplace.FixedStepCountStopCondition">
+            <component name="stopCondition" class="org.hage.platform.component.workplace.FixedStepCountStopCondition">
                 <constructor-arg type="Long" value="1"/>
             </component>
         </block>

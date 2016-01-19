@@ -10,7 +10,7 @@
         <constructor-arg name="name" type="String" value="mainBus"/>
     </component>
 
-    <component name="workplaceManager" class="org.hage.workplace.manager.DefaultWorkplaceManager"/>
+    <component name="workplaceManager" class="org.hage.platform.component.workplace.manager.DefaultWorkplaceManager"/>
 
     <block name="monitoring">
         <component class="org.hage.monitoring.gatherer.DefaultComputationInstanceProvider"/>

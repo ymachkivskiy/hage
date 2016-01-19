@@ -35,9 +35,9 @@ package org.hage.monitoring.supplier;
 
 
 import com.google.common.base.Supplier;
-import org.hage.query.IQuery;
-import org.hage.workplace.Workplace;
-import org.hage.workplace.manager.WorkplaceManager;
+import org.hage.platform.component.query.IQuery;
+import org.hage.platform.component.workplace.Workplace;
+import org.hage.platform.component.workplace.manager.WorkplaceManager;
 
 import javax.inject.Inject;
 import java.util.List;

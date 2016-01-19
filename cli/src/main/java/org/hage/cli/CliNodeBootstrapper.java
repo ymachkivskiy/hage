@@ -2,7 +2,7 @@ package org.hage.cli;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.hage.services.core.LifecycleManager;
+import org.hage.platform.component.services.core.LifecycleManager;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 

@@ -31,8 +31,8 @@ package org.hage.monitoring.supplier;
 import org.hage.monitoring.supplier.resultprocessor.AgentStringQueryResultProcessor;
 import org.hage.monitoring.supplier.resultprocessor.DefaultAgentStringQueryResultProcessor;
 import org.hage.monitoring.supplier.stringquery.StringQuery;
-import org.hage.query.IQuery;
-import org.hage.workplace.Workplace;
+import org.hage.platform.component.query.IQuery;
+import org.hage.platform.component.workplace.Workplace;
 
 import java.util.List;
 

@@ -3,8 +3,8 @@ package org.hage.platform.component.lifecycle;
 
 import org.hage.platform.annotation.FieldsAreNonnullByDefault;
 import org.hage.platform.annotation.ReturnValuesAreNonnullByDefault;
+import org.hage.platform.component.services.core.LifecycleManager;
 import org.hage.platform.util.fsm.StateChangedEvent;
-import org.hage.services.core.LifecycleManager;
 
 import javax.annotation.concurrent.Immutable;
 

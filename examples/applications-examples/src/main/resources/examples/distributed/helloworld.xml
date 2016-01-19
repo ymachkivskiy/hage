@@ -2,16 +2,16 @@
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://age.iisg.agh.edu.pl/schema/age"
                xsi:schemaLocation="http://age.iisg.agh.edu.pl/schema/age http://age.iisg.agh.edu.pl/schema/age/age.xsd">
 
-    <component name="stopCondition" class="org.hage.workplace.FixedStepCountStopCondition" isSingleton="true">
+    <component name="stopCondition" class="org.hage.platform.component.workplace.FixedStepCountStopCondition" isSingleton="true">
         <constructor-arg type="Long" value="20"/>
     </component>
 
     <component name="defaultAgentAddressSupplier" class="org.hage.address.agent.DefaultAgentAddressSupplier"/>
-    <component name="comparator" class="org.hage.action.ordering.DefaultActionComparator" isSingleton="false"/>
+    <component name="comparator" class="org.hage.platform.component.action.ordering.DefaultActionComparator" isSingleton="false"/>
 
-    <agent name="workplace" class="org.hage.workplace.SimpleWorkplace">
+    <agent name="workplace" class="org.hage.platform.component.workplace.SimpleWorkplace">
         <property name="agent" ref="aggregate"/>
-        <agent name="aggregate" class="org.hage.agent.SimpleAggregate">
+        <agent name="aggregate" class="org.hage.platform.component.agent.SimpleAggregate">
             <property name="agents">
                 <list name="agents">
                     <agent name="scully" class="org.hage.examples.helloworld.HelloWorldSimpleAgent">
@@ -29,8 +29,8 @@
         </agent>
     </agent>
 
-    <component name="aggregateActionService" class="org.hage.agent.AggregateActionService" isSingleton="false"/>
-    <component name="aggregateQueryService" class="org.hage.agent.AggregateQueryService" isSingleton="false"/>
-    <component name="aggregateMessagingService" class="org.hage.agent.AggregateMessagingService" isSingleton="false"/>
+    <component name="aggregateActionService" class="org.hage.platform.component.agent.AggregateActionService" isSingleton="false"/>
+    <component name="aggregateQueryService" class="org.hage.platform.component.agent.AggregateQueryService" isSingleton="false"/>
+    <component name="aggregateMessagingService" class="org.hage.platform.component.agent.AggregateMessagingService" isSingleton="false"/>
 
 </configuration>

@@ -34,7 +34,7 @@ package org.hage.examples.delegation;
 
 import org.hage.address.agent.AgentAddress;
 import org.hage.address.agent.AgentAddressSupplier;
-import org.hage.agent.SimpleAgent;
+import org.hage.platform.component.agent.SimpleAgent;
 import org.hage.platform.component.provider.IComponentInstanceProvider;
 import org.hage.platform.component.provider.IComponentInstanceProviderAware;
 import org.slf4j.Logger;

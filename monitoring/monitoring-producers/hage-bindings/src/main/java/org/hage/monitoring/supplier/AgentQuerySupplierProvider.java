@@ -32,7 +32,7 @@ import com.google.common.base.Supplier;
 import com.typesafe.config.Config;
 import org.hage.monitoring.supplier.resultprocessor.AgentStringQueryResultProcessor;
 import org.hage.platform.component.provider.IComponentInstanceProvider;
-import org.hage.workplace.manager.WorkplaceManager;
+import org.hage.platform.component.workplace.manager.WorkplaceManager;
 
 
 /**

@@ -3,7 +3,7 @@ package org.hage.examples.hage.distrconf;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.address.agent.AgentAddress;
 import org.hage.address.agent.AgentAddressSupplier;
-import org.hage.agent.SimpleAgent;
+import org.hage.platform.component.agent.SimpleAgent;
 
 import javax.inject.Inject;
 

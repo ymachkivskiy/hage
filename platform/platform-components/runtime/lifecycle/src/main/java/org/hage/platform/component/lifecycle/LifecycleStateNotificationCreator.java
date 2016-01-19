@@ -1,7 +1,7 @@
 package org.hage.platform.component.lifecycle;
 
+import org.hage.platform.component.services.core.LifecycleManager;
 import org.hage.platform.util.fsm.NotificationEventCreator;
-import org.hage.services.core.LifecycleManager;
 
 class LifecycleStateNotificationCreator implements NotificationEventCreator<LifecycleManager.State, LifecycleManager.Event, LifecycleStateChangedEvent> {
 

@@ -33,7 +33,7 @@ package org.hage.examples.distributed;
 
 
 import org.hage.platform.component.exception.ComponentException;
-import org.hage.workplace.IStopCondition;
+import org.hage.platform.component.workplace.IStopCondition;
 
 
 /**
