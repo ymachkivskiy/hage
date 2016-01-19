@@ -1,4 +1,4 @@
-package org.hage.lifecycle;
+package org.hage.platform.component.lifecycle;
 
 
 import org.hage.platform.annotation.ReturnValuesAreNonnullByDefault;

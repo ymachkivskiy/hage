@@ -1,10 +1,9 @@
-package org.hage.lifecycle;
+package org.hage.platform.component.lifecycle;
 
 
 import com.google.common.eventbus.Subscribe;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.configuration.event.ConfigurationUpdatedEvent;
-import org.hage.lifecycle.LifecycleMessage.LifecycleCommand;
 import org.hage.platform.component.IStatefulComponent;
 import org.hage.platform.component.exception.ComponentException;
 import org.hage.platform.component.pico.visitor.StatefulComponentFinisher;
@@ -90,7 +89,7 @@ public class DefaultLifecycleManager implements LifecycleManager, EventSubscribe
         Runtime.getRuntime().addShutdownHook(new ShutdownHook());
     }
 
-    public void performCommand(LifecycleCommand command) {
+    public void performCommand(LifecycleMessage.LifecycleCommand command) {
         switch (command) {
             case FAIL:
                 break;

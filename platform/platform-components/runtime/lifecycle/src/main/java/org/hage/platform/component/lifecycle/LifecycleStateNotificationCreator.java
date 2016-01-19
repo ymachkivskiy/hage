@@ -1,4 +1,4 @@
-package org.hage.lifecycle;
+package org.hage.platform.component.lifecycle;
 
 import org.hage.platform.util.fsm.NotificationEventCreator;
 import org.hage.services.core.LifecycleManager;

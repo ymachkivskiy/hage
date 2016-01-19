@@ -11,7 +11,7 @@
     </component>
 
     <component name="workplaceManager" class="org.hage.workplace.manager.DefaultWorkplaceManager"/>
-    <component class="org.hage.lifecycle.AutoExitHook"/>
+    <component class="org.hage.platform.component.lifecycle.AutoExitHook"/>
 
     <block name="monitoring">
         <component class="org.hage.monitoring.Monitoring">

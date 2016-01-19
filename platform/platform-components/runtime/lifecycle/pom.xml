@@ -3,8 +3,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.hage.services</groupId>
-        <artifactId>services</artifactId>
+        <groupId>org.hage.platform.component</groupId>
+        <artifactId>runtime-parent</artifactId>
         <version>0.2.0-SNAPSHOT</version>
     </parent>
 

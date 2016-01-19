@@ -1,10 +1,10 @@
-package org.hage.lifecycle.communication;
+package org.hage.platform.component.lifecycle.communication;
 
 
 import org.hage.communication.api.BaseRemoteChanel;
 import org.hage.communication.message.service.consume.MessageConsumer;
-import org.hage.lifecycle.DefaultLifecycleManager;
-import org.hage.lifecycle.LifecycleMessage;
+import org.hage.platform.component.lifecycle.DefaultLifecycleManager;
+import org.hage.platform.component.lifecycle.LifecycleMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 
 

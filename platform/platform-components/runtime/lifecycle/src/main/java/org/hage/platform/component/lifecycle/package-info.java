@@ -36,4 +36,4 @@
  *
  * @author AGH AgE Team
  */
-@javax.annotation.ParametersAreNonnullByDefault package org.hage.lifecycle;
+@javax.annotation.ParametersAreNonnullByDefault package org.hage.platform.component.lifecycle;

@@ -29,18 +29,16 @@
  * $Id$
  */
 
-package org.hage.lifecycle;
+package org.hage.platform.component.lifecycle;
 
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
-import static org.hage.lifecycle.LifecycleMessages.createExit;
-import static org.hage.lifecycle.LifecycleMessages.createStart;
+import static org.hage.platform.component.lifecycle.LifecycleMessages.createExit;
+import static org.hage.platform.component.lifecycle.LifecycleMessages.createStart;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
 

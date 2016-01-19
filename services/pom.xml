@@ -20,7 +20,6 @@
         <module>core</module>
         <module>address</module>
         <module>communication</module>
-        <module>lifecycle</module>
         <module>configuration</module>
         <module>performance</module>
     </modules>
