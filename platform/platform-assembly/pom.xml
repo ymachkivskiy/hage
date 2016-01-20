@@ -9,7 +9,6 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.hage.platform</groupId>
     <artifactId>platform-assembly</artifactId>
 
     <dependencies>
@@ -21,8 +20,8 @@
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform</groupId>
-            <artifactId>component</artifactId>
+            <groupId>org.hage.platform.container</groupId>
+            <artifactId>container-all</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -41,12 +40,6 @@
         <dependency>
             <groupId>org.hage.platform.component</groupId>
             <artifactId>rate</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hage.platform</groupId>
-            <artifactId>container-merge</artifactId>
             <version>${project.version}</version>
         </dependency>
 

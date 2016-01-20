@@ -17,8 +17,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.hage.platform</groupId>
-            <artifactId>component</artifactId>
+            <groupId>org.hage.platform.container</groupId>
+            <artifactId>container-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 
