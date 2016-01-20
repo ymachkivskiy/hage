@@ -5,7 +5,7 @@ import com.google.common.eventbus.Subscribe;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.configuration.event.ConfigurationLoadRequestEvent;
 import org.hage.configuration.event.ConfigurationLoadedEvent;
-import org.hage.platform.config.ComputationConfiguration;
+import org.hage.platform.config.def.ComputationConfiguration;
 import org.hage.platform.config.provider.ComputationConfigurationProvider;
 import org.hage.platform.util.bus.EventBus;
 import org.hage.platform.util.bus.EventListener;

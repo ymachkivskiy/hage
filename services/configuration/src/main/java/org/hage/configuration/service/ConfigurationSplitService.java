@@ -9,7 +9,7 @@ import org.hage.configuration.split.ConfigurationAllocation;
 import org.hage.configuration.split.ConfigurationSplitAllocator;
 import org.hage.platform.component.rate.cluster.AggregatedPerformanceMeasurements;
 import org.hage.platform.component.rate.cluster.ClusterPerformanceManager;
-import org.hage.platform.config.ComputationConfiguration;
+import org.hage.platform.config.def.ComputationConfiguration;
 import org.hage.platform.util.bus.EventListener;
 import org.hage.platform.util.bus.EventSubscriber;
 import org.springframework.beans.factory.annotation.Autowired;

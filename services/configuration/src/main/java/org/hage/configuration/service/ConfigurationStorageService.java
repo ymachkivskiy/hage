@@ -4,7 +4,7 @@ package org.hage.configuration.service;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.configuration.event.ConfigurationUpdatedEvent;
-import org.hage.platform.config.ComputationConfiguration;
+import org.hage.platform.config.def.ComputationConfiguration;
 import org.hage.platform.util.bus.EventBus;
 import org.springframework.beans.factory.annotation.Autowired;
 

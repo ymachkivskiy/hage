@@ -16,6 +16,7 @@
     <modules>
         <module>runtime</module>
         <module>rate</module>
+        <module>config</module>
     </modules>
 
 

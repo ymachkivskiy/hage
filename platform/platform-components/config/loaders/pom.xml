@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>org.hage.platform.component</groupId>
+        <artifactId>configuration-parent</artifactId>
+        <version>0.2.0-SNAPSHOT</version>
+    </parent>
+    <packaging>pom</packaging>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.hage.platform.components</groupId>
+    <artifactId>config-loaders-parent</artifactId>
+    <name>HAgE::Platform::Configuration::Loaders</name>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.hage.platform.components</groupId>
+            <artifactId>configuration-external</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hage.platform</groupId>
+            <artifactId>component</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- Tests dependencies -->
+        <dependency>
+            <groupId>org.hage.platform</groupId>
+            <artifactId>component</artifactId>
+            <version>${project.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <modules>
+        <module>loader-xml</module>
+    </modules>
+
+</project>

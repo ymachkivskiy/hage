@@ -3,7 +3,7 @@ package org.hage.configuration.split;
 import lombok.Data;
 import lombok.ToString;
 import org.hage.address.node.NodeAddress;
-import org.hage.platform.config.ComputationConfiguration;
+import org.hage.platform.config.def.ComputationConfiguration;
 
 @Data
 @ToString
