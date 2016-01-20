@@ -27,6 +27,11 @@
             <artifactId>reflection</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.hage.platform.util</groupId>
+            <artifactId>property</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

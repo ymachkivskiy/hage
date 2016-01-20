@@ -6,10 +6,10 @@
         <version>0.2.0-SNAPSHOT</version>
     </parent>
 
+    <packaging>pom</packaging>
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.hage.platform.util</groupId>
     <artifactId>utils-parent</artifactId>
-    <packaging>pom</packaging>
     <name>HAge::Platform::Common</name>
 
     <modules>
@@ -17,6 +17,7 @@
         <module>utils-all</module>
         <module>state-machine</module>
         <module>reflection</module>
+        <module>property</module>
     </modules>
 
     <dependencies>
