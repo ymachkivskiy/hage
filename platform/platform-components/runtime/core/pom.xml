@@ -16,13 +16,7 @@
     <dependencies>
         <dependency>
             <groupId>org.hage.platform.util.connection</groupId>
-            <artifactId>connection-address</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hage.services</groupId>
-            <artifactId>communication</artifactId>
+            <artifactId>connection-all</artifactId>
             <version>${project.version}</version>
         </dependency>
 

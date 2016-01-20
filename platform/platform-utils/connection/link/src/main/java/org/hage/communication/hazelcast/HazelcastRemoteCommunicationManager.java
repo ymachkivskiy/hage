@@ -2,7 +2,9 @@ package org.hage.communication.hazelcast;
 
 
 import com.hazelcast.config.Config;
-import com.hazelcast.core.*;
+import com.hazelcast.core.Hazelcast;
+import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.core.IMap;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.address.node.HazelcastNodeAddress;
 import org.hage.address.node.NodeAddress;

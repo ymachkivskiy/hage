@@ -16,8 +16,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.hage.services</groupId>
-            <artifactId>communication</artifactId>
+            <groupId>org.hage.platform.util.connection</groupId>
+            <artifactId>connection-link</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

@@ -13,6 +13,8 @@
 
     <modules>
         <module>address</module>
+        <module>link</module>
+        <module>connection-all</module>
     </modules>
 
 

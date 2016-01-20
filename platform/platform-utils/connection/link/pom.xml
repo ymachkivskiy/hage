@@ -3,12 +3,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.hage.services</groupId>
-        <artifactId>services</artifactId>
+        <groupId>org.hage.platform.util.connection</groupId>
+        <artifactId>connection-parent</artifactId>
         <version>0.2.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>communication</artifactId>
+    <artifactId>connection-link</artifactId>
 
     <name>HAgE::Services::Communication</name>
     <description>HAgE communication service common classes</description>
