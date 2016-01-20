@@ -34,8 +34,8 @@
         </dependency>
 
         <dependency>
-            <groupId>org.hage.services</groupId>
-            <artifactId>address</artifactId>
+            <groupId>org.hage.platform.util.connection</groupId>
+            <artifactId>connection-address</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

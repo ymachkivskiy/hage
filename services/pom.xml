@@ -17,7 +17,6 @@
     <description>HAgE services</description>
 
     <modules>
-        <module>address</module>
         <module>communication</module>
     </modules>
 

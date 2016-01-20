@@ -18,6 +18,7 @@
         <module>state-machine</module>
         <module>reflection</module>
         <module>property</module>
+        <module>connection</module>
     </modules>
 
     <dependencies>

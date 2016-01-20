@@ -46,10 +46,7 @@ import javax.annotation.Nullable;
 import java.util.Set;
 
 import static com.google.common.collect.Sets.newHashSetWithExpectedSize;
-import static org.hamcrest.Matchers.everyItem;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.isIn;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
 
