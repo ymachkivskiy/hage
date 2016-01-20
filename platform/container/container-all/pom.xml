@@ -11,15 +11,24 @@
 
 
     <dependencies>
+
         <dependency>
             <groupId>org.hage.platform.container</groupId>
             <artifactId>container-api</artifactId>
             <version>${project.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.hage.platform.container</groupId>
             <artifactId>container-merge</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.hage.platform.container</groupId>
+            <artifactId>pico-impl</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
     </dependencies>
 </project>

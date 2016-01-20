@@ -18,7 +18,6 @@
 
     <modules>
         <module>common</module>
-        <module>component-pico</module>
         <module>platform-utils</module>
         <module>platform-assembly</module>
         <module>platform-components</module>

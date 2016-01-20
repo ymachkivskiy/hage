@@ -15,6 +15,7 @@
         <module>container-api</module>
         <module>container-merge</module>
         <module>container-all</module>
+        <module>container-pico-impl</module>
     </modules>
 
 </project>
