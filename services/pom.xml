@@ -19,7 +19,6 @@
     <modules>
         <module>address</module>
         <module>communication</module>
-        <module>configuration</module>
     </modules>
 
     <dependencies>

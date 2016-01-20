@@ -6,12 +6,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.hage.services</groupId>
-        <artifactId>services</artifactId>
+        <groupId>org.hage.platform.component</groupId>
+        <artifactId>configuration-parent</artifactId>
         <version>0.2.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>configuration</artifactId>
+    <groupId>org.hage.platform.components</groupId>
+    <artifactId>config-service</artifactId>
 
     <name>HAgE::Service::Configuration</name>
     <description>HAgE service that configures nodes and the environment</description>

@@ -64,8 +64,8 @@
             <version>1</version>
         </dependency>
         <dependency>
-            <groupId>org.hage.services</groupId>
-            <artifactId>configuration</artifactId>
+            <groupId>org.hage.platform.components</groupId>
+            <artifactId>config-service</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

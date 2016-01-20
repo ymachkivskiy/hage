@@ -16,6 +16,7 @@
 
     <modules>
         <module>core</module>
+        <module>service</module>
         <module>external-core</module>
         <module>loaders</module>
     </modules>
