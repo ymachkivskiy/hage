@@ -26,13 +26,13 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.hage.platform.habitat</groupId>
-            <artifactId>core</artifactId>
+            <groupId>org.hage.platform.components</groupId>
+            <artifactId>habitat-parent</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.hage.platform.habitat</groupId>
-            <artifactId>structure</artifactId>
+            <groupId>org.hage.platform.components.habitat</groupId>
+            <artifactId>habitat-structure</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

@@ -1,8 +1,6 @@
 package org.hage.platform.habitat.structure;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 import javax.annotation.concurrent.Immutable;
 import java.io.Serializable;

@@ -21,7 +21,6 @@
         <module>component</module>
         <module>component-pico</module>
         <module>container-merge</module>
-        <module>habitat</module>
         <module>platform-utils</module>
         <module>platform-assembly</module>
         <module>platform-components</module>

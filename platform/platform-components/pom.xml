@@ -17,6 +17,7 @@
         <module>runtime</module>
         <module>rate</module>
         <module>config</module>
+        <module>habitat</module>
     </modules>
 
     <dependencies>

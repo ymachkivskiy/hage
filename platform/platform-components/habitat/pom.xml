@@ -3,14 +3,14 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>platform-parent</artifactId>
         <groupId>org.hage.platform</groupId>
+        <artifactId>platform-components-parent</artifactId>
         <version>0.2.0-SNAPSHOT</version>
     </parent>
     <packaging>pom</packaging>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.hage.platform.habitat</groupId>
+    <groupId>org.hage.platform.components</groupId>
     <artifactId>habitat-parent</artifactId>
     <name>HAgE::Platform::Habitat</name>
 
