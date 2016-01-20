@@ -44,7 +44,7 @@
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.common</groupId>
+            <groupId>org.hage.platform.util</groupId>
             <artifactId>event-bus</artifactId>
             <version>${project.version}</version>
         </dependency>

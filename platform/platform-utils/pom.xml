@@ -7,8 +7,8 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.hage.platform.common</groupId>
-    <artifactId>common-parent</artifactId>
+    <groupId>org.hage.platform.util</groupId>
+    <artifactId>utils-parent</artifactId>
     <packaging>pom</packaging>
     <name>HAge::Platform::Common</name>
 
