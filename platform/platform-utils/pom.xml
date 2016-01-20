@@ -17,7 +17,14 @@
         <module>utils-all</module>
         <module>state-machine</module>
         <module>reflection</module>
-        <module>core</module>
     </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.hage.platform</groupId>
+            <artifactId>platform-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 
 </project>

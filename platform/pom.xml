@@ -17,6 +17,7 @@
     <description>Components for the HAgE platform</description>
 
     <modules>
+        <module>common</module>
         <module>property</module>
         <module>component</module>
         <module>component-pico</module>

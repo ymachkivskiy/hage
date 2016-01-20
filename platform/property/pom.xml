@@ -15,8 +15,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.hage.platform.util</groupId>
-            <artifactId>core</artifactId>
+            <groupId>org.hage.platform</groupId>
+            <artifactId>platform-common</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
