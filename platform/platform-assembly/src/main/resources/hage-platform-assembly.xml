@@ -49,7 +49,7 @@
           class="org.hage.platform.component.lifecycle.DefaultLifecycleManager"/>
 
     <bean id="hage.platform.configuration.loader"
-          class="org.hage.platform.config.xml.XmlConfigurationLoader"/>
+          class="org.hage.platform.config.xml.XmlConfigurationProvider"/>
 
     <bean id="hage.platform.configuration.splitter"
           class="org.hage.platform.config.split.SimpleConfigurationSplitter"/>

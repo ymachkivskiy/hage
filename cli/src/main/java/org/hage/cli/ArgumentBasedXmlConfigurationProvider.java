@@ -1,7 +1,7 @@
 package org.hage.cli;
 
-import org.hage.platform.config.loader.ConfigurationSource;
 import org.hage.platform.config.provider.BaseComputationConfigurationProvider;
+import org.hage.platform.config.provider.ConfigurationSource;
 import org.hage.platform.config.xml.FileConfigurationSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

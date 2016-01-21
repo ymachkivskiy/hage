@@ -6,7 +6,7 @@ import org.hage.platform.config.ComputationConfiguration;
 import org.hage.platform.config.PopulationDistributionMap;
 import org.hage.platform.config.def.ChunkPopulationQualifier;
 import org.hage.platform.config.def.HabitatOrganizationDefinition;
-import org.hage.platform.config.loader.Configuration;
+import org.hage.platform.config.provider.Configuration;
 import org.hage.platform.habitat.AgentDefinition;
 import org.hage.platform.habitat.structure.InternalPosition;
 import org.hage.platform.habitat.structure.StructureDefinition;

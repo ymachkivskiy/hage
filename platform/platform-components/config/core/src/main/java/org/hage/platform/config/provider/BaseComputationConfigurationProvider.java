@@ -3,9 +3,6 @@ package org.hage.platform.config.provider;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.component.definition.ConfigurationException;
 import org.hage.platform.config.ComputationConfiguration;
-import org.hage.platform.config.loader.Configuration;
-import org.hage.platform.config.loader.ConfigurationLoader;
-import org.hage.platform.config.loader.ConfigurationSource;
 import org.hage.platform.config.transl.ConfigurationComputationConfigurationTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,7 +15,7 @@ import static java.util.Optional.of;
 public abstract class BaseComputationConfigurationProvider implements ComputationConfigurationProvider {
 
     @Autowired
-    private ConfigurationLoader configurationLoader;
+    private ConfigurationProvider configurationProvider;
     @Autowired
     private ConfigurationComputationConfigurationTranslator configurationTranslator;
 
@@ -46,7 +43,7 @@ public abstract class BaseComputationConfigurationProvider implements Computatio
         log.info("Loading computation configuration from {}.", configSource);
 
         try {
-            return of(configurationLoader.loadConfiguration(configSource));
+            return of(configurationProvider.getConfiguration(configSource));
         } catch (final ConfigurationException e) {
             log.error("Cannot load configuration from {}.", configSource, e);
         }

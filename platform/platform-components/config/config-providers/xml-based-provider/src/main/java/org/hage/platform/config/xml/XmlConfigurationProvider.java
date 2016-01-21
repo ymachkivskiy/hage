@@ -5,8 +5,8 @@ import org.dom4j.Document;
 import org.hage.platform.component.definition.ConfigurationException;
 import org.hage.platform.component.definition.IComponentDefinition;
 import org.hage.platform.config.ConfigurationConversionService;
-import org.hage.platform.config.loader.Configuration;
-import org.hage.platform.config.loader.ConfigurationLoader;
+import org.hage.platform.config.provider.Configuration;
+import org.hage.platform.config.provider.ConfigurationProvider;
 import org.hage.platform.config.xml.loaders.*;
 import org.hage.platform.config.xml.readers.DocumentReader;
 import org.slf4j.Logger;
@@ -15,9 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-public final class XmlConfigurationLoader implements ConfigurationLoader<FileConfigurationSource> {
+public final class XmlConfigurationProvider implements ConfigurationProvider<FileConfigurationSource> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(XmlConfigurationLoader.class);
+    private static final Logger LOG = LoggerFactory.getLogger(XmlConfigurationProvider.class);
 
     @Autowired
     private ConfigurationConversionService configurationConversionService;
@@ -25,11 +25,11 @@ public final class XmlConfigurationLoader implements ConfigurationLoader<FileCon
     private final DocumentReader reader;
     private final DocumentLoader loader;
 
-    public XmlConfigurationLoader() throws ConfigurationException {
+    public XmlConfigurationProvider() throws ConfigurationException {
         this(createLoaderChain(), new DocumentReader());
     }
 
-    XmlConfigurationLoader(final DocumentLoader loader, final DocumentReader reader) {
+    XmlConfigurationProvider(final DocumentLoader loader, final DocumentReader reader) {
         this.loader = loader;
         this.reader = reader;
     }
@@ -47,7 +47,7 @@ public final class XmlConfigurationLoader implements ConfigurationLoader<FileCon
     }
 
     @Override
-    public Configuration loadConfiguration(FileConfigurationSource source) throws ConfigurationException {
+    public Configuration getConfiguration(FileConfigurationSource source) throws ConfigurationException {
         final String path = source.sourceLocation();
 
         LOG.debug("Loading document from '{}'", path);

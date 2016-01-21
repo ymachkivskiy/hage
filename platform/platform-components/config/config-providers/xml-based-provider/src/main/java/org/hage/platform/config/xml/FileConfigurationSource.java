@@ -2,7 +2,7 @@ package org.hage.platform.config.xml;
 
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import org.hage.platform.config.loader.ConfigurationSource;
+import org.hage.platform.config.provider.ConfigurationSource;
 
 @ToString
 @RequiredArgsConstructor

@@ -10,8 +10,8 @@
     <packaging>pom</packaging>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.hage.platform.components</groupId>
-    <artifactId>config-loaders-parent</artifactId>
+    <groupId>org.hage.platform.component.config</groupId>
+    <artifactId>config-providers-parent</artifactId>
     <name>HAgE::Platform::Configuration::Loaders</name>
 
     <dependencies>
@@ -35,7 +35,7 @@
     </dependencies>
 
     <modules>
-        <module>loader-xml</module>
+        <module>xml-based-provider</module>
     </modules>
 
 </project>

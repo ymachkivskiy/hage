@@ -32,6 +32,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.hage.platform.component.config</groupId>
+            <artifactId>config-provider-xml</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.hage.platform.component</groupId>
             <artifactId>runtime</artifactId>
             <version>${project.version}</version>

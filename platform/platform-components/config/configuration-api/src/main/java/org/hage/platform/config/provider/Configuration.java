@@ -1,4 +1,4 @@
-package org.hage.platform.config.loader;
+package org.hage.platform.config.provider;
 
 import lombok.Builder;
 import lombok.Getter;

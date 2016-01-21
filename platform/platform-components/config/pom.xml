@@ -18,7 +18,7 @@
         <module>core</module>
         <module>service</module>
         <module>configuration-api</module>
-        <module>loaders</module>
+        <module>config-providers</module>
         <module>internal-config-data</module>
     </modules>
 

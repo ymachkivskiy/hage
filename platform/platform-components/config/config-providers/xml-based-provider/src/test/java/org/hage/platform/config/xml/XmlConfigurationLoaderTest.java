@@ -46,14 +46,14 @@ import static org.mockito.Mockito.mock;
  */
 public class XmlConfigurationLoaderTest {
 
-    private final XmlConfigurationLoader configLoader;
+    private final XmlConfigurationProvider configLoader;
     private DocumentLoader loader;
     private DocumentReader reader;
 
     public XmlConfigurationLoaderTest() throws ConfigurationException {
         loader = mock(DocumentLoader.class);
         reader = mock(DocumentReader.class);
-        configLoader = new XmlConfigurationLoader(loader, reader);
+        configLoader = new XmlConfigurationProvider(loader, reader);
     }
 
 //    @Test
