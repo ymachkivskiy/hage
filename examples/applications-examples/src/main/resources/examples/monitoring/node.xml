@@ -4,8 +4,8 @@
                xsi:schemaLocation="http://age.iisg.agh.edu.pl/schema/age http://age.iisg.agh.edu.pl/schema/age/age.xsd">
 
     <component class="org.hage.communication.HazelcastCommunicationManager"/>
-    <component class="org.hage.configuration.service.ConfigurationStorageService"/>
-    <component class="org.hage.configuration.service.ConfigurationLoaderService"/>
+    <component class="org.hage.platform.config.local.ConfigurationStorageService"/>
+    <component class="org.hage.platform.config.local.ConfigurationLoaderService"/>
     <component class="org.hage.bus.EventBus">
         <constructor-arg name="name" type="String" value="mainBus"/>
     </component>

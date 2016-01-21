@@ -27,8 +27,8 @@
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.components</groupId>
-            <artifactId>configuraion-core</artifactId>
+            <groupId>org.hage.platform.component.config</groupId>
+            <artifactId>local-config</artifactId>
             <version>${project.version}</version>
         </dependency>
 

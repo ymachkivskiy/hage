@@ -7,7 +7,7 @@
 
     <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
 
-    <import resource="classpath*:org/hage/**/module-spring-conf.xml"/>
+    <import resource="classpath*:**/module-spring-conf.xml"/>
 
     <bean id="hage.component.stateful.base" abstract="true" init-method="init" destroy-method="finish"/>
 
@@ -21,7 +21,7 @@
           class="org.hage.communication.hazelcast.HazelcastRemoteCommunicationManager"/>
 
     <bean id="hage.service.configuration.communication.remote"
-          class="org.hage.configuration.communication.ConfigurationRemoteChanel"
+          class="org.hage.platform.config.communication.ConfigurationRemoteChanel"
           parent="hage.component.stateful.base"/>
 
     <bean id="hage.service.lifecycle.communication.remote"
@@ -52,7 +52,7 @@
           class="org.hage.platform.config.xml.XmlConfigurationProvider"/>
 
     <bean id="hage.platform.configuration.splitter"
-          class="org.hage.platform.config.split.SimpleConfigurationSplitter"/>
+          class="org.hage.platform.config.local.division.SimpleConfigurationSplitter"/>
 
     <bean id="hage.platform.addressSupplier.agent"
           class="org.hage.address.agent.DefaultAgentAddressSupplier"/>
@@ -81,16 +81,16 @@
     <!--old services-->
 
     <bean id="hage.service.configuration"
-          class="org.hage.configuration.service.ConfigurationStorageService"/>
+          class="org.hage.platform.config.local.ConfigurationStorageService"/>
 
     <bean id="hage.service.configurationLoader"
-          class="org.hage.configuration.service.ConfigurationLoaderService"/>
+          class="org.hage.platform.config.local.ConfigurationLoaderService"/>
 
     <bean id="hage.service.configurationSplitter"
-          class="org.hage.configuration.service.ConfigurationSplitService"/>
+          class="org.hage.platform.config.service.ConfigurationSplitService"/>
 
     <bean id="hage.service.configurationSplitter.ConfSplitterWorker"
-          class="org.hage.configuration.split.PerformanceProportionsBasedConfigurationSplitAllocator"/>
+          class="org.hage.platform.config.split.PerformanceProportionsBasedConfigurationSplitAllocator"/>
 
     <bean id="hage.service.performance.NodePerformanceManager" class="org.hage.platform.component.rate.node.CombinedNodePerformanceManager">
         <property name="measurers">
