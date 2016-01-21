@@ -4,8 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.component.definition.ConfigurationException;
 import org.hage.platform.config.ComputationConfiguration;
 import org.hage.platform.config.loader.Configuration;
+import org.hage.platform.config.loader.ConfigurationLoader;
 import org.hage.platform.config.loader.ConfigurationSource;
-import org.hage.platform.config.loader.IConfigurationLoader;
 import org.hage.platform.config.transl.ConfigurationComputationConfigurationTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,7 +18,7 @@ import static java.util.Optional.of;
 public abstract class BaseComputationConfigurationProvider implements ComputationConfigurationProvider {
 
     @Autowired
-    private IConfigurationLoader configurationLoader;
+    private ConfigurationLoader configurationLoader;
     @Autowired
     private ConfigurationComputationConfigurationTranslator configurationTranslator;
 

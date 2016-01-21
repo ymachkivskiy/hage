@@ -6,7 +6,7 @@ import org.hage.platform.component.definition.ConfigurationException;
 import org.hage.platform.component.definition.IComponentDefinition;
 import org.hage.platform.config.ConfigurationConversionService;
 import org.hage.platform.config.loader.Configuration;
-import org.hage.platform.config.loader.IConfigurationLoader;
+import org.hage.platform.config.loader.ConfigurationLoader;
 import org.hage.platform.config.xml.loaders.*;
 import org.hage.platform.config.xml.readers.DocumentReader;
 import org.slf4j.Logger;
@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-public final class XmlConfigurationLoader implements IConfigurationLoader<FileConfigurationSource> {
+public final class XmlConfigurationLoader implements ConfigurationLoader<FileConfigurationSource> {
 
     private static final Logger LOG = LoggerFactory.getLogger(XmlConfigurationLoader.class);
 

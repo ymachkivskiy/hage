@@ -9,8 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.hage.platform.components</groupId>
-    <artifactId>configuration-external</artifactId>
+    <groupId>org.hage.platform.component.config</groupId>
+    <artifactId>config-api</artifactId>
 
     <dependencies>
         <dependency>
