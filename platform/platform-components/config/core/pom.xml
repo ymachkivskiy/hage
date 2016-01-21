@@ -16,8 +16,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.hage</groupId>
-            <artifactId>common-utils</artifactId>
+            <groupId>org.hage.platform.component.config</groupId>
+            <artifactId>internal-config-data</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

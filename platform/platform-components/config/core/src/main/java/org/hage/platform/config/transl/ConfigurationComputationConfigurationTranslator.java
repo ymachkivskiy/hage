@@ -1,9 +1,9 @@
 package org.hage.platform.config.transl;
 
-import org.hage.platform.config.def.ComputationConfiguration;
-import org.hage.platform.config.def.HabitatGeography;
+import org.hage.platform.config.ComputationConfiguration;
+import org.hage.platform.config.HabitatGeography;
+import org.hage.platform.config.PopulationDistributionMap;
 import org.hage.platform.config.def.HabitatOrganizationDefinition;
-import org.hage.platform.config.def.PopulationDistributionMap;
 import org.hage.platform.config.loader.Configuration;
 import org.springframework.beans.factory.annotation.Required;
 

@@ -2,7 +2,7 @@ package org.hage.platform.config.provider;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.component.definition.ConfigurationException;
-import org.hage.platform.config.def.ComputationConfiguration;
+import org.hage.platform.config.ComputationConfiguration;
 import org.hage.platform.config.loader.Configuration;
 import org.hage.platform.config.loader.ConfigurationSource;
 import org.hage.platform.config.loader.IConfigurationLoader;

@@ -19,6 +19,7 @@
         <module>service</module>
         <module>external-core</module>
         <module>loaders</module>
+        <module>internal-config-data</module>
     </modules>
 
 </project>

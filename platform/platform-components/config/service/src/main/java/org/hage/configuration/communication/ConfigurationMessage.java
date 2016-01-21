@@ -3,7 +3,7 @@ package org.hage.configuration.communication;
 
 import org.hage.communication.message.service.ServiceHeader;
 import org.hage.communication.message.service.ServiceMessage;
-import org.hage.platform.config.def.ComputationConfiguration;
+import org.hage.platform.config.ComputationConfiguration;
 
 import javax.annotation.concurrent.Immutable;
 

@@ -3,7 +3,6 @@ package org.hage.platform.component.lifecycle;
 
 import com.google.common.eventbus.Subscribe;
 import lombok.extern.slf4j.Slf4j;
-import org.hage.configuration.event.ConfigurationUpdatedEvent;
 import org.hage.platform.component.IStatefulComponent;
 import org.hage.platform.component.exception.ComponentException;
 import org.hage.platform.component.pico.visitor.StatefulComponentFinisher;
@@ -13,6 +12,7 @@ import org.hage.platform.component.services.core.CoreComponent;
 import org.hage.platform.component.services.core.CoreComponentEvent;
 import org.hage.platform.component.services.core.LifecycleManager;
 import org.hage.platform.component.workplace.StopConditionFulfilledEvent;
+import org.hage.platform.config.event.ConfigurationUpdatedEvent;
 import org.hage.platform.util.bus.EventBus;
 import org.hage.platform.util.bus.EventListener;
 import org.hage.platform.util.bus.EventSubscriber;
@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import static com.google.common.base.Objects.toStringHelper;
-import static org.hage.configuration.event.ConfigurationLoadRequestEvent.configurationLoadRequest;
+import static org.hage.platform.config.event.ConfigurationLoadRequestEvent.configurationLoadRequest;
 
 
 @Slf4j
@@ -209,7 +209,6 @@ public class DefaultLifecycleManager implements LifecycleManager, EventSubscribe
                 //fallback for other potential implementations
                 instanceProvider.getInstances(IStatefulComponent.class);
             }
-            boolean a = false;
         }
 
     }

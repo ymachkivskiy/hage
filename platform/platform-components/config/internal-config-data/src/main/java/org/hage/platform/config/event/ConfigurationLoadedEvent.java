@@ -1,9 +1,9 @@
-package org.hage.configuration.event;
+package org.hage.platform.config.event;
 
 
 import lombok.Data;
 import lombok.ToString;
-import org.hage.platform.config.def.ComputationConfiguration;
+import org.hage.platform.config.ComputationConfiguration;
 import org.hage.platform.util.bus.Event;
 
 import javax.annotation.concurrent.Immutable;

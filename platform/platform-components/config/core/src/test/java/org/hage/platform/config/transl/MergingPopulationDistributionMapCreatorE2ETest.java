@@ -1,9 +1,9 @@
 package org.hage.platform.config.transl;
 
 import org.fest.assertions.Condition;
-import org.hage.platform.config.def.CellPopulationDescription;
+import org.hage.platform.config.CellPopulationDescription;
+import org.hage.platform.config.PopulationDistributionMap;
 import org.hage.platform.config.def.ChunkPopulationQualifier;
-import org.hage.platform.config.def.PopulationDistributionMap;
 import org.hage.platform.config.def.agent.AgentCountData;
 import org.hage.platform.config.def.agent.ChunkAgentDistribution;
 import org.hage.platform.config.def.agent.PositionsSelectionData;

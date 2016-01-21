@@ -1,4 +1,4 @@
-package org.hage.platform.config.def;
+package org.hage.platform.config;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;

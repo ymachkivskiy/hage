@@ -5,7 +5,7 @@ import lombok.Data;
 import org.hage.address.node.NodeAddress;
 import org.hage.platform.component.rate.cluster.AggregatedPerformanceMeasurements;
 import org.hage.platform.component.rate.cluster.NodeCombinedPerformance;
-import org.hage.platform.config.def.ComputationConfiguration;
+import org.hage.platform.config.ComputationConfiguration;
 import org.hage.platform.config.split.ConfigurationDivision;
 import org.hage.platform.config.split.ConfigurationSplitter;
 import org.hage.util.proportion.Countable;

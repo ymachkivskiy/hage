@@ -1,8 +1,8 @@
 package org.hage.platform.config.transl;
 
-import org.hage.platform.config.def.CellPopulationDescription;
+import org.hage.platform.config.CellPopulationDescription;
+import org.hage.platform.config.PopulationDistributionMap;
 import org.hage.platform.config.def.ChunkPopulationQualifier;
-import org.hage.platform.config.def.PopulationDistributionMap;
 import org.hage.platform.config.def.agent.AgentCountData;
 import org.hage.platform.config.def.agent.ChunkAgentDistribution;
 import org.hage.platform.config.transl.count.AgentCountProvider;
@@ -17,8 +17,8 @@ import java.util.Map;
 import java.util.Set;
 
 import static java.util.stream.Collectors.toMap;
-import static org.hage.platform.config.def.CellPopulationDescription.populationFromPair;
-import static org.hage.platform.config.def.PopulationDistributionMap.distributionFromMap;
+import static org.hage.platform.config.CellPopulationDescription.populationFromPair;
+import static org.hage.platform.config.PopulationDistributionMap.distributionFromMap;
 
 class MergingPopulationDistributionMapCreator implements PopulationDistributionMapCreator {
 

@@ -2,10 +2,10 @@ package org.hage.platform.config.transl;
 
 import com.google.common.collect.ImmutableMap;
 import org.hage.platform.component.definition.IComponentDefinition;
+import org.hage.platform.config.ComputationConfiguration;
+import org.hage.platform.config.PopulationDistributionMap;
 import org.hage.platform.config.def.ChunkPopulationQualifier;
-import org.hage.platform.config.def.ComputationConfiguration;
 import org.hage.platform.config.def.HabitatOrganizationDefinition;
-import org.hage.platform.config.def.PopulationDistributionMap;
 import org.hage.platform.config.loader.Configuration;
 import org.hage.platform.habitat.AgentDefinition;
 import org.hage.platform.habitat.structure.InternalPosition;
@@ -21,8 +21,8 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static org.fest.assertions.Assertions.assertThat;
-import static org.hage.platform.config.def.CellPopulationDescription.populationFromPair;
-import static org.hage.platform.config.def.PopulationDistributionMap.distributionFromMap;
+import static org.hage.platform.config.CellPopulationDescription.populationFromPair;
+import static org.hage.platform.config.PopulationDistributionMap.distributionFromMap;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 

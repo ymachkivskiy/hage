@@ -1,6 +1,7 @@
 package org.hage.platform.config.provider;
 
-import org.hage.platform.config.def.ComputationConfiguration;
+
+import org.hage.platform.config.ComputationConfiguration;
 
 import java.util.Optional;
 

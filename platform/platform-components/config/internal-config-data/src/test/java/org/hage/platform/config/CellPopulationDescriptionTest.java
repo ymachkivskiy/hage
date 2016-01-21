@@ -1,4 +1,4 @@
-package org.hage.platform.config.def;
+package org.hage.platform.config;
 
 import com.google.common.collect.ImmutableMap;
 import org.hage.platform.habitat.AgentDefinition;

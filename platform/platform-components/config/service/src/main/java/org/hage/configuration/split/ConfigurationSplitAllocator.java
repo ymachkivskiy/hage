@@ -1,7 +1,7 @@
 package org.hage.configuration.split;
 
 import org.hage.platform.component.rate.cluster.AggregatedPerformanceMeasurements;
-import org.hage.platform.config.def.ComputationConfiguration;
+import org.hage.platform.config.ComputationConfiguration;
 
 import java.util.List;
 

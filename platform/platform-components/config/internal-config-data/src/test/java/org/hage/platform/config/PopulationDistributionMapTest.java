@@ -1,4 +1,4 @@
-package org.hage.platform.config.def;
+package org.hage.platform.config;
 
 import org.hage.platform.habitat.AgentDefinition;
 import org.hage.platform.habitat.structure.InternalPosition;
@@ -13,9 +13,9 @@ import static java.util.Collections.emptyList;
 import static java.util.Collections.emptySet;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.util.Collections.set;
-import static org.hage.platform.config.def.CellPopulationDescription.populationFromMap;
-import static org.hage.platform.config.def.CellPopulationDescription.populationFromPair;
-import static org.hage.platform.config.def.PopulationDistributionMap.emptyDistributionMap;
+import static org.hage.platform.config.CellPopulationDescription.populationFromMap;
+import static org.hage.platform.config.CellPopulationDescription.populationFromPair;
+import static org.hage.platform.config.PopulationDistributionMap.emptyDistributionMap;
 import static org.hage.platform.habitat.structure.InternalPosition.definedBy;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;

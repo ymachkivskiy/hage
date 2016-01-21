@@ -1,4 +1,4 @@
-package org.hage.configuration.event;
+package org.hage.platform.config.event;
 
 
 import org.hage.platform.util.bus.Event;
