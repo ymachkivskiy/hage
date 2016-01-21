@@ -1,4 +1,4 @@
-package org.hage.platform.config.communication;
+package org.hage.platform.config.distributed.link;
 
 
 import lombok.extern.slf4j.Slf4j;
@@ -7,13 +7,13 @@ import org.hage.communication.api.BaseRemoteChanel;
 import org.hage.communication.message.service.ServiceHeader;
 import org.hage.communication.message.service.consume.BaseConditionalMessageConsumer;
 import org.hage.communication.synch.SynchronizationSupport;
+import org.hage.platform.config.distributed.ConfigurationAllocation;
 import org.hage.platform.config.local.ConfigurationStorageService;
-import org.hage.platform.config.split.ConfigurationAllocation;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Set;
 
-import static org.hage.platform.config.communication.ConfigurationMessage.*;
+import static org.hage.platform.config.distributed.link.ConfigurationMessage.*;
 
 
 @Slf4j

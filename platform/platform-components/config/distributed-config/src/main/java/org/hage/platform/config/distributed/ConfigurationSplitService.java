@@ -1,4 +1,4 @@
-package org.hage.platform.config.service;
+package org.hage.platform.config.distributed;
 
 import com.google.common.eventbus.Subscribe;
 import lombok.extern.slf4j.Slf4j;
@@ -6,10 +6,8 @@ import org.hage.address.node.NodeAddress;
 import org.hage.platform.component.rate.cluster.AggregatedPerformanceMeasurements;
 import org.hage.platform.component.rate.cluster.ClusterPerformanceManager;
 import org.hage.platform.config.ComputationConfiguration;
-import org.hage.platform.config.communication.ConfigurationRemoteChanel;
+import org.hage.platform.config.distributed.link.ConfigurationRemoteChanel;
 import org.hage.platform.config.event.ConfigurationLoadedEvent;
-import org.hage.platform.config.split.ConfigurationAllocation;
-import org.hage.platform.config.split.ConfigurationSplitAllocator;
 import org.hage.platform.util.bus.EventListener;
 import org.hage.platform.util.bus.EventSubscriber;
 import org.springframework.beans.factory.annotation.Autowired;

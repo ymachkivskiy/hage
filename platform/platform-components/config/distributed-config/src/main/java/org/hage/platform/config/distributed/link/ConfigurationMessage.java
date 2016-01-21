@@ -1,4 +1,4 @@
-package org.hage.platform.config.communication;
+package org.hage.platform.config.distributed.link;
 
 
 import org.hage.communication.message.service.ServiceHeader;

@@ -1,4 +1,4 @@
-package org.hage.platform.config.split;
+package org.hage.platform.config.distributed;
 
 import com.google.common.primitives.UnsignedInteger;
 import lombok.Data;
@@ -18,7 +18,7 @@ import static com.google.common.primitives.UnsignedInteger.valueOf;
 import static java.util.stream.Collectors.toList;
 import static org.hage.util.proportion.Proportions.forCountable;
 
-public class PerformanceProportionsBasedConfigurationSplitAllocator implements ConfigurationSplitAllocator {
+class PerformanceProportionsBasedConfigurationSplitAllocator implements ConfigurationSplitAllocator {
 
     @Autowired
     private ConfigurationSplitter configurationSplitter;

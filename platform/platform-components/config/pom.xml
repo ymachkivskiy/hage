@@ -15,11 +15,11 @@
     <artifactId>configuration-parent</artifactId>
 
     <modules>
-        <module>service</module>
+        <module>internal-config-data</module>
         <module>configuration-api</module>
         <module>config-providers</module>
-        <module>internal-config-data</module>
         <module>local-config</module>
+        <module>distributed-config</module>
     </modules>
 
 </project>

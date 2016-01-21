@@ -1,4 +1,4 @@
-package org.hage.platform.config.communication;
+package org.hage.platform.config.distributed.link;
 
 import org.hage.address.node.NodeAddress;
 import org.hage.communication.synch.ConversationMessagesAggregator;
@@ -8,7 +8,7 @@ import java.util.Set;
 
 import static java.util.stream.Collectors.toSet;
 
-public class ConfigurationCheckAggregator extends ConversationMessagesAggregator<Set<NodeAddress>, ConfigurationMessage> {
+class ConfigurationCheckAggregator extends ConversationMessagesAggregator<Set<NodeAddress>, ConfigurationMessage> {
 
     public ConfigurationCheckAggregator(Collection<NodeAddress> nodeAddresses) {
         super(nodeAddresses);

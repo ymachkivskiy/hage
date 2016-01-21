@@ -1,4 +1,4 @@
-package org.hage.platform.config.split;
+package org.hage.platform.config.distributed;
 
 import lombok.Data;
 import lombok.ToString;

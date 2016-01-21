@@ -1,4 +1,4 @@
-package org.hage.platform.config.split;
+package org.hage.platform.config.distributed;
 
 import org.hage.platform.component.rate.cluster.AggregatedPerformanceMeasurements;
 import org.hage.platform.config.ComputationConfiguration;

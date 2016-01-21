@@ -21,7 +21,7 @@
           class="org.hage.communication.hazelcast.HazelcastRemoteCommunicationManager"/>
 
     <bean id="hage.service.configuration.communication.remote"
-          class="org.hage.platform.config.communication.ConfigurationRemoteChanel"
+          class="org.hage.platform.config.distributed.link.ConfigurationRemoteChanel"
           parent="hage.component.stateful.base"/>
 
     <bean id="hage.service.lifecycle.communication.remote"
@@ -87,10 +87,10 @@
           class="org.hage.platform.config.local.ConfigurationLoaderService"/>
 
     <bean id="hage.service.configurationSplitter"
-          class="org.hage.platform.config.service.ConfigurationSplitService"/>
+          class="org.hage.platform.config.distributed.ConfigurationSplitService"/>
 
     <bean id="hage.service.configurationSplitter.ConfSplitterWorker"
-          class="org.hage.platform.config.split.PerformanceProportionsBasedConfigurationSplitAllocator"/>
+          class="org.hage.platform.config.distributed.PerformanceProportionsBasedConfigurationSplitAllocator"/>
 
     <bean id="hage.service.performance.NodePerformanceManager" class="org.hage.platform.component.rate.node.CombinedNodePerformanceManager">
         <property name="measurers">

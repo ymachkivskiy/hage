@@ -26,8 +26,8 @@
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.components</groupId>
-            <artifactId>config-service</artifactId>
+            <groupId>org.hage.platform.component.config</groupId>
+            <artifactId>distr-config</artifactId>
             <version>${project.version}</version>
         </dependency>
 
