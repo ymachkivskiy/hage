@@ -3,11 +3,11 @@ package org.hage.platform.config.distributed;
 import com.google.common.primitives.UnsignedInteger;
 import lombok.Data;
 import org.hage.address.node.NodeAddress;
-import org.hage.platform.component.rate.cluster.AggregatedPerformanceMeasurements;
-import org.hage.platform.component.rate.cluster.NodeCombinedPerformance;
 import org.hage.platform.config.ComputationConfiguration;
 import org.hage.platform.config.local.division.ConfigurationDivision;
 import org.hage.platform.config.local.division.ConfigurationSplitter;
+import org.hage.platform.rate.distributed.AggregatedPerformanceMeasurements;
+import org.hage.platform.rate.distributed.NodeCombinedPerformance;
 import org.hage.util.proportion.Countable;
 import org.springframework.beans.factory.annotation.Autowired;
 

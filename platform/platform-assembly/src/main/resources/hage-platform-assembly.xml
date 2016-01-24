@@ -29,10 +29,12 @@
           parent="hage.component.stateful.base"/>
 
     <bean id="hage.service.performance.communication.remote"
-          class="org.hage.platform.component.rate.cluster.communication.PerformanceRemoteChanel"
+          class="org.hage.platform.rate.distributed.communication.PerformanceRemoteChanel"
           parent="hage.component.stateful.base"/>
 
     <!--old platform -->
+
+    <bean class="org.hage.platform.rate.local.config.RateConfigurationService"/>
 
     <bean id="hage.platform.di.container"
           class="org.hage.platform.component.pico.PicoComponentInstanceProviderFactory"
@@ -92,17 +94,17 @@
     <bean id="hage.service.configurationSplitter.ConfSplitterWorker"
           class="org.hage.platform.config.distributed.PerformanceProportionsBasedConfigurationSplitAllocator"/>
 
-    <bean id="hage.service.performance.NodePerformanceManager" class="org.hage.platform.component.rate.node.CombinedNodePerformanceManager">
+    <bean id="hage.service.performance.NodePerformanceManager" class="org.hage.platform.rate.local.CombinedNodePerformanceManager">
         <property name="measurers">
             <list>
-                <bean class="org.hage.platform.component.rate.node.measure.impl.MaxMemoryPerformanceMeasurer"/>
-                <bean class="org.hage.platform.component.rate.node.measure.impl.ConcurrencyPerformanceMeasurer"/>
+                <bean class="org.hage.platform.rate.local.measure.impl.MaxMemoryPerformanceMeasurer"/>
+                <bean class="org.hage.platform.rate.local.measure.impl.ConcurrencyPerformanceMeasurer"/>
             </list>
         </property>
     </bean>
 
-    <bean id="hage.service.performance.normalizer.scaled" class="org.hage.platform.component.rate.node.normalize.scaled.ScaledNormalizerProvider"/>
+    <bean id="hage.service.performance.normalizer.scaled" class="org.hage.platform.rate.local.normalize.scaled.ScaledNormalizerProvider"/>
 
-    <bean id="hage.service.performance.ClusterPerformanceManager" class="org.hage.platform.component.rate.cluster.CombinedClusterPerformanceManager"/>
+    <bean id="hage.service.performance.ClusterPerformanceManager" class="org.hage.platform.rate.distributed.CombinedClusterPerformanceManager"/>
 
 </beans>

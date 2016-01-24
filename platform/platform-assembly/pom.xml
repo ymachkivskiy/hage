@@ -44,8 +44,8 @@
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.component</groupId>
-            <artifactId>rate</artifactId>
+            <groupId>org.hage.platform.component.rate</groupId>
+            <artifactId>distr-rate</artifactId>
             <version>${project.version}</version>
         </dependency>
 
