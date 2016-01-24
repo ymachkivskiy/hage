@@ -70,7 +70,7 @@ public class RateConfigurationService implements EventSubscriber {
         @SuppressWarnings("unused")
         @Subscribe
         public void onComputationConfigurationUpdated(ConfigurationUpdatedEvent event) {
-
+            boolean dupa = false;
         }
     }
 

@@ -10,6 +10,7 @@ import org.hage.platform.config.provider.Configuration;
 import org.hage.platform.habitat.AgentDefinition;
 import org.hage.platform.habitat.structure.InternalPosition;
 import org.hage.platform.habitat.structure.StructureDefinition;
+import org.hage.platform.rate.model.RateConfiguration;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -45,8 +46,8 @@ public class ConfigurationComputationConfigurationTranslatorTest {
         final Configuration configuration = Configuration.builder()
                 .habitatConfiguration(new HabitatOrganizationDefinition(null, emptyList()))
                 .globalComponents(asList(
-                    firstComponentDefinition,
-                    secondComponentDefinition
+                        firstComponentDefinition,
+                        secondComponentDefinition
                 )).build();
 
         // when
@@ -57,6 +58,26 @@ public class ConfigurationComputationConfigurationTranslatorTest {
 
         assertThat(translatedConfiguration.getGlobalComponents()).containsOnly(firstComponentDefinition, secondComponentDefinition);
 
+
+    }
+
+    @Test
+    public void testTranslateToConfigurationWithSameRateSettings() throws Exception {
+
+        //given
+
+        final RateConfiguration expectedRateConfiguration = mock(RateConfiguration.class);
+        final Configuration configuration = Configuration.builder()
+                .rateConfiguration(expectedRateConfiguration)
+                .build();
+
+        // when
+
+        ComputationConfiguration translatedConfiguration = tested.translate(configuration);
+
+        // then
+
+        assertThat(translatedConfiguration.getRateConfiguration()).isSameAs(expectedRateConfiguration);
 
     }
 
@@ -90,8 +111,8 @@ public class ConfigurationComputationConfigurationTranslatorTest {
 
 
         final Configuration configuration = Configuration.builder()
-            .habitatConfiguration(new HabitatOrganizationDefinition(mock(StructureDefinition.class), chunkPopulationQualifiers))
-            .build();
+                .habitatConfiguration(new HabitatOrganizationDefinition(mock(StructureDefinition.class), chunkPopulationQualifiers))
+                .build();
 
 
         // when

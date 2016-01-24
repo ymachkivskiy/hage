@@ -14,6 +14,7 @@ public class ConfigurationComputationConfigurationTranslator {
 
     public ComputationConfiguration translate(Configuration configuration) {
         return ComputationConfiguration.builder()
+            .rateConfiguration(configuration.getRateConfiguration())
             .globalComponents(configuration.getGlobalComponents())
             .habitatGeography(getGeographyForOrganizationDefinition(configuration.getHabitatConfiguration()))
             .build();

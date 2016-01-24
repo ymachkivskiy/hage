@@ -28,6 +28,11 @@
             <artifactId>habitat-structure</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.hage.platform.component.rate</groupId>
+            <artifactId>rate-data-model</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
 </project>
