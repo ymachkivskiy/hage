@@ -1,4 +1,4 @@
-package org.hage.platform.rate.local.normalize;
+package org.hage.platform.rate.local.config;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

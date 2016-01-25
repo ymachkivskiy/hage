@@ -10,7 +10,7 @@ import org.hage.platform.config.provider.Configuration;
 import org.hage.platform.habitat.AgentDefinition;
 import org.hage.platform.habitat.structure.InternalPosition;
 import org.hage.platform.habitat.structure.StructureDefinition;
-import org.hage.platform.rate.model.RateConfiguration;
+import org.hage.platform.rate.model.ComputationRatingConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -66,9 +66,9 @@ public class ConfigurationComputationConfigurationTranslatorTest {
 
         //given
 
-        final RateConfiguration expectedRateConfiguration = mock(RateConfiguration.class);
+        final ComputationRatingConfig expectedComputationRatingConfig = mock(ComputationRatingConfig.class);
         final Configuration configuration = Configuration.builder()
-                .rateConfiguration(expectedRateConfiguration)
+                .computationRatingConfig(expectedComputationRatingConfig)
                 .build();
 
         // when
@@ -77,7 +77,7 @@ public class ConfigurationComputationConfigurationTranslatorTest {
 
         // then
 
-        assertThat(translatedConfiguration.getRateConfiguration()).isSameAs(expectedRateConfiguration);
+        assertThat(translatedConfiguration.getRatingConfig()).isSameAs(expectedComputationRatingConfig);
 
     }
 

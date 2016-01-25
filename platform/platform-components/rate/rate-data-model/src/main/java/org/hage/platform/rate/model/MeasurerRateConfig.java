@@ -5,7 +5,8 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public final class MeasurerConfiguration implements Serializable {
+public final class MeasurerRateConfig implements Serializable {
     private final MeasurerType measurerType;
-    private final RateCalculationSettings rateCalculationSettings;
+    private final int rateWeight;
+    private final int maxRate;
 }

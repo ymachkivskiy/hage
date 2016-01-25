@@ -10,11 +10,11 @@ import java.util.Set;
 
 @Builder
 @ToString
-public class RateConfiguration implements Serializable {
+public class ComputationRatingConfig implements Serializable {
 
     @Getter
     private final Set<MeasurerType> enabledRateMeasureTypes;
     @Getter
-    private final List<MeasurerConfiguration> measurerConfigurations;
+    private final List<MeasurerRateConfig> measurerRateConfigs;
 
 }

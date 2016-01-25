@@ -1,22 +1,27 @@
 package org.hage.platform.rate.local;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hage.platform.rate.local.config.MeasurerSettings;
+import org.hage.platform.rate.local.config.NormalizationRateSettings;
 import org.hage.platform.rate.local.config.RateConfigurationService;
+import org.hage.platform.rate.local.config.RatingSettings;
 import org.hage.platform.rate.local.measure.PerformanceMeasurer;
-import org.hage.platform.rate.local.normalize.NormalizationRateSettings;
 import org.hage.platform.rate.local.normalize.PerformanceRate;
 import org.hage.platform.rate.local.normalize.RateNormalizationProvider;
-import org.hage.platform.rate.local.normalize.RateNormalizer;
-import org.hage.platform.rate.model.RateCalculationSettings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+
+import static java.util.stream.Collectors.toList;
+import static org.hage.platform.rate.local.util.PerformanceRateArithmetic.sumWithDefaultIfZero;
 
 @Slf4j
 class CombinedNodePerformanceManager implements NodePerformanceManager {
+
 
     @Autowired
     private RateConfigurationService rateConfigurationService;
@@ -29,39 +34,38 @@ class CombinedNodePerformanceManager implements NodePerformanceManager {
     public PerformanceRate getOverallPerformance() {
         log.info("Calculating overall node performance");
 
-        PerformanceRate overallRate = measurers
+        RatingSettings ratingSettings = rateConfigurationService.getSettings();
+
+        List<PerformanceRate> rates = getAllNormalizedRates(ratingSettings);
+        PerformanceRate resultRate = sumWithDefaultIfZero(rates, ratingSettings.getMinimalRate());
+
+        log.info("Overall performance is {}", resultRate);
+
+        return resultRate;
+    }
+
+    private List<PerformanceRate> getAllNormalizedRates(RatingSettings ratingSettings) {
+        return measurers
                 .stream()
-                .map(this::getMeasuredRate)
-                .reduce(PerformanceRate.ZERO_RATE, PerformanceRate::add);
-
-        log.info("Overall performance is {}", overallRate);
-
-        return overallRate;
+                .filter(ratingSettings::measurerEnabled)
+                .map(measurer -> getNormalizedRate(measurer, ratingSettings))
+                .collect(toList());
     }
 
-    private PerformanceRate getMeasuredRate(PerformanceMeasurer measurer) {
-        log.debug("Getting measured rate from {}", measurer);
-
-        PerformanceRate rate = getNormalizedRate(measurer);
-        RateCalculationSettings rateConfig = rateConfigurationService.getConfigurationForMeasurer(measurer);
-
-        return calculateWeightedRate(rate, rateConfig);
-    }
-
-    private PerformanceRate getNormalizedRate(PerformanceMeasurer measurer) {
+    private PerformanceRate getNormalizedRate(PerformanceMeasurer measurer, RatingSettings settings) {
         log.debug("Getting normalized rate for measurer {}", measurer);
 
-        RateCalculationSettings rateConfiguration = rateConfigurationService.getConfigurationForMeasurer(measurer);
-        NormalizationRateSettings normalizationConfiguration = new NormalizationRateSettings(rateConfigurationService.getGlobalRateSettings(), rateConfiguration);
-        RateNormalizer normalizer = normalizationProvider.getNormalizer(normalizationConfiguration);
+        NormalizationRateSettings measurerSettings = settings.getNormalizationSettingsFor(measurer);
 
-        return normalizer.normalize(measurer.measureRate());
+        PerformanceRate rate = normalizationProvider.getNormalizer(measurerSettings).normalize(measurer.measureRate());
+
+        return calculateWeightedRate(rate, measurerSettings.getMeasurerSettings());
     }
 
+    private PerformanceRate calculateWeightedRate(PerformanceRate rate, MeasurerSettings settings) {
+        log.debug("Calculating weighted rate for {} with settings {}", rate, settings);
 
-    private PerformanceRate calculateWeightedRate(PerformanceRate rate, RateCalculationSettings configuration) {
-        log.debug("Calculating weighted rate for {} with configuration {}", rate, configuration);
-        int categorySummaryWeight = configuration.getRateBaseWeight() + configuration.getRateWeight();
+        int categorySummaryWeight = settings.getBaseWeight() + settings.getWeight();
         return rate.multiply(categorySummaryWeight);
     }
 

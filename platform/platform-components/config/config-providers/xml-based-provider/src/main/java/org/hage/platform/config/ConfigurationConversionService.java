@@ -9,10 +9,9 @@ import org.hage.platform.config.def.agent.ChunkAgentDistribution;
 import org.hage.platform.config.provider.Configuration;
 import org.hage.platform.habitat.AgentDefinition;
 import org.hage.platform.habitat.structure.*;
-import org.hage.platform.rate.model.MeasurerConfiguration;
+import org.hage.platform.rate.model.ComputationRatingConfig;
+import org.hage.platform.rate.model.MeasurerRateConfig;
 import org.hage.platform.rate.model.MeasurerType;
-import org.hage.platform.rate.model.RateCalculationSettings;
-import org.hage.platform.rate.model.RateConfiguration;
 
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
@@ -102,12 +101,11 @@ public class ConfigurationConversionService {
             .builder()
             .globalComponents(componentDefinitionCollection)
             .habitatConfiguration(HABITAT_EXTERNAL_CONFIGURATION)
-            .rateConfiguration(
-                    RateConfiguration.builder()
+            .computationRatingConfig(
+                    ComputationRatingConfig.builder()
                         .enabledRateMeasureTypes(EnumSet.of(MeasurerType.MAX_RAM_MEMORY))
-                        .measurerConfigurations(singletonList(
-                            new MeasurerConfiguration(MeasurerType.MAX_RAM_MEMORY,
-                                    new RateCalculationSettings(2,3,100))
+                        .measurerRateConfigs(singletonList(
+                            new MeasurerRateConfig(MeasurerType.MAX_RAM_MEMORY, 2, 5)
                     )).build()
             )
             .build();

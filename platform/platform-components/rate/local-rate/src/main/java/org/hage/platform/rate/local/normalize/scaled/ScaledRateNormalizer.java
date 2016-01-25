@@ -2,10 +2,10 @@ package org.hage.platform.rate.local.normalize.scaled;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.rate.local.normalize.GlobalRateSettings;
+import org.hage.platform.rate.local.config.GlobalRateSettings;
+import org.hage.platform.rate.local.config.MeasurerSettings;
 import org.hage.platform.rate.local.normalize.PerformanceRate;
 import org.hage.platform.rate.local.normalize.RateNormalizer;
-import org.hage.platform.rate.model.RateCalculationSettings;
 
 import java.math.BigDecimal;
 
@@ -16,7 +16,7 @@ import static java.math.BigDecimal.valueOf;
 @AllArgsConstructor
 class ScaledRateNormalizer implements RateNormalizer {
     private final GlobalRateSettings globalRateConfiguration;
-    private final RateCalculationSettings rateConfig;
+    private final MeasurerSettings rateConfig;
 
     @Override
     public PerformanceRate normalize(int rate) {

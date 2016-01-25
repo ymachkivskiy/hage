@@ -61,7 +61,7 @@ public class SimpleConfigurationSplitter implements ConfigurationSplitter {
         for (int i = 0; i < acquiredNumbersOfAgents.size(); i++) {
             Countable countable = acquiredNumbersOfAgents.get(i).getCountable();
             ComputationConfiguration compConfig = ComputationConfiguration.builder()
-                .rateConfiguration(configuration.getRateConfiguration())
+                .ratingConfig(configuration.getRatingConfig())
                 .globalComponents(configuration.getGlobalComponents())
                 .habitatGeography(new HabitatGeography(configuration.getHabitatGeography().getStructureDefinition(), splittedConfigList.get(i)))
                 .build();
