@@ -29,10 +29,10 @@ class RatingSettingsProvider {
 
     public RatingSettings getUpdatedConfig(ComputationRatingConfig simulationConfiguration) {
         boolean d = false;
-        return null; //TODO
+        return new RatingSettings(); //TODO
     }
 
     public RatingSettings getBaseConfig() {
-        return null;
+        return new RatingSettings();
     }
 }
