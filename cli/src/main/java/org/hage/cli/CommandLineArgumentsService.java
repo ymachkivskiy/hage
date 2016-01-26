@@ -32,20 +32,12 @@ public class CommandLineArgumentsService {
         }
     }
 
-    public String getPlatformOption(final String key) {
-        return commandLine.getOptionValue(key);
-    }
-
     public boolean containsPlatformOption(final String key) {
         return commandLine.hasOption(key);
     }
 
     public String getCustomOption(final String key) {
         return commandLine.getOptionProperties(PROPERTIES_PREFIX).getProperty(key);
-    }
-
-    public boolean containsCustomOption(final String key) {
-        return commandLine.getOptionProperties(PROPERTIES_PREFIX).containsKey(key);
     }
 
     public void printUsage() {

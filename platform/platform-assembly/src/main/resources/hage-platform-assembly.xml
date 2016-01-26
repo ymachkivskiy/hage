@@ -12,9 +12,17 @@
 
     <import resource="classpath*:**/module-spring-conf.xml"/>
 
+    <context:annotation-config/>
+    <context:component-scan base-package="org.hage.platform" use-default-filters="false">
+        <context:include-filter type="annotation" expression="org.springframework.context.annotation.Configuration"/>
+    </context:component-scan>
 
-    <context:component-scan base-package="org.hage.platform" />
 
+    <bean class="org.hage.platform.rate.local.config.RatingSettingsProvider"/>
+    <!-- TODO remove it -->
+
+    <bean class="org.hage.platform.rate.local.config.Settings"/>
+    <!--TODO remove it-->
 
     <!--old communication-->
 

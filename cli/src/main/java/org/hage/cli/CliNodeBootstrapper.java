@@ -39,7 +39,7 @@ public class CliNodeBootstrapper {
     }
 
     public void start() {
-        log.debug("Starting AgE Node from the command line.");
+        log.debug("Starting HAgE Node from the command line.");
 
         if(argumentsService.hasHelpOption()) {
             argumentsService.printUsage();
