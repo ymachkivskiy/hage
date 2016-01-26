@@ -12,10 +12,8 @@
 
     <import resource="classpath*:**/module-spring-conf.xml"/>
 
-    <bean id="hage.component.stateful.base" abstract="true" init-method="init" destroy-method="finish"/>
 
     <context:component-scan base-package="org.hage.platform" />
-
 
 
     <!--old communication-->
@@ -24,16 +22,13 @@
           class="org.hage.communication.hazelcast.HazelcastRemoteCommunicationManager"/>
 
     <bean id="hage.service.configuration.communication.remote"
-          class="org.hage.platform.config.distributed.link.ConfigurationRemoteChanel"
-          parent="hage.component.stateful.base"/>
+          class="org.hage.platform.config.distributed.link.ConfigurationRemoteChanel"/>
 
     <bean id="hage.service.lifecycle.communication.remote"
-          class="org.hage.platform.component.lifecycle.communication.LifecycleManagerRemoteChanel"
-          parent="hage.component.stateful.base"/>
+          class="org.hage.platform.component.lifecycle.communication.LifecycleManagerRemoteChanel"/>
 
     <bean id="hage.service.performance.communication.remote"
-          class="org.hage.platform.rate.distributed.communication.PerformanceRemoteChanel"
-          parent="hage.component.stateful.base"/>
+          class="org.hage.platform.rate.distributed.communication.PerformanceRemoteChanel"/>
 
     <!--old platform -->
 
@@ -44,8 +39,7 @@
           factory-method="createInstanceProvider"/>
 
     <bean id="hage.platform.component.core"
-          class="org.hage.platform.component.workplace.manager.DefaultWorkplaceManager"
-          parent="hage.component.stateful.base"/>
+          class="org.hage.platform.component.workplace.manager.DefaultWorkplaceManager"/>
 
     <bean id="hage.platform.lifecycle.exitHook"
           class="org.hage.platform.component.lifecycle.AutoExitHook"/>
@@ -63,8 +57,7 @@
           class="org.hage.address.agent.DefaultAgentAddressSupplier"/>
 
     <bean id="hage.platform.stopCondition"
-          class="org.hage.platform.component.workplace.FixedStepCountStopCondition"
-          parent="hage.component.stateful.base"/>
+          class="org.hage.platform.component.workplace.FixedStepCountStopCondition"/>
 
     <bean id="hage.platform.actionComparator"
           class="org.hage.platform.component.action.ordering.DefaultActionComparator"

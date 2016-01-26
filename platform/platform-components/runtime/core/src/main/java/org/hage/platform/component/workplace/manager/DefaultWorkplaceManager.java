@@ -39,9 +39,7 @@ import org.hage.platform.util.bus.EventSubscriber;
 import org.hage.util.Locks;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import javax.annotation.*;
 import javax.annotation.concurrent.GuardedBy;
 import java.io.Serializable;
 import java.util.Collection;
@@ -103,6 +101,7 @@ public class DefaultWorkplaceManager implements
 
     // Lifecycle methods
 
+    @PostConstruct
     @Override
     public void init() {
         communicationChannel = communicationManager.getCommunicationChannelForService(SERVICE_NAME);
@@ -111,6 +110,7 @@ public class DefaultWorkplaceManager implements
         queryCache = communicationManager.getDistributedMap(QUERY_CACHE_NAME);
     }
 
+    @PreDestroy
     @Override
     public boolean finish() {
         withReadLock(() -> {

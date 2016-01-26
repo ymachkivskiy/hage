@@ -14,6 +14,8 @@ import org.hage.platform.util.bus.EventListener;
 import org.hage.platform.util.bus.EventSubscriber;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.util.Collection;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledFuture;
@@ -84,10 +86,12 @@ public class FixedStepCountStopCondition implements
     }
 
 
+    @PostConstruct
     @Override
     public void init() {
     }
 
+    @PreDestroy
     @Override
     public boolean finish() {
         executor.shutdown();

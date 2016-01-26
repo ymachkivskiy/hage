@@ -9,6 +9,8 @@ import org.hage.platform.component.IStatefulComponent;
 import org.hage.platform.component.exception.ComponentException;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -66,6 +68,7 @@ public abstract class BaseRemoteChanel<MessageT extends ServiceMessage>
         return remoteChanel.nextConversationId();
     }
 
+    @PostConstruct
     @Override
     public final void init() throws ComponentException {
         remoteChanel = remoteCommunicationManager.getCommunicationChannelForService(serviceName);
@@ -73,6 +76,7 @@ public abstract class BaseRemoteChanel<MessageT extends ServiceMessage>
         postInit();
     }
 
+    @PreDestroy
     @Override
     public final boolean finish() throws ComponentException {
         remoteChanel.unsubscribeChannel(this);
