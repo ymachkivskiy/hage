@@ -10,11 +10,13 @@ import org.hage.platform.rate.distributed.NodeCombinedPerformance;
 import org.hage.platform.rate.local.NodePerformanceManager;
 import org.hage.platform.rate.local.normalize.PerformanceRate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Set;
 
 @Slf4j
+@Component
 public class PerformanceRemoteChanel extends BaseRemoteChanel<PerformanceServiceMessage> {
 
     @Autowired

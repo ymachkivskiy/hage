@@ -67,9 +67,4 @@
 
     <!--old services-->
 
-    <bean id="hage.service.performance.communication.remote"
-          class="org.hage.platform.rate.distributed.communication.PerformanceRemoteChanel"/>
-
-    <bean id="hage.service.performance.ClusterPerformanceManager" class="org.hage.platform.rate.distributed.CombinedClusterPerformanceManager"/>
-
 </beans>
