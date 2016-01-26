@@ -9,9 +9,7 @@ import org.hage.platform.rate.local.measure.PerformanceMeasurer;
 import org.hage.platform.rate.local.normalize.PerformanceRate;
 import org.hage.platform.rate.local.normalize.RateNormalizationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -27,7 +25,7 @@ class CombinedNodePerformanceManager implements NodePerformanceManager {
     private RateConfigurationService rateConfigurationService;
     @Autowired
     private RateNormalizationProvider normalizationProvider;
-
+    @Autowired
     private Set<PerformanceMeasurer> measurers = new HashSet<>();
 
     @Override
@@ -69,11 +67,4 @@ class CombinedNodePerformanceManager implements NodePerformanceManager {
         return rate.multiply(categorySummaryWeight);
     }
 
-    @Required
-    public void setMeasurers(Collection<PerformanceMeasurer> measurers) {
-        log.debug("Setting performance measurers: {}", measurers);
-
-        this.measurers.clear();
-        this.measurers.addAll(measurers);
-    }
 }

@@ -2,8 +2,9 @@ package org.hage.platform.rate.local.config;
 
 import org.hage.platform.rate.model.ComputationRatingConfig;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-//@Component
+@Component
 class RatingSettingsProvider {
 
     @Autowired

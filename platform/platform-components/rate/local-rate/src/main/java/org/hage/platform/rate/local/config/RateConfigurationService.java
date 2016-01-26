@@ -5,10 +5,12 @@ import org.hage.platform.config.event.ConfigurationUpdatedEvent;
 import org.hage.platform.util.bus.EventListener;
 import org.hage.platform.util.bus.EventSubscriber;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.concurrent.atomic.AtomicReference;
 
+@Component
 public class RateConfigurationService implements EventSubscriber {
 
     private final EventListener eventListener = new PrivateEventListener();

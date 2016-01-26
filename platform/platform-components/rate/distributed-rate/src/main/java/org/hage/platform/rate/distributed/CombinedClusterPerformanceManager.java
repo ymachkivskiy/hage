@@ -10,6 +10,7 @@ import java.util.Set;
 
 @Slf4j
 public class CombinedClusterPerformanceManager implements ClusterPerformanceManager {
+
     @Autowired
     private PerformanceRemoteChanel performanceRemoteChanel;
 

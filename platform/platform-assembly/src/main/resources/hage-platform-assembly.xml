@@ -16,13 +16,6 @@
         <context:include-filter type="annotation" expression="org.springframework.context.annotation.Configuration"/>
     </context:component-scan>
 
-
-    <bean class="org.hage.platform.rate.local.config.RatingSettingsProvider"/>
-    <!-- TODO remove it -->
-
-    <bean class="org.hage.platform.rate.local.config.Settings"/>
-    <!--TODO remove it-->
-
     <!--old communication-->
 
     <bean id="hage.platform.communication"
@@ -31,12 +24,7 @@
     <bean id="hage.service.lifecycle.communication.remote"
           class="org.hage.platform.component.lifecycle.communication.LifecycleManagerRemoteChanel"/>
 
-    <bean id="hage.service.performance.communication.remote"
-          class="org.hage.platform.rate.distributed.communication.PerformanceRemoteChanel"/>
 
-    <!--old platform -->
-
-    <bean class="org.hage.platform.rate.local.config.RateConfigurationService"/>
 
     <bean id="hage.platform.di.container"
           class="org.hage.platform.component.pico.PicoComponentInstanceProviderFactory"
@@ -79,16 +67,8 @@
 
     <!--old services-->
 
-    <bean id="hage.service.performance.NodePerformanceManager" class="org.hage.platform.rate.local.CombinedNodePerformanceManager">
-        <property name="measurers">
-            <list>
-                <bean class="org.hage.platform.rate.local.measure.impl.MaxMemoryPerformanceMeasurer"/>
-                <bean class="org.hage.platform.rate.local.measure.impl.ConcurrencyPerformanceMeasurer"/>
-            </list>
-        </property>
-    </bean>
-
-    <bean id="hage.service.performance.normalizer.scaled" class="org.hage.platform.rate.local.normalize.scaled.ScaledNormalizerProvider"/>
+    <bean id="hage.service.performance.communication.remote"
+          class="org.hage.platform.rate.distributed.communication.PerformanceRemoteChanel"/>
 
     <bean id="hage.service.performance.ClusterPerformanceManager" class="org.hage.platform.rate.distributed.CombinedClusterPerformanceManager"/>
 
