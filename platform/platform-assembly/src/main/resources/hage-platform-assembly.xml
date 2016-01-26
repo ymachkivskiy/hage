@@ -21,10 +21,6 @@
     <bean id="hage.platform.communication"
           class="org.hage.communication.hazelcast.HazelcastRemoteCommunicationManager"/>
 
-    <bean id="hage.service.lifecycle.communication.remote"
-          class="org.hage.platform.component.lifecycle.communication.LifecycleManagerRemoteChanel"/>
-
-
 
     <bean id="hage.platform.di.container"
           class="org.hage.platform.component.pico.PicoComponentInstanceProviderFactory"
@@ -33,11 +29,7 @@
     <bean id="hage.platform.component.core"
           class="org.hage.platform.component.workplace.manager.DefaultWorkplaceManager"/>
 
-    <bean id="hage.platform.lifecycle.exitHook"
-          class="org.hage.platform.component.lifecycle.AutoExitHook"/>
 
-    <bean id="hage.platform.lifecycle"
-          class="org.hage.platform.component.lifecycle.DefaultLifecycleManager"/>
 
     <bean id="hage.platform.configuration.loader"
           class="org.hage.platform.config.xml.XmlConfigurationProvider"/>
@@ -64,7 +56,5 @@
             </list>
         </property>
     </bean>
-
-    <!--old services-->
 
 </beans>
