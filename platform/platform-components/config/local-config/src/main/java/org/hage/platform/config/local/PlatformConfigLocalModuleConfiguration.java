@@ -2,7 +2,6 @@ package org.hage.platform.config.local;
 
 import org.hage.platform.config.local.division.ConfigurationSplitter;
 import org.hage.platform.config.local.division.SimpleConfigurationSplitter;
-import org.hage.platform.config.local.gen.ConfigurationComputationConfigurationTranslator;
 import org.hage.platform.config.local.gen.MergingPopulationDistributionMapCreator;
 import org.hage.platform.config.local.gen.PopulationDistributionMapCreator;
 import org.hage.platform.config.local.gen.count.*;
@@ -18,11 +17,6 @@ public class PlatformConfigLocalModuleConfiguration {
     @Bean
     public ConfigurationSplitter getConfigurationSplitter() {
         return new SimpleConfigurationSplitter();
-    }
-
-    @Bean
-    public ConfigurationComputationConfigurationTranslator getComputationConfigurationConfigurationTranslator() {
-        return new ConfigurationComputationConfigurationTranslator();
     }
 
     @Bean

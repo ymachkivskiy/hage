@@ -11,11 +11,13 @@ import org.hage.platform.rate.distributed.ClusterPerformanceManager;
 import org.hage.platform.util.bus.EventListener;
 import org.hage.platform.util.bus.EventSubscriber;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Set;
 
 @Slf4j
+@Component
 public class ConfigurationSplitService implements EventSubscriber {
 
     private final EventListener eventListener = new PrivateEventListener();

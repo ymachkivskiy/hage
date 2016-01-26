@@ -6,7 +6,9 @@ import org.hage.platform.config.PopulationDistributionMap;
 import org.hage.platform.config.def.HabitatOrganizationDefinition;
 import org.hage.platform.config.provider.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ConfigurationComputationConfigurationTranslator {
 
     @Autowired

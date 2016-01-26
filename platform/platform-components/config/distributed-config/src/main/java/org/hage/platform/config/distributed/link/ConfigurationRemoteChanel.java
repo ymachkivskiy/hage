@@ -10,6 +10,7 @@ import org.hage.communication.synch.SynchronizationSupport;
 import org.hage.platform.config.distributed.ConfigurationAllocation;
 import org.hage.platform.config.local.ConfigurationStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Set;
 
@@ -17,6 +18,7 @@ import static org.hage.platform.config.distributed.link.ConfigurationMessage.*;
 
 
 @Slf4j
+@Component
 public class ConfigurationRemoteChanel extends BaseRemoteChanel<ConfigurationMessage> {
 
     @Autowired
