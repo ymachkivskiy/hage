@@ -7,6 +7,7 @@ import org.hage.platform.config.def.ChunkPopulationQualifier;
 import org.hage.platform.config.def.agent.AgentCountData;
 import org.hage.platform.config.def.agent.ChunkAgentDistribution;
 import org.hage.platform.config.def.agent.PositionsSelectionData;
+import org.hage.platform.config.local.PlatformConfigLocalModuleConfiguration;
 import org.hage.platform.config.local.util.ChunkPositionsConditions;
 import org.hage.platform.habitat.AgentDefinition;
 import org.hage.platform.habitat.structure.Chunk;
@@ -29,7 +30,7 @@ import static org.hage.platform.habitat.structure.InternalPosition.definedBy;
 import static org.mockito.Mockito.mock;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:/org/hage/platform/config/local/module-spring-conf.xml")
+@ContextConfiguration(classes = PlatformConfigLocalModuleConfiguration.class)
 public class MergingPopulationDistributionMapCreatorE2ETest {
 
     @Autowired

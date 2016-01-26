@@ -10,7 +10,7 @@ import java.util.EnumMap;
 import java.util.Map;
 
 @Slf4j
-class CompositeCountProvider implements AgentCountProvider {
+public class CompositeCountProvider implements AgentCountProvider {
 
     private static final AgentCountProvider NOT_IMPLEMENTED_PROVIDER = countData -> {
         log.warn("Count provider not implemented for {}" + countData.getAgentCountMode());

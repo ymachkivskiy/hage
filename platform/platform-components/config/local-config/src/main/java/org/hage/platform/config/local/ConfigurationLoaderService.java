@@ -11,12 +11,10 @@ import org.hage.platform.util.bus.EventBus;
 import org.hage.platform.util.bus.EventListener;
 import org.hage.platform.util.bus.EventSubscriber;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import javax.annotation.concurrent.ThreadSafe;
 
-
-@ThreadSafe
-//@Component
+@Component
 @Slf4j
 public class ConfigurationLoaderService implements EventSubscriber {
 
@@ -43,6 +41,7 @@ public class ConfigurationLoaderService implements EventSubscriber {
     private class PrivateEventListener implements EventListener {
 
         @Subscribe
+        @SuppressWarnings("unused")
         public void onConfigurationLoadRequest(ConfigurationLoadRequestEvent event) {
             configurationLoader.tryGetConfiguration().ifPresent(ConfigurationLoaderService.this::notifyConfigurationLoaded);
         }

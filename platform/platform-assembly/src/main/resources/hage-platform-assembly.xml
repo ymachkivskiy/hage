@@ -5,12 +5,11 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd ">
 
+    <!--TODO move to class config-->
     <context:property-placeholder location="classpath*:application.properties" />
 
 
     <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
-
-    <import resource="classpath*:**/module-spring-conf.xml"/>
 
     <context:annotation-config/>
     <context:component-scan base-package="org.hage.platform" use-default-filters="false">
@@ -58,9 +57,6 @@
     <bean id="hage.platform.configuration.loader"
           class="org.hage.platform.config.xml.XmlConfigurationProvider"/>
 
-    <bean id="hage.platform.configuration.splitter"
-          class="org.hage.platform.config.local.division.SimpleConfigurationSplitter"/>
-
     <bean id="hage.platform.addressSupplier.agent"
           class="org.hage.address.agent.DefaultAgentAddressSupplier"/>
 
@@ -85,12 +81,6 @@
     </bean>
 
     <!--old services-->
-
-    <bean id="hage.service.configuration"
-          class="org.hage.platform.config.local.ConfigurationStorageService"/>
-
-    <bean id="hage.service.configurationLoader"
-          class="org.hage.platform.config.local.ConfigurationLoaderService"/>
 
     <bean id="hage.service.configurationSplitter"
           class="org.hage.platform.config.distributed.ConfigurationSplitService"/>

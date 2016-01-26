@@ -4,7 +4,7 @@ import org.hage.platform.config.def.agent.AgentCountData;
 
 public class AtMostCountProvider extends AbstractCountProvider {
 
-    protected AtMostCountProvider() {
+    public AtMostCountProvider() {
         super(ValueType.PRIMARY);
     }
 

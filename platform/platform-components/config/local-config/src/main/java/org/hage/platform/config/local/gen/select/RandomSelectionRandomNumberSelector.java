@@ -9,7 +9,7 @@ import java.util.Set;
 
 import static java.lang.Math.abs;
 
-class RandomSelectionRandomNumberSelector implements PositionsSelector {
+public class RandomSelectionRandomNumberSelector implements PositionsSelector {
 
     private Random rand = new Random();
 

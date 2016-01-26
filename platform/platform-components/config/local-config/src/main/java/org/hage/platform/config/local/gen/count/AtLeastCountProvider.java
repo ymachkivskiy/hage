@@ -2,9 +2,9 @@ package org.hage.platform.config.local.gen.count;
 
 import org.hage.platform.config.def.agent.AgentCountData;
 
-class AtLeastCountProvider extends AbstractCountProvider {
+public class AtLeastCountProvider extends AbstractCountProvider {
 
-    protected AtLeastCountProvider() {
+    public AtLeastCountProvider() {
         super(ValueType.PRIMARY);
     }
 

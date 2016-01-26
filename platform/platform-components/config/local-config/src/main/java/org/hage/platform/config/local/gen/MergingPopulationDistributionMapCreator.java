@@ -18,7 +18,7 @@ import java.util.Set;
 
 import static java.util.stream.Collectors.toMap;
 
-class MergingPopulationDistributionMapCreator implements PopulationDistributionMapCreator {
+public class MergingPopulationDistributionMapCreator implements PopulationDistributionMapCreator {
 
     private PositionsSelector positionsSelector;
     private AgentCountProvider countProvider;

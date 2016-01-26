@@ -1,23 +1,21 @@
 package org.hage.platform.config.local;
 
 
-import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.config.ComputationConfiguration;
 import org.hage.platform.config.event.ConfigurationUpdatedEvent;
 import org.hage.platform.util.bus.EventBus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import javax.annotation.concurrent.ThreadSafe;
 import java.util.Optional;
 
 import static java.util.Optional.empty;
 import static java.util.Optional.ofNullable;
 
 
-@ToString
-@ThreadSafe
 @Slf4j
+@Component
 public class ConfigurationStorageService {
 
     private Optional<ComputationConfiguration> configuration = empty();

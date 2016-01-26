@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Slf4j
-class CompositePositionsSelector implements PositionsSelector {
+public class CompositePositionsSelector implements PositionsSelector {
 
     private final static PositionsSelector NOT_IMPLEMENTED_SELECTOR = (chunk, selectionData) -> {
         log.warn("Selector not implemented for mode {}", selectionData.getMode());

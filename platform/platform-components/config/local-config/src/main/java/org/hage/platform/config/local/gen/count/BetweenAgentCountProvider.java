@@ -2,9 +2,9 @@ package org.hage.platform.config.local.gen.count;
 
 import org.hage.platform.config.def.agent.AgentCountData;
 
-class BetweenAgentCountProvider extends AbstractCountProvider {
+public class BetweenAgentCountProvider extends AbstractCountProvider {
 
-    protected BetweenAgentCountProvider() {
+    public BetweenAgentCountProvider() {
         super(ValueType.PRIMARY, ValueType.SECONDARY);
     }
 
