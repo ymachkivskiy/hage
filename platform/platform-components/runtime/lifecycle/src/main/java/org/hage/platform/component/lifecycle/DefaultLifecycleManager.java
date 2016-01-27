@@ -130,12 +130,14 @@ public class DefaultLifecycleManager implements LifecycleManager, EventSubscribe
     private class PrivateEventListener implements EventListener {
 
         @Subscribe
+        @SuppressWarnings("unused")
         public void onConfigurationUpdated(ConfigurationUpdatedEvent event) {
             log.debug("Configuration updated event: {}.", event);
             service.fire(Event.CONFIGURE);
         }
 
         @Subscribe
+        @SuppressWarnings("unused")
         public void onCoreComponentEvent(CoreComponentEvent event) {
             log.debug("Core component Event: {}.", event);
             switch (event.getType()) {

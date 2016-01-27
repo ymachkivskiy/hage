@@ -10,32 +10,22 @@
 
 
     <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
-
+<!--TODO change communication package-->
     <context:annotation-config/>
-    <context:component-scan base-package="org.hage.platform" use-default-filters="false">
+    <context:component-scan base-package="org.hage.platform, org.hage.communication, org.hage.address" use-default-filters="false">
         <context:include-filter type="annotation" expression="org.springframework.context.annotation.Configuration"/>
     </context:component-scan>
 
-    <!--old communication-->
-
-    <bean id="hage.platform.communication"
-          class="org.hage.communication.hazelcast.HazelcastRemoteCommunicationManager"/>
-
-
-    <bean id="hage.platform.di.container"
-          class="org.hage.platform.component.pico.PicoComponentInstanceProviderFactory"
-          factory-method="createInstanceProvider"/>
 
     <bean id="hage.platform.component.core"
           class="org.hage.platform.component.workplace.manager.DefaultWorkplaceManager"/>
 
 
-
     <bean id="hage.platform.configuration.loader"
           class="org.hage.platform.config.xml.XmlConfigurationProvider"/>
 
-    <bean id="hage.platform.addressSupplier.agent"
-          class="org.hage.address.agent.DefaultAgentAddressSupplier"/>
+    <bean class="org.hage.platform.config.ConfigurationConversionService"/>
+
 
     <bean id="hage.platform.stopCondition"
           class="org.hage.platform.component.workplace.FixedStepCountStopCondition"/>
@@ -44,17 +34,5 @@
           class="org.hage.platform.component.action.ordering.DefaultActionComparator"
           scope="prototype"/>
 
-    <bean class="org.hage.platform.config.ConfigurationConversionService"/>
-
-    <alias name="hage.platform.communication" alias="hage.platform.addressSupplier.node"/>
-
-    <bean class="org.hage.platform.containermerge.ContainerComponentShare" init-method="shareComponents">
-        <property name="componentsForSharing">
-            <list>
-                <ref bean="hage.platform.addressSupplier.node"/>
-                <ref bean="hage.platform.addressSupplier.agent"/>
-            </list>
-        </property>
-    </bean>
 
 </beans>

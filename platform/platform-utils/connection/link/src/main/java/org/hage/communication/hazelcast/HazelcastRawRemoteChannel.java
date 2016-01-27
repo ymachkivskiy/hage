@@ -20,7 +20,7 @@ import static com.google.common.collect.Sets.newCopyOnWriteArraySet;
 
 @ThreadSafe
 @Slf4j
-class HazelcastRawRemoteChannel<T extends ServiceMessage> implements RawRemoteChannel<T> {
+public class HazelcastRawRemoteChannel<T extends ServiceMessage> implements RawRemoteChannel<T> {
 
     private final AtomicLong conversationIdCounter = new AtomicLong(0);
 

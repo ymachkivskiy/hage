@@ -460,6 +460,7 @@ public class DefaultWorkplaceManager implements
     private class PrivateEventListener implements EventListener {
 
         @Subscribe
+        @SuppressWarnings("unused")
         public void onConfigurationUpdated(ConfigurationUpdatedEvent event) {
             log.debug("Event: {}.", event);
             checkState(configuredWorkplaces == null, "The core component is already configured.");

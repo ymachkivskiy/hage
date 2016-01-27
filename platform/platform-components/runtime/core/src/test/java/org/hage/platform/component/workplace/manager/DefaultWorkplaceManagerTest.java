@@ -37,7 +37,6 @@ import org.hage.address.node.NodeAddressSupplier;
 import org.hage.platform.component.definition.ComponentDefinition;
 import org.hage.platform.component.exception.ComponentException;
 import org.hage.platform.component.pico.PicoComponentInstanceProvider;
-import org.hage.platform.component.pico.PicoComponentInstanceProviderFactory;
 import org.hage.platform.component.services.core.LifecycleManager;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -66,8 +65,7 @@ import static org.mockito.Mockito.mock;
 public class DefaultWorkplaceManagerTest {
 
     private static final String TEST_COMPONENT_KEY = "test";
-    private final PicoComponentInstanceProvider instanceProvider = (PicoComponentInstanceProvider) PicoComponentInstanceProviderFactory
-            .createInstanceProvider();
+    private final PicoComponentInstanceProvider instanceProvider = new PicoComponentInstanceProvider();
     @Mock
     // (answer = Answers.CALLS_REAL_METHODS)
     private NodeAddressSupplier addressProvider;

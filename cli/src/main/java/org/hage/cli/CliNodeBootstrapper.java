@@ -28,6 +28,7 @@ public class CliNodeBootstrapper {
         System.out.print(HEADER);
 
         applicationContext = new ClassPathXmlApplicationContext(APP_CONTEXT);
+        applicationContext.refresh();
 
         argumentsService = applicationContext.getBean(CommandLineArgumentsService.class);
         argumentsService.parse(getClass().getName(), args);

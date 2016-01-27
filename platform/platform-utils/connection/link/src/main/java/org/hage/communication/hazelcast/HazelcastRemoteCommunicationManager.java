@@ -12,6 +12,7 @@ import org.hage.address.node.NodeAddressSupplier;
 import org.hage.communication.api.RemoteCommunicationManager;
 import org.hage.communication.message.service.ServiceMessage;
 import org.hage.platform.component.IStatefulComponent;
+import org.hage.platform.util.container.share.SharedBetweenContainers;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
@@ -20,10 +21,10 @@ import java.util.Set;
 import static com.google.common.base.Objects.toStringHelper;
 import static java.util.stream.Collectors.toSet;
 
-
+@SharedBetweenContainers
 @ThreadSafe
 @Slf4j
-class HazelcastRemoteCommunicationManager
+public class HazelcastRemoteCommunicationManager
         implements IStatefulComponent, NodeAddressSupplier, RemoteCommunicationManager {
 
     public static final String HAZELCAST_INSTANCE_NAME = "HageInstance";

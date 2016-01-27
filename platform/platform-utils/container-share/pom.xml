@@ -2,16 +2,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <groupId>org.hage.platform.container</groupId>
-        <artifactId>container-parent</artifactId>
+        <groupId>org.hage.platform.util</groupId>
+        <artifactId>utils-parent</artifactId>
         <version>0.2.0-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>container-merge</artifactId>
+    <artifactId>container-share</artifactId>
 
-    <name>HAgE::Platform::Container-Merge</name>
+    <name>HAgE::Platform::Container-Share</name>
 
     <dependencies>
         <dependency>
