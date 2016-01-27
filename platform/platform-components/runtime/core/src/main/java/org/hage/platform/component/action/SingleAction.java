@@ -33,8 +33,8 @@ package org.hage.platform.component.action;
 
 
 import com.google.common.base.Objects;
-import org.hage.address.agent.AgentAddress;
-import org.hage.address.selector.AddressSelector;
+import org.hage.platform.util.communication.address.agent.AgentAddress;
+import org.hage.platform.util.communication.address.selector.AddressSelector;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

@@ -7,7 +7,7 @@
             <component name="workplace" class="org.hage.platform.component.workplace.SimpleWorkplace" isSingleton="false">
                 <property name="agent">
                     <agent name="action" class="org.hage.platform.component.agent.SimpleAggregate">
-                        <component class="org.hage.address.agent.DefaultAgentAddressSupplier">
+                        <component class="org.hage.platform.util.communication.address.agent.DefaultAgentAddressSupplier">
                             <constructor-arg name="nameTemplate" value="workplace"/>
                         </component>
 
@@ -15,12 +15,12 @@
                                    class="org.hage.platform.component.agent.ActionDrivenAggregateActionService" isSingleton="false"/>
 
                         <agent name="island" class="org.hage.emas.agent.DefaultIslandAgent">
-                            <component class="org.hage.address.agent.DefaultAgentAddressSupplier">
+                            <component class="org.hage.platform.util.communication.address.agent.DefaultAgentAddressSupplier">
                                 <constructor-arg name="nameTemplate" value="island*"/>
                             </component>
 
                             <agent name="agent" class="org.hage.emas.agent.DefaultIndividualAgent">
-                                <component class="org.hage.address.agent.DefaultAgentAddressSupplier">
+                                <component class="org.hage.platform.util.communication.address.agent.DefaultAgentAddressSupplier">
                                     <constructor-arg name="nameTemplate" value="individual*"/>
                                 </component>
                                 <strategy name="actionPreparator"

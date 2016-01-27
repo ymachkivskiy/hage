@@ -1,8 +1,8 @@
 package org.hage.platform.rate.distributed.communication;
 
-import org.hage.address.node.NodeAddress;
-import org.hage.communication.synch.ConversationMessagesAggregator;
 import org.hage.platform.rate.distributed.NodeCombinedPerformance;
+import org.hage.platform.util.communication.address.node.NodeAddress;
+import org.hage.platform.util.communication.synch.ConversationMessagesAggregator;
 
 import java.util.Collection;
 import java.util.List;

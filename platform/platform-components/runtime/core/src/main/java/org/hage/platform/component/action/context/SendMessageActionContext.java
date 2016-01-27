@@ -33,8 +33,8 @@ package org.hage.platform.component.action.context;
 
 
 import com.google.common.base.Objects;
-import org.hage.address.agent.AgentAddress;
-import org.hage.communication.message.Message;
+import org.hage.platform.util.communication.address.agent.AgentAddress;
+import org.hage.platform.util.communication.message.Message;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

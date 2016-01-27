@@ -32,10 +32,10 @@
 package org.hage.platform.component.action.context;
 
 
-import org.hage.address.agent.AgentAddress;
 import org.hage.platform.component.action.Action;
 import org.hage.platform.component.action.IActionContext;
 import org.hage.platform.component.agent.SimpleAggregate;
+import org.hage.platform.util.communication.address.agent.AgentAddress;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

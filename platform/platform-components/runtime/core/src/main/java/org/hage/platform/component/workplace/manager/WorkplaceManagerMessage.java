@@ -32,8 +32,8 @@
 package org.hage.platform.component.workplace.manager;
 
 
-import org.hage.communication.message.service.ServiceHeader;
-import org.hage.communication.message.service.ServiceMessage;
+import org.hage.platform.util.communication.message.service.ServiceHeader;
+import org.hage.platform.util.communication.message.service.ServiceMessage;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

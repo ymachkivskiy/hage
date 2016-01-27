@@ -35,12 +35,12 @@ package org.hage.emas.action.island;
 import org.hage.action.Action;
 import org.hage.action.SingleAction;
 import org.hage.action.preparers.IActionPreparer;
-import org.hage.address.agent.AgentAddress;
-import org.hage.address.selector.AddressSelector;
-import org.hage.address.selector.Selectors;
 import org.hage.emas.agent.IslandAgent;
 import org.hage.emas.util.ChainingContext;
 import org.hage.emas.util.ChainingContext.ChainingContextBuilder;
+import org.hage.platform.util.communication.address.agent.AgentAddress;
+import org.hage.platform.util.communication.address.selector.AddressSelector;
+import org.hage.platform.util.communication.address.selector.Selectors;
 import org.hage.strategy.AbstractStrategy;
 
 import javax.inject.Inject;

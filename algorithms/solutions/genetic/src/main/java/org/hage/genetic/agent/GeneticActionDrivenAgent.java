@@ -32,10 +32,10 @@
 package org.hage.genetic.agent;
 
 
-import org.hage.address.agent.AgentAddress;
-import org.hage.address.agent.AgentAddressSupplier;
 import org.hage.agent.ActionDrivenAgent;
 import org.hage.platform.component.exception.ComponentException;
+import org.hage.platform.util.communication.address.agent.AgentAddress;
+import org.hage.platform.util.communication.address.agent.AgentAddressSupplier;
 import org.hage.population.IPopulation;
 import org.hage.population.IPopulation.Tuple;
 import org.hage.property.PropertyField;

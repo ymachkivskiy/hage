@@ -33,11 +33,11 @@ package org.hage.emas.agent;
 
 
 import com.google.common.collect.ImmutableList;
-import org.hage.address.agent.AgentAddress;
-import org.hage.address.agent.AgentAddressSupplier;
 import org.hage.agent.ActionDrivenAggregate;
 import org.hage.agent.ISimpleAgentEnvironment;
 import org.hage.platform.component.exception.ComponentException;
+import org.hage.platform.util.communication.address.agent.AgentAddress;
+import org.hage.platform.util.communication.address.agent.AgentAddressSupplier;
 import org.hage.property.PropertyField;
 import org.hage.solution.ISolution;
 import org.hage.solution.ISolutionFactory;
@@ -48,7 +48,6 @@ import javax.inject.Inject;
 import java.util.List;
 
 import static com.google.common.base.Objects.toStringHelper;
-import static com.google.common.collect.Iterables.filter;
 import static java.lang.String.format;
 
 

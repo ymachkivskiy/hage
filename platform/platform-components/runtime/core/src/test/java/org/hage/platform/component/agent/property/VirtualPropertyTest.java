@@ -32,13 +32,13 @@
 package org.hage.platform.component.agent.property;
 
 
-import org.hage.address.agent.AgentAddress;
 import org.hage.platform.component.agent.AggregateActionService;
 import org.hage.platform.component.agent.AggregateQueryService;
 import org.hage.platform.component.agent.SimpleAgent;
 import org.hage.platform.component.agent.SimpleAggregate;
 import org.hage.platform.component.provider.IComponentInstanceProvider;
 import org.hage.platform.component.workplace.SimpleWorkplace;
+import org.hage.platform.util.communication.address.agent.AgentAddress;
 import org.hage.property.InvalidPropertyPathException;
 import org.hage.property.Property;
 import org.junit.Before;

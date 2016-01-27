@@ -32,11 +32,11 @@
 package org.hage.platform.component.action;
 
 
-import org.hage.address.agent.AgentAddress;
-import org.hage.address.selector.BroadcastSelector;
 import org.hage.platform.component.agent.AgentException;
 import org.hage.platform.component.agent.IAgent;
 import org.hage.platform.component.agent.ISimpleAggregate;
+import org.hage.platform.util.communication.address.agent.AgentAddress;
+import org.hage.platform.util.communication.address.selector.BroadcastSelector;
 
 import java.util.Collection;
 

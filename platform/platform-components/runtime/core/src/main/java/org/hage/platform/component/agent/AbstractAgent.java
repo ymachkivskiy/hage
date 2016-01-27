@@ -2,11 +2,11 @@ package org.hage.platform.component.agent;
 
 
 import com.google.common.base.Objects;
-import org.hage.address.agent.AgentAddress;
-import org.hage.address.agent.AgentAddressSupplier;
-import org.hage.communication.message.Message;
 import org.hage.platform.component.query.AgentEnvironmentQuery;
 import org.hage.platform.component.workplace.IllegalOperationException;
+import org.hage.platform.util.communication.address.agent.AgentAddress;
+import org.hage.platform.util.communication.address.agent.AgentAddressSupplier;
+import org.hage.platform.util.communication.message.Message;
 import org.hage.property.*;
 
 import javax.annotation.CheckForNull;

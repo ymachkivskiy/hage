@@ -32,10 +32,10 @@
 package org.hage.platform.component.agent;
 
 
-import org.hage.address.agent.AgentAddress;
-import org.hage.communication.message.Message;
 import org.hage.platform.component.action.SingleAction;
 import org.hage.platform.component.action.context.SendMessageActionContext;
+import org.hage.platform.util.communication.address.agent.AgentAddress;
+import org.hage.platform.util.communication.message.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

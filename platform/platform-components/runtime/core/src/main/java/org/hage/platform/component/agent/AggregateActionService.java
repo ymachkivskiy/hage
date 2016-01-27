@@ -33,11 +33,6 @@ package org.hage.platform.component.agent;
 
 
 import com.google.common.collect.Lists;
-import org.hage.address.agent.AgentAddress;
-import org.hage.address.selector.AddressSelector;
-import org.hage.address.selector.Selectors;
-import org.hage.address.selector.agent.ParentAddressSelector;
-import org.hage.communication.message.Message;
 import org.hage.platform.component.action.*;
 import org.hage.platform.component.action.context.*;
 import org.hage.platform.component.action.ordering.ActionComparator;
@@ -45,6 +40,11 @@ import org.hage.platform.component.action.ordering.DefaultActionComparator;
 import org.hage.platform.component.exception.ComponentException;
 import org.hage.platform.component.provider.IComponentInstanceProvider;
 import org.hage.platform.component.util.RebuildablePriorityQueue;
+import org.hage.platform.util.communication.address.agent.AgentAddress;
+import org.hage.platform.util.communication.address.selector.AddressSelector;
+import org.hage.platform.util.communication.address.selector.Selectors;
+import org.hage.platform.util.communication.address.selector.agent.ParentAddressSelector;
+import org.hage.platform.util.communication.message.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

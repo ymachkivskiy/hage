@@ -32,12 +32,12 @@
 package org.hage.platform.component.action.testHelpers;
 
 
-import org.hage.address.agent.AgentAddress;
-import org.hage.address.agent.DefaultAgentAddress;
-import org.hage.address.node.NodeAddress;
 import org.hage.platform.component.action.Action;
 import org.hage.platform.component.agent.AgentException;
 import org.hage.platform.component.agent.SimpleAgent;
+import org.hage.platform.util.communication.address.agent.AgentAddress;
+import org.hage.platform.util.communication.address.agent.DefaultAgentAddress;
+import org.hage.platform.util.communication.address.node.NodeAddress;
 import org.junit.Ignore;
 
 import static org.mockito.Mockito.mock;

@@ -32,21 +32,21 @@
 package org.hage.platform.component.agent;
 
 
-import org.hage.address.agent.AgentAddress;
 import org.hage.platform.component.action.ComplexAction;
 import org.hage.platform.component.action.SingleAction;
 import org.hage.platform.component.action.testHelpers.ActionTestException;
 import org.hage.platform.component.action.testHelpers.HelperTestAggregateActionService;
 import org.hage.platform.component.action.testHelpers.TracingActionContext;
 import org.hage.platform.component.provider.IComponentInstanceProvider;
+import org.hage.platform.util.communication.address.agent.AgentAddress;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.hage.address.selector.Selectors.singleAddress;
 import static org.hage.platform.component.utils.AgentTestUtils.createMockAgentWithAddress;
+import static org.hage.platform.util.communication.address.selector.Selectors.singleAddress;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;

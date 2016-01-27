@@ -32,11 +32,11 @@
 package org.hage.platform.component.agent;
 
 
-import org.hage.address.Address;
-import org.hage.address.agent.AgentAddress;
-import org.hage.communication.message.Header;
-import org.hage.communication.message.Message;
-import org.hage.communication.message.SimpleMessage;
+import org.hage.platform.util.communication.address.Address;
+import org.hage.platform.util.communication.address.agent.AgentAddress;
+import org.hage.platform.util.communication.message.Header;
+import org.hage.platform.util.communication.message.Message;
+import org.hage.platform.util.communication.message.SimpleMessage;
 import org.junit.Test;
 
 import java.io.Serializable;

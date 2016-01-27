@@ -32,10 +32,10 @@
 package org.hage.platform.component.workplace.manager;
 
 
-import org.hage.address.agent.AgentAddress;
 import org.hage.platform.component.services.core.CoreComponent;
 import org.hage.platform.component.workplace.Workplace;
 import org.hage.platform.component.workplace.WorkplaceEnvironment;
+import org.hage.platform.util.communication.address.agent.AgentAddress;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;

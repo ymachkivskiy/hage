@@ -32,8 +32,8 @@
 package org.hage.emas.agent;
 
 
-import org.hage.address.agent.AgentAddressSupplier;
 import org.hage.agent.ActionDrivenAgent;
+import org.hage.platform.util.communication.address.agent.AgentAddressSupplier;
 import org.hage.solution.ISolution;
 
 import javax.inject.Inject;

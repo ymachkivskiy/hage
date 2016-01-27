@@ -1,10 +1,10 @@
 package org.hage.platform.component.agent;
 
 
-import org.hage.address.agent.AgentAddress;
-import org.hage.address.agent.AgentAddressSupplier;
 import org.hage.platform.component.action.Action;
 import org.hage.platform.component.action.preparers.IActionPreparer;
+import org.hage.platform.util.communication.address.agent.AgentAddress;
+import org.hage.platform.util.communication.address.agent.AgentAddressSupplier;
 import org.hage.property.PropertyField;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

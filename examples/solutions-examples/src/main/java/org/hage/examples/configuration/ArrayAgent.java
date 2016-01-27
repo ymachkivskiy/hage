@@ -32,11 +32,11 @@
 package org.hage.examples.configuration;
 
 
-import org.hage.address.agent.AgentAddress;
-import org.hage.address.agent.AgentAddressSupplier;
 import org.hage.platform.component.agent.SimpleAgent;
 import org.hage.platform.component.provider.IComponentInstanceProvider;
 import org.hage.platform.component.provider.IComponentInstanceProviderAware;
+import org.hage.platform.util.communication.address.agent.AgentAddress;
+import org.hage.platform.util.communication.address.agent.AgentAddressSupplier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

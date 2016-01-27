@@ -32,11 +32,11 @@
 package org.hage.platform.component.workplace;
 
 
-import org.hage.address.agent.AgentAddress;
 import org.hage.platform.component.agent.IAgent;
 import org.hage.platform.component.query.AgentEnvironmentQuery;
 import org.hage.platform.component.query.IQuery;
 import org.hage.platform.component.workplace.manager.WorkplaceManagerMessage;
+import org.hage.platform.util.communication.address.agent.AgentAddress;
 
 import javax.annotation.Nonnull;
 import java.util.Collection;

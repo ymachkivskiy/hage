@@ -2,14 +2,14 @@ package org.hage.cli;
 
 
 import lombok.extern.slf4j.Slf4j;
+import org.hage.platform.PlatformConfiguration;
 import org.hage.platform.component.services.core.LifecycleManager;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 
 @Slf4j
 public class CliNodeBootstrapper {
-
-    private static final String APP_CONTEXT = "spring/appconfig.xml";
 
     private static final String HEADER =
             "+-------------------------------+\n"
@@ -22,13 +22,12 @@ public class CliNodeBootstrapper {
                     + "+-------------------------------+\n\n";
 
     private final CommandLineArgumentsService argumentsService;
-    private final ClassPathXmlApplicationContext applicationContext;
+    private final ApplicationContext applicationContext;
 
     public CliNodeBootstrapper(final String[] args) {
         System.out.print(HEADER);
 
-        applicationContext = new ClassPathXmlApplicationContext(APP_CONTEXT);
-        applicationContext.refresh();
+        applicationContext = new AnnotationConfigApplicationContext(AppConfig.class, PlatformConfiguration.class);
 
         argumentsService = applicationContext.getBean(CommandLineArgumentsService.class);
         argumentsService.parse(getClass().getName(), args);

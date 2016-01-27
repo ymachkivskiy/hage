@@ -11,7 +11,7 @@
             <component name="workplace" class="org.hage.platform.component.workplace.SimpleWorkplace" isSingleton="false">
                 <property name="agent">
                     <agent name="action" class="org.hage.platform.component.agent.SimpleAggregate">
-                        <component class="org.hage.address.agent.DefaultAgentAddressSupplier">
+                        <component class="org.hage.platform.util.communication.address.agent.DefaultAgentAddressSupplier">
                             <constructor-arg name="nameTemplate" value="TheXFiles"/>
                         </component>
 
@@ -19,7 +19,7 @@
                             <list>
                                 <agent name="scully"
                                        class="org.hage.examples.properties.xml.XMLContractHelloWorldSimpleAgent">
-                                    <component class="org.hage.address.agent.DefaultAgentAddressSupplier">
+                                    <component class="org.hage.platform.util.communication.address.agent.DefaultAgentAddressSupplier">
                                         <constructor-arg name="nameTemplate" value="Scully"/>
                                     </component>
                                     <property name="exampleComponent">
@@ -35,7 +35,7 @@
                                 </agent>
                                 <agent name="mulder"
                                        class="org.hage.examples.properties.xml.XMLContractHelloWorldSimpleAgent">
-                                    <component class="org.hage.address.agent.DefaultAgentAddressSupplier">
+                                    <component class="org.hage.platform.util.communication.address.agent.DefaultAgentAddressSupplier">
                                         <constructor-arg name="nameTemplate" value="Mulder"/>
                                     </component>
                                     <property name="exampleComponent">

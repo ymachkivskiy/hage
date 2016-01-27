@@ -1,8 +1,8 @@
 package org.hage.examples.hage.distrconf;
 
-import org.hage.address.agent.AgentAddress;
-import org.hage.address.agent.AgentAddressSupplier;
 import org.hage.platform.component.agent.SimpleAgent;
+import org.hage.platform.util.communication.address.agent.AgentAddress;
+import org.hage.platform.util.communication.address.agent.AgentAddressSupplier;
 
 import javax.inject.Inject;
 

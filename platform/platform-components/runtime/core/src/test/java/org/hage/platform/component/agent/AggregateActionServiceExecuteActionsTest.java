@@ -32,16 +32,16 @@
 package org.hage.platform.component.agent;
 
 
-import org.hage.address.agent.AgentAddress;
-import org.hage.address.selector.AddressPredicate;
-import org.hage.address.selector.AddressSelector;
-import org.hage.address.selector.Selectors;
-import org.hage.address.selector.UnicastSelector;
 import org.hage.platform.component.action.ComplexAction;
 import org.hage.platform.component.action.SingleAction;
 import org.hage.platform.component.action.testHelpers.HelperTestAggregateActionService;
 import org.hage.platform.component.action.testHelpers.TracingActionContext;
 import org.hage.platform.component.provider.IComponentInstanceProvider;
+import org.hage.platform.util.communication.address.agent.AgentAddress;
+import org.hage.platform.util.communication.address.selector.AddressPredicate;
+import org.hage.platform.util.communication.address.selector.AddressSelector;
+import org.hage.platform.util.communication.address.selector.Selectors;
+import org.hage.platform.util.communication.address.selector.UnicastSelector;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

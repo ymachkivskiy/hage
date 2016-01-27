@@ -32,11 +32,11 @@
 package org.hage.platform.component.agent;
 
 
-import org.hage.address.agent.AgentAddress;
-import org.hage.address.agent.AgentAddressSupplier;
 import org.hage.platform.component.action.Action;
 import org.hage.platform.component.action.IActionContext;
 import org.hage.platform.component.action.SingleAction;
+import org.hage.platform.util.communication.address.agent.AgentAddress;
+import org.hage.platform.util.communication.address.agent.AgentAddressSupplier;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
@@ -44,7 +44,7 @@ import java.util.Collection;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
-import static org.hage.address.selector.Selectors.singleAddress;
+import static org.hage.platform.util.communication.address.selector.Selectors.singleAddress;
 
 
 /**

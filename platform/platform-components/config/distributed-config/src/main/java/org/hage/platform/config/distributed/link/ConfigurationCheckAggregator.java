@@ -1,7 +1,7 @@
 package org.hage.platform.config.distributed.link;
 
-import org.hage.address.node.NodeAddress;
-import org.hage.communication.synch.ConversationMessagesAggregator;
+import org.hage.platform.util.communication.address.node.NodeAddress;
+import org.hage.platform.util.communication.synch.ConversationMessagesAggregator;
 
 import java.util.Collection;
 import java.util.Set;

@@ -32,12 +32,12 @@
 package org.hage.examples.delegation;
 
 
-import org.hage.address.agent.AgentAddress;
-import org.hage.address.agent.AgentAddressSupplier;
 import org.hage.platform.component.agent.IAgent;
 import org.hage.platform.component.agent.IAgentEnvironment;
 import org.hage.platform.component.agent.SimpleAggregate;
 import org.hage.platform.component.exception.ComponentException;
+import org.hage.platform.util.communication.address.agent.AgentAddress;
+import org.hage.platform.util.communication.address.agent.AgentAddressSupplier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

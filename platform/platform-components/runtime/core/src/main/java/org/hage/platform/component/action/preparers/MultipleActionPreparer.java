@@ -32,14 +32,14 @@
 package org.hage.platform.component.action.preparers;
 
 
-import org.hage.address.agent.AgentAddress;
-import org.hage.address.selector.ExplicitSelector;
-import org.hage.address.selector.Selectors;
 import org.hage.platform.component.action.Action;
 import org.hage.platform.component.action.IActionContext;
 import org.hage.platform.component.action.SingleAction;
 import org.hage.platform.component.agent.IAgent;
 import org.hage.platform.component.strategy.AbstractStrategy;
+import org.hage.platform.util.communication.address.agent.AgentAddress;
+import org.hage.platform.util.communication.address.selector.ExplicitSelector;
+import org.hage.platform.util.communication.address.selector.Selectors;
 
 import javax.inject.Inject;
 import java.util.ArrayList;

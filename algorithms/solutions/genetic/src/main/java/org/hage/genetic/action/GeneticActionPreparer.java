@@ -35,10 +35,10 @@ package org.hage.genetic.action;
 import org.hage.action.Action;
 import org.hage.action.SingleAction;
 import org.hage.action.preparers.IActionPreparer;
-import org.hage.address.agent.AgentAddress;
-import org.hage.address.selector.AddressSelector;
-import org.hage.address.selector.Selectors;
 import org.hage.agent.IAgent;
+import org.hage.platform.util.communication.address.agent.AgentAddress;
+import org.hage.platform.util.communication.address.selector.AddressSelector;
+import org.hage.platform.util.communication.address.selector.Selectors;
 import org.hage.strategy.AbstractStrategy;
 
 import java.util.List;

@@ -32,11 +32,11 @@
 package org.hage.genetic.agent;
 
 
-import org.hage.address.agent.AgentAddress;
-import org.hage.address.agent.AgentAddressSupplier;
 import org.hage.agent.SimpleAgent;
 import org.hage.evaluation.ISolutionEvaluator;
 import org.hage.genetic.preselection.IPreselection;
+import org.hage.platform.util.communication.address.agent.AgentAddress;
+import org.hage.platform.util.communication.address.agent.AgentAddressSupplier;
 import org.hage.population.IPopulation;
 import org.hage.property.PropertyField;
 import org.hage.solution.ISolution;

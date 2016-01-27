@@ -32,12 +32,12 @@
 package org.hage.platform.component.workplace.manager;
 
 
-import org.hage.address.node.NodeAddress;
-import org.hage.address.node.NodeAddressSupplier;
 import org.hage.platform.component.definition.ComponentDefinition;
 import org.hage.platform.component.exception.ComponentException;
 import org.hage.platform.component.pico.PicoComponentInstanceProvider;
 import org.hage.platform.component.services.core.LifecycleManager;
+import org.hage.platform.util.communication.address.node.NodeAddress;
+import org.hage.platform.util.communication.address.node.NodeAddressSupplier;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;

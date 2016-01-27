@@ -33,12 +33,12 @@ package org.hage.platform.component.action.ordering;
 
 
 import com.google.common.collect.ImmutableList;
-import org.hage.address.agent.AgentAddress;
-import org.hage.address.selector.AddressSelector;
 import org.hage.platform.component.action.ActionException;
 import org.hage.platform.component.action.IActionContext;
 import org.hage.platform.component.action.SingleAction;
 import org.hage.platform.component.action.ordering.ActionComparator.Relation;
+import org.hage.platform.util.communication.address.agent.AgentAddress;
+import org.hage.platform.util.communication.address.selector.AddressSelector;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -32,10 +32,10 @@
 package org.hage.platform.component.agent;
 
 
-import org.hage.address.agent.AgentAddress;
 import org.hage.platform.component.action.Action;
 import org.hage.platform.component.action.preparers.IActionPreparer;
 import org.hage.platform.component.utils.BaseTest;
+import org.hage.platform.util.communication.address.agent.AgentAddress;
 import org.hage.property.Property;
 import org.hage.property.monitors.AbstractPropertyMonitor;
 import org.junit.Before;

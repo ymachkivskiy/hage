@@ -33,8 +33,8 @@ package org.hage.platform.component.agent;
 
 
 import com.google.common.collect.ImmutableList;
-import org.hage.address.Address;
-import org.hage.address.agent.AgentAddress;
+import org.hage.platform.util.communication.address.Address;
+import org.hage.platform.util.communication.address.agent.AgentAddress;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

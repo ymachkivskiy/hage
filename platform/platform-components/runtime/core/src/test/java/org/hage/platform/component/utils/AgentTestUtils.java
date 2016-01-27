@@ -32,9 +32,9 @@
 package org.hage.platform.component.utils;
 
 
-import org.hage.address.agent.AgentAddress;
 import org.hage.platform.component.agent.ISimpleAgent;
 import org.hage.platform.component.agent.SimpleAgent;
+import org.hage.platform.util.communication.address.agent.AgentAddress;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;

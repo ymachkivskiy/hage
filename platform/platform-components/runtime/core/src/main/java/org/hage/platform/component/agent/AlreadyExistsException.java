@@ -1,8 +1,8 @@
 package org.hage.platform.component.agent;
 
 
-import org.hage.address.agent.AgentAddress;
 import org.hage.platform.HageException;
+import org.hage.platform.util.communication.address.agent.AgentAddress;
 
 
 public class AlreadyExistsException extends HageException {

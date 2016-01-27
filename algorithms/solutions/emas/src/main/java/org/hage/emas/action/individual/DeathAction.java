@@ -34,17 +34,17 @@ package org.hage.emas.action.individual;
 
 import org.hage.action.SingleAction;
 import org.hage.action.context.KillAgentActionContext;
-import org.hage.address.agent.AgentAddress;
 import org.hage.agent.AgentException;
 import org.hage.emas.agent.IndividualAgent;
 import org.hage.emas.predicate.IPredicate;
 import org.hage.emas.util.ChainingAction;
+import org.hage.platform.util.communication.address.agent.AgentAddress;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 
-import static org.hage.address.selector.Selectors.singleAddress;
+import static org.hage.platform.util.communication.address.selector.Selectors.singleAddress;
 
 
 /**

@@ -32,14 +32,14 @@
 package org.hage.platform.component.action;
 
 
-import org.hage.address.agent.AgentAddress;
-import org.hage.address.selector.Selectors;
-import org.hage.communication.message.Message;
 import org.hage.platform.component.action.context.*;
 import org.hage.platform.component.agent.ISimpleAgent;
+import org.hage.platform.util.communication.address.agent.AgentAddress;
+import org.hage.platform.util.communication.address.selector.Selectors;
+import org.hage.platform.util.communication.message.Message;
 
-import static org.hage.address.selector.Selectors.parentOf;
-import static org.hage.address.selector.Selectors.singleAddress;
+import static org.hage.platform.util.communication.address.selector.Selectors.parentOf;
+import static org.hage.platform.util.communication.address.selector.Selectors.singleAddress;
 
 
 /**

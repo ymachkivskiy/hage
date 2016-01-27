@@ -32,8 +32,8 @@
 package org.hage.platform.component.query;
 
 
-import org.hage.address.agent.AgentAddress;
 import org.hage.platform.component.agent.IAgent;
+import org.hage.platform.util.communication.address.agent.AgentAddress;
 import org.hage.property.IPropertyContainer;
 
 import java.lang.reflect.Method;

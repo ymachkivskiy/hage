@@ -1,14 +1,14 @@
 package org.hage.platform.rate.distributed.communication;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hage.address.node.NodeAddress;
-import org.hage.communication.api.BaseRemoteChanel;
-import org.hage.communication.message.service.ServiceHeader;
-import org.hage.communication.message.service.consume.BaseConditionalMessageConsumer;
-import org.hage.communication.synch.SynchronizationSupport;
 import org.hage.platform.rate.distributed.NodeCombinedPerformance;
 import org.hage.platform.rate.local.NodePerformanceManager;
 import org.hage.platform.rate.local.normalize.PerformanceRate;
+import org.hage.platform.util.communication.address.node.NodeAddress;
+import org.hage.platform.util.communication.api.BaseRemoteChanel;
+import org.hage.platform.util.communication.message.service.ServiceHeader;
+import org.hage.platform.util.communication.message.service.consume.BaseConditionalMessageConsumer;
+import org.hage.platform.util.communication.synch.SynchronizationSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

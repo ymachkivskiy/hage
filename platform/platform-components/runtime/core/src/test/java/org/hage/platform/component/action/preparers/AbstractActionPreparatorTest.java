@@ -32,9 +32,9 @@
 package org.hage.platform.component.action.preparers;
 
 
-import org.hage.address.agent.AgentAddress;
 import org.hage.platform.component.agent.IAgent;
 import org.hage.platform.component.agent.IAgentEnvironment;
+import org.hage.platform.util.communication.address.agent.AgentAddress;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;

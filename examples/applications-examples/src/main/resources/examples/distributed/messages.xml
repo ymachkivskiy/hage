@@ -6,7 +6,7 @@
         <constructor-arg type="Long" value="20"/>
     </component>
 
-    <component name="defaultAgentAddressSupplier" class="org.hage.address.agent.DefaultAgentAddressSupplier"/>
+    <component name="defaultAgentAddressSupplier" class="org.hage.platform.util.communication.address.agent.DefaultAgentAddressSupplier"/>
     <component name="comparator" class="org.hage.platform.component.action.ordering.DefaultActionComparator" isSingleton="false"/>
 
     <component name="aggregateActionService" class="org.hage.platform.component.agent.AggregateActionService" isSingleton="false"/>
@@ -17,7 +17,7 @@
         <property name="agent" ref="scully"/>
 
         <agent name="scully" class="org.hage.examples.messages.MessagesSimpleAgent">
-            <component class="org.hage.address.agent.DefaultAgentAddressSupplier">
+            <component class="org.hage.platform.util.communication.address.agent.DefaultAgentAddressSupplier">
                 <constructor-arg name="nameTemplate" value="Scully"/>
             </component>
             <property name="message" value="The Truth is Out There"/>
@@ -29,7 +29,7 @@
         <property name="agent" ref="mulder"/>
 
         <agent name="mulder" class="org.hage.examples.messages.MessagesSimpleAgent">
-            <component class="org.hage.address.agent.DefaultAgentAddressSupplier">
+            <component class="org.hage.platform.util.communication.address.agent.DefaultAgentAddressSupplier">
                 <constructor-arg name="nameTemplate" value="Mulder"/>
             </component>
             <property name="message" value="I want to believe"/>

@@ -1,13 +1,13 @@
 package org.hage.platform.config.distributed.link;
 
 
-import org.hage.communication.message.service.ServiceHeader;
-import org.hage.communication.message.service.ServiceMessage;
 import org.hage.platform.config.ComputationConfiguration;
+import org.hage.platform.util.communication.message.service.ServiceHeader;
+import org.hage.platform.util.communication.message.service.ServiceMessage;
 
 import javax.annotation.concurrent.Immutable;
 
-import static org.hage.communication.message.service.ServiceHeader.create;
+import static org.hage.platform.util.communication.message.service.ServiceHeader.create;
 
 
 @Immutable

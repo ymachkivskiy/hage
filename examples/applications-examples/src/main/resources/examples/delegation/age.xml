@@ -7,7 +7,7 @@
             <component name="workplace" class="org.hage.platform.component.workplace.SimpleWorkplace" isSingleton="false">
                 <property name="agent">
                     <agent name="root" class="org.hage.examples.delegation.DelegationSimpleAggregate">
-                        <component class="org.hage.address.agent.DefaultAgentAddressSupplier">
+                        <component class="org.hage.platform.util.communication.address.agent.DefaultAgentAddressSupplier">
                             <constructor-arg name="nameTemplate" value="Root"/>
                         </component>
                         <property name="echoStrategy" ref="parentStrategy"/>
@@ -15,7 +15,7 @@
                             <list>
                                 <agent name="level-1"
                                        class="org.hage.examples.delegation.DelegationSimpleAggregate">
-                                    <component class="org.hage.address.agent.DefaultAgentAddressSupplier">
+                                    <component class="org.hage.platform.util.communication.address.agent.DefaultAgentAddressSupplier">
                                         <constructor-arg name="nameTemplate" value="Level-1"/>
                                     </component>
                                     <property name="echoStrategy" ref="parentStrategy"/>
@@ -26,14 +26,14 @@
                                             <agent name="level-1-1"
                                                    class="org.hage.examples.delegation.DelegationSimpleLeaf">
                                                 <component
-                                                        class="org.hage.address.agent.DefaultAgentAddressSupplier">
+                                                        class="org.hage.platform.util.communication.address.agent.DefaultAgentAddressSupplier">
                                                     <constructor-arg name="nameTemplate" value="Level-1-1"/>
                                                 </component>
                                             </agent>
                                             <agent name="level-1-2"
                                                    class="org.hage.examples.delegation.DelegationSimpleLeaf">
                                                 <component
-                                                        class="org.hage.address.agent.DefaultAgentAddressSupplier">
+                                                        class="org.hage.platform.util.communication.address.agent.DefaultAgentAddressSupplier">
                                                     <constructor-arg name="nameTemplate" value="Level-1-2"/>
                                                 </component>
                                             </agent>
@@ -43,7 +43,7 @@
 
                                 <agent name="level-2"
                                        class="org.hage.examples.delegation.DelegationSimpleAggregate">
-                                    <component class="org.hage.address.agent.DefaultAgentAddressSupplier">
+                                    <component class="org.hage.platform.util.communication.address.agent.DefaultAgentAddressSupplier">
                                         <constructor-arg name="nameTemplate" value="Level-2"/>
                                     </component>
                                     <property name="echoStrategy" ref="helloStrategy"/>
@@ -54,7 +54,7 @@
                                             <agent name="level-2-1"
                                                    class="org.hage.examples.delegation.DelegationSimpleLeaf">
                                                 <component
-                                                        class="org.hage.address.agent.DefaultAgentAddressSupplier">
+                                                        class="org.hage.platform.util.communication.address.agent.DefaultAgentAddressSupplier">
                                                     <constructor-arg name="nameTemplate" value="Level-2-1"/>
                                                 </component>
                                             </agent>
