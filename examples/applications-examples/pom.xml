@@ -29,35 +29,10 @@
             <version>${project.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.hage.monitoring</groupId>
-            <artifactId>monitoring-core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hage.monitoring</groupId>
-            <artifactId>age-visualization</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hage.monitoring</groupId>
-            <artifactId>hage-bindings</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
         <!-- Solution Module -->
         <dependency>
             <groupId>org.hage.student.examples</groupId>
             <artifactId>solutions</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <!-- Monitoring -->
-        <dependency>
-            <groupId>org.hage.monitoring</groupId>
-            <artifactId>graphite</artifactId>
             <version>${project.version}</version>
         </dependency>
 

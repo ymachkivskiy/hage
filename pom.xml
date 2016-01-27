@@ -15,7 +15,6 @@
 
     <modules>
         <module>platform</module>
-        <module>monitoring</module>
         <module>examples</module>
         <module>cli</module>
         <module>common-utils</module>
