@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 public enum MeasurerType implements Serializable {
 
-    CONCURRENCY_PERFORMANCE("concurrency"),
-    MAX_RAM_MEMORY("rammemo"),
+    CONCURRENCY("concurrency"),
+    RAM_MEMORY("rammemory"),
     ;
 
     private final String typeName;

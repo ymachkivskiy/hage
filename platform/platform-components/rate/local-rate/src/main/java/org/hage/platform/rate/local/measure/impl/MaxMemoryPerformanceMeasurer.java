@@ -9,7 +9,7 @@ public class MaxMemoryPerformanceMeasurer implements PerformanceMeasurer {
 
     @Override
     public MeasurerType getType() {
-        return MeasurerType.MAX_RAM_MEMORY;
+        return MeasurerType.RAM_MEMORY;
     }
 
     @Override

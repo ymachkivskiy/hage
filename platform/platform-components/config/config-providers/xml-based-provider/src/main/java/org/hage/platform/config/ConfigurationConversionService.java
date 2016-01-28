@@ -103,9 +103,9 @@ public class ConfigurationConversionService {
             .habitatConfiguration(HABITAT_EXTERNAL_CONFIGURATION)
             .computationRatingConfig(
                     ComputationRatingConfig.builder()
-                        .enabledRateMeasureTypes(EnumSet.of(MeasurerType.MAX_RAM_MEMORY))
+                        .enabledRateMeasureTypes(EnumSet.of(MeasurerType.RAM_MEMORY))
                         .measurerRateConfigs(singletonList(
-                            new MeasurerRateConfig(MeasurerType.MAX_RAM_MEMORY, 2, 5)
+                            new MeasurerRateConfig(MeasurerType.RAM_MEMORY, 2, 5)
                     )).build()
             )
             .build();

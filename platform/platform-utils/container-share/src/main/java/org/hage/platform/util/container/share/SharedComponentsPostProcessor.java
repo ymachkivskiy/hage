@@ -16,9 +16,6 @@ class SharedComponentsPostProcessor implements BeanPostProcessor {
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-        if (bean.getClass().getAnnotationsByType(SharedBetweenContainers.class).length > 0) {
-          boolean dupa = false;
-        }
         return bean;
     }
 

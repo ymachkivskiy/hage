@@ -9,7 +9,7 @@ public class ConcurrencyPerformanceMeasurer implements PerformanceMeasurer {
 
     @Override
     public MeasurerType getType() {
-        return MeasurerType.CONCURRENCY_PERFORMANCE;
+        return MeasurerType.CONCURRENCY;
     }
 
     @Override
