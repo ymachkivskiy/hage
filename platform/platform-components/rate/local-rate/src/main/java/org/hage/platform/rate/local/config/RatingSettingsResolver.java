@@ -1,6 +1,9 @@
 package org.hage.platform.rate.local.config;
 
-import org.hage.platform.rate.local.normalize.PerformanceRate;
+import org.hage.platform.rate.local.config.data.GlobalRateSettings;
+import org.hage.platform.rate.local.config.data.MeasurerSettings;
+import org.hage.platform.rate.local.config.data.RatingSettings;
+import org.hage.platform.rate.local.measure.PerformanceRate;
 import org.hage.platform.rate.model.ComputationRatingConfig;
 import org.hage.platform.rate.model.MeasurerRateConfig;
 import org.hage.platform.rate.model.MeasurerType;
@@ -15,7 +18,7 @@ import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
 
 @Component
-class RatingSettingsProvider {
+public class RatingSettingsResolver {
 
     @Autowired
     private ExternalSettings externalSettings;

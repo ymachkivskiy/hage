@@ -1,6 +1,7 @@
 package org.hage.platform.rate.local.config;
 
 import lombok.Getter;
+import org.hage.platform.rate.local.config.data.MeasurerSettings;
 import org.hage.platform.rate.model.MeasurerType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

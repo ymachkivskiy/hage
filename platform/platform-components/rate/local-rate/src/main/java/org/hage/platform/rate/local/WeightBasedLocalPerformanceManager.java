@@ -1,12 +1,11 @@
 package org.hage.platform.rate.local;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.rate.local.config.MeasurerSettings;
-import org.hage.platform.rate.local.config.NormalizationSettings;
-import org.hage.platform.rate.local.config.RateConfigurationStorageService;
-import org.hage.platform.rate.local.config.RatingSettings;
+import org.hage.platform.rate.local.config.data.MeasurerSettings;
+import org.hage.platform.rate.local.config.data.NormalizationSettings;
+import org.hage.platform.rate.local.config.data.RatingSettings;
 import org.hage.platform.rate.local.measure.PerformanceMeasurer;
-import org.hage.platform.rate.local.normalize.PerformanceRate;
+import org.hage.platform.rate.local.measure.PerformanceRate;
 import org.hage.platform.rate.local.normalize.RateNormalizationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,21 +17,21 @@ import static java.util.stream.Collectors.toList;
 import static org.hage.platform.rate.local.util.PerformanceRateArithmetic.sumWithDefaultIfZero;
 
 @Slf4j
-class CombinedNodePerformanceManager implements NodePerformanceManager {
+public class WeightBasedLocalPerformanceManager implements LocalPerformanceManager {
 
 
     @Autowired
-    private RateConfigurationStorageService rateConfigurationStorageService;
+    private RateSettingsStorageService rateSettingsStorageService;
     @Autowired
     private RateNormalizationProvider normalizationProvider;
     @Autowired
     private Set<PerformanceMeasurer> measurers = new HashSet<>();
 
     @Override
-    public PerformanceRate getOverallPerformance() {
+    public PerformanceRate getLocalPerformanceRate() {
         log.info("Calculating overall node performance");
 
-        RatingSettings ratingSettings = rateConfigurationStorageService.getSettings();
+        RatingSettings ratingSettings = rateSettingsStorageService.getSettings();
 
         List<PerformanceRate> rates = getAllNormalizedRates(ratingSettings);
         PerformanceRate resultRate = sumWithDefaultIfZero(rates, ratingSettings.getMinimalRate());

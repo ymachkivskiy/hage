@@ -2,8 +2,8 @@ package org.hage.platform.rate.distributed.communication;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.rate.distributed.NodeCombinedPerformance;
-import org.hage.platform.rate.local.NodePerformanceManager;
-import org.hage.platform.rate.local.normalize.PerformanceRate;
+import org.hage.platform.rate.local.LocalPerformanceManager;
+import org.hage.platform.rate.local.measure.PerformanceRate;
 import org.hage.platform.util.communication.address.node.NodeAddress;
 import org.hage.platform.util.communication.api.BaseRemoteChanel;
 import org.hage.platform.util.communication.message.service.ServiceHeader;
@@ -20,7 +20,7 @@ import java.util.Set;
 public class PerformanceRemoteChanel extends BaseRemoteChanel<PerformanceServiceMessage> {
 
     @Autowired
-    private NodePerformanceManager nodePerformanceManager;
+    private LocalPerformanceManager localPerformanceManager;
 
     private final PerformanceRequestSynchConnector performanceRequestSynchConnector = new PerformanceRequestSynchConnector();
 
@@ -46,7 +46,7 @@ public class PerformanceRemoteChanel extends BaseRemoteChanel<PerformanceService
     private void sendLocalNodeRateToNode(ServiceHeader requestMessageHeader) {
         log.info("Send local performance request for {}", requestMessageHeader);
 
-        PerformanceRate localPerformance = nodePerformanceManager.getOverallPerformance();
+        PerformanceRate localPerformance = localPerformanceManager.getLocalPerformanceRate();
         PerformanceServiceMessage responseMessage = PerformanceServiceMessage.newResponsePerformanceMessage(requestMessageHeader.getConversationId(), localPerformance);
 
         send(responseMessage, requestMessageHeader.getSender());

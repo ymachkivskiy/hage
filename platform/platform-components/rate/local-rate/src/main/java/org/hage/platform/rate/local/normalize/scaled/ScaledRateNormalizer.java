@@ -2,9 +2,9 @@ package org.hage.platform.rate.local.normalize.scaled;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.rate.local.config.GlobalRateSettings;
-import org.hage.platform.rate.local.config.MeasurerSettings;
-import org.hage.platform.rate.local.normalize.PerformanceRate;
+import org.hage.platform.rate.local.config.data.GlobalRateSettings;
+import org.hage.platform.rate.local.config.data.MeasurerSettings;
+import org.hage.platform.rate.local.measure.PerformanceRate;
 import org.hage.platform.rate.local.normalize.RateNormalizer;
 
 import java.math.BigDecimal;

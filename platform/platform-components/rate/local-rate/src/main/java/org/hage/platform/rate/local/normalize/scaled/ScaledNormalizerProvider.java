@@ -1,6 +1,6 @@
 package org.hage.platform.rate.local.normalize.scaled;
 
-import org.hage.platform.rate.local.config.NormalizationSettings;
+import org.hage.platform.rate.local.config.data.NormalizationSettings;
 import org.hage.platform.rate.local.normalize.RateNormalizationProvider;
 import org.hage.platform.rate.local.normalize.RateNormalizer;
 

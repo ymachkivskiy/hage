@@ -1,9 +1,9 @@
-package org.hage.platform.rate.local.config;
+package org.hage.platform.rate.local.config.data;
 
 import lombok.Builder;
 import lombok.Getter;
 import org.hage.platform.rate.local.measure.PerformanceMeasurer;
-import org.hage.platform.rate.local.normalize.PerformanceRate;
+import org.hage.platform.rate.local.measure.PerformanceRate;
 import org.hage.platform.rate.model.MeasurerType;
 
 import java.util.Map;

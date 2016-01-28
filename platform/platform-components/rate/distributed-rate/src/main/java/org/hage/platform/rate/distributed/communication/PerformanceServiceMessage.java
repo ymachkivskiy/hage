@@ -1,6 +1,6 @@
 package org.hage.platform.rate.distributed.communication;
 
-import org.hage.platform.rate.local.normalize.PerformanceRate;
+import org.hage.platform.rate.local.measure.PerformanceRate;
 import org.hage.platform.util.communication.message.service.ServiceHeader;
 import org.hage.platform.util.communication.message.service.ServiceMessage;
 

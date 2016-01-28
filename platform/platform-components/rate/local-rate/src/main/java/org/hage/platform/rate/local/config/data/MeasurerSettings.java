@@ -1,4 +1,4 @@
-package org.hage.platform.rate.local.config;
+package org.hage.platform.rate.local.config.data;
 
 import lombok.Data;
 

@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ComponentScan(basePackageClasses = PlatformRateDistributedModuleConfiguration.class)
-public class PlatformRateDistributedModuleConfiguration {
+class PlatformRateDistributedModuleConfiguration {
 
     @Bean
     public ClusterPerformanceManager getClusterPerformanceManager() {

@@ -19,8 +19,8 @@ class PlatformRateLocalModuleConfiguration {
     }
 
     @Bean
-    public NodePerformanceManager getNodePerformanceManager() {
-        return new CombinedNodePerformanceManager();
+    public LocalPerformanceManager getNodePerformanceManager() {
+        return new WeightBasedLocalPerformanceManager();
     }
 
     //region performance measurers

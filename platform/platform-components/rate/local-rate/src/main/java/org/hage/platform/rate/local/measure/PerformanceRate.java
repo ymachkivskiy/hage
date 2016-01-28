@@ -1,4 +1,4 @@
-package org.hage.platform.rate.local.normalize;
+package org.hage.platform.rate.local.measure;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

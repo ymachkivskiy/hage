@@ -1,6 +1,6 @@
 package org.hage.platform.rate.local.util;
 
-import org.hage.platform.rate.local.normalize.PerformanceRate;
+import org.hage.platform.rate.local.measure.PerformanceRate;
 
 import java.util.Collection;
 
