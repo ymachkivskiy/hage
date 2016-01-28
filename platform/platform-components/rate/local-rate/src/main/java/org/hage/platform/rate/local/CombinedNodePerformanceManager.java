@@ -2,8 +2,8 @@ package org.hage.platform.rate.local;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.rate.local.config.MeasurerSettings;
-import org.hage.platform.rate.local.config.NormalizationRateSettings;
-import org.hage.platform.rate.local.config.RateConfigurationService;
+import org.hage.platform.rate.local.config.NormalizationSettings;
+import org.hage.platform.rate.local.config.RateConfigurationStorageService;
 import org.hage.platform.rate.local.config.RatingSettings;
 import org.hage.platform.rate.local.measure.PerformanceMeasurer;
 import org.hage.platform.rate.local.normalize.PerformanceRate;
@@ -22,7 +22,7 @@ class CombinedNodePerformanceManager implements NodePerformanceManager {
 
 
     @Autowired
-    private RateConfigurationService rateConfigurationService;
+    private RateConfigurationStorageService rateConfigurationStorageService;
     @Autowired
     private RateNormalizationProvider normalizationProvider;
     @Autowired
@@ -32,7 +32,7 @@ class CombinedNodePerformanceManager implements NodePerformanceManager {
     public PerformanceRate getOverallPerformance() {
         log.info("Calculating overall node performance");
 
-        RatingSettings ratingSettings = rateConfigurationService.getSettings();
+        RatingSettings ratingSettings = rateConfigurationStorageService.getSettings();
 
         List<PerformanceRate> rates = getAllNormalizedRates(ratingSettings);
         PerformanceRate resultRate = sumWithDefaultIfZero(rates, ratingSettings.getMinimalRate());
@@ -53,7 +53,7 @@ class CombinedNodePerformanceManager implements NodePerformanceManager {
     private PerformanceRate getNormalizedRate(PerformanceMeasurer measurer, RatingSettings settings) {
         log.debug("Getting normalized rate for measurer {}", measurer);
 
-        NormalizationRateSettings measurerSettings = settings.getNormalizationSettingsFor(measurer);
+        NormalizationSettings measurerSettings = settings.normalizationFor(measurer);
 
         PerformanceRate rate = normalizationProvider.getNormalizer(measurerSettings).normalize(measurer.measureRate());
 

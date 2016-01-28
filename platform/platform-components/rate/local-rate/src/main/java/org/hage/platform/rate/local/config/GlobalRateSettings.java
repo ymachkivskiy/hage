@@ -1,12 +1,10 @@
 package org.hage.platform.rate.local.config;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 
 import java.math.BigInteger;
 
-@AllArgsConstructor
+@Data
 public class GlobalRateSettings {
-    @Getter
     private final BigInteger maxGlobalRate;
 }
