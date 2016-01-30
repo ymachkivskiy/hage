@@ -14,6 +14,7 @@
     <artifactId>platform-components-parent</artifactId>
 
     <modules>
+        <module>container</module>
         <module>runtime</module>
         <module>config</module>
         <module>habitat</module>
