@@ -8,7 +8,7 @@ class PlatformUtilBusModuleConfiguration {
 
     @Bean
     public EventBus getEventBus() {
-        return new SynchronousEventBus();
+        return new AsynchronousEventBus();
     }
 
     @Bean

@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.component.IStatefulComponent;
 import org.hage.platform.component.exception.ComponentException;
 import org.hage.platform.component.pico.visitor.StatefulComponentFinisher;
-import org.hage.platform.component.pico.visitor.StatefulComponentInitializer;
 import org.hage.platform.component.provider.IMutableComponentInstanceProvider;
 import org.hage.platform.component.services.core.CoreComponent;
 import org.hage.platform.component.services.core.CoreComponentEvent;
@@ -155,12 +154,14 @@ public class DefaultLifecycleManager implements LifecycleManager, EventSubscribe
         }
 
         @Subscribe
+        @SuppressWarnings("unused")
         public void onStopConditionFulfilledEvent(StopConditionFulfilledEvent event) {
             log.debug("Stop condition fulfilled event: {}.", event);
             service.fire(Event.STOP_COMMAND);
         }
 
         @Subscribe
+        @SuppressWarnings("unused")
         public void onExitRequestedEvent(ExitRequestedEvent event) {
             log.debug("Exit requested by event: {}.", event);
             service.fire(Event.EXIT);
@@ -196,22 +197,12 @@ public class DefaultLifecycleManager implements LifecycleManager, EventSubscribe
         public void run() {
             log.info("Configuring the computation.");
 
-            initializeStatefullComponents();
+            coreComponent.configure();
 
             log.info("Node is configured.");
         }
 
-        private void initializeStatefullComponents() {
-            log.debug("Initialising required components.");
-            // initialize in the whole hierarchy (see AGE-163). Can be removed when some @PostConstruct are introduced
-            // or component starting is supported at container level.
-            if (instanceProvider instanceof PicoContainer) {
-                ((PicoContainer) instanceProvider).accept(new StatefulComponentInitializer());
-            } else {
-                //fallback for other potential implementations
-                instanceProvider.getInstances(IStatefulComponent.class);
-            }
-        }
+
 
     }
 

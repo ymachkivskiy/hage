@@ -11,18 +11,21 @@ import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.hazelcast.core.IMap;
 import lombok.extern.slf4j.Slf4j;
+import org.hage.platform.component.IStatefulComponent;
 import org.hage.platform.component.agent.IAgent;
 import org.hage.platform.component.agent.ISimpleAgent;
 import org.hage.platform.component.definition.IComponentDefinition;
 import org.hage.platform.component.exception.ComponentException;
 import org.hage.platform.component.pico.IPicoComponentInstanceProvider;
 import org.hage.platform.component.pico.PicoComponentInstanceProvider;
+import org.hage.platform.component.pico.visitor.StatefulComponentInitializer;
 import org.hage.platform.component.query.AgentEnvironmentQuery;
 import org.hage.platform.component.query.IQuery;
 import org.hage.platform.component.services.core.CoreComponentEvent;
 import org.hage.platform.component.workplace.IStopCondition;
 import org.hage.platform.component.workplace.Workplace;
 import org.hage.platform.component.workplace.WorkplaceException;
+import org.hage.platform.config.ComputationConfiguration;
 import org.hage.platform.config.event.ConfigurationUpdatedEvent;
 import org.hage.platform.util.bus.EventBus;
 import org.hage.platform.util.bus.EventListener;
@@ -37,6 +40,7 @@ import org.hage.platform.util.communication.api.RemoteCommunicationManager;
 import org.hage.platform.util.communication.api.RemoteMessageSubscriber;
 import org.hage.platform.util.communication.message.Message;
 import org.hage.util.Locks;
+import org.picocontainer.PicoContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.*;
@@ -48,6 +52,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
@@ -98,6 +103,8 @@ public class DefaultWorkplaceManager implements
     private IPicoComponentInstanceProvider childContainer;
     @Autowired
     private EventBus eventBus;
+
+    private final AtomicReference<ComputationConfiguration> config = new AtomicReference<>();
 
     // Lifecycle methods
 
@@ -453,6 +460,38 @@ public class DefaultWorkplaceManager implements
     }
 
     @Override
+    public void configure() {
+
+        final Collection<IComponentDefinition> componentDefinitions = config.get().getComponentsDefinitions();
+
+        childContainer = instanceProvider.makeChildContainer();
+        for (final IComponentDefinition def : componentDefinitions) {
+            childContainer.addComponent(def);
+        }
+        childContainer.verify();
+
+        configuredWorkplaces = newArrayList(childContainer.getInstances(Workplace.class));
+
+        log.info("Configured workplaces: {}.", configuredWorkplaces);
+
+        initializeStatefullComponents();
+
+        eventBus.post(new CoreComponentEvent(CoreComponentEvent.Type.CONFIGURED));
+    }
+
+    private void initializeStatefullComponents() {
+        log.debug("Initialising required components.");
+        // initialize in the whole hierarchy (see AGE-163). Can be removed when some @PostConstruct are introduced
+        // or component starting is supported at container level.
+        if (instanceProvider instanceof PicoContainer) {
+            instanceProvider.accept(new StatefulComponentInitializer());
+        } else {
+            //fallback for other potential implementations
+            instanceProvider.getInstances(IStatefulComponent.class);
+        }
+    }
+
+    @Override
     public EventListener getEventListener() {
         return eventListener;
     }
@@ -462,21 +501,7 @@ public class DefaultWorkplaceManager implements
         @Subscribe
         @SuppressWarnings("unused")
         public void onConfigurationUpdated(ConfigurationUpdatedEvent event) {
-            log.debug("Event: {}.", event);
-            checkState(configuredWorkplaces == null, "The core component is already configured.");
-
-            final Collection<IComponentDefinition> componentDefinitions = event.getComputationConfiguration().getComponentsDefinitions();
-
-            childContainer = instanceProvider.makeChildContainer();
-            for (final IComponentDefinition def : componentDefinitions) {
-                childContainer.addComponent(def);
-            }
-            childContainer.verify();
-
-            configuredWorkplaces = newArrayList(childContainer.getInstances(Workplace.class));
-
-            log.info("Configured workplaces: {}.", configuredWorkplaces);
-            eventBus.post(new CoreComponentEvent(CoreComponentEvent.Type.CONFIGURED));
+            config.set(event.getComputationConfiguration());
         }
 
     }
