@@ -32,10 +32,10 @@
 package org.hage.examples.functions;
 
 
+import org.hage.platform.communication.address.agent.AgentAddress;
+import org.hage.platform.communication.address.agent.AgentAddressSupplier;
 import org.hage.platform.component.agent.SimpleAggregate;
 import org.hage.platform.component.exception.ComponentException;
-import org.hage.platform.util.communication.address.agent.AgentAddress;
-import org.hage.platform.util.communication.address.agent.AgentAddressSupplier;
 import org.hage.property.DuplicatePropertyNameException;
 import org.hage.property.InvalidPropertyPathException;
 import org.hage.property.functions.*;

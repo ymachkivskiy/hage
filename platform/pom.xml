@@ -14,7 +14,7 @@
     <packaging>pom</packaging>
 
     <name>HAgE::Platform</name>
-    <description>Components for the HAgE platform</description>
+    <description>HAgE platform</description>
 
     <modules>
         <module>common</module>

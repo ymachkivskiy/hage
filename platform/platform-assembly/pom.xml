@@ -14,26 +14,20 @@
     <dependencies>
 
         <dependency>
-            <groupId>org.hage.platform.util</groupId>
-            <artifactId>utils-all</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hage.platform.container</groupId>
+            <groupId>org.hage.platform.component</groupId>
             <artifactId>container-all</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.component.config</groupId>
+            <groupId>org.hage.platform.component</groupId>
             <artifactId>distr-config</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.component.config</groupId>
-            <artifactId>config-provider-xml</artifactId>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>configuration-provider-xml</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -44,7 +38,7 @@
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.component.rate</groupId>
+            <groupId>org.hage.platform.component</groupId>
             <artifactId>distr-rate</artifactId>
             <version>${project.version}</version>
         </dependency>

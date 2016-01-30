@@ -9,19 +9,18 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.hage.platform.component.rate</groupId>
-    <artifactId>local-rate</artifactId>
+    <artifactId>rate-local</artifactId>
 
     <dependencies>
 
         <dependency>
-            <groupId>org.hage.platform.component.config</groupId>
-            <artifactId>internal-config-data</artifactId>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>configuration-internal-data</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.component.rate</groupId>
+            <groupId>org.hage.platform.component</groupId>
             <artifactId>rate-data-model</artifactId>
             <version>${project.version}</version>
         </dependency>

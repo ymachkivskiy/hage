@@ -34,16 +34,16 @@ package org.hage.examples.messages;
 
 import com.google.common.base.Predicate;
 import org.hage.platform.HageException;
+import org.hage.platform.communication.address.agent.AgentAddress;
+import org.hage.platform.communication.address.agent.AgentAddressSupplier;
+import org.hage.platform.communication.address.selector.Selectors;
+import org.hage.platform.communication.message.Message;
+import org.hage.platform.communication.message.SimpleHeader;
+import org.hage.platform.communication.message.SimpleMessage;
 import org.hage.platform.component.action.AgentActions;
 import org.hage.platform.component.agent.AgentException;
 import org.hage.platform.component.agent.SimpleAgent;
 import org.hage.platform.component.query.AgentEnvironmentQuery;
-import org.hage.platform.util.communication.address.agent.AgentAddress;
-import org.hage.platform.util.communication.address.agent.AgentAddressSupplier;
-import org.hage.platform.util.communication.address.selector.Selectors;
-import org.hage.platform.util.communication.message.Message;
-import org.hage.platform.util.communication.message.SimpleHeader;
-import org.hage.platform.util.communication.message.SimpleMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

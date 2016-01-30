@@ -1,6 +1,6 @@
 package org.hage.platform.rate.distributed;
 
-import org.hage.platform.util.communication.address.node.NodeAddress;
+import org.hage.platform.communication.address.node.NodeAddress;
 
 import java.util.Set;
 

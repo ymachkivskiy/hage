@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
+        <groupId>org.hage.platform.component</groupId>
         <artifactId>container-parent</artifactId>
-        <groupId>org.hage.platform.container</groupId>
         <version>0.2.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -13,13 +13,13 @@
     <dependencies>
 
         <dependency>
-            <groupId>org.hage.platform.container</groupId>
+            <groupId>org.hage.platform.component</groupId>
             <artifactId>container-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.container</groupId>
+            <groupId>org.hage.platform.component</groupId>
             <artifactId>pico-impl</artifactId>
             <version>${project.version}</version>
         </dependency>

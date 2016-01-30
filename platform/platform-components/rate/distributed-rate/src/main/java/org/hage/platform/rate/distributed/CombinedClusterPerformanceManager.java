@@ -2,8 +2,8 @@ package org.hage.platform.rate.distributed;
 
 
 import lombok.extern.slf4j.Slf4j;
+import org.hage.platform.communication.address.node.NodeAddress;
 import org.hage.platform.rate.distributed.communication.PerformanceRemoteChanel;
-import org.hage.platform.util.communication.address.node.NodeAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Set;

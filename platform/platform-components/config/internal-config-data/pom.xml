@@ -3,15 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>configuration-parent</artifactId>
         <groupId>org.hage.platform.component</groupId>
+        <artifactId>configuration-parent</artifactId>
         <version>0.2.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.hage.platform.component.config</groupId>
-    <artifactId>internal-config-data</artifactId>
-
+    <artifactId>configuration-internal-data</artifactId>
 
     <dependencies>
 
@@ -22,19 +20,19 @@
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.components.habitat</groupId>
+            <groupId>org.hage.platform.component</groupId>
             <artifactId>habitat-structure</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.components.habitat</groupId>
+            <groupId>org.hage.platform.component</groupId>
             <artifactId>habitat-core</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.component.rate</groupId>
+            <groupId>org.hage.platform.component</groupId>
             <artifactId>rate-data-model</artifactId>
             <version>${project.version}</version>
         </dependency>

@@ -24,7 +24,7 @@
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.component.config</groupId>
+            <groupId>org.hage.platform.component</groupId>
             <artifactId>distr-config</artifactId>
             <version>${project.version}</version>
         </dependency>

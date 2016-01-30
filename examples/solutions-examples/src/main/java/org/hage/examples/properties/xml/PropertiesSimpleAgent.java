@@ -32,13 +32,13 @@
 package org.hage.examples.properties.xml;
 
 
+import org.hage.platform.communication.address.agent.AgentAddress;
+import org.hage.platform.communication.address.agent.AgentAddressSupplier;
 import org.hage.platform.component.agent.AbstractAgent;
 import org.hage.platform.component.agent.AgentException;
 import org.hage.platform.component.agent.SimpleAgent;
 import org.hage.platform.component.exception.ComponentException;
 import org.hage.platform.component.query.AgentEnvironmentQuery;
-import org.hage.platform.util.communication.address.agent.AgentAddress;
-import org.hage.platform.util.communication.address.agent.AgentAddressSupplier;
 import org.hage.property.InvalidPropertyPathException;
 import org.hage.property.Property;
 import org.hage.property.PropertyGetter;

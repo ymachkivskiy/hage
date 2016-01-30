@@ -7,7 +7,6 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.hage.platform.component</groupId>
     <artifactId>runtime</artifactId>
 
     <dependencies>
@@ -20,7 +19,7 @@
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
-            <artifactId>core</artifactId>
+            <artifactId>runtime-core</artifactId>
             <version>${project.version}</version>
         </dependency>
 

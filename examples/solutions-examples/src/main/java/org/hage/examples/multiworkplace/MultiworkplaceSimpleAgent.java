@@ -33,17 +33,17 @@ package org.hage.examples.multiworkplace;
 
 
 import org.hage.examples.migration.CrawlingSimpleAgent;
+import org.hage.platform.communication.address.agent.AgentAddress;
+import org.hage.platform.communication.address.agent.AgentAddressSupplier;
+import org.hage.platform.communication.message.Message;
 import org.hage.platform.component.action.AgentActions;
 import org.hage.platform.component.agent.AgentException;
-import org.hage.platform.util.communication.address.agent.AgentAddress;
-import org.hage.platform.util.communication.address.agent.AgentAddressSupplier;
-import org.hage.platform.util.communication.message.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 
-import static org.hage.platform.util.communication.message.Messages.newMessageToParent;
+import static org.hage.platform.communication.message.Messages.newMessageToParent;
 
 
 /**

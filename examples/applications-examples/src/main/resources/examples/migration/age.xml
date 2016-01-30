@@ -7,23 +7,23 @@
             <component name="workplace" class="org.hage.platform.component.workplace.SimpleWorkplace" isSingleton="false">
                 <property name="agent">
                     <agent name="rootSimpleAggregate" class="org.hage.platform.component.agent.SimpleAggregate">
-                        <component class="org.hage.platform.util.communication.address.agent.DefaultAgentAddressSupplier">
+                        <component class="org.hage.platform.communication.address.agent.DefaultAgentAddressSupplier">
                             <constructor-arg name="nameTemplate" value="TheXFiles"/>
                         </component>
                         <list name="simpleAgents">
                             <agent name="squeeze" class="org.hage.platform.component.agent.SimpleAggregate">
-                                <component class="org.hage.platform.util.communication.address.agent.DefaultAgentAddressSupplier">
+                                <component class="org.hage.platform.communication.address.agent.DefaultAgentAddressSupplier">
                                     <constructor-arg name="nameTemplate" value="Squeeze"/>
                                 </component>
                                 <property name="agents">
                                     <list name="agents">
                                         <agent name="scully" class="org.hage.examples.migration.CrawlingSimpleAgent">
-                                            <component class="org.hage.platform.util.communication.address.agent.DefaultAgentAddressSupplier">
+                                            <component class="org.hage.platform.communication.address.agent.DefaultAgentAddressSupplier">
                                                 <constructor-arg name="nameTemplate" value="Scully"/>
                                             </component>
                                         </agent>
                                         <agent name="mulder" class="org.hage.examples.migration.CrawlingSimpleAgent">
-                                            <component class="org.hage.platform.util.communication.address.agent.DefaultAgentAddressSupplier">
+                                            <component class="org.hage.platform.communication.address.agent.DefaultAgentAddressSupplier">
                                                 <constructor-arg name="nameTemplate" value="Mulder"/>
                                             </component>
                                         </agent>
@@ -32,14 +32,14 @@
                             </agent>
 
                             <agent name="shadows" class="org.hage.platform.component.agent.SimpleAggregate">
-                                <component class="org.hage.platform.util.communication.address.agent.DefaultAgentAddressSupplier">
+                                <component class="org.hage.platform.communication.address.agent.DefaultAgentAddressSupplier">
                                     <constructor-arg name="nameTemplate" value="Shadows"/>
                                 </component>
 
                                 <property name="agents">
                                     <list name="agents">
                                         <agent name="skinner" class="org.hage.examples.migration.CrawlingSimpleAgent">
-                                            <component class="org.hage.platform.util.communication.address.agent.DefaultAgentAddressSupplier">
+                                            <component class="org.hage.platform.communication.address.agent.DefaultAgentAddressSupplier">
                                                 <constructor-arg name="nameTemplate" value="Skinner"/>
                                             </component>
                                         </agent>
@@ -48,14 +48,14 @@
                             </agent>
 
                             <agent name="space" class="org.hage.platform.component.agent.SimpleAggregate">
-                                <component class="org.hage.platform.util.communication.address.agent.DefaultAgentAddressSupplier">
+                                <component class="org.hage.platform.communication.address.agent.DefaultAgentAddressSupplier">
                                     <constructor-arg name="nameTemplate" value="Space"/>
                                 </component>
 
                                 <property name="agents">
                                     <list name="agents">
                                         <agent name="doggett" class="org.hage.examples.migration.CrawlingSimpleAgent">
-                                            <component class="org.hage.platform.util.communication.address.agent.DefaultAgentAddressSupplier">
+                                            <component class="org.hage.platform.communication.address.agent.DefaultAgentAddressSupplier">
                                                 <constructor-arg name="nameTemplate" value="Doggett"/>
                                             </component>
                                         </agent>

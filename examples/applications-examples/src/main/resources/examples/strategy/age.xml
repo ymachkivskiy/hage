@@ -7,25 +7,25 @@
             <component name="workplace" class="org.hage.platform.component.workplace.SimpleWorkplace" isSingleton="false">
                 <property name="agent">
                     <agent name="action" class="org.hage.platform.component.agent.SimpleAggregate">
-                        <component class="org.hage.platform.util.communication.address.agent.DefaultAgentAddressSupplier">
+                        <component class="org.hage.platform.communication.address.agent.DefaultAgentAddressSupplier">
                             <constructor-arg name="nameTemplate" value="TheXFiles"/>
                         </component>
 
                         <list name="agents">
                             <agent name="echo123" class="org.hage.examples.strategy.StrategySimpleAgent">
-                                <component class="org.hage.platform.util.communication.address.agent.DefaultAgentAddressSupplier">
+                                <component class="org.hage.platform.communication.address.agent.DefaultAgentAddressSupplier">
                                     <constructor-arg name="nameTemplate" value="echoEvery1"/>
                                 </component>
                                 <property name="echoStrategy" ref="customCounter"/>
                             </agent>
                             <agent name="echoABC" class="org.hage.examples.strategy.StrategySimpleAgent">
-                                <component class="org.hage.platform.util.communication.address.agent.DefaultAgentAddressSupplier">
+                                <component class="org.hage.platform.communication.address.agent.DefaultAgentAddressSupplier">
                                     <constructor-arg name="nameTemplate" value="echoEvery2"/>
                                 </component>
                                 <property name="echoStrategy" ref="customCounter2"/>
                             </agent>
                             <agent name="echoEcho" class="org.hage.examples.strategy.StrategySimpleAgent">
-                                <component class="org.hage.platform.util.communication.address.agent.DefaultAgentAddressSupplier">
+                                <component class="org.hage.platform.communication.address.agent.DefaultAgentAddressSupplier">
                                     <constructor-arg name="nameTemplate" value="EchoABC"/>
                                 </component>
                                 <property name="echoStrategy" ref="echoAbcStrategy"/>

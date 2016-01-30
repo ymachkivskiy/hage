@@ -1,12 +1,12 @@
 package org.hage.platform.rate.distributed.communication;
 
+import org.hage.platform.communication.message.service.ServiceHeader;
+import org.hage.platform.communication.message.service.ServiceMessage;
 import org.hage.platform.rate.local.measure.PerformanceRate;
-import org.hage.platform.util.communication.message.service.ServiceHeader;
-import org.hage.platform.util.communication.message.service.ServiceMessage;
 
 import javax.annotation.concurrent.Immutable;
 
-import static org.hage.platform.util.communication.message.service.ServiceHeader.create;
+import static org.hage.platform.communication.message.service.ServiceHeader.create;
 
 @Immutable
 public class PerformanceServiceMessage extends ServiceMessage<PerformanceMessageType, PerformanceRate> {

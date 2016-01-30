@@ -9,20 +9,19 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.hage.platform.component.rate</groupId>
     <artifactId>distr-rate</artifactId>
 
     <dependencies>
 
         <dependency>
-            <groupId>org.hage.platform.util.connection</groupId>
+            <groupId>org.hage.platform.component</groupId>
             <artifactId>connection-link</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.component.rate</groupId>
-            <artifactId>local-rate</artifactId>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>rate-local</artifactId>
             <version>${project.version}</version>
         </dependency>
         

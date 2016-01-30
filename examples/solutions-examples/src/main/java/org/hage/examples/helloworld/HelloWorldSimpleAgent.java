@@ -32,9 +32,9 @@
 package org.hage.examples.helloworld;
 
 
+import org.hage.platform.communication.address.agent.AgentAddress;
+import org.hage.platform.communication.address.agent.AgentAddressSupplier;
 import org.hage.platform.component.agent.SimpleAgent;
-import org.hage.platform.util.communication.address.agent.AgentAddress;
-import org.hage.platform.util.communication.address.agent.AgentAddressSupplier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
