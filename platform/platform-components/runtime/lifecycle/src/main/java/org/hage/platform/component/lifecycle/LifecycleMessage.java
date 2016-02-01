@@ -15,11 +15,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 @ReturnValuesAreNonnullByDefault
 @Immutable
-public final class LifecycleMessage extends ServiceMessage<LifecycleMessage.LifecycleCommand, Serializable> {
+public final class LifecycleMessage extends ServiceMessage<LifecycleCommand, Serializable> {
 
     private static final long serialVersionUID = 1L;
 
-    public LifecycleMessage(final ServiceHeader<LifecycleCommand> header, @Nullable final Serializable payload) {
+    private LifecycleMessage(final ServiceHeader<LifecycleCommand> header, @Nullable final Serializable payload) {
         super(header, payload);
     }
 
@@ -38,18 +38,4 @@ public final class LifecycleMessage extends ServiceMessage<LifecycleMessage.Life
         return getHeader().getType();
     }
 
-    public enum LifecycleCommand {
-
-        START,
-
-        PAUSE,
-
-        STOP,
-
-        FAIL,
-
-        NOTIFY,
-
-        EXIT,
-    }
 }

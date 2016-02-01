@@ -5,7 +5,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import org.hage.platform.annotation.FieldsAreNonnullByDefault;
 import org.hage.platform.component.IStatefulComponent;
-import org.hage.platform.util.fsm.StateChangedEvent;
+import org.hage.platform.component.lifecycle.event.LifecycleStateChangedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +35,7 @@ public class LifecycleTransitionLogger implements IStatefulComponent {
 
 
     @Subscribe
-    public <S extends Enum<S>, E extends Enum<E>> void logStateChanged(final StateChangedEvent<S, E> event) {
+    public void logStateChanged(final LifecycleStateChangedEvent event) {
         log.info("Event {}.", event);
 
         try {

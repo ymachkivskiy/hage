@@ -19,8 +19,8 @@
         <!-- HAgE Modules -->
 
         <dependency>
-            <groupId>org.hage.platform.util</groupId>
-            <artifactId>state-machine</artifactId>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>lifecycle-event-data</artifactId>
             <version>${project.version}</version>
         </dependency>
 

@@ -15,10 +15,10 @@ public final class LifecycleMessages {
     }
 
     public static LifecycleMessage createStart() {
-        return LifecycleMessage.create(LifecycleMessage.LifecycleCommand.START);
+        return LifecycleMessage.create(LifecycleCommand.START);
     }
 
     public static LifecycleMessage createExit() {
-        return LifecycleMessage.create(LifecycleMessage.LifecycleCommand.EXIT);
+        return LifecycleMessage.create(LifecycleCommand.EXIT);
     }
 }

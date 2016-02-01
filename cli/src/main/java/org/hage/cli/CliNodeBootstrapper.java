@@ -3,7 +3,7 @@ package org.hage.cli;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.PlatformConfiguration;
-import org.hage.platform.component.services.core.LifecycleManager;
+import org.hage.platform.component.lifecycle.LifecycleEngine;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -56,6 +56,6 @@ public class CliNodeBootstrapper {
     }
 
     private void initialize() {
-        applicationContext.getBean(LifecycleManager.class).start();
+        applicationContext.getBean(LifecycleEngine.class).start();
     }
 }

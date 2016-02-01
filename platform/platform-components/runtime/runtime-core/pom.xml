@@ -14,6 +14,13 @@
     <name>HAgE::Services::Core</name>
 
     <dependencies>
+
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>lifecycle-engine-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.hage.platform.component</groupId>
             <artifactId>connection-all</artifactId>

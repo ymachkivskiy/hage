@@ -15,9 +15,30 @@
 
 
     <dependencies>
+
+        <!--TODO remove this TEMPORARY dependency-->
         <dependency>
             <groupId>org.hage.platform.component</groupId>
             <artifactId>runtime-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!---->
+
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>lifecycle-engine-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>lifecycle-event-data</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>lifecycle-engine</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -30,12 +51,6 @@
         <dependency>
             <groupId>org.hage.platform.component</groupId>
             <artifactId>distr-config</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hage.platform.util</groupId>
-            <artifactId>state-machine</artifactId>
             <version>${project.version}</version>
         </dependency>
 

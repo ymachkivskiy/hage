@@ -36,8 +36,8 @@ import org.hage.platform.communication.address.node.NodeAddress;
 import org.hage.platform.communication.address.node.NodeAddressSupplier;
 import org.hage.platform.component.definition.ComponentDefinition;
 import org.hage.platform.component.exception.ComponentException;
+import org.hage.platform.component.lifecycle.LifecycleEngine;
 import org.hage.platform.component.pico.PicoComponentInstanceProvider;
-import org.hage.platform.component.services.core.LifecycleManager;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -71,7 +71,7 @@ public class DefaultWorkplaceManagerTest {
     private NodeAddressSupplier addressProvider;
     @Mock
     // (answer = Answers.CALLS_REAL_METHODS)
-    private LifecycleManager lifecycleManager;
+    private LifecycleEngine lifecycleEngine;
 
     @Before
     public void setUp() throws ComponentException {
@@ -79,7 +79,7 @@ public class DefaultWorkplaceManagerTest {
 
         //instanceProvider.addComponent(LoopbackCommunicationService.class);
         instanceProvider.addComponentInstance(addressProvider);
-        instanceProvider.addComponentInstance(lifecycleManager);
+        instanceProvider.addComponentInstance(lifecycleEngine);
         instanceProvider.addComponent(DefaultWorkplaceManager.class);
         instanceProvider.verify();
     }

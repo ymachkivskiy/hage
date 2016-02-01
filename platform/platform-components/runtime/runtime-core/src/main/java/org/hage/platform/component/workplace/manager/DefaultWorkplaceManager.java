@@ -106,7 +106,7 @@ public class DefaultWorkplaceManager implements
 
     private final AtomicReference<ComputationConfiguration> config = new AtomicReference<>();
 
-    // Lifecycle methods
+    // LifecycleEngine methods
 
     @PostConstruct
     @Override

@@ -14,7 +14,6 @@
     <modules>
         <module>event-bus</module>
         <module>utils-all</module>
-        <module>state-machine</module>
         <module>reflection</module>
         <module>property</module>
         <module>container-share</module>

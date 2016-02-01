@@ -3,30 +3,22 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <groupId>org.hage.platform.util</groupId>
-        <artifactId>utils-parent</artifactId>
+        <artifactId>runtime-parent</artifactId>
+        <groupId>org.hage.platform.component</groupId>
         <version>0.2.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>utils-all</artifactId>
+    <artifactId>lifecycle-event-data</artifactId>
 
     <dependencies>
+
         <dependency>
             <groupId>org.hage.platform.util</groupId>
             <artifactId>event-bus</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.hage.platform.util</groupId>
-            <artifactId>reflection</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.hage.platform.util</groupId>
-            <artifactId>property</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+
     </dependencies>
 
 </project>
