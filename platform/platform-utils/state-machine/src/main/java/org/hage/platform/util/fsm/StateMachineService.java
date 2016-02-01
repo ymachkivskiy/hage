@@ -3,11 +3,11 @@ package org.hage.platform.util.fsm;
 
 import com.google.common.collect.Table;
 import com.google.common.util.concurrent.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.FieldsAreNonnullByDefault;
 import org.hage.platform.util.bus.EventBus;
-import org.hage.util.Locks;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.GuardedBy;
@@ -24,37 +24,26 @@ import static com.google.common.collect.Queues.newPriorityBlockingQueue;
 import static com.google.common.util.concurrent.MoreExecutors.listeningDecorator;
 import static com.google.common.util.concurrent.MoreExecutors.sameThreadExecutor;
 import static java.util.concurrent.Executors.newSingleThreadScheduledExecutor;
+import static org.hage.util.Locks.withReadLock;
+import static org.hage.util.Locks.withWriteLock;
 
-
+// TODO: 2/1/2016 refactor this mess
 @FieldsAreNonnullByDefault
 @ThreadSafe
+@Slf4j
 public class StateMachineService<S extends Enum<S>, E extends Enum<E>> {
 
-    private static final Logger log = LoggerFactory.getLogger(StateMachineService.class);
-
-    private final EnumSet<S> allStates;
-
-    private final EnumSet<E> allEvents;
+    private final ListeningScheduledExecutorService service = listeningDecorator(
+        newSingleThreadScheduledExecutor(new ThreadFactoryBuilder().setNameFormat("fsm-srv-%d").build()));
 
     private final Table<S, E, TransitionDescriptor<S, E>> transitionsTable;
-
     private final E failureEvent;
-
-    private final ListeningScheduledExecutorService service = listeningDecorator(
-            newSingleThreadScheduledExecutor(new ThreadFactoryBuilder().setNameFormat("fsm-srv-%d").build()));
-
     private final PriorityBlockingQueue<EventHolder> eventQueue = newPriorityBlockingQueue();
-
     private final EnumSet<S> terminalStates;
-
     private final ReadWriteLock stateLock = new ReentrantReadWriteLock();
-
     private final ScheduledFuture<?> dispatcherFuture;
-
     private final boolean shutdownAfterTerminalState;
-
     private final EventBus eventBus;
-
     private final NotificationEventCreator<S, E, ? extends StateChangedEvent<S, E>> notificationCreator;
 
     @GuardedBy("stateLock")
@@ -64,12 +53,10 @@ public class StateMachineService<S extends Enum<S>, E extends Enum<E>> {
     @GuardedBy("stateLock")
     private E currentEvent;
 
-    StateMachineService(final StateMachineServiceBuilder<S, E> builder) throws NoSuchMethodException {
-        allStates = EnumSet.allOf(builder.getStateClass());
-        allEvents = EnumSet.allOf(builder.getEventClass());
+    StateMachineService(final StateMachineServiceBuilder<S, E> builder) {
         currentState = builder.getInitialState();
-        this.eventBus = builder.getEventBus();
-        this.notificationCreator = builder.getNotificationCreator();
+        eventBus = builder.getEventBus();
+        notificationCreator = builder.getNotificationCreator();
         terminalStates = builder.getTerminalStates();
         shutdownAfterTerminalState = builder.getShutdownWhenTerminated();
         failureEvent = builder.getFailureBehaviorBuilder().getEvent();
@@ -77,61 +64,28 @@ public class StateMachineService<S extends Enum<S>, E extends Enum<E>> {
         dispatcherFuture = service.scheduleAtFixedRate(new Dispatcher(), 0, 1, TimeUnit.MILLISECONDS);
     }
 
-    public void fire(final E event) {
-        log.debug("{} fired.", event);
-        eventQueue.add(new EventHolder(event));
-    }
-
-    public void fire(final E event, final Object... parameters) {
-        log.debug("{} fired with parameters: {}.", event, parameters);
-        eventQueue.add(new EventHolder(event, parameters));
-    }
-
     public final S getCurrentState() {
-        return withReadLock(() -> currentState);
+        return readLock(() -> currentState);
     }
 
     private void setCurrentState(final S state) {
-        withWriteLock(() -> StateMachineService.this.currentState = state);
-    }
-
-    private void withWriteLock(final Runnable runnable) {
-        try {
-            Locks.withWriteLock(stateLock, runnable);
-        } catch (final Exception e) {
-            fire(failureEvent, e);
-        }
-    }
-
-    public void fire(final E event, final Object parameter) {
-        log.debug("{} fired with parameters: {}.", event, parameter);
-        eventQueue.add(new EventHolder(event, parameter));
+        writeLock(() -> this.currentState = state);
     }
 
     private void setCurrentEvent(@Nullable final E event) {
-        withWriteLock(() -> StateMachineService.this.currentEvent = event);
+        writeLock(() -> StateMachineService.this.currentEvent = event);
     }
 
     public final boolean inState(final S state) {
-        return withReadLock(() -> currentState == state);
-    }
-
-    @Nullable
-    private <T> T withReadLock(final Callable<T> callable) {
-        try {
-            return Locks.withReadLock(stateLock, callable);
-        } catch (final Exception e) {
-            fire(failureEvent, e);
-        }
-        return null;
+        return readLock(() -> currentState == state);
     }
 
     public boolean terminated() {
-        return withReadLock(() -> terminalStates.contains(currentState));
+        return readLock(() -> terminalStates.contains(currentState));
     }
 
     public boolean isTerminating() {
-        return withReadLock(() -> {
+        return readLock(() -> {
             if (currentEvent == null) {
                 return false;
             }
@@ -141,7 +95,7 @@ public class StateMachineService<S extends Enum<S>, E extends Enum<E>> {
     }
 
     public void shutdown() {
-        withReadLock(() -> checkState(terminated(), "Service has not terminated yet. Current state: %s.", getCurrentState()));
+        readLock(() -> checkState(terminated(), "Service has not terminated yet. Current state: %s.", getCurrentState()));
         internalShutdown();
         try {
             service.awaitTermination(2, TimeUnit.SECONDS);
@@ -150,6 +104,16 @@ public class StateMachineService<S extends Enum<S>, E extends Enum<E>> {
             log.warn("Interrupted during shutdown.");
             Thread.currentThread().interrupt();
         }
+    }
+
+    public void fire(final E event) {
+        log.debug("{} fired.", event);
+        eventQueue.add(new EventHolder(event));
+    }
+
+    public void fire(final E event, final Object parameter) {
+        log.debug("{} fired with parameters: {}.", event, parameter);
+        eventQueue.add(new EventHolder(event, parameter));
     }
 
     void fireAndWaitForTransitionToComplete(final E event) {
@@ -168,7 +132,7 @@ public class StateMachineService<S extends Enum<S>, E extends Enum<E>> {
 
         boolean stable = false;
         while (!stable) {
-            stable = withReadLock(() -> eventQueue.isEmpty() && currentEvent == null);
+            stable = readLock(() -> eventQueue.isEmpty() && currentEvent == null);
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
@@ -184,17 +148,13 @@ public class StateMachineService<S extends Enum<S>, E extends Enum<E>> {
         service.shutdown();
     }
 
-    private void withReadLock(final Runnable runnable) {
-        Locks.withReadLock(stateLock, runnable);
-    }
-
     public EventBus getEventBus() {
         return eventBus;
     }
 
     @Override
     public String toString() {
-        return withReadLock(new Callable<String>() {
+        return readLock(new Callable<String>() {
 
             @Override
             public String call() throws Exception {
@@ -210,22 +170,16 @@ public class StateMachineService<S extends Enum<S>, E extends Enum<E>> {
         }
     }
 
-
+    @RequiredArgsConstructor
     private class TransitionFinalizer implements FutureCallback<Object> {
 
         private final TransitionDescriptor<S, E> descriptor;
 
         private final Semaphore completionSemaphore;
-
-        public TransitionFinalizer(final TransitionDescriptor<S, E> descriptor, final Semaphore completionSemaphore) {
-            this.descriptor = descriptor;
-            this.completionSemaphore = completionSemaphore;
-        }
-
         @Override
         public void onSuccess(final Object result) {
             log.debug("Transition from {} on {} to {} was successful.", logData());
-            withWriteLock(() -> {
+            writeLock(() -> {
                 setCurrentState(descriptor.getTarget());
                 setCurrentEvent(null);
             });
@@ -252,7 +206,6 @@ public class StateMachineService<S extends Enum<S>, E extends Enum<E>> {
         }
 
     }
-
 
     private class Dispatcher implements Runnable {
 
@@ -313,21 +266,23 @@ public class StateMachineService<S extends Enum<S>, E extends Enum<E>> {
 
             final Runnable runnable = transitionDescriptor.getAction();
             if (runnable instanceof CallableAdapter) {
-                ((CallableAdapter) runnable).setParameters(holder.getParameters());
+                ((CallableAdapter) runnable).setParameter(holder.getParameters());
             }
             final ListenableFuture<?> future = localExecutor.submit(runnable);
             Futures.addCallback(future, new TransitionFinalizer(transitionDescriptor, holder.getSemaphore()));
 
         }
+
     }
 
-
+    @RequiredArgsConstructor
     private class EventHolder implements Comparable<EventHolder> {
 
-        private final E event;
-
+        @Getter
         private final Semaphore semaphore = new Semaphore(0);
-
+        @Getter
+        private final E event;
+        @Getter
         @Nullable
         private final Object parameters;
 
@@ -335,24 +290,6 @@ public class StateMachineService<S extends Enum<S>, E extends Enum<E>> {
             this(event, null);
         }
 
-        public EventHolder(final E event, @Nullable final Object parameters) {
-            this.event = event;
-            this.parameters = parameters;
-        }
-
-        final E getEvent() {
-            return event;
-        }
-
-        final Semaphore getSemaphore() {
-            return semaphore;
-        }
-
-        final Object getParameters() {
-            return parameters;
-        }
-
-        final
         @Override
         public int compareTo(final EventHolder o) {
             if (failureEvent.equals(this.event) && failureEvent.equals(o.event)) {
@@ -364,6 +301,24 @@ public class StateMachineService<S extends Enum<S>, E extends Enum<E>> {
             }
             return 0;
         }
+
+    }
+
+    private void writeLock(final Runnable runnable) {
+        withWriteLock(stateLock, runnable);
+    }
+
+    private void readLock(final Runnable runnable) {
+        withReadLock(stateLock, runnable);
+    }
+
+    private <T> T readLock(final Callable<T> callable) {
+        try {
+            return withReadLock(stateLock, callable);
+        } catch (final Exception e) {
+            fire(failureEvent, e);
+        }
+        return null;
     }
 
 }

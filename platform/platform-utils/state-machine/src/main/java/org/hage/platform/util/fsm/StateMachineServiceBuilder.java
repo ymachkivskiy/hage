@@ -5,11 +5,9 @@ import com.google.common.collect.ArrayTable;
 import com.google.common.collect.ImmutableTable;
 import com.google.common.collect.ImmutableTable.Builder;
 import com.google.common.collect.Table;
-import org.hage.platform.HageException;
-import org.hage.platform.annotation.ReturnValuesAreNonnullByDefault;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.util.bus.EventBus;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -19,25 +17,27 @@ import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Maps.newEnumMap;
+import static org.hage.platform.util.fsm.TransitionDescriptor.transition;
 
 
-@ReturnValuesAreNonnullByDefault
+@Slf4j
 public class StateMachineServiceBuilder<S extends Enum<S>, E extends Enum<E>> {
 
-    private static final Logger log = LoggerFactory.getLogger(StateMachineServiceBuilder.class);
-    @Nonnull
-    private final FailureBehaviorBuilder failureBehaviorBuilder = new FailureBehaviorBuilder();
+    private S initialState;
     private Table<S, E, S> transitions;
     private Map<E, S> noStateTransitions;
+    private EnumSet<S> terminalStates;
     private Table<S, E, Runnable> actions;
     private Map<E, Runnable> noStateActions;
+
     private Class<S> stateClass;
     private Class<E> eventClass;
-    private S initialState;
-    private EnumSet<S> terminalStates;
+
     private EventBus eventBus;
 
     private boolean shutdownWhenTerminated = false;
+
+    private final FailureBehaviorBuilder failureBehaviorBuilder = new FailureBehaviorBuilder();
     private NotificationEventCreator<S, E, ? extends StateChangedEvent<S, E>> notificationCreator;
 
     public static <V extends Enum<V>, T extends Enum<T>> StateMachineServiceBuilder<V, T> create() {
@@ -118,14 +118,7 @@ public class StateMachineServiceBuilder<S extends Enum<S>, E extends Enum<E>> {
         checkState(failureBehaviorBuilder.getEvent() != null);
         checkState(eventBus != null);
 
-        try {
-            return new StateMachineService<S, E>(this) {
-                /* Empty */
-            };
-        } catch (NoSuchMethodException e) {
-            log.error("Incorrect event class.", e);
-            throw new HageException(e);
-        }
+        return new StateMachineService<>(this);
     }
 
     @Nullable
@@ -208,15 +201,14 @@ public class StateMachineServiceBuilder<S extends Enum<S>, E extends Enum<E>> {
             target = noStateTransitions.get(event);
             action = noStateActions.get(event);
         } else {
-            return TransitionDescriptor.getNull();
+            return TransitionDescriptor.nullTransition();
         }
 
-        final TransitionDescriptor<S, E> descriptor = new TransitionDescriptor<>(state, event, target, action);
+        final TransitionDescriptor<S, E> descriptor = transition(state, target, event, action);
         log.debug("New transition: {}.", descriptor);
         return descriptor;
     }
 
-    @ReturnValuesAreNonnullByDefault
     public final class ActionBuilder {
 
         private final S entry;
@@ -241,7 +233,7 @@ public class StateMachineServiceBuilder<S extends Enum<S>, E extends Enum<E>> {
             return this;
         }
 
-        public <T> ActionBuilder execute(final CallableWithParameters<T> actionToExecute) {
+        public <T> ActionBuilder execute(final CallableWithParameter<T> actionToExecute) {
             this.action = new CallableAdapter<>(actionToExecute);
             return this;
         }
@@ -264,7 +256,6 @@ public class StateMachineServiceBuilder<S extends Enum<S>, E extends Enum<E>> {
         }
     }
 
-    @ReturnValuesAreNonnullByDefault
     public class AnyStateActionBuilder {
 
         private E event;
@@ -283,7 +274,7 @@ public class StateMachineServiceBuilder<S extends Enum<S>, E extends Enum<E>> {
             return this;
         }
 
-        public <T> AnyStateActionBuilder execute(final CallableWithParameters<T> actionToExecute) {
+        public <T> AnyStateActionBuilder execute(final CallableWithParameter<T> actionToExecute) {
             this.action = new CallableAdapter<>(actionToExecute);
             return this;
         }
@@ -308,17 +299,12 @@ public class StateMachineServiceBuilder<S extends Enum<S>, E extends Enum<E>> {
 
     public class FailureBehaviorBuilder {
 
-        @Nullable
+        @Getter
         private E event;
 
         public StateMachineServiceBuilder<S, E> fire(final E eventToFire) {
             this.event = eventToFire;
             return StateMachineServiceBuilder.this;
-        }
-
-        @Nullable
-        E getEvent() {
-            return event;
         }
     }
 

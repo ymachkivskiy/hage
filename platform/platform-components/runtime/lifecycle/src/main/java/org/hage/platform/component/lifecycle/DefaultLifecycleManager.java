@@ -15,7 +15,7 @@ import org.hage.platform.config.event.ConfigurationUpdatedEvent;
 import org.hage.platform.util.bus.EventBus;
 import org.hage.platform.util.bus.EventListener;
 import org.hage.platform.util.bus.EventSubscriber;
-import org.hage.platform.util.fsm.CallableWithParameters;
+import org.hage.platform.util.fsm.CallableWithParameter;
 import org.hage.platform.util.fsm.StateMachineService;
 import org.hage.platform.util.fsm.StateMachineServiceBuilder;
 import org.picocontainer.PicoContainer;
@@ -322,7 +322,7 @@ public class DefaultLifecycleManager implements LifecycleManager, EventSubscribe
     }
 
 
-    private class ErrorAction implements CallableWithParameters<Throwable> {
+    private class ErrorAction implements CallableWithParameter<Throwable> {
 
         @Override
         public void call(final Throwable parameter) {

@@ -1,77 +1,44 @@
 package org.hage.platform.util.fsm;
 
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import static java.lang.String.format;
 
-
+@RequiredArgsConstructor
 class TransitionDescriptor<S extends Enum<S>, E extends Enum<E>> {
 
     @SuppressWarnings("unchecked")
-    public static final TransitionDescriptor<?, ?> NULL = new TransitionDescriptor(null, null, null, null) {
+    private static final TransitionDescriptor<?, ?> NULL_TRANSITION = new TransitionDescriptor(
+        () -> {},
+        null,
+        null,
+        null,
+        true
+    );
 
-        @Override
-        boolean isNull() {
-            return true;
-        }
-
-        @Override
-        public String toString() {
-            return format("(null)");
-        }
-    };
-    private static final Runnable EMPTY_ACTION = new Runnable() {
-
-        @Override
-        public void run() {
-            // Empty
-        }
-    };
-    private final S initial;
-    private final E event;
-    @Nonnull
+    @Getter
     private final Runnable action;
+    @Getter
+    private final E event;
+    @Getter
+    private final S initial;
+    @Getter
     private final S target;
-
-    public TransitionDescriptor(@Nullable final S initial, @Nullable final E event, @Nullable final S target,
-            @Nullable final Runnable action) {
-        this.initial = initial;
-        this.event = event;
-        this.action = action != null ? action : EMPTY_ACTION;
-        this.target = target;
-    }
+    @Getter
+    private final boolean isNull;
 
     @SuppressWarnings("unchecked")
     @Nonnull
-    public static <V extends Enum<V>, Z extends Enum<Z>> TransitionDescriptor<V, Z> getNull() {
-        return (TransitionDescriptor<V, Z>) NULL;
+    public static <V extends Enum<V>, Z extends Enum<Z>> TransitionDescriptor<V, Z> nullTransition() {
+        return (TransitionDescriptor<V, Z>) NULL_TRANSITION;
     }
 
-    @Nonnull
-    final Runnable getAction() {
-        return action;
-    }
-
-    @Nullable
-    final S getTarget() {
-        return target;
-    }
-
-    @Nullable
-    final S getInitial() {
-        return initial;
-    }
-
-    @Nullable
-    final E getEvent() {
-        return event;
-    }
-
-    @SuppressWarnings("static-method")
-    boolean isNull() {
-        return false;
+    public static <V extends Enum<V>, Z extends Enum<Z>> TransitionDescriptor<V, Z> transition(V initial, V target, Z event, Runnable action) {
+        return new TransitionDescriptor<>(action, event, initial, target, false);
     }
 
     @Override

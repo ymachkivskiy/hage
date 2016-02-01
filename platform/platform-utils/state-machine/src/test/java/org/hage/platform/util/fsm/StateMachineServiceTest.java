@@ -1,6 +1,7 @@
 package org.hage.platform.util.fsm;
 
 
+import org.hage.platform.util.bus.EventBus;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,6 +12,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -29,9 +31,11 @@ public class StateMachineServiceTest {
         builder.terminateIn(State.TERMINAL);
         builder.inAnyState().on(Event.ERROR).goTo(State.FAIL).commit();
         builder.ifFailed().fire(Event.ERROR);
+        builder.withEventBus(mock(EventBus.class));
+        builder.notificationCreator(mock(NotificationEventCreator.class));
     }
 
-    @Test
+    @Test(timeout = 10000)
     public void shouldBeInCorrectInitialState() {
         // given
         service = builder.build();
@@ -40,7 +44,7 @@ public class StateMachineServiceTest {
         assertThat(service.getCurrentState(), is(State.INITIAL));
     }
 
-    @Test
+    @Test(timeout = 10000)
     public void shouldPerformBasicTransition() {
         // given
         builder.in(State.INITIAL).on(Event.A).goTo(State.SECOND).commit();
@@ -53,7 +57,7 @@ public class StateMachineServiceTest {
         assertThat(service.getCurrentState(), is(State.SECOND));
     }
 
-    @Test
+    @Test(timeout = 10000)
     public void shouldBeTerminatedAfterTransitionToTerminalState() {
         // given
         builder.in(State.INITIAL).on(Event.A).goTo(State.TERMINAL).commit();
@@ -67,7 +71,7 @@ public class StateMachineServiceTest {
         assertThat(service.getCurrentState(), is(State.TERMINAL));
     }
 
-    @Test
+    @Test(timeout = 10000)
     public void shouldExecuteActionOnTransition() {
         // given
         final AtomicBoolean executed = new AtomicBoolean(false);
@@ -91,7 +95,7 @@ public class StateMachineServiceTest {
     /**
      * Undefined transition should result in failure event and fail state.
      */
-    @Test
+    @Test(timeout = 10000)
     public void shouldFailIfTransitionUndefined() throws InterruptedException {
         // given
         service = builder.build();
@@ -103,7 +107,7 @@ public class StateMachineServiceTest {
         assertThat(service.getCurrentState(), is(State.FAIL));
     }
 
-    @Test
+    @Test(timeout = 10000)
     public void shouldIgnoreEventsWhenTerminated() throws InterruptedException {
         // given
         builder.in(State.INITIAL).on(Event.A).goTo(State.TERMINAL).commit();
@@ -119,7 +123,7 @@ public class StateMachineServiceTest {
     }
 
     @SuppressWarnings("unchecked")
-    @Test
+    @Test(timeout = 10000)
     public void shouldSendNotificationsAboutStateChanges() {
         // given
         final EventCatcher eventCatcher = new EventCatcher();

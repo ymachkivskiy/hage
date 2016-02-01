@@ -3,6 +3,7 @@ package org.hage.platform.util.fsm;
 
 import com.google.common.collect.Table;
 import com.google.common.collect.Table.Cell;
+import org.hage.platform.util.bus.EventBus;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,7 +11,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
-
+import static org.mockito.Mockito.mock;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -31,6 +32,7 @@ public class StateMachineServiceBuilderTest {
         builder.terminateIn(State.TERMINAL);
         builder.ifFailed().fire(Event.ERROR);
         builder.inAnyState().on(Event.ERROR).goTo(State.FAIL);
+        builder.withEventBus(mock(EventBus.class));
 
         // when
         final StateMachineService<State, Event> service = builder.build();

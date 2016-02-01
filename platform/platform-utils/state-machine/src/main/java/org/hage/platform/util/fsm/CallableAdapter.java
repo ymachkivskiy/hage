@@ -1,30 +1,22 @@
 package org.hage.platform.util.fsm;
 
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-
 public class CallableAdapter<T> implements Runnable {
 
-    @Nonnull
-    private final CallableWithParameters<T> callable;
+    private final CallableWithParameter<T> callable;
 
-    private T parameters;
+    private T parameter;
 
-
-    public CallableAdapter(final CallableWithParameters<T> callable) {
-        super();
+    public CallableAdapter(final CallableWithParameter<T> callable) {
         this.callable = callable;
     }
 
-
-    public void setParameters(@Nullable final T parameters) {
-        this.parameters = parameters;
+    public void setParameter(final T parameter) {
+        this.parameter = parameter;
     }
 
     @Override
     public void run() {
-        callable.call(parameters);
+        callable.call(parameter);
     }
 }
