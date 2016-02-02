@@ -9,6 +9,7 @@ import org.hage.platform.component.lifecycle.LifecycleEvent;
 public class FailureBehaviorBuilder {
 
     private final LifecycleStateMachineBuilder builder;
+
     @Getter
     private LifecycleEvent event;
 

@@ -2,7 +2,7 @@ package org.hage.platform.component.lifecycle.api;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.hage.platform.component.lifecycle.Action;
+import org.hage.platform.component.lifecycle.LifecycleAction;
 import org.hage.platform.component.lifecycle.LifecycleEvent;
 import org.hage.platform.component.lifecycle.LifecycleState;
 
@@ -10,16 +10,17 @@ import org.hage.platform.component.lifecycle.LifecycleState;
 public class AnyStateActionBuilder {
 
     private final LifecycleStateMachineBuilder builder;
+
     private LifecycleEvent event;
     private LifecycleState exit;
-    private Action action = EmptyAction.INSTANCE;
+    private Class<? extends LifecycleAction> action = EmptyLifecycleAction.class;
 
     public AnyStateActionBuilder on(LifecycleEvent initiatingEvent) {
         this.event = initiatingEvent;
         return this;
     }
 
-    public AnyStateActionBuilder execute(Action actionToExecute) {
+    public AnyStateActionBuilder execute(Class<? extends LifecycleAction> actionToExecute) {
         this.action = actionToExecute;
         return this;
     }

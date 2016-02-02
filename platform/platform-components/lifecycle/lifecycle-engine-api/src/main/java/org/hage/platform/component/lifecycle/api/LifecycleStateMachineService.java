@@ -7,7 +7,7 @@ import com.google.common.util.concurrent.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.component.lifecycle.Action;
+import org.hage.platform.component.lifecycle.LifecycleAction;
 import org.hage.platform.component.lifecycle.LifecycleEvent;
 import org.hage.platform.component.lifecycle.LifecycleState;
 import org.hage.platform.component.lifecycle.LifecycleStateMachine;
@@ -214,8 +214,8 @@ class LifecycleStateMachineService implements LifecycleStateMachine {
             }
             log.debug("Planned transition: {}.", transitionDescriptor);
 
-            Action action = transitionDescriptor.getAction();
-            ListenableFuture<?> future = localExecutor.submit(action::execute);
+            LifecycleAction lifecycleAction = transitionDescriptor.getLifecycleAction();
+            ListenableFuture<?> future = localExecutor.submit(lifecycleAction::execute);
             addCallback(future, new TransitionFinalizer(transitionDescriptor, holder.getSemaphore()));
         }
 

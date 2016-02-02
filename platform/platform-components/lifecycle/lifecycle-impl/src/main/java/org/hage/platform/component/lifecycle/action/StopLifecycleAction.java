@@ -3,7 +3,7 @@ package org.hage.platform.component.lifecycle.action;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.component.lifecycle.Action;
+import org.hage.platform.component.lifecycle.LifecycleAction;
 import org.hage.platform.component.services.core.CoreComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -11,15 +11,15 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public class ResumeAction implements Action {
+public class StopLifecycleAction implements LifecycleAction {
 
     @Autowired
     private CoreComponent coreComponent;
 
     @Override
     public void execute() {
-        log.info("Computation is resuming.");
+        log.info("Computation is stopping.");
 
-        coreComponent.resume();
+        coreComponent.stop();
     }
 }

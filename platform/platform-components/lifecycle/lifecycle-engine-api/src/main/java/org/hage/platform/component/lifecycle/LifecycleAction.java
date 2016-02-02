@@ -1,5 +1,5 @@
 package org.hage.platform.component.lifecycle;
 
-public interface Action {
+public interface LifecycleAction {
     void execute();
 }

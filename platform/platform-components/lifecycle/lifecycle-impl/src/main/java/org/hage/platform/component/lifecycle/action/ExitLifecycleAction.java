@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.component.IStatefulComponent;
 import org.hage.platform.component.exception.ComponentException;
-import org.hage.platform.component.lifecycle.Action;
+import org.hage.platform.component.lifecycle.LifecycleAction;
 import org.hage.platform.component.pico.visitor.StatefulComponentFinisher;
 import org.hage.platform.component.provider.IMutableComponentInstanceProvider;
 import org.picocontainer.PicoContainer;
@@ -18,7 +18,7 @@ import java.util.Map;
 @Component
 @Slf4j
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public class ExitAction implements Action {
+public class ExitLifecycleAction implements LifecycleAction {
 
     @Autowired
     private IMutableComponentInstanceProvider instanceProvider;

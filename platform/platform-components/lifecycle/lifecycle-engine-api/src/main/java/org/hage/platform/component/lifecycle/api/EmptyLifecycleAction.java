@@ -1,18 +1,14 @@
 package org.hage.platform.component.lifecycle.api;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.component.lifecycle.Action;
+import org.hage.platform.component.lifecycle.LifecycleAction;
+import org.springframework.stereotype.Component;
 
+@Component
 @Slf4j
-class EmptyAction implements Action {
-
-    static final Action INSTANCE = new EmptyAction();
-
-    private EmptyAction() {
-    }
+class EmptyLifecycleAction implements LifecycleAction {
 
     @Override
-
     public void execute() {
         log.warn("Empty lifecycle action body");
     }

@@ -6,11 +6,16 @@ import com.google.common.collect.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.component.lifecycle.Action;
+import org.hage.platform.component.lifecycle.LifecycleAction;
 import org.hage.platform.component.lifecycle.LifecycleEvent;
 import org.hage.platform.component.lifecycle.LifecycleState;
 import org.hage.platform.component.lifecycle.LifecycleStateMachine;
 import org.hage.platform.util.bus.EventBus;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.util.EnumMap;
 import java.util.EnumSet;
@@ -23,34 +28,34 @@ import static java.util.Collections.emptySet;
 import static java.util.EnumSet.allOf;
 
 
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+@Component
 @Getter(AccessLevel.PACKAGE)
 @Slf4j
 public class LifecycleStateMachineBuilder {
 
-    private final Table<LifecycleState, LifecycleEvent, Action> actions;
+    @Autowired
+    private BeanFactory beanFactory;
+    @Autowired
+    private EventBus eventBus;
+
+    private final Table<LifecycleState, LifecycleEvent, Class<? extends LifecycleAction>> actions;
     private final Table<LifecycleState, LifecycleEvent, LifecycleState> transitions;
-    private final Map<LifecycleEvent, Action> noStateActions;
+    private final Map<LifecycleEvent, Class<? extends LifecycleAction>> noStateActions;
     private final Map<LifecycleEvent, LifecycleState> noStateTransitions;
 
     private LifecycleState initialState;
     private Set<LifecycleState> terminalStates = emptySet();
 
     private final FailureBehaviorBuilder failureBehaviorBuilder;
-
     private boolean shutdownWhenTerminated = false;
-    private EventBus eventBus;
 
-    LifecycleStateMachineBuilder() {
+    private LifecycleStateMachineBuilder() {
         transitions = ArrayTable.create(allOf(LifecycleState.class), allOf(LifecycleEvent.class));
         actions = ArrayTable.create(allOf(LifecycleState.class), allOf(LifecycleEvent.class));
         noStateTransitions = new EnumMap<>(LifecycleEvent.class);
         noStateActions = new EnumMap<>(LifecycleEvent.class);
         failureBehaviorBuilder = new FailureBehaviorBuilder(this);
-    }
-
-    LifecycleStateMachineBuilder withEventBus(EventBus eventBus) {
-        this.eventBus = eventBus;
-        return this;
     }
 
     public ActionBuilder in(LifecycleState state) {
@@ -85,28 +90,29 @@ public class LifecycleStateMachineBuilder {
 
         checkState(initialState != null);
         checkState(failureBehaviorBuilder.getEvent() != null);
-        checkState(eventBus != null); //// TODO: 01.02.16 remove this by doing bus optional
 
         return new LifecycleStateMachineService(this);
     }
 
-    public TransitionDescriptor transitionFor(LifecycleState state, LifecycleEvent event) {
+    TransitionDescriptor transitionFor(LifecycleState state, LifecycleEvent event) {
         final LifecycleState target;
-        final Action action;
+        final Class<? extends LifecycleAction> actionClass;
 
         // More specific declarations are preferred
         if (transitions.get(state, event) != null) {
             target = transitions.get(state, event);
-            action = actions.get(state, event);
+            actionClass = actions.get(state, event);
         } else if (noStateTransitions.get(event) != null) {
             target = noStateTransitions.get(event);
-            action = noStateActions.get(event);
+            actionClass = noStateActions.get(event);
         } else {
             return TransitionDescriptor.nullTransition();
         }
 
-        final TransitionDescriptor descriptor = TransitionDescriptor.transition(state, target, event, action);
+        TransitionDescriptor descriptor = TransitionDescriptor.transition(state, target, event, beanFactory.getBean(actionClass));
+
         log.debug("New transition: {}.", descriptor);
+
         return descriptor;
     }
 
