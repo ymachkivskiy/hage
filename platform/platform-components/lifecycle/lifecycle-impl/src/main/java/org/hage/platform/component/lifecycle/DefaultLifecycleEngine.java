@@ -3,28 +3,15 @@ package org.hage.platform.component.lifecycle;
 
 import com.google.common.eventbus.Subscribe;
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.component.IStatefulComponent;
-import org.hage.platform.component.exception.ComponentException;
+import org.hage.platform.component.lifecycle.action.*;
 import org.hage.platform.component.lifecycle.api.BaseLifecycleEngine;
 import org.hage.platform.component.lifecycle.api.LifecycleStateMachineBuilder;
 import org.hage.platform.component.lifecycle.event.ExitRequestedEvent;
-import org.hage.platform.component.pico.visitor.StatefulComponentFinisher;
-import org.hage.platform.component.provider.IMutableComponentInstanceProvider;
-import org.hage.platform.component.services.core.CoreComponent;
 import org.hage.platform.component.services.core.CoreComponentEvent;
 import org.hage.platform.component.workplace.StopConditionFulfilledEvent;
 import org.hage.platform.config.event.ConfigurationUpdatedEvent;
-import org.hage.platform.util.bus.EventBus;
 import org.hage.platform.util.bus.EventListener;
 import org.hage.platform.util.bus.EventSubscriber;
-import org.picocontainer.PicoContainer;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Collection;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import static org.hage.platform.config.event.ConfigurationLoadRequestEvent.configurationLoadRequest;
 
 
 @Slf4j
@@ -32,16 +19,84 @@ public class DefaultLifecycleEngine extends BaseLifecycleEngine implements Event
 
     private final EventListener eventListener = new PrivateEventListener();
 
-    @Autowired
-    private IMutableComponentInstanceProvider instanceProvider;
+    @Override
+    protected void performLifecycleInitialization(LifecycleStateMachineBuilder lifecycleBuilder) {
 
-    @Autowired
-    private CoreComponent coreComponent;
+        // @formatter:off
 
-    @Autowired
-    private EventBus eventBus;
+        lifecycleBuilder
 
+            .startWith(LifecycleState.OFFLINE)
+            .terminateIn(LifecycleState.TERMINATED)
 
+            .in(LifecycleState.OFFLINE)
+                .on(LifecycleEvent.INITIALIZE)
+                    .execute(getActionInstanceByClass(InitializationAction.class))
+                    .goTo(LifecycleState.INITIALIZED)
+                .commit()
+
+            .in(LifecycleState.INITIALIZED)
+                .on(LifecycleEvent.CONFIGURE)
+                    .execute(getActionInstanceByClass(ConfigurationAction.class))
+                    .goTo(LifecycleState.CONFIGURED)
+                .commit()
+
+            .in(LifecycleState.CONFIGURED)
+                .on(LifecycleEvent.START_COMMAND)
+                    .execute(getActionInstanceByClass(StartAction.class))
+                    .goTo(LifecycleState.RUNNING)
+                .commit()
+
+            .in(LifecycleState.RUNNING)
+                .on(LifecycleEvent.CORE_STARTING)
+                    .goTo(LifecycleState.RUNNING)
+                .and()
+                .on(LifecycleEvent.PAUSE)
+                    .execute(getActionInstanceByClass(PauseAction.class))
+                    .goTo(LifecycleState.PAUSED)
+                .and()
+                .on(LifecycleEvent.STOP_COMMAND)
+                    .execute(getActionInstanceByClass(StopAction.class))
+                    .goTo(LifecycleState.STOPPED)
+                .commit()
+
+            .in(LifecycleState.PAUSED)
+                .on(LifecycleEvent.RESUME)
+                    .execute(getActionInstanceByClass(ResumeAction.class))
+                    .goTo(LifecycleState.RUNNING)
+                .commit()
+
+            .in(LifecycleState.STOPPED)
+                .on(LifecycleEvent.CORE_STOPPED)
+                    .execute(getActionInstanceByClass(CoreStoppedAction.class))
+                    .goTo(LifecycleState.STOPPED)
+                .and()
+                .on(LifecycleEvent.CLEAR)
+                    .execute(getActionInstanceByClass(ClearAction.class))
+                    .goTo(LifecycleState.INITIALIZED)
+                .commit()
+
+            .inAnyState()
+                .on(LifecycleEvent.EXIT)
+                    .execute(getActionInstanceByClass(ExitAction.class))
+                    .goTo(LifecycleState.TERMINATED)
+                .and()
+                .on(LifecycleEvent.ERROR)
+                    .execute(getActionInstanceByClass(ErrorAction.class))
+                    .goTo(LifecycleState.FAILED)
+                .commit()
+
+            .ifFailed().fire(LifecycleEvent.ERROR)
+
+            .shutdownWhenTerminated();
+
+        // @formatter:on
+
+        // Register shutdown hook, so we will be able to do a clean shutdown
+        Runtime.getRuntime().addShutdownHook(new ShutdownHook());
+    }
+
+    @Override
     public void performCommand(LifecycleCommand command) {
         switch (command) {
             case FAIL:
@@ -73,45 +128,6 @@ public class DefaultLifecycleEngine extends BaseLifecycleEngine implements Event
     @Override
     public EventListener getEventListener() {
         return eventListener;
-    }
-
-    @Override
-    protected void performLifecycleInitialization(LifecycleStateMachineBuilder lifecycleBuilder) {
-
-        lifecycleBuilder
-
-            .startWith(LifecycleState.OFFLINE)
-            .terminateIn(LifecycleState.TERMINATED)
-
-            .in(LifecycleState.OFFLINE)
-            .on(LifecycleEvent.INITIALIZE).execute(new InitializationAction()).goTo(LifecycleState.INITIALIZED).commit()
-            .in(LifecycleState.INITIALIZED)
-            .on(LifecycleEvent.CONFIGURE).execute(new ConfigurationAction()).goTo(LifecycleState.CONFIGURED).commit()
-            .in(LifecycleState.CONFIGURED)
-            .on(LifecycleEvent.START_COMMAND).execute(new StartAction()).goTo(LifecycleState.RUNNING).commit()
-            .in(LifecycleState.RUNNING)
-            .on(LifecycleEvent.CORE_STARTING).goTo(LifecycleState.RUNNING).and()
-            .on(LifecycleEvent.PAUSE).execute(new PauseAction()).goTo(LifecycleState.PAUSED).and()
-            .on(LifecycleEvent.STOP_COMMAND).execute(new StopAction()).goTo(LifecycleState.STOPPED).commit()
-            .in(LifecycleState.PAUSED)
-            .on(LifecycleEvent.RESUME).execute(new ResumeAction()).goTo(LifecycleState.RUNNING).commit()
-            .in(LifecycleState.STOPPED)
-            .on(LifecycleEvent.CORE_STOPPED).execute(new CoreStoppedAction()).goTo(LifecycleState.STOPPED).and()
-            .on(LifecycleEvent.CLEAR).execute(new ClearAction()).goTo(LifecycleState.INITIALIZED).commit()
-
-            .inAnyState()
-            .on(LifecycleEvent.EXIT).execute(new ExitAction()).goTo(LifecycleState.TERMINATED).and()
-            .on(LifecycleEvent.ERROR).execute(new ErrorAction()).goTo(LifecycleState.FAILED).commit()
-
-            .ifFailed()
-            .fire(LifecycleEvent.ERROR)
-
-
-            .shutdownWhenTerminated();
-        //@formatter:on
-
-        // Register shutdown hook, so we will be able to do a clean shutdown
-        Runtime.getRuntime().addShutdownHook(new ShutdownHook());
     }
 
     private class PrivateEventListener implements EventListener {
@@ -158,166 +174,6 @@ public class DefaultLifecycleEngine extends BaseLifecycleEngine implements Event
     }
 
     // Implementations of actions
-
-
-    private class InitializationAction implements Action {
-
-        @Override
-        public void execute() {
-            log.debug("Initializing LifecycleEngine.");
-
-            notifyConfigurationCanBeLoaded();
-
-            log.debug("Node has finished initialization.");
-        }
-
-        private void notifyConfigurationCanBeLoaded() {
-            eventBus.post(configurationLoadRequest());
-        }
-
-    }
-
-
-    private class ConfigurationAction implements Action {
-
-        @SuppressWarnings("unchecked")
-        @Override
-        public void execute() {
-            log.info("Configuring the computation.");
-
-            coreComponent.configure();
-
-            log.info("Node is configured.");
-        }
-
-
-    }
-
-
-    private class StartAction implements Action {
-
-        @Override
-        public void execute() {
-            log.info("Computation is starting.");
-
-            try {
-                coreComponent.start();
-            } catch (final ComponentException e) {
-                throw new LifecycleException("The core component could not start.", e);
-            }
-        }
-    }
-
-
-    private class PauseAction implements Action {
-
-        @Override
-        public void execute() {
-            log.info("Computation is pausing.");
-
-            coreComponent.pause();
-        }
-    }
-
-
-    private class ResumeAction implements Action {
-
-        @Override
-        public void execute() {
-            log.info("Computation is resuming.");
-
-            coreComponent.resume();
-        }
-    }
-
-
-    private class StopAction implements Action {
-
-        @Override
-        public void execute() {
-            log.info("Computation is stopping.");
-
-            coreComponent.stop();
-        }
-    }
-
-
-    private class CoreStoppedAction implements Action {
-
-        @Override
-        public void execute() {
-            log.debug("CoreComponent has stopped.");
-        }
-    }
-
-
-    private class ClearAction implements Action {
-
-        @Override
-        public void execute() {
-            log.info("Computation configuration is being removed.");
-
-            coreComponent.resume();
-        }
-    }
-
-
-    private class ExitAction implements Action {
-
-        @Override
-        public void execute() {
-            log.debug("Node is terminating.");
-            final long start = System.nanoTime();
-
-            // Tears down in the whole hierarchy (similar to AGE-163). Can be removed when some @PreDestroy are
-            // introduced or component stopping is supported at container level.
-            if (instanceProvider instanceof PicoContainer) {
-                ((PicoContainer) instanceProvider).accept(new StatefulComponentFinisher());
-            } else {
-                // fallback for other potential implementations
-                final Collection<IStatefulComponent> statefulComponents =
-                    instanceProvider.getInstances(IStatefulComponent.class);
-                if (statefulComponents != null) {
-                    for (final IStatefulComponent statefulComponent : statefulComponents) {
-                        try {
-                            statefulComponent.finish();
-                        } catch (final ComponentException e) {
-                            log.error("Exception during the teardown.", e);
-                        }
-                    }
-                }
-            }
-            log.info("Node terminated.");
-
-            if (log.isDebugEnabled()) {
-                final Map<Thread, StackTraceElement[]> stackTraces = Thread.getAllStackTraces();
-
-                for (final Entry<Thread, StackTraceElement[]> entry : stackTraces.entrySet()) {
-                    final Thread thread = entry.getKey();
-                    if (!thread.equals(Thread.currentThread()) && thread.isAlive() && !thread.isDaemon()) {
-                        log.debug("{} has not been shutdown properly.", entry.getKey());
-                        for (final StackTraceElement e : entry.getValue()) {
-                            log.debug("\t{}", e);
-                        }
-                    }
-                }
-            }
-
-            final long elapsedTime = System.nanoTime() - start;
-            log.debug("Shutdown took {} ms.", elapsedTime / 1000000);
-        }
-    }
-
-
-    private class ErrorAction implements Action {
-
-        @Override
-        public void execute() {
-            log.error("Node failed.");
-            log.info("If you are running the node from the console, press Ctrl-C to exit.");
-        }
-
-    }
 
 
     private class ShutdownHook extends Thread {
