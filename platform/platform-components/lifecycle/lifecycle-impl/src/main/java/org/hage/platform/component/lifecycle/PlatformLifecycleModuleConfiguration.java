@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 class PlatformLifecycleModuleConfiguration {
 
     @Bean
-    public DefaultLifecycleEngine getLifecycleManager() {
+    public LifecycleEngine getLifecycleManager() {
         return new DefaultLifecycleEngine();
     }
 

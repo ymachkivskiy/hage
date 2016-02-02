@@ -13,7 +13,7 @@
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
-            <artifactId>lifecycle</artifactId>
+            <artifactId>lifecycle-impl</artifactId>
             <version>${project.version}</version>
         </dependency>
 

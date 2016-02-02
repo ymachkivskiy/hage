@@ -33,6 +33,12 @@
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
+            <artifactId>lifecycle-impl</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
             <artifactId>runtime</artifactId>
             <version>${project.version}</version>
         </dependency>

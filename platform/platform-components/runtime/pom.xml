@@ -13,12 +13,8 @@
     <artifactId>runtime-parent</artifactId>
 
     <modules>
-        <module>lifecycle</module>
         <module>runtime-all</module>
         <module>runtime-core</module>
-        <module>lifecycle-engine-api</module>
-        <module>lifecycle-engine</module>
-        <module>lifecycle-event-data</module>
     </modules>
 
 </project>
