@@ -1,4 +1,4 @@
-package org.hage.platform.component.lifecycle.communication;
+package org.hage.platform.component.lifecycle.distr;
 
 
 import org.hage.platform.annotation.ReturnValuesAreNonnullByDefault;

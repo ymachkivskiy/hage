@@ -17,6 +17,12 @@
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
+            <artifactId>distr-config</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
             <artifactId>lifecycle-engine-api</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -58,11 +64,7 @@
             <artifactId>javax.inject</artifactId>
             <version>1</version>
         </dependency>
-        <dependency>
-            <groupId>org.hage.platform.component</groupId>
-            <artifactId>distr-config</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+
     </dependencies>
 
 </project>

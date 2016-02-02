@@ -12,6 +12,6 @@
 
     <component name="workplaceManager" class="org.hage.platform.component.workplace.manager.DefaultWorkplaceManager"/>
 
-    <component class="org.hage.platform.component.lifecycle.AutoExitHook"/>
+    <component class="org.hage.platform.component.workplace.AutoExitHook"/>
 
 </configuration>

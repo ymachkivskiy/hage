@@ -29,17 +29,17 @@
  * $Id$
  */
 
-package org.hage.platform.component.lifecycle;
+package org.hage.platform.component.lifecycle.distr;
 
 
-import org.hage.platform.component.lifecycle.communication.LifecycleMessage;
-import org.hage.platform.component.lifecycle.communication.LifecycleMessages;
+import org.hage.platform.component.lifecycle.LifecycleCommand;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.hage.platform.component.lifecycle.communication.LifecycleMessages.createExit;
-import static org.hage.platform.component.lifecycle.communication.LifecycleMessages.createStart;
+import static org.hage.platform.component.lifecycle.distr.LifecycleMessages.createExit;
+import static org.hage.platform.component.lifecycle.distr.LifecycleMessages.createStart;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
@@ -59,7 +59,7 @@ public class LifecycleEngineMessagesTest {
 
         // then
         assertThat(message, is(notNullValue()));
-        assertThat(message.getCommand(), is(LifecycleCommand.START));
+        assertThat(message.getCommand(), Matchers.is(LifecycleCommand.START));
         assertThat(message.getPayload(), is(nullValue()));
     }
 

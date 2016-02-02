@@ -8,7 +8,7 @@
         <version>0.2.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>lifecycle-impl</artifactId>
+    <artifactId>lifecycle-local</artifactId>
 
     <name>HAgE::Services::Lifecycle</name>
     <description>HAgE service that manages the node lifecycle</description>
@@ -16,23 +16,9 @@
 
     <dependencies>
 
-        <!--TODO remove this TEMPORARY dependency-->
         <dependency>
             <groupId>org.hage.platform.component</groupId>
             <artifactId>runtime-core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <!---->
-
-        <dependency>
-            <groupId>org.hage.platform.component</groupId>
-            <artifactId>lifecycle-engine-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hage.platform.component</groupId>
-            <artifactId>lifecycle-data</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -45,12 +31,6 @@
         <dependency>
             <groupId>org.hage.platform.component</groupId>
             <artifactId>container-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hage.platform.component</groupId>
-            <artifactId>distr-config</artifactId>
             <version>${project.version}</version>
         </dependency>
 

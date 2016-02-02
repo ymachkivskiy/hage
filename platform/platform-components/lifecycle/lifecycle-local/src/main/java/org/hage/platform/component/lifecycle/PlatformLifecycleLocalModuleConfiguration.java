@@ -5,17 +5,12 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ComponentScan(basePackageClasses = PlatformLifecycleModuleConfiguration.class)
-class PlatformLifecycleModuleConfiguration {
+@ComponentScan(basePackageClasses = PlatformLifecycleLocalModuleConfiguration.class)
+class PlatformLifecycleLocalModuleConfiguration {
 
     @Bean
     public LifecycleEngine getLifecycleManager() {
         return new DefaultLifecycleEngine();
-    }
-
-    @Bean
-    public AutoExitHook getAutoExitHook() {
-        return new AutoExitHook();
     }
 
 }

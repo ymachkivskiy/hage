@@ -1,8 +1,9 @@
-package org.hage.platform.component.lifecycle;
+package org.hage.platform.component.workplace;
 
 
 import com.google.common.eventbus.Subscribe;
 import lombok.extern.slf4j.Slf4j;
+import org.hage.platform.component.lifecycle.LifecycleState;
 import org.hage.platform.component.lifecycle.event.ExitRequestedEvent;
 import org.hage.platform.component.lifecycle.event.LifecycleStateChangedEvent;
 import org.hage.platform.util.bus.EventBus;

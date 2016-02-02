@@ -33,7 +33,13 @@
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
-            <artifactId>lifecycle-impl</artifactId>
+            <artifactId>lifecycle-distr</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>lifecycle-local</artifactId>
             <version>${project.version}</version>
         </dependency>
 

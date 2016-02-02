@@ -1,18 +1,16 @@
-package org.hage.platform.component.lifecycle.communication;
+package org.hage.platform.component.lifecycle.distr;
 
 
 import org.hage.platform.communication.api.BaseRemoteChanel;
 import org.hage.platform.communication.message.service.consume.MessageConsumer;
 import org.hage.platform.component.lifecycle.LifecycleEngine;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 
-@Component
 public class LifecycleManagerRemoteChanel extends BaseRemoteChanel<LifecycleMessage> {
 
     @Autowired
-    private LifecycleEngine lifecycleManager;
+    private LifecycleEngine lifecycleEngine;
 
     @Override
     protected void postInit() {
@@ -22,7 +20,7 @@ public class LifecycleManagerRemoteChanel extends BaseRemoteChanel<LifecycleMess
     private class PerformCommandMessageConsumer implements MessageConsumer<LifecycleMessage> {
         @Override
         public void consumeMessage(LifecycleMessage lifecycleMessage) {
-            lifecycleManager.performCommand(lifecycleMessage.getCommand());
+            lifecycleEngine.performCommand(lifecycleMessage.getCommand());
         }
     }
 }
