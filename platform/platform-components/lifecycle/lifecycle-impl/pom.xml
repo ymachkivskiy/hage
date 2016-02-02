@@ -38,7 +38,7 @@
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
-            <artifactId>lifecycle-engine</artifactId>
+            <artifactId>lifecycle-engine-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 

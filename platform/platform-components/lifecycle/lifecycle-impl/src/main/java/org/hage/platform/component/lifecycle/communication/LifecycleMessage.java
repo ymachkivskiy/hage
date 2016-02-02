@@ -1,9 +1,10 @@
-package org.hage.platform.component.lifecycle;
+package org.hage.platform.component.lifecycle.communication;
 
 
 import org.hage.platform.annotation.ReturnValuesAreNonnullByDefault;
 import org.hage.platform.communication.message.service.ServiceHeader;
 import org.hage.platform.communication.message.service.ServiceMessage;
+import org.hage.platform.component.lifecycle.LifecycleCommand;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

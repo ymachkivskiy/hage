@@ -1,7 +1,8 @@
-package org.hage.platform.component.lifecycle;
+package org.hage.platform.component.lifecycle.communication;
 
 
 import org.hage.platform.annotation.ReturnValuesAreNonnullByDefault;
+import org.hage.platform.component.lifecycle.LifecycleCommand;
 
 import javax.annotation.concurrent.ThreadSafe;
 

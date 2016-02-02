@@ -14,7 +14,6 @@
         <module>lifecycle-impl</module>
         <module>lifecycle-data</module>
         <module>lifecycle-engine-api</module>
-        <module>lifecycle-engine</module>
     </modules>
 
 </project>

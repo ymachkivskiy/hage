@@ -32,12 +32,14 @@
 package org.hage.platform.component.lifecycle;
 
 
+import org.hage.platform.component.lifecycle.communication.LifecycleMessage;
+import org.hage.platform.component.lifecycle.communication.LifecycleMessages;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.hage.platform.component.lifecycle.LifecycleMessages.createExit;
-import static org.hage.platform.component.lifecycle.LifecycleMessages.createStart;
+import static org.hage.platform.component.lifecycle.communication.LifecycleMessages.createExit;
+import static org.hage.platform.component.lifecycle.communication.LifecycleMessages.createStart;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 

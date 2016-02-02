@@ -1,11 +1,16 @@
-package org.hage.platform.component.lifecycle;
+package org.hage.platform.component.lifecycle.api;
 
 
+import com.google.common.collect.ImmutableTable;
 import com.google.common.collect.Table;
 import com.google.common.util.concurrent.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hage.platform.component.lifecycle.Action;
+import org.hage.platform.component.lifecycle.LifecycleEvent;
+import org.hage.platform.component.lifecycle.LifecycleState;
+import org.hage.platform.component.lifecycle.LifecycleStateMachine;
 import org.hage.platform.util.bus.EventBus;
 
 import javax.annotation.Nullable;
@@ -19,6 +24,7 @@ import static com.google.common.base.Objects.toStringHelper;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Iterables.consumingIterable;
 import static com.google.common.collect.Queues.newPriorityBlockingQueue;
+import static com.google.common.util.concurrent.Futures.addCallback;
 import static com.google.common.util.concurrent.MoreExecutors.listeningDecorator;
 import static com.google.common.util.concurrent.MoreExecutors.newDirectExecutorService;
 import static java.util.concurrent.Executors.newSingleThreadScheduledExecutor;
@@ -26,7 +32,7 @@ import static org.hage.util.Locks.withReadLock;
 import static org.hage.util.Locks.withWriteLock;
 
 @Slf4j
-public class LifecycleEngineService {
+class LifecycleStateMachineService implements LifecycleStateMachine {
 
     private final ListeningScheduledExecutorService service = listeningDecorator(
         newSingleThreadScheduledExecutor(new ThreadFactoryBuilder().setNameFormat("fsm-srv-%d").build()));
@@ -49,13 +55,13 @@ public class LifecycleEngineService {
     @GuardedBy("stateLock")
     private LifecycleEvent currentEvent;
 
-    LifecycleEngineService(LifecycleEngineServiceBuilder builder) {
+    LifecycleStateMachineService(LifecycleStateMachineBuilder builder) {
         currentState = builder.getInitialState();
         eventBus = builder.getEventBus();
         terminalStates = builder.getTerminalStates();
         shutdownAfterTerminalState = builder.isShutdownWhenTerminated();
         failureEvent = builder.getFailureBehaviorBuilder().getEvent();
-        transitionsTable = builder.buildTransitionsTable();
+        transitionsTable = buildTransitionsTable(builder);
         dispatcherFuture = service.scheduleAtFixedRate(new Dispatcher(), 0, 1, TimeUnit.MILLISECONDS);
     }
 
@@ -126,7 +132,7 @@ public class LifecycleEngineService {
         return readLock(() -> toStringHelper(this).addValue(currentState).addValue(currentEvent).toString());
     }
 
-    final LifecycleState getCurrentState() {
+    private LifecycleState getCurrentState() {
         return readLock(() -> currentState);
     }
 
@@ -208,13 +214,9 @@ public class LifecycleEngineService {
             }
             log.debug("Planned transition: {}.", transitionDescriptor);
 
-            final Runnable runnable = transitionDescriptor.getAction();
-            if (runnable instanceof CallableAdapter) {
-                ((CallableAdapter) runnable).setParameter(holder.getParameters());
-            }
-            final ListenableFuture<?> future = localExecutor.submit(runnable);
-            Futures.addCallback(future, new TransitionFinalizer(transitionDescriptor, holder.getSemaphore()));
-
+            Action action = transitionDescriptor.getAction();
+            ListenableFuture<?> future = localExecutor.submit(action::execute);
+            addCallback(future, new TransitionFinalizer(transitionDescriptor, holder.getSemaphore()));
         }
 
     }
@@ -262,12 +264,12 @@ public class LifecycleEngineService {
 
         @Getter
         private final Semaphore semaphore = new Semaphore(0);
+
         @Getter
         private final LifecycleEvent event;
         @Getter
         @Nullable
         private final Object parameters;
-
         public EventHolder(final LifecycleEvent event) {
             this(event, null);
         }
@@ -301,6 +303,19 @@ public class LifecycleEngineService {
             fire(failureEvent, e);
         }
         return null;
+    }
+
+    private static Table<LifecycleState, LifecycleEvent, TransitionDescriptor> buildTransitionsTable(LifecycleStateMachineBuilder builder) {
+
+        final ImmutableTable.Builder<LifecycleState, LifecycleEvent, TransitionDescriptor> tableBuilder = ImmutableTable.builder();
+
+        for (final LifecycleState state : LifecycleState.values()) {
+            for (final LifecycleEvent event : LifecycleEvent.values()) {
+                tableBuilder.put(state, event, builder.transitionFor(state, event));
+            }
+        }
+
+        return tableBuilder.build();
     }
 
 }

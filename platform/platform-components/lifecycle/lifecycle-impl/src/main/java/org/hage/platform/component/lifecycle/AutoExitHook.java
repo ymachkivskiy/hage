@@ -3,6 +3,7 @@ package org.hage.platform.component.lifecycle;
 
 import com.google.common.base.Objects;
 import com.google.common.eventbus.Subscribe;
+import org.hage.platform.component.lifecycle.event.ExitRequestedEvent;
 import org.hage.platform.component.lifecycle.event.LifecycleStateChangedEvent;
 import org.hage.platform.util.bus.EventBus;
 import org.hage.platform.util.bus.EventListener;

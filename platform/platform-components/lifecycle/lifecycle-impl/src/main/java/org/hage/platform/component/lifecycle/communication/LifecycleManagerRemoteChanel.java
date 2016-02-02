@@ -4,7 +4,6 @@ package org.hage.platform.component.lifecycle.communication;
 import org.hage.platform.communication.api.BaseRemoteChanel;
 import org.hage.platform.communication.message.service.consume.MessageConsumer;
 import org.hage.platform.component.lifecycle.LifecycleEngine;
-import org.hage.platform.component.lifecycle.LifecycleMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

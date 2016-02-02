@@ -119,7 +119,7 @@ public class FixedStepCountStopCondition implements
             log.debug("Event: {}.", event);
             switch(event.getType()) {
                 case STARTING:
-                    future = executor.scheduleWithFixedDelay(observer, 0, 50, TimeUnit.MILLISECONDS);
+                    future = executor.scheduleWithFixedDelay(observer, 0, 1, TimeUnit.MILLISECONDS);
                     break;
                 case STOPPED:
                     future.cancel(true);

@@ -13,12 +13,6 @@
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
-            <artifactId>lifecycle-impl</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hage.platform.component</groupId>
             <artifactId>runtime-core</artifactId>
             <version>${project.version}</version>
         </dependency>

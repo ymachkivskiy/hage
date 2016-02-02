@@ -10,56 +10,6 @@
 
     <include file="classpath:examples/common.xml">
         <block name="workplaces">
-            <component name="heavyWorkplace" class="org.hage.platform.component.workplace.SimpleWorkplace" isSingleton="false">
-                <property name="agent">
-                    <agent class="org.hage.platform.component.agent.SimpleAggregate">
-                        <component class="org.hage.platform.communication.address.agent.DefaultAgentAddressSupplier">
-                            <constructor-arg name="nameTemplate" value="Heavy workplace"/>
-                        </component>
-                        <property name="agents">
-                            <list>
-
-                                <agent class="org.hage.examples.hage.distrconf.HeavyAgent">
-                                    <component class="org.hage.examples.hage.distrconf.SomeFooComponent" isSingleton="true">
-                                        <constructor-arg value="SPECIAL TOMAS"/>
-                                    </component>
-                                    <component class="org.hage.platform.communication.address.agent.DefaultAgentAddressSupplier">
-                                        <constructor-arg name="nameTemplate" value="Tomas"/>
-                                    </component>
-                                </agent>
-
-                                <agent class="org.hage.examples.hage.distrconf.HeavyAgent">
-                                    <component class="org.hage.platform.communication.address.agent.DefaultAgentAddressSupplier">
-                                        <constructor-arg name="nameTemplate" value="John"/>
-                                    </component>
-                                </agent>
-
-                                <agent class="org.hage.examples.hage.distrconf.HeavyAgent">
-                                    <component class="org.hage.platform.communication.address.agent.DefaultAgentAddressSupplier">
-                                        <constructor-arg name="nameTemplate" value="David"/>
-                                    </component>
-                                </agent>
-
-                                <agent class="org.hage.examples.hage.distrconf.LightAgent">
-                                    <component class="org.hage.examples.hage.distrconf.SomeFooComponent" isSingleton="true">
-                                        <constructor-arg value="SPECIAL KATE"/>
-                                    </component>
-                                    <component class="org.hage.platform.communication.address.agent.DefaultAgentAddressSupplier">
-                                        <constructor-arg name="nameTemplate" value="Kate"/>
-                                    </component>
-                                </agent>
-
-                                <agent class="org.hage.examples.hage.distrconf.LightAgent">
-                                    <component class="org.hage.platform.communication.address.agent.DefaultAgentAddressSupplier">
-                                        <constructor-arg name="nameTemplate" value="Jane"/>
-                                    </component>
-                                </agent>
-
-                            </list>
-                        </property>
-                    </agent>
-                </property>
-            </component>
             <component name="lightWorkplace" class="org.hage.platform.component.workplace.SimpleWorkplace" isSingleton="false">
                 <property name="agent">
                     <agent class="org.hage.platform.component.agent.SimpleAggregate">

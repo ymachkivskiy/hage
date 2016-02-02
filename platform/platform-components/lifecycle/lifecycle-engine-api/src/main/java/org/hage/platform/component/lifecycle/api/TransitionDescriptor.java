@@ -1,9 +1,12 @@
-package org.hage.platform.component.lifecycle;
+package org.hage.platform.component.lifecycle.api;
 
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.hage.platform.component.lifecycle.Action;
+import org.hage.platform.component.lifecycle.LifecycleEvent;
+import org.hage.platform.component.lifecycle.LifecycleState;
 import org.hage.platform.component.lifecycle.event.LifecycleStateChangedEvent;
 
 import static java.lang.String.format;
@@ -21,7 +24,7 @@ class TransitionDescriptor {
     );
 
     @Getter
-    private final Runnable action;
+    private final Action action;
     @Getter
     private final LifecycleEvent event;
     @Getter
@@ -40,11 +43,11 @@ class TransitionDescriptor {
         return NULL_TRANSITION;
     }
 
-    public static TransitionDescriptor transition(LifecycleState initial, LifecycleState target, LifecycleEvent event, Runnable action) {
+    static TransitionDescriptor transition(LifecycleState initial, LifecycleState target, LifecycleEvent event, Action action) {
         return new TransitionDescriptor(action, event, initial, target, false);
     }
 
-    public LifecycleStateChangedEvent createEvent() {
+    LifecycleStateChangedEvent createEvent() {
         return new LifecycleStateChangedEvent(initial, event, target);
     }
 }

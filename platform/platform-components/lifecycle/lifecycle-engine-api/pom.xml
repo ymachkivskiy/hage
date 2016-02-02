@@ -11,5 +11,14 @@
 
     <artifactId>lifecycle-engine-api</artifactId>
 
+    <dependencies>
+
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>lifecycle-data</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+    </dependencies>
 
 </project>
