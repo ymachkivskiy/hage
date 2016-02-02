@@ -1,4 +1,4 @@
-package org.hage.platform.component.lifecycle.event;
+package org.hage.platform.component.lifecycle;
 
 public enum LifecycleEvent {
     /**

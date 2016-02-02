@@ -6,8 +6,6 @@ import com.google.common.util.concurrent.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.component.lifecycle.event.LifecycleEvent;
-import org.hage.platform.component.lifecycle.event.LifecycleState;
 import org.hage.platform.util.bus.EventBus;
 
 import javax.annotation.Nullable;

@@ -20,7 +20,7 @@
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
-            <artifactId>lifecycle-event-data</artifactId>
+            <artifactId>lifecycle-data</artifactId>
             <version>${project.version}</version>
         </dependency>
 
