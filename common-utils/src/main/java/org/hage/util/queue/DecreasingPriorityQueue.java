@@ -29,7 +29,7 @@
  * $Id$
  */
 
-package org.hage.platform.component.util;
+package org.hage.util.queue;
 
 
 import java.util.NoSuchElementException;

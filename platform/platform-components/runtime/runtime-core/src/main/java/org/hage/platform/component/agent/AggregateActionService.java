@@ -44,7 +44,7 @@ import org.hage.platform.component.action.ordering.ActionComparator;
 import org.hage.platform.component.action.ordering.DefaultActionComparator;
 import org.hage.platform.component.exception.ComponentException;
 import org.hage.platform.component.provider.IComponentInstanceProvider;
-import org.hage.platform.component.util.RebuildablePriorityQueue;
+import org.hage.util.queue.RebuildablePriorityQueue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
