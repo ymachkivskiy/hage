@@ -1,4 +1,4 @@
-package org.hage.platform.component.lifecycle.api;
+package org.hage.platform.component.lifecycle.construct;
 
 
 import com.google.common.collect.ArrayTable;
@@ -85,7 +85,7 @@ public class LifecycleStateMachineBuilder {
         return failureBehaviorBuilder;
     }
 
-    LifecycleStateMachine build() {
+    public LifecycleStateMachine build() {
         log.debug("Building a state machine.");
 
         checkState(initialState != null);

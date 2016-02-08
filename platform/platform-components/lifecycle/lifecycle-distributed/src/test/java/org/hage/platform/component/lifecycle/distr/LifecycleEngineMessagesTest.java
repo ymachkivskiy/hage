@@ -32,7 +32,7 @@
 package org.hage.platform.component.lifecycle.distr;
 
 
-import org.hage.platform.component.lifecycle.LifecycleCommand;
+import org.hage.platform.component.lifecycle.BaseLifecycleCommand;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,7 +59,7 @@ public class LifecycleEngineMessagesTest {
 
         // then
         assertThat(message, is(notNullValue()));
-        assertThat(message.getCommand(), Matchers.is(LifecycleCommand.START));
+        assertThat(message.getCommand(), Matchers.is(BaseLifecycleCommand.START));
         assertThat(message.getPayload(), is(nullValue()));
     }
 
@@ -70,7 +70,7 @@ public class LifecycleEngineMessagesTest {
 
         // then
         assertThat(message, is(notNullValue()));
-        assertThat(message.getCommand(), is(LifecycleCommand.EXIT));
+        assertThat(message.getCommand(), is(BaseLifecycleCommand.EXIT));
         assertThat(message.getPayload(), is(nullValue()));
     }
 }

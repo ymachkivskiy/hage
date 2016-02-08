@@ -10,7 +10,16 @@ class PlatformLifecycleLocalModuleConfiguration {
 
     @Bean
     public LifecycleEngine getLifecycleManager() {
-        return new DefaultLifecycleEngine();
+        LifecycleEngine lifecycleEngine = new LifecycleEngine();
+
+        lifecycleEngine.setLifecycleInitializer(getLifecycleInitializer());
+
+        return lifecycleEngine;
+    }
+
+    @Bean
+    public LifecycleInitializer getLifecycleInitializer() {
+        return new DefaultLifecycleInitializer();
     }
 
 }

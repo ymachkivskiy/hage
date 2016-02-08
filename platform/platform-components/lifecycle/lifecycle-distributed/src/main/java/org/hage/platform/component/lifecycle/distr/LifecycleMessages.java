@@ -2,7 +2,7 @@ package org.hage.platform.component.lifecycle.distr;
 
 
 import org.hage.platform.annotation.ReturnValuesAreNonnullByDefault;
-import org.hage.platform.component.lifecycle.LifecycleCommand;
+import org.hage.platform.component.lifecycle.BaseLifecycleCommand;
 
 import javax.annotation.concurrent.ThreadSafe;
 
@@ -16,10 +16,10 @@ public final class LifecycleMessages {
     }
 
     public static LifecycleMessage createStart() {
-        return LifecycleMessage.create(LifecycleCommand.START);
+        return LifecycleMessage.create(BaseLifecycleCommand.START);
     }
 
     public static LifecycleMessage createExit() {
-        return LifecycleMessage.create(LifecycleCommand.EXIT);
+        return LifecycleMessage.create(BaseLifecycleCommand.EXIT);
     }
 }

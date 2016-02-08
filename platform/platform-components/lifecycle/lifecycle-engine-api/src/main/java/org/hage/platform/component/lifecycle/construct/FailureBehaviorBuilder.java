@@ -1,4 +1,4 @@
-package org.hage.platform.component.lifecycle.api;
+package org.hage.platform.component.lifecycle.construct;
 
 import lombok.AccessLevel;
 import lombok.Getter;

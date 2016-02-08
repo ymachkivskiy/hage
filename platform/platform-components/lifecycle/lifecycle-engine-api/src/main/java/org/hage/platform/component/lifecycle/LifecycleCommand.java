@@ -1,16 +1,7 @@
 package org.hage.platform.component.lifecycle;
 
-public enum LifecycleCommand {
+import java.io.Serializable;
 
-    START,
-
-    PAUSE,
-
-    STOP,
-
-    FAIL,
-
-    NOTIFY,
-
-    EXIT,
+public interface LifecycleCommand extends Serializable {
+    void accept(LifecycleStateMachine lifecycleStateMachine);
 }
