@@ -5,21 +5,21 @@ public enum BaseLifecycleCommand implements LifecycleCommand {
     START {
         @Override
         public void accept(LifecycleStateMachine lifecycleStateMachine) {
-            lifecycleStateMachine.fire(LifecycleEvent.START_COMMAND);
+            lifecycleStateMachine.fire(LifecycleEvent.START_SIMULATION);
         }
     },
 
     PAUSE {
         @Override
         public void accept(LifecycleStateMachine lifecycleStateMachine) {
-            lifecycleStateMachine.fire(LifecycleEvent.PAUSE);
+            lifecycleStateMachine.fire(LifecycleEvent.PAUSE_SIMULATION);
         }
     },
 
     STOP {
         @Override
         public void accept(LifecycleStateMachine lifecycleStateMachine) {
-            lifecycleStateMachine.fire(LifecycleEvent.STOP_COMMAND);
+            lifecycleStateMachine.fire(LifecycleEvent.STOP_SIMULATION);
         }
     },
 

@@ -1,48 +1,26 @@
 package org.hage.platform.component.lifecycle;
 
 public enum LifecycleEvent {
-    /**
-     * Sent by the bootstrapper.
-     */
-    INITIALIZE,
-    /**
-     * Sent by the configuration service when configuration is available.
-     */
+
+    PERFORM_CLUSTER_INITIALIZATION,
+
     CONFIGURE,
-    /**
-     * Starts the computation.
-     */
-    START_COMMAND,
-    /**
-     * Notifies that the core component is starting.
-     */
+
+    START_SIMULATION,
+
     CORE_STARTING,
-    /**
-     * Pauses the computation.
-     */
-    PAUSE,
-    /**
-     * Resumes the computation.
-     */
-    RESUME,
-    /**
-     * Stops the computation completely.
-     */
-    STOP_COMMAND,
-    /**
-     * Notifies that the core component has stopped.
-     */
+
+    PAUSE_SIMULATION,
+
+    RESUME_SIMULATION,
+
+    STOP_SIMULATION,
+
     CORE_STOPPED,
-    /**
-     * Clears the node from the computation configuration.
-     */
-    CLEAR,
-    /**
-     * Indicates that an error occurred.
-     */
+
+    CLEAR_SIMULATION_CONFIGURATION,
+
     ERROR,
-    /**
-     * Terminates the node.
-     */
+
     EXIT
 }

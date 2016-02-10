@@ -76,7 +76,7 @@ public class LifecycleStateMachineBuilder {
         return this;
     }
 
-    public LifecycleStateMachineBuilder shutdownWhenTerminated() {
+    public LifecycleStateMachineBuilder shutdownServiceWhenTerminated() {
         shutdownWhenTerminated = true;
         return this;
     }

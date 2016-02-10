@@ -3,6 +3,9 @@ package org.hage.platform.component.lifecycle;
 import org.hage.platform.component.lifecycle.action.*;
 import org.hage.platform.component.lifecycle.construct.LifecycleStateMachineBuilder;
 
+import static org.hage.platform.component.lifecycle.LifecycleEvent.*;
+import static org.hage.platform.component.lifecycle.LifecycleState.*;
+
 public class DefaultLifecycleInitializer implements LifecycleInitializer {
 
     @Override
@@ -12,60 +15,60 @@ public class DefaultLifecycleInitializer implements LifecycleInitializer {
 
         lifecycleBuilder
 
-            .startWith(LifecycleState.OFFLINE)
-            .terminateIn(LifecycleState.TERMINATED)
+            .startWith(OFFLINE)
+            .terminateIn(TERMINATED)
 
-            .in(LifecycleState.OFFLINE)
-                .on(LifecycleEvent.INITIALIZE)
+            .in(OFFLINE)
+                .on(PERFORM_CLUSTER_INITIALIZATION)
                     .execute(InitializationLifecycleAction.class)
-                    .goTo(LifecycleState.INITIALIZED)
+                    .goTo(INITIALIZED)
                 .commit()
 
-            .in(LifecycleState.INITIALIZED)
-                .on(LifecycleEvent.CONFIGURE)
+            .in(INITIALIZED)
+                .on(CONFIGURE)
                     .execute(ConfigurationLifecycleAction.class)
-                    .goTo(LifecycleState.CONFIGURED)
+                    .goTo(CONFIGURED)
                 .commit()
 
-            .in(LifecycleState.CONFIGURED)
-                .on(LifecycleEvent.START_COMMAND)
+            .in(CONFIGURED)
+                .on(START_SIMULATION)
                     .execute(StartLifecycleAction.class)
-                    .goTo(LifecycleState.RUNNING)
+                    .goTo(RUNNING)
                 .commit()
 
-            .in(LifecycleState.RUNNING)
+            .in(RUNNING)
                 .on(LifecycleEvent.CORE_STARTING)
-                    .goTo(LifecycleState.RUNNING)
+                    .goTo(RUNNING)
                 .and()
-                .on(LifecycleEvent.PAUSE)
+                .on(PAUSE_SIMULATION)
                     .execute(PauseLifecycleAction.class)
-                    .goTo(LifecycleState.PAUSED)
+                    .goTo(PAUSED)
                 .and()
-                .on(LifecycleEvent.STOP_COMMAND)
+                .on(STOP_SIMULATION)
                     .execute(StopLifecycleAction.class)
-                    .goTo(LifecycleState.STOPPED)
+                    .goTo(STOPPED)
                 .commit()
 
-            .in(LifecycleState.PAUSED)
-                .on(LifecycleEvent.RESUME)
+            .in(PAUSED)
+                .on(RESUME_SIMULATION)
                     .execute(ResumeLifecycleAction.class)
-                    .goTo(LifecycleState.RUNNING)
+                    .goTo(RUNNING)
                 .commit()
 
-            .in(LifecycleState.STOPPED)
+            .in(STOPPED)
                 .on(LifecycleEvent.CORE_STOPPED)
                     .execute(CoreStoppedLifecycleAction.class)
-                    .goTo(LifecycleState.STOPPED)
+                    .goTo(STOPPED)
                 .and()
-                .on(LifecycleEvent.CLEAR)
+                .on(CLEAR_SIMULATION_CONFIGURATION)
                     .execute(ClearLifecycleAction.class)
-                    .goTo(LifecycleState.INITIALIZED)
+                    .goTo(INITIALIZED)
                 .commit()
 
             .inAnyState()
                 .on(LifecycleEvent.EXIT)
                     .execute(ExitLifecycleAction.class)
-                    .goTo(LifecycleState.TERMINATED)
+                    .goTo(TERMINATED)
                 .and()
                 .on(LifecycleEvent.ERROR)
                     .execute(ErrorLifecycleAction.class)
@@ -74,16 +77,14 @@ public class DefaultLifecycleInitializer implements LifecycleInitializer {
 
             .ifFailed().fire(LifecycleEvent.ERROR)
 
-            .shutdownWhenTerminated();
+            .shutdownServiceWhenTerminated();
 
         // @formatter:on
 
-        // Register shutdown hook, so we will be able to do a clean shutdown
-//        Runtime.getRuntime().addShutdownHook(new ShutdownHook());
     }
 
     @Override
     public LifecycleEvent getStartingEvent() {
-        return LifecycleEvent.INITIALIZE;
+        return PERFORM_CLUSTER_INITIALIZATION;
     }
 }
