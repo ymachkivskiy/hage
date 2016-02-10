@@ -37,4 +37,8 @@ public class ConfigurationStorageService {
             }
         }
     }
+
+    public ComputationConfiguration getConfiguration() {
+        return configuration.get();
+    }
 }

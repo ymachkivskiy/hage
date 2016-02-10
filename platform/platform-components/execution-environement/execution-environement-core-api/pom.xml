@@ -12,4 +12,14 @@
     <artifactId>core-api</artifactId>
 
 
+    <dependencies>
+
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>configuration-internal-data</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+    </dependencies>
+
 </project>

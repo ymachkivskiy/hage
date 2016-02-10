@@ -1,10 +1,7 @@
 package org.hage.platform.component.execution;
 
 
-public interface ExecutionCore {
-
-
-    void configure();
+public interface ExecutionCore extends ComputationConfigurable {
 
 
     void start() throws ExecutionCoreException;

@@ -5,11 +5,11 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
-import com.google.common.eventbus.Subscribe;
 import com.google.common.util.concurrent.ListeningScheduledExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.hazelcast.core.IMap;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.communication.address.agent.AgentAddress;
 import org.hage.platform.communication.address.node.NodeAddress;
@@ -38,15 +38,15 @@ import org.hage.platform.component.query.IQuery;
 import org.hage.platform.component.workplace.IStopCondition;
 import org.hage.platform.component.workplace.Workplace;
 import org.hage.platform.config.ComputationConfiguration;
-import org.hage.platform.config.event.ConfigurationUpdatedEvent;
 import org.hage.platform.util.bus.EventBus;
-import org.hage.platform.util.bus.EventListener;
-import org.hage.platform.util.bus.EventSubscriber;
 import org.hage.util.Locks;
 import org.picocontainer.PicoContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.*;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.annotation.concurrent.GuardedBy;
 import java.io.Serializable;
 import java.util.Collection;
@@ -55,12 +55,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
 
-import static com.google.common.base.Objects.toStringHelper;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.newLinkedList;
@@ -69,17 +67,14 @@ import static com.google.common.collect.Sets.newHashSet;
 import static java.util.Objects.requireNonNull;
 
 
-@ParametersAreNonnullByDefault
 @Slf4j
+@ToString(of = {})
 public class DefaultWorkplaceManager implements
     WorkplaceManager,
-    RemoteMessageSubscriber<WorkplaceManagerMessage>,
-    EventSubscriber {
+    RemoteMessageSubscriber<WorkplaceManagerMessage>{
 
     public static final String QUERY_CACHE_NAME = "queryCache";
     public static final String WORKPLACES_MAP_NAME = "workplaces";
-
-    private final EventListener eventListener = new PrivateEventListener();
 
     @Nonnull
     private final ListeningScheduledExecutorService executorService = MoreExecutors.listeningDecorator(
@@ -115,8 +110,7 @@ public class DefaultWorkplaceManager implements
     private EventBus eventBus;
 
 
-    private final AtomicReference<ComputationConfiguration> config = new AtomicReference<>();
-
+    // TODO: 10.02.16 state machine for verification
     // LifecycleEngine methods
 
     @PostConstruct
@@ -135,9 +129,38 @@ public class DefaultWorkplaceManager implements
 
 
     @Override
+    public void configureUsing(ComputationConfiguration configuration) {
+
+        final Collection<IComponentDefinition> componentDefinitions = configuration.getComponentsDefinitions();
+
+        childContainer = instanceProvider.makeChildContainer();
+        for (final IComponentDefinition def : componentDefinitions) {
+            childContainer.addComponent(def);
+        }
+        childContainer.verify();
+
+        configuredWorkplaces = newArrayList(childContainer.getInstances(Workplace.class));
+
+        log.info("Configured workplaces: {}.", configuredWorkplaces);
+
+        log.debug("Initialising required components.");
+        // initialize in the whole hierarchy (see AGE-163). Can be removed when some @PostConstruct are introduced
+        // or component starting is supported at container level.
+        if (instanceProvider instanceof PicoContainer) {
+            instanceProvider.accept(new StatefulComponentInitializer());
+        } else {
+            //fallback for other potential implementations
+            instanceProvider.getInstances(IStatefulComponent.class);
+        }
+
+        initializeWorkplaces();
+
+        eventBus.post(new CoreConfiguredEvent());
+    }
+
+    @Override
     public void start() {
         checkState(configuredWorkplaces != null, "There are no workplaces configured.");
-        initializeWorkplaces();
 
         childContainer.getInstance(IStopCondition.class);
 
@@ -215,9 +238,7 @@ public class DefaultWorkplaceManager implements
 
         instanceProvider.removeChildContainer(childContainer);
         configuredWorkplaces = null;
-        config.set(null);
     }
-
 
     public boolean isActive() {
         return !activeWorkplaces.isEmpty();
@@ -264,7 +285,6 @@ public class DefaultWorkplaceManager implements
             .collect(Collectors.toSet());
     }
 
-
     @Override
     public void onWorkplaceStop(@Nonnull final Workplace workplace) {
         log.debug("Get stopped notification from {}", workplace.getAddress());
@@ -291,13 +311,6 @@ public class DefaultWorkplaceManager implements
         log.debug("Global query {} -> {}.", query, results);
         log.debug("Map: {}.", queryCache.entrySet());
         return (Collection<T>) results;
-    }
-
-    @Override
-    public void sendMessage(@Nonnull final WorkplaceManagerMessage message) {
-        requireNonNull(message);
-        log.debug("Sending message {}.", message);
-        communicationChannel.sendMessageToAll(message);
     }
 
     @Override
@@ -337,23 +350,6 @@ public class DefaultWorkplaceManager implements
         }
     }
 
-    public void addWorkplace(final Workplace workplace) {
-        withWriteLock(() -> {
-            final AgentAddress agentAddress = workplace.getAddress();
-            if (!initializedWorkplaces.containsKey(agentAddress)) {
-                initializedWorkplaces.put(agentAddress, workplace);
-                if (workplace.isRunning() && !activeWorkplaces.contains(workplace)) {
-                    workplace.setEnvironment(DefaultWorkplaceManager.this);
-                    activeWorkplaces.add(workplace);
-                }
-                log.info("Workplace added: {}", workplace.getAddress());
-                updateWorkplacesCache();
-            } else {
-                throw new WorkplaceException(String.format("%s already exists in the manager.", agentAddress));
-            }
-        });
-    }
-
     @Override
     @Nullable
     public Workplace getLocalWorkplace(@Nonnull final AgentAddress workplaceAddress) {
@@ -366,17 +362,22 @@ public class DefaultWorkplaceManager implements
         return withReadLockAndRuntimeExceptions(() -> ImmutableList.copyOf(initializedWorkplaces.values()));
     }
 
-    private void deliverMessageToWorkplace(@Nonnull final Message<AgentAddress, ?> message) {
-        withReadLock(() -> {
-            final AddressSelector<AgentAddress> receiverSelector = message.getHeader().getReceiverSelector();
-            final Set<AgentAddress> addresses = Selectors.filter(getAddressesOfLocalWorkplaces(), receiverSelector);
-            for (final AgentAddress agentAddress : addresses) {
-                log.debug("Delivering to {}.", agentAddress);
-                getLocalWorkplace(agentAddress).deliverMessage(message);
-            }
-        });
-    }
 
+
+
+
+
+
+
+
+
+
+    @Override
+    public void sendMessage(@Nonnull final WorkplaceManagerMessage message) {
+        requireNonNull(message);
+        log.debug("Sending message {}.", message);
+        communicationChannel.sendMessageToAll(message);
+    }
 
     @Override
     public void onRemoteMessage(@Nonnull final WorkplaceManagerMessage message) {
@@ -409,57 +410,24 @@ public class DefaultWorkplaceManager implements
 
     }
 
-    @Override
-    public String toString() {
-        return toStringHelper(this).toString();
+    private void deliverMessageToWorkplace(@Nonnull final Message<AgentAddress, ?> message) {
+        withReadLock(() -> {
+            final AddressSelector<AgentAddress> receiverSelector = message.getHeader().getReceiverSelector();
+            final Set<AgentAddress> addresses = Selectors.filter(getAddressesOfLocalWorkplaces(), receiverSelector);
+            for (final AgentAddress agentAddress : addresses) {
+                log.debug("Delivering to {}.", agentAddress);
+                getLocalWorkplace(agentAddress).deliverMessage(message);
+            }
+        });
     }
 
-    @Override
-    public void configure() {
 
-        final Collection<IComponentDefinition> componentDefinitions = config.get().getComponentsDefinitions();
 
-        childContainer = instanceProvider.makeChildContainer();
-        for (final IComponentDefinition def : componentDefinitions) {
-            childContainer.addComponent(def);
-        }
-        childContainer.verify();
 
-        configuredWorkplaces = newArrayList(childContainer.getInstances(Workplace.class));
 
-        log.info("Configured workplaces: {}.", configuredWorkplaces);
 
-        initializeStatefullComponents();
+//    Locks utils
 
-        eventBus.post(new CoreConfiguredEvent());
-    }
-
-    private void initializeStatefullComponents() {
-        log.debug("Initialising required components.");
-        // initialize in the whole hierarchy (see AGE-163). Can be removed when some @PostConstruct are introduced
-        // or component starting is supported at container level.
-        if (instanceProvider instanceof PicoContainer) {
-            instanceProvider.accept(new StatefulComponentInitializer());
-        } else {
-            //fallback for other potential implementations
-            instanceProvider.getInstances(IStatefulComponent.class);
-        }
-    }
-
-    @Override
-    public EventListener getEventListener() {
-        return eventListener;
-    }
-
-    private class PrivateEventListener implements EventListener {
-
-        @Subscribe
-        @SuppressWarnings("unused")
-        public void onConfigurationUpdated(ConfigurationUpdatedEvent event) {
-            config.set(event.getComputationConfiguration());
-        }
-
-    }
 
 
     protected final void withReadLock(final Runnable action) {
