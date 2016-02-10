@@ -21,6 +21,7 @@
         <module>habitat</module>
         <module>rate</module>
         <module>lifecycle</module>
+        <module>execution-environement</module>
     </modules>
 
     <dependencies>

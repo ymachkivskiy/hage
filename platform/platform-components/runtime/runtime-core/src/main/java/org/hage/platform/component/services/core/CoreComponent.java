@@ -1,11 +1,10 @@
 package org.hage.platform.component.services.core;
 
 
-import org.hage.platform.component.IStatefulComponent;
 import org.hage.platform.component.exception.ComponentException;
 
 
-public interface CoreComponent extends IStatefulComponent {
+public interface CoreComponent {
 
 
     void start() throws ComponentException;

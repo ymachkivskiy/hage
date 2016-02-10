@@ -5,9 +5,11 @@ import com.google.common.eventbus.Subscribe;
 import com.google.common.util.concurrent.ListeningScheduledExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 import lombok.extern.slf4j.Slf4j;
+import org.hage.platform.component.execution.event.CoreStartingEvent;
+import org.hage.platform.component.execution.event.CoreStoppedEvent;
+import org.hage.platform.component.execution.event.StopConditionFulfilledEvent;
 import org.hage.platform.component.query.CollectionQuery;
 import org.hage.platform.component.query.ValueFilters;
-import org.hage.platform.component.services.core.CoreComponentEvent;
 import org.hage.platform.component.workplace.manager.WorkplaceManager;
 import org.hage.platform.util.bus.EventBus;
 import org.hage.platform.util.bus.EventListener;
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -24,6 +27,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 import static org.hage.platform.component.query.ValueSelectors.field;
 
 @Slf4j
@@ -43,7 +48,7 @@ public class FixedStepCountStopCondition implements
     private final ListeningScheduledExecutorService executor = MoreExecutors.listeningDecorator(
             Executors.newSingleThreadScheduledExecutor());
 
-    private ScheduledFuture<?> future;
+    private Optional<ScheduledFuture<?>> future = empty();
 
     @Autowired
     private EventBus eventBus;
@@ -103,7 +108,6 @@ public class FixedStepCountStopCondition implements
 
         final Collection<Long> results = query.matching("step", ValueFilters.lessThan(stepCount))
                 .select(field("step")).execute(workplaceManager.getLocalWorkplaces());
-//        log.info("Q={}", results);
         return results.isEmpty();
     }
 
@@ -115,16 +119,17 @@ public class FixedStepCountStopCondition implements
     private class PrivateEventListener implements EventListener {
 
         @Subscribe
-        public void onCoreComponentEvent(CoreComponentEvent event) {
-            log.debug("Event: {}.", event);
-            switch(event.getType()) {
-                case STARTING:
-                    future = executor.scheduleWithFixedDelay(observer, 0, 1, TimeUnit.MILLISECONDS);
-                    break;
-                case STOPPED:
-                    future.cancel(true);
-                    break;
-            }
+        @SuppressWarnings("unused")
+        public void onCoreStarting(CoreStartingEvent event) {
+            log.debug("Core starting event: {}.", event);
+            future = of(executor.scheduleWithFixedDelay(observer, 0, 1, TimeUnit.MILLISECONDS));
+        }
+
+        @Subscribe
+        @SuppressWarnings("unused")
+        public void onCoreStopped(CoreStoppedEvent event) {
+            log.debug("Core stopped event: {}", event);
+            future.ifPresent(f -> f.cancel(true));
         }
 
     }

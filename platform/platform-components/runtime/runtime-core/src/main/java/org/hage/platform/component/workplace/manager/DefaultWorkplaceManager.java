@@ -25,12 +25,14 @@ import org.hage.platform.component.agent.IAgent;
 import org.hage.platform.component.agent.ISimpleAgent;
 import org.hage.platform.component.definition.IComponentDefinition;
 import org.hage.platform.component.exception.ComponentException;
+import org.hage.platform.component.execution.event.CoreConfiguredEvent;
+import org.hage.platform.component.execution.event.CoreStartingEvent;
+import org.hage.platform.component.execution.event.CoreStoppedEvent;
 import org.hage.platform.component.pico.IPicoComponentInstanceProvider;
 import org.hage.platform.component.pico.PicoComponentInstanceProvider;
 import org.hage.platform.component.pico.visitor.StatefulComponentInitializer;
 import org.hage.platform.component.query.AgentEnvironmentQuery;
 import org.hage.platform.component.query.IQuery;
-import org.hage.platform.component.services.core.CoreComponentEvent;
 import org.hage.platform.component.workplace.IStopCondition;
 import org.hage.platform.component.workplace.Workplace;
 import org.hage.platform.component.workplace.WorkplaceException;
@@ -78,39 +80,51 @@ public class DefaultWorkplaceManager implements
 
     private final EventListener eventListener = new PrivateEventListener();
 
+    @Nonnull
+    private final ListeningScheduledExecutorService executorService = MoreExecutors.listeningDecorator(
+        Executors.newSingleThreadScheduledExecutor(
+            (new ThreadFactoryBuilder()).setNameFormat("wp-mgr-%d").build()));
+
+    @Autowired
+    protected PicoComponentInstanceProvider instanceProvider;
+    private IPicoComponentInstanceProvider childContainer;
+
+
+    @Nullable
+    private List<Workplace> configuredWorkplaces;
+    @Nonnull
+    private final List<Workplace> activeWorkplaces = newLinkedList();
     @GuardedBy("workplacesLock")
     @Nonnull
     private final Map<AgentAddress, Workplace> initializedWorkplaces = newHashMap();
     @Nonnull
-    private final List<Workplace> activeWorkplaces = newLinkedList();
-    @Nonnull
     private final ReadWriteLock workplacesLock = new ReentrantReadWriteLock(true);
-    @Nonnull
-    private final ListeningScheduledExecutorService executorService = MoreExecutors.listeningDecorator(
-            Executors.newSingleThreadScheduledExecutor(
-                    (new ThreadFactoryBuilder()).setNameFormat("wp-mgr-%d").build()));
-    @Autowired
-    protected PicoComponentInstanceProvider instanceProvider;
-    @Nullable
-    private List<Workplace> configuredWorkplaces;
-    private IMap<NodeAddress, Set<AgentAddress>> workplacesMap;
-    private IMap<AgentAddress, Map<String, Iterable<?>>> queryCache;
+
+
+
+
+
+    private IMap<NodeAddress, Set<AgentAddress>> workplacesMap; //used as simple map (structure service candidate)
+    private IMap<AgentAddress, Map<String, Iterable<?>>> queryCache; ///used as simple map with possibility to lock keys (service candidate)
     @Autowired
     private RemoteCommunicationManager communicationManager;
     private RawRemoteChannel<WorkplaceManagerMessage> communicationChannel;
     @Autowired
     private NodeAddressSupplier nodeAddressProvider;
-    private IPicoComponentInstanceProvider childContainer;
+
+
+
+
     @Autowired
     private EventBus eventBus;
+
 
     private final AtomicReference<ComputationConfiguration> config = new AtomicReference<>();
 
     // LifecycleEngine methods
 
     @PostConstruct
-    @Override
-    public void init() {
+    private void init() {
         communicationChannel = communicationManager.getCommunicationChannelForService(SERVICE_NAME);
         communicationChannel.subscribeChannel(this);
         workplacesMap = communicationManager.getDistributedMap(WORKPLACES_MAP_NAME);
@@ -118,8 +132,7 @@ public class DefaultWorkplaceManager implements
     }
 
     @PreDestroy
-    @Override
-    public boolean finish() {
+    private boolean finish() {
         withReadLock(() -> {
             for (final Workplace workplace : initializedWorkplaces.values()) {
                 synchronized (workplace) {
@@ -136,13 +149,7 @@ public class DefaultWorkplaceManager implements
         return true;
     }
 
-    protected final void withReadLock(final Runnable action) {
-        withReadLockAndRuntimeExceptions(Executors.callable(action));
-    }
 
-    protected final <V> V withReadLockAndRuntimeExceptions(final Callable<V> action) {
-        return Locks.withReadLockAndRuntimeExceptions(workplacesLock, action);
-    }
 
     @Override
     public void start() {
@@ -152,7 +159,7 @@ public class DefaultWorkplaceManager implements
         childContainer.getInstance(IStopCondition.class);
 
         // notify all listeners
-        eventBus.post(new CoreComponentEvent(CoreComponentEvent.Type.STARTING));
+        eventBus.post(new CoreStartingEvent());
 
         // start all workplaces
         withReadLock(() -> {
@@ -182,8 +189,6 @@ public class DefaultWorkplaceManager implements
             }
         });
     }
-
-	/* Workplace management methods */
 
     @Override
     public void resume() {
@@ -228,16 +233,10 @@ public class DefaultWorkplaceManager implements
         configuredWorkplaces = null;
     }
 
-    /**
-     * Indicates if the workplace manager is active, i.e. it contains at least on active workplace.
-     *
-     * @return true if the manager is active
-     */
+
     public boolean isActive() {
         return !activeWorkplaces.isEmpty();
     }
-
-	/* Workplace environment methods. */
 
     private void initializeWorkplaces() {
         if (configuredWorkplaces == null || configuredWorkplaces.isEmpty()) {
@@ -272,32 +271,13 @@ public class DefaultWorkplaceManager implements
         workplacesMap.put(nodeAddressProvider.get(), getAddressesOfLocalWorkplaces());
     }
 
-    protected final void withWriteLock(final Runnable action) {
-        withWriteLockAndRuntimeExceptions(Executors.callable(action));
-    }
+
 
     @Nonnull
     protected Set<AgentAddress> getAddressesOfLocalWorkplaces() {
         return getLocalWorkplaces().stream()
-                .map(Workplace::getAddress)
-                .collect(Collectors.toSet());
-    }
-
-    protected final <V> V withWriteLockAndRuntimeExceptions(final Callable<V> action) {
-        assert (action != null);
-        return Locks.withWriteLockAndRuntimeExceptions(workplacesLock, action);
-    }
-
-    protected final <V, E extends Exception> V withWriteLockThrowing(final Callable<V> action,
-                                                                     final Class<E> exceptionClass) throws E {
-        assert (action != null && exceptionClass != null);
-        return Locks.withWriteLockThrowing(workplacesLock, action, exceptionClass);
-    }
-
-    protected final <V, E extends Exception> V withReadLockThrowing(final Callable<V> action,
-                                                                    final Class<E> exceptionClass) throws E {
-        assert (action != null && exceptionClass != null);
-        return Locks.withReadLockThrowing(workplacesLock, action, exceptionClass);
+            .map(Workplace::getAddress)
+            .collect(Collectors.toSet());
     }
 
 
@@ -312,7 +292,7 @@ public class DefaultWorkplaceManager implements
         }
 
         if (activeWorkplaces.isEmpty()) {
-            eventBus.post(new CoreComponentEvent(CoreComponentEvent.Type.STOPPED));
+            eventBus.post(new CoreStoppedEvent());
         }
     }
 
@@ -373,15 +353,6 @@ public class DefaultWorkplaceManager implements
         }
     }
 
-	/* Lock utilities. */
-
-    /**
-     * Attaches a given workplace to this manager.
-     *
-     * @param workplace workplace to attache
-     * @throws WorkplaceException when a given workplace is already attached to this manager or workplace's address exists already in
-     *                            the manager
-     */
     public void addWorkplace(final Workplace workplace) {
         withWriteLock(() -> {
             final AgentAddress agentAddress = workplace.getAddress();
@@ -476,7 +447,7 @@ public class DefaultWorkplaceManager implements
 
         initializeStatefullComponents();
 
-        eventBus.post(new CoreComponentEvent(CoreComponentEvent.Type.CONFIGURED));
+        eventBus.post(new CoreConfiguredEvent());
     }
 
     private void initializeStatefullComponents() {
@@ -505,5 +476,39 @@ public class DefaultWorkplaceManager implements
         }
 
     }
+
+
+
+
+
+    protected final void withReadLock(final Runnable action) {
+        withReadLockAndRuntimeExceptions(Executors.callable(action));
+    }
+
+    protected final <V> V withReadLockAndRuntimeExceptions(final Callable<V> action) {
+        return Locks.withReadLockAndRuntimeExceptions(workplacesLock, action);
+    }
+
+    protected final void withWriteLock(final Runnable action) {
+        withWriteLockAndRuntimeExceptions(Executors.callable(action));
+    }
+
+    protected final <V> V withWriteLockAndRuntimeExceptions(final Callable<V> action) {
+        assert (action != null);
+        return Locks.withWriteLockAndRuntimeExceptions(workplacesLock, action);
+    }
+
+    protected final <V, E extends Exception> V withWriteLockThrowing(final Callable<V> action,
+                                                                     final Class<E> exceptionClass) throws E {
+        assert (action != null && exceptionClass != null);
+        return Locks.withWriteLockThrowing(workplacesLock, action, exceptionClass);
+    }
+
+    protected final <V, E extends Exception> V withReadLockThrowing(final Callable<V> action,
+                                                                    final Class<E> exceptionClass) throws E {
+        assert (action != null && exceptionClass != null);
+        return Locks.withReadLockThrowing(workplacesLock, action, exceptionClass);
+    }
+
 
 }
