@@ -13,6 +13,7 @@
 
     <modules>
         <module>execution-environement-data</module>
+        <module>execution-environement-core-api</module>
     </modules>
 
 </project>

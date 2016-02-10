@@ -25,7 +25,9 @@ import org.hage.platform.component.agent.IAgent;
 import org.hage.platform.component.agent.ISimpleAgent;
 import org.hage.platform.component.definition.IComponentDefinition;
 import org.hage.platform.component.exception.ComponentException;
+import org.hage.platform.component.execution.WorkplaceException;
 import org.hage.platform.component.execution.event.CoreConfiguredEvent;
+import org.hage.platform.component.execution.event.CoreStartedEvent;
 import org.hage.platform.component.execution.event.CoreStartingEvent;
 import org.hage.platform.component.execution.event.CoreStoppedEvent;
 import org.hage.platform.component.pico.IPicoComponentInstanceProvider;
@@ -35,7 +37,6 @@ import org.hage.platform.component.query.AgentEnvironmentQuery;
 import org.hage.platform.component.query.IQuery;
 import org.hage.platform.component.workplace.IStopCondition;
 import org.hage.platform.component.workplace.Workplace;
-import org.hage.platform.component.workplace.WorkplaceException;
 import org.hage.platform.config.ComputationConfiguration;
 import org.hage.platform.config.event.ConfigurationUpdatedEvent;
 import org.hage.platform.util.bus.EventBus;
@@ -71,9 +72,9 @@ import static java.util.Objects.requireNonNull;
 @ParametersAreNonnullByDefault
 @Slf4j
 public class DefaultWorkplaceManager implements
-        WorkplaceManager,
-        RemoteMessageSubscriber<WorkplaceManagerMessage>,
-        EventSubscriber {
+    WorkplaceManager,
+    RemoteMessageSubscriber<WorkplaceManagerMessage>,
+    EventSubscriber {
 
     public static final String QUERY_CACHE_NAME = "queryCache";
     public static final String WORKPLACES_MAP_NAME = "workplaces";
@@ -101,9 +102,6 @@ public class DefaultWorkplaceManager implements
     private final ReadWriteLock workplacesLock = new ReentrantReadWriteLock(true);
 
 
-
-
-
     private IMap<NodeAddress, Set<AgentAddress>> workplacesMap; //used as simple map (structure service candidate)
     private IMap<AgentAddress, Map<String, Iterable<?>>> queryCache; ///used as simple map with possibility to lock keys (service candidate)
     @Autowired
@@ -111,8 +109,6 @@ public class DefaultWorkplaceManager implements
     private RawRemoteChannel<WorkplaceManagerMessage> communicationChannel;
     @Autowired
     private NodeAddressSupplier nodeAddressProvider;
-
-
 
 
     @Autowired
@@ -133,22 +129,9 @@ public class DefaultWorkplaceManager implements
 
     @PreDestroy
     private boolean finish() {
-        withReadLock(() -> {
-            for (final Workplace workplace : initializedWorkplaces.values()) {
-                synchronized (workplace) {
-                    if (workplace.isStopped()) {
-                        workplace.terminate();
-                        log.info("Workplace {} finished", workplace);
-                    } else {
-                        log.error("Cannot terminate still running workplace: {}.", workplace);
-                    }
-                }
-            }
-        });
         executorService.shutdown();
         return true;
     }
-
 
 
     @Override
@@ -172,6 +155,8 @@ public class DefaultWorkplaceManager implements
             }
             updateWorkplacesCache();
         });
+
+        eventBus.post(new CoreStartedEvent());
     }
 
     @Override
@@ -224,13 +209,13 @@ public class DefaultWorkplaceManager implements
         log.debug("Workplace manager stopped.");
     }
 
-    @Override
-    public void teardownConfiguration() {
+    private void teardownConfiguration() {
         checkState(childContainer != null, "No configuration to destroy.");
         checkState(!isActive(), "Cannot destroy configuration of an active manager.");
 
         instanceProvider.removeChildContainer(childContainer);
         configuredWorkplaces = null;
+        config.set(null);
     }
 
 
@@ -257,9 +242,9 @@ public class DefaultWorkplaceManager implements
                     log.info("Workplace {} initialized.", agentAddress);
                 } catch (final WorkplaceException e) {
                     initializedWorkplaces.remove(
-                            agentAddress); // Do not leave not configured workplace in the manager
+                        agentAddress); // Do not leave not configured workplace in the manager
                     throw new ComponentException(
-                            String.format("Cannot set workplace environment for: %s.", agentAddress), e);
+                        String.format("Cannot set workplace environment for: %s.", agentAddress), e);
                 }
             }
         });
@@ -267,10 +252,9 @@ public class DefaultWorkplaceManager implements
 
     private void updateWorkplacesCache() {
         log.debug("Updating workplaces in global map {} - {}.", nodeAddressProvider.get(),
-                getAddressesOfLocalWorkplaces());
+            getAddressesOfLocalWorkplaces());
         workplacesMap.put(nodeAddressProvider.get(), getAddressesOfLocalWorkplaces());
     }
-
 
 
     @Nonnull
@@ -288,7 +272,7 @@ public class DefaultWorkplaceManager implements
             activeWorkplaces.remove(workplace);
         } else {
             log.error("Received event notify stopped from workplace {} which is already stopped",
-                    workplace.getAddress());
+                workplace.getAddress());
         }
 
         if (activeWorkplaces.isEmpty()) {
@@ -414,7 +398,7 @@ public class DefaultWorkplaceManager implements
                 }
                 final Map<String, Serializable> migrationData = (Map<String, Serializable>) payload;
                 final AddressSelector<AgentAddress> targetSelector =
-                        (AddressSelector<AgentAddress>) migrationData.get("target");
+                    (AddressSelector<AgentAddress>) migrationData.get("target");
                 final ISimpleAgent agent = (ISimpleAgent) migrationData.get("agent");
                 final Set<AgentAddress> addresses = Selectors.filter(getAddressesOfLocalWorkplaces(), targetSelector);
                 if (addresses.size() == 1) {//TODO : strange construction
@@ -476,9 +460,6 @@ public class DefaultWorkplaceManager implements
         }
 
     }
-
-
-
 
 
     protected final void withReadLock(final Runnable action) {

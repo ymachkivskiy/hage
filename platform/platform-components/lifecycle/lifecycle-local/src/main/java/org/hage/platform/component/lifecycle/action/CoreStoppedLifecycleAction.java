@@ -13,6 +13,6 @@ public class CoreStoppedLifecycleAction implements LifecycleAction {
 
     @Override
     public void execute() {
-        log.debug("CoreComponent has stopped.");
+        log.debug("ExecutionCore has stopped.");
     }
 }

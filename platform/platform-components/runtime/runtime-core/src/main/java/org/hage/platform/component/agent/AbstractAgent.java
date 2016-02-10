@@ -5,8 +5,8 @@ import com.google.common.base.Objects;
 import org.hage.platform.communication.address.agent.AgentAddress;
 import org.hage.platform.communication.address.agent.AgentAddressSupplier;
 import org.hage.platform.communication.message.Message;
+import org.hage.platform.component.execution.IllegalOperationException;
 import org.hage.platform.component.query.AgentEnvironmentQuery;
-import org.hage.platform.component.workplace.IllegalOperationException;
 import org.hage.property.*;
 
 import javax.annotation.CheckForNull;

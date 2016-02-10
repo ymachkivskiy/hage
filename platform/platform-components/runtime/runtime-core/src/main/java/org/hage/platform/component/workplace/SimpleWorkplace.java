@@ -1,34 +1,3 @@
-/**
- * Copyright (C) 2006 - 2012
- *   Pawel Kedzior
- *   Tomasz Kmiecik
- *   Kamil Pietak
- *   Krzysztof Sikora
- *   Adam Wos
- *   Lukasz Faber
- *   Daniel Krzywicki
- *   and other students of AGH University of Science and Technology.
- *
- * This file is part of AgE.
- *
- * AgE is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * AgE is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with AgE.  If not, see <http://www.gnu.org/licenses/>.
- */
-/*
- * Created: 2008-10-07
- * $Id$
- */
-
 package org.hage.platform.component.workplace;
 
 
@@ -45,6 +14,8 @@ import org.hage.platform.component.action.IActionContext;
 import org.hage.platform.component.action.SingleAction;
 import org.hage.platform.component.action.context.*;
 import org.hage.platform.component.agent.*;
+import org.hage.platform.component.execution.IllegalOperationException;
+import org.hage.platform.component.execution.WorkplaceException;
 import org.hage.platform.component.query.AgentEnvironmentQuery;
 import org.hage.platform.component.query.EnvironmentAddressesQuery;
 import org.hage.platform.component.query.IQuery;
@@ -57,7 +28,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.concurrent.GuardedBy;
 import java.io.Serializable;
 import java.util.*;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
@@ -69,11 +39,6 @@ import static com.google.common.collect.Iterables.consumingIterable;
 import static com.google.common.collect.Queues.newConcurrentLinkedQueue;
 
 
-/**
- * This is a basic workplace for simple agents ({@link ISimpleAgent}).
- *
- * @author AGH AgE Team
- */
 public class SimpleWorkplace implements Workplace, ISimpleAgentEnvironment {
 
     private static final Logger log = LoggerFactory.getLogger(SimpleWorkplace.class);
@@ -235,28 +200,8 @@ public class SimpleWorkplace implements Workplace, ISimpleAgentEnvironment {
             state = State.STOPPING;
         }
 
-        try {
-            if(!agentStepExecutorFuture.isDone()) {
-                agentStepExecutorFuture.get();
-            }
-        } catch(final InterruptedException | ExecutionException e) {
-            log.warn("Exception when waiting for step executor to finish.", e);
-        }
-    }
-
-    @Override
-    public boolean terminate() {
-        checkState(isStopped(), "Illegal use of terminate. Must invoke stop() first.");
-
-        queryExecutorFuture.cancel(true);
         executorService.shutdown();
-        try {
-            executorService.awaitTermination(1, TimeUnit.SECONDS);
-        } catch(InterruptedException e) {
-            log.debug("Interrupted.", e);
-        }
-        log.info("{} has been shut down.", getAddress());
-        return true;
+
     }
 
     @Override
