@@ -14,7 +14,11 @@ public final class ActionBuilder {
 
     private LifecycleEvent event;
     private LifecycleState exit;
-    private Class<? extends LifecycleAction> actionClass = EmptyLifecycleAction.class;
+    private Class<? extends LifecycleAction> actionClass;
+
+    {
+        reset();
+    }
 
     public ActionBuilder on(LifecycleEvent initiatingEvent) {
         this.event = initiatingEvent;
@@ -34,6 +38,7 @@ public final class ActionBuilder {
     public ActionBuilder and() {
         builder.getTransitions().put(entry, event, exit);
         builder.getActions().put(entry, event, actionClass);
+        reset();
         return this;
     }
 
@@ -41,5 +46,9 @@ public final class ActionBuilder {
         builder.getTransitions().put(entry, event, exit);
         builder.getActions().put(entry, event, actionClass);
         return builder;
+    }
+
+    private void reset() {
+        actionClass = EmptyLifecycleAction.class;
     }
 }

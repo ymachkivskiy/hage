@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Configuration;
 class PlatformLocalConfigurationProviderModuleConfiguration {
 
     @Bean
-    public ConfigurationStorageService computationConfigurationLocalProvider() {
-        return new ConfigurationStorageService();
+    public ConfigurationHub computationConfigurationLocalProvider() {
+        return new ConfigurationHub();
     }
 
 }

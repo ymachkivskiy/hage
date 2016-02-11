@@ -4,11 +4,10 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.component.lifecycle.LifecycleAction;
+import org.hage.platform.config.event.ConfigurationLoadRequestEvent;
 import org.hage.platform.util.bus.EventBus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import static org.hage.platform.config.event.ConfigurationLoadRequestEvent.configurationLoadRequest;
 
 @Slf4j
 @Component
@@ -22,13 +21,9 @@ public class InitializationLifecycleAction implements LifecycleAction {
     public void execute() {
         log.debug("Initializing LifecycleEngine.");
 
-        notifyConfigurationCanBeLoaded();
+        eventBus.post(new ConfigurationLoadRequestEvent());
 
         log.debug("Node has finished initialization.");
-    }
-
-    private void notifyConfigurationCanBeLoaded() {
-        eventBus.post(configurationLoadRequest());
     }
 
 
