@@ -18,7 +18,7 @@
 
         <dependency>
             <groupId>org.hage.platform.component.execution</groupId>
-            <artifactId>event-data</artifactId>
+            <artifactId>execution-event-data</artifactId>
             <version>${project.version}</version>
         </dependency>
 

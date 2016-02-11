@@ -12,8 +12,8 @@
     <artifactId>execuction-environment-parent</artifactId>
 
     <modules>
-        <module>execution-environement-data</module>
-        <module>execution-environement-core-api</module>
+        <module>execution-core-api</module>
+        <module>execution-event-data</module>
     </modules>
 
 </project>

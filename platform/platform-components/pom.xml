@@ -21,15 +21,7 @@
         <module>habitat</module>
         <module>rate</module>
         <module>lifecycle</module>
-        <module>execution-environement</module>
+        <module>execution-environment</module>
     </modules>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.hage.platform</groupId>
-            <artifactId>platform-common</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-    </dependencies>
 
 </project>

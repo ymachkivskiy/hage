@@ -17,13 +17,13 @@
 
         <dependency>
             <groupId>org.hage.platform.component.execution</groupId>
-            <artifactId>event-data</artifactId>
+            <artifactId>execution-event-data</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.hage.platform.component.execution</groupId>
-            <artifactId>core-api</artifactId>
+            <artifactId>execution-core-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 

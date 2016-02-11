@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>event-data</artifactId>
+    <artifactId>execution-event-data</artifactId>
 
 
     <dependencies>
