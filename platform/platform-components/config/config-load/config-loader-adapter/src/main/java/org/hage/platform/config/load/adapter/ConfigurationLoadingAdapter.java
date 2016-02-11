@@ -4,7 +4,7 @@ package org.hage.platform.config.load.adapter;
 import com.google.common.eventbus.Subscribe;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.config.ComputationConfiguration;
-import org.hage.platform.config.ConfigurationStorage;
+import org.hage.platform.config.distribution.ConfigurationDistributor;
 import org.hage.platform.config.event.ConfigurationLoadRequestEvent;
 import org.hage.platform.config.load.ConfigurationLoader;
 import org.hage.platform.config.load.ConfigurationNotFoundException;
@@ -30,7 +30,7 @@ public class ConfigurationLoadingAdapter implements EventSubscriber, EventListen
     @Autowired
     private ComputationConfigurationGenerator configurationGenerator;
     @Autowired
-    private ConfigurationStorage configurationStorage;
+    private ConfigurationDistributor configurationDistributor;
 
     @Subscribe
     @SuppressWarnings("unused")
@@ -56,8 +56,7 @@ public class ConfigurationLoadingAdapter implements EventSubscriber, EventListen
 
     private void notifyConfigurationLoaded(ComputationConfiguration configuration) {
         log.info("Notify configuration has been loaded {}", configuration);
-
-        configurationStorage.updateConfiguration(configuration);
+        configurationDistributor.distribute(configuration);
     }
 
 

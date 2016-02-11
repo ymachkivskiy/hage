@@ -3,20 +3,23 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
+        <artifactId>config-distribution-parent</artifactId>
         <groupId>org.hage.platform.component</groupId>
-        <artifactId>platform-components</artifactId>
         <version>0.2.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <packaging>pom</packaging>
 
-    <artifactId>configuration-parent</artifactId>
+    <artifactId>config-distribution-api</artifactId>
 
-    <modules>
-        <module>config-data</module>
-        <module>config-provider</module>
-        <module>config-load</module>
-        <module>config-distribution</module>
-    </modules>
+    <dependencies>
+
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>config-data</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+    </dependencies>
+
 
 </project>

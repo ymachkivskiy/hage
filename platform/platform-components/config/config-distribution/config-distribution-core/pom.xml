@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <groupId>org.hage.platform.component</groupId>
-        <artifactId>config-loader-parent</artifactId>
-        <version>0.2.0-SNAPSHOT</version>
-    </parent>
+
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>config-loader-adapter</artifactId>
+    <parent>
+        <groupId>org.hage.platform.component</groupId>
+        <artifactId>config-distribution-parent</artifactId>
+        <version>0.2.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>config-distribution-core</artifactId>
+
+    <name>HAgE::Service::Configuration</name>
+    <description>HAgE service that configures nodes and the environment</description>
 
     <dependencies>
 
@@ -21,13 +26,19 @@
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
-            <artifactId>config-data</artifactId>
+            <artifactId>config-provider</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
-            <artifactId>config-loader-api</artifactId>
+            <artifactId>connection-link</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>distr-rate</artifactId>
             <version>${project.version}</version>
         </dependency>
 
