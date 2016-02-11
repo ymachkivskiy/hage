@@ -40,10 +40,10 @@ import org.hage.platform.communication.address.selector.Selectors;
 import org.hage.platform.communication.message.Message;
 import org.hage.platform.communication.message.SimpleHeader;
 import org.hage.platform.communication.message.SimpleMessage;
-import org.hage.platform.component.action.AgentActions;
-import org.hage.platform.component.agent.AgentException;
-import org.hage.platform.component.agent.SimpleAgent;
-import org.hage.platform.component.query.AgentEnvironmentQuery;
+import org.hage.platform.component.execution.action.AgentActions;
+import org.hage.platform.component.execution.agent.AgentException;
+import org.hage.platform.component.execution.agent.SimpleAgent;
+import org.hage.platform.component.execution.query.AgentEnvironmentQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

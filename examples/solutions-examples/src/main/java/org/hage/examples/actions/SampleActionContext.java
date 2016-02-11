@@ -32,8 +32,8 @@
 package org.hage.examples.actions;
 
 
-import org.hage.platform.component.action.IActionContext;
-import org.hage.platform.component.action.context.AgentActionContext;
+import org.hage.platform.component.execution.action.IActionContext;
+import org.hage.platform.component.execution.action.context.AgentActionContext;
 
 /**
  * Empty context, because of the action simplicity.

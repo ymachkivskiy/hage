@@ -32,7 +32,7 @@
 package org.hage.examples.delegation;
 
 
-import org.hage.platform.component.strategy.IStrategy;
+import org.hage.platform.component.execution.strategy.IStrategy;
 
 /**
  * Simple interface for strategies printing texts.

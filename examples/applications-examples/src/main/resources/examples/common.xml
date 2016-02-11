@@ -4,9 +4,9 @@
                xsi:schemaLocation="http://age.iisg.agh.edu.pl/schema/age http://age.iisg.agh.edu.pl/schema/age/age.xsd">
 
     <block name="workplaceComponents">
-        <component name="aggregateActionService" class="org.hage.platform.component.agent.AggregateActionService" isSingleton="false"/>
-        <component name="aggregateQueryService" class="org.hage.platform.component.agent.AggregateQueryService" isSingleton="false"/>
-        <component name="aggregateMessagingService" class="org.hage.platform.component.agent.AggregateMessagingService"
+        <component name="aggregateActionService" class="org.hage.platform.component.execution.agent.AggregateActionService" isSingleton="false"/>
+        <component name="aggregateQueryService" class="org.hage.platform.component.execution.agent.AggregateQueryService" isSingleton="false"/>
+        <component name="aggregateMessagingService" class="org.hage.platform.component.execution.agent.AggregateMessagingService"
                    isSingleton="false"/>
     </block>
 

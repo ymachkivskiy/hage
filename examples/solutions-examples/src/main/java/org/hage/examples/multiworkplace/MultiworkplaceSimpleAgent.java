@@ -36,8 +36,8 @@ import org.hage.examples.migration.CrawlingSimpleAgent;
 import org.hage.platform.communication.address.agent.AgentAddress;
 import org.hage.platform.communication.address.agent.AgentAddressSupplier;
 import org.hage.platform.communication.message.Message;
-import org.hage.platform.component.action.AgentActions;
-import org.hage.platform.component.agent.AgentException;
+import org.hage.platform.component.execution.action.AgentActions;
+import org.hage.platform.component.execution.agent.AgentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

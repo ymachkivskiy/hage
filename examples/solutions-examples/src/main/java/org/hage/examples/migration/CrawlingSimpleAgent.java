@@ -34,10 +34,10 @@ package org.hage.examples.migration;
 
 import org.hage.platform.communication.address.agent.AgentAddress;
 import org.hage.platform.communication.address.agent.AgentAddressSupplier;
-import org.hage.platform.component.action.AgentActions;
-import org.hage.platform.component.agent.AgentException;
-import org.hage.platform.component.agent.SimpleAgent;
-import org.hage.platform.component.query.EnvironmentAddressesQuery;
+import org.hage.platform.component.execution.action.AgentActions;
+import org.hage.platform.component.execution.agent.AgentException;
+import org.hage.platform.component.execution.agent.SimpleAgent;
+import org.hage.platform.component.execution.query.EnvironmentAddressesQuery;
 import org.hage.property.InvalidPropertyPathException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

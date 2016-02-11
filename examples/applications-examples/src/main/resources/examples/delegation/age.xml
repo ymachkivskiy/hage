@@ -4,7 +4,7 @@
 
     <include file="classpath:examples/common.xml">
         <block name="workplaces">
-            <component name="workplace" class="org.hage.platform.component.workplace.SimpleWorkplace" isSingleton="false">
+            <component name="workplace" class="org.hage.platform.component.execution.workplace.SimpleWorkplace" isSingleton="false">
                 <property name="agent">
                     <agent name="root" class="org.hage.examples.delegation.DelegationSimpleAggregate">
                         <component class="org.hage.platform.communication.address.agent.DefaultAgentAddressSupplier">

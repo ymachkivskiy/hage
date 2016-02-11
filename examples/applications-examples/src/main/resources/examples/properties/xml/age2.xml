@@ -8,9 +8,9 @@
 
     <include file="classpath:examples/common.xml">
         <block name="workplaces">
-            <component name="workplace" class="org.hage.platform.component.workplace.SimpleWorkplace" isSingleton="false">
+            <component name="workplace" class="org.hage.platform.component.execution.workplace.SimpleWorkplace" isSingleton="false">
                 <property name="agent">
-                    <agent name="action" class="org.hage.platform.component.agent.SimpleAggregate">
+                    <agent name="action" class="org.hage.platform.component.execution.agent.SimpleAggregate">
                         <component class="org.hage.platform.communication.address.agent.DefaultAgentAddressSupplier">
                             <constructor-arg name="nameTemplate" value="TheXFiles"/>
                         </component>

@@ -2,18 +2,18 @@
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://age.iisg.agh.edu.pl/schema/age"
                xsi:schemaLocation="http://age.iisg.agh.edu.pl/schema/age http://age.iisg.agh.edu.pl/schema/age/age.xsd">
 
-    <component name="stopCondition" class="org.hage.platform.component.workplace.FixedStepCountStopCondition" isSingleton="true">
+    <component name="stopCondition" class="org.hage.platform.component.execution.workplace.FixedStepCountStopCondition" isSingleton="true">
         <constructor-arg type="Long" value="20"/>
     </component>
 
     <component name="defaultAgentAddressSupplier" class="org.hage.platform.communication.address.agent.DefaultAgentAddressSupplier"/>
-    <component name="comparator" class="org.hage.platform.component.action.ordering.DefaultActionComparator" isSingleton="false"/>
+    <component name="comparator" class="org.hage.platform.component.execution.action.ordering.DefaultActionComparator" isSingleton="false"/>
 
-    <component name="aggregateActionService" class="org.hage.platform.component.agent.AggregateActionService" isSingleton="false"/>
-    <component name="aggregateQueryService" class="org.hage.platform.component.agent.AggregateQueryService" isSingleton="false"/>
-    <component name="aggregateMessagingService" class="org.hage.platform.component.agent.AggregateMessagingService" isSingleton="false"/>
+    <component name="aggregateActionService" class="org.hage.platform.component.execution.agent.AggregateActionService" isSingleton="false"/>
+    <component name="aggregateQueryService" class="org.hage.platform.component.execution.agent.AggregateQueryService" isSingleton="false"/>
+    <component name="aggregateMessagingService" class="org.hage.platform.component.execution.agent.AggregateMessagingService" isSingleton="false"/>
 
-    <agent name="workplace1" class="org.hage.platform.component.workplace.SimpleWorkplace">
+    <agent name="workplace1" class="org.hage.platform.component.execution.workplace.SimpleWorkplace">
         <property name="agent" ref="scully"/>
 
         <agent name="scully" class="org.hage.examples.messages.MessagesSimpleAgent">
@@ -25,7 +25,7 @@
         </agent>
     </agent>
 
-    <agent name="workplace2" class="org.hage.platform.component.workplace.SimpleWorkplace">
+    <agent name="workplace2" class="org.hage.platform.component.execution.workplace.SimpleWorkplace">
         <property name="agent" ref="mulder"/>
 
         <agent name="mulder" class="org.hage.examples.messages.MessagesSimpleAgent">

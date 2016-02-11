@@ -10,9 +10,9 @@
 
     <include file="classpath:examples/common.xml">
         <block name="workplaces">
-            <component name="lightWorkplace" class="org.hage.platform.component.workplace.SimpleWorkplace" isSingleton="false">
+            <component name="lightWorkplace" class="org.hage.platform.component.execution.workplace.SimpleWorkplace" isSingleton="false">
                 <property name="agent">
-                    <agent class="org.hage.platform.component.agent.SimpleAggregate">
+                    <agent class="org.hage.platform.component.execution.agent.SimpleAggregate">
                         <component class="org.hage.platform.communication.address.agent.DefaultAgentAddressSupplier">
                             <constructor-arg name="nameTemplate" value="Light Workplace"/>
                         </component>

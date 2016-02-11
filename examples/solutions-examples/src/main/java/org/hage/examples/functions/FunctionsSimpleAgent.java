@@ -34,7 +34,7 @@ package org.hage.examples.functions;
 
 import org.hage.platform.communication.address.agent.AgentAddress;
 import org.hage.platform.communication.address.agent.AgentAddressSupplier;
-import org.hage.platform.component.agent.SimpleAgent;
+import org.hage.platform.component.execution.agent.SimpleAgent;
 import org.hage.property.InvalidPropertyOperationException;
 import org.hage.property.InvalidPropertyPathException;
 import org.hage.property.Property;

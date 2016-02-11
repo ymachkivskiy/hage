@@ -33,12 +33,12 @@ package org.hage.examples.actions;
 
 
 import org.hage.platform.communication.address.agent.AgentAddress;
-import org.hage.platform.component.action.IActionContext;
-import org.hage.platform.component.action.IPerformActionStrategy;
-import org.hage.platform.component.action.SingleAction;
-import org.hage.platform.component.agent.AgentException;
-import org.hage.platform.component.agent.IAgent;
-import org.hage.platform.component.agent.ISimpleAggregate;
+import org.hage.platform.component.execution.action.IActionContext;
+import org.hage.platform.component.execution.action.IPerformActionStrategy;
+import org.hage.platform.component.execution.action.SingleAction;
+import org.hage.platform.component.execution.agent.AgentException;
+import org.hage.platform.component.execution.agent.IAgent;
+import org.hage.platform.component.execution.agent.ISimpleAggregate;
 import org.hage.property.ClassPropertyContainer;
 
 import java.util.Collection;

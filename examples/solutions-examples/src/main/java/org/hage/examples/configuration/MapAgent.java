@@ -34,8 +34,8 @@ package org.hage.examples.configuration;
 
 import org.hage.platform.communication.address.agent.AgentAddress;
 import org.hage.platform.communication.address.agent.AgentAddressSupplier;
-import org.hage.platform.component.agent.SimpleAgent;
 import org.hage.platform.component.exception.ComponentException;
+import org.hage.platform.component.execution.agent.SimpleAgent;
 import org.hage.platform.component.provider.IComponentInstanceProvider;
 import org.hage.platform.component.provider.IComponentInstanceProviderAware;
 import org.slf4j.Logger;
