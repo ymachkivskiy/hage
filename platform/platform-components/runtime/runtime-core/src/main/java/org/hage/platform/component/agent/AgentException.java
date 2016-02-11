@@ -1,9 +1,9 @@
 package org.hage.platform.component.agent;
 
 
-import org.hage.platform.HageException;
+import org.hage.platform.HageRuntimeException;
 
-public class AgentException extends HageException {
+public class AgentException extends HageRuntimeException {
 
     public AgentException(final String message) {
         super(message);

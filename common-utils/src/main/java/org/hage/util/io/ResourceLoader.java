@@ -10,7 +10,7 @@ public class ResourceLoader {
 
     public static Resource getResource(String uri) throws IncorrectUriException {
         if(uri == null || uri.isEmpty()) {
-            throw new IllegalArgumentException("URI cannot be null nor empty.");
+            throw new IncorrectUriException("URI cannot be null nor empty.");
         }
 
         if(uri.startsWith(ClasspathResource.CLASSPATH_SCHEME)) {

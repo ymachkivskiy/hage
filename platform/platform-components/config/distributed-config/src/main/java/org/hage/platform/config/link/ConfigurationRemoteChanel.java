@@ -8,7 +8,7 @@ import org.hage.platform.communication.message.service.ServiceHeader;
 import org.hage.platform.communication.message.service.consume.BaseConditionalMessageConsumer;
 import org.hage.platform.communication.synch.SynchronizationSupport;
 import org.hage.platform.config.ConfigurationAllocation;
-import org.hage.platform.config.ConfigurationStorageService;
+import org.hage.platform.config.ConfigurationStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +20,7 @@ import java.util.Set;
 public class ConfigurationRemoteChanel extends BaseRemoteChanel<ConfigurationMessage> {
 
     @Autowired
-    private ConfigurationStorageService configurationStorageService;
+    private ConfigurationStorage configurationStorageService;
 
     private final ConfigurationCheckRequestSynchConnector checkSynchConnector = new ConfigurationCheckRequestSynchConnector();
 

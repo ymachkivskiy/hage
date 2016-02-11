@@ -1,9 +1,9 @@
 package org.hage.platform.component.exception;
 
 
-import org.hage.platform.HageException;
+import org.hage.platform.HageRuntimeException;
 
-public class ComponentException extends HageException {
+public class ComponentException extends HageRuntimeException {
 
     private static final long serialVersionUID = 1L;
 

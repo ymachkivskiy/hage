@@ -16,7 +16,7 @@
     <modules>
         <module>platform</module>
         <module>examples</module>
-        <module>cli</module>
+        <module>cli-bootstrapper</module>
         <module>common-utils</module>
     </modules>
 

@@ -1,17 +1,15 @@
 package org.hage.platform;
 
-
-public class HageException extends RuntimeException {
-
-    public HageException(final String message) {
+public class HageException extends Exception {
+    public HageException(String message) {
         super(message);
     }
 
-    public HageException(final Throwable cause) {
-        super(cause);
+    public HageException(String message, Throwable cause) {
+        super(message, cause);
     }
 
-    public HageException(final String message, final Throwable cause) {
-        super(message, cause);
+    public HageException(Throwable cause) {
+        super(cause);
     }
 }

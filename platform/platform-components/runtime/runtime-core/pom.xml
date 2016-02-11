@@ -52,12 +52,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.component</groupId>
-            <artifactId>configuration-local</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.hage.platform.util</groupId>
             <artifactId>property</artifactId>
             <version>${project.version}</version>

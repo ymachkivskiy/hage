@@ -27,7 +27,7 @@
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
-            <artifactId>configuration-provider-xml</artifactId>
+            <artifactId>config-loader</artifactId>
             <version>${project.version}</version>
         </dependency>
 

@@ -1,8 +1,8 @@
 package org.hage.platform.component.execution;
 
-import org.hage.platform.HageException;
+import org.hage.platform.HageRuntimeException;
 
-public class WorkplaceException extends HageException {
+public class WorkplaceException extends HageRuntimeException {
 
     public WorkplaceException(final String message) {
         super(message);

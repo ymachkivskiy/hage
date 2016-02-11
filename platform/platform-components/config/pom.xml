@@ -13,11 +13,10 @@
     <artifactId>configuration-parent</artifactId>
 
     <modules>
-        <module>internal-config-data</module>
-        <module>configuration-api</module>
-        <module>local-config</module>
+        <module>config-data</module>
         <module>distributed-config</module>
-        <module>xml-based-provider</module>
+        <module>config-provider</module>
+        <module>config-load</module>
     </modules>
 
 </project>

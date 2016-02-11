@@ -1,8 +1,8 @@
 package org.hage.platform.component.execution;
 
-import org.hage.platform.HageException;
+import org.hage.platform.HageRuntimeException;
 
-public class ExecutionCoreException extends HageException {
+public class ExecutionCoreException extends HageRuntimeException {
     public ExecutionCoreException(String message) {
         super(message);
     }

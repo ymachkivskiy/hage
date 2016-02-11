@@ -1,9 +1,9 @@
 package org.hage.platform.component.action;
 
 
-import org.hage.platform.HageException;
+import org.hage.platform.HageRuntimeException;
 
-public class ActionException extends HageException {
+public class ActionException extends HageRuntimeException {
 
     public ActionException(final String message, final Throwable cause) {
         super(message, cause);

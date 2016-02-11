@@ -5,7 +5,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.component.execution.ComputationConfigurable;
 import org.hage.platform.component.lifecycle.LifecycleAction;
-import org.hage.platform.config.ConfigurationStorageService;
+import org.hage.platform.config.ComputationConfiguration;
+import org.hage.platform.config.ConfigurationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,13 +19,15 @@ public class ConfigurationLifecycleAction implements LifecycleAction {
     private ComputationConfigurable computationConfigurable;
 
     @Autowired
-    private ConfigurationStorageService configurationStorageService;
+    private ConfigurationProvider configurationStorageService;
 
     @Override
     public void execute() {
         log.info("Configuring the computation.");
 
-        computationConfigurable.configureUsing(configurationStorageService.getConfiguration());
+        ComputationConfiguration configuration = configurationStorageService.provideConfiguration();
+
+        computationConfigurable.configureUsing(configuration);
 
         log.info("Node is configured.");
     }

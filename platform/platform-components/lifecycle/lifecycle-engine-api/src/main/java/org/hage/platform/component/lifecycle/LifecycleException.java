@@ -1,13 +1,13 @@
 package org.hage.platform.component.lifecycle;
 
 
-import org.hage.platform.HageException;
+import org.hage.platform.HageRuntimeException;
 
 import javax.annotation.concurrent.Immutable;
 
 
 @Immutable
-public class LifecycleException extends HageException {
+public class LifecycleException extends HageRuntimeException {
 
     private static final long serialVersionUID = 1L;
 

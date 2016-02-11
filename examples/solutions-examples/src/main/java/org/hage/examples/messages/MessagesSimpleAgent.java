@@ -33,7 +33,7 @@ package org.hage.examples.messages;
 
 
 import com.google.common.base.Predicate;
-import org.hage.platform.HageException;
+import org.hage.platform.HageRuntimeException;
 import org.hage.platform.communication.address.agent.AgentAddress;
 import org.hage.platform.communication.address.agent.AgentAddressSupplier;
 import org.hage.platform.communication.address.selector.Selectors;
@@ -112,7 +112,7 @@ public class MessagesSimpleAgent extends SimpleAgent {
                         receiverAddress = agentAddress;
                     }
                 }
-            } catch(final HageException e) {
+            } catch(final HageRuntimeException e) {
                 log.error("Agent exception", e);
             }
         }

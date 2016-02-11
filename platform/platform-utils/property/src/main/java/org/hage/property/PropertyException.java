@@ -1,9 +1,9 @@
 package org.hage.property;
 
 
-import org.hage.platform.HageException;
+import org.hage.platform.HageRuntimeException;
 
-public class PropertyException extends HageException {
+public class PropertyException extends HageRuntimeException {
 
     private static final long serialVersionUID = 1L;
 

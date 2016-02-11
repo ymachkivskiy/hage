@@ -4,7 +4,7 @@ import com.google.common.primitives.UnsignedInteger;
 import lombok.Data;
 import org.hage.platform.communication.address.node.NodeAddress;
 import org.hage.platform.config.division.ConfigurationDivision;
-import org.hage.platform.config.division.ConfigurationSplitter;
+import org.hage.platform.config.division.SimpleConfigurationSplitter;
 import org.hage.platform.rate.distributed.AggregatedPerformanceMeasurements;
 import org.hage.platform.rate.distributed.NodeCombinedPerformance;
 import org.hage.util.proportion.Countable;
@@ -20,7 +20,7 @@ import static org.hage.util.proportion.Proportions.forCountable;
 class PerformanceProportionsBasedConfigurationSplitAllocator implements ConfigurationSplitAllocator {
 
     @Autowired
-    private ConfigurationSplitter configurationSplitter;
+    private SimpleConfigurationSplitter configurationSplitter;
 
     @Override
     public List<ConfigurationAllocation> allocateConfigurationParts(ComputationConfiguration configuration, AggregatedPerformanceMeasurements performanceMeasurements) {

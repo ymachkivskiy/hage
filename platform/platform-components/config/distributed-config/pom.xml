@@ -20,7 +20,7 @@
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
-            <artifactId>configuration-local</artifactId>
+            <artifactId>config-provider</artifactId>
             <version>${project.version}</version>
         </dependency>
 
