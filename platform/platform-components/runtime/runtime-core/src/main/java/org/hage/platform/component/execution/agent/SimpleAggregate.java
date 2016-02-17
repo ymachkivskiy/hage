@@ -15,7 +15,7 @@ import org.hage.platform.component.provider.IComponentInstanceProvider;
 import org.hage.platform.component.provider.IComponentInstanceProviderAware;
 import org.hage.property.PropertyGetter;
 import org.hage.property.PropertySetter;
-import org.hage.util.Locks;
+import org.hage.util.concurrency.Locks;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

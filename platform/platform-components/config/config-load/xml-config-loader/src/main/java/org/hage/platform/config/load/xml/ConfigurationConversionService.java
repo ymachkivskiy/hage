@@ -89,7 +89,7 @@ public class ConfigurationConversionService {
 
     public ConfigurationConversionService() {
         try {
-            this.localComponents.add(Class.forName("org.hage.platform.component.workplace.Workplace"));
+            this.localComponents.add(Class.forName("org.hage.platform.component.execution.workplace.Workplace"));
         } catch (ClassNotFoundException e) {
             log.error("Error while converting component definition into computation config", e);
             System.exit(-1);

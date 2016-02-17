@@ -22,13 +22,13 @@ abstract class BaseEventBus implements EventBus {
     public void register(EventSubscriber subscriber) {
         log.debug("register subscriber {}", subscriber);
 
-        eventBus.register(subscriber.getEventListener());
+        eventBus.register(subscriber);
     }
 
     @Override
     public void unregister(EventSubscriber subscriber) {
         log.debug("unregister subscriber {}", subscriber);
 
-        eventBus.unregister(subscriber.getEventListener());
+        eventBus.unregister(subscriber);
     }
 }

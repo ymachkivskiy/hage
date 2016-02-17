@@ -1,6 +1,5 @@
 package org.hage.platform.component.lifecycle.action;
 
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.component.IStatefulComponent;
@@ -15,9 +14,11 @@ import org.springframework.stereotype.Component;
 import java.util.Collection;
 import java.util.Map;
 
+import static lombok.AccessLevel.PRIVATE;
+
 @Component
 @Slf4j
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@RequiredArgsConstructor(access = PRIVATE)
 public class ExitLifecycleAction implements LifecycleAction {
 
     @Autowired

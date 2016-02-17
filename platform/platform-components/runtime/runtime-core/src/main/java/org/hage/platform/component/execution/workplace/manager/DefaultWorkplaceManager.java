@@ -26,6 +26,7 @@ import org.hage.platform.component.exception.ComponentException;
 import org.hage.platform.component.execution.WorkplaceException;
 import org.hage.platform.component.execution.agent.IAgent;
 import org.hage.platform.component.execution.agent.ISimpleAgent;
+import org.hage.platform.component.execution.core.ExecutionInfo;
 import org.hage.platform.component.execution.event.CoreConfiguredEvent;
 import org.hage.platform.component.execution.event.CoreStartedEvent;
 import org.hage.platform.component.execution.event.CoreStartingEvent;
@@ -39,7 +40,7 @@ import org.hage.platform.component.pico.PicoComponentInstanceProvider;
 import org.hage.platform.component.pico.visitor.StatefulComponentInitializer;
 import org.hage.platform.config.ComputationConfiguration;
 import org.hage.platform.util.bus.EventBus;
-import org.hage.util.Locks;
+import org.hage.util.concurrency.Locks;
 import org.picocontainer.PicoContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -128,8 +129,7 @@ public class DefaultWorkplaceManager implements
     }
 
 
-    @Override
-    public void configureUsing(ComputationConfiguration configuration) {
+    public void acceptConfiguration(ComputationConfiguration configuration) {
 
         final Collection<IComponentDefinition> componentDefinitions = configuration.getComponentsDefinitions();
 
@@ -199,22 +199,6 @@ public class DefaultWorkplaceManager implements
     }
 
     @Override
-    public void resume() {
-        log.debug("Workplace manager is resuming computation.");
-        withReadLock(() -> {
-            for (final Workplace workplace : initializedWorkplaces.values()) {
-                synchronized (workplace) {
-                    if (workplace.isPaused()) {
-                        workplace.resume();
-                    } else {
-                        log.warn("Trying to resume not paused workplace: {}.", workplace);
-                    }
-                }
-            }
-        });
-    }
-
-    @Override
     public void stop() {
         log.debug("Workplace manager is stopping.");
         withReadLock(() -> {
@@ -230,6 +214,11 @@ public class DefaultWorkplaceManager implements
             updateWorkplacesCache();
         });
         log.debug("Workplace manager stopped.");
+    }
+
+    @Override
+    public ExecutionInfo getInfo() {
+        return null;
     }
 
     private void teardownConfiguration() {

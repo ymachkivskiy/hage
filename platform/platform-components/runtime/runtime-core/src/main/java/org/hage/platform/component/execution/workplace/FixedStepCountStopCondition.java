@@ -13,7 +13,6 @@ import org.hage.platform.component.execution.query.ValueFilters;
 import org.hage.platform.component.execution.query.ValueSelectors;
 import org.hage.platform.component.execution.workplace.manager.WorkplaceManager;
 import org.hage.platform.util.bus.EventBus;
-import org.hage.platform.util.bus.EventListener;
 import org.hage.platform.util.bus.EventSubscriber;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -36,8 +35,6 @@ public class FixedStepCountStopCondition implements
         IStopCondition,
         EventSubscriber
 { //TODO : re-implement and extract some base class with event posting etc.
-
-    private final EventListener eventListener = new PrivateEventListener();
 
     private static final long DEFAULT_STEP_COUNT = 2;
 
@@ -111,27 +108,18 @@ public class FixedStepCountStopCondition implements
         return results.isEmpty();
     }
 
-    @Override
-    public EventListener getEventListener() {
-        return eventListener;
+    @Subscribe
+    @SuppressWarnings("unused")
+    public void onCoreStarting(CoreStartingEvent event) {
+        log.debug("Core starting event: {}.", event);
+        future = of(executor.scheduleWithFixedDelay(observer, 0, 1, TimeUnit.MILLISECONDS));
     }
 
-    private class PrivateEventListener implements EventListener {
-
-        @Subscribe
-        @SuppressWarnings("unused")
-        public void onCoreStarting(CoreStartingEvent event) {
-            log.debug("Core starting event: {}.", event);
-            future = of(executor.scheduleWithFixedDelay(observer, 0, 1, TimeUnit.MILLISECONDS));
-        }
-
-        @Subscribe
-        @SuppressWarnings("unused")
-        public void onCoreStopped(CoreStoppedEvent event) {
-            log.debug("Core stopped event: {}", event);
-            future.ifPresent(f -> f.cancel(true));
-        }
-
+    @Subscribe
+    @SuppressWarnings("unused")
+    public void onCoreStopped(CoreStoppedEvent event) {
+        log.debug("Core stopped event: {}", event);
+        future.ifPresent(f -> f.cancel(true));
     }
 
 }

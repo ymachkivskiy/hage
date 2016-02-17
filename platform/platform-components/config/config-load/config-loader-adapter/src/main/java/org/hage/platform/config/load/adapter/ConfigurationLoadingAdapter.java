@@ -10,7 +10,6 @@ import org.hage.platform.config.load.ConfigurationLoader;
 import org.hage.platform.config.load.ConfigurationNotFoundException;
 import org.hage.platform.config.load.adapter.generate.ComputationConfigurationGenerator;
 import org.hage.platform.config.load.definition.Configuration;
-import org.hage.platform.util.bus.EventListener;
 import org.hage.platform.util.bus.EventSubscriber;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,7 +22,7 @@ import static java.util.Optional.of;
 
 @Component
 @Slf4j
-public class ConfigurationLoadingAdapter implements EventSubscriber, EventListener {
+public class ConfigurationLoadingAdapter implements EventSubscriber {
 
     @Autowired
     private ConfigurationLoader configurationLoader;
@@ -57,12 +56,6 @@ public class ConfigurationLoadingAdapter implements EventSubscriber, EventListen
     private void notifyConfigurationLoaded(ComputationConfiguration configuration) {
         log.info("Notify configuration has been loaded {}", configuration);
         configurationDistributor.distribute(configuration);
-    }
-
-
-    @Override
-    public EventListener getEventListener() {
-        return this;
     }
 
 }

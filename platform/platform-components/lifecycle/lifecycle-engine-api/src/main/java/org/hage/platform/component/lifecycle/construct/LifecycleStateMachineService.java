@@ -28,8 +28,8 @@ import static com.google.common.util.concurrent.Futures.addCallback;
 import static com.google.common.util.concurrent.MoreExecutors.listeningDecorator;
 import static com.google.common.util.concurrent.MoreExecutors.newDirectExecutorService;
 import static java.util.concurrent.Executors.newSingleThreadScheduledExecutor;
-import static org.hage.util.Locks.withReadLock;
-import static org.hage.util.Locks.withWriteLock;
+import static org.hage.util.concurrency.Locks.withReadLock;
+import static org.hage.util.concurrency.Locks.withWriteLock;
 
 @Slf4j
 class LifecycleStateMachineService implements LifecycleStateMachine {

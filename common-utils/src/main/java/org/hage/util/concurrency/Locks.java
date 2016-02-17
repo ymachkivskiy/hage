@@ -1,4 +1,4 @@
-package org.hage.util;
+package org.hage.util.concurrency;
 
 
 import com.google.common.base.Throwables;

@@ -18,10 +18,9 @@ public class EventBusRegisterPostProcessor implements BeanPostProcessor {
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        log.debug("Checking bean bean {} ({}) for event bus subscription", bean, beanName);
 
         if (bean instanceof EventSubscriber) {
-            log.debug("Registering bean {} ({}) with eventbus subscriber", bean, beanName);
+            log.debug("Registering bean {} ({}) with event bus subscriber", bean, beanName);
             eventBus.register((EventSubscriber) bean);
         }
 

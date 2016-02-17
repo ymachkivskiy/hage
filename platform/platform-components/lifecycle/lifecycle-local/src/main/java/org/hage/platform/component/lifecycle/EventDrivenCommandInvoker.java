@@ -8,7 +8,6 @@ import org.hage.platform.component.execution.event.CoreStoppedEvent;
 import org.hage.platform.component.execution.event.StopConditionFulfilledEvent;
 import org.hage.platform.component.lifecycle.event.ExitRequestedEvent;
 import org.hage.platform.config.event.ConfigurationUpdatedEvent;
-import org.hage.platform.util.bus.EventListener;
 import org.hage.platform.util.bus.EventSubscriber;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,15 +16,10 @@ import static org.hage.platform.component.lifecycle.BaseLifecycleCommand.*;
 
 @Component
 @Slf4j
-public class EventDrivenCommandInvoker implements EventSubscriber, EventListener {
+public class EventDrivenCommandInvoker implements EventSubscriber {
 
     @Autowired
     private LifecycleEngine lifecycleEngine;
-
-    @Override
-    public EventListener getEventListener() {
-        return this;
-    }
 
     @Subscribe
     @SuppressWarnings("unused")

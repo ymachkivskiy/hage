@@ -14,6 +14,18 @@
     <dependencies>
 
         <dependency>
+            <groupId>org.hage.platform.component.simulation</groupId>
+            <artifactId>structure-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hage.platform.component.execution</groupId>
+            <artifactId>execution-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.hage.platform.component</groupId>
             <artifactId>container-all</artifactId>
             <version>${project.version}</version>

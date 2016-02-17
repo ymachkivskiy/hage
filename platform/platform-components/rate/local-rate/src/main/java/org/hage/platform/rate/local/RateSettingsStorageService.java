@@ -5,7 +5,6 @@ import org.hage.platform.config.event.ConfigurationUpdatedEvent;
 import org.hage.platform.rate.local.config.RatingSettingsResolver;
 import org.hage.platform.rate.local.config.data.RatingSettings;
 import org.hage.platform.rate.model.ComputationRatingConfig;
-import org.hage.platform.util.bus.EventListener;
 import org.hage.platform.util.bus.EventSubscriber;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,8 +15,6 @@ import static java.util.Optional.ofNullable;
 
 @Component
 public class RateSettingsStorageService implements EventSubscriber {
-
-    private final EventListener eventListener = new PrivateEventListener();
 
     @Autowired
     private RatingSettingsResolver ratingSettingsResolver;
@@ -30,18 +27,10 @@ public class RateSettingsStorageService implements EventSubscriber {
                 .orElse(ratingSettingsResolver.getSettings());
     }
 
-    @Override
-    public EventListener getEventListener() {
-        return eventListener;
-    }
-
-    private class PrivateEventListener implements EventListener {
-
-        @SuppressWarnings("unused")
-        @Subscribe
-        public void onComputationConfigurationUpdated(ConfigurationUpdatedEvent event) {
-            computationRateSettingsHolder.set(event.getComputationConfiguration().getRatingConfig());
-        }
+    @SuppressWarnings("unused")
+    @Subscribe
+    public void onComputationConfigurationUpdated(ConfigurationUpdatedEvent event) {
+        computationRateSettingsHolder.set(event.getComputationConfiguration().getRatingConfig());
     }
 
 }

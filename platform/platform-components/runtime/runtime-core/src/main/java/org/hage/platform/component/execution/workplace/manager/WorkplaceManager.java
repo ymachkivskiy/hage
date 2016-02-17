@@ -2,7 +2,7 @@ package org.hage.platform.component.execution.workplace.manager;
 
 
 import org.hage.platform.communication.address.agent.AgentAddress;
-import org.hage.platform.component.execution.ExecutionCore;
+import org.hage.platform.component.execution.core.ExecutionCore;
 import org.hage.platform.component.execution.workplace.Workplace;
 import org.hage.platform.component.execution.workplace.WorkplaceEnvironment;
 

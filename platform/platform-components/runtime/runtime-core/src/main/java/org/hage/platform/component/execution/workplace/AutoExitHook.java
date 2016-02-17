@@ -7,22 +7,16 @@ import org.hage.platform.component.lifecycle.LifecycleState;
 import org.hage.platform.component.lifecycle.event.ExitRequestedEvent;
 import org.hage.platform.component.lifecycle.event.LifecycleStateChangedEvent;
 import org.hage.platform.util.bus.EventBus;
-import org.hage.platform.util.bus.EventListener;
 import org.hage.platform.util.bus.EventSubscriber;
 
 import javax.inject.Inject;
 
 
 @Slf4j
-public final class AutoExitHook implements EventSubscriber, EventListener {
+public final class AutoExitHook implements EventSubscriber {
 
     @Inject
     private EventBus eventBus;
-
-    @Override
-    public EventListener getEventListener() {
-        return this;
-    }
 
     @Subscribe
     @SuppressWarnings("unused")
