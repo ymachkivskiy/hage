@@ -111,9 +111,6 @@ public class DefaultWorkplaceManager implements
     private EventBus eventBus;
 
 
-    // TODO: 10.02.16 state machine for verification
-    // LifecycleEngine methods
-
     @PostConstruct
     private void init() {
         communicationChannel = communicationManager.getCommunicationChannelForService(SERVICE_NAME);
@@ -128,8 +125,8 @@ public class DefaultWorkplaceManager implements
         return true;
     }
 
-
-    public void acceptConfiguration(ComputationConfiguration configuration) {
+    @Override
+    public void configureWith(ComputationConfiguration configuration) {
 
         final Collection<IComponentDefinition> componentDefinitions = configuration.getComponentsDefinitions();
 

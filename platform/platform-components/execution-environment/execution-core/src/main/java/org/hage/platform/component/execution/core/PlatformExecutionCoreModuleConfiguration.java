@@ -26,7 +26,7 @@ public class PlatformExecutionCoreModuleConfiguration {
         );
     }
 
-    @Bean
+//    @Bean
     public ExecutionCore executionCore() {
         return new BaseNodeExecutionCore();
     }
