@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 class PlatformRuntimeCoreModuleConfiguration {
 
-    @Bean
+//    @Bean
     public WorkplaceManager workplaceManager() {
         return new DefaultWorkplaceManager();
     }

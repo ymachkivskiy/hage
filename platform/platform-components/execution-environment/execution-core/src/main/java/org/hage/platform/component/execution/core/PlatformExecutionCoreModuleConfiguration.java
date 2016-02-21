@@ -2,7 +2,7 @@ package org.hage.platform.component.execution.core;
 
 import org.hage.platform.component.execution.core.executor.CoreBatchExecutor;
 import org.hage.platform.component.execution.core.executor.ExecutionPhasesProvider;
-import org.hage.platform.component.execution.core.executor.SimpleSequentialSameThreadCoreBatchExecutor;
+import org.hage.platform.component.execution.core.executor.ParallelCoreBatchExecutor;
 import org.hage.platform.component.execution.core.supplier.FixedExecutionPhasesProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -16,8 +16,7 @@ public class PlatformExecutionCoreModuleConfiguration {
 
     @Bean
     public CoreBatchExecutor coreBatchExecutor() {
-        // TODO: 16.02.16 to be replaced by threadpool based executor
-        return new SimpleSequentialSameThreadCoreBatchExecutor();
+        return new ParallelCoreBatchExecutor();
     }
 
     @Bean

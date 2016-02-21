@@ -50,7 +50,7 @@ public class FixedStepCountStopCondition implements
     @Autowired
     private EventBus eventBus;
 
-    @Autowired
+    @Autowired(required = false)
     private WorkplaceManager workplaceManager;
 
 
