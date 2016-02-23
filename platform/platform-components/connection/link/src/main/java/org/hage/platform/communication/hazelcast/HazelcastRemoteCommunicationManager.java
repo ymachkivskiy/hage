@@ -85,11 +85,6 @@ public class HazelcastRemoteCommunicationManager
     }
 
     @Override
-    public int getClusterSize() {
-        return hazelcastInstance.getCluster().getMembers().size();
-    }
-
-    @Override
     public NodeAddress getLocalNodeAddress() {
         return nodeAddress;
     }

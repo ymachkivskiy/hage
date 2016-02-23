@@ -41,7 +41,13 @@
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
-            <artifactId>connection-all</artifactId>
+            <artifactId>connection-link</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>connection-address</artifactId>
             <version>${project.version}</version>
         </dependency>
 

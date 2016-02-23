@@ -14,8 +14,6 @@ public interface RemoteCommunicationManager {
 
     <K, V> IMap<K, V> getDistributedMap(String mapName);
 
-    int getClusterSize();
-
     Set<NodeAddress> getRemoteNodeAddresses();
 
     NodeAddress getLocalNodeAddress();
