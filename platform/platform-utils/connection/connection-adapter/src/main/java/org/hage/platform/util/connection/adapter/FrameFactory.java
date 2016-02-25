@@ -1,12 +1,8 @@
 package org.hage.platform.util.connection.adapter;
 
 import lombok.RequiredArgsConstructor;
-import org.hage.platform.util.connection.data.Payload;
-import org.hage.platform.util.connection.data.frame.Frame;
-import org.hage.platform.util.connection.data.frame.MulticastFrame;
-import org.hage.platform.util.connection.data.frame.UnicastFrame;
-import org.hage.platform.util.connection.data.header.MulticastHeader;
-import org.hage.platform.util.connection.data.header.UnicastHeader;
+import org.hage.platform.util.connection.frame.Frame;
+import org.hage.platform.util.connection.frame.Payload;
 
 @RequiredArgsConstructor
 public class FrameFactory<T> {

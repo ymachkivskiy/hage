@@ -1,6 +1,6 @@
 package org.hage.platform.util.connection.adapter.aggregate;
 
-import org.hage.platform.util.connection.data.frame.Frame;
+import org.hage.platform.util.connection.frame.Frame;
 
 import java.util.Collection;
 

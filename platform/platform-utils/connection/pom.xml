@@ -12,7 +12,7 @@
 
     <modules>
         <module>connection-api</module>
-        <module>hazzelcast</module>
+        <module>hazelcast</module>
         <module>connection-adapter</module>
     </modules>
 
