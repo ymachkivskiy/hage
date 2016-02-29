@@ -13,7 +13,7 @@
     <modules>
         <module>connection-api</module>
         <module>hazelcast</module>
-        <module>connection-adapter</module>
+        <module>remote-connection-adapter</module>
     </modules>
 
 </project>

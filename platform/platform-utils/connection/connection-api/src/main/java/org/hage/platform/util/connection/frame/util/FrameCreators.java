@@ -5,6 +5,8 @@ import org.hage.platform.util.connection.frame.diagnostics.Diagnostics;
 import org.hage.platform.util.connection.frame.process.FrameProcessor;
 import org.hage.platform.util.connection.frame.process.ProcessorChain;
 
+import java.io.Serializable;
+
 import static com.google.common.base.Preconditions.checkArgument;
 import static java.util.Arrays.asList;
 import static org.hage.platform.util.connection.frame.process.ConversationIdProcessor.sameConversation;
@@ -21,7 +23,7 @@ public class FrameCreators {
         return processor.process(new Frame(null, null));
     }
 
-    public static <T> Frame successfulResponse(Frame originalFrame, T responseData) {
+    public static Frame successfulResponse(Frame originalFrame, Serializable responseData) {
         checkArgument(originalFrame.getPayload().checkDataType(responseData.getClass()), "Frame %s is not compatible with payload data %s", originalFrame, responseData.getClass());
 
         FrameProcessor processor = new ProcessorChain(

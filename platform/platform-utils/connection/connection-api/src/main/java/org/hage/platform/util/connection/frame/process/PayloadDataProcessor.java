@@ -5,13 +5,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.util.connection.frame.Frame;
 import org.hage.platform.util.connection.frame.Payload;
 
+import java.io.Serializable;
+
 import static lombok.AccessLevel.PRIVATE;
 
 @Slf4j
 @RequiredArgsConstructor(access = PRIVATE)
 public class PayloadDataProcessor implements FrameProcessor {
 
-    private final Object data;
+    private final Serializable data;
 
     @Override
     public Frame process(Frame input) {
@@ -20,7 +22,7 @@ public class PayloadDataProcessor implements FrameProcessor {
         return new Frame(input.getHeader(), new Payload(data));
     }
 
-    public static PayloadDataProcessor withData(Object data) {
+    public static PayloadDataProcessor withData(Serializable data) {
         return new PayloadDataProcessor(data);
     }
 
