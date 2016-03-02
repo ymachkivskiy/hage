@@ -1,4 +1,4 @@
-package org.hage.platform.util.connection.remote.api;
+package org.hage.platform.util.connection.remote.endpoint;
 
 import lombok.Data;
 import org.hage.platform.util.connection.NodeAddress;

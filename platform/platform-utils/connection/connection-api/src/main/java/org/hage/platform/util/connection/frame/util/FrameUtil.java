@@ -11,6 +11,10 @@ import static org.hage.platform.util.connection.frame.diagnostics.ResultType.SUC
 
 public class FrameUtil {
 
+    public static NodeAddress getFrameSender(Frame frame) {
+        return frame.getHeader().getSender();
+    }
+
     public static boolean requiresResponse(Frame frame) {
         return frame.getHeader().getResponsiveness() == REQUIRES_RESPONSE;
     }
