@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -44,6 +45,13 @@ public class HazelcastClusterAddressManager implements ClusterAddressManager {
     @Override
     public NodeAddress getLocalAddress() {
         return localAddressSupplier.get();
+    }
+
+    @Override
+    public Set<NodeAddress> getAllAddresses() {
+        Set<NodeAddress> addresses = new HashSet<>(getOtherMembersAddresses());
+        addresses.add(getLocalAddress());
+        return addresses;
     }
 
     @PostConstruct

@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 
 @Slf4j
-class EndpointSenderInitializationPostProcessorBean implements BeanPostProcessor {
+public class EndpointInitializationPostProcessorBean implements BeanPostProcessor {
 
     @Autowired
     private ConnectionFactory connectionFactory;
@@ -22,17 +22,17 @@ class EndpointSenderInitializationPostProcessorBean implements BeanPostProcessor
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
 
-        if (bean instanceof BaseRemoteMessageSender) {
-            processRemoteMessageSender((BaseRemoteMessageSender) bean);
-        } else if (bean instanceof BaseRemoteMessageSubscriber) {
-            processRemoteMessageSubscriber((BaseRemoteMessageSubscriber) bean);
+        if (bean instanceof BaseRemoteEndpoint) {
+            BaseRemoteEndpoint endpoint = (BaseRemoteEndpoint) bean;
+            processRemoteMessageSender(endpoint);
+            processRemoteMessageSubscriber(endpoint);
         }
 
         return bean;
     }
 
-    private void processRemoteMessageSender(BaseRemoteMessageSender sender) {
-        ConnectionDescriptor descriptor = sender.describe();
+    private void processRemoteMessageSender(BaseRemoteEndpoint sender) {
+        ConnectionDescriptor descriptor = sender.getDescriptor();
 
         log.debug("Initializing message sender '{}' using connection descriptor '{}'", sender.getClass(), descriptor);
 
@@ -43,8 +43,8 @@ class EndpointSenderInitializationPostProcessorBean implements BeanPostProcessor
         }
     }
 
-    private void processRemoteMessageSubscriber(BaseRemoteMessageSubscriber subscriber) {
-        ConnectionDescriptor descriptor = subscriber.describe();
+    private void processRemoteMessageSubscriber(BaseRemoteEndpoint subscriber) {
+        ConnectionDescriptor descriptor = subscriber.getDescriptor();
 
         log.debug("Initializing message subscriber '{}' using connection descriptor '{}'", subscriber.getClass(), descriptor);
 
@@ -53,7 +53,7 @@ class EndpointSenderInitializationPostProcessorBean implements BeanPostProcessor
         } else {
 
             @SuppressWarnings("unchecked")
-            FrameReceiverMessageTranslationAdapter forwardAdapter = new FrameReceiverMessageTranslationAdapter<>(subscriber);
+            FrameReceiverMessageAdapter forwardAdapter = new FrameReceiverMessageAdapter<>(subscriber);
             FrameReceiverAdapter frameReceiverAdapter = connectionFactory.receiverAdapterFor(descriptor);
 
             frameReceiverAdapter.setReceiver(forwardAdapter);

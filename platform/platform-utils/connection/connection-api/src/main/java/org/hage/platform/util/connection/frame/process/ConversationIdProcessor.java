@@ -24,7 +24,7 @@ public class ConversationIdProcessor extends AbstractHeaderProcessor {
         return new ConversationIdProcessor(null);
     }
 
-    public static ConversationIdProcessor forConversation(Long conversationId) {
+    public static ConversationIdProcessor withConversation(Long conversationId) {
         return new ConversationIdProcessor(conversationId);
     }
 

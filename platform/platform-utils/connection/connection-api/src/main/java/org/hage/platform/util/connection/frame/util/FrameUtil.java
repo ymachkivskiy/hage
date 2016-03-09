@@ -11,7 +11,7 @@ import static org.hage.platform.util.connection.frame.diagnostics.ResultType.SUC
 
 public class FrameUtil {
 
-    public static NodeAddress getFrameSender(Frame frame) {
+    public static NodeAddress getFrameSenderAddress(Frame frame) {
         return frame.getHeader().getSender();
     }
 
@@ -23,6 +23,13 @@ public class FrameUtil {
         return frame.getHeader().getDiagnostics().getResultType() == SUCCESS;
     }
 
+    public static Long getConversationIdOf(Frame frame) {
+        return frame.getHeader().getConversationId();
+    }
+
+    public static boolean belongsToConversation(Frame frame) {
+        return frame.getHeader().getConversationId() != null;
+    }
 
     public static boolean isBroadcastFrame(Frame frame) {
         return frame.getHeader().getAddressingType() == BROADCAST;

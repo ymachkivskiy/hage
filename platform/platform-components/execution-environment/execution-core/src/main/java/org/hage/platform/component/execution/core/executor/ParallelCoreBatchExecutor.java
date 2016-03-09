@@ -10,6 +10,7 @@ import static java.lang.Runtime.getRuntime;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.stream.Collectors.toList;
 
+// TODO: 09.03.16 move all executors to one place executors module
 public class ParallelCoreBatchExecutor implements CoreBatchExecutor {
     private static final String THREADS_PREFIX = "exec-core-t-";
 

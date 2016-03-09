@@ -17,6 +17,7 @@
         <module>property</module>
         <module>container-share</module>
         <module>connection</module>
+        <module>executors</module>
     </modules>
 
     <dependencies>

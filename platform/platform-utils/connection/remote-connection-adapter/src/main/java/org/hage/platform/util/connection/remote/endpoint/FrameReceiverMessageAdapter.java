@@ -14,31 +14,39 @@ import java.io.Serializable;
 
 import static org.hage.platform.util.connection.frame.diagnostics.Diagnostics.SUCCESS_DIAGNOSTICS;
 import static org.hage.platform.util.connection.frame.diagnostics.ResultType.ERROR;
-import static org.hage.platform.util.connection.frame.util.FrameUtil.getFrameSender;
+import static org.hage.platform.util.connection.frame.util.FrameUtil.*;
 
 @Slf4j
 @ToString
 @RequiredArgsConstructor
-class FrameReceiverMessageTranslationAdapter<M extends Serializable, R extends Serializable> implements Receiver, RespondReceiver {
+class FrameReceiverMessageAdapter<M extends Serializable> implements Receiver, RespondReceiver {
 
-    private final BaseRemoteMessageSubscriber<M, R> subscriberDelegate;
+    private final BaseRemoteEndpoint<M> endpoint;
 
     @Override
     public void receive(Frame frame) {
         log.trace("Received frame {}", frame);
-        subscriberDelegate.consume(translateToRemoteMessage(frame));
+
+        RemoteMessage<M> message = translateToRemoteMessage(frame);
+
+        if (belongsToConversation(frame)) {
+            endpoint.consumeResponseMessageForConversation(message, getConversationIdOf(frame));
+        } else {
+            endpoint.consumeMessage(message);
+        }
+
     }
 
     @Override
     public Result receiveRespond(Frame frame) {
         log.trace("Received frame {}", frame);
 
-        R respond;
+        M respond;
         Diagnostics diagnostics;
 
         try {
             RemoteMessage<M> remoteMessage = translateToRemoteMessage(frame);
-            respond = subscriberDelegate.consumeAndRespond(remoteMessage);
+            respond = endpoint.consumeMessageAndRespond(remoteMessage);
             diagnostics = SUCCESS_DIAGNOSTICS;
         } catch (Exception e) {
             e.printStackTrace();
@@ -50,10 +58,10 @@ class FrameReceiverMessageTranslationAdapter<M extends Serializable, R extends S
     }
 
     private RemoteMessage<M> translateToRemoteMessage(Frame frame) {
-        Class<M> messageClazz = subscriberDelegate.getMessageClazz();
-        log.trace("Getting payload data using data class '{}' declared by subscriber '{}'", messageClazz, subscriberDelegate.getClass());
+        Class<M> messageClazz = endpoint.getMessageClazz();
+        log.trace("Getting payload data using data class '{}' declared by subscriber '{}'", messageClazz, endpoint.getClass());
 
-        NodeAddress sender = getFrameSender(frame);
+        NodeAddress sender = getFrameSenderAddress(frame);
         M message = frame.getPayload().getData(messageClazz);
         log.debug("Get remote message '{}' from node '{}'", message, sender);
 

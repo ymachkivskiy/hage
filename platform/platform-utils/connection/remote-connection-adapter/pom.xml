@@ -19,6 +19,12 @@
             <version>${project.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.hage.platform.util</groupId>
+            <artifactId>executors</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
     </dependencies>
 
 

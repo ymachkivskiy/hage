@@ -6,4 +6,6 @@ public interface ClusterAddressManager extends LocalNodeAddressProvider {
     void addMembershipChangeCallback(ClusterMemberChangeCallback callback);
 
     Set<NodeAddress> getOtherMembersAddresses();
+
+    Set<NodeAddress> getAllAddresses();
 }
