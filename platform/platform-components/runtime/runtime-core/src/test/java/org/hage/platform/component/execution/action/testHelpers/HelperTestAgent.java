@@ -32,9 +32,9 @@
 package org.hage.platform.component.execution.action.testHelpers;
 
 
+import org.hage.platform.communication.address.NodeAddress;
 import org.hage.platform.communication.address.agent.AgentAddress;
 import org.hage.platform.communication.address.agent.DefaultAgentAddress;
-import org.hage.platform.communication.address.node.NodeAddress;
 import org.hage.platform.component.execution.action.Action;
 import org.hage.platform.component.execution.agent.AgentException;
 import org.hage.platform.component.execution.agent.SimpleAgent;

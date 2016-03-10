@@ -2,7 +2,7 @@ package org.hage.platform.util.connection.hazelcast;
 
 import com.hazelcast.core.Member;
 import lombok.EqualsAndHashCode;
-import org.hage.platform.util.connection.NodeAddress;
+import org.hage.platform.communication.address.NodeAddress;
 
 import java.net.InetSocketAddress;
 

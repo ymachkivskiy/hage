@@ -15,16 +15,16 @@
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
-            <artifactId>connection-link</artifactId>
+            <artifactId>rate-local</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.component</groupId>
-            <artifactId>rate-local</artifactId>
+            <groupId>org.hage.platform.util</groupId>
+            <artifactId>remote-connection-adapter</artifactId>
             <version>${project.version}</version>
         </dependency>
-        
+
     </dependencies>
 
 </project>

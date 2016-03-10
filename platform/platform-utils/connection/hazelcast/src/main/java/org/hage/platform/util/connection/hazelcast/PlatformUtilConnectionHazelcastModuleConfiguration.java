@@ -1,6 +1,5 @@
 package org.hage.platform.util.connection.hazelcast;
 
-import org.hage.platform.util.connection.ClusterAddressManager;
 import org.hage.platform.util.connection.ConversationIdProvider;
 import org.hage.platform.util.connection.chanel.ConnectionFactory;
 import org.hage.platform.util.connection.hazelcast.chanel.HazelcastConnectionFactory;
@@ -19,7 +18,7 @@ class PlatformUtilConnectionHazelcastModuleConfiguration {
     }
 
     @Bean
-    public ClusterAddressManager platformCommunicationUtilClusterAddressManager() {
+    public HazelcastClusterAddressManager platformCommunicationUtilClusterAddressManager() {
         return new HazelcastClusterAddressManager();
     }
 

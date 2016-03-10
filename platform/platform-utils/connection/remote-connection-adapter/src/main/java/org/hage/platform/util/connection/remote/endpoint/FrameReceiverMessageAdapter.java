@@ -3,7 +3,7 @@ package org.hage.platform.util.connection.remote.endpoint;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.util.connection.NodeAddress;
+import org.hage.platform.communication.address.NodeAddress;
 import org.hage.platform.util.connection.chanel.Receiver;
 import org.hage.platform.util.connection.chanel.RespondReceiver;
 import org.hage.platform.util.connection.frame.Frame;
@@ -27,7 +27,7 @@ class FrameReceiverMessageAdapter<M extends Serializable> implements Receiver, R
     public void receive(Frame frame) {
         log.trace("Received frame {}", frame);
 
-        RemoteMessage<M> message = translateToRemoteMessage(frame);
+        MessageEnvelope<M> message = translateToRemoteMessage(frame);
 
         if (belongsToConversation(frame)) {
             endpoint.consumeResponseMessageForConversation(message, getConversationIdOf(frame));
@@ -45,8 +45,8 @@ class FrameReceiverMessageAdapter<M extends Serializable> implements Receiver, R
         Diagnostics diagnostics;
 
         try {
-            RemoteMessage<M> remoteMessage = translateToRemoteMessage(frame);
-            respond = endpoint.consumeMessageAndRespond(remoteMessage);
+            MessageEnvelope<M> messageEnvelope = translateToRemoteMessage(frame);
+            respond = endpoint.consumeMessageAndRespond(messageEnvelope);
             diagnostics = SUCCESS_DIAGNOSTICS;
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,7 +57,7 @@ class FrameReceiverMessageAdapter<M extends Serializable> implements Receiver, R
         return new Result(respond, diagnostics);
     }
 
-    private RemoteMessage<M> translateToRemoteMessage(Frame frame) {
+    private MessageEnvelope<M> translateToRemoteMessage(Frame frame) {
         Class<M> messageClazz = endpoint.getMessageClazz();
         log.trace("Getting payload data using data class '{}' declared by subscriber '{}'", messageClazz, endpoint.getClass());
 
@@ -65,7 +65,7 @@ class FrameReceiverMessageAdapter<M extends Serializable> implements Receiver, R
         M message = frame.getPayload().getData(messageClazz);
         log.debug("Get remote message '{}' from node '{}'", message, sender);
 
-        return new RemoteMessage<>(sender, message);
+        return new MessageEnvelope<>(sender, message);
     }
 
 }

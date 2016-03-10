@@ -2,12 +2,14 @@ package org.hage.platform.util.connection.frame;
 
 import lombok.Builder;
 import lombok.Getter;
-import org.hage.platform.util.connection.NodeAddress;
+import lombok.ToString;
+import org.hage.platform.communication.address.NodeAddress;
 import org.hage.platform.util.connection.frame.diagnostics.Diagnostics;
 
 import java.io.Serializable;
 import java.util.Set;
 
+@ToString
 @Getter
 @Builder
 public class Header implements Serializable {

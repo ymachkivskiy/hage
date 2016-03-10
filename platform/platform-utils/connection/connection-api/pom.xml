@@ -11,5 +11,14 @@
 
     <artifactId>connection-api</artifactId>
 
+    <dependencies>
+
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>connection-address</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+    </dependencies>
 
 </project>

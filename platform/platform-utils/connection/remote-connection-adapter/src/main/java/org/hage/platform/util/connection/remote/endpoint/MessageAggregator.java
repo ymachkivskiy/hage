@@ -4,5 +4,5 @@ import java.io.Serializable;
 import java.util.Collection;
 
 public interface MessageAggregator<M extends Serializable, R> {
-    R aggregate(Collection<RemoteMessage<M>> messages);
+    R aggregate(Collection<MessageEnvelope<M>> messages);
 }

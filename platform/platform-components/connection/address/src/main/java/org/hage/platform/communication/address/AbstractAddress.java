@@ -33,7 +33,6 @@ package org.hage.platform.communication.address;
 
 
 import com.google.common.base.Objects;
-import org.hage.platform.communication.address.node.NodeAddress;
 
 import javax.annotation.concurrent.Immutable;
 

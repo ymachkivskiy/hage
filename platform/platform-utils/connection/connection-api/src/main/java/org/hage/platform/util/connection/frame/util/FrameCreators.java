@@ -1,7 +1,8 @@
 package org.hage.platform.util.connection.frame.util;
 
-import org.hage.platform.util.connection.NodeAddress;
+import org.hage.platform.communication.address.NodeAddress;
 import org.hage.platform.util.connection.frame.Frame;
+import org.hage.platform.util.connection.frame.Header;
 import org.hage.platform.util.connection.frame.diagnostics.Diagnostics;
 import org.hage.platform.util.connection.frame.process.FrameProcessor;
 import org.hage.platform.util.connection.frame.process.ProcessorChain;
@@ -23,7 +24,7 @@ import static org.hage.platform.util.connection.frame.process.ResponsivenessProc
 public class FrameCreators {
 
     public static Frame createWithProcessor(FrameProcessor processor) {
-        return processor.process(new Frame(null, null));
+        return processor.process(new Frame(Header.builder().build(), null));
     }
 
     public static Frame successfulResponse(Frame originalFrame, Serializable responseData) {

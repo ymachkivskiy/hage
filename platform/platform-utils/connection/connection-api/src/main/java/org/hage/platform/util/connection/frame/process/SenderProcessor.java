@@ -2,7 +2,7 @@ package org.hage.platform.util.connection.frame.process;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.util.connection.NodeAddress;
+import org.hage.platform.communication.address.NodeAddress;
 import org.hage.platform.util.connection.frame.Header.HeaderBuilder;
 
 @Slf4j

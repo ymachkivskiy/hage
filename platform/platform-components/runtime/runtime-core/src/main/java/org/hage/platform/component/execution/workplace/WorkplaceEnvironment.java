@@ -37,11 +37,11 @@ public interface WorkplaceEnvironment {
     @Nonnull
     <E extends IAgent, T> Collection<T> queryWorkplaces(AgentEnvironmentQuery<E, T> query);
 
-    /**
-     * Sends a message to other workplaces that are located in this environment.
-     *
-     * @param message The message to send.
-     */
+//    /**
+//     * Sends a message to other workplaces that are located in this environment.
+//     *
+//     * @param message The message to send.
+//     */
     void sendMessage(@Nonnull WorkplaceManagerMessage message);
 
     void requestRemoval(@Nonnull AgentAddress simpleWorkplace);

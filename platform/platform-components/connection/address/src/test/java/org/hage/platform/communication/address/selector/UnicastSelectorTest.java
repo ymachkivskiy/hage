@@ -32,9 +32,9 @@
 package org.hage.platform.communication.address.selector;
 
 
+import org.hage.platform.communication.address.NodeAddress;
 import org.hage.platform.communication.address.agent.AgentAddress;
 import org.hage.platform.communication.address.agent.DefaultAgentAddress;
-import org.hage.platform.communication.address.node.NodeAddress;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -11,21 +11,16 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.hazelcast.core.IMap;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
+import org.hage.platform.communication.address.NodeAddress;
 import org.hage.platform.communication.address.agent.AgentAddress;
-import org.hage.platform.communication.address.node.NodeAddress;
-import org.hage.platform.communication.address.node.NodeAddressSupplier;
 import org.hage.platform.communication.address.selector.AddressSelector;
 import org.hage.platform.communication.address.selector.Selectors;
-import org.hage.platform.communication.api.RawRemoteChannel;
-import org.hage.platform.communication.api.RemoteCommunicationManager;
-import org.hage.platform.communication.api.RemoteMessageSubscriber;
 import org.hage.platform.communication.message.Message;
 import org.hage.platform.component.IStatefulComponent;
 import org.hage.platform.component.definition.IComponentDefinition;
 import org.hage.platform.component.exception.ComponentException;
 import org.hage.platform.component.execution.WorkplaceException;
 import org.hage.platform.component.execution.agent.IAgent;
-import org.hage.platform.component.execution.agent.ISimpleAgent;
 import org.hage.platform.component.execution.core.ExecutionInfo;
 import org.hage.platform.component.execution.event.CoreConfiguredEvent;
 import org.hage.platform.component.execution.event.CoreStartedEvent;
@@ -46,10 +41,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.annotation.concurrent.GuardedBy;
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -71,8 +64,7 @@ import static java.util.Objects.requireNonNull;
 @Slf4j
 @ToString(of = {})
 public class DefaultWorkplaceManager implements
-    WorkplaceManager,
-    RemoteMessageSubscriber<WorkplaceManagerMessage>{
+    WorkplaceManager{
 
     public static final String QUERY_CACHE_NAME = "queryCache";
     public static final String WORKPLACES_MAP_NAME = "workplaces";
@@ -100,24 +92,24 @@ public class DefaultWorkplaceManager implements
 
     private IMap<NodeAddress, Set<AgentAddress>> workplacesMap; //used as simple map (structure service candidate)
     private IMap<AgentAddress, Map<String, Iterable<?>>> queryCache; ///used as simple map with possibility to lock keys (service candidate)
-    @Autowired
-    private RemoteCommunicationManager communicationManager;
-    private RawRemoteChannel<WorkplaceManagerMessage> communicationChannel;
-    @Autowired
-    private NodeAddressSupplier nodeAddressProvider;
+//    @Autowired
+//    private RemoteCommunicationManager communicationManager;
+//    private RawRemoteChannel<WorkplaceManagerMessage> communicationChannel;
+//    @Autowired
+//    private NodeAddressSupplier nodeAddressProvider;
 
 
     @Autowired
     private EventBus eventBus;
 
 
-    @PostConstruct
-    private void init() {
-        communicationChannel = communicationManager.getCommunicationChannelForService(SERVICE_NAME);
-        communicationChannel.subscribeChannel(this);
-        workplacesMap = communicationManager.getDistributedMap(WORKPLACES_MAP_NAME);
-        queryCache = communicationManager.getDistributedMap(QUERY_CACHE_NAME);
-    }
+//    @PostConstruct
+//    private void init() {
+//        communicationChannel = communicationManager.getCommunicationChannelForService(SERVICE_NAME);
+//        communicationChannel.subscribeChannel(this);
+//        workplacesMap = communicationManager.getDistributedMap(WORKPLACES_MAP_NAME);
+//        queryCache = communicationManager.getDistributedMap(QUERY_CACHE_NAME);
+//    }
 
     @PreDestroy
     private boolean finish() {
@@ -258,9 +250,9 @@ public class DefaultWorkplaceManager implements
     }
 
     private void updateWorkplacesCache() {
-        log.debug("Updating workplaces in global map {} - {}.", nodeAddressProvider.get(),
-            getAddressesOfLocalWorkplaces());
-        workplacesMap.put(nodeAddressProvider.get(), getAddressesOfLocalWorkplaces());
+//        log.debug("Updating workplaces in global map {} - {}.", nodeAddressProvider.get(),
+//            getAddressesOfLocalWorkplaces());
+//        workplacesMap.put(nodeAddressProvider.get(), getAddressesOfLocalWorkplaces());
     }
 
 
@@ -362,39 +354,39 @@ public class DefaultWorkplaceManager implements
     public void sendMessage(@Nonnull final WorkplaceManagerMessage message) {
         requireNonNull(message);
         log.debug("Sending message {}.", message);
-        communicationChannel.sendMessageToAll(message);
+//        communicationChannel.sendMessageToAll(message);
     }
 
-    @Override
-    public void onRemoteMessage(@Nonnull final WorkplaceManagerMessage message) {
-        final Serializable payload = message.getPayload();
-        switch (message.getType()) {
-            case AGENT_MESSAGE:
-                if (!(payload instanceof Message)) {
-                    log.error("Unrecognizable payload {}.", payload);
-                    return;
-                }
-                final Message<AgentAddress, Serializable> agentMessage = (Message<AgentAddress, Serializable>) payload;
-                deliverMessageToWorkplace(agentMessage);
-                break;
-
-            case MIGRATE_AGENT:
-                if (!(payload instanceof Map)) {
-                    log.error("Unrecognizable payload {}.", payload);
-                    return;
-                }
-                final Map<String, Serializable> migrationData = (Map<String, Serializable>) payload;
-                final AddressSelector<AgentAddress> targetSelector =
-                    (AddressSelector<AgentAddress>) migrationData.get("target");
-                final ISimpleAgent agent = (ISimpleAgent) migrationData.get("agent");
-                final Set<AgentAddress> addresses = Selectors.filter(getAddressesOfLocalWorkplaces(), targetSelector);
-                if (addresses.size() == 1) {//TODO : strange construction
-                    getLocalWorkplace(addresses.iterator().next()).sendAgent(agent);
-                }
-                break;
-        }
-
-    }
+//    @Override
+//    public void onRemoteMessage(@Nonnull final WorkplaceManagerMessage message) {
+//        final Serializable payload = message.getPayload();
+//        switch (message.getType()) {
+//            case AGENT_MESSAGE:
+//                if (!(payload instanceof Message)) {
+//                    log.error("Unrecognizable payload {}.", payload);
+//                    return;
+//                }
+//                final Message<AgentAddress, Serializable> agentMessage = (Message<AgentAddress, Serializable>) payload;
+//                deliverMessageToWorkplace(agentMessage);
+//                break;
+//
+//            case MIGRATE_AGENT:
+//                if (!(payload instanceof Map)) {
+//                    log.error("Unrecognizable payload {}.", payload);
+//                    return;
+//                }
+//                final Map<String, Serializable> migrationData = (Map<String, Serializable>) payload;
+//                final AddressSelector<AgentAddress> targetSelector =
+//                    (AddressSelector<AgentAddress>) migrationData.get("target");
+//                final ISimpleAgent agent = (ISimpleAgent) migrationData.get("agent");
+//                final Set<AgentAddress> addresses = Selectors.filter(getAddressesOfLocalWorkplaces(), targetSelector);
+//                if (addresses.size() == 1) {//TODO : strange construction
+//                    getLocalWorkplace(addresses.iterator().next()).sendAgent(agent);
+//                }
+//                break;
+//        }
+//
+//    }
 
     private void deliverMessageToWorkplace(@Nonnull final Message<AgentAddress, ?> message) {
         withReadLock(() -> {

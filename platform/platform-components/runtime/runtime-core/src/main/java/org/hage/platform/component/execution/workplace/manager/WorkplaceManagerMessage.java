@@ -31,38 +31,32 @@
 
 package org.hage.platform.component.execution.workplace.manager;
 
-
-import org.hage.platform.communication.message.service.ServiceHeader;
-import org.hage.platform.communication.message.service.ServiceMessage;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 import java.io.Serializable;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 
 @Immutable
-public class WorkplaceManagerMessage extends ServiceMessage<WorkplaceManagerMessage.MessageType, Serializable> {
+public class WorkplaceManagerMessage implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public WorkplaceManagerMessage(final ServiceHeader<MessageType> header,
-            @Nullable final Serializable payload) {
-        super(header, payload);
-    }
+//    public WorkplaceManagerMessage(final ServiceHeader<MessageType> header,
+//            @Nullable final Serializable payload) {
+//        super(header, payload);
+//    }
 
     @Nonnull
     public static WorkplaceManagerMessage create(@Nonnull final MessageType type,
             @Nullable final Serializable payload) {
-        return new WorkplaceManagerMessage(ServiceHeader.create(checkNotNull(type)), payload);
+        return new WorkplaceManagerMessage();
     }
-
-    @Nonnull
-    public static WorkplaceManagerMessage create(@Nonnull final MessageType type) {
-        return new WorkplaceManagerMessage(ServiceHeader.create(type), null);
-    }
+//
+//    @Nonnull
+//    public static WorkplaceManagerMessage create(@Nonnull final MessageType type) {
+//        return new WorkplaceManagerMessage(ServiceHeader.create(type), null);
+//    }
 
     /**
      * Constructs a new message with the given header and with no payload.
@@ -70,34 +64,33 @@ public class WorkplaceManagerMessage extends ServiceMessage<WorkplaceManagerMess
      * @param header A header that contains metadata for this message.
      * @return a new message.
      */
-    @Nonnull
-    public static WorkplaceManagerMessage create(@Nonnull final ServiceHeader<MessageType> header) {
-        return create(header, null);
-    }
+//    @Nonnull
+//    public static WorkplaceManagerMessage create(@Nonnull final ServiceHeader<MessageType> header) {
+//        return create(header, null);
+//    }
 
     /**
      * Constructs a new message with the given header and the payload.
      *
-     * @param header  A header that contains metadata for this message.
-     * @param payload A payload to transport.
+//     * @param header  A header that contains metadata for this message.
+//     * @param payload A payload to transport.
      * @return a new message.
      */
-    @Nonnull
-    public static WorkplaceManagerMessage create(@Nonnull final ServiceHeader<MessageType> header,
-            @Nullable final Serializable payload) {
-        return new WorkplaceManagerMessage(header, payload);
-    }
+//    @Nonnull
+//    public static WorkplaceManagerMessage create(@Nonnull final ServiceHeader<MessageType> header,
+//            @Nullable final Serializable payload) {
+//        return new WorkplaceManagerMessage(header, payload);
+//    }
 
-    @Nonnull
     public MessageType getType() {
-        return getHeader().getType();
+        return null;
     }
 
-    @Override
-    @Nonnull
-    public ServiceHeader<MessageType> getHeader() {
-        return super.getHeader();
-    }
+//    @Override
+//    @Nonnull
+//    public ServiceHeader<MessageType> getHeader() {
+//        return super.getHeader();
+//    }
 
     public  enum MessageType {
         AGENT_MESSAGE,

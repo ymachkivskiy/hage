@@ -32,7 +32,6 @@
 package org.hage.platform.communication.address;
 
 
-import org.hage.platform.communication.address.node.NodeAddress;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.*;

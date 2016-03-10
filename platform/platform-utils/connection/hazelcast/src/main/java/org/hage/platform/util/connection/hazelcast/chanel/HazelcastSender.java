@@ -6,19 +6,19 @@ import com.hazelcast.core.ITopic;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.util.connection.LocalNodeAddressProvider;
-import org.hage.platform.util.connection.NodeAddress;
+import org.hage.platform.communication.address.LocalNodeAddressSupplier;
+import org.hage.platform.communication.address.NodeAddress;
 import org.hage.platform.util.connection.chanel.ConnectionDescriptor;
 import org.hage.platform.util.connection.chanel.FrameSender;
 import org.hage.platform.util.connection.frame.Frame;
 import org.hage.platform.util.connection.frame.process.FrameProcessor;
 import org.hage.platform.util.connection.frame.process.SenderProcessor;
-import org.hage.platform.util.connection.frame.util.FrameUtil;
 
 import java.util.Collection;
+import java.util.HashSet;
 
-import static java.util.stream.Collectors.toList;
 import static lombok.AccessLevel.PACKAGE;
+import static org.hage.platform.util.connection.frame.util.FrameUtil.getReceiverAdresses;
 import static org.hage.platform.util.connection.frame.util.FrameUtil.isBroadcastFrame;
 
 @RequiredArgsConstructor
@@ -26,7 +26,7 @@ import static org.hage.platform.util.connection.frame.util.FrameUtil.isBroadcast
 class HazelcastSender implements FrameSender {
 
     private final ConnectionDescriptor descriptor;
-    private final LocalNodeAddressProvider localNodeAddressProvider;
+    private final LocalNodeAddressSupplier localNodeAddressSupplier;
     private final HazelcastInstance hazelcastInstance;
 
 
@@ -43,9 +43,9 @@ class HazelcastSender implements FrameSender {
         this.unicastMap = hazelcastInstance.getMap("node-unicast-map-" + descriptor.getChanelName());
 
         this.broadcastTopic.addMessageListener(new BroadcastFrameTopicListener(receiver));
-        this.unicastMap.addEntryListener(new UnicastFrameMapListener(receiver), localNodeAddressProvider.getLocalAddress(), true);
+        this.unicastMap.addEntryListener(new UnicastFrameMapListener(receiver), localNodeAddressSupplier.getLocalAddress(), true);
 
-        this.frameProcessor = new SenderProcessor(localNodeAddressProvider.getLocalAddress());
+        this.frameProcessor = new SenderProcessor(localNodeAddressSupplier.getLocalAddress());
     }
 
     @Override
@@ -57,7 +57,7 @@ class HazelcastSender implements FrameSender {
         if (isBroadcastFrame(frame)) {
             broadcast(frame);
         } else {
-            for (NodeAddress address : getUniqueRemoteAddressesForFrame(frame)) {
+            for (NodeAddress address : getUniqueAddressesForFrame(frame)) {
                 unicastToNode(frame, address);
             }
         }
@@ -73,14 +73,16 @@ class HazelcastSender implements FrameSender {
     private void unicastToNode(Frame frame, NodeAddress address) {
         log.debug("Sending frame {} with chanel {} to node {}", frame, descriptor, address);
 
-        unicastMap.putAsync(address, frame);
+        if (localNodeAddressSupplier.getLocalAddress().equals(address)) {
+            log.debug("Send to loopback");
+            receiver.receive(frame);
+        } else {
+            unicastMap.putAsync(address, frame);
+        }
     }
 
-    private Collection<NodeAddress> getUniqueRemoteAddressesForFrame(Frame frame) {
-        return FrameUtil.getReceiverAdresses(frame).stream()
-            .filter(receiverAddress -> !localNodeAddressProvider.getLocalAddress().equals(receiverAddress))
-            .distinct()
-            .collect(toList());
+    private Collection<NodeAddress> getUniqueAddressesForFrame(Frame frame) {
+        return new HashSet<>(getReceiverAdresses(frame));
     }
 
 }

@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import static java.util.Optional.ofNullable;
 
+// TODO: 10.03.16 change
 public final class ConfigurationDivision {
     private Map<Countable, ComputationConfiguration> splitMap;
 
@@ -16,7 +17,7 @@ public final class ConfigurationDivision {
         this.splitMap = new HashMap<>(splitMap);
     }
 
-    public Optional<ComputationConfiguration> get(Countable countable) {
+    public Optional<ComputationConfiguration> getFor(Countable countable) {
         return ofNullable(splitMap.get(countable));
     }
 }

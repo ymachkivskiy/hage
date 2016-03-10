@@ -2,7 +2,6 @@ package org.hage.platform.communication.address;
 
 
 import org.hage.platform.annotation.ReturnValuesAreNonnullByDefault;
-import org.hage.platform.communication.address.node.NodeAddress;
 
 import java.io.Serializable;
 

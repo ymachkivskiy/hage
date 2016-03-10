@@ -4,9 +4,9 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.hage.platform.communication.address.NodeAddress;
 import org.hage.platform.util.connection.ClusterAddressManager;
 import org.hage.platform.util.connection.ConversationIdProvider;
-import org.hage.platform.util.connection.NodeAddress;
 import org.hage.platform.util.connection.chanel.ConnectionDescriptor;
 import org.hage.platform.util.connection.chanel.FrameSender;
 import org.hage.platform.util.executors.WorkerExecutor;
@@ -18,7 +18,6 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static java.util.Collections.singleton;
 import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PROTECTED;
@@ -68,7 +67,6 @@ public abstract class BaseRemoteEndpoint<M extends Serializable> {
     }
 
     protected final <R> R sendToAndAggregateResponses(M message, MessageAggregator<M, R> aggregator, Set<NodeAddress> addresses) {
-        checkArgument(addresses.size() > 1, "For aggregating we need more than one receiver address");
         log.debug("Send message '{}' to '{}' and aggregate response", message, addresses);
 
         Long conversationId = conversationIdProvider.nextConversationId();
@@ -84,19 +82,24 @@ public abstract class BaseRemoteEndpoint<M extends Serializable> {
         return response;
     }
 
-    final void consumeResponseMessageForConversation(RemoteMessage<M> remoteMessage, Long conversationId) {
-        log.debug("Consume remote message '{}' insinde conversation '{}'", remoteMessage, conversationId);
+    final void consumeResponseMessageForConversation(MessageEnvelope<M> messageEnvelope, Long conversationId) {
+        log.debug("Consume remote message '{}' insinde conversation '{}'", messageEnvelope, conversationId);
 
         ResponseBlockingAggregator<M, ?> responseBlockingAggregator = aggregatorsForConversation.get(conversationId);
         if (responseBlockingAggregator != null) {
-            responseBlockingAggregator.addMessage(remoteMessage);
+            responseBlockingAggregator.addMessage(messageEnvelope);
         } else {
-            log.warn("Got remote message '{}' with conversation '{}', but response aggregator is absent", remoteMessage, conversationId);
+            log.warn("Got remote message '{}' with conversation '{}', but response aggregator is absent", messageEnvelope, conversationId);
         }
     }
 
 
-    protected abstract void consumeMessage(RemoteMessage<M> remoteMessage);
+    protected M consumeMessageAndRespond(MessageEnvelope<M> envelope) {
+        log.error("Executed not implemented consume message '{}' and respond method", envelope);
+        throw new UnsupportedOperationException("consumeMessageAndRespond is not supported for " + getClass().getName());
+    }
 
-    protected abstract M consumeMessageAndRespond(RemoteMessage<M> remoteMessage);
+    protected void consumeMessage(MessageEnvelope<M> envelope) {
+        log.warn("Consumer for endpoint '{}' messages not defined. Got message '{}', but did not process it", getClass().getName(), envelope);
+    }
 }

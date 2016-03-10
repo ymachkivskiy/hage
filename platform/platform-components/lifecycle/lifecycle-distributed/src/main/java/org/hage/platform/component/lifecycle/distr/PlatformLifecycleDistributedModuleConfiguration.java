@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Configuration;
 class PlatformLifecycleDistributedModuleConfiguration {
 
     @Bean
-    public LifecycleManagerRemoteChanel lifecycleManagerRemoteChanel() {
-        return new LifecycleManagerRemoteChanel();
+    public LifecycleManagerEndpoint lifecycleManagerRemoteChanel() {
+        return new LifecycleManagerEndpoint();
     }
 
 }
