@@ -36,7 +36,7 @@ public class FixedStepCountStopCondition implements
         EventSubscriber
 { //TODO : re-implement and extract some base class with event posting etc.
 
-    private static final long DEFAULT_STEP_COUNT = 2;
+    private static final long DEFAULT_STEP_COUNT = 300;
 
     private final long stepCount;
 

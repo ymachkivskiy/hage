@@ -22,11 +22,13 @@ import static org.hage.platform.config.distribution.endpoint.message.MessageUtil
 @Component
 public class ConfigurationEndpoint extends BaseRemoteEndpoint<ConfigurationMessage> {
 
+    private static final String CHANEL_NAME = "configuration-remote-chanel";
+
     @Autowired
     private ConfigurationStorage configurationStorageService;
 
     public ConfigurationEndpoint() {
-        super(new ConnectionDescriptor("configuration-chanel"), ConfigurationMessage.class);
+        super(new ConnectionDescriptor(CHANEL_NAME), ConfigurationMessage.class);
     }
 
     public void distribute(Allocation allocation) {

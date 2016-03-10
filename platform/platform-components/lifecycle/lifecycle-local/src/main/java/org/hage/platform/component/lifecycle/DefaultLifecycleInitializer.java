@@ -16,7 +16,7 @@ public class DefaultLifecycleInitializer implements LifecycleInitializer {
         lifecycleBuilder
 
             .startWith(OFFLINE)
-            .terminateIn(TERMINATED)
+            .terminateIn(TERMINATED, FAILED)
 
             .in(OFFLINE)
                 .on(PERFORM_CLUSTER_INITIALIZATION)

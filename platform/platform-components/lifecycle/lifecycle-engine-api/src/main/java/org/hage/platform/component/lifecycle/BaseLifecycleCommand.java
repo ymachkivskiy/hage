@@ -1,5 +1,7 @@
 package org.hage.platform.component.lifecycle;
 
+import static org.hage.platform.component.lifecycle.LifecycleEvent.ERROR;
+
 public enum BaseLifecycleCommand implements LifecycleCommand {
 
     START {
@@ -26,7 +28,7 @@ public enum BaseLifecycleCommand implements LifecycleCommand {
     FAIL {
         @Override
         public void accept(LifecycleStateMachine lifecycleStateMachine) {
-
+            lifecycleStateMachine.fire(ERROR);
         }
     },
 

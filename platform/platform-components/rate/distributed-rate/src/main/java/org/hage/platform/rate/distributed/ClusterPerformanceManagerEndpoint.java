@@ -15,11 +15,13 @@ import static org.hage.platform.rate.distributed.PerformanceRemoteMessage.rateRe
 @Slf4j
 class ClusterPerformanceManagerEndpoint extends BaseRemoteEndpoint<PerformanceRemoteMessage> implements ClusterPerformanceManager {
 
+    private static final String CHANEL_NAME = "performance-remote-chanel";
+
     @Autowired
     private LocalPerformanceManager localPerformanceManager;
 
     public ClusterPerformanceManagerEndpoint() {
-        super(new ConnectionDescriptor("performance-chanel"), PerformanceRemoteMessage.class);
+        super(new ConnectionDescriptor(CHANEL_NAME), PerformanceRemoteMessage.class);
     }
 
     @Override

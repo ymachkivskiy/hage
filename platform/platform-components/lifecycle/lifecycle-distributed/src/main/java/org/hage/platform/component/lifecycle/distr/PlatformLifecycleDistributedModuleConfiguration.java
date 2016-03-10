@@ -11,4 +11,9 @@ class PlatformLifecycleDistributedModuleConfiguration {
         return new LifecycleManagerEndpoint();
     }
 
+    @Bean
+    public ClusterConsistencyGuard clusterConsistencyGuard() {
+        return new ClusterConsistencyGuard();
+    }
+
 }
