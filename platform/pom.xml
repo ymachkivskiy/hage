@@ -21,6 +21,7 @@
         <module>platform-utils</module>
         <module>platform-assembly</module>
         <module>platform-components</module>
+        <module>simulation-api</module>
     </modules>
 
     <dependencies>

@@ -12,7 +12,6 @@
 
     <modules>
         <module>container-api</module>
-        <module>container-all</module>
         <module>container-pico-impl</module>
     </modules>
 

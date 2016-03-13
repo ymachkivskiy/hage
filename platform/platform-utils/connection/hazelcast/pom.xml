@@ -30,6 +30,12 @@
             <version>${hazzelcast.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.hage.platform.util</groupId>
+            <artifactId>container-share</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
     </dependencies>
 
 </project>

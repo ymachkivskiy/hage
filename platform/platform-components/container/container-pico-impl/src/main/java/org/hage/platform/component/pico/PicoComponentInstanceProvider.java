@@ -39,6 +39,8 @@ import org.hage.platform.component.definition.IComponentDefinition;
 import org.hage.platform.component.pico.injector.Injector;
 import org.hage.platform.component.pico.injector.factory.DefaultInjectorFactory;
 import org.hage.platform.component.pico.injector.factory.InjectorFactory;
+import org.hage.platform.component.pico.visitor.StatefulComponentFinisher;
+import org.hage.platform.component.pico.visitor.StatefulComponentInitializer;
 import org.picocontainer.*;
 import org.picocontainer.visitors.VerifyingVisitor;
 import org.slf4j.Logger;
@@ -298,5 +300,15 @@ public class PicoComponentInstanceProvider extends DefaultPicoContainer implemen
         return helper.toString();
     }
 
+
+    @Override
+    public void initializeStatefulComponents() {
+        accept(new StatefulComponentInitializer());
+    }
+
+    @Override
+    public void finishStatefulComponents() {
+        accept(new StatefulComponentFinisher());
+    }
 
 }

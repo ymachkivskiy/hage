@@ -5,7 +5,7 @@ import com.hazelcast.core.EntryListener;
 import com.hazelcast.core.Message;
 import com.hazelcast.core.MessageListener;
 import lombok.RequiredArgsConstructor;
-import org.hage.platform.communication.address.NodeAddress;
+import org.hage.platform.util.connection.NodeAddress;
 import org.hage.platform.util.connection.chanel.Receiver;
 import org.hage.platform.util.connection.frame.Frame;
 

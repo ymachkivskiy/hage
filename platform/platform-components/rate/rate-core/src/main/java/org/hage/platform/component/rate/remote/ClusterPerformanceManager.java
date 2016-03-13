@@ -1,7 +1,7 @@
 package org.hage.platform.component.rate.remote;
 
 
-import org.hage.platform.communication.address.NodeAddress;
+import org.hage.platform.util.connection.NodeAddress;
 
 import java.util.Set;
 

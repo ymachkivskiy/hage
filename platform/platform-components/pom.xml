@@ -14,7 +14,6 @@
     <artifactId>platform-components</artifactId>
 
     <modules>
-        <module>connection</module>
         <module>container</module>
         <module>runtime</module>
         <module>config</module>

@@ -3,9 +3,9 @@ package org.hage.platform.component.simulation.structure;
 import lombok.Data;
 import lombok.Getter;
 import lombok.ToString;
-import org.hage.platform.component.simulation.structure.definition.CellPopulationDescription;
-import org.hage.platform.component.simulation.structure.definition.InternalPosition;
-import org.hage.platform.component.simulation.structure.definition.PopulationDistributionMap;
+import org.hage.platform.component.simulation.structure.definition.CellPopulation;
+import org.hage.platform.component.simulation.structure.definition.Population;
+import org.hage.platform.component.simulation.structure.definition.Position;
 import org.hage.util.proportion.*;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +23,7 @@ public class SimpleOrganizationDivisor implements ProportionsDivisor<SimulationO
     @Override
     public Division<SimulationOrganization> divideUsingProportions(SimulationOrganization source, Proportions proportions) {
 
-        PopulationDistributionMap sourcePopulationDistrMap = source.getPopulationDistributionMap();
+        Population sourcePopulationDistrMap = source.getPopulation();
         BigDecimal numberOfAgents = BigDecimal.valueOf(sourcePopulationDistrMap.getNumberOfAgents());
 
         List<NumberForCountable> acquiredNumbersOfAgents = proportions.getElements()
@@ -41,21 +41,21 @@ public class SimpleOrganizationDivisor implements ProportionsDivisor<SimulationO
             .sorted()
             .collect(toStack());
 
-        List<Set<InternalPosition>> splitList = new ArrayList<>();
+        List<Set<Position>> splitList = new ArrayList<>();
         for (NumberForCountable acquiredNumbersOfAgent : acquiredNumbersOfAgents) {
             long currentAcc = 0;
-            Set<InternalPosition> currentGroup = new HashSet<>();
+            Set<Position> currentGroup = new HashSet<>();
 
             while (currentAcc < acquiredNumbersOfAgent.getNumber() && !populationsPerCell.isEmpty()) {
                 final NumberForInternalPosition numberForInternalPosition = populationsPerCell.pop();
-                currentGroup.add(numberForInternalPosition.getInternalPosition());
+                currentGroup.add(numberForInternalPosition.getPosition());
                 currentAcc += numberForInternalPosition.getNumber();
             }
 
             splitList.add(currentGroup);
         }
 
-        List<PopulationDistributionMap> splittedConfigList = sourcePopulationDistrMap.split(splitList);
+        List<Population> splittedConfigList = sourcePopulationDistrMap.split(splitList);
 
         List<DivisionPart<SimulationOrganization>> resultDivision = new ArrayList<>();
 
@@ -96,13 +96,13 @@ public class SimpleOrganizationDivisor implements ProportionsDivisor<SimulationO
     @ToString
     private static class NumberForInternalPosition implements Comparable<NumberForInternalPosition> {
         @Getter
-        private final InternalPosition internalPosition;
+        private final Position position;
         @Getter
         private final int number;
 
-        public NumberForInternalPosition(InternalPosition internalPosition, CellPopulationDescription cellPopulationDescription) {
-            this.internalPosition = internalPosition;
-            this.number = cellPopulationDescription.getAgentsCount();
+        public NumberForInternalPosition(Position position, CellPopulation cellPopulation) {
+            this.position = position;
+            this.number = cellPopulation.getAgentsCount();
         }
 
         @Override

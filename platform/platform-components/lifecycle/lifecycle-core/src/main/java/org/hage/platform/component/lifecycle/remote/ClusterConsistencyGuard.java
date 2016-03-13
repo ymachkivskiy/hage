@@ -1,10 +1,10 @@
 package org.hage.platform.component.lifecycle.remote;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.communication.address.NodeAddress;
 import org.hage.platform.component.lifecycle.LifecycleEngine;
 import org.hage.platform.util.connection.ClusterAddressManager;
 import org.hage.platform.util.connection.ClusterMemberChangeCallback;
+import org.hage.platform.util.connection.NodeAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;

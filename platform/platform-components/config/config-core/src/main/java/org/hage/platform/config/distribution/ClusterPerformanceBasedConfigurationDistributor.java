@@ -1,7 +1,6 @@
 package org.hage.platform.config.distribution;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.communication.address.NodeAddress;
 import org.hage.platform.component.config.ConfigurationDistributor;
 import org.hage.platform.component.rate.remote.ActiveClusterPerformance;
 import org.hage.platform.component.rate.remote.ClusterPerformanceManager;
@@ -9,6 +8,7 @@ import org.hage.platform.config.Configuration;
 import org.hage.platform.config.distribution.division.Allocation;
 import org.hage.platform.config.distribution.division.ConfigurationAllocator;
 import org.hage.platform.config.distribution.endpoint.ConfigurationEndpoint;
+import org.hage.platform.util.connection.NodeAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Set;

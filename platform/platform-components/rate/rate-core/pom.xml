@@ -15,13 +15,7 @@
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
-            <artifactId>config-data</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hage.platform.component</groupId>
-            <artifactId>rate-data-model</artifactId>
+            <artifactId>rate-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 

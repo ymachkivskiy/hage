@@ -19,24 +19,11 @@
         <!-- HAgE Modules -->
 
         <dependency>
-            <groupId>org.hage.platform.component</groupId>
-            <artifactId>lifecycle-data</artifactId>
+            <groupId>org.hage.platform</groupId>
+            <artifactId>simulation-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.hage.platform.component</groupId>
-            <artifactId>runtime-core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hage.platform.component</groupId>
-            <artifactId>runtime-core</artifactId>
-            <version>${project.version}</version>
-            <type>test-jar</type>
-            <scope>test</scope>
-        </dependency>
 
         <dependency>
             <groupId>javax.inject</groupId>

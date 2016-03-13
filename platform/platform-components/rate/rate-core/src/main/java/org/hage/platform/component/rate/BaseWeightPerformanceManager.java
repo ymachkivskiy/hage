@@ -1,6 +1,7 @@
 package org.hage.platform.component.rate;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hage.platform.component.rate.config.RatingSettingProvider;
 import org.hage.platform.component.rate.config.data.MeasurerSettings;
 import org.hage.platform.component.rate.config.data.NormalizationSettings;
 import org.hage.platform.component.rate.config.data.RatingSettings;
@@ -21,7 +22,7 @@ public class BaseWeightPerformanceManager implements PerformanceManager {
 
 
     @Autowired
-    private RateSettingsStorageService rateSettingsStorageService;
+    private RatingSettingProvider ratingSettingsProvider;
     @Autowired
     private RateNormalizationProvider normalizationProvider;
     @Autowired
@@ -31,7 +32,7 @@ public class BaseWeightPerformanceManager implements PerformanceManager {
     public PerformanceRate measurePerformance() {
         log.info("Calculating overall node performance");
 
-        RatingSettings ratingSettings = rateSettingsStorageService.getSettings();
+        RatingSettings ratingSettings = ratingSettingsProvider.getSettings();
 
         List<PerformanceRate> rates = getAllNormalizedRates(ratingSettings);
         PerformanceRate resultRate = PerformanceRateArithmetic.sumWithDefaultIfZero(rates, ratingSettings.getMinimalRate());

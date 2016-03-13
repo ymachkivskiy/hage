@@ -12,7 +12,6 @@
     <artifactId>simulation-parent</artifactId>
 
     <modules>
-        <module>agent-api</module>
         <module>structure-api</module>
         <module>structure-event-data</module>
         <module>structure-core</module>

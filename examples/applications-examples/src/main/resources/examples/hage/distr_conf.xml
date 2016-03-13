@@ -8,36 +8,38 @@
         <constructor-arg value="GLOBAL"/>
     </component>
 
-    <include file="classpath:examples/common.xml">
-        <block name="workplaces">
-            <component name="lightWorkplace" class="org.hage.platform.component.execution.workplace.SimpleWorkplace" isSingleton="false">
-                <property name="agent">
-                    <agent class="org.hage.platform.component.execution.agent.SimpleAggregate">
-                        <component class="org.hage.platform.communication.address.agent.DefaultAgentAddressSupplier">
-                            <constructor-arg name="nameTemplate" value="Light Workplace"/>
-                        </component>
-                        <property name="agents">
-                            <list>
-                                <agent class="org.hage.examples.hage.distrconf.LightAgent">
-                                    <component class="org.hage.examples.hage.distrconf.SomeFooComponent" isSingleton="true">
-                                        <constructor-arg value="SPECIAL LILIAN"/>
-                                    </component>
-                                    <component class="org.hage.platform.communication.address.agent.DefaultAgentAddressSupplier">
-                                        <constructor-arg name="nameTemplate" value="Lilian"/>
-                                    </component>
-                                </agent>
+    <!--<block name="workplaces">-->
+        <!--<component name="lightWorkplace" class="org.hage.platform.component.execution.workplace.SimpleWorkplace"-->
+                   <!--isSingleton="false">-->
+            <!--<property name="agent">-->
+                <!--<agent class="org.hage.platform.component.execution.agent.SimpleAggregate">-->
+                    <!--<component class="org.hage.platform.simulation.identification.agent.DefaultAgentAddressSupplier">-->
+                        <!--<constructor-arg name="nameTemplate" value="Light Workplace"/>-->
+                    <!--</component>-->
+                    <!--<property name="agents">-->
+                        <!--<list>-->
+                            <!--<agent class="org.hage.examples.hage.distrconf.LightAgent">-->
+                                <!--<component class="org.hage.examples.hage.distrconf.SomeFooComponent" isSingleton="true">-->
+                                    <!--<constructor-arg value="SPECIAL LILIAN"/>-->
+                                <!--</component>-->
+                                <!--<component-->
+                                        <!--class="org.hage.platform.simulation.identification.agent.DefaultAgentAddressSupplier">-->
+                                    <!--<constructor-arg name="nameTemplate" value="Lilian"/>-->
+                                <!--</component>-->
+                            <!--</agent>-->
 
-                                <agent class="org.hage.examples.hage.distrconf.LightAgent">
-                                    <component class="org.hage.platform.communication.address.agent.DefaultAgentAddressSupplier">
-                                        <constructor-arg name="nameTemplate" value="Alice"/>
-                                    </component>
-                                </agent>
+                            <!--<agent class="org.hage.examples.hage.distrconf.LightAgent">-->
+                                <!--<component-->
+                                        <!--class="org.hage.platform.simulation.identification.agent.DefaultAgentAddressSupplier">-->
+                                    <!--<constructor-arg name="nameTemplate" value="Alice"/>-->
+                                <!--</component>-->
+                            <!--</agent>-->
 
-                            </list>
-                        </property>
-                    </agent>
-                </property>
-            </component>
-        </block>
-    </include>
+                        <!--</list>-->
+                    <!--</property>-->
+                <!--</agent>-->
+            <!--</property>-->
+        <!--</component>-->
+    <!--</block>-->
+
 </configuration>

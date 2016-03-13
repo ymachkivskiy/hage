@@ -10,42 +10,42 @@ import static java.util.Collections.emptySet;
 
 @Data
 public final class Chunk {
-    private final InternalPosition startPos;
+    private final Position startPos;
     private final Dimensions dimensions;
 
     public Long getSize() {
         return ((long) dimensions.getXDim()) * dimensions.getYDim() * dimensions.getZDim();
     }
 
-    public boolean containsPosition(InternalPosition cellPosition) {
-        InternalPosition xExtreme = startPos.shift(dimensions.getXDim() - 1, 0, 0);
-        InternalPosition yExtreme = startPos.shift(0, dimensions.getYDim() - 1, 0);
-        InternalPosition zExtreme = startPos.shift(0, 0, dimensions.getZDim() - 1);
+    public boolean containsPosition(Position cellPosition) {
+        Position xExtreme = startPos.shift(dimensions.getXDim() - 1, 0, 0);
+        Position yExtreme = startPos.shift(0, dimensions.getYDim() - 1, 0);
+        Position zExtreme = startPos.shift(0, 0, dimensions.getZDim() - 1);
 
-        return cellPosition.getZPos() >= xExtreme.getZPos()
-            && cellPosition.getZPos() <= zExtreme.getZPos()
-            && cellPosition.getXPos() >= yExtreme.getXPos()
-            && cellPosition.getXPos() <= xExtreme.getXPos()
-            && cellPosition.getYPos() >= zExtreme.getYPos()
-            && cellPosition.getYPos() <= yExtreme.getYPos();
+        return cellPosition.getZ() >= xExtreme.getZ()
+            && cellPosition.getZ() <= zExtreme.getZ()
+            && cellPosition.getX() >= yExtreme.getX()
+            && cellPosition.getX() <= xExtreme.getX()
+            && cellPosition.getY() >= zExtreme.getY()
+            && cellPosition.getY() <= yExtreme.getY();
     }
 
 
-    public Set<InternalPosition> getInternalPositions() {
-        Set<InternalPosition> internalPositions = new HashSet<>();
+    public Set<Position> getInternalPositions() {
+        Set<Position> positions = new HashSet<>();
 
-        for (int xPos = startPos.getXPos(), i = 0; i < dimensions.getXDim(); xPos++, i++) {
-            for (int yPos = startPos.getYPos(), j = 0; j < dimensions.getYDim(); yPos++, j++) {
-                for (int zPos = startPos.getZPos(), k = 0; k < dimensions.getZDim(); zPos++, k++) {
-                    internalPositions.add(InternalPosition.definedBy(xPos, yPos, zPos));
+        for (int xPos = startPos.getX(), i = 0; i < dimensions.getXDim(); xPos++, i++) {
+            for (int yPos = startPos.getY(), j = 0; j < dimensions.getYDim(); yPos++, j++) {
+                for (int zPos = startPos.getZ(), k = 0; k < dimensions.getZDim(); zPos++, k++) {
+                    positions.add(Position.definedBy(xPos, yPos, zPos));
                 }
             }
         }
 
-        return internalPositions;
+        return positions;
     }
 
-    public Set<InternalPosition> getRandomPositions(Long count) {
+    public Set<Position> getRandomPositions(Long count) {
 
         if (count == 0) {
             return emptySet();
@@ -55,16 +55,16 @@ public final class Chunk {
             return getInternalPositions();
         }
 
-        Set<InternalPosition> randomPositions = new HashSet<>();
+        Set<Position> randomPositions = new HashSet<>();
 
         Set<Long> indexesToInclude = generateIndexes(count);
 
         long idxCounter = 0;
-        for (int xPos = startPos.getXPos(), i = 0; i < dimensions.getXDim(); xPos++, i++) {
-            for (int yPos = startPos.getYPos(), j = 0; j < dimensions.getYDim(); yPos++, j++) {
-                for (int zPos = startPos.getZPos(), k = 0; k < dimensions.getZDim(); zPos++, k++, ++idxCounter) {
+        for (int xPos = startPos.getX(), i = 0; i < dimensions.getXDim(); xPos++, i++) {
+            for (int yPos = startPos.getY(), j = 0; j < dimensions.getYDim(); yPos++, j++) {
+                for (int zPos = startPos.getZ(), k = 0; k < dimensions.getZDim(); zPos++, k++, ++idxCounter) {
                     if (indexesToInclude.contains(idxCounter)) {
-                        randomPositions.add(InternalPosition.definedBy(xPos, yPos, zPos));
+                        randomPositions.add(Position.definedBy(xPos, yPos, zPos));
                     }
                 }
             }

@@ -3,7 +3,7 @@ package org.hage.platform.config.load.generate.select;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.NotImplementedException;
 import org.hage.platform.component.simulation.structure.definition.Chunk;
-import org.hage.platform.component.simulation.structure.definition.InternalPosition;
+import org.hage.platform.component.simulation.structure.definition.Position;
 import org.hage.platform.config.load.definition.agent.PositionsSelectionData;
 import org.hage.platform.config.load.definition.agent.SelectionMode;
 
@@ -22,7 +22,7 @@ public class CompositePositionsSelector implements PositionsSelector {
     private final Map<SelectionMode, PositionsSelector> selectorsMap = new EnumMap<>(SelectionMode.class);
 
     @Override
-    public Set<InternalPosition> select(Chunk chunk, PositionsSelectionData selectionData) {
+    public Set<Position> select(Chunk chunk, PositionsSelectionData selectionData) {
         return selectorsMap.getOrDefault(selectionData.getMode(), NOT_IMPLEMENTED_SELECTOR).select(chunk, selectionData);
     }
 

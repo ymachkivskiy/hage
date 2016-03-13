@@ -1,7 +1,7 @@
 package org.hage.platform.util.connection.remote.endpoint;
 
 import lombok.Data;
-import org.hage.platform.communication.address.NodeAddress;
+import org.hage.platform.util.connection.NodeAddress;
 
 import java.io.Serializable;
 

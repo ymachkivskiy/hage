@@ -27,7 +27,7 @@
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
-            <artifactId>container-all</artifactId>
+            <artifactId>pico-impl</artifactId>
             <version>${project.version}</version>
         </dependency>
 

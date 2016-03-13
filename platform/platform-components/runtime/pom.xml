@@ -13,7 +13,7 @@
     <artifactId>runtime-parent</artifactId>
 
     <modules>
-        <module>runtime-core</module>
+        <!--<module>runtime-core</module>-->
     </modules>
 
 </project>

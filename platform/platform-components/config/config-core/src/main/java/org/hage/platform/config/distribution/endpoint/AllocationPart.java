@@ -1,8 +1,8 @@
 package org.hage.platform.config.distribution.endpoint;
 
 import lombok.Data;
-import org.hage.platform.communication.address.NodeAddress;
 import org.hage.platform.config.Configuration;
+import org.hage.platform.util.connection.NodeAddress;
 
 @Data
 public class AllocationPart {

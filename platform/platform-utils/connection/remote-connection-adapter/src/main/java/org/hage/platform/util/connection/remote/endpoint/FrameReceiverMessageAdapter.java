@@ -3,7 +3,7 @@ package org.hage.platform.util.connection.remote.endpoint;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.communication.address.NodeAddress;
+import org.hage.platform.util.connection.NodeAddress;
 import org.hage.platform.util.connection.chanel.Receiver;
 import org.hage.platform.util.connection.chanel.RespondReceiver;
 import org.hage.platform.util.connection.frame.Frame;

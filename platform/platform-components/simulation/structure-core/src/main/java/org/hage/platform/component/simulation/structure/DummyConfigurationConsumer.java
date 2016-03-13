@@ -1,13 +1,14 @@
 package org.hage.platform.component.simulation.structure;
 
 
-// TODO: 21.02.16 uncomment this
-//@Component
+import org.springframework.stereotype.Component;
+
+@Component
 public class DummyConfigurationConsumer implements SimulationOrganizationConsumer {
 
     @Override
-    public void consume(SimulationOrganization simulationOrganization) {
-
+    public void acceptOrganizationConfiguration(SimulationOrganization simulationOrganization) {
+        // TODO: 13.03.16 implement
     }
 
 }

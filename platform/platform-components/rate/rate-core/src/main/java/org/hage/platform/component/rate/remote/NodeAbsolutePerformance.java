@@ -2,8 +2,8 @@ package org.hage.platform.component.rate.remote;
 
 import com.google.common.primitives.UnsignedInteger;
 import lombok.Data;
-import org.hage.platform.communication.address.NodeAddress;
 import org.hage.platform.component.rate.measure.PerformanceRate;
+import org.hage.platform.util.connection.NodeAddress;
 import org.hage.util.proportion.Countable;
 
 import static com.google.common.primitives.UnsignedInteger.valueOf;

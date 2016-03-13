@@ -1,38 +1,38 @@
 package org.hage.examples.hage.distrconf;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.communication.address.agent.AgentAddress;
-import org.hage.platform.communication.address.agent.AgentAddressSupplier;
-import org.hage.platform.component.execution.agent.SimpleAgent;
+import org.hage.platform.component.exception.ComponentException;
+import org.hage.platform.simulation.base.Agent;
+import org.hage.platform.simulation.base.Context;
 
 import javax.inject.Inject;
 
 @Slf4j
-public class LightAgent extends SimpleAgent {
+public class LightAgent implements Agent {
 
     @Inject
     private SomeFooComponent component;
 
-    public LightAgent(AgentAddress address) {
-        super(address);
-    }
-
-    @Inject
-    public LightAgent(AgentAddressSupplier supplier) {
-        super(supplier);
-    }
-
-
     @Override
-    public void step() {
-        log.info("agent {} perform step", getAddress());
-        component.processMessage("hello from " + getAddress());
+    public void step(Context context) {
+        log.info("agent {} perform step", context.getAgentFriendlyName());
+        component.processMessage("hello from " + context.getAgentFriendlyName());
+
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
     }
 
+    @Override
+    public void init() throws ComponentException {
 
+    }
+
+    @Override
+    public boolean finish() throws ComponentException {
+        return false;
+    }
 }

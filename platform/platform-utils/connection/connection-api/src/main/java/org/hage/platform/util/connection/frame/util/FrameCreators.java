@@ -1,6 +1,6 @@
 package org.hage.platform.util.connection.frame.util;
 
-import org.hage.platform.communication.address.NodeAddress;
+import org.hage.platform.util.connection.NodeAddress;
 import org.hage.platform.util.connection.frame.Frame;
 import org.hage.platform.util.connection.frame.Header;
 import org.hage.platform.util.connection.frame.diagnostics.Diagnostics;

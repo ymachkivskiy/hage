@@ -78,4 +78,8 @@ public interface IMutableComponentInstanceProvider extends IComponentInstancePro
     void verify() throws ComponentException;
 
     void reconfigure(Collection<IComponentDefinition> defs);
+
+    void initializeStatefulComponents();
+
+    void finishStatefulComponents();
 }

@@ -15,8 +15,8 @@
     <dependencies>
 
         <dependency>
-            <groupId>org.hage.platform.component.simulation</groupId>
-            <artifactId>agent-api</artifactId>
+            <groupId>org.hage.platform</groupId>
+            <artifactId>simulation-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 

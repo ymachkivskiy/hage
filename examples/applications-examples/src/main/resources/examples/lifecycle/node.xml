@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://age.iisg.agh.edu.pl/schema/age"
-               xsi:schemaLocation="http://age.iisg.agh.edu.pl/schema/age http://age.iisg.agh.edu.pl/schema/age/age.xsd">
-
-    <component class="org.hage.examples.lifecycle.LifecycleTransitionLogger"/>
-
-    <include file="classpath:examples/node.xml">
-    </include>
-</configuration>

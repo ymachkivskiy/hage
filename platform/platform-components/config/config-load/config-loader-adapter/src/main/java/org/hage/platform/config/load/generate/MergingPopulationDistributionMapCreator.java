@@ -1,10 +1,6 @@
 package org.hage.platform.config.load.generate;
 
-import org.hage.platform.component.simulation.agent.Agent;
-import org.hage.platform.component.simulation.structure.definition.CellPopulationDescription;
-import org.hage.platform.component.simulation.structure.definition.Chunk;
-import org.hage.platform.component.simulation.structure.definition.InternalPosition;
-import org.hage.platform.component.simulation.structure.definition.PopulationDistributionMap;
+import org.hage.platform.component.simulation.structure.definition.*;
 import org.hage.platform.config.load.definition.ChunkPopulationQualifier;
 import org.hage.platform.config.load.definition.agent.AgentCountData;
 import org.hage.platform.config.load.definition.agent.ChunkAgentDistribution;
@@ -24,31 +20,31 @@ public class MergingPopulationDistributionMapCreator implements PopulationDistri
     private AgentCountProvider countProvider;
 
     @Override
-    public PopulationDistributionMap createMap(ChunkPopulationQualifier populationQualifier) {
+    public Population createMap(ChunkPopulationQualifier populationQualifier) {
         return populationQualifier.getChunkAgentDistributions()
             .stream()
             .map(agentDistribution -> createDistributionMapFor(populationQualifier.getChunk(), agentDistribution))
-            .reduce(PopulationDistributionMap.emptyDistributionMap(), PopulationDistributionMap::merge);
+            .reduce(Population.emptyDistributionMap(), Population::merge);
     }
 
-    private PopulationDistributionMap createDistributionMapFor(Chunk chunk, ChunkAgentDistribution agentDistribution) {
-        Set<InternalPosition> selectedInternalPositions = getSelectedInternalPositions(chunk, agentDistribution);
-        return PopulationDistributionMap.distributionFromMap(createPopulationMapForSelectedPositions(selectedInternalPositions, agentDistribution));
+    private Population createDistributionMapFor(Chunk chunk, ChunkAgentDistribution agentDistribution) {
+        Set<Position> selectedPositions = getSelectedInternalPositions(chunk, agentDistribution);
+        return Population.distributionFromMap(createPopulationMapForSelectedPositions(selectedPositions, agentDistribution));
     }
 
-    private Set<InternalPosition> getSelectedInternalPositions(Chunk chunk, ChunkAgentDistribution agentDistribution) {
+    private Set<Position> getSelectedInternalPositions(Chunk chunk, ChunkAgentDistribution agentDistribution) {
         return positionsSelector.select(chunk, agentDistribution.getPositionsSelectionData());
     }
 
-    private Map<InternalPosition, CellPopulationDescription> createPopulationMapForSelectedPositions(Collection<InternalPosition> selectedInternalPositions, ChunkAgentDistribution agentDistribution) {
-        Agent agentDef = agentDistribution.getAgent();
+    private Map<Position, CellPopulation> createPopulationMapForSelectedPositions(Collection<Position> selectedPositions, ChunkAgentDistribution agentDistribution) {
+        AgentDefinition agentDef = agentDistribution.getAgentDefinition();
         AgentCountData countData = agentDistribution.getCountData();
 
-        return selectedInternalPositions
+        return selectedPositions
             .stream()
             .collect(toMap(
                 (x) -> x,
-                (x) -> CellPopulationDescription.populationFromPair(agentDef, countProvider.getAgentCount(countData))
+                (x) -> CellPopulation.populationFromPair(agentDef, countProvider.getAgentCount(countData))
             ));
     }
 
