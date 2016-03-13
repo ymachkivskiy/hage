@@ -13,7 +13,6 @@
     <artifactId>runtime-parent</artifactId>
 
     <modules>
-        <module>runtime-all</module>
         <module>runtime-core</module>
     </modules>
 

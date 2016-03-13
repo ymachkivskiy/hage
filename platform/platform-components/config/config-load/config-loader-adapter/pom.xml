@@ -15,19 +15,25 @@
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
-            <artifactId>config-distribution-api</artifactId>
+            <artifactId>config-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
-            <artifactId>config-data</artifactId>
+            <artifactId>container-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hage.platform.component.simulation</groupId>
+            <artifactId>structure-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
-            <artifactId>config-loader-api</artifactId>
+            <artifactId>rate-data-model</artifactId>
             <version>${project.version}</version>
         </dependency>
 

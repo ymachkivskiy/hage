@@ -4,11 +4,11 @@ import lombok.Builder;
 import lombok.Data;
 import org.hage.platform.component.simulation.structure.SimulationCell;
 
-import java.util.Collection;
+import java.util.List;
 
 @Builder
 @Data
 public class SimulationStructureChangedEvent {
-    private final Collection<SimulationCell> addedCells;
-    private final Collection<SimulationCell> removedCells;
+    private final List<SimulationCell> addedCells;
+    private final List<SimulationCell> removedCells;
 }

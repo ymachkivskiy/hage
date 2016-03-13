@@ -11,11 +11,12 @@
 
     <artifactId>structure-api</artifactId>
 
+
     <dependencies>
 
         <dependency>
-            <groupId>org.hage.platform.component</groupId>
-            <artifactId>config-data</artifactId>
+            <groupId>org.hage.platform.component.simulation</groupId>
+            <artifactId>agent-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 

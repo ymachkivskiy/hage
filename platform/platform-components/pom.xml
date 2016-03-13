@@ -18,7 +18,6 @@
         <module>container</module>
         <module>runtime</module>
         <module>config</module>
-        <module>habitat</module>
         <module>rate</module>
         <module>lifecycle</module>
         <module>execution-environment</module>

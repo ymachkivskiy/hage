@@ -1,20 +1,14 @@
 package org.hage.platform.config.event;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.ToString;
-import org.hage.platform.config.ComputationConfiguration;
+import lombok.Data;
+import org.hage.platform.config.Configuration;
 import org.hage.platform.util.bus.Event;
 
 import javax.annotation.concurrent.Immutable;
 
 @Immutable
-@AllArgsConstructor
-@ToString
+@Data
 public final class ConfigurationUpdatedEvent implements Event {
-
-    @Getter
-    private final ComputationConfiguration computationConfiguration;
-
+    private final Configuration configuration;
 }

@@ -8,11 +8,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-import static org.hage.platform.component.execution.core.supplier.SimulationCellExecutionPhase.CELL_AGENTS_STEP;
+import static org.hage.platform.component.simulation.structure.CellExecutionPhase.AGENTS_STEP;
 
 @Configuration
 @ComponentScan(basePackageClasses = PlatformExecutionCoreModuleConfiguration.class)
-public class PlatformExecutionCoreModuleConfiguration {
+class PlatformExecutionCoreModuleConfiguration {
 
     @Bean
     public CoreBatchExecutor coreBatchExecutor() {
@@ -22,7 +22,7 @@ public class PlatformExecutionCoreModuleConfiguration {
     @Bean
     public ExecutionPhasesProvider coreExecutorPhasesProvider() {
         return new FixedExecutionPhasesProvider(
-            CELL_AGENTS_STEP
+            AGENTS_STEP
         );
     }
 

@@ -11,10 +11,8 @@
     <artifactId>config-loader-parent</artifactId>
 
     <modules>
-        <module>config-loader-api</module>
         <module>config-loader-adapter</module>
         <module>xml-config-loader</module>
-        <module>config-loader</module>
     </modules>
 
 </project>

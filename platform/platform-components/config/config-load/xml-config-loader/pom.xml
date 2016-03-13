@@ -18,7 +18,7 @@
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
-            <artifactId>config-loader-api</artifactId>
+            <artifactId>config-loader-adapter</artifactId>
             <version>${project.version}</version>
         </dependency>
 

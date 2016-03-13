@@ -33,7 +33,7 @@ import org.hage.platform.component.execution.workplace.Workplace;
 import org.hage.platform.component.pico.IPicoComponentInstanceProvider;
 import org.hage.platform.component.pico.PicoComponentInstanceProvider;
 import org.hage.platform.component.pico.visitor.StatefulComponentInitializer;
-import org.hage.platform.config.ComputationConfiguration;
+import org.hage.platform.config.Configuration;
 import org.hage.platform.util.bus.EventBus;
 import org.hage.util.concurrency.Locks;
 import org.picocontainer.PicoContainer;
@@ -118,9 +118,9 @@ public class DefaultWorkplaceManager implements
     }
 
     @Override
-    public void configureWith(ComputationConfiguration configuration) {
+    public void acceptConfiguration(Configuration configuration) {
 
-        final Collection<IComponentDefinition> componentDefinitions = configuration.getComponentsDefinitions();
+        final Collection<IComponentDefinition> componentDefinitions = configuration.getCommon().getGlobalComponents();
 
         childContainer = instanceProvider.makeChildContainer();
         for (final IComponentDefinition def : componentDefinitions) {

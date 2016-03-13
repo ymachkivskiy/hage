@@ -33,13 +33,13 @@
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
-            <artifactId>config-distribution-core</artifactId>
+            <artifactId>config-core</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
-            <artifactId>config-loader</artifactId>
+            <artifactId>xml-config-loader</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -57,7 +57,7 @@
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
-            <artifactId>runtime</artifactId>
+            <artifactId>runtime-core</artifactId>
             <version>${project.version}</version>
         </dependency>
 

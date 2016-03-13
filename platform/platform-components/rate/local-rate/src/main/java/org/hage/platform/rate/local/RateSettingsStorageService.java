@@ -30,7 +30,7 @@ public class RateSettingsStorageService implements EventSubscriber {
     @SuppressWarnings("unused")
     @Subscribe
     public void onComputationConfigurationUpdated(ConfigurationUpdatedEvent event) {
-        computationRateSettingsHolder.set(event.getComputationConfiguration().getRatingConfig());
+        computationRateSettingsHolder.set(event.getConfiguration().getCommon().getRatingConfig());
     }
 
 }

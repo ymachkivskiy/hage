@@ -8,7 +8,7 @@ import org.hage.platform.component.definition.IComponentDefinition;
 import org.hage.platform.config.load.ConfigurationLoadException;
 import org.hage.platform.config.load.ConfigurationLoader;
 import org.hage.platform.config.load.ConfigurationNotFoundException;
-import org.hage.platform.config.load.definition.Configuration;
+import org.hage.platform.config.load.definition.InputConfiguration;
 import org.hage.platform.config.load.xml.loaders.*;
 import org.hage.platform.config.load.xml.readers.DocumentReader;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +49,7 @@ public final class XmlConfigurationLoader implements ConfigurationLoader {
     }
 
     @Override
-    public Configuration load() throws ConfigurationNotFoundException {
+    public InputConfiguration load() throws ConfigurationNotFoundException {
         try {
             return getConfiguration();
         } catch (ConfigurationException e) {
@@ -57,7 +57,7 @@ public final class XmlConfigurationLoader implements ConfigurationLoader {
         }
     }
 
-    private Configuration getConfiguration() throws ConfigurationException, ConfigurationNotFoundException {
+    private InputConfiguration getConfiguration() throws ConfigurationException, ConfigurationNotFoundException {
         String path = configurationFilePathProvider.getPath();
         log.debug("Loading document from '{}'", path);
 

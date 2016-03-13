@@ -2,10 +2,10 @@ package org.hage.platform.component.execution.workplace.manager;
 
 
 import org.hage.platform.communication.address.agent.AgentAddress;
+import org.hage.platform.component.config.ConfigurationConsumer;
 import org.hage.platform.component.execution.core.ExecutionCore;
 import org.hage.platform.component.execution.workplace.Workplace;
 import org.hage.platform.component.execution.workplace.WorkplaceEnvironment;
-import org.hage.platform.component.simulation.structure.ComputationStructureConfigurator;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
@@ -17,7 +17,7 @@ import java.util.List;
  *
  * @author AGH AgE Team
  */
-public interface WorkplaceManager extends ExecutionCore, WorkplaceEnvironment, ComputationStructureConfigurator {
+public interface WorkplaceManager extends ExecutionCore, WorkplaceEnvironment, ConfigurationConsumer {
 
     String SERVICE_NAME = WorkplaceManager.class.getSimpleName();
 

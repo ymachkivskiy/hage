@@ -2,10 +2,10 @@ package org.hage.platform.component.lifecycle.action;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hage.platform.component.config.ConfigurationConsumer;
+import org.hage.platform.component.config.ConfigurationProvider;
 import org.hage.platform.component.lifecycle.LifecycleAction;
-import org.hage.platform.component.simulation.structure.ComputationStructureConfigurator;
-import org.hage.platform.config.ComputationConfiguration;
-import org.hage.platform.config.ConfigurationProvider;
+import org.hage.platform.config.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +17,7 @@ import static lombok.AccessLevel.PRIVATE;
 public class ConfigurationLifecycleAction implements LifecycleAction {
 
     @Autowired
-    private ComputationStructureConfigurator computationStructureConfigurator;
+    private ConfigurationConsumer configurationConsumer;
 
     @Autowired
     private ConfigurationProvider configurationProvider;
@@ -26,9 +26,9 @@ public class ConfigurationLifecycleAction implements LifecycleAction {
     public void execute() {
         log.info("Configuring the computation.");
 
-        ComputationConfiguration configuration = configurationProvider.provideConfiguration();
+        Configuration configuration = configurationProvider.provideConfiguration();
 
-        computationStructureConfigurator.configureWith(configuration);
+        configurationConsumer.acceptConfiguration(configuration);
 
         log.info("Node is configured.");
     }

@@ -14,9 +14,9 @@
 
     <modules>
         <module>config-data</module>
-        <module>config-provider</module>
         <module>config-load</module>
-        <module>config-distribution</module>
+        <module>config-core</module>
+        <module>config-api</module>
     </modules>
 
 </project>
