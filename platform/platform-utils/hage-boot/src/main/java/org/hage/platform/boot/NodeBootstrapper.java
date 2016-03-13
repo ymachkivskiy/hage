@@ -1,17 +1,13 @@
-package org.hage.platform;
+package org.hage.platform.boot;
 
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.component.lifecycle.LifecycleEngine;
-import org.hage.util.cmd.CommandLineArguments;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 
 @Slf4j
-public class CliNodeBootstrapper {
+public class NodeBootstrapper {
 
     private static final String HEADER =
         "+-------------------------------+\n"
@@ -25,10 +21,10 @@ public class CliNodeBootstrapper {
 
     private final ApplicationContext applicationContext;
 
-    public CliNodeBootstrapper(final String[] args) {
-        System.out.print(HEADER);
+    public NodeBootstrapper(ApplicationContext applicationContext, String[] args) {
+        log.info(HEADER);
 
-        applicationContext = new AnnotationConfigApplicationContext(Config.class, PlatformConfiguration.class);
+        this.applicationContext = applicationContext;
 
         processCmdArgs(args);
     }
@@ -45,25 +41,13 @@ public class CliNodeBootstrapper {
     private void processCmdArgs(String[] args) {
         CommandLineArguments argumentsService = applicationContext.getBean(CommandLineArguments.class);
 
-        argumentsService.parse(CliNodeBootstrapper.class, args);
+        argumentsService.parse(NodeBootstrapper.class, args);
 
         if (argumentsService.hasHelpOption()) {
             System.out.println(argumentsService.getUsage());
             System.exit(0);
         }
 
-    }
-
-    @Configuration
-    public static class Config {
-        @Bean
-        public CommandLineArguments commandLineArgumentsService() {
-            return new CommandLineArguments();
-        }
-    }
-
-    public static void main(final String[] args) {
-        new CliNodeBootstrapper(args).start();
     }
 
 }

@@ -16,6 +16,7 @@
     <modules>
         <module>platform</module>
         <module>common-utils</module>
+        <module>cli-node</module>
     </modules>
 
     <properties>

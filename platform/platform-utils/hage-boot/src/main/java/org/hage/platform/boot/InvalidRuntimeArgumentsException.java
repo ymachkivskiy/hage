@@ -1,6 +1,8 @@
-package org.hage.util.cmd;
+package org.hage.platform.boot;
 
-public class InvalidRuntimeArgumentsException extends RuntimeException {
+import org.hage.platform.HageRuntimeException;
+
+public class InvalidRuntimeArgumentsException extends HageRuntimeException {
 
     public InvalidRuntimeArgumentsException(final String message) {
         super(message);

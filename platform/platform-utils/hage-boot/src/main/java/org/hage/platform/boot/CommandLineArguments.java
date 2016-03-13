@@ -1,4 +1,4 @@
-package org.hage.util.cmd;
+package org.hage.platform.boot;
 
 
 import org.apache.commons.cli.*;

@@ -18,6 +18,7 @@
         <module>container-share</module>
         <module>connection</module>
         <module>executors</module>
+        <module>hage-boot</module>
     </modules>
 
     <dependencies>
