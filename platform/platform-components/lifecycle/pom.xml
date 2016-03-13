@@ -11,10 +11,9 @@
     <artifactId>lifecycle-parent</artifactId>
 
     <modules>
-        <module>lifecycle-local</module>
+        <module>lifecycle-core</module>
         <module>lifecycle-data</module>
         <module>lifecycle-engine-api</module>
-        <module>lifecycle-distributed</module>
     </modules>
 
 </project>

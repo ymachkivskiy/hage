@@ -45,13 +45,7 @@
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
-            <artifactId>lifecycle-distr</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hage.platform.component</groupId>
-            <artifactId>lifecycle-local</artifactId>
+            <artifactId>lifecycle-core</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -63,7 +57,7 @@
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
-            <artifactId>distr-rate</artifactId>
+            <artifactId>rate-core</artifactId>
             <version>${project.version}</version>
         </dependency>
 

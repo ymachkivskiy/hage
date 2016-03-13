@@ -3,7 +3,7 @@ package org.hage.platform.config.load.definition;
 import lombok.Builder;
 import lombok.Getter;
 import org.hage.platform.component.definition.IComponentDefinition;
-import org.hage.platform.rate.model.ComputationRatingConfig;
+import org.hage.platform.component.rate.model.ComputationRatingConfig;
 
 import java.util.Collection;
 

@@ -2,14 +2,14 @@ package org.hage.platform.config.load.xml;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.component.definition.IComponentDefinition;
+import org.hage.platform.component.rate.model.ComputationRatingConfig;
+import org.hage.platform.component.rate.model.MeasurerRateConfig;
+import org.hage.platform.component.rate.model.MeasurerType;
 import org.hage.platform.component.simulation.structure.definition.*;
 import org.hage.platform.config.load.definition.ChunkPopulationQualifier;
 import org.hage.platform.config.load.definition.HabitatOrganizationDefinition;
 import org.hage.platform.config.load.definition.InputConfiguration;
 import org.hage.platform.config.load.definition.agent.ChunkAgentDistribution;
-import org.hage.platform.rate.model.ComputationRatingConfig;
-import org.hage.platform.rate.model.MeasurerRateConfig;
-import org.hage.platform.rate.model.MeasurerType;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;

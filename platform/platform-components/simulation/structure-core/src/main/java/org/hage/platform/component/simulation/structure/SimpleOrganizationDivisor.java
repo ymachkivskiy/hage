@@ -21,7 +21,7 @@ import static java.util.stream.Collectors.toList;
 public class SimpleOrganizationDivisor implements ProportionsDivisor<SimulationOrganization> {
 
     @Override
-    public ProportionDivision<SimulationOrganization> divideUsingProportions(SimulationOrganization source, Proportions proportions) {
+    public Division<SimulationOrganization> divideUsingProportions(SimulationOrganization source, Proportions proportions) {
 
         PopulationDistributionMap sourcePopulationDistrMap = source.getPopulationDistributionMap();
         BigDecimal numberOfAgents = BigDecimal.valueOf(sourcePopulationDistrMap.getNumberOfAgents());
@@ -66,7 +66,7 @@ public class SimpleOrganizationDivisor implements ProportionsDivisor<SimulationO
             resultDivision.add(p);
         }
 
-        return new ProportionDivision<>(resultDivision);
+        return new Division<>(resultDivision);
     }
 
 

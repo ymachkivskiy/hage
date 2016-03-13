@@ -3,11 +3,11 @@ package org.hage.platform.config.distribution.division;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.component.config.ConfigurationDivisor;
+import org.hage.platform.component.rate.remote.ActiveClusterPerformance;
+import org.hage.platform.component.rate.remote.NodeAbsolutePerformance;
 import org.hage.platform.config.Configuration;
 import org.hage.platform.config.distribution.endpoint.AllocationPart;
-import org.hage.platform.rate.distributed.ActiveClusterPerformance;
-import org.hage.platform.rate.distributed.NodeAbsolutePerformance;
-import org.hage.util.proportion.ProportionDivision;
+import org.hage.util.proportion.Division;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
@@ -26,12 +26,12 @@ public class ConfigurationAllocator {
 
         Collection<NodeAbsolutePerformance> nodePerformances = clusterPerformance.getNodeAbsolutePerformances();
 
-        ProportionDivision<Configuration> configurationDivision = divisor.divideUsingProportions(configuration, forCountable(nodePerformances));
+        Division<Configuration> configurationDivision = divisor.divideUsingProportions(configuration, forCountable(nodePerformances));
 
         return new Allocation(toAllocations(nodePerformances, configurationDivision));
     }
 
-    private List<AllocationPart> toAllocations(Collection<NodeAbsolutePerformance> nodePerformances, ProportionDivision<Configuration> configurationDivision) {
+    private List<AllocationPart> toAllocations(Collection<NodeAbsolutePerformance> nodePerformances, Division<Configuration> configurationDivision) {
         return nodePerformances
             .stream()
             .map(co -> new ConfigPairWrapper(configurationDivision.getFor(co), co))

@@ -12,8 +12,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>rate-data-model</module>
-        <module>local-rate</module>
-        <module>distributed-rate</module>
+        <module>rate-core</module>
     </modules>
 
     <artifactId>rate-parent</artifactId>
