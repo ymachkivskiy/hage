@@ -5,9 +5,11 @@ import org.hage.platform.config.load.generate.PopulationDistributionMapCreator;
 import org.hage.platform.config.load.generate.count.*;
 import org.hage.platform.config.load.generate.select.*;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@ComponentScan(basePackageClasses = PlatformLocalConfigurationProviderModuleConfiguration.class)
 class PlatformLocalConfigurationProviderModuleConfiguration {
 
     @Bean

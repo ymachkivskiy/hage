@@ -15,8 +15,6 @@
 
     <modules>
         <module>platform</module>
-        <module>examples</module>
-        <module>cli-bootstrapper</module>
         <module>common-utils</module>
     </modules>
 
@@ -26,7 +24,6 @@
         <spring.version>4.2.1.RELEASE</spring.version>
         <lombok.version>1.16.6</lombok.version>
         <guava.version>19.0</guava.version>
-        <slf4j.version>1.7.6</slf4j.version>
     </properties>
 
     <!-- plugin repositories -->
@@ -348,20 +345,16 @@
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
-                <version>${slf4j.version}</version>
+                <version>1.7.5</version>
             </dependency>
 
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-log4j12</artifactId>
-                <version>${slf4j.version}</version>
+                <version>1.7.5</version>
             </dependency>
 
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>jcl-over-slf4j</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency>
+
 
             <!-- testing -->
 
@@ -466,18 +459,19 @@
             <artifactId>commons-collections4</artifactId>
         </dependency>
 
-        <!-- logging -->
+        <!--logging-->
+
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
 
-        <!-- testing -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
-            <scope>test</scope>
         </dependency>
+
+        <!-- testing -->
         <dependency>
             <groupId>junit</groupId>
             <!-- junit-dep, because it does not contain hamcrest. -->

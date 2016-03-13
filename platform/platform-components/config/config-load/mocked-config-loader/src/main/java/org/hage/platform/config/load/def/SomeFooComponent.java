@@ -1,4 +1,4 @@
-package org.hage.examples.hage.distrconf;
+package org.hage.platform.config.load.def;
 
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;

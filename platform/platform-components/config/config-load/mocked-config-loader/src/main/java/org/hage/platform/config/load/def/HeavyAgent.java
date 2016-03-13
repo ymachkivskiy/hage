@@ -1,4 +1,4 @@
-package org.hage.examples.hage.distrconf;
+package org.hage.platform.config.load.def;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.component.exception.ComponentException;
@@ -8,7 +8,7 @@ import org.hage.platform.simulation.base.Context;
 import javax.inject.Inject;
 
 @Slf4j
-public class LightAgent implements Agent {
+public class HeavyAgent implements Agent {
 
     @Inject
     private SomeFooComponent component;
@@ -16,10 +16,11 @@ public class LightAgent implements Agent {
     @Override
     public void step(Context context) {
         log.info("agent {} perform step", context.getAgentFriendlyName());
+
         component.processMessage("hello from " + context.getAgentFriendlyName());
 
         try {
-            Thread.sleep(500);
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

@@ -39,19 +39,7 @@
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
-            <artifactId>xml-config-loader</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hage.platform.component</groupId>
             <artifactId>lifecycle-core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hage.platform.component</groupId>
-            <artifactId>runtime-core</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -64,6 +52,14 @@
         <dependency>
             <groupId>org.hage.platform.util</groupId>
             <artifactId>connection-hazelcast</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!--load configuration-->
+
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>mocked-config-loader</artifactId>
             <version>${project.version}</version>
         </dependency>
 

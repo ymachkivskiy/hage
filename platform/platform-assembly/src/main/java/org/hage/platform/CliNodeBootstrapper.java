@@ -1,8 +1,7 @@
-package org.hage.cli;
+package org.hage.platform;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.PlatformConfiguration;
 import org.hage.platform.component.lifecycle.LifecycleEngine;
 import org.hage.util.cmd.CommandLineArguments;
 import org.springframework.context.ApplicationContext;

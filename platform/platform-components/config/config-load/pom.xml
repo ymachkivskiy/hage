@@ -10,9 +10,10 @@
 
     <artifactId>config-loader-parent</artifactId>
 
+
     <modules>
         <module>config-loader-adapter</module>
-        <module>xml-config-loader</module>
+        <module>mocked-config-loader</module>
     </modules>
 
 </project>
