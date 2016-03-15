@@ -1,14 +1,14 @@
 package org.hage.platform.simulation.base;
 
-import org.hage.platform.simulation.identification.CellAddress;
+import org.hage.platform.simulation.identification.UnitAddress;
 
 import java.util.Set;
 
 public interface CommonContext {
 
-    CellAddress queryCellAddress();
+    UnitAddress queryUnit();
 
-    Set<CellAddress> querySurroundingCellAddresses();
+    Set<UnitAddress> querySurroundingUnits();
 
     void notifyStopConditionSatisfied();
 

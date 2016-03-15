@@ -1,8 +1,8 @@
 package org.hage.platform.config.load.generate.select;
 
 import com.google.common.base.Preconditions;
-import org.hage.platform.component.simulation.structure.definition.Chunk;
-import org.hage.platform.component.simulation.structure.definition.Position;
+import org.hage.platform.component.structure.definition.Position;
+import org.hage.platform.config.load.definition.Chunk;
 import org.hage.platform.config.load.definition.agent.PositionsSelectionData;
 
 import java.util.Set;

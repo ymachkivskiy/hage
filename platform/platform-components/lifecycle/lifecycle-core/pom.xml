@@ -53,7 +53,7 @@
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.component.simulation</groupId>
+            <groupId>org.hage.platform.component</groupId>
             <artifactId>structure-api</artifactId>
             <version>${project.version}</version>
         </dependency>

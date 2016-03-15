@@ -20,7 +20,7 @@
         <module>rate</module>
         <module>lifecycle</module>
         <module>execution-environment</module>
-        <module>simulation</module>
+        <module>structure</module>
     </modules>
 
 </project>

@@ -1,6 +1,6 @@
 package org.hage.platform.config.distribution.division;
 
-import org.hage.platform.component.simulation.structure.SimulationOrganization;
+import org.hage.platform.component.runtime.definition.Population;
 import org.hage.platform.config.Specific;
 import org.hage.util.proportion.Division;
 import org.hage.util.proportion.Proportions;
@@ -12,12 +12,12 @@ import org.springframework.stereotype.Component;
 public class SpecificDivisor implements ProportionsDivisor<Specific> {
 
     @Autowired
-    private ProportionsDivisor<SimulationOrganization> organizationDivisor;
+    private ProportionsDivisor<Population> organizationDivisor;
 
     @Override
     public Division<Specific> divideUsingProportions(Specific source, Proportions proportions) {
 
-        Division<SimulationOrganization> organizationDivision = organizationDivisor.divideUsingProportions(source.getSimulationOrganization(), proportions);
+        Division<Population> organizationDivision = organizationDivisor.divideUsingProportions(source.getPopulation(), proportions);
 
         return organizationDivision.translateTo(
             Specific::new

@@ -2,17 +2,17 @@ package org.hage.platform.component.execution.core.supplier;
 
 import lombok.RequiredArgsConstructor;
 import org.hage.platform.component.execution.core.executor.PhasedRunnable;
-import org.hage.platform.component.simulation.structure.CellExecutionPhase;
-import org.hage.platform.component.simulation.structure.SimulationCell;
+import org.hage.platform.component.runtime.unit.ExecutionUnit;
+import org.hage.platform.component.runtime.unit.UnitExecutionPhase;
 
 @RequiredArgsConstructor
 class CellPhaseRunnableAdapter implements PhasedRunnable {
 
-    private final SimulationCell simulationCell;
+    private final ExecutionUnit executionUnit;
 
     @Override
-    public void runPhase(CellExecutionPhase phase) {
-        phase.executeOn(simulationCell);
+    public void runPhase(UnitExecutionPhase phase) {
+        phase.executeOn(executionUnit);
     }
 
 }

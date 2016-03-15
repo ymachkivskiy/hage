@@ -3,8 +3,8 @@ package org.hage.platform.component.execution.core.supplier;
 import com.google.common.eventbus.Subscribe;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.component.execution.core.executor.PhasedRunnable;
-import org.hage.platform.component.simulation.structure.SimulationCell;
-import org.hage.platform.component.simulation.structure.event.SimulationStructureChangedEvent;
+import org.hage.platform.component.runtime.event.SimulationStructureChangedEvent;
+import org.hage.platform.component.runtime.unit.ExecutionUnit;
 import org.hage.platform.util.bus.EventSubscriber;
 import org.springframework.stereotype.Component;
 
@@ -20,10 +20,10 @@ import static java.util.stream.Collectors.toList;
 @Component
 public class ListenableTasksChangeSupplier implements TasksChangeSupplier, EventSubscriber {
 
-    private Map<SimulationCell, PhasedRunnable> translationMap = new HashMap<>();
+    private Map<ExecutionUnit, PhasedRunnable> translationMap = new HashMap<>();
 
-    private List<SimulationCell> removed = new ArrayList<>();
-    private List<SimulationCell> added = new ArrayList<>();
+    private List<ExecutionUnit> removed = new ArrayList<>();
+    private List<ExecutionUnit> added = new ArrayList<>();
 
 
     @Override
@@ -55,19 +55,19 @@ public class ListenableTasksChangeSupplier implements TasksChangeSupplier, Event
         added.clear();
     }
 
-    private List<PhasedRunnable> runnablesFor(List<SimulationCell> cells) {
+    private List<PhasedRunnable> runnablesFor(List<ExecutionUnit> cells) {
         return cells
             .stream()
             .map(this::translate)
             .collect(toList());
     }
 
-    private PhasedRunnable translate(SimulationCell simulationCell) {
-        PhasedRunnable phasedRunnable = translationMap.get(simulationCell);
+    private PhasedRunnable translate(ExecutionUnit executionUnit) {
+        PhasedRunnable phasedRunnable = translationMap.get(executionUnit);
 
         if (phasedRunnable == null) {
-            phasedRunnable = new CellPhaseRunnableAdapter(simulationCell);
-            translationMap.put(simulationCell, phasedRunnable);
+            phasedRunnable = new CellPhaseRunnableAdapter(executionUnit);
+            translationMap.put(executionUnit, phasedRunnable);
         }
 
         return phasedRunnable;

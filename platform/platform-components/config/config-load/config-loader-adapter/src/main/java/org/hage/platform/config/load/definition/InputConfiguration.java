@@ -16,5 +16,5 @@ public final class InputConfiguration {
     @Getter
     private final Collection<IComponentDefinition> localComponents;
     @Getter
-    private final HabitatOrganizationDefinition habitatConfiguration;
+    private final SimulationOrganizationDefinition habitatConfiguration;
 }

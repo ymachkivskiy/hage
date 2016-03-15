@@ -2,7 +2,7 @@ package org.hage.platform.component.execution.core.executor;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.component.simulation.structure.CellExecutionPhase;
+import org.hage.platform.component.runtime.unit.UnitExecutionPhase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -49,10 +49,10 @@ public class PhasedExecutor {
         phasedRunnables.clear();
     }
 
-    public synchronized void performFullCycle(List<CellExecutionPhase> phasesInOrder) {
+    public synchronized void performFullCycle(List<UnitExecutionPhase> phasesInOrder) {
         log.debug("Execute full cycle for phases {}:  STARTED", phasesInOrder);
 
-        Set<CellExecutionPhase> alreadyExecutedPhases = noneOf(CellExecutionPhase.class);
+        Set<UnitExecutionPhase> alreadyExecutedPhases = noneOf(UnitExecutionPhase.class);
 
         phasesInOrder.stream()
             .filter(alreadyExecutedPhases::add)
@@ -62,7 +62,7 @@ public class PhasedExecutor {
 
     }
 
-    private void executePhase(CellExecutionPhase phase) {
+    private void executePhase(UnitExecutionPhase phase) {
         log.debug("Executing phase: {}", phase);
 
         List<PhasedRunnableAdapter> runnableAdapters = phasedRunnables
@@ -77,7 +77,7 @@ public class PhasedExecutor {
     private static class PhasedRunnableAdapter implements Runnable {
 
         private final PhasedRunnable phasedRunnable;
-        private final CellExecutionPhase phase;
+        private final UnitExecutionPhase phase;
 
         @Override
         public void run() {

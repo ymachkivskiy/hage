@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-import static org.hage.platform.component.simulation.structure.CellExecutionPhase.AGENTS_STEP;
+import static org.hage.platform.component.runtime.unit.UnitExecutionPhase.AGENTS_STEP;
 
 @Configuration
 @ComponentScan(basePackageClasses = PlatformExecutionCoreModuleConfiguration.class)

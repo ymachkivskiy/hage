@@ -5,7 +5,6 @@ import org.hage.platform.component.definition.IComponentDefinition;
 import org.hage.platform.component.rate.model.ComputationRatingConfig;
 import org.hage.platform.component.rate.model.MeasurerRateConfig;
 import org.hage.platform.component.rate.model.MeasurerType;
-import org.hage.platform.component.simulation.structure.definition.*;
 import org.hage.platform.config.load.definition.ChunkPopulationQualifier;
 import org.hage.platform.config.load.definition.HabitatOrganizationDefinition;
 import org.hage.platform.config.load.definition.InputConfiguration;

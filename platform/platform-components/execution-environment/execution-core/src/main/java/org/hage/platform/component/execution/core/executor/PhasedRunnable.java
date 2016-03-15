@@ -1,9 +1,10 @@
 package org.hage.platform.component.execution.core.executor;
 
-import org.hage.platform.component.simulation.structure.CellExecutionPhase;
+
+import org.hage.platform.component.runtime.unit.UnitExecutionPhase;
 
 public interface PhasedRunnable {
 
-    void runPhase(CellExecutionPhase phase);
+    void runPhase(UnitExecutionPhase phase);
 
 }

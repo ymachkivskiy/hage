@@ -6,6 +6,7 @@ import org.apache.commons.cli.*;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+// TO BE CHANGED : encapsulate into better class
 public class CommandLineArguments {
 
     private static final String HELP_OPTION = "h";

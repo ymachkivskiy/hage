@@ -20,8 +20,8 @@
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.component.simulation</groupId>
-            <artifactId>structure-api</artifactId>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>runtime-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 
