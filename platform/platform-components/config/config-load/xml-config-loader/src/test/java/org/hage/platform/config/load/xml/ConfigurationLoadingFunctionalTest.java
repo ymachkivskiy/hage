@@ -1,12 +1,12 @@
 package org.hage.platform.config.load.xml;
 
 
-import org.hage.platform.component.definition.ClassWithProperties;
-import org.hage.platform.component.definition.IComponentDefinition;
+import org.hage.platform.component.container.definition.ClassWithProperties;
+import org.hage.platform.component.container.definition.IComponentDefinition;
 
 import java.util.List;
 
-import static org.hage.platform.component.builder.ConfigurationBuilder.Configuration;
+import static org.hage.platform.component.container.builder.ConfigurationBuilder.Configuration;
 
 
 public class ConfigurationLoadingFunctionalTest {

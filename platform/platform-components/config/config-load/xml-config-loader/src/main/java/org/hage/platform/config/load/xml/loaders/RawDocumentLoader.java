@@ -4,7 +4,7 @@ package org.hage.platform.config.load.xml.loaders;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.io.SAXReader;
-import org.hage.platform.component.definition.ConfigurationException;
+import org.hage.platform.component.container.definition.ConfigurationException;
 import org.hage.platform.config.load.ConfigurationNotFoundException;
 import org.hage.util.io.IncorrectUriException;
 import org.hage.util.io.ResourceLoader;

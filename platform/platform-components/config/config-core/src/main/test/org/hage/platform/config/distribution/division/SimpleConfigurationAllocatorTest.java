@@ -3,7 +3,7 @@ package org.hage.platform.config.distribution.division;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.primitives.UnsignedInteger;
 import org.fest.assertions.Assertions;
-import org.hage.platform.component.definition.IComponentDefinition;
+import org.hage.platform.component.container.definition.IComponentDefinition;
 import org.hage.platform.config.CellPopulationDescription;
 import org.hage.platform.config.ComputationConfiguration;
 import org.hage.platform.config.HabitatGeography;

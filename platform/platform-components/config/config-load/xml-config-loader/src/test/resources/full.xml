@@ -2,7 +2,7 @@
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://age.iisg.agh.edu.pl/schema/age"
                xsi:schemaLocation="http://age.iisg.agh.edu.pl/schema/age http://age.iisg.agh.edu.pl/schema/age/age.xsd">
 
-    <component name="outerComponent" class="org.hage.platform.component.definition.ClassWithProperties"
+    <component name="outerComponent" class="org.hage.platform.component.container.definition.ClassWithProperties"
                isSingleton="true">
         <constructor-arg>
             <value>ABC</value>

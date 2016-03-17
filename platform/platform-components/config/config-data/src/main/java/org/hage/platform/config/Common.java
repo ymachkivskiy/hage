@@ -1,7 +1,7 @@
 package org.hage.platform.config;
 
 import lombok.Data;
-import org.hage.platform.component.definition.IComponentDefinition;
+import org.hage.platform.component.container.definition.IComponentDefinition;
 import org.hage.platform.component.rate.model.ComputationRatingConfig;
 import org.hage.platform.component.structure.definition.StructureDefinition;
 

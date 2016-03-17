@@ -35,7 +35,7 @@ package org.hage.platform.config.load.xml;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Sets;
 import org.dom4j.Element;
-import org.hage.platform.component.definition.ConfigurationException;
+import org.hage.platform.component.container.definition.ConfigurationException;
 
 import java.util.List;
 import java.util.Set;

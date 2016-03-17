@@ -34,7 +34,7 @@ package org.hage.platform.component.execution.agent;
 
 import org.hage.platform.communication.address.agent.AgentAddress;
 import org.hage.platform.communication.address.agent.AgentAddressSupplier;
-import org.hage.platform.component.exception.ComponentException;
+import org.hage.platform.component.container.exception.ComponentException;
 import org.hage.platform.component.execution.action.Action;
 import org.hage.platform.component.execution.action.preparers.IActionPreparer;
 import org.hage.property.PropertyField;

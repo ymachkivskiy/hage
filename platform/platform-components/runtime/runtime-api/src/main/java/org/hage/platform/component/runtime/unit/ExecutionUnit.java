@@ -1,7 +1,9 @@
 package org.hage.platform.component.runtime.unit;
 
-public interface ExecutionUnit {
-    ClusterUnitAddress getAddress();
+import java.io.Serializable;
+
+public interface ExecutionUnit extends Serializable {
+    ExecutionUnitAddress getAddress();
 
     void performAgentsStep();
 

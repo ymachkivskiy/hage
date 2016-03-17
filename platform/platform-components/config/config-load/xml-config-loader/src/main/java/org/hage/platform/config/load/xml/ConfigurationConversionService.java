@@ -1,7 +1,7 @@
 package org.hage.platform.config.load.xml;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.component.definition.IComponentDefinition;
+import org.hage.platform.component.container.definition.IComponentDefinition;
 import org.hage.platform.component.rate.model.ComputationRatingConfig;
 import org.hage.platform.component.rate.model.MeasurerRateConfig;
 import org.hage.platform.component.rate.model.MeasurerType;

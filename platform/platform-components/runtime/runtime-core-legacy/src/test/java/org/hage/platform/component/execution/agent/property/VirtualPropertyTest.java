@@ -39,7 +39,7 @@ import org.hage.platform.component.execution.agent.SimpleAgent;
 import org.hage.platform.component.execution.agent.SimpleAggregate;
 import org.hage.platform.component.execution.utils.AgentTestUtils;
 import org.hage.platform.component.execution.workplace.SimpleWorkplace;
-import org.hage.platform.component.provider.IComponentInstanceProvider;
+import org.hage.platform.component.container.provider.IComponentInstanceProvider;
 import org.hage.property.InvalidPropertyPathException;
 import org.hage.property.Property;
 import org.junit.Before;

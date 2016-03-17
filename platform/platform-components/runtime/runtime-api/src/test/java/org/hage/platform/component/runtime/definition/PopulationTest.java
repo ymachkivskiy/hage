@@ -13,9 +13,9 @@ import static java.util.Collections.emptyList;
 import static java.util.Collections.emptySet;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.util.Collections.set;
-import static org.hage.platform.component.runtime.definition.CellPopulation.populationFromMap;
-import static org.hage.platform.component.runtime.definition.CellPopulation.populationFromPair;
-import static org.hage.platform.component.runtime.definition.Population.emptyDistributionMap;
+import static org.hage.platform.component.runtime.definition.Population.emptyPopulation;
+import static org.hage.platform.component.runtime.definition.UnitPopulation.populationFromMap;
+import static org.hage.platform.component.runtime.definition.UnitPopulation.populationFromPair;
 import static org.hage.platform.component.structure.definition.Position.definedBy;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -32,18 +32,18 @@ public class PopulationTest {
         final Position pos3 = definedBy(0, 0, 3);
         final Position pos4 = definedBy(4, 0, 4);
 
-        final Population originalDistributionMap = Population.distributionFromMap(
+        final Population originalDistributionMap = Population.populationFromMap(
                 of(
-                        pos1, mock(CellPopulation.class),
-                        pos2, mock(CellPopulation.class),
-                        pos3, mock(CellPopulation.class),
-                        pos4, mock(CellPopulation.class)
+                        pos1, mock(UnitPopulation.class),
+                        pos2, mock(UnitPopulation.class),
+                        pos3, mock(UnitPopulation.class),
+                        pos4, mock(UnitPopulation.class)
                 )
         );
 
         // when
 
-        Population mergedMap = originalDistributionMap.merge(emptyDistributionMap());
+        Population mergedMap = originalDistributionMap.merge(emptyPopulation());
 
         // then
 
@@ -61,18 +61,18 @@ public class PopulationTest {
         final Position pos3 = definedBy(0, 0, 3);
         final Position pos4 = definedBy(4, 0, 4);
 
-        final Population originalDistributionMap = Population.distributionFromMap(
+        final Population originalDistributionMap = Population.populationFromMap(
                 of(
-                        pos1, mock(CellPopulation.class),
-                        pos2, mock(CellPopulation.class),
-                        pos3, mock(CellPopulation.class),
-                        pos4, mock(CellPopulation.class)
+                        pos1, mock(UnitPopulation.class),
+                        pos2, mock(UnitPopulation.class),
+                        pos3, mock(UnitPopulation.class),
+                        pos4, mock(UnitPopulation.class)
                 )
         );
 
         // when
 
-        Population mergedMap = emptyDistributionMap().merge(originalDistributionMap);
+        Population mergedMap = emptyPopulation().merge(originalDistributionMap);
 
         // then
 
@@ -92,18 +92,18 @@ public class PopulationTest {
         final Position pos2Map2 = definedBy(4, 0, 4);
         final Position pos3Map2 = definedBy(5, 1, 5);
 
-        final Population firstMap = Population.distributionFromMap(
+        final Population firstMap = Population.populationFromMap(
                 of(
-                        pos1Map1, mock(CellPopulation.class),
-                        pos2Map1, mock(CellPopulation.class)
+                        pos1Map1, mock(UnitPopulation.class),
+                        pos2Map1, mock(UnitPopulation.class)
                 )
         );
 
-        final Population secondMap = Population.distributionFromMap(
+        final Population secondMap = Population.populationFromMap(
                 of(
-                        pos1Map2, mock(CellPopulation.class),
-                        pos2Map2, mock(CellPopulation.class),
-                        pos3Map2, mock(CellPopulation.class)
+                        pos1Map2, mock(UnitPopulation.class),
+                        pos2Map2, mock(UnitPopulation.class),
+                        pos3Map2, mock(UnitPopulation.class)
                 )
         );
 
@@ -124,12 +124,12 @@ public class PopulationTest {
 
         // given
 
-        Population tested = Population.distributionFromMap(
+        Population tested = Population.populationFromMap(
                 of(
-                        definedBy(0, 0, 1), mock(CellPopulation.class),
-                        definedBy(0, 1, 0), mock(CellPopulation.class),
-                        definedBy(1, 0, 1), mock(CellPopulation.class),
-                        definedBy(1, 1, 0), mock(CellPopulation.class)
+                        definedBy(0, 0, 1), mock(UnitPopulation.class),
+                        definedBy(0, 1, 0), mock(UnitPopulation.class),
+                        definedBy(1, 0, 1), mock(UnitPopulation.class),
+                        definedBy(1, 1, 0), mock(UnitPopulation.class)
                 )
         );
 
@@ -153,12 +153,12 @@ public class PopulationTest {
         final Position pos3 = definedBy(1, 0, 1);
         final Position pos4 = definedBy(1, 1, 0);
 
-        final Population originalMap = Population.distributionFromMap(
+        final Population originalMap = Population.populationFromMap(
                 of(
-                        pos1, mock(CellPopulation.class),
-                        pos2, mock(CellPopulation.class),
-                        pos3, mock(CellPopulation.class),
-                        pos4, mock(CellPopulation.class)
+                        pos1, mock(UnitPopulation.class),
+                        pos2, mock(UnitPopulation.class),
+                        pos3, mock(UnitPopulation.class),
+                        pos4, mock(UnitPopulation.class)
                 )
         );
 
@@ -186,12 +186,12 @@ public class PopulationTest {
         final Position pos3 = definedBy(1, 0, 1);
         final Position pos4 = definedBy(1, 1, 0);
 
-        final Population originalMap = Population.distributionFromMap(
+        final Population originalMap = Population.populationFromMap(
                 of(
-                        pos1, mock(CellPopulation.class),
-                        pos2, mock(CellPopulation.class),
-                        pos3, mock(CellPopulation.class),
-                        pos4, mock(CellPopulation.class)
+                        pos1, mock(UnitPopulation.class),
+                        pos2, mock(UnitPopulation.class),
+                        pos3, mock(UnitPopulation.class),
+                        pos4, mock(UnitPopulation.class)
                 )
         );
 
@@ -215,12 +215,12 @@ public class PopulationTest {
 
         //given
 
-        final Population originalMap = Population.distributionFromMap(
+        final Population originalMap = Population.populationFromMap(
             of(
-                definedBy(0, 0, 1), mock(CellPopulation.class),
-                definedBy(0, 1, 0), mock(CellPopulation.class),
-                definedBy(1, 0, 1), mock(CellPopulation.class),
-                definedBy(1, 1, 0), mock(CellPopulation.class)
+                definedBy(0, 0, 1), mock(UnitPopulation.class),
+                definedBy(0, 1, 0), mock(UnitPopulation.class),
+                definedBy(1, 0, 1), mock(UnitPopulation.class),
+                definedBy(1, 1, 0), mock(UnitPopulation.class)
             )
         );
 
@@ -231,8 +231,8 @@ public class PopulationTest {
         // then
 
         assertThat(splitted).hasSize(2);
-        assertThat(splitted.get(0)).isEqualTo(emptyDistributionMap());
-        assertThat(splitted.get(1)).isEqualTo(emptyDistributionMap());
+        assertThat(splitted.get(0)).isEqualTo(emptyPopulation());
+        assertThat(splitted.get(1)).isEqualTo(emptyPopulation());
 
     }
 
@@ -241,12 +241,12 @@ public class PopulationTest {
 
         // given
 
-        final Population originalMap = Population.distributionFromMap(
+        final Population originalMap = Population.populationFromMap(
             of(
-                definedBy(0, 0, 1), mock(CellPopulation.class),
-                definedBy(0, 1, 0), mock(CellPopulation.class),
-                definedBy(1, 0, 1), mock(CellPopulation.class),
-                definedBy(1, 1, 0), mock(CellPopulation.class)
+                definedBy(0, 0, 1), mock(UnitPopulation.class),
+                definedBy(0, 1, 0), mock(UnitPopulation.class),
+                definedBy(1, 0, 1), mock(UnitPopulation.class),
+                definedBy(1, 1, 0), mock(UnitPopulation.class)
             )
         );
 
@@ -273,7 +273,7 @@ public class PopulationTest {
         final int count7 = 17;
         final int count8 = 72;
 
-        final Population distributionMap = Population.distributionFromMap(
+        final Population distributionMap = Population.populationFromMap(
             of(
                 definedBy(0, 0, 1), populationFromMap(of(
                     dummyAgentDef(), count1,
@@ -309,24 +309,24 @@ public class PopulationTest {
 
         final Position commonInternalPos = definedBy(2, 0, 0);
 
-        final CellPopulation firstMapCommonCellPopulation = mock(CellPopulation.class);
-        final CellPopulation secondMapCommonCellPopulation = mock(CellPopulation.class);
-        final CellPopulation expectedMergedCellPopulation = mock(CellPopulation.class);
+        final UnitPopulation firstMapCommonUnitPopulation = mock(UnitPopulation.class);
+        final UnitPopulation secondMapCommonUnitPopulation = mock(UnitPopulation.class);
+        final UnitPopulation expectedMergedUnitPopulation = mock(UnitPopulation.class);
 
-        when(firstMapCommonCellPopulation.merge(secondMapCommonCellPopulation)).thenReturn(expectedMergedCellPopulation);
-        when(secondMapCommonCellPopulation.merge(firstMapCommonCellPopulation)).thenReturn(expectedMergedCellPopulation);
+        when(firstMapCommonUnitPopulation.merge(secondMapCommonUnitPopulation)).thenReturn(expectedMergedUnitPopulation);
+        when(secondMapCommonUnitPopulation.merge(firstMapCommonUnitPopulation)).thenReturn(expectedMergedUnitPopulation);
 
-        final Population firstMap = Population.distributionFromMap(
+        final Population firstMap = Population.populationFromMap(
                 of(
-                        definedBy(0, 0, 1), mock(CellPopulation.class),
-                        commonInternalPos, firstMapCommonCellPopulation
+                        definedBy(0, 0, 1), mock(UnitPopulation.class),
+                        commonInternalPos, firstMapCommonUnitPopulation
                 )
         );
 
-        final Population secondMap = Population.distributionFromMap(
+        final Population secondMap = Population.populationFromMap(
                 of(
-                        commonInternalPos, secondMapCommonCellPopulation,
-                        definedBy(4, 0, 4), mock(CellPopulation.class)
+                        commonInternalPos, secondMapCommonUnitPopulation,
+                        definedBy(4, 0, 4), mock(UnitPopulation.class)
                 )
         );
 
@@ -337,7 +337,7 @@ public class PopulationTest {
 
         // then
 
-        assertThat(mergedMap.getPopulationFor(commonInternalPos)).isSameAs(expectedMergedCellPopulation);
+        assertThat(mergedMap.unitPopulationFor(commonInternalPos)).isSameAs(expectedMergedUnitPopulation);
 
     }
 
@@ -346,7 +346,7 @@ public class PopulationTest {
 
         // given
 
-        final Population tested = emptyDistributionMap();
+        final Population tested = emptyPopulation();
 
         // when
 
@@ -367,11 +367,11 @@ public class PopulationTest {
         final Position pos2 = definedBy(2, 0, 0);
         final Position pos3 = definedBy(4, 0, 4);
 
-        final Population testedMap = Population.distributionFromMap(
+        final Population testedMap = Population.populationFromMap(
             of(
-                pos1, mock(CellPopulation.class),
-                pos2, mock(CellPopulation.class),
-                pos3, mock(CellPopulation.class)
+                pos1, mock(UnitPopulation.class),
+                pos2, mock(UnitPopulation.class),
+                pos3, mock(UnitPopulation.class)
             )
         );
 
@@ -393,20 +393,20 @@ public class PopulationTest {
 
         // given
 
-        final Population tested = Population.distributionFromMap(
+        final Population tested = Population.populationFromMap(
                 of(
-                        definedBy(1, 2, 3), mock(CellPopulation.class),
-                        definedBy(1, 1, 3), mock(CellPopulation.class)
+                        definedBy(1, 2, 3), mock(UnitPopulation.class),
+                        definedBy(1, 1, 3), mock(UnitPopulation.class)
                 )
         );
 
         // when
 
-        CellPopulation populationDescription = tested.getPopulationFor(definedBy(0, 0, 0));
+        UnitPopulation populationDescription = tested.unitPopulationFor(definedBy(0, 0, 0));
 
         // then
 
-        assertThat(populationDescription).isSameAs(CellPopulation.emptyPopulation());
+        assertThat(populationDescription).isSameAs(UnitPopulation.emptyUnitPopulation());
 
     }
 
@@ -419,11 +419,11 @@ public class PopulationTest {
         final Position pos2 = definedBy(2, 0, 0);
         final Position pos3 = definedBy(4, 0, 4);
 
-        final CellPopulation pos1Population = mock(CellPopulation.class);
-        final CellPopulation pos2Population = mock(CellPopulation.class);
-        final CellPopulation pos3Population = mock(CellPopulation.class);
+        final UnitPopulation pos1Population = mock(UnitPopulation.class);
+        final UnitPopulation pos2Population = mock(UnitPopulation.class);
+        final UnitPopulation pos3Population = mock(UnitPopulation.class);
 
-        final Population testedMap = Population.distributionFromMap(
+        final Population testedMap = Population.populationFromMap(
                 of(
                         pos1, pos1Population,
                         pos2, pos2Population,
@@ -436,9 +436,9 @@ public class PopulationTest {
 
         // then
 
-        assertThat(testedMap.getPopulationFor(pos1)).isSameAs(pos1Population);
-        assertThat(testedMap.getPopulationFor(pos2)).isSameAs(pos2Population);
-        assertThat(testedMap.getPopulationFor(pos3)).isSameAs(pos3Population);
+        assertThat(testedMap.unitPopulationFor(pos1)).isSameAs(pos1Population);
+        assertThat(testedMap.unitPopulationFor(pos2)).isSameAs(pos2Population);
+        assertThat(testedMap.unitPopulationFor(pos3)).isSameAs(pos3Population);
 
     }
 

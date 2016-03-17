@@ -1,14 +1,15 @@
 package org.hage.platform.component.runtime;
 
-import org.hage.platform.component.runtime.unit.ClusterUnitAddress;
 import org.hage.platform.component.runtime.unit.ExecutionUnit;
+import org.hage.platform.component.runtime.unit.ExecutionUnitAddress;
 
+// TODO: think about interface
 public interface ExecutionUnitRepository {
 
-    boolean isValid(ClusterUnitAddress address);
+    boolean isValid(ExecutionUnitAddress address);
 
-    boolean isLocalUnit(ClusterUnitAddress address);
+    boolean isLocalUnit(ExecutionUnitAddress address);
 
-    ExecutionUnit getLocalExecutionUnit(ClusterUnitAddress address);
+    ExecutionUnit getLocalExecutionUnit(ExecutionUnitAddress address);
 
 }

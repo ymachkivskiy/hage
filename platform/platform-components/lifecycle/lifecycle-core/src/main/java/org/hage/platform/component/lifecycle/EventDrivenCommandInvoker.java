@@ -2,7 +2,7 @@ package org.hage.platform.component.lifecycle;
 
 import com.google.common.eventbus.Subscribe;
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.component.execution.event.CoreConfiguredEvent;
+import org.hage.platform.component.execution.event.CoreReadyEvent;
 import org.hage.platform.component.execution.event.CoreStartingEvent;
 import org.hage.platform.component.execution.event.CoreStoppedEvent;
 import org.hage.platform.component.execution.event.StopConditionFulfilledEvent;
@@ -12,7 +12,9 @@ import org.hage.platform.util.bus.EventSubscriber;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import static org.hage.platform.component.lifecycle.BaseLifecycleCommand.EXIT;
 import static org.hage.platform.component.lifecycle.BaseLifecycleCommand.*;
+import static org.hage.platform.component.lifecycle.LifecycleEvent.*;
 
 @Component
 @Slf4j
@@ -25,12 +27,12 @@ public class EventDrivenCommandInvoker implements EventSubscriber {
     @SuppressWarnings("unused")
     public void onConfigurationUpdated(ConfigurationUpdatedEvent event) {
         log.debug("Configuration updated event: {}.", event);
-        lifecycleEngine.performCommand(stMachine -> stMachine.fire(LifecycleEvent.CONFIGURE));
+        lifecycleEngine.performCommand(stMachine -> stMachine.fire(CONFIGURE));
     }
 
     @Subscribe
     @SuppressWarnings("unused")
-    public void onCoreConfigured(CoreConfiguredEvent event) {
+    public void onCoreReady(CoreReadyEvent event) {
         log.debug("On core configured event: {}", event);
         lifecycleEngine.performCommand(START);
     }
@@ -39,7 +41,7 @@ public class EventDrivenCommandInvoker implements EventSubscriber {
     @SuppressWarnings("unused")
     public void onCoreStarting(CoreStartingEvent event) {
         log.debug("On core starting event: {}", event);
-        lifecycleEngine.performCommand(lifecycleStateMachine -> lifecycleStateMachine.fire(LifecycleEvent.CORE_STARTING));
+        lifecycleEngine.performCommand(lifecycleStateMachine -> lifecycleStateMachine.fire(CORE_STARTING));
     }
 
 
@@ -47,7 +49,7 @@ public class EventDrivenCommandInvoker implements EventSubscriber {
     @SuppressWarnings("unused")
     public void onCoreStopped(CoreStoppedEvent event) {
         log.debug("On core stopped event: {}", event);
-        lifecycleEngine.performCommand(lifecycleStateMachine -> lifecycleStateMachine.fire(LifecycleEvent.CORE_STOPPED));
+        lifecycleEngine.performCommand(lifecycleStateMachine -> lifecycleStateMachine.fire(CORE_STOPPED));
     }
 
 

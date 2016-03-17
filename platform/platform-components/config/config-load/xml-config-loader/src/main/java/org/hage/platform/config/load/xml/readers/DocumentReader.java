@@ -4,9 +4,9 @@ package org.hage.platform.config.load.xml.readers;
 import com.google.common.collect.ImmutableMap;
 import org.dom4j.Document;
 import org.dom4j.Element;
-import org.hage.platform.component.definition.ConfigurationException;
-import org.hage.platform.component.definition.IArgumentDefinition;
-import org.hage.platform.component.definition.IComponentDefinition;
+import org.hage.platform.component.container.definition.ConfigurationException;
+import org.hage.platform.component.container.definition.IArgumentDefinition;
+import org.hage.platform.component.container.definition.IComponentDefinition;
 import org.hage.platform.config.load.xml.ConfigTags;
 import org.hage.platform.config.load.xml.ConfigUtils;
 

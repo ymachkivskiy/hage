@@ -1,8 +1,8 @@
 package org.hage.platform.config.load.generate;
 
 import org.hage.platform.component.runtime.definition.AgentDefinition;
-import org.hage.platform.component.runtime.definition.CellPopulation;
 import org.hage.platform.component.runtime.definition.Population;
+import org.hage.platform.component.runtime.definition.UnitPopulation;
 import org.hage.platform.component.structure.definition.Position;
 import org.hage.platform.config.load.definition.Chunk;
 import org.hage.platform.config.load.definition.ChunkPopulationQualifier;
@@ -28,19 +28,19 @@ public class MergingPopulationDistributionMapCreator implements PopulationDistri
         return populationQualifier.getChunkAgentDistributions()
             .stream()
             .map(agentDistribution -> createDistributionMapFor(populationQualifier.getChunk(), agentDistribution))
-            .reduce(Population.emptyDistributionMap(), Population::merge);
+            .reduce(Population.emptyPopulation(), Population::merge);
     }
 
     private Population createDistributionMapFor(Chunk chunk, ChunkAgentDistribution agentDistribution) {
         Set<Position> selectedPositions = getSelectedInternalPositions(chunk, agentDistribution);
-        return Population.distributionFromMap(createPopulationMapForSelectedPositions(selectedPositions, agentDistribution));
+        return Population.populationFromMap(createPopulationMapForSelectedPositions(selectedPositions, agentDistribution));
     }
 
     private Set<Position> getSelectedInternalPositions(Chunk chunk, ChunkAgentDistribution agentDistribution) {
         return positionsSelector.select(chunk, agentDistribution.getPositionsSelectionData());
     }
 
-    private Map<Position, CellPopulation> createPopulationMapForSelectedPositions(Collection<Position> selectedPositions, ChunkAgentDistribution agentDistribution) {
+    private Map<Position, UnitPopulation> createPopulationMapForSelectedPositions(Collection<Position> selectedPositions, ChunkAgentDistribution agentDistribution) {
         AgentDefinition agentDef = agentDistribution.getAgentDefinition();
         AgentCountData countData = agentDistribution.getCountData();
 
@@ -48,7 +48,7 @@ public class MergingPopulationDistributionMapCreator implements PopulationDistri
             .stream()
             .collect(toMap(
                 (x) -> x,
-                (x) -> CellPopulation.populationFromPair(agentDef, countProvider.getAgentCount(countData))
+                (x) -> UnitPopulation.populationFromPair(agentDef, countProvider.getAgentCount(countData))
             ));
     }
 

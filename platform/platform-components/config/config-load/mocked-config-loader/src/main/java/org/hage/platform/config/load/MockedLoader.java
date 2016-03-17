@@ -1,6 +1,7 @@
 package org.hage.platform.config.load;
 
-import org.hage.platform.component.definition.ComponentDefinition;
+import org.hage.platform.component.container.definition.ComponentDefinition;
+import org.hage.platform.component.container.definition.ValueDefinition;
 import org.hage.platform.component.rate.model.ComputationRatingConfig;
 import org.hage.platform.component.rate.model.MeasurerRateConfig;
 import org.hage.platform.component.rate.model.MeasurerType;
@@ -54,9 +55,12 @@ class MockedLoader implements ConfigurationLoader {
 
     @Override
     public InputConfiguration load() throws ConfigurationNotFoundException {
+        ComponentDefinition globalComponent = new ComponentDefinition("globalComponent", SomeFooComponent.class, true);
+        globalComponent.addConstructorArgument(new ValueDefinition(String.class, "GLOBAL"));
+
         return InputConfiguration
             .builder()
-            .globalComponents(singletonList(new ComponentDefinition("globalComponent", SomeFooComponent.class, true)))
+            .globalComponents(singletonList(globalComponent))
             .habitatConfiguration(HABITAT_EXTERNAL_CONFIGURATION)
             .computationRatingConfig(
                 ComputationRatingConfig.builder()

@@ -79,8 +79,8 @@ public class ListenableTasksChangeSupplier implements TasksChangeSupplier, Event
     public synchronized void onStructureChanged(SimulationStructureChangedEvent event) {
         log.debug("Simulation structure changed: {}", event);
 
-        removed.addAll(event.getRemovedCells());
-        added.addAll(event.getAddedCells());
+        removed.addAll(event.getRemovedUnits());
+        added.addAll(event.getAddedUnits());
     }
 
 }

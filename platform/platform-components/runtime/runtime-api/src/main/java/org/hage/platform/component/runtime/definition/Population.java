@@ -22,22 +22,22 @@ import static java.util.stream.Collectors.toMap;
 public class Population implements Serializable {
     private static final Population EMPTY = new Population(emptyMap());
 
-    private final Map<Position, CellPopulation> distributionMap;
+    private final Map<Position, UnitPopulation> distributionMap;
 
-    private Population(Map<Position, CellPopulation> distributionMap) {
+    private Population(Map<Position, UnitPopulation> distributionMap) {
         this.distributionMap = unmodifiableMap(distributionMap);
     }
 
-    public static Population emptyDistributionMap() {
+    public static Population emptyPopulation() {
         return EMPTY;
     }
 
-    public static Population distributionFromMap(Map<Position, CellPopulation> distributionMap) {
+    public static Population populationFromMap(Map<Position, UnitPopulation> distributionMap) {
         return new Population(new HashMap<>(distributionMap));
     }
 
-    public CellPopulation getPopulationFor(Position position) {
-        return distributionMap.getOrDefault(position, CellPopulation.emptyPopulation());
+    public UnitPopulation unitPopulationFor(Position position) {
+        return distributionMap.getOrDefault(position, UnitPopulation.emptyUnitPopulation());
     }
 
     public Set<Position> getInternalPositions() {
@@ -48,7 +48,7 @@ public class Population implements Serializable {
         return splitPositionsGrouping
             .stream()
             .map(internalPositions ->
-                distributionFromMap(
+                populationFromMap(
                     internalPositions
                         .stream()
                         .collect(toMap(
@@ -63,7 +63,7 @@ public class Population implements Serializable {
     public Long getNumberOfAgents(){
         return distributionMap.values()
             .stream()
-            .mapToLong(CellPopulation::getAgentsCount)
+            .mapToLong(UnitPopulation::getAgentsCount)
             .sum();
     }
 
@@ -76,15 +76,15 @@ public class Population implements Serializable {
             return this;
         }
 
-        HashMap<Position, CellPopulation> mergeMap = new HashMap<>(distributionMap);
+        HashMap<Position, UnitPopulation> mergeMap = new HashMap<>(distributionMap);
 
         for (Position position : otherMap.getInternalPositions()) {
-            CellPopulation cellPopulation = otherMap.getPopulationFor(position);
-            CellPopulation existingCellPopulation = mergeMap.getOrDefault(position, CellPopulation.emptyPopulation());
+            UnitPopulation unitPopulation = otherMap.unitPopulationFor(position);
+            UnitPopulation existingUnitPopulation = mergeMap.getOrDefault(position, UnitPopulation.emptyUnitPopulation());
 
-            mergeMap.put(position, existingCellPopulation.merge(cellPopulation));
+            mergeMap.put(position, existingUnitPopulation.merge(unitPopulation));
         }
 
-        return distributionFromMap(mergeMap);
+        return populationFromMap(mergeMap);
     }
 }

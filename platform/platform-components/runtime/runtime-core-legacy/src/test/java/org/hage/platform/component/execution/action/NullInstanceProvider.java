@@ -32,7 +32,7 @@
 package org.hage.platform.component.execution.action;
 
 
-import org.hage.platform.component.provider.IComponentInstanceProvider;
+import org.hage.platform.component.container.provider.IComponentInstanceProvider;
 
 import java.lang.reflect.Type;
 import java.util.Collection;

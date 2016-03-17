@@ -1,7 +1,7 @@
 package org.hage.platform.util.container.share;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.component.provider.IMutableComponentInstanceProvider;
+import org.hage.platform.component.container.MutableInstanceContainer;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -11,7 +11,7 @@ class SharedComponentsPostProcessor implements BeanPostProcessor {
 
 
     @Autowired
-    protected IMutableComponentInstanceProvider container;
+    protected MutableInstanceContainer container;
 
 
     @Override

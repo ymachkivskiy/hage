@@ -135,8 +135,8 @@ public class DefaultWorkplaceManagerTest {
 //        }
 //
 //        @Override
-//        public boolean visitContainer(final PicoContainer pico) {
-//            containers.add(pico);
+//        public boolean visitContainer(final PicoContainer container) {
+//            containers.add(container);
 //            return CONTINUE_TRAVERSAL;
 //        }
 //

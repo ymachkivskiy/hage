@@ -38,7 +38,7 @@ import org.hage.platform.component.execution.action.ComplexAction;
 import org.hage.platform.component.execution.action.SingleAction;
 import org.hage.platform.component.execution.action.testHelpers.HelperTestAggregateActionService;
 import org.hage.platform.component.execution.action.testHelpers.TracingActionContext;
-import org.hage.platform.component.provider.IComponentInstanceProvider;
+import org.hage.platform.component.container.provider.IComponentInstanceProvider;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

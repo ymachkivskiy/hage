@@ -2,12 +2,12 @@ package org.hage.platform.config.load.def;
 
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.component.IStatefulComponent;
-import org.hage.platform.component.exception.ComponentException;
+import org.hage.platform.component.container.Stateful;
+import org.hage.platform.component.container.exception.ComponentException;
 
 @Slf4j
 @ToString
-public class SomeFooComponent implements IStatefulComponent {
+public class SomeFooComponent implements Stateful {
 
     private final String componentScope;
 

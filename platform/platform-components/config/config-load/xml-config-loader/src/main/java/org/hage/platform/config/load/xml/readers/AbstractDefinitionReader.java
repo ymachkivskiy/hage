@@ -1,8 +1,8 @@
 package org.hage.platform.config.load.xml.readers;
 
 
-import org.hage.platform.component.definition.IArgumentDefinition;
-import org.hage.platform.component.definition.IComponentDefinition;
+import org.hage.platform.component.container.definition.IArgumentDefinition;
+import org.hage.platform.component.container.definition.IComponentDefinition;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

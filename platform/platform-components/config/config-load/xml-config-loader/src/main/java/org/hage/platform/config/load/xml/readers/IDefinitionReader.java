@@ -2,7 +2,7 @@ package org.hage.platform.config.load.xml.readers;
 
 
 import org.dom4j.Element;
-import org.hage.platform.component.definition.ConfigurationException;
+import org.hage.platform.component.container.definition.ConfigurationException;
 
 
 /**

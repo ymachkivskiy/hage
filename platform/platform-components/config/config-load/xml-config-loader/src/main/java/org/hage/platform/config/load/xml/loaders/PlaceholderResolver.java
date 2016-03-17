@@ -5,7 +5,7 @@ import com.google.common.io.Closeables;
 import org.dom4j.Document;
 import org.dom4j.Node;
 import org.dom4j.XPath;
-import org.hage.platform.component.definition.ConfigurationException;
+import org.hage.platform.component.container.definition.ConfigurationException;
 import org.hage.platform.config.load.ConfigurationNotFoundException;
 import org.hage.platform.config.load.xml.ConfigNamespaces;
 import org.hage.util.io.IncorrectUriException;

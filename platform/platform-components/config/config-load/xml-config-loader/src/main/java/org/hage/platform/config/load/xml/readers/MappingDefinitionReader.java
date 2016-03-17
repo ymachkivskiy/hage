@@ -3,7 +3,7 @@ package org.hage.platform.config.load.xml.readers;
 
 import com.google.common.collect.ImmutableMap;
 import org.dom4j.Element;
-import org.hage.platform.component.definition.ConfigurationException;
+import org.hage.platform.component.container.definition.ConfigurationException;
 
 import java.util.Map;
 

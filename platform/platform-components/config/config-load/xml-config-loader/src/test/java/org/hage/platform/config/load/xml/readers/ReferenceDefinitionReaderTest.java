@@ -33,8 +33,8 @@ package org.hage.platform.config.load.xml.readers;
 
 
 import org.dom4j.Element;
-import org.hage.platform.component.definition.ConfigurationException;
-import org.hage.platform.component.definition.ReferenceDefinition;
+import org.hage.platform.component.container.definition.ConfigurationException;
+import org.hage.platform.component.container.definition.ReferenceDefinition;
 import org.hage.platform.config.load.xml.ConfigAttributes;
 import org.hage.platform.config.load.xml.ConfigTags;
 import org.hage.platform.config.load.xml.util.ElementBuilder;

@@ -33,7 +33,7 @@ package org.hage.platform.config.load.xml.loaders;
 
 
 import org.dom4j.*;
-import org.hage.platform.component.definition.ConfigurationException;
+import org.hage.platform.component.container.definition.ConfigurationException;
 import org.hage.platform.config.load.ConfigurationNotFoundException;
 import org.hage.platform.config.load.xml.ConfigNamespaces;
 import org.hage.platform.config.load.xml.ConfigTags;

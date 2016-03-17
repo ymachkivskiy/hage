@@ -36,7 +36,7 @@ import com.google.common.base.Supplier;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.XPath;
-import org.hage.platform.component.definition.ConfigurationException;
+import org.hage.platform.component.container.definition.ConfigurationException;
 import org.hage.platform.config.load.ConfigurationNotFoundException;
 import org.hage.platform.config.load.xml.ConfigAttributes;
 import org.hage.platform.config.load.xml.ConfigNamespaces;

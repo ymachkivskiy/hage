@@ -32,7 +32,7 @@
 package org.hage.platform.component.execution.strategy;
 
 
-import org.hage.platform.component.provider.IComponentInstanceProviderAware;
+import org.hage.platform.component.container.provider.IComponentInstanceProviderAware;
 
 
 /**

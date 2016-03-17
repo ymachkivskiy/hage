@@ -2,9 +2,9 @@
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://age.iisg.agh.edu.pl/schema/age"
                xsi:schemaLocation="http://age.iisg.agh.edu.pl/schema/age http://age.iisg.agh.edu.pl/schema/age/age.xsd">
 
-    <component name="innerComponent" class="org.hage.platform.component.definition.ClassWithProperties"
+    <component name="innerComponent" class="org.hage.platform.component.container.definition.ClassWithProperties"
                isSingleton="true"/>
-    <agent name="innerAgent" class="org.hage.platform.component.definition.ClassWithProperties"/>
-    <strategy name="innerStrategy" class="org.hage.platform.component.definition.ClassWithProperties"/>
+    <agent name="innerAgent" class="org.hage.platform.component.container.definition.ClassWithProperties"/>
+    <strategy name="innerStrategy" class="org.hage.platform.component.container.definition.ClassWithProperties"/>
 
 </configuration>

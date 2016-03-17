@@ -34,8 +34,8 @@ package org.hage.platform.config.load.xml.readers;
 
 import org.dom4j.Document;
 import org.dom4j.Element;
-import org.hage.platform.component.definition.ConfigurationException;
-import org.hage.platform.component.definition.IComponentDefinition;
+import org.hage.platform.component.container.definition.ConfigurationException;
+import org.hage.platform.component.container.definition.IComponentDefinition;
 import org.junit.Test;
 
 import java.util.List;
