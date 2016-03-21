@@ -1,7 +1,7 @@
 package org.hage.platform.component.rate.remote;
 
+import org.hage.platform.component.cluster.NodeAddress;
 import org.hage.platform.component.rate.measure.PerformanceRate;
-import org.hage.platform.util.connection.NodeAddress;
 import org.hage.platform.util.connection.remote.endpoint.MessageAggregator;
 import org.hage.platform.util.connection.remote.endpoint.MessageEnvelope;
 

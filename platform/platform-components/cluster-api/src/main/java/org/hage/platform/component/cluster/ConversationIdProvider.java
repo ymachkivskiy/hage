@@ -1,4 +1,4 @@
-package org.hage.platform.util.connection;
+package org.hage.platform.component.cluster;
 
 public interface ConversationIdProvider {
     Long nextConversationId();

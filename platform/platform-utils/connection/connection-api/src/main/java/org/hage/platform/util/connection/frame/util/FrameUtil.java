@@ -1,6 +1,6 @@
 package org.hage.platform.util.connection.frame.util;
 
-import org.hage.platform.util.connection.NodeAddress;
+import org.hage.platform.component.cluster.NodeAddress;
 import org.hage.platform.util.connection.frame.Frame;
 
 import java.util.Collection;

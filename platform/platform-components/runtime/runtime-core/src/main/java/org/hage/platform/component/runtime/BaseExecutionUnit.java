@@ -3,13 +3,13 @@ package org.hage.platform.component.runtime;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.hage.platform.component.cluster.NodeAddress;
 import org.hage.platform.component.container.InstanceContainer;
 import org.hage.platform.component.runtime.agent.AgentAdapter;
 import org.hage.platform.component.runtime.agent.ControlAgentAdapter;
 import org.hage.platform.component.runtime.unit.ExecutionUnit;
 import org.hage.platform.component.runtime.unit.ExecutionUnitAddress;
 import org.hage.platform.component.structure.definition.Position;
-import org.hage.platform.util.connection.NodeAddress;
 
 import java.util.Collection;
 import java.util.HashSet;

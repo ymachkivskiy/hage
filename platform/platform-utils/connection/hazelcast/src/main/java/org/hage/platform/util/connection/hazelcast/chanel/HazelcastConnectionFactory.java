@@ -3,7 +3,7 @@ package org.hage.platform.util.connection.hazelcast.chanel;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import lombok.Data;
-import org.hage.platform.util.connection.LocalNodeAddressSupplier;
+import org.hage.platform.component.cluster.LocalNodeAddressSupplier;
 import org.hage.platform.util.connection.chanel.ConnectionDescriptor;
 import org.hage.platform.util.connection.chanel.ConnectionFactory;
 import org.hage.platform.util.connection.chanel.FrameReceiverAdapter;

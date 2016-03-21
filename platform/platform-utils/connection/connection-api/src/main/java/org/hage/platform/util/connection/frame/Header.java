@@ -3,7 +3,7 @@ package org.hage.platform.util.connection.frame;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
-import org.hage.platform.util.connection.NodeAddress;
+import org.hage.platform.component.cluster.NodeAddress;
 import org.hage.platform.util.connection.frame.diagnostics.Diagnostics;
 
 import java.io.Serializable;

@@ -1,8 +1,8 @@
 package org.hage.platform.component.rate.remote;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hage.platform.component.cluster.NodeAddress;
 import org.hage.platform.component.rate.PerformanceManager;
-import org.hage.platform.util.connection.NodeAddress;
 import org.hage.platform.util.connection.chanel.ConnectionDescriptor;
 import org.hage.platform.util.connection.remote.endpoint.BaseRemoteEndpoint;
 import org.hage.platform.util.connection.remote.endpoint.MessageEnvelope;

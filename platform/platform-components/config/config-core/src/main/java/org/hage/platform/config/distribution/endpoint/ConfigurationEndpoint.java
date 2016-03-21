@@ -2,11 +2,11 @@ package org.hage.platform.config.distribution.endpoint;
 
 
 import lombok.extern.slf4j.Slf4j;
+import org.hage.platform.component.cluster.NodeAddress;
 import org.hage.platform.component.config.ConfigurationStorage;
 import org.hage.platform.config.Configuration;
 import org.hage.platform.config.distribution.division.Allocation;
 import org.hage.platform.config.distribution.endpoint.message.ConfigurationMessage;
-import org.hage.platform.util.connection.NodeAddress;
 import org.hage.platform.util.connection.chanel.ConnectionDescriptor;
 import org.hage.platform.util.connection.remote.endpoint.BaseRemoteEndpoint;
 import org.hage.platform.util.connection.remote.endpoint.MessageEnvelope;

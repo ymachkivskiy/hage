@@ -2,7 +2,7 @@ package org.hage.platform.util.connection.remote.endpoint;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.util.connection.NodeAddress;
+import org.hage.platform.component.cluster.NodeAddress;
 
 import java.io.Serializable;
 import java.util.ArrayList;

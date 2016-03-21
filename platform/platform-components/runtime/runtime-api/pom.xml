@@ -21,8 +21,8 @@
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.util</groupId>
-            <artifactId>connection-api</artifactId>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>cluster-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 

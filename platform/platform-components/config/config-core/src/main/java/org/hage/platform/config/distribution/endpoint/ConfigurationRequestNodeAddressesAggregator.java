@@ -1,8 +1,8 @@
 package org.hage.platform.config.distribution.endpoint;
 
 
+import org.hage.platform.component.cluster.NodeAddress;
 import org.hage.platform.config.distribution.endpoint.message.ConfigurationMessage;
-import org.hage.platform.util.connection.NodeAddress;
 import org.hage.platform.util.connection.remote.endpoint.MessageAggregator;
 import org.hage.platform.util.connection.remote.endpoint.MessageEnvelope;
 

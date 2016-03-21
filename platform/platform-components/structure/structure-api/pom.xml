@@ -12,4 +12,14 @@
     <artifactId>structure-api</artifactId>
 
 
+    <dependencies>
+
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>cluster-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+    </dependencies>
+
 </project>

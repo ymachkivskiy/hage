@@ -4,9 +4,9 @@ import com.google.common.base.Supplier;
 import com.hazelcast.core.Cluster;
 import com.hazelcast.core.MembershipEvent;
 import com.hazelcast.core.MembershipListener;
-import org.hage.platform.util.connection.ClusterAddressManager;
-import org.hage.platform.util.connection.ClusterMemberChangeCallback;
-import org.hage.platform.util.connection.NodeAddress;
+import org.hage.platform.component.cluster.ClusterAddressManager;
+import org.hage.platform.component.cluster.ClusterMemberChangeCallback;
+import org.hage.platform.component.cluster.NodeAddress;
 import org.hage.platform.util.container.share.SharedBetweenContainers;
 import org.springframework.beans.factory.annotation.Autowired;
 

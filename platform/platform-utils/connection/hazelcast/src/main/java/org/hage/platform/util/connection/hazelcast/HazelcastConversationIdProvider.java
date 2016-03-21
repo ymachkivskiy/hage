@@ -1,12 +1,12 @@
 package org.hage.platform.util.connection.hazelcast;
 
 import com.hazelcast.core.IAtomicLong;
-import org.hage.platform.util.connection.ConversationIdProvider;
+import org.hage.platform.component.cluster.ConversationIdProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 
-public class HazelcastConversationIdProvider implements ConversationIdProvider{
+public class HazelcastConversationIdProvider implements ConversationIdProvider {
 
     private static final String HAZELCAST_CONVERSATION_ID_COUNTER = "hazelcastConversationIdCounter";
 
