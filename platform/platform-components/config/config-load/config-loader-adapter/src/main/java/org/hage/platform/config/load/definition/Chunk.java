@@ -24,21 +24,21 @@ public final class Chunk {
         Position yExtreme = startPos.shift(0, dimensions.getYDim() - 1, 0);
         Position zExtreme = startPos.shift(0, 0, dimensions.getZDim() - 1);
 
-        return cellPosition.getZ() >= xExtreme.getZ()
-            && cellPosition.getZ() <= zExtreme.getZ()
-            && cellPosition.getX() >= yExtreme.getX()
-            && cellPosition.getX() <= xExtreme.getX()
-            && cellPosition.getY() >= zExtreme.getY()
-            && cellPosition.getY() <= yExtreme.getY();
+        return cellPosition.getVertical() >= xExtreme.getVertical()
+            && cellPosition.getVertical() <= zExtreme.getVertical()
+            && cellPosition.getHorizontal() >= yExtreme.getHorizontal()
+            && cellPosition.getHorizontal() <= xExtreme.getHorizontal()
+            && cellPosition.getDepth() >= zExtreme.getDepth()
+            && cellPosition.getDepth() <= yExtreme.getDepth();
     }
 
 
     public Set<Position> getInternalPositions() {
         Set<Position> positions = new HashSet<>();
 
-        for (int xPos = startPos.getX(), i = 0; i < dimensions.getXDim(); xPos++, i++) {
-            for (int yPos = startPos.getY(), j = 0; j < dimensions.getYDim(); yPos++, j++) {
-                for (int zPos = startPos.getZ(), k = 0; k < dimensions.getZDim(); zPos++, k++) {
+        for (int xPos = startPos.getHorizontal(), i = 0; i < dimensions.getXDim(); xPos++, i++) {
+            for (int yPos = startPos.getDepth(), j = 0; j < dimensions.getYDim(); yPos++, j++) {
+                for (int zPos = startPos.getVertical(), k = 0; k < dimensions.getZDim(); zPos++, k++) {
                     positions.add(Position.definedBy(xPos, yPos, zPos));
                 }
             }
@@ -62,9 +62,9 @@ public final class Chunk {
         Set<Long> indexesToInclude = generateIndexes(count);
 
         long idxCounter = 0;
-        for (int xPos = startPos.getX(), i = 0; i < dimensions.getXDim(); xPos++, i++) {
-            for (int yPos = startPos.getY(), j = 0; j < dimensions.getYDim(); yPos++, j++) {
-                for (int zPos = startPos.getZ(), k = 0; k < dimensions.getZDim(); zPos++, k++, ++idxCounter) {
+        for (int xPos = startPos.getHorizontal(), i = 0; i < dimensions.getXDim(); xPos++, i++) {
+            for (int yPos = startPos.getDepth(), j = 0; j < dimensions.getYDim(); yPos++, j++) {
+                for (int zPos = startPos.getVertical(), k = 0; k < dimensions.getZDim(); zPos++, k++, ++idxCounter) {
                     if (indexesToInclude.contains(idxCounter)) {
                         randomPositions.add(Position.definedBy(xPos, yPos, zPos));
                     }

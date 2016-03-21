@@ -10,11 +10,11 @@ import java.io.Serializable;
 public final class Position implements Serializable {
     public static final Position ZERO = definedBy(0, 0, 0);
 
-    private final int x;
-    private final int y;
-    private final int z;
+    private final int horizontal;
+    private final int depth;
+    private final int vertical;
 
     public Position shift(int xShift, int yShift, int zShift) {
-        return definedBy(x + xShift, y + yShift, z + zShift);
+        return definedBy(horizontal + xShift, depth + yShift, vertical + zShift);
     }
 }

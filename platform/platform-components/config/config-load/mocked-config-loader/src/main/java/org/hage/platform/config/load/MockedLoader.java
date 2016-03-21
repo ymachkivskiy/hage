@@ -6,9 +6,7 @@ import org.hage.platform.component.rate.model.ComputationRatingConfig;
 import org.hage.platform.component.rate.model.MeasurerRateConfig;
 import org.hage.platform.component.rate.model.MeasurerType;
 import org.hage.platform.component.runtime.definition.AgentDefinition;
-import org.hage.platform.component.structure.definition.BoundaryConditions;
 import org.hage.platform.component.structure.definition.Dimensions;
-import org.hage.platform.component.structure.definition.Position;
 import org.hage.platform.component.structure.definition.StructureDefinition;
 import org.hage.platform.config.load.def.HeavyAgent;
 import org.hage.platform.config.load.def.LightAgent;
@@ -23,6 +21,8 @@ import java.util.EnumSet;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
+import static org.hage.platform.component.structure.definition.BoundaryConditions.CLOSED;
+import static org.hage.platform.component.structure.definition.Position.ZERO;
 import static org.hage.platform.config.load.definition.agent.AgentCountData.atMost;
 import static org.hage.platform.config.load.definition.agent.AgentCountData.fixed;
 import static org.hage.platform.config.load.definition.agent.PositionsSelectionData.allPositions;
@@ -31,10 +31,10 @@ import static org.hage.platform.config.load.definition.agent.PositionsSelectionD
 class MockedLoader implements ConfigurationLoader {
 
     private static final SimulationOrganizationDefinition HABITAT_EXTERNAL_CONFIGURATION = new SimulationOrganizationDefinition(
-        new StructureDefinition(Dimensions.of(2, 2, 1), BoundaryConditions.CLOSED),
+        new StructureDefinition(CLOSED, Dimensions.of(2, 2, 4)),
         singletonList(
             new ChunkPopulationQualifier(
-                new Chunk(Position.ZERO, Dimensions.of(2, 2, 1)),
+                new Chunk(ZERO, Dimensions.of(2, 2, 3)),
                 asList(
                     new ChunkAgentDistribution(
                         new AgentDefinition(LightAgent.class),

@@ -24,4 +24,14 @@
         <module>cluster-api</module>
     </modules>
 
+    <dependencies>
+
+        <dependency>
+            <groupId>org.hage.platform</groupId>
+            <artifactId>platform-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+    </dependencies>
+
 </project>
