@@ -8,11 +8,6 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 
-/**
- * Interface for implementations of {@link MutableInstanceContainer} based on Picocontainer library.
- *
- * @author AGH AgE Team
- */
 public interface PicoMutableInstanceContainer extends MutableInstanceContainer, MutablePicoContainer {
 
     /**

@@ -2,8 +2,8 @@ package org.hage.platform.component.runtime;
 
 
 import org.hage.platform.component.runtime.definition.Population;
-import org.hage.platform.component.runtime.event.SimulationStructureChangedEvent;
-import org.hage.platform.component.structure.definition.Position;
+import org.hage.platform.component.runtime.event.ActiveUnitsChangedEvent;
+import org.hage.platform.component.structure.connections.Position;
 import org.hage.platform.util.bus.EventBus;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -35,7 +35,7 @@ public class LocalExecutionUnitRepository implements ExecutionUnitRepositoryConf
         }
 
 
-        eventBus.post(new SimulationStructureChangedEvent(newUnits, emptyList()));
+        eventBus.post(new ActiveUnitsChangedEvent(newUnits, emptyList()));
 
 
     }

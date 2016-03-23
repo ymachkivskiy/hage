@@ -1,8 +1,7 @@
 package org.hage.platform.component.structure;
 
-import org.hage.platform.component.structure.grid.ConnectionRepositoryHolder;
-import org.hage.platform.component.structure.grid.GridConnectionsConfigurator;
-import org.hage.platform.component.structure.grid.RepositoryCreator;
+import org.hage.platform.component.structure.connections.ConfigurableStructure;
+import org.hage.platform.component.structure.connections.grid.GridStructureCreationStrategy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -12,13 +11,17 @@ import org.springframework.context.annotation.Configuration;
 public class PlatformStructureModuleConfiguration {
 
     @Bean
-    public ConnectionRepositoryHolder gridConnectionsRepository() {
-        return new ConnectionRepositoryHolder();
+    public ConfigurableStructure gridConnectionsRepository() {
+        return new ConfigurableStructure();
     }
 
+    //region repository creation strategies
+
     @Bean
-    public GridConnectionsConfigurator gridConnectionsConfigurator() {
-        return new RepositoryCreator();
+    public GridStructureCreationStrategy boxGridRepositoryCreationStrategy() {
+        return new GridStructureCreationStrategy();
     }
+    
+    //endregion
 
 }

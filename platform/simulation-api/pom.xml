@@ -15,7 +15,13 @@
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
-            <artifactId>container-api</artifactId>
+            <artifactId>structure-simulation-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>runtime-simulation-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 

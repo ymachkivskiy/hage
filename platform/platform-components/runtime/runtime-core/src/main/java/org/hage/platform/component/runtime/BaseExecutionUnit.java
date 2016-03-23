@@ -9,7 +9,7 @@ import org.hage.platform.component.runtime.agent.AgentAdapter;
 import org.hage.platform.component.runtime.agent.ControlAgentAdapter;
 import org.hage.platform.component.runtime.unit.ExecutionUnit;
 import org.hage.platform.component.runtime.unit.ExecutionUnitAddress;
-import org.hage.platform.component.structure.definition.Position;
+import org.hage.platform.component.structure.connections.Position;
 
 import java.util.Collection;
 import java.util.HashSet;

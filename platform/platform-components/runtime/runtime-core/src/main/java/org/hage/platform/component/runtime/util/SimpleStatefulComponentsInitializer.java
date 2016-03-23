@@ -1,6 +1,6 @@
 package org.hage.platform.component.runtime.util;
 
-import org.hage.platform.component.container.Stateful;
+import org.hage.platform.simulation.container.Stateful;
 
 import java.util.Collection;
 

@@ -20,10 +20,29 @@
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
+            <artifactId>container-internal-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
             <artifactId>config-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>structure-internal-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>runtime-internal-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!--todo switch to api-->
         <dependency>
             <groupId>org.hage.platform.component</groupId>
             <artifactId>rate-core</artifactId>

@@ -15,9 +15,9 @@ public final class PositionsSelectionData {
     @Getter
     private final SelectionMode mode;
     @Getter
-    private final Optional<Long> value;
+    private final Optional<Integer> value;
 
-    private PositionsSelectionData(SelectionMode mode, Long value) {
+    private PositionsSelectionData(SelectionMode mode, Integer value) {
         checkArgument(value == null || value >= 0, "Negative values not allowed");
 
         this.mode = mode;
@@ -32,7 +32,7 @@ public final class PositionsSelectionData {
         return RANDOM;
     }
 
-    public static PositionsSelectionData randomPositions(long numberOfPositions) {
+    public static PositionsSelectionData randomPositions(int numberOfPositions) {
         return new PositionsSelectionData(SelectionMode.RANDOM_CHOOSE__FIXED_NUMBER, numberOfPositions);
     }
 }

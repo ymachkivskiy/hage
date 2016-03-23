@@ -6,7 +6,7 @@ import org.hage.platform.component.runtime.agent.AgentAdapter;
 import org.hage.platform.component.runtime.definition.AgentDefinition;
 import org.hage.platform.component.runtime.definition.UnitPopulation;
 import org.hage.platform.component.runtime.util.StatefulComponentsInitializer;
-import org.hage.platform.simulation.base.Agent;
+import org.hage.platform.simulation.runtime.Agent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

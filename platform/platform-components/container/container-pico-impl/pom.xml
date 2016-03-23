@@ -23,7 +23,7 @@
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
-            <artifactId>container-api</artifactId>
+            <artifactId>container-internal-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 

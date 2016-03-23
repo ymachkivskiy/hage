@@ -13,7 +13,7 @@
     <modules>
         <module>rate-data-model</module>
         <module>rate-core</module>
-        <module>rate-api</module>
+        <module>rate-internal-api</module>
     </modules>
 
     <artifactId>rate-parent</artifactId>

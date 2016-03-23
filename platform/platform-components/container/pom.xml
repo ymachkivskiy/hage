@@ -11,8 +11,10 @@
     <artifactId>container-parent</artifactId>
 
     <modules>
-        <module>container-api</module>
+        <module>container-internal-api</module>
         <module>container-pico-impl</module>
+        <module>container-simulation-api</module>
+        <module>container-config-data</module>
     </modules>
 
 </project>

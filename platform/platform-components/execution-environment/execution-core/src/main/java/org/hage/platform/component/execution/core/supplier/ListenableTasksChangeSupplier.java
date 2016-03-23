@@ -3,7 +3,7 @@ package org.hage.platform.component.execution.core.supplier;
 import com.google.common.eventbus.Subscribe;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.component.execution.core.executor.PhasedRunnable;
-import org.hage.platform.component.runtime.event.SimulationStructureChangedEvent;
+import org.hage.platform.component.runtime.event.ActiveUnitsChangedEvent;
 import org.hage.platform.component.runtime.unit.ExecutionUnit;
 import org.hage.platform.util.bus.EventSubscriber;
 import org.springframework.stereotype.Component;
@@ -76,7 +76,7 @@ public class ListenableTasksChangeSupplier implements TasksChangeSupplier, Event
 
     @Subscribe
     @SuppressWarnings("unused")
-    public synchronized void onStructureChanged(SimulationStructureChangedEvent event) {
+    public synchronized void onStructureChanged(ActiveUnitsChangedEvent event) {
         log.debug("Simulation structure changed: {}", event);
 
         removed.addAll(event.getRemovedUnits());

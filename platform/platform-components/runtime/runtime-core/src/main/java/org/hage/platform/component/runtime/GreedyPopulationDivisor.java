@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.ToString;
 import org.hage.platform.component.runtime.definition.Population;
 import org.hage.platform.component.runtime.definition.UnitPopulation;
-import org.hage.platform.component.structure.definition.Position;
+import org.hage.platform.component.structure.connections.Position;
 import org.hage.util.proportion.*;
 
 import java.math.BigDecimal;

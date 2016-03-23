@@ -15,9 +15,16 @@
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
-            <artifactId>runtime-api</artifactId>
+            <artifactId>container-internal-api</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>runtime-internal-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
 
     </dependencies>
 

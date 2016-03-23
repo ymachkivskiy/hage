@@ -1,10 +1,10 @@
 package org.hage.platform.component.runtime.agent;
 
 import lombok.RequiredArgsConstructor;
-import org.hage.platform.simulation.base.Agent;
-import org.hage.platform.simulation.base.Context;
-import org.hage.platform.simulation.identification.AgentAddress;
-import org.hage.platform.simulation.identification.UnitAddress;
+import org.hage.platform.simulation.runtime.Agent;
+import org.hage.platform.simulation.runtime.AgentAddress;
+import org.hage.platform.simulation.runtime.Context;
+import org.hage.platform.simulation.runtime.UnitAddress;
 
 import java.io.Serializable;
 import java.util.Set;

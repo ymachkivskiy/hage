@@ -1,7 +1,7 @@
 package org.hage.platform.component.runtime;
 
 import org.hage.platform.component.runtime.agent.AgentAdapter;
-import org.hage.platform.simulation.base.Agent;
+import org.hage.platform.simulation.runtime.Agent;
 import org.springframework.stereotype.Component;
 
 @Component

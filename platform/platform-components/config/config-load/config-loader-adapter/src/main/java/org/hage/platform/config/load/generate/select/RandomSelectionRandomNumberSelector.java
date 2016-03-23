@@ -1,7 +1,7 @@
 package org.hage.platform.config.load.generate.select;
 
-import org.hage.platform.component.structure.definition.Position;
-import org.hage.platform.config.load.definition.Chunk;
+import org.hage.platform.component.structure.connections.Position;
+import org.hage.platform.component.structure.connections.grid.Chunk;
 import org.hage.platform.config.load.definition.agent.PositionsSelectionData;
 
 import java.util.Random;
@@ -15,7 +15,7 @@ public class RandomSelectionRandomNumberSelector implements PositionsSelector {
 
     @Override
     public Set<Position> select(Chunk chunk, PositionsSelectionData selectionData) {
-        long chosenNumberOfPositions = Math.floorMod(abs(rand.nextLong()), chunk.getSize());
+        int chosenNumberOfPositions = Math.floorMod(abs(rand.nextInt()), chunk.getSize());
         return chunk.getRandomPositions(chosenNumberOfPositions);
     }
 }

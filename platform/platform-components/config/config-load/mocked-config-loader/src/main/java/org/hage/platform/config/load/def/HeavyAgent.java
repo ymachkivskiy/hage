@@ -2,8 +2,8 @@ package org.hage.platform.config.load.def;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.component.container.exception.ComponentException;
-import org.hage.platform.simulation.base.Agent;
-import org.hage.platform.simulation.base.Context;
+import org.hage.platform.simulation.runtime.Agent;
+import org.hage.platform.simulation.runtime.Context;
 
 import javax.inject.Inject;
 

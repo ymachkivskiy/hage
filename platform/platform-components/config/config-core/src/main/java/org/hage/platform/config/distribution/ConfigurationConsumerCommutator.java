@@ -7,7 +7,7 @@ import org.hage.platform.component.container.definition.IComponentDefinition;
 import org.hage.platform.component.execution.event.CoreReadyEvent;
 import org.hage.platform.component.rate.RateConfigurationConsumer;
 import org.hage.platform.component.runtime.ExecutionUnitRepositoryConfigurator;
-import org.hage.platform.component.structure.grid.GridConnectionsConfigurator;
+import org.hage.platform.component.structure.connections.StructureConfigurator;
 import org.hage.platform.config.Configuration;
 import org.hage.platform.util.bus.EventBus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ import java.util.Collection;
 class ConfigurationConsumerCommutator implements ConfigurationConsumer {
 
     @Autowired
-    private GridConnectionsConfigurator gridConnectionsConfigurator;
+    private StructureConfigurator structureConfigurator;
     @Autowired
     private ExecutionUnitRepositoryConfigurator executionUnitRepositoryConfigurator;
     @Autowired
@@ -37,7 +37,7 @@ class ConfigurationConsumerCommutator implements ConfigurationConsumer {
         registerGlobalComponents(configuration);
 
         rateConfigurationConsumer.acceptRateConfiguration(configuration.getCommon().getRatingConfig());
-        gridConnectionsConfigurator.configure(configuration.getCommon().getStructureDefinition());
+        structureConfigurator.configure(configuration.getCommon().getStructureDefinition());
         executionUnitRepositoryConfigurator.populateWith(configuration.getSpecific().getPopulation());
 
         eventBus.post(new CoreReadyEvent());
