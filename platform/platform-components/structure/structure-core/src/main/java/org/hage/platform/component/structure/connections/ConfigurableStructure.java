@@ -28,10 +28,10 @@ public class ConfigurableStructure implements Structure, StructureConfigurator {
     }
 
     @Override
-    public Neighbors getNeighborsOf(Position position) {
+    public Neighborhood getNeighborhoodOf(Position position) {
         checkState(structure != null, "Structure not initialized");
 
-        return structure.getNeighborsOf(position);
+        return structure.getNeighborhoodOf(position);
     }
 
 

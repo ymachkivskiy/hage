@@ -8,5 +8,5 @@ import java.io.Serializable;
 public class GridDefinition implements Serializable {
     private final BoundaryConditions boundaryConditions;
     private final Dimensions dimensions;
-    private final GridNeighborhoodType gridNeighborhoodType;
+    private final GridNeighborhoodType neighborhoodType;
 }

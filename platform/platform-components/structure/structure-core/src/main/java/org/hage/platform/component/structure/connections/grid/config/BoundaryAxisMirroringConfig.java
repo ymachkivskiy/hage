@@ -1,35 +1,40 @@
-package org.hage.platform.component.structure.connections.grid;
+package org.hage.platform.component.structure.connections.grid.config;
 
 import lombok.RequiredArgsConstructor;
 import org.hage.platform.component.structure.Axis;
 import org.hage.platform.component.structure.StructureException;
+import org.hage.platform.component.structure.connections.grid.BoundaryConditions;
 
+import java.util.EnumMap;
+import java.util.EnumSet;
 import java.util.Map;
-import java.util.Set;
 
 import static com.google.common.collect.ImmutableMap.of;
-import static java.util.Collections.*;
-import static java.util.EnumSet.allOf;
+import static java.util.EnumSet.*;
 import static java.util.Optional.ofNullable;
 import static lombok.AccessLevel.PRIVATE;
 import static org.hage.platform.component.structure.connections.grid.BoundaryConditions.CLOSED;
 import static org.hage.platform.component.structure.connections.grid.BoundaryConditions.FULL_TORUS;
 
 @RequiredArgsConstructor(access = PRIVATE)
-public class BoundaryConditionsWrappingConfig {
+public class BoundaryAxisMirroringConfig {
 
-    private static final Map<BoundaryConditions, Set<Axis>> allowedShiftAxisesMap;
+    private static final Map<BoundaryConditions, EnumSet<Axis>> allowedShiftAxisesMap;
 
     static {
-        allowedShiftAxisesMap = unmodifiableMap(of(
-            CLOSED, emptySet(),
-            FULL_TORUS, unmodifiableSet(allOf(Axis.class))
+        allowedShiftAxisesMap = new EnumMap<>(of(
+            CLOSED, noneOf(Axis.class),
+            FULL_TORUS, allOf(Axis.class)
         ));
     }
 
-    public static Set<Axis> allowedWrappedShiftsAxises(BoundaryConditions boundaryConditions) {
+    private static EnumSet<Axis> allowedAxisesForMirroring(BoundaryConditions boundaryConditions) {
         return ofNullable(allowedShiftAxisesMap.get(boundaryConditions))
             .orElseThrow(() -> new StructureException("Allowed wrapped axises for boundary conditions " + boundaryConditions + " are not specified"));
+    }
+
+    public static EnumSet<Axis> axisesForbiddenForMirroring(BoundaryConditions boundaryConditions) {
+        return complementOf(allowedAxisesForMirroring(boundaryConditions));
     }
 
 }

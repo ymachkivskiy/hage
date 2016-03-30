@@ -6,7 +6,7 @@ import org.hage.platform.component.structure.connections.StructureDefinition;
 
 import static org.hage.platform.component.structure.connections.StructureType.FULL_GRID;
 
-public class GridStructureCreationStrategy implements StructureCreationStrategy {
+public class FullGridStructureCreationStrategy implements StructureCreationStrategy {
 
     @Override
     public boolean isApplicableFor(StructureDefinition structure) {
@@ -16,7 +16,7 @@ public class GridStructureCreationStrategy implements StructureCreationStrategy 
     @Override
     public Structure createUsingDefinition(StructureDefinition structure) {
         GridDefinition def = structure.getGridDefinition();
-        return new GridStructure(def.getGridNeighborhoodType(), def.getDimensions(), def.getBoundaryConditions());
+        return new FullGridStructure(def.getNeighborhoodType(), def.getDimensions(), def.getBoundaryConditions());
     }
 
 }

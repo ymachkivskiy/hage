@@ -11,13 +11,13 @@ import static lombok.AccessLevel.PRIVATE;
 @RequiredArgsConstructor(access = PRIVATE)
 @ToString
 public final class Dimensions implements Serializable {
-    public static final Dimensions UNIT = of(1, 1, 1);
+    public static final Dimensions UNIT = definedBy(1, 1, 1);
 
     public final int depthSize;
     public final int horizontalSize;
     public final int verticalSize;
 
-    public static Dimensions of(int depthSize, int horizontalSize, int verticalSize) {
+    public static Dimensions definedBy(int depthSize, int horizontalSize, int verticalSize) {
         checkArgument(depthSize > 0);
         checkArgument(horizontalSize > 0);
         checkArgument(verticalSize > 0);
