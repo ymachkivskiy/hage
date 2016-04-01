@@ -11,7 +11,7 @@
     <artifactId>structure-parent</artifactId>
 
     <modules>
-        <module>structure-config-data</module>
+        <module>structure-model</module>
         <module>structure-core</module>
         <module>structure-simulation-api</module>
         <module>structure-internal-api</module>

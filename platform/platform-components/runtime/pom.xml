@@ -17,6 +17,7 @@
         <module>runtime-core</module>
         <module>runtime-config-data</module>
         <module>runtime-simulation-api</module>
+        <module>runtime-distribution-api</module>
     </modules>
 
 </project>

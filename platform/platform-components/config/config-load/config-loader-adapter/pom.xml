@@ -28,7 +28,7 @@
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
-            <artifactId>structure-config-data</artifactId>
+            <artifactId>structure-model</artifactId>
             <version>${project.version}</version>
         </dependency>
 

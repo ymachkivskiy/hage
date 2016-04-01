@@ -86,7 +86,7 @@
         <!--TODO remove this dependency-->
         <dependency>
             <groupId>org.hage.platform.component.simulation</groupId>
-            <artifactId>structure-config-data</artifactId>
+            <artifactId>structure-model</artifactId>
             <version>0.2.0-SNAPSHOT</version>
         </dependency>
 
