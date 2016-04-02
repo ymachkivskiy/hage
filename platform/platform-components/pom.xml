@@ -19,7 +19,6 @@
         <module>config</module>
         <module>rate</module>
         <module>lifecycle</module>
-        <module>execution-environment</module>
         <module>structure</module>
         <module>cluster-api</module>
     </modules>

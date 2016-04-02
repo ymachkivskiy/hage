@@ -26,12 +26,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.component.execution</groupId>
-            <artifactId>execution-core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.hage.platform.component</groupId>
             <artifactId>pico-impl</artifactId>
             <version>${project.version}</version>

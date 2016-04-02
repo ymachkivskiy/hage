@@ -21,7 +21,13 @@
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
-            <artifactId>structure-internal-api</artifactId>
+            <artifactId>structure-shape-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>structure-distribution-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 

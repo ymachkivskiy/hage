@@ -3,6 +3,7 @@ package org.hage.platform.component.structure.connections;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.hage.platform.component.structure.StructureException;
+import org.hage.platform.component.structure.StructureDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

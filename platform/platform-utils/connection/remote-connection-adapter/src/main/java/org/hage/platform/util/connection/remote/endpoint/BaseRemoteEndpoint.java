@@ -9,7 +9,7 @@ import org.hage.platform.component.cluster.ConversationIdProvider;
 import org.hage.platform.component.cluster.NodeAddress;
 import org.hage.platform.util.connection.chanel.ConnectionDescriptor;
 import org.hage.platform.util.connection.chanel.FrameSender;
-import org.hage.platform.util.executors.WorkerExecutor;
+import org.hage.platform.util.executors.simple.WorkerExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;

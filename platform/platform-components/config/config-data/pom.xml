@@ -21,13 +21,13 @@
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
-            <artifactId>structure-model</artifactId>
+            <artifactId>structure-data-model</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
-            <artifactId>runtime-config-data</artifactId>
+            <artifactId>runtime-init-data-model</artifactId>
             <version>${project.version}</version>
         </dependency>
 

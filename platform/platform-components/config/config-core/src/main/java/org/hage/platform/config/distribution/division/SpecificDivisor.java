@@ -1,6 +1,6 @@
 package org.hage.platform.config.distribution.division;
 
-import org.hage.platform.component.runtime.definition.Population;
+import org.hage.platform.component.runtime.init.Population;
 import org.hage.platform.config.Specific;
 import org.hage.util.proportion.Division;
 import org.hage.util.proportion.Proportions;

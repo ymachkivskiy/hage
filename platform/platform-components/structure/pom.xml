@@ -11,10 +11,11 @@
     <artifactId>structure-parent</artifactId>
 
     <modules>
-        <module>structure-model</module>
+        <module>structure-data-model</module>
         <module>structure-core</module>
         <module>structure-simulation-api</module>
-        <module>structure-internal-api</module>
+        <module>structure-shape-api</module>
+        <module>structure-distribution-api</module>
     </modules>
 
 </project>

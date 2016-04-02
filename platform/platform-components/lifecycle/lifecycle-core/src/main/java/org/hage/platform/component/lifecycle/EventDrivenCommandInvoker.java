@@ -2,10 +2,10 @@ package org.hage.platform.component.lifecycle;
 
 import com.google.common.eventbus.Subscribe;
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.component.execution.event.CoreReadyEvent;
-import org.hage.platform.component.execution.event.CoreStartingEvent;
-import org.hage.platform.component.execution.event.CoreStoppedEvent;
-import org.hage.platform.component.execution.event.StopConditionFulfilledEvent;
+import org.hage.platform.component.runtime.event.CoreReadyEvent;
+import org.hage.platform.component.runtime.event.CoreStartingEvent;
+import org.hage.platform.component.runtime.event.CoreStoppedEvent;
+import org.hage.platform.component.runtime.event.StopConditionFulfilledEvent;
 import org.hage.platform.component.lifecycle.event.ExitRequestedEvent;
 import org.hage.platform.config.event.ConfigurationUpdatedEvent;
 import org.hage.platform.util.bus.EventSubscriber;

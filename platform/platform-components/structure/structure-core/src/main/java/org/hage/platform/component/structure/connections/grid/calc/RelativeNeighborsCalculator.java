@@ -1,10 +1,10 @@
 package org.hage.platform.component.structure.connections.grid.calc;
 
-import org.hage.platform.component.structure.connections.Position;
+import org.hage.platform.component.structure.Position;
 import org.hage.platform.component.structure.connections.RelativePosition;
-import org.hage.platform.component.structure.connections.grid.BoundaryConditions;
-import org.hage.platform.component.structure.connections.grid.Dimensions;
-import org.hage.platform.component.structure.connections.grid.GridNeighborhoodType;
+import org.hage.platform.component.structure.grid.BoundaryConditions;
+import org.hage.platform.component.structure.grid.Dimensions;
+import org.hage.platform.component.structure.grid.GridNeighborhoodType;
 
 import java.util.ArrayList;
 import java.util.List;

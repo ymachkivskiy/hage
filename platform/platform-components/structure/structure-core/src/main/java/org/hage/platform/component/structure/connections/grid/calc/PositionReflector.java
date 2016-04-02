@@ -1,11 +1,11 @@
 package org.hage.platform.component.structure.connections.grid.calc;
 
 import lombok.RequiredArgsConstructor;
-import org.hage.platform.component.structure.connections.Position;
-import org.hage.platform.component.structure.connections.grid.Dimensions;
+import org.hage.platform.component.structure.Position;
+import org.hage.platform.component.structure.grid.Dimensions;
 
 import static java.lang.Math.floorMod;
-import static org.hage.platform.component.structure.connections.Position.position;
+import static org.hage.platform.component.structure.Position.position;
 
 @RequiredArgsConstructor
 class PositionReflector {

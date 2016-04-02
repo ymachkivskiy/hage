@@ -1,6 +1,6 @@
 package org.hage.platform.component.structure.connections.grid.calc;
 
-import org.hage.platform.component.structure.connections.Position;
+import org.hage.platform.component.structure.Position;
 import org.hage.platform.component.structure.connections.RelativePosition;
 
 import java.util.EnumMap;

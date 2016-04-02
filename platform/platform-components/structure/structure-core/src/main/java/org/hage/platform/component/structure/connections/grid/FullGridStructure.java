@@ -2,9 +2,14 @@ package org.hage.platform.component.structure.connections.grid;
 
 import org.hage.platform.component.structure.connections.*;
 import org.hage.platform.component.structure.connections.grid.calc.RelativeNeighborsCalculator;
+import org.hage.platform.component.structure.Position;
+import org.hage.platform.component.structure.grid.BoundaryConditions;
+import org.hage.platform.component.structure.grid.Chunk;
+import org.hage.platform.component.structure.grid.Dimensions;
+import org.hage.platform.component.structure.grid.GridNeighborhoodType;
 
-import static org.hage.platform.component.structure.connections.Position.ZERO;
-import static org.hage.platform.component.structure.connections.grid.GridNeighborhoodType.NO_NEIGHBORS;
+import static org.hage.platform.component.structure.Position.ZERO;
+import static org.hage.platform.component.structure.grid.GridNeighborhoodType.NO_NEIGHBORS;
 import static org.hage.platform.component.structure.connections.grid.NeighborhoodBuilder.neighborhoodBuilder;
 
 class FullGridStructure implements Structure {

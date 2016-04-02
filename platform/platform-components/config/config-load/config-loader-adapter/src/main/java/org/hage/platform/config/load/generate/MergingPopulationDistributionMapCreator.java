@@ -1,10 +1,10 @@
 package org.hage.platform.config.load.generate;
 
-import org.hage.platform.component.runtime.definition.AgentDefinition;
-import org.hage.platform.component.runtime.definition.Population;
-import org.hage.platform.component.runtime.definition.UnitPopulation;
-import org.hage.platform.component.structure.connections.Position;
-import org.hage.platform.component.structure.connections.grid.Chunk;
+import org.hage.platform.component.runtime.init.AgentDefinition;
+import org.hage.platform.component.runtime.init.Population;
+import org.hage.platform.component.runtime.init.UnitPopulation;
+import org.hage.platform.component.structure.Position;
+import org.hage.platform.component.structure.grid.Chunk;
 import org.hage.platform.config.load.definition.ChunkPopulationQualifier;
 import org.hage.platform.config.load.definition.agent.AgentCountData;
 import org.hage.platform.config.load.definition.agent.ChunkAgentDistribution;

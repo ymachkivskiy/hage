@@ -20,11 +20,28 @@
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.component</groupId>
-            <artifactId>runtime-internal-api</artifactId>
+            <groupId>org.hage.platform.util</groupId>
+            <artifactId>executors</artifactId>
             <version>${project.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>runtime-init-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>runtime-execution-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>structure-distribution-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
     </dependencies>
 

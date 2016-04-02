@@ -4,9 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.component.config.ConfigurationConsumer;
 import org.hage.platform.component.container.MutableInstanceContainer;
 import org.hage.platform.component.container.definition.IComponentDefinition;
-import org.hage.platform.component.execution.event.CoreReadyEvent;
+import org.hage.platform.component.runtime.event.CoreReadyEvent;
 import org.hage.platform.component.rate.RateConfigurationConsumer;
-import org.hage.platform.component.runtime.ExecutionUnitRepositoryConfigurator;
+import org.hage.platform.component.runtime.init.RuntimeInitializer;
 import org.hage.platform.component.structure.connections.StructureConfigurator;
 import org.hage.platform.config.Configuration;
 import org.hage.platform.util.bus.EventBus;
@@ -22,7 +22,7 @@ class ConfigurationConsumerCommutator implements ConfigurationConsumer {
     @Autowired
     private StructureConfigurator structureConfigurator;
     @Autowired
-    private ExecutionUnitRepositoryConfigurator executionUnitRepositoryConfigurator;
+    private RuntimeInitializer runtimeInitializer;
     @Autowired
     private RateConfigurationConsumer rateConfigurationConsumer;
     @Autowired
@@ -38,7 +38,7 @@ class ConfigurationConsumerCommutator implements ConfigurationConsumer {
 
         rateConfigurationConsumer.acceptRateConfiguration(configuration.getCommon().getRatingConfig());
         structureConfigurator.configure(configuration.getCommon().getStructureDefinition());
-        executionUnitRepositoryConfigurator.populateWith(configuration.getSpecific().getPopulation());
+        runtimeInitializer.initializeWith(configuration.getSpecific().getPopulation());
 
         eventBus.post(new CoreReadyEvent());
     }

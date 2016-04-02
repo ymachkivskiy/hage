@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.hage.platform.component.structure.Axis;
-import org.hage.platform.component.structure.connections.Position;
+import org.hage.platform.component.structure.Position;
 
 import java.util.EnumMap;
 import java.util.Map;

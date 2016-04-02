@@ -17,13 +17,13 @@
 
         <dependency>
             <groupId>org.hage.platform.component.execution</groupId>
-            <artifactId>execution-event-data</artifactId>
+            <artifactId>runtime-event-data</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.hage.platform.component.execution</groupId>
-            <artifactId>execution-core-api</artifactId>
+            <artifactId>runtime-execution-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -86,7 +86,7 @@
         <!--TODO remove this dependency-->
         <dependency>
             <groupId>org.hage.platform.component.simulation</groupId>
-            <artifactId>structure-model</artifactId>
+            <artifactId>structure-data-model</artifactId>
             <version>0.2.0-SNAPSHOT</version>
         </dependency>
 

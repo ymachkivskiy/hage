@@ -1,16 +1,25 @@
 package org.hage.platform.component.runtime;
 
-import org.hage.platform.component.runtime.definition.Population;
-import org.hage.platform.component.runtime.util.SimpleStatefulComponentsInitializer;
-import org.hage.platform.component.runtime.util.StatefulComponentsInitializer;
+import org.hage.platform.component.runtime.execution.NodeExecutionCore;
+import org.hage.platform.component.runtime.execution.ExecutionCore;
+import org.hage.platform.component.runtime.execution.phase.ExecutionPhasesProvider;
+import org.hage.platform.component.runtime.execution.phase.FixedExecutionPhasesProvider;
+import org.hage.platform.component.runtime.init.GreedyPopulationDivisor;
+import org.hage.platform.component.runtime.init.BaseRuntimeInitializer;
+import org.hage.platform.component.runtime.init.Population;
+import org.hage.platform.component.runtime.init.RuntimeInitializer;
+import org.hage.platform.component.runtime.unit.util.SimpleStatefulComponentsInitializer;
+import org.hage.platform.component.runtime.unit.util.StatefulComponentsInitializer;
 import org.hage.util.proportion.ProportionsDivisor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+import static org.hage.platform.component.runtime.execution.ExecutionUnitPhase.AGENTS_STEP;
+
 @Configuration
 @ComponentScan(basePackageClasses = PlatformRuntimeModuleConfiguration.class)
-class PlatformRuntimeModuleConfiguration {
+public class PlatformRuntimeModuleConfiguration {
 
     @Bean
     public ProportionsDivisor<Population> populationProportionsDivisor() {
@@ -18,13 +27,25 @@ class PlatformRuntimeModuleConfiguration {
     }
 
     @Bean
-    public LocalExecutionUnitRepository executionUnitRepository() {
-        return new LocalExecutionUnitRepository();
+    public RuntimeInitializer executionUnitRepository() {
+        return new BaseRuntimeInitializer();
     }
 
     @Bean
     public StatefulComponentsInitializer statefulComponentsInitializer() {
         return new SimpleStatefulComponentsInitializer();
+    }
+
+    @Bean
+    public ExecutionPhasesProvider coreExecutorPhasesProvider() {
+        return new FixedExecutionPhasesProvider(
+            AGENTS_STEP
+        );
+    }
+
+    @Bean
+    public ExecutionCore executionCore() {
+        return new NodeExecutionCore();
     }
 
 }

@@ -1,7 +1,7 @@
 package org.hage.platform.component.structure.connections.grid;
 
 import org.hage.platform.component.structure.connections.Neighborhood;
-import org.hage.platform.component.structure.connections.Position;
+import org.hage.platform.component.structure.Position;
 import org.hage.platform.component.structure.connections.RelativePosition;
 
 import java.util.EnumMap;

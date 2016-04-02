@@ -1,7 +1,7 @@
 package org.hage.platform.config.load.definition;
 
 import lombok.Data;
-import org.hage.platform.component.structure.connections.StructureDefinition;
+import org.hage.platform.component.structure.StructureDefinition;
 
 import java.util.List;
 

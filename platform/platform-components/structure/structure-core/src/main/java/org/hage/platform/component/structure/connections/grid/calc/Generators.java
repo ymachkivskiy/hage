@@ -1,10 +1,10 @@
 package org.hage.platform.component.structure.connections.grid.calc;
 
 import org.hage.platform.component.structure.StructureException;
-import org.hage.platform.component.structure.connections.Position;
-import org.hage.platform.component.structure.connections.grid.BoundaryConditions;
-import org.hage.platform.component.structure.connections.grid.Dimensions;
-import org.hage.platform.component.structure.connections.grid.GridNeighborhoodType;
+import org.hage.platform.component.structure.Position;
+import org.hage.platform.component.structure.grid.BoundaryConditions;
+import org.hage.platform.component.structure.grid.Dimensions;
+import org.hage.platform.component.structure.grid.GridNeighborhoodType;
 import org.hage.platform.component.structure.connections.util.AxisCoordinateUtil.ShiftVector;
 import org.hage.platform.component.structure.connections.util.AxisPerpendicularity;
 

@@ -13,11 +13,12 @@
     <artifactId>runtime-parent</artifactId>
 
     <modules>
-        <module>runtime-internal-api</module>
         <module>runtime-core</module>
-        <module>runtime-config-data</module>
+        <module>runtime-init-data-model</module>
         <module>runtime-simulation-api</module>
-        <module>runtime-distribution-api</module>
+        <module>runtime-init-api</module>
+        <module>runtime-execution-api</module>
+        <module>runtime-event-data</module>
     </modules>
 
 </project>

@@ -1,7 +1,7 @@
 package org.hage.platform.component.structure.connections.grid.calc;
 
 import lombok.RequiredArgsConstructor;
-import org.hage.platform.component.structure.connections.Position;
+import org.hage.platform.component.structure.Position;
 import org.hage.platform.component.structure.connections.RelativePosition;
 import org.hage.platform.component.structure.connections.util.AxisPerpendicularity.Plane;
 

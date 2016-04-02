@@ -32,13 +32,13 @@
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
-            <artifactId>structure-internal-api</artifactId>
+            <artifactId>structure-shape-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
-            <artifactId>runtime-internal-api</artifactId>
+            <artifactId>runtime-init-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -50,8 +50,8 @@
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.component.execution</groupId>
-            <artifactId>execution-event-data</artifactId>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>runtime-event-data</artifactId>
             <version>${project.version}</version>
         </dependency>
 

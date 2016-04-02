@@ -1,17 +1,17 @@
 package org.hage.platform.component.structure.connections.grid.calc;
 
-import org.hage.platform.component.structure.connections.Position;
+import org.hage.platform.component.structure.Position;
 import org.junit.Test;
 
 import java.util.List;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static org.hage.platform.component.structure.connections.Position.position;
+import static org.hage.platform.component.structure.Position.position;
 import static org.hage.platform.component.structure.connections.RelativePosition.*;
-import static org.hage.platform.component.structure.connections.grid.BoundaryConditions.CLOSED;
-import static org.hage.platform.component.structure.connections.grid.BoundaryConditions.FULL_TORUS;
-import static org.hage.platform.component.structure.connections.grid.Dimensions.definedBy;
-import static org.hage.platform.component.structure.connections.grid.GridNeighborhoodType.*;
+import static org.hage.platform.component.structure.grid.BoundaryConditions.CLOSED;
+import static org.hage.platform.component.structure.grid.BoundaryConditions.FULL_TORUS;
+import static org.hage.platform.component.structure.grid.Dimensions.definedBy;
+import static org.hage.platform.component.structure.grid.GridNeighborhoodType.*;
 
 public class RelativeNeighborsCalculatorTest {
 
