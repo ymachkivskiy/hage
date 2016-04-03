@@ -1,15 +1,16 @@
 package org.hage.platform.component.runtime;
 
-import org.hage.platform.component.runtime.execution.NodeExecutionCore;
 import org.hage.platform.component.runtime.execution.ExecutionCore;
+import org.hage.platform.component.runtime.execution.NodeExecutionCore;
 import org.hage.platform.component.runtime.execution.phase.ExecutionPhasesProvider;
 import org.hage.platform.component.runtime.execution.phase.FixedExecutionPhasesProvider;
-import org.hage.platform.component.runtime.init.GreedyPopulationDivisor;
 import org.hage.platform.component.runtime.init.BaseRuntimeInitializer;
+import org.hage.platform.component.runtime.init.GreedyPopulationDivisor;
 import org.hage.platform.component.runtime.init.Population;
 import org.hage.platform.component.runtime.init.RuntimeInitializer;
-import org.hage.platform.component.runtime.unit.util.SimpleStatefulComponentsInitializer;
-import org.hage.platform.component.runtime.unit.util.StatefulComponentsInitializer;
+import org.hage.platform.component.runtime.unit.NodeAgentUnitsRepo;
+import org.hage.platform.component.runtime.unit.population.util.SimpleStatefulPrototypeComponentsInitializer;
+import org.hage.platform.component.runtime.unit.population.util.StatefulPrototypeComponentsInitializer;
 import org.hage.util.proportion.ProportionsDivisor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -32,8 +33,8 @@ public class PlatformRuntimeModuleConfiguration {
     }
 
     @Bean
-    public StatefulComponentsInitializer statefulComponentsInitializer() {
-        return new SimpleStatefulComponentsInitializer();
+    public StatefulPrototypeComponentsInitializer statefulComponentsInitializer() {
+        return new SimpleStatefulPrototypeComponentsInitializer();
     }
 
     @Bean
@@ -46,6 +47,11 @@ public class PlatformRuntimeModuleConfiguration {
     @Bean
     public ExecutionCore executionCore() {
         return new NodeExecutionCore();
+    }
+
+    @Bean
+    public NodeAgentUnitsRepo nodeAgentUnitsRepo() {
+        return new NodeAgentUnitsRepo();
     }
 
 }

@@ -5,11 +5,9 @@ import org.hage.platform.component.runtime.execution.ExecutionUnit;
 import org.hage.platform.component.runtime.execution.phase.PhasedRunnable;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 
 
@@ -37,6 +35,11 @@ class ExecutionUnitStateController implements TasksChangeSupplier, ActiveExecuti
     public void activate(List<? extends ExecutionUnit> activatedUnits) {
         log.debug("Added units to activate {}", activatedUnits);
         toBeAdded.addAll(activatedUnits);
+    }
+
+    @Override
+    public void activate(ExecutionUnit activatedUnit) {
+        activate(singletonList(activatedUnit));
     }
 
     @Override

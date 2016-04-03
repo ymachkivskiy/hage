@@ -6,7 +6,7 @@ import org.hage.platform.component.structure.Position;
 import org.hage.platform.simulation.runtime.UnitAddress;
 
 @Data
-public class ExecutionUnitAddress implements UnitAddress {
+public class AgentsUnitAddress implements UnitAddress {
     private final NodeAddress nodeAddress;
     private final Position position;
 

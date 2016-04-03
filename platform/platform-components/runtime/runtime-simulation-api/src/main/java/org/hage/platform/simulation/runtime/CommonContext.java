@@ -7,6 +7,7 @@ public interface CommonContext {
 
     UnitAddress queryUnit();
 
+    // TODO: use neighborhood
     Set<UnitAddress> querySurroundingUnits();
 
     void notifyStopConditionSatisfied();

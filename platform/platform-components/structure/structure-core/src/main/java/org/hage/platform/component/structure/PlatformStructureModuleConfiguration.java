@@ -12,14 +12,14 @@ import org.springframework.context.annotation.Configuration;
 public class PlatformStructureModuleConfiguration {
 
     @Bean
-    public ConfigurableStructure gridConnectionsRepository() {
+    public ConfigurableStructure simulationStructure() {
         return new ConfigurableStructure();
     }
 
     //region repository creation strategies
 
     @Bean
-    public FullGridStructureCreationStrategy boxGridRepositoryCreationStrategy() {
+    public FullGridStructureCreationStrategy fullGridRepositoryCreationStrategy() {
         return new FullGridStructureCreationStrategy();
     }
     
