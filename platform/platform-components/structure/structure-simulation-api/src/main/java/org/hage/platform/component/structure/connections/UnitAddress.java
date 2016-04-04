@@ -1,4 +1,4 @@
-package org.hage.platform.simulation.runtime;
+package org.hage.platform.component.structure.connections;
 
 import java.io.Serializable;
 

@@ -3,7 +3,7 @@ package org.hage.platform.component.runtime.unit;
 import lombok.Data;
 import org.hage.platform.component.cluster.NodeAddress;
 import org.hage.platform.component.structure.Position;
-import org.hage.platform.simulation.runtime.UnitAddress;
+import org.hage.platform.component.structure.connections.UnitAddress;
 
 @Data
 public class AgentsUnitAddress implements UnitAddress {
@@ -12,7 +12,7 @@ public class AgentsUnitAddress implements UnitAddress {
 
     @Override
     public String getUniqueIdentifier() {
-        return "[" + nodeAddress + "]::"  /* + position*/;
+        return "[" + nodeAddress + "]::" + position;
     }
-    // TODO: work with
+
 }

@@ -1,10 +1,11 @@
-package org.hage.platform.component.runtime.unit.agent;
+package org.hage.platform.component.runtime.unit.adapter;
 
 import lombok.RequiredArgsConstructor;
+import org.hage.platform.component.structure.connections.Neighbors;
+import org.hage.platform.component.structure.connections.UnitAddress;
 import org.hage.platform.simulation.runtime.Agent;
 import org.hage.platform.simulation.runtime.AgentAddress;
 import org.hage.platform.simulation.runtime.Context;
-import org.hage.platform.simulation.runtime.UnitAddress;
 
 import java.util.Set;
 
@@ -14,6 +15,7 @@ public class AgentAdapter implements AgentAddress, Context {
     private final int id;
     private final String friendlyName;
     private final Agent agent;
+    private final CommonContextAdapter contextAdapter;
 
     public void performStep() {
         agent.step(this);
@@ -38,7 +40,7 @@ public class AgentAdapter implements AgentAddress, Context {
 
     @Override
     public AgentAddress queryAddress() {
-        return null;
+        return this;
     }
 
     @Override
@@ -48,17 +50,17 @@ public class AgentAdapter implements AgentAddress, Context {
 
     @Override
     public UnitAddress queryUnit() {
-        return null;
+        return contextAdapter.queryUnit();
     }
 
     @Override
-    public Set<UnitAddress> querySurroundingUnits() {
-        return null;
+    public Neighbors querySurroundingUnits() {
+        return contextAdapter.querySurroundingUnits();
     }
 
     @Override
     public void notifyStopConditionSatisfied() {
-
+        contextAdapter.notifyStopConditionSatisfied();
     }
 
 }

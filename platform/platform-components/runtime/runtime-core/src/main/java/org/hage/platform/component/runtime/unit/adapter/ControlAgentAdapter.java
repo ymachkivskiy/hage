@@ -1,14 +1,17 @@
-package org.hage.platform.component.runtime.unit.agent;
+package org.hage.platform.component.runtime.unit.adapter;
 
 import lombok.RequiredArgsConstructor;
+import org.hage.platform.component.structure.connections.Neighbors;
+import org.hage.platform.component.structure.connections.UnitAddress;
 import org.hage.platform.simulation.runtime.*;
 
-import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 @RequiredArgsConstructor
 public class ControlAgentAdapter implements ControlContext {
+    private final CommonContextAdapter context;
     private final ControlAgent controlAgent;
 
     public void performStep() {
@@ -18,13 +21,13 @@ public class ControlAgentAdapter implements ControlContext {
     @Override
     public Set<Class<? extends Agent>> getSupportedAgentsTypes() {
         //todo : NOT IMPLEMENTED
-        return null;
+        return Collections.emptySet();
     }
 
     @Override
     public <T extends Agent> List<T> queryAgentsOfType(Class<T> clazz) throws UnsupportedAgentTypeException {
         //todo : NOT IMPLEMENTED
-        return null;
+        return Collections.emptyList();
     }
 
     @Override
@@ -35,19 +38,16 @@ public class ControlAgentAdapter implements ControlContext {
 
     @Override
     public UnitAddress queryUnit() {
-        //todo : NOT IMPLEMENTED
-        return null;
+        return context.queryUnit();
     }
 
     @Override
-    public Set<UnitAddress> querySurroundingUnits() {
-        //todo : NOT IMPLEMENTED
-        return null;
+    public Neighbors querySurroundingUnits() {
+        return context.querySurroundingUnits();
     }
 
     @Override
     public void notifyStopConditionSatisfied() {
-        //todo : NOT IMPLEMENTED
-
+        context.notifyStopConditionSatisfied();
     }
 }

@@ -1,14 +1,14 @@
 package org.hage.platform.simulation.runtime;
 
 
-import java.util.Set;
+import org.hage.platform.component.structure.connections.Neighbors;
+import org.hage.platform.component.structure.connections.UnitAddress;
 
 public interface CommonContext {
 
     UnitAddress queryUnit();
 
-    // TODO: use neighborhood
-    Set<UnitAddress> querySurroundingUnits();
+    Neighbors querySurroundingUnits();
 
     void notifyStopConditionSatisfied();
 

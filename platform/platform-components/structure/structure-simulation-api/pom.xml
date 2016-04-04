@@ -11,14 +11,4 @@
 
     <artifactId>structure-simulation-api</artifactId>
 
-    <dependencies>
-
-        <dependency>
-            <groupId>org.hage.platform.component</groupId>
-            <artifactId>runtime-simulation-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-    </dependencies>
-
 </project>
