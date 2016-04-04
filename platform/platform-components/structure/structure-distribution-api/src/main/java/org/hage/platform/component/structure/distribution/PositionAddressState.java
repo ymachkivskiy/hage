@@ -8,7 +8,9 @@ import static org.hage.platform.component.structure.distribution.PositionState.*
 
 @ToString
 @RequiredArgsConstructor
-public class PositionAddress {
+public class PositionAddressState {
+    public static final PositionAddressState NOT_CORRECT_POSITION_ADDRESS = new PositionAddressState(NOT_CORRECT, null);
+
     private final PositionState state;
     private final NodeAddress address;
 

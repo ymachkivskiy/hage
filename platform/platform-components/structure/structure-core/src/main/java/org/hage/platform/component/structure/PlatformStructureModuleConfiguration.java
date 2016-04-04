@@ -2,7 +2,7 @@ package org.hage.platform.component.structure;
 
 import org.hage.platform.component.structure.connections.ConfigurableStructure;
 import org.hage.platform.component.structure.connections.grid.FullGridStructureCreationStrategy;
-import org.hage.platform.component.structure.distribution.DummyLocalPositionsRepo;
+import org.hage.platform.component.structure.distribution.DistributedPositionsAddressingRegistry;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -26,8 +26,8 @@ public class PlatformStructureModuleConfiguration {
     //endregion
 
     @Bean
-    public DummyLocalPositionsRepo positionsRepo() {
-            return new DummyLocalPositionsRepo();
+    public DistributedPositionsAddressingRegistry positionsRepo() {
+            return new DistributedPositionsAddressingRegistry();
     }
 
 }

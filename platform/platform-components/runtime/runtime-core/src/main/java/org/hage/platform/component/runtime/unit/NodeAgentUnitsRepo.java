@@ -31,7 +31,7 @@ public class NodeAgentUnitsRepo implements UnitInitializationController {
         createdUnitsMap.put(position, unit);
 
         activeExecutionUnitsController.activate(unit);
-        localPositionsController.activate(position);
+        localPositionsController.activateLocally(position);
 
         return unit;
     }

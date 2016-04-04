@@ -7,10 +7,10 @@ import java.util.Collection;
 import java.util.List;
 
 public interface LocalPositionsController {
-    void activate(Collection<Position> positions);
+    void activateLocally(Collection<Position> positions);
 
-    void activate(Position position);
+    void activateLocally(Position position);
 
-    void deactivate(List<Position> positions);
+    void deactivateLocally(List<Position> positions);
 
 }
