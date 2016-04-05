@@ -22,9 +22,7 @@ import static org.hage.util.concurrency.ReadWriteLockObjectWrapper.wrap;
 public class DistributedPositionsAddressingRegistry implements LocalPositionsController, AddressingRegistry {
 
     @Autowired
-    private StructureDistributionEndpoint distributionEndpoint;
-    @Autowired
-    private LocalNodeAddressSupplier localNodeAddressSupplier;
+    private StructureChangeRemoteBuffer structureChangeRemoteBuffer;
     @Autowired
     private Structure structure;
 
@@ -79,8 +77,7 @@ public class DistributedPositionsAddressingRegistry implements LocalPositionsCon
         log.debug("Activating locally positions {}", positions);
 
         lockedLocalPositions.write(localPositions -> localPositions.addAll(nullSafe(positions)));
-
-        distributionEndpoint.activatePositions(positions);
+        structureChangeRemoteBuffer.addActivated(positions);
     }
 
     @Override
@@ -93,8 +90,7 @@ public class DistributedPositionsAddressingRegistry implements LocalPositionsCon
         log.debug("Deactivating locally positions {}", positions);
 
         lockedLocalPositions.write(localPositions -> localPositions.removeAll(nullSafe(positions)));
-
-        distributionEndpoint.deactivatePositions(positions);
+        structureChangeRemoteBuffer.addDeactivated(positions);
     }
 
     void updatePositionsForNode(NodeAddress nodeAddress, Collection<Position> activatedPositions, Collection<Position> deactivatedPositions) {
@@ -115,6 +111,5 @@ public class DistributedPositionsAddressingRegistry implements LocalPositionsCon
             .map(e -> new ActivePositionAddress(e.getKey(), e.getValue()))
             .collect(toList());
     }
-
 
 }

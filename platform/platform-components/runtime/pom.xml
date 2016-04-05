@@ -19,6 +19,7 @@
         <module>runtime-init-api</module>
         <module>runtime-execution-api</module>
         <module>runtime-event-data</module>
+        <module>runtime-step-api</module>
     </modules>
 
 </project>

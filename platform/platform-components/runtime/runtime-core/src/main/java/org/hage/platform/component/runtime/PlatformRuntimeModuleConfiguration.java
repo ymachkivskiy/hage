@@ -2,6 +2,9 @@ package org.hage.platform.component.runtime;
 
 import org.hage.platform.component.runtime.execution.ExecutionCore;
 import org.hage.platform.component.runtime.execution.NodeExecutionCore;
+import org.hage.platform.component.runtime.execution.PostStepPhase;
+import org.hage.platform.component.runtime.execution.cycle.FixedPhaseOrderOrderClassifier;
+import org.hage.platform.component.runtime.execution.cycle.PostStepPhaseOrderClassifier;
 import org.hage.platform.component.runtime.execution.phase.ExecutionPhasesProvider;
 import org.hage.platform.component.runtime.execution.phase.FixedExecutionPhasesProvider;
 import org.hage.platform.component.runtime.init.BaseRuntimeInitializer;
@@ -17,6 +20,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import static org.hage.platform.component.runtime.execution.ExecutionUnitPhase.AGENTS_STEP;
+import static org.hage.platform.component.runtime.execution.PostStepPhase.STRUCTURE_UPDATE;
 
 @Configuration
 @ComponentScan(basePackageClasses = PlatformRuntimeModuleConfiguration.class)
@@ -28,7 +32,7 @@ public class PlatformRuntimeModuleConfiguration {
     }
 
     @Bean
-    public RuntimeInitializer executionUnitRepository() {
+    public RuntimeInitializer runtimeInitializer() {
         return new BaseRuntimeInitializer();
     }
 
@@ -41,6 +45,13 @@ public class PlatformRuntimeModuleConfiguration {
     public ExecutionPhasesProvider coreExecutorPhasesProvider() {
         return new FixedExecutionPhasesProvider(
             AGENTS_STEP
+        );
+    }
+
+    @Bean
+    public PostStepPhaseOrderClassifier postStepPhaseOrderClassifier() {
+        return new FixedPhaseOrderOrderClassifier(
+            STRUCTURE_UPDATE
         );
     }
 

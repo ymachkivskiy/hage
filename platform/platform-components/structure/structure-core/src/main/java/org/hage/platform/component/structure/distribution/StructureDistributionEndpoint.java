@@ -32,13 +32,10 @@ public class StructureDistributionEndpoint extends BaseRemoteEndpoint<StructureM
         }
     }
 
-    public void activatePositions(Collection<Position> positions) {
-        log.debug("Notifying about activation of positions {}", positions);
-        sendToAll(new StructureMessage(positions, null));
+    public void updatePositions(Collection<Position> activated, Collection<Position> deactivated) {
+        log.debug("Notifying about activation of positions {}", activated);
+        log.debug("Notifying about deactivation of positions {}", deactivated);
+        sendToAll(new StructureMessage(activated, deactivated));
     }
 
-    public void deactivatePositions(Collection<Position> positions) {
-        log.debug("Notifying about deactivation of position s{}", positions);
-        sendToAll(new StructureMessage(null, positions));
-    }
 }

@@ -1,7 +1,6 @@
 package org.hage.platform.component.runtime.execution;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.component.runtime.execution.cycle.ExecutionCycle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.CustomizableThreadFactory;
 
@@ -24,7 +23,7 @@ public class NodeExecutionCore implements ExecutionCore {
 
 
     @Autowired
-    private ExecutionCycle stepTask;
+    private ExecutionStepAdapter cycleTask;
 
     private CoreState currentState = CoreState.STOPPED;
 
@@ -63,7 +62,7 @@ public class NodeExecutionCore implements ExecutionCore {
     }
 
     private void doStart() {
-        stepFutureHandle = of(executorService.scheduleAtFixedRate(stepTask, 0, 1, MICROSECONDS));
+        stepFutureHandle = of(executorService.scheduleAtFixedRate(cycleTask, 0, 1, MICROSECONDS));
         currentState = CoreState.RUNNING;
 
         log.info("Core started");
@@ -80,7 +79,7 @@ public class NodeExecutionCore implements ExecutionCore {
     private void doStop() {
         stepFutureHandle.ifPresent(f -> f.cancel(false));
         stepFutureHandle = empty();
-        stepTask.reset();
+        cycleTask.reset();
         currentState = CoreState.STOPPED;
 
         log.info("Core stopped");
@@ -89,7 +88,7 @@ public class NodeExecutionCore implements ExecutionCore {
 
     @Override
     public ExecutionInfo getInfo() {
-        return new ExecutionInfo(stepTask.getPerformedStepsCount());
+        return new ExecutionInfo(cycleTask.getPerformedStepsCount());
     }
 
 }

@@ -14,7 +14,6 @@ import java.util.Map;
 @Slf4j
 public class NodeAgentUnitsRepo implements UnitInitializationController {
 
-
     @Autowired
     private ActiveExecutionUnitsController activeExecutionUnitsController;
     @Autowired
@@ -24,23 +23,34 @@ public class NodeAgentUnitsRepo implements UnitInitializationController {
 
     private final Map<Position, AgentsUnit> createdUnitsMap = new HashMap<>();
 
-    private AgentsUnit getOrCreateLocalUnit(Position position) {
+    @Override
+    public UnitPopulationInitializer getInitializerForUnitOnPosition(Position position) {
+        return getOrCreateNewUnit(position);
+    }
+
+    private synchronized AgentsUnit getOrCreateNewUnit(Position position) {
+        log.debug("Agents unit with for position {} acquired.", position);
+
+        AgentsUnit storedUnit = createdUnitsMap.get(position);
+
+        if (storedUnit == null) {
+            storedUnit = createNewUnit(position);
+            createdUnitsMap.put(position, storedUnit);
+        }
+
+        return storedUnit;
+    }
+
+
+    private AgentsUnit createNewUnit(Position position) {
+        log.debug("Create new agents unit for position {}", position);
 
         AgentsUnit unit = unitsFactory.create(position);
-
-        createdUnitsMap.put(position, unit);
 
         activeExecutionUnitsController.activate(unit);
         localPositionsController.activateLocally(position);
 
         return unit;
-    }
-
-
-
-    @Override
-    public UnitPopulationInitializer getInitializerForUnitOnPosition(Position position) {
-        return getOrCreateLocalUnit(position);
     }
 
 }

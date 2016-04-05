@@ -32,6 +32,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>runtime-step-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.hage.platform.util</groupId>
             <artifactId>remote-connection-adapter</artifactId>
             <version>${project.version}</version>
