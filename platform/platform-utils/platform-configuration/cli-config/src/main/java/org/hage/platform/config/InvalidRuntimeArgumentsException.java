@@ -1,4 +1,4 @@
-package org.hage.platform.boot;
+package org.hage.platform.config;
 
 import org.hage.platform.HageRuntimeException;
 

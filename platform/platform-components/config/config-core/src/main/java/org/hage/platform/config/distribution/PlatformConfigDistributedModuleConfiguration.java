@@ -21,7 +21,7 @@ class PlatformConfigDistributedModuleConfiguration {
     }
 
     @Bean
-    public ConfigurationHub configurationHub() {
-        return new ConfigurationHub();
+    public SimulationConfigurationHub simulationConfigurationHub() {
+        return new SimulationConfigurationHub();
     }
 }

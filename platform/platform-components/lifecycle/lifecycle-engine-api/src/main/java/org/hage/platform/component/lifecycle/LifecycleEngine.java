@@ -2,6 +2,7 @@ package org.hage.platform.component.lifecycle;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.component.lifecycle.construct.LifecycleStateMachineBuilder;
+import org.hage.platform.util.boot.PlatformStarter;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
@@ -11,7 +12,7 @@ import javax.annotation.PostConstruct;
 import static java.lang.Runtime.getRuntime;
 
 @Slf4j
-public class LifecycleEngine {
+public class LifecycleEngine implements PlatformStarter {
 
     @Autowired
     private BeanFactory beanFactory;
@@ -19,6 +20,7 @@ public class LifecycleEngine {
 
     private LifecycleStateMachine engineService;
 
+    @Override
     public final void start() {
         engineService.fire(lifecycleInitializer.getStartingEvent());
     }

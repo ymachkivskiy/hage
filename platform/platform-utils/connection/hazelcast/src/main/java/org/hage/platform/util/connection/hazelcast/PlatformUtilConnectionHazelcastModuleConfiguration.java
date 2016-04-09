@@ -6,6 +6,7 @@ import org.hage.platform.util.connection.hazelcast.chanel.HazelcastConnectionFac
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 
 
 @Configuration
@@ -18,13 +19,20 @@ class PlatformUtilConnectionHazelcastModuleConfiguration {
     }
 
     @Bean
+    @DependsOn("hazelcastInstanceHolder")
     public HazelcastClusterAddressManager platformCommunicationUtilClusterAddressManager() {
         return new HazelcastClusterAddressManager();
     }
 
     @Bean
+    @DependsOn("hazelcastInstanceHolder")
     public ConversationIdProvider platformCommunicationUtilConversationIdProvider() {
         return new HazelcastConversationIdProvider();
+    }
+
+    @Bean(name = "hazelcastInstanceHolder")
+    public HazelcastInstanceHolder hazelcastInstanceHolder() {
+        return new HazelcastInstanceHolder();
     }
 
 }

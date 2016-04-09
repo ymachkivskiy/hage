@@ -1,6 +1,5 @@
 package org.hage.platform;
 
-import org.hage.platform.boot.CommandLineArguments;
 import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -25,11 +24,6 @@ public class BootConfiguration {
     @Bean
     public PropertySourcesPlaceholderConfigurer propertyPlaceholderConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();
-    }
-
-    @Bean
-    public CommandLineArguments commandLineArgumentsService() {
-        return new CommandLineArguments();
     }
 
 }

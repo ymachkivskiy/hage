@@ -18,7 +18,8 @@
         <module>container-share</module>
         <module>connection</module>
         <module>executors</module>
-        <module>hage-boot</module>
+        <module>platform-configuration</module>
+        <module>platform-boot</module>
     </modules>
 
     <dependencies>

@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 
 @Slf4j
-class ConfigurationHub implements ConfigurationProvider, ConfigurationStorage {
+class SimulationConfigurationHub implements ConfigurationProvider, ConfigurationStorage {
 
     private final BlockingElementHolder<Configuration> confgurationHolder = new BlockingElementHolder<>();
 

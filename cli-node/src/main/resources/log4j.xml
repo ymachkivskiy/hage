@@ -25,6 +25,11 @@
         <appender-ref ref="CONSOLE"/>
     </logger>
 
+    <logger name="org.apache.commons">
+        <level value="ERROR"/>
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
     <root>
         <priority value="DEBUG"/>
         <appender-ref ref="CONSOLE"/>

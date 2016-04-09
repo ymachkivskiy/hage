@@ -1,9 +1,11 @@
-package org.hage.platform.boot;
+package org.hage.platform;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.component.lifecycle.LifecycleEngine;
+import org.hage.platform.config.CommandLineArgumentsParser;
+import org.hage.platform.util.boot.PlatformStarter;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 
 @Slf4j
@@ -22,32 +24,31 @@ public class NodeBootstrapper {
     private final ApplicationContext applicationContext;
 
     public NodeBootstrapper(ApplicationContext applicationContext, String[] args) {
-        log.info(HEADER);
+        System.out.println(HEADER);
 
         this.applicationContext = applicationContext;
 
-        processCmdArgs(args);
+        CommandLineArgumentsParser parser = this.applicationContext.getBean(CommandLineArgumentsParser.class);
+
+        parser.parse(args);
+
     }
 
 
     public void start() {
         log.debug("Starting HAgE Node from the command line.");
 
-        applicationContext.getBean(LifecycleEngine.class).start();
+        applicationContext.getBean(PlatformStarter.class).start();
 
         log.debug("Bootstrapping finished.");
     }
 
-    private void processCmdArgs(String[] args) {
-        CommandLineArguments argumentsService = applicationContext.getBean(CommandLineArguments.class);
 
-        argumentsService.parse(NodeBootstrapper.class, args);
+    public static void main(String[] args) {
+        AnnotationConfigApplicationContext ctxt = new AnnotationConfigApplicationContext(BootConfiguration.class);
 
-        if (argumentsService.hasHelpOption()) {
-            System.out.println(argumentsService.getUsage());
-            System.exit(0);
-        }
-
+        new NodeBootstrapper(ctxt, args).start();
     }
+
 
 }
