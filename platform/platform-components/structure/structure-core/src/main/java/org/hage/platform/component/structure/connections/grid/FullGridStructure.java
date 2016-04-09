@@ -3,7 +3,7 @@ package org.hage.platform.component.structure.connections.grid;
 import org.hage.platform.component.structure.connections.*;
 import org.hage.platform.component.structure.connections.grid.calc.RelativeNeighborsCalculator;
 import org.hage.platform.component.structure.Position;
-import org.hage.platform.component.structure.grid.BoundaryConditions;
+import org.hage.platform.component.structure.grid.GridBoundaryConditions;
 import org.hage.platform.component.structure.grid.Chunk;
 import org.hage.platform.component.structure.grid.Dimensions;
 import org.hage.platform.component.structure.grid.GridNeighborhoodType;
@@ -19,9 +19,9 @@ class FullGridStructure implements Structure {
     private final GridNeighborhoodType neighborhoodType;
 
 
-    public FullGridStructure(GridNeighborhoodType neighborhoodType, Dimensions dimensions, BoundaryConditions boundaryConditions) {
+    public FullGridStructure(GridNeighborhoodType neighborhoodType, Dimensions dimensions, GridBoundaryConditions gridBoundaryConditions) {
         this.baseChunk = new Chunk(ZERO, dimensions);
-        this.relativeNeighborsCalculator = new RelativeNeighborsCalculator(boundaryConditions, dimensions, neighborhoodType);
+        this.relativeNeighborsCalculator = new RelativeNeighborsCalculator(gridBoundaryConditions, dimensions, neighborhoodType);
         this.neighborhoodType = neighborhoodType;
     }
 

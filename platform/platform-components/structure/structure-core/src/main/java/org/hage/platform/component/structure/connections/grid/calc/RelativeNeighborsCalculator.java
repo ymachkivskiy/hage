@@ -2,7 +2,7 @@ package org.hage.platform.component.structure.connections.grid.calc;
 
 import org.hage.platform.component.structure.Position;
 import org.hage.platform.component.structure.connections.RelativePosition;
-import org.hage.platform.component.structure.grid.BoundaryConditions;
+import org.hage.platform.component.structure.grid.GridBoundaryConditions;
 import org.hage.platform.component.structure.grid.Dimensions;
 import org.hage.platform.component.structure.grid.GridNeighborhoodType;
 
@@ -17,9 +17,9 @@ public class RelativeNeighborsCalculator {
     private final PositionReflector reflector;
     private final NeighborsGenerator neighborsGenerator;
 
-    public RelativeNeighborsCalculator(BoundaryConditions boundaryConditions, Dimensions gridDimensions, GridNeighborhoodType neighborhoodType) {
+    public RelativeNeighborsCalculator(GridBoundaryConditions gridBoundaryConditions, Dimensions gridDimensions, GridNeighborhoodType neighborhoodType) {
         this.reflector = new PositionReflector(gridDimensions);
-        this.neighborsGenerator = neighborsGeneratorFor(neighborhoodType, boundaryConditions, gridDimensions);
+        this.neighborsGenerator = neighborsGeneratorFor(neighborhoodType, gridBoundaryConditions, gridDimensions);
     }
 
     public List<Position> neighborsOf(Position position, RelativePosition relativePosition) {

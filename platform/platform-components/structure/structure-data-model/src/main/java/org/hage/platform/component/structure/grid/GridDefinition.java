@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 @Data
 public class GridDefinition implements Serializable {
-    private final BoundaryConditions boundaryConditions;
+    private final GridBoundaryConditions gridBoundaryConditions;
     private final Dimensions dimensions;
     private final GridNeighborhoodType neighborhoodType;
 }

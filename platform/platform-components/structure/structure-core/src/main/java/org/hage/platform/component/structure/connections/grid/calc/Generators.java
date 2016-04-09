@@ -5,7 +5,7 @@ import org.hage.platform.component.structure.Position;
 import org.hage.platform.component.structure.StructureException;
 import org.hage.platform.component.structure.connections.util.AxisCoordinateUtil.ShiftVector;
 import org.hage.platform.component.structure.connections.util.AxisPerpendicularity.Plane;
-import org.hage.platform.component.structure.grid.BoundaryConditions;
+import org.hage.platform.component.structure.grid.GridBoundaryConditions;
 import org.hage.platform.component.structure.grid.Dimensions;
 import org.hage.platform.component.structure.grid.GridNeighborhoodType;
 
@@ -17,7 +17,7 @@ import java.util.function.Function;
 import static java.util.Collections.singletonList;
 import static java.util.Optional.ofNullable;
 import static org.hage.platform.component.structure.connections.util.AxisCoordinateUtil.ShiftVector.newZeroShift;
-import static org.hage.platform.component.structure.connections.util.AxisCoordinateUtil.prepareShiftForAxisCoordinate;
+import static org.hage.platform.component.structure.connections.util.AxisCoordinateUtil.updateShiftVectorForAxis;
 
 class Generators {
     private static final EnumMap<GridNeighborhoodType, Function<PositionBoundsChecker, NeighborsGenerator>> generatorsMap = new EnumMap<>(GridNeighborhoodType.class);
@@ -28,10 +28,10 @@ class Generators {
     }
 
 
-    public static NeighborsGenerator neighborsGeneratorFor(GridNeighborhoodType neighborhoodType, BoundaryConditions boundaryConditions, Dimensions gridDimensions) {
+    public static NeighborsGenerator neighborsGeneratorFor(GridNeighborhoodType neighborhoodType, GridBoundaryConditions gridBoundaryConditions, Dimensions gridDimensions) {
         return ofNullable(generatorsMap.get(neighborhoodType))
             .orElseThrow(() -> new StructureException("Neighbors generator not available for " + neighborhoodType + " neighborhood type."))
-            .apply(new PositionBoundsChecker(boundaryConditions, gridDimensions));
+            .apply(new PositionBoundsChecker(gridBoundaryConditions, gridDimensions));
     }
 
 
@@ -66,17 +66,17 @@ class Generators {
                 ShiftVector shiftV;
 
                 shiftV = newZeroShift();
-                prepareShiftForAxisCoordinate(shiftV, fAxis, shift);
+                updateShiftVectorForAxis(shiftV, fAxis, shift);
                 appendCorrectNeighbor(nearestNeighbor, shiftV, neighbors);
 
-                prepareShiftForAxisCoordinate(shiftV, sAxis, shift);
+                updateShiftVectorForAxis(shiftV, sAxis, shift);
                 appendCorrectNeighbor(nearestNeighbor, shiftV, neighbors);
 
                 shiftV = newZeroShift();
-                prepareShiftForAxisCoordinate(shiftV, sAxis, shift);
+                updateShiftVectorForAxis(shiftV, sAxis, shift);
                 appendCorrectNeighbor(nearestNeighbor, shiftV, neighbors);
 
-                prepareShiftForAxisCoordinate(shiftV, fAxis, -shift);
+                updateShiftVectorForAxis(shiftV, fAxis, -shift);
                 appendCorrectNeighbor(nearestNeighbor, shiftV, neighbors);
             }
 

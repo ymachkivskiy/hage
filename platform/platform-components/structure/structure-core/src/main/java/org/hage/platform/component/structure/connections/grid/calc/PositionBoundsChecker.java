@@ -2,7 +2,7 @@ package org.hage.platform.component.structure.connections.grid.calc;
 
 import org.hage.platform.component.structure.Axis;
 import org.hage.platform.component.structure.Position;
-import org.hage.platform.component.structure.grid.BoundaryConditions;
+import org.hage.platform.component.structure.grid.GridBoundaryConditions;
 import org.hage.platform.component.structure.grid.Dimensions;
 
 import java.util.EnumSet;
@@ -15,9 +15,9 @@ class PositionBoundsChecker {
     private final Dimensions dimensions;
     private final EnumSet<Axis> axisesWithForbiddenMirroring;
 
-    public PositionBoundsChecker(BoundaryConditions boundaryConditions, Dimensions dimensions) {
+    public PositionBoundsChecker(GridBoundaryConditions gridBoundaryConditions, Dimensions dimensions) {
         this.dimensions = dimensions;
-        this.axisesWithForbiddenMirroring = axisesForbiddenForMirroring(boundaryConditions);
+        this.axisesWithForbiddenMirroring = axisesForbiddenForMirroring(gridBoundaryConditions);
     }
 
     public boolean isLegal(Position position) {

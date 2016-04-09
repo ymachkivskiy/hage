@@ -17,7 +17,7 @@ public class FullGridStructureCreationStrategy implements StructureCreationStrat
     @Override
     public Structure createUsingDefinition(StructureDefinition structure) {
         GridDefinition def = structure.getGridDefinition();
-        return new FullGridStructure(def.getNeighborhoodType(), def.getDimensions(), def.getBoundaryConditions());
+        return new FullGridStructure(def.getNeighborhoodType(), def.getDimensions(), def.getGridBoundaryConditions());
     }
 
 }

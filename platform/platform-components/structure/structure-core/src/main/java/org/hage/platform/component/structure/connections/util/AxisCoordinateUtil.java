@@ -49,7 +49,7 @@ public class AxisCoordinateUtil {
         return coordinateExtractorsMap.get(axis).coordinateExtractor.apply(position);
     }
 
-    public static void prepareShiftForAxisCoordinate(ShiftVector shiftVector, Axis axis, int shiftDelta) {
+    public static void updateShiftVectorForAxis(ShiftVector shiftVector, Axis axis, int shiftDelta) {
         coordinateExtractorsMap.get(axis).shiftUpdater.accept(shiftVector, shiftDelta);
     }
 

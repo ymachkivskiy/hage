@@ -6,7 +6,7 @@ import lombok.ToString;
 import org.hage.platform.component.structure.graph.Edge;
 import org.hage.platform.component.structure.graph.GraphDefinition;
 import org.hage.platform.component.structure.graph.GraphType;
-import org.hage.platform.component.structure.grid.BoundaryConditions;
+import org.hage.platform.component.structure.grid.GridBoundaryConditions;
 import org.hage.platform.component.structure.grid.Dimensions;
 import org.hage.platform.component.structure.grid.GridDefinition;
 import org.hage.platform.component.structure.grid.GridNeighborhoodType;
@@ -24,8 +24,8 @@ public class StructureDefinition implements Serializable {
     private final GridDefinition gridDefinition;
     private final GraphDefinition graphDefinition;
 
-    public StructureDefinition(BoundaryConditions boundaryConditions, Dimensions dimensions, GridNeighborhoodType gridNeighborhoodType) {
-        this(StructureType.FULL_GRID, new GridDefinition(boundaryConditions, dimensions, gridNeighborhoodType), null);
+    public StructureDefinition(GridBoundaryConditions gridBoundaryConditions, Dimensions dimensions, GridNeighborhoodType gridNeighborhoodType) {
+        this(StructureType.FULL_GRID, new GridDefinition(gridBoundaryConditions, dimensions, gridNeighborhoodType), null);
     }
 
     public StructureDefinition(List<Position> islands) {

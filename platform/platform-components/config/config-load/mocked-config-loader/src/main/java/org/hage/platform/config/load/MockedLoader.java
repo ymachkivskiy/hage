@@ -22,7 +22,7 @@ import java.util.EnumSet;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.hage.platform.component.structure.Position.ZERO;
-import static org.hage.platform.component.structure.grid.BoundaryConditions.CLOSED;
+import static org.hage.platform.component.structure.grid.GridBoundaryConditions.CLOSED;
 import static org.hage.platform.component.structure.grid.GridNeighborhoodType.MOORE_NEIGHBORHOOD;
 import static org.hage.platform.component.structure.grid.GridNeighborhoodType.VON_NEUMANN_NEGIHBORHOOD;
 import static org.hage.platform.config.load.definition.agent.AgentCountData.atMost;
