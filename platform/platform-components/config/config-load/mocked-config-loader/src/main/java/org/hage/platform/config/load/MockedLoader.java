@@ -23,7 +23,8 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.hage.platform.component.structure.Position.ZERO;
 import static org.hage.platform.component.structure.grid.BoundaryConditions.CLOSED;
-import static org.hage.platform.component.structure.grid.GridNeighborhoodType.FIRST_DEGREE;
+import static org.hage.platform.component.structure.grid.GridNeighborhoodType.MOORE_NEIGHBORHOOD;
+import static org.hage.platform.component.structure.grid.GridNeighborhoodType.VON_NEUMANN_NEGIHBORHOOD;
 import static org.hage.platform.config.load.definition.agent.AgentCountData.atMost;
 import static org.hage.platform.config.load.definition.agent.AgentCountData.fixed;
 import static org.hage.platform.config.load.definition.agent.PositionsSelectionData.allPositions;
@@ -32,7 +33,7 @@ import static org.hage.platform.config.load.definition.agent.PositionsSelectionD
 class MockedLoader implements ConfigurationLoader {
 
     private static final SimulationOrganizationDefinition HABITAT_EXTERNAL_CONFIGURATION = new SimulationOrganizationDefinition(
-        new StructureDefinition(CLOSED, Dimensions.definedBy(2, 2, 4), FIRST_DEGREE),
+        new StructureDefinition(CLOSED, Dimensions.definedBy(2, 2, 4), MOORE_NEIGHBORHOOD),
         singletonList(
             new ChunkPopulationQualifier(
                 new Chunk(ZERO, Dimensions.definedBy(2, 2, 3)),

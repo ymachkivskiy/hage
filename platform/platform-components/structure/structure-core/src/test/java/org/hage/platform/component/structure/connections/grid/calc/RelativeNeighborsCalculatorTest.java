@@ -19,9 +19,9 @@ public class RelativeNeighborsCalculatorTest {
     //region Closed boundary conditions
 
     @Test
-    public void testClosedInsideGridFirstDegreeNeighbors() {
+    public void testClosedInsideGridVonNeumanNeighbors() {
         // given
-        RelativeNeighborsCalculator tested = new RelativeNeighborsCalculator(CLOSED, definedBy(3, 3, 3), FIRST_DEGREE);
+        RelativeNeighborsCalculator tested = new RelativeNeighborsCalculator(CLOSED, definedBy(3, 3, 3), VON_NEUMANN_NEGIHBORHOOD);
 
         // when
         List<Position> neighbors = tested.neighborsOf(position(0, 0, 1), ABOVE);
@@ -31,27 +31,9 @@ public class RelativeNeighborsCalculatorTest {
     }
 
     @Test
-    public void testClosedInsideGridSecondDegreeNeighbors() {
+    public void testClosedInsideGridMooreNeighbors() {
         // given
-        RelativeNeighborsCalculator tested = new RelativeNeighborsCalculator(CLOSED, definedBy(3, 3, 3), SECOND_DEGREE);
-
-        // when
-        List<Position> neighbors = tested.neighborsOf(position(1, 1, 1), IN_FRONT);
-
-        // then
-        assertThat(neighbors).containsOnly(
-            position(2, 1, 1),
-            position(2, 0, 1),
-            position(2, 2, 1),
-            position(2, 1, 0),
-            position(2, 1, 2)
-        );
-    }
-
-    @Test
-    public void testClosedInsideGridThirdDegreeNeighbors() {
-        // given
-        RelativeNeighborsCalculator tested = new RelativeNeighborsCalculator(CLOSED, definedBy(3, 3, 3), THIRD_DEGREE);
+        RelativeNeighborsCalculator tested = new RelativeNeighborsCalculator(CLOSED, definedBy(3, 3, 3), MOORE_NEIGHBORHOOD);
 
         // when
         List<Position> neighbors = tested.neighborsOf(position(1, 0, 1), ON_RIGHT);
@@ -72,9 +54,9 @@ public class RelativeNeighborsCalculatorTest {
 
 
     @Test
-    public void testClosedOnGridSideFirstDegreeNeighbors() {
+    public void testClosedOnGridSideVonNeumanNeighbors() {
         // given
-        RelativeNeighborsCalculator tested = new RelativeNeighborsCalculator(CLOSED, definedBy(3, 3, 3), FIRST_DEGREE);
+        RelativeNeighborsCalculator tested = new RelativeNeighborsCalculator(CLOSED, definedBy(3, 3, 3), VON_NEUMANN_NEGIHBORHOOD);
 
         // when
         List<Position> neighbors = tested.neighborsOf(position(0, 1, 1), AT_BACK);
@@ -84,25 +66,9 @@ public class RelativeNeighborsCalculatorTest {
     }
 
     @Test
-    public void testClosedOnGridEdgeSecondDegreeNeighbors() {
+    public void testClosedOnGridCornerMooreNeighbors() {
         // given
-        RelativeNeighborsCalculator tested = new RelativeNeighborsCalculator(CLOSED, definedBy(3, 3, 3), SECOND_DEGREE);
-
-        // when
-        List<Position> neighbors = tested.neighborsOf(position(0, 2, 1), ABOVE);
-
-        // then
-        assertThat(neighbors).containsOnly(
-            position(0, 1, 2),
-            position(0, 2, 2),
-            position(1, 2, 2)
-        );
-    }
-
-    @Test
-    public void testClosedOnGridCornerThirdDegreeNeighbors() {
-        // given
-        RelativeNeighborsCalculator tested = new RelativeNeighborsCalculator(CLOSED, definedBy(3, 3, 3), THIRD_DEGREE);
+        RelativeNeighborsCalculator tested = new RelativeNeighborsCalculator(CLOSED, definedBy(3, 3, 3), MOORE_NEIGHBORHOOD);
 
         // when
         List<Position> neighbors = tested.neighborsOf(position(1, 2, 2), AT_BACK);
@@ -126,9 +92,9 @@ public class RelativeNeighborsCalculatorTest {
     //region Grid side
 
     @Test
-    public void testFullTorusOnGridSideFirstDegreeNeighbors() {
+    public void testFullTorusOnGridSideVonNeumanNeighbors() {
         // given
-        RelativeNeighborsCalculator tested = new RelativeNeighborsCalculator(FULL_TORUS, definedBy(3, 3, 3), FIRST_DEGREE);
+        RelativeNeighborsCalculator tested = new RelativeNeighborsCalculator(FULL_TORUS, definedBy(3, 3, 3), VON_NEUMANN_NEGIHBORHOOD);
 
         // when
         List<Position> neighbors = tested.neighborsOf(position(2, 1, 1), IN_FRONT);
@@ -139,27 +105,9 @@ public class RelativeNeighborsCalculatorTest {
     }
 
     @Test
-    public void testFullTorusOnGridSideSecondDegreeNeighbors() {
+    public void testFullTorusOnGridSideMooreNeighbors() {
         // given
-        RelativeNeighborsCalculator tested = new RelativeNeighborsCalculator(FULL_TORUS, definedBy(3, 3, 3), SECOND_DEGREE);
-
-        // when
-        List<Position> neighbors = tested.neighborsOf(position(1, 1, 2), ABOVE);
-
-        // then
-        assertThat(neighbors).containsOnly(
-            position(1, 1, 0),
-            position(0, 1, 0),
-            position(2, 1, 0),
-            position(1, 0, 0),
-            position(1, 2, 0)
-        );
-    }
-
-    @Test
-    public void testFullTorusOnGridSideThirdDegreeNeighbors() {
-        // given
-        RelativeNeighborsCalculator tested = new RelativeNeighborsCalculator(FULL_TORUS, definedBy(3, 3, 3), THIRD_DEGREE);
+        RelativeNeighborsCalculator tested = new RelativeNeighborsCalculator(FULL_TORUS, definedBy(3, 3, 3), MOORE_NEIGHBORHOOD);
 
         // when
         List<Position> neighbors = tested.neighborsOf(position(1, 0, 1), ON_LEFT);
@@ -184,9 +132,9 @@ public class RelativeNeighborsCalculatorTest {
     //region Grid edge
 
     @Test
-    public void testFullTorusOnGridEdgeFirstDegreeNeighborsAllMirrored() {
+    public void testFullTorusOnGridEdgeVonNeumanNeighborsAllMirrored() {
         // given
-        RelativeNeighborsCalculator tested = new RelativeNeighborsCalculator(FULL_TORUS, definedBy(3, 3, 3), FIRST_DEGREE);
+        RelativeNeighborsCalculator tested = new RelativeNeighborsCalculator(FULL_TORUS, definedBy(3, 3, 3), VON_NEUMANN_NEGIHBORHOOD);
 
         // when
         List<Position> neighbors = tested.neighborsOf(position(0, 0, 1), AT_BACK);
@@ -196,45 +144,9 @@ public class RelativeNeighborsCalculatorTest {
     }
 
     @Test
-    public void testFullTorusOnGridEdgeSecondDegreeNeighborsAllMirrored() {
+    public void testFullTorusOnGridEdgeMooreNeighborsAllMirrored() {
         // given
-        RelativeNeighborsCalculator tested = new RelativeNeighborsCalculator(FULL_TORUS, definedBy(3, 3, 3), SECOND_DEGREE);
-
-        // when
-        List<Position> neighbors = tested.neighborsOf(position(1, 2, 0), BELOW);
-
-        // then
-        assertThat(neighbors).containsOnly(
-            position(1, 2, 2),
-            position(0, 2, 2),
-            position(1, 1, 2),
-            position(2, 2, 2),
-            position(1, 0, 2)
-        );
-    }
-
-    @Test
-    public void testFullTorusOnGridEdgeSecondDegreeNeighborsMixedMirroring() {
-        // given
-        RelativeNeighborsCalculator tested = new RelativeNeighborsCalculator(FULL_TORUS, definedBy(3, 3, 3), SECOND_DEGREE);
-
-        // when
-        List<Position> neighbors = tested.neighborsOf(position(0, 2, 1), ABOVE);
-
-        // then
-        assertThat(neighbors).containsOnly(
-            position(0, 2, 2),
-            position(0, 1, 2),
-            position(1, 2, 2),
-            position(2, 2, 2),
-            position(0, 0, 2)
-        );
-    }
-
-    @Test
-    public void testFullTorusOnGridEdgeThirdDegreeNeighborsAllMirrored() {
-        // given
-        RelativeNeighborsCalculator tested = new RelativeNeighborsCalculator(FULL_TORUS, definedBy(3, 3, 3), THIRD_DEGREE);
+        RelativeNeighborsCalculator tested = new RelativeNeighborsCalculator(FULL_TORUS, definedBy(3, 3, 3), MOORE_NEIGHBORHOOD);
 
         // when
         List<Position> neighbors = tested.neighborsOf(position(1, 0, 0), ON_LEFT);
@@ -254,9 +166,9 @@ public class RelativeNeighborsCalculatorTest {
     }
 
     @Test
-    public void testFullTorusOnGridEdgeThirdDegreeNeighborsMixedMirroring() {
+    public void testFullTorusOnGridEdgeMooreNeighborsMixedMirroring() {
         // given
-        RelativeNeighborsCalculator tested = new RelativeNeighborsCalculator(FULL_TORUS, definedBy(3, 3, 3), THIRD_DEGREE);
+        RelativeNeighborsCalculator tested = new RelativeNeighborsCalculator(FULL_TORUS, definedBy(3, 3, 3), MOORE_NEIGHBORHOOD);
 
         // when
         List<Position> neighbors = tested.neighborsOf(position(0, 1, 0), ON_LEFT);
@@ -281,9 +193,9 @@ public class RelativeNeighborsCalculatorTest {
     //region Grid corner
 
     @Test
-    public void testFullTorusOnGridCornerFirstDegreeNeighborsAllMirrored() {
+    public void testFullTorusOnGridCornerVonNeumanNeighborsAllMirrored() {
         // given
-        RelativeNeighborsCalculator tested = new RelativeNeighborsCalculator(FULL_TORUS, definedBy(3, 3, 3), FIRST_DEGREE);
+        RelativeNeighborsCalculator tested = new RelativeNeighborsCalculator(FULL_TORUS, definedBy(3, 3, 3), VON_NEUMANN_NEGIHBORHOOD);
 
         // when
         List<Position> neighbors = tested.neighborsOf(position(2, 0, 2), IN_FRONT);
@@ -293,45 +205,9 @@ public class RelativeNeighborsCalculatorTest {
     }
 
     @Test
-    public void testFullTorusOnGridCornerSecondDegreeNeighborsAllMirrored() {
+    public void testFullTorusOnGridCornerMooreNeighborsAllMirrored() {
         // given
-        RelativeNeighborsCalculator tested = new RelativeNeighborsCalculator(FULL_TORUS, definedBy(3, 3, 3), SECOND_DEGREE);
-
-        // when
-        List<Position> neighbors = tested.neighborsOf(position(2, 2, 2), IN_FRONT);
-
-        // then
-        assertThat(neighbors).containsOnly(
-            position(0, 2, 2),
-            position(0, 1, 2),
-            position(0, 2, 1),
-            position(0, 2, 0),
-            position(0, 0, 2)
-        );
-    }
-
-    @Test
-    public void testFullTorusOnGridCornerSecondDegreeNeighborsMixedMirroring() {
-        // given
-        RelativeNeighborsCalculator tested = new RelativeNeighborsCalculator(FULL_TORUS, definedBy(3, 3, 3), SECOND_DEGREE);
-
-        // when
-        List<Position> neighbors = tested.neighborsOf(position(0, 2, 2), ON_LEFT);
-
-        // then
-        assertThat(neighbors).containsOnly(
-            position(0, 1, 2),
-            position(0, 1, 1),
-            position(1, 1, 2),
-            position(0, 1, 0),
-            position(2, 1, 2)
-        );
-    }
-
-    @Test
-    public void testFullTorusOnGridCornerThirdDegreeNeighborsAllMirrored() {
-        // given
-        RelativeNeighborsCalculator tested = new RelativeNeighborsCalculator(FULL_TORUS, definedBy(3, 3, 3), THIRD_DEGREE);
+        RelativeNeighborsCalculator tested = new RelativeNeighborsCalculator(FULL_TORUS, definedBy(3, 3, 3), MOORE_NEIGHBORHOOD);
 
         // when
         List<Position> neighbors = tested.neighborsOf(position(2, 2, 2), IN_FRONT);
@@ -351,9 +227,9 @@ public class RelativeNeighborsCalculatorTest {
     }
 
     @Test
-    public void testFullTorusOnGridCornerThirdDegreeNeighborsMixedMirroring() {
+    public void testFullTorusOnGridCornerMooreNeighborsMixedMirroring() {
         // given
-        RelativeNeighborsCalculator tested = new RelativeNeighborsCalculator(FULL_TORUS, definedBy(3, 3, 3), THIRD_DEGREE);
+        RelativeNeighborsCalculator tested = new RelativeNeighborsCalculator(FULL_TORUS, definedBy(3, 3, 3), MOORE_NEIGHBORHOOD);
 
         // when
         List<Position> neighbors = tested.neighborsOf(position(0, 0, 0), ON_RIGHT);

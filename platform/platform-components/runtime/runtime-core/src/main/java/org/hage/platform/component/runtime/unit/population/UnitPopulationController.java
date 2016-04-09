@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.hage.platform.component.container.MutableInstanceContainer;
 import org.hage.platform.component.runtime.init.AgentDefinition;
 import org.hage.platform.component.runtime.init.UnitPopulation;
-import org.hage.platform.component.runtime.unit.population.util.StatefulPrototypeComponentsInitializer;
+import org.hage.platform.component.runtime.util.StatefulPrototypeComponentsInitializer;
 import org.hage.platform.simulation.runtime.Agent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;

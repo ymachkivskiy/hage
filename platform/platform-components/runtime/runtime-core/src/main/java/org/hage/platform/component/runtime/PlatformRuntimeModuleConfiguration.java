@@ -2,7 +2,6 @@ package org.hage.platform.component.runtime;
 
 import org.hage.platform.component.runtime.execution.ExecutionCore;
 import org.hage.platform.component.runtime.execution.NodeExecutionCore;
-import org.hage.platform.component.runtime.execution.PostStepPhase;
 import org.hage.platform.component.runtime.execution.cycle.FixedPhaseOrderOrderClassifier;
 import org.hage.platform.component.runtime.execution.cycle.PostStepPhaseOrderClassifier;
 import org.hage.platform.component.runtime.execution.phase.ExecutionPhasesProvider;
@@ -12,8 +11,8 @@ import org.hage.platform.component.runtime.init.GreedyPopulationDivisor;
 import org.hage.platform.component.runtime.init.Population;
 import org.hage.platform.component.runtime.init.RuntimeInitializer;
 import org.hage.platform.component.runtime.unit.NodeAgentUnitsRepo;
-import org.hage.platform.component.runtime.unit.population.util.SimpleStatefulPrototypeComponentsInitializer;
-import org.hage.platform.component.runtime.unit.population.util.StatefulPrototypeComponentsInitializer;
+import org.hage.platform.component.runtime.util.SimpleStatefulPrototypeComponentsInitializer;
+import org.hage.platform.component.runtime.util.StatefulPrototypeComponentsInitializer;
 import org.hage.util.proportion.ProportionsDivisor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;

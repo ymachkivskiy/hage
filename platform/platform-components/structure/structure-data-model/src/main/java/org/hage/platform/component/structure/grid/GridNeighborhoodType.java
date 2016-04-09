@@ -4,51 +4,42 @@ import java.io.Serializable;
 
 public enum GridNeighborhoodType implements Serializable {
     /**
-     * Next to central position layer (for one relative position)
-     *  ___ ___ ___
-     * |   |   |   |
-     * |___|___|___|
-     * |   |   |   |
-     * |___|_ _|___|
-     * |   |   |   |
-     * |___|___|___|
+     * <b>C</b> for central position
+     *
+     *  ___ ___ ___  ___ ___ ___  ___ ___ ___
+     * |   |   |   ||   |   |   ||   |   |   |
+     * |___|___|___||___|___|___||___|___|___|
+     * |   |   |   ||   | C |   ||   |   |   |
+     * |___|___|___||___|___|___||___|___|___|
+     * |   |   |   ||   |   |   ||   |   |   |
+     * |___|___|___||___|___|___||___|___|___|
      *
      */
     NO_NEIGHBORS,
     /**
-     * Next to central position layer (for one relative position)
-     *  ___ ___ ___
-     * |   |   |   |
-     * |___|___|___|
-     * |   | f |   |
-     * |___|_ _|___|
-     * |   |   |   |
-     * |___|___|___|
+     * <b>C</b> for central position
+     *
+     *  ___ ___ ___  ___ ___ ___  ___ ___ ___
+     * |   |   |   ||   | X |   ||   |   |   |
+     * |___|___|___||___|___|___||___|___|___|
+     * |   | X |   || X | C | X ||   | X |   |
+     * |___|___|___||___|___|___||___|___|___|
+     * |   |   |   ||   | X |   ||   |   |   |
+     * |___|___|___||___|___|___||___|___|___|
      *
      */
-    FIRST_DEGREE,
+    VON_NEUMANN_NEGIHBORHOOD,
     /**
-     * Next to central position layer (for one relative position)
-     *  ___ ___ ___
-     * |   | s |   |
-     * |___|___|___|
-     * | s | f | s |
-     * |___|_ _|___|
-     * |   | s |   |
-     * |___|___|___|
+     * <b>C</b> for central position
+     *
+     *  ___ ___ ___  ___ ___ ___  ___ ___ ___
+     * | X | X | X || X | X | X || X | X | X |
+     * |___|___|___||___|___|___||___|___|___|
+     * | X | X | X || X | C | X || X | X | X |
+     * |___|___|___||___|___|___||___|___|___|
+     * | X | X | X || X | X | X || X | X | X |
+     * |___|___|___||___|___|___||___|___|___|
      *
      */
-    SECOND_DEGREE,
-    /**
-     * Next to central position layer (for one relative position)
-     *  ___ ___ ___
-     * | t | s | t |
-     * |___|___|___|
-     * | s | f | s |
-     * |___|_ _|___|
-     * | t | s | t |
-     * |___|___|___|
-     *
-     */
-    THIRD_DEGREE,
+    MOORE_NEIGHBORHOOD,
 }

@@ -1,12 +1,13 @@
 package org.hage.platform.component.structure.connections.grid.calc;
 
-import org.hage.platform.component.structure.StructureException;
+import org.hage.platform.component.structure.Axis;
 import org.hage.platform.component.structure.Position;
+import org.hage.platform.component.structure.StructureException;
+import org.hage.platform.component.structure.connections.util.AxisCoordinateUtil.ShiftVector;
+import org.hage.platform.component.structure.connections.util.AxisPerpendicularity.Plane;
 import org.hage.platform.component.structure.grid.BoundaryConditions;
 import org.hage.platform.component.structure.grid.Dimensions;
 import org.hage.platform.component.structure.grid.GridNeighborhoodType;
-import org.hage.platform.component.structure.connections.util.AxisCoordinateUtil.ShiftVector;
-import org.hage.platform.component.structure.connections.util.AxisPerpendicularity;
 
 import java.util.EnumMap;
 import java.util.LinkedList;
@@ -22,9 +23,8 @@ class Generators {
     private static final EnumMap<GridNeighborhoodType, Function<PositionBoundsChecker, NeighborsGenerator>> generatorsMap = new EnumMap<>(GridNeighborhoodType.class);
 
     static {
-        generatorsMap.put(GridNeighborhoodType.FIRST_DEGREE, FirstDegreeNeighborhoodGenerator::new);
-        generatorsMap.put(GridNeighborhoodType.SECOND_DEGREE, SecondDegreeNeighborhoodGenerator::new);
-        generatorsMap.put(GridNeighborhoodType.THIRD_DEGREE, ThirdDegreeNeighborhoodGenerator::new);
+        generatorsMap.put(GridNeighborhoodType.VON_NEUMANN_NEGIHBORHOOD, VonNeumanNeighborhood::new);
+        generatorsMap.put(GridNeighborhoodType.MOORE_NEIGHBORHOOD, MooreNeighborhood::new);
     }
 
 
@@ -35,93 +35,59 @@ class Generators {
     }
 
 
-    private static class FirstDegreeNeighborhoodGenerator extends NeighborsGenerator {
+    private static class VonNeumanNeighborhood extends NeighborsGenerator {
         protected static final int shifts[] = {-1, 1};
 
-        public FirstDegreeNeighborhoodGenerator(PositionBoundsChecker positionBoundsChecker) {
+        public VonNeumanNeighborhood(PositionBoundsChecker positionBoundsChecker) {
             super(positionBoundsChecker);
         }
 
         @Override
-        protected List<Position> getEnrichedPositions(Position nearestNeighbor, AxisPerpendicularity.Plane perpendicularPlane) {
+        protected List<Position> getEnrichedPositions(Position nearestNeighbor, Plane perpendicularPlane) {
             return singletonList(nearestNeighbor);
         }
     }
 
-    private static class SecondDegreeNeighborhoodGenerator extends FirstDegreeNeighborhoodGenerator {
+    private static class MooreNeighborhood extends VonNeumanNeighborhood {
 
-        public SecondDegreeNeighborhoodGenerator(PositionBoundsChecker positionBoundsChecker) {
-            super(positionBoundsChecker);
-        }
-
-        @Override
-        protected List<Position> getEnrichedPositions(Position nearestNeighbor, AxisPerpendicularity.Plane perpendicularPlane) {
-            List<Position> neighbors = new LinkedList<>(super.getEnrichedPositions(nearestNeighbor, perpendicularPlane));
-
-            for (int shift : shifts) {
-
-                ShiftVector shiftVector = newZeroShift();
-                prepareShiftForAxisCoordinate(shiftVector, perpendicularPlane.firstAxis, shift);
-
-                Position shiftedPosition = shiftVector.shiftPosition(nearestNeighbor);
-
-                if (positionBoundsChecker.isLegal(shiftedPosition)) {
-                    neighbors.add(shiftedPosition);
-                }
-
-
-                shiftVector = newZeroShift();
-                prepareShiftForAxisCoordinate(shiftVector, perpendicularPlane.secondAxis, shift);
-
-                shiftedPosition = shiftVector.shiftPosition(nearestNeighbor);
-
-                if (positionBoundsChecker.isLegal(shiftedPosition)) {
-                    neighbors.add(shiftedPosition);
-                }
-
-            }
-
-            return neighbors;
-        }
-    }
-
-    private static class ThirdDegreeNeighborhoodGenerator extends SecondDegreeNeighborhoodGenerator {
-
-        public ThirdDegreeNeighborhoodGenerator(PositionBoundsChecker positionBoundsChecker) {
+        public MooreNeighborhood(PositionBoundsChecker positionBoundsChecker) {
             super(positionBoundsChecker);
         }
 
 
         @Override
-        protected List<Position> getEnrichedPositions(Position nearestNeighbor, AxisPerpendicularity.Plane perpendicularPlane) {
+        protected List<Position> getEnrichedPositions(Position nearestNeighbor, Plane perpendicularPlane) {
             List<Position> neighbors = new LinkedList<>(super.getEnrichedPositions(nearestNeighbor, perpendicularPlane));
 
+            final Axis fAxis = perpendicularPlane.firstAxis;
+            final Axis sAxis = perpendicularPlane.secondAxis;
+
             for (int shift : shifts) {
+                ShiftVector shiftV;
 
-                ShiftVector shiftVector = newZeroShift();
-                prepareShiftForAxisCoordinate(shiftVector, perpendicularPlane.firstAxis, shift);
-                prepareShiftForAxisCoordinate(shiftVector, perpendicularPlane.secondAxis, shift);
+                shiftV = newZeroShift();
+                prepareShiftForAxisCoordinate(shiftV, fAxis, shift);
+                appendCorrectNeighbor(nearestNeighbor, shiftV, neighbors);
 
-                Position shiftedPosition = shiftVector.shiftPosition(nearestNeighbor);
+                prepareShiftForAxisCoordinate(shiftV, sAxis, shift);
+                appendCorrectNeighbor(nearestNeighbor, shiftV, neighbors);
 
-                if (positionBoundsChecker.isLegal(shiftedPosition)) {
-                    neighbors.add(shiftedPosition);
-                }
+                shiftV = newZeroShift();
+                prepareShiftForAxisCoordinate(shiftV, sAxis, shift);
+                appendCorrectNeighbor(nearestNeighbor, shiftV, neighbors);
 
-
-                shiftVector = newZeroShift();
-                prepareShiftForAxisCoordinate(shiftVector, perpendicularPlane.firstAxis, -shift);
-                prepareShiftForAxisCoordinate(shiftVector, perpendicularPlane.secondAxis, shift);
-
-                shiftedPosition = shiftVector.shiftPosition(nearestNeighbor);
-
-                if (positionBoundsChecker.isLegal(shiftedPosition)) {
-                    neighbors.add(shiftedPosition);
-                }
-
+                prepareShiftForAxisCoordinate(shiftV, fAxis, -shift);
+                appendCorrectNeighbor(nearestNeighbor, shiftV, neighbors);
             }
 
             return neighbors;
+        }
+
+        private void appendCorrectNeighbor(Position central, ShiftVector shiftV, List<Position> neighbors) {
+            Position neighbor = shiftV.shiftPosition(central);
+            if (positionBoundsChecker.isLegal(neighbor)) {
+                neighbors.add(neighbor);
+            }
         }
     }
 
