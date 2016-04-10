@@ -1,8 +1,7 @@
-package org.hage.platform.config.load.def;
+package org.hage.example;
 
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.component.container.exception.ComponentException;
 import org.hage.platform.simulation.container.Stateful;
 
 @Slf4j
@@ -20,12 +19,12 @@ public class SomeFooComponent implements Stateful {
     }
 
     @Override
-    public void init() throws ComponentException {
+    public void init() {
         log.info("Initializing component {}", this);
     }
 
     @Override
-    public boolean finish() throws ComponentException {
+    public boolean finish() {
         log.info("Finishing component {}", this);
         return true;
     }

@@ -11,13 +11,25 @@
 
     <artifactId>cli-node</artifactId>
 
+    <profiles>
+        <profile>
+            <id>master</id>
+            <dependencies>
+
+                <!-- simulation configuration loader -->
+                <dependency>
+                    <groupId>org.hage.platform.component</groupId>
+                    <artifactId>mocked-config-loader</artifactId>
+                    <version>${project.version}</version>
+                </dependency>
+
+            </dependencies>
+        </profile>
+    </profiles>
+
     <dependencies>
 
-        <dependency>
-            <groupId>org.hage.platform</groupId>
-            <artifactId>platform-assembly</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+        <!-- boot utils -->
 
         <dependency>
             <groupId>org.hage.platform.util.conf</groupId>
@@ -28,6 +40,60 @@
         <dependency>
             <groupId>org.hage.platform.util</groupId>
             <artifactId>platform-boot</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- platform core -->
+
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>structure-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>runtime-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>config-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>lifecycle-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>rate-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!--special implementations-->
+
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>pico-impl</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hage.platform.util</groupId>
+            <artifactId>connection-hazelcast</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!--TODO this is temporary dependency, to be removed-->
+
+        <dependency>
+            <groupId>org.hage.example</groupId>
+            <artifactId>example-model-data</artifactId>
             <version>${project.version}</version>
         </dependency>
 

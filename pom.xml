@@ -16,6 +16,7 @@
     <modules>
         <module>platform</module>
         <module>cli-node</module>
+        <module>example-model-data</module>
     </modules>
 
     <properties>

@@ -19,7 +19,6 @@
     <modules>
         <module>common</module>
         <module>platform-utils</module>
-        <module>platform-assembly</module>
         <module>platform-components</module>
         <module>simulation-api</module>
         <module>common-utils</module>

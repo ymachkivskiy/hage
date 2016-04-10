@@ -7,8 +7,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ComponentScan(basePackageClasses = PlatformConfigDistributedModuleConfiguration.class)
-class PlatformConfigDistributedModuleConfiguration {
+@ComponentScan(basePackageClasses = SimulationConfigurationCoreConfig.class)
+public class SimulationConfigurationCoreConfig {
 
     @Bean
     public ConfigurationAllocator getConfigurationSplitAllocator() {

@@ -1,7 +1,7 @@
-package org.hage.platform.config.load.def;
+package org.hage.example.agent;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.component.container.exception.ComponentException;
+import org.hage.example.SomeFooComponent;
 import org.hage.platform.simulation.runtime.Agent;
 import org.hage.platform.simulation.runtime.Context;
 
@@ -27,12 +27,12 @@ public class LightAgent implements Agent {
     }
 
     @Override
-    public void init() throws ComponentException {
+    public void init() {
 
     }
 
     @Override
-    public boolean finish() throws ComponentException {
+    public boolean finish() {
         return false;
     }
 }
