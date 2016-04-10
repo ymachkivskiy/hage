@@ -18,7 +18,7 @@
 
                 <!-- simulation configuration loader -->
                 <dependency>
-                    <groupId>org.hage.platform.component</groupId>
+                    <groupId>org.hage.platform.component.configload</groupId>
                     <artifactId>mocked-config-loader</artifactId>
                     <version>${project.version}</version>
                 </dependency>
@@ -33,7 +33,7 @@
 
         <dependency>
             <groupId>org.hage.platform.util.conf</groupId>
-            <artifactId>cli-config</artifactId>
+            <artifactId>cli-config-core</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -43,49 +43,9 @@
             <version>${project.version}</version>
         </dependency>
 
-        <!-- platform core -->
-
         <dependency>
-            <groupId>org.hage.platform.component</groupId>
-            <artifactId>structure-core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hage.platform.component</groupId>
-            <artifactId>runtime-core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hage.platform.component</groupId>
-            <artifactId>config-core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hage.platform.component</groupId>
-            <artifactId>lifecycle-core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hage.platform.component</groupId>
-            <artifactId>rate-core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <!--special implementations-->
-
-        <dependency>
-            <groupId>org.hage.platform.component</groupId>
-            <artifactId>pico-impl</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hage.platform.util</groupId>
-            <artifactId>connection-hazelcast</artifactId>
+            <groupId>org.hage.platform</groupId>
+            <artifactId>platform-assembly</artifactId>
             <version>${project.version}</version>
         </dependency>
 

@@ -10,6 +10,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>event-bus</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>event-bus-api</module>
+        <module>event-bus-core</module>
+    </modules>
 
     <dependencies>
         <dependency>

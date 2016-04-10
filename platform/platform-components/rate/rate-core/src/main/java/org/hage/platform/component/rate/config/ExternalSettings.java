@@ -1,6 +1,7 @@
 package org.hage.platform.component.rate.config;
 
 import lombok.Getter;
+import org.hage.platform.annotation.di.HageComponent;
 import org.hage.platform.component.rate.config.data.MeasurerSettings;
 import org.hage.platform.component.rate.model.MeasurerType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import java.util.Map;
 
 import static java.lang.String.format;
 
-@Component
+@HageComponent
 public class ExternalSettings {
 
     private static final String PROPERTY_PREFIX = "hage.platform.rate.local.";

@@ -16,7 +16,7 @@
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
-            <artifactId>config-data</artifactId>
+            <artifactId>simulation-config-data</artifactId>
             <version>${project.version}</version>
         </dependency>
 

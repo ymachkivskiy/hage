@@ -6,6 +6,7 @@ import com.google.common.collect.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.hage.platform.annotation.di.HageComponent;
 import org.hage.platform.component.lifecycle.LifecycleAction;
 import org.hage.platform.component.lifecycle.LifecycleEvent;
 import org.hage.platform.component.lifecycle.LifecycleState;
@@ -29,7 +30,7 @@ import static java.util.EnumSet.allOf;
 
 
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-@Component
+@HageComponent
 @Getter(AccessLevel.PACKAGE)
 @Slf4j
 public class LifecycleStateMachineBuilder {

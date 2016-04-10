@@ -2,6 +2,7 @@ package org.hage.platform.component.runtime.execution.phase;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hage.platform.annotation.di.HageComponent;
 import org.hage.platform.component.runtime.execution.ExecutionUnitPhase;
 import org.hage.platform.util.executors.core.CoreBatchExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import java.util.Set;
 import static java.util.EnumSet.noneOf;
 import static java.util.stream.Collectors.toList;
 
-@Component
+@HageComponent
 @Slf4j
 public class PhasedExecutor {
 

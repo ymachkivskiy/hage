@@ -2,6 +2,7 @@ package org.hage.platform.component.structure.connections;
 
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.hage.platform.annotation.di.HageComponent;
 import org.hage.platform.component.structure.StructureException;
 import org.hage.platform.component.structure.StructureDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,7 @@ import java.util.List;
 
 import static org.hage.util.CollectionUtils.nullSafe;
 
-@Component
+@HageComponent
 @Slf4j
 class StructureCreator {
 

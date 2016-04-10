@@ -16,7 +16,7 @@
     <modules>
         <module>container</module>
         <module>runtime</module>
-        <module>config</module>
+        <module>simulation-config</module>
         <module>rate</module>
         <module>lifecycle</module>
         <module>structure</module>

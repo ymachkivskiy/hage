@@ -7,7 +7,6 @@ import com.hazelcast.core.MembershipListener;
 import org.hage.platform.component.cluster.ClusterAddressManager;
 import org.hage.platform.component.cluster.ClusterMemberChangeCallback;
 import org.hage.platform.component.cluster.NodeAddress;
-import org.hage.platform.util.container.share.SharedBetweenContainers;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
@@ -19,7 +18,6 @@ import java.util.Set;
 import static com.google.common.base.Suppliers.memoize;
 import static java.util.stream.Collectors.toSet;
 
-@SharedBetweenContainers
 public class HazelcastClusterAddressManager implements ClusterAddressManager {
 
     @Autowired

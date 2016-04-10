@@ -12,7 +12,7 @@
     <artifactId>platform-configuration</artifactId>
 
     <modules>
-        <module>cli-config</module>
+        <module>cli-config-core</module>
         <module>internal-config-api</module>
     </modules>
 

@@ -14,7 +14,7 @@
     <description>The HAgE components implementation based on PicoContainer</description>
 
     <dependencies>
-        <!-- AgE Platform dependencies -->
+
         <dependency>
             <groupId>org.hage.platform.util</groupId>
             <artifactId>reflection</artifactId>

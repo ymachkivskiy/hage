@@ -1,6 +1,7 @@
 package org.hage.platform.component.structure.distribution;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hage.platform.annotation.di.HageComponent;
 import org.hage.platform.component.runtime.execution.BaseStaticExecutionStateAware;
 import org.hage.platform.component.structure.Position;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import java.util.List;
 
 import static org.hage.platform.component.runtime.execution.PostStepPhase.STRUCTURE_UPDATE;
 
-@Component
+@HageComponent
 @Slf4j
 class StructureChangeRemoteBuffer extends BaseStaticExecutionStateAware {
 

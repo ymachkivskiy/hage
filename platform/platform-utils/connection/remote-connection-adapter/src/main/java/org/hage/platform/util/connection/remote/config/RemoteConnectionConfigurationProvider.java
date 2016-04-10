@@ -2,7 +2,7 @@ package org.hage.platform.util.connection.remote.config;
 
 import org.hage.platform.config.ConfigurationCategory;
 import org.hage.platform.config.ConfigurationCategorySupplier;
-import org.hage.platform.config.ConfigurationProvider;
+import org.hage.platform.config.PlatformConfigurationValueProvider;
 import org.hage.platform.util.connection.config.ConnectionConfiguration;
 import org.hage.platform.util.connection.config.ConnectionConfigurationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ public class RemoteConnectionConfigurationProvider implements ConnectionConfigur
     private static final NetworkInterfaceConfigurationItem networkInterfaceAddrConfItem = new NetworkInterfaceConfigurationItem();
 
     @Autowired
-    private ConfigurationProvider configurationProvider;
+    private PlatformConfigurationValueProvider configurationProvider;
 
     @Override
     public ConnectionConfiguration getConfiguration() {

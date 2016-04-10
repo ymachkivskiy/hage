@@ -1,5 +1,6 @@
 package org.hage.platform.component.rate;
 
+import org.hage.platform.annotation.di.HageComponent;
 import org.hage.platform.component.rate.config.RatingSettingProvider;
 import org.hage.platform.component.rate.config.RatingSettingsResolver;
 import org.hage.platform.component.rate.config.data.RatingSettings;
@@ -11,7 +12,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static java.util.Optional.ofNullable;
 
-@Component
+@HageComponent
 class RateSettingsStorageService implements RatingSettingProvider, RateConfigurationConsumer {
 
     @Autowired

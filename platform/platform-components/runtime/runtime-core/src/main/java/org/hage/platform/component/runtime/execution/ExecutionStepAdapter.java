@@ -1,6 +1,7 @@
 package org.hage.platform.component.runtime.execution;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hage.platform.annotation.di.HageComponent;
 import org.hage.platform.component.runtime.execution.change.TasksChange;
 import org.hage.platform.component.runtime.execution.change.TasksChangeSupplier;
 import org.hage.platform.component.runtime.execution.cycle.PostStepPhasesRunner;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 import static org.hage.util.CollectionUtils.nullSafe;
 
-@Component
+@HageComponent
 @Slf4j
 public class ExecutionStepAdapter implements Runnable {
 

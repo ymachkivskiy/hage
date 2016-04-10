@@ -1,6 +1,7 @@
 package org.hage.platform.component.runtime.unit.population;
 
 import lombok.RequiredArgsConstructor;
+import org.hage.platform.annotation.di.HageComponent;
 import org.hage.platform.component.container.MutableInstanceContainer;
 import org.hage.platform.component.runtime.init.AgentDefinition;
 import org.hage.platform.component.runtime.init.UnitPopulation;
@@ -18,7 +19,7 @@ import static java.util.stream.Collectors.toList;
 import static java.util.stream.IntStream.range;
 import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
 
-@Component
+@HageComponent
 @Scope(SCOPE_PROTOTYPE)
 @RequiredArgsConstructor
 public class UnitPopulationController {

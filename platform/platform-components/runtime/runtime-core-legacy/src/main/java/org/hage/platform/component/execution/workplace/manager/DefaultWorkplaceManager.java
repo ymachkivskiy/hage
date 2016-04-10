@@ -33,7 +33,7 @@ import org.hage.platform.component.execution.workplace.Workplace;
 import org.hage.platform.component.container.IPicoComponentInstanceProvider;
 import org.hage.platform.component.container.PicoComponentInstanceProvider;
 import org.hage.platform.component.container.visitor.StatefulComponentInitializer;
-import org.hage.platform.config.Configuration;
+import org.hage.platform.simulationconfig.Configuration;
 import org.hage.platform.util.bus.EventBus;
 import org.hage.util.concurrency.Locks;
 import org.picocontainer.PicoContainer;

@@ -16,7 +16,7 @@
 
         <dependency>
             <groupId>org.hage.platform.util</groupId>
-            <artifactId>event-bus</artifactId>
+            <artifactId>event-bus-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 

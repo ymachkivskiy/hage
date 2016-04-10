@@ -1,5 +1,6 @@
 package org.hage.platform.component.rate.config;
 
+import org.hage.platform.annotation.di.HageComponent;
 import org.hage.platform.component.rate.config.data.GlobalRateSettings;
 import org.hage.platform.component.rate.config.data.MeasurerSettings;
 import org.hage.platform.component.rate.config.data.RatingSettings;
@@ -17,7 +18,7 @@ import static java.util.Arrays.stream;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
 
-@Component
+@HageComponent
 public class RatingSettingsResolver {
 
     @Autowired

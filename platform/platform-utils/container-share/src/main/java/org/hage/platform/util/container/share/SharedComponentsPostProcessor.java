@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 
 @Slf4j
-class SharedComponentsPostProcessor implements BeanPostProcessor {
+public class SharedComponentsPostProcessor implements BeanPostProcessor {
 
 
     @Autowired
