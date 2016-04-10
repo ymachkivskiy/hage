@@ -5,49 +5,52 @@ import org.hage.platform.PlatformCliCfg;
 import org.hage.platform.PlatformCoreCfg;
 import org.hage.platform.config.CommandLineArgumentsParser;
 import org.hage.platform.util.boot.PlatformStarter;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 
 public class NodeBootstrapper {
 
     private static final String HEADER =
-        "+-------------------------------+\n"
-            + "|Hh  hH   AAA           EEEEEEE |\n"
-            + "|Hh  hH  AAAAA   gggggg EE      |\n"
-            + "|hhhhhH AA   AA gg   gg EEEEE   |\n"
-            + "|hhhhhH AAAAAAA ggggggg EE      |\n"
-            + "|Hh  hH AA   AA      gg EEEEEEE |\n"
-            + "|Hh  hH          ggggg          |\n"
-            + "+-------------------------------+\n\n";
+              "+--------------------------------------------------------------------+\n"
+            + "|Hh  hH   AAA           EEEEEEE    Nn    nN    OOOO   DDDDD   EEEEEEE|\n"
+            + "|Hh  hH  AAAAA   gggggg EE         Nnn   nN   OooooO  DddddD  EE     |\n"
+            + "|hhhhhH AA   AA gg   gg EEEEE      Nnnn  nN   Oo  oO  Dd   D  EEEEE  |\n"
+            + "|hhhhhH AAAAAAA ggggggg EE         Nn nn nN   Oo  oO  Dd   D  EE     |\n"
+            + "|Hh  hH AA   AA      gg EEEEEEE    Nn  nnnN   OooooO  DddddD  EEEEEEE|\n"
+            + "|Hh  hH          ggggg             Nn    nN    OOOO   DDDDD          |\n"
+            + "+--------------------------------------------------------------------+\n\n";
 
+    private final AnnotationConfigApplicationContext parentCtxt;
+    private final AnnotationConfigApplicationContext corePlatformCtxt;
+
+
+    public NodeBootstrapper() {
+        parentCtxt = new AnnotationConfigApplicationContext(PlatformCliCfg.class);
+        corePlatformCtxt = new AnnotationConfigApplicationContext();
+
+        corePlatformCtxt.register(PlatformCoreCfg.class);
+        corePlatformCtxt.setParent(parentCtxt);
+    }
+
+    public void start(String[] args) {
+        parseArguments(args);
+        System.out.println(HEADER);
+        startPlatform();
+    }
+
+    private void parseArguments(String[] args) {
+        CommandLineArgumentsParser argumentsParser = parentCtxt.getBean(CommandLineArgumentsParser.class);
+        argumentsParser.parse(args);
+    }
+
+    private void startPlatform() {
+        corePlatformCtxt.refresh();
+        PlatformStarter platformStarter = corePlatformCtxt.getBean(PlatformStarter.class);
+        platformStarter.start();
+    }
 
     public static void main(String[] args) {
-
-        ApplicationContext parsingCtxt = parseArguments(args);
-
-        System.out.println(HEADER);
-
-        getPlatformStarter(parsingCtxt).start();
-
+        new NodeBootstrapper().start(args);
     }
-
-    private static PlatformStarter getPlatformStarter(ApplicationContext parsingCtxt) {
-        AnnotationConfigApplicationContext ctxt = new AnnotationConfigApplicationContext();
-
-        ctxt.register(PlatformCoreCfg.class);
-        ctxt.setParent(parsingCtxt);
-        ctxt.refresh();
-
-        return ctxt.getBean(PlatformStarter.class);
-    }
-
-    private static ApplicationContext parseArguments(String[] args) {
-        AnnotationConfigApplicationContext parsingCtxt = new AnnotationConfigApplicationContext(PlatformCliCfg.class);
-        parsingCtxt.getBean(CommandLineArgumentsParser.class).parse(args);
-
-        return parsingCtxt;
-    }
-
 
 }
