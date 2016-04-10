@@ -22,14 +22,8 @@
         <module>platform-assembly</module>
         <module>platform-components</module>
         <module>simulation-api</module>
+        <module>common-utils</module>
     </modules>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.hage</groupId>
-            <artifactId>common-utils</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-    </dependencies>
 
 </project>

@@ -12,4 +12,14 @@
     <artifactId>platform-common</artifactId>
 
 
+    <dependencies>
+
+        <dependency>
+            <groupId>org.hage.platform</groupId>
+            <artifactId>common-utils</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+    </dependencies>
+
 </project>

@@ -1,7 +1,6 @@
 package org.hage.platform.component.structure.distribution;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.component.cluster.LocalNodeAddressSupplier;
 import org.hage.platform.component.cluster.NodeAddress;
 import org.hage.platform.component.structure.Position;
 import org.hage.platform.component.structure.connections.Structure;

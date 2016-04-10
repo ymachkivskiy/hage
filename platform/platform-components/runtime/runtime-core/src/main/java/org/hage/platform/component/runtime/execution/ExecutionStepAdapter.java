@@ -1,7 +1,6 @@
 package org.hage.platform.component.runtime.execution;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.component.runtime.execution.ExecutionStepAware;
 import org.hage.platform.component.runtime.execution.change.TasksChange;
 import org.hage.platform.component.runtime.execution.change.TasksChangeSupplier;
 import org.hage.platform.component.runtime.execution.cycle.PostStepPhasesRunner;
@@ -9,8 +8,6 @@ import org.hage.platform.component.runtime.execution.phase.ExecutionPhasesProvid
 import org.hage.platform.component.runtime.execution.phase.PhasedExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 import static org.hage.util.CollectionUtils.nullSafe;
 
