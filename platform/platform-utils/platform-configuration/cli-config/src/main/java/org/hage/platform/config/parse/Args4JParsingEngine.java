@@ -58,7 +58,7 @@ public class Args4JParsingEngine implements ParsingEngine {
 
         arg.help(p.getDescription());
         if (p.isHasValue()) {
-            arg.nargs(1).metavar(p.getValueName()).type(p.getValueType());
+            arg.metavar(p.getValueName()).type(p.getValueType());
 
             if (p.getDefaultValue() != null) {
                 arg.setDefault(p.getDefaultValue());

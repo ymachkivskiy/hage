@@ -1,18 +1,17 @@
 package org.hage.platform;
 
+import org.hage.platform.config.PlatformUtilCliModuleConfiguration;
 import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.*;
 import org.springframework.context.annotation.ComponentScan.Filter;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 @Configuration
 @ComponentScan(
     basePackageClasses = BootConfiguration.class,
     useDefaultFilters = false,
-    includeFilters = {@Filter(Configuration.class)})
+    includeFilters = {@Filter(Configuration.class)}
+)
 @PropertySource("classpath:application.properties")
 public class BootConfiguration {
 

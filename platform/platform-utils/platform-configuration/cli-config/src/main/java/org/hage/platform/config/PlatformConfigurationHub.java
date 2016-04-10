@@ -11,13 +11,17 @@ import java.util.Optional;
 import static java.util.Optional.ofNullable;
 import static org.hage.util.CollectionUtils.nullSafe;
 
-class PlatformConfigurationHub implements ConfigurationProvider, CommandLineArgumentsParser {
+public class PlatformConfigurationHub implements ConfigurationProvider, CommandLineArgumentsParser {
 
     @Autowired(required = false)
     private List<ConfigurationCategorySupplier> configurationCategorySuppliers;
     @Autowired
     private ParsingEngine parsingEngine;
     private ParseResult argumentValues;
+
+    public PlatformConfigurationHub() {
+        boolean dupa = false;
+    }
 
     @Override
     public void parse(String[] arguments) throws InvalidRuntimeArgumentsException {

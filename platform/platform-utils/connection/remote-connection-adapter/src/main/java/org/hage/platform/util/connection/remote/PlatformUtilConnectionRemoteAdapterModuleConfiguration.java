@@ -13,9 +13,4 @@ public class PlatformUtilConnectionRemoteAdapterModuleConfiguration {
         return new EndpointInitializationPostProcessorBean();
     }
 
-    @Bean
-    public RemoteConnectionConfigurationProvider remoteConnectionConfigurationProvider() {
-        return new RemoteConnectionConfigurationProvider();
-    }
-
 }
