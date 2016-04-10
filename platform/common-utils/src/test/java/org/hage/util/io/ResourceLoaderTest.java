@@ -40,7 +40,7 @@ public class ResourceLoaderTest {
     /**
      * Tests obtaining a resource for null URI.
      */
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = IncorrectUriException.class)
     public void testNullGetResource() throws IncorrectUriException {
         ResourceLoader.getResource(null);
     }
@@ -48,7 +48,7 @@ public class ResourceLoaderTest {
     /**
      * Tests obtaining a resource for an empty string.
      */
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = IncorrectUriException.class)
     public void testEmptyGetResource() throws IncorrectUriException {
         ResourceLoader.getResource("");
     }
