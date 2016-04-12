@@ -2,17 +2,15 @@ package org.hage.platform.component.runtime.unit;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.HageRuntimeException;
-import org.hage.platform.annotation.di.HageComponent;
+import org.hage.platform.annotation.di.SingletonComponent;
 import org.hage.platform.component.container.MutableInstanceContainer;
-import org.hage.platform.component.runtime.unit.adapter.CommonContextAdapter;
 import org.hage.platform.component.runtime.unit.population.UnitPopulationController;
 import org.hage.platform.component.structure.Position;
 import org.hage.platform.component.structure.connections.Structure;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-@HageComponent
+@SingletonComponent
 @Slf4j
 class AgentsUnitFactory {
 
@@ -32,7 +30,7 @@ class AgentsUnitFactory {
             throw new HageRuntimeException("Illegal position " + position + " given during creation of agents unit.");
         }
 
-        return new AgentsUnit(position, newPopulationController(), newCommonContextAdapter(position));
+        return new AgentsUnit(position, newPopulationController());
     }
 
 
@@ -40,8 +38,6 @@ class AgentsUnitFactory {
         return beanFactory.getBean(UnitPopulationController.class, mutableInstanceContainer.newChildContainer());
     }
 
-    private CommonContextAdapter newCommonContextAdapter(Position position) {
-        return beanFactory.getBean(CommonContextAdapter.class, position);
-    }
+
 
 }

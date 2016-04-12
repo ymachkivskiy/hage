@@ -2,7 +2,7 @@ package org.hage.platform.component.simulationconfig.endpoint;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.annotation.di.HageComponent;
+import org.hage.platform.annotation.di.SingletonComponent;
 import org.hage.platform.component.cluster.NodeAddress;
 import org.hage.platform.component.simulationconfig.ConfigurationStorage;
 import org.hage.platform.component.simulationconfig.Configuration;
@@ -12,7 +12,6 @@ import org.hage.platform.util.connection.chanel.ConnectionDescriptor;
 import org.hage.platform.util.connection.remote.endpoint.BaseRemoteEndpoint;
 import org.hage.platform.util.connection.remote.endpoint.MessageEnvelope;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.Set;
 
@@ -20,7 +19,7 @@ import static org.hage.platform.component.simulationconfig.endpoint.message.Mess
 
 
 @Slf4j
-@HageComponent
+@SingletonComponent
 public class ConfigurationEndpoint extends BaseRemoteEndpoint<ConfigurationMessage> {
 
     private static final String CHANEL_NAME = "configuration-remote-chanel";

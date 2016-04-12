@@ -6,7 +6,7 @@ import com.google.common.collect.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.annotation.di.HageComponent;
+import org.hage.platform.annotation.di.PrototypeComponent;
 import org.hage.platform.component.lifecycle.LifecycleAction;
 import org.hage.platform.component.lifecycle.LifecycleEvent;
 import org.hage.platform.component.lifecycle.LifecycleState;
@@ -16,7 +16,6 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 import java.util.EnumMap;
 import java.util.EnumSet;
@@ -29,8 +28,7 @@ import static java.util.Collections.emptySet;
 import static java.util.EnumSet.allOf;
 
 
-@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-@HageComponent
+@PrototypeComponent
 @Getter(AccessLevel.PACKAGE)
 @Slf4j
 public class LifecycleStateMachineBuilder {

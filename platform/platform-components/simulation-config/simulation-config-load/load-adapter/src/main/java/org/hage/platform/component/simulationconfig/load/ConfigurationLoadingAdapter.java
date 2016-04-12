@@ -3,7 +3,7 @@ package org.hage.platform.component.simulationconfig.load;
 
 import com.google.common.eventbus.Subscribe;
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.annotation.di.HageComponent;
+import org.hage.platform.annotation.di.SingletonComponent;
 import org.hage.platform.component.simulationconfig.ConfigurationDistributor;
 import org.hage.platform.component.simulationconfig.Configuration;
 import org.hage.platform.component.simulationconfig.event.ConfigurationLoadRequestEvent;
@@ -11,7 +11,6 @@ import org.hage.platform.component.simulationconfig.load.generate.ComputationCon
 import org.hage.platform.component.simulationconfig.load.definition.InputConfiguration;
 import org.hage.platform.util.bus.EventSubscriber;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
@@ -19,7 +18,7 @@ import static java.util.Optional.empty;
 import static java.util.Optional.of;
 
 
-@HageComponent
+@SingletonComponent
 @Slf4j
 class ConfigurationLoadingAdapter implements EventSubscriber {
 

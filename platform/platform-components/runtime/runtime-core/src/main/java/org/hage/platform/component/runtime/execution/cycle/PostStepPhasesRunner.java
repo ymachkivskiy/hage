@@ -1,10 +1,9 @@
 package org.hage.platform.component.runtime.execution.cycle;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.annotation.di.HageComponent;
+import org.hage.platform.annotation.di.SingletonComponent;
 import org.hage.platform.component.runtime.execution.ExecutionStepAware;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -12,7 +11,7 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 import static org.hage.util.CollectionUtils.nullSafe;
 
-@HageComponent
+@SingletonComponent
 @Slf4j
 public class PostStepPhasesRunner {
 

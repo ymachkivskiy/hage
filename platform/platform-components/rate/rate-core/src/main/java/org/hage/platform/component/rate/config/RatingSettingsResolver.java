@@ -1,6 +1,6 @@
 package org.hage.platform.component.rate.config;
 
-import org.hage.platform.annotation.di.HageComponent;
+import org.hage.platform.annotation.di.SingletonComponent;
 import org.hage.platform.component.rate.config.data.GlobalRateSettings;
 import org.hage.platform.component.rate.config.data.MeasurerSettings;
 import org.hage.platform.component.rate.config.data.RatingSettings;
@@ -9,7 +9,6 @@ import org.hage.platform.component.rate.model.ComputationRatingConfig;
 import org.hage.platform.component.rate.model.MeasurerRateConfig;
 import org.hage.platform.component.rate.model.MeasurerType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
@@ -18,7 +17,7 @@ import static java.util.Arrays.stream;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
 
-@HageComponent
+@SingletonComponent
 public class RatingSettingsResolver {
 
     @Autowired

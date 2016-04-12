@@ -11,7 +11,6 @@ import org.springframework.context.annotation.DependsOn;
 
 
 @PlugableConfiguration
-@Configuration
 @ComponentScan(basePackageClasses = HazelcastModuleCfg.class)
 public class HazelcastModuleCfg {
 

@@ -15,7 +15,6 @@ public class AgentAdapter implements AgentAddress, Context {
     private final int id;
     private final String friendlyName;
     private final Agent agent;
-    private final CommonContextAdapter contextAdapter;
 
     public void performStep() {
         agent.step(this);
@@ -50,17 +49,16 @@ public class AgentAdapter implements AgentAddress, Context {
 
     @Override
     public UnitAddress queryUnit() {
-        return contextAdapter.queryUnit();
+        return null;
     }
 
     @Override
     public Neighbors querySurroundingUnits() {
-        return contextAdapter.querySurroundingUnits();
+        return null;
     }
 
     @Override
-    public void notifyStopConditionSatisfied() {
-        contextAdapter.notifyStopConditionSatisfied();
+    public void notifyStopConditionSatisfied(){
     }
 
 }

@@ -1,7 +1,7 @@
 package org.hage.platform.component.simulationconfig;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.annotation.di.HageComponent;
+import org.hage.platform.annotation.di.SingletonComponent;
 import org.hage.platform.component.container.MutableInstanceContainer;
 import org.hage.platform.component.container.definition.IComponentDefinition;
 import org.hage.platform.component.runtime.event.CoreReadyEvent;
@@ -10,11 +10,10 @@ import org.hage.platform.component.runtime.init.RuntimeInitializer;
 import org.hage.platform.component.structure.connections.StructureConfigurator;
 import org.hage.platform.util.bus.EventBus;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 
-@HageComponent
+@SingletonComponent
 @Slf4j
 class ConfigurationConsumerCommutator implements ConfigurationConsumer {
 

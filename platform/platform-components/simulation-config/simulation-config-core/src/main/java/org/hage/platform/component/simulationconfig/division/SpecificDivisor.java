@@ -1,15 +1,14 @@
 package org.hage.platform.component.simulationconfig.division;
 
-import org.hage.platform.annotation.di.HageComponent;
+import org.hage.platform.annotation.di.SingletonComponent;
 import org.hage.platform.component.runtime.init.Population;
 import org.hage.platform.component.simulationconfig.Specific;
 import org.hage.util.proportion.Division;
 import org.hage.util.proportion.Proportions;
 import org.hage.util.proportion.ProportionsDivisor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-@HageComponent
+@SingletonComponent
 public class SpecificDivisor implements ProportionsDivisor<Specific> {
 
     @Autowired

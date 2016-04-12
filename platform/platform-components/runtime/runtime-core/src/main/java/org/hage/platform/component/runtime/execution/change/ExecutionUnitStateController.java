@@ -1,10 +1,9 @@
 package org.hage.platform.component.runtime.execution.change;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.annotation.di.HageComponent;
+import org.hage.platform.annotation.di.SingletonComponent;
 import org.hage.platform.component.runtime.execution.ExecutionUnit;
 import org.hage.platform.component.runtime.execution.phase.PhasedRunnable;
-import org.springframework.stereotype.Component;
 
 import java.util.*;
 
@@ -13,7 +12,7 @@ import static java.util.stream.Collectors.toList;
 
 
 @Slf4j
-@HageComponent
+@SingletonComponent
 class ExecutionUnitStateController implements TasksChangeSupplier, ActiveExecutionUnitsController {
 
     private Map<String, PhasedRunnable> translationMap = new HashMap<>();

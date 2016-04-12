@@ -2,7 +2,7 @@ package org.hage.platform.component.lifecycle;
 
 import com.google.common.eventbus.Subscribe;
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.annotation.di.HageComponent;
+import org.hage.platform.annotation.di.SingletonComponent;
 import org.hage.platform.component.runtime.event.CoreReadyEvent;
 import org.hage.platform.component.runtime.event.CoreStartingEvent;
 import org.hage.platform.component.runtime.event.CoreStoppedEvent;
@@ -11,13 +11,12 @@ import org.hage.platform.component.lifecycle.event.ExitRequestedEvent;
 import org.hage.platform.component.simulationconfig.event.ConfigurationUpdatedEvent;
 import org.hage.platform.util.bus.EventSubscriber;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import static org.hage.platform.component.lifecycle.BaseLifecycleCommand.EXIT;
 import static org.hage.platform.component.lifecycle.BaseLifecycleCommand.*;
 import static org.hage.platform.component.lifecycle.LifecycleEvent.*;
 
-@HageComponent
+@SingletonComponent
 @Slf4j
 public class EventDrivenCommandInvoker implements EventSubscriber {
 
