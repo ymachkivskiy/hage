@@ -8,8 +8,8 @@ import org.hage.platform.component.structure.Position;
 import org.hage.platform.component.structure.distribution.LocalPositionsController;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 @Slf4j
 public class NodeAgentUnitsRepo implements UnitInitializationController {
@@ -21,24 +21,16 @@ public class NodeAgentUnitsRepo implements UnitInitializationController {
     @Autowired
     private AgentsUnitFactory unitsFactory;
 
-    private final Map<Position, AgentsUnit> createdUnitsMap = new HashMap<>();
+    private final ConcurrentMap<Position, AgentsUnit> createdUnitsMap = new ConcurrentHashMap<>();
 
     @Override
     public UnitPopulationInitializer getInitializerForUnitOnPosition(Position position) {
         return getOrCreateNewUnit(position);
     }
 
-    private synchronized AgentsUnit getOrCreateNewUnit(Position position) {
+    private AgentsUnit getOrCreateNewUnit(Position position) {
         log.debug("Agents unit with for position {} acquired.", position);
-
-        AgentsUnit storedUnit = createdUnitsMap.get(position);
-
-        if (storedUnit == null) {
-            storedUnit = createNewUnit(position);
-            createdUnitsMap.put(position, storedUnit);
-        }
-
-        return storedUnit;
+        return createdUnitsMap.computeIfAbsent(position, this::createNewUnit);
     }
 
 
@@ -52,5 +44,7 @@ public class NodeAgentUnitsRepo implements UnitInitializationController {
 
         return unit;
     }
+
+    // TODO: write detroy unit method
 
 }

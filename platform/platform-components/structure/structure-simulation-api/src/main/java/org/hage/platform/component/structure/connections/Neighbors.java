@@ -5,6 +5,8 @@ import java.util.List;
 
 public interface Neighbors {
 
-    List<UnitAddress> choose(RelativeSelector selector);
+    List<UnitAddress> getLocated(RelativePosition firstRelativeSelector, RelativePosition... otherSelectors);
+
+    List<UnitAddress> getAll();
 
 }

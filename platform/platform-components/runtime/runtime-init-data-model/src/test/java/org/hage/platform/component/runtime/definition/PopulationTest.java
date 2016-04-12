@@ -4,7 +4,7 @@ import org.hage.platform.component.runtime.init.AgentDefinition;
 import org.hage.platform.component.runtime.init.Population;
 import org.hage.platform.component.runtime.init.UnitPopulation;
 import org.hage.platform.component.structure.Position;
-import org.hage.platform.simulation.runtime.Agent;
+import org.hage.platform.simulation.runtime.agent.Agent;
 import org.junit.Test;
 
 import java.util.List;

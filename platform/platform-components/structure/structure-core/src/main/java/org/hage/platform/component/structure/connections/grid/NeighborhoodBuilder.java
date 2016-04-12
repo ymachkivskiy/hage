@@ -1,6 +1,6 @@
 package org.hage.platform.component.structure.connections.grid;
 
-import org.hage.platform.component.structure.connections.Neighborhood;
+import org.hage.platform.component.structure.connections.StructuralNeighborhood;
 import org.hage.platform.component.structure.Position;
 import org.hage.platform.component.structure.connections.RelativePosition;
 
@@ -22,8 +22,8 @@ class NeighborhoodBuilder {
         return this;
     }
 
-    public Neighborhood build() {
-        return new GridNeighborhood(neighborsMap);
+    public StructuralNeighborhood build() {
+        return new GridStructuralNeighborhood(neighborsMap);
     }
 
 }

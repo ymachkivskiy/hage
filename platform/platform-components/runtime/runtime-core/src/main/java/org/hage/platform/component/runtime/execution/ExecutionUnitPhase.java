@@ -14,6 +14,12 @@ public enum ExecutionUnitPhase {
         public void executeOn(ExecutionUnit cell) {
             cell.performControlAgentStep();
         }
+    },
+    CLEANUP {
+        @Override
+        public void executeOn(ExecutionUnit cell) {
+            cell.afterStepPerformed();
+        }
     };
 
     public abstract void executeOn(ExecutionUnit cell);

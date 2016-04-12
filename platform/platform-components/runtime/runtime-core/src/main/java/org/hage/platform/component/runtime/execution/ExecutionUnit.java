@@ -6,4 +6,6 @@ public interface ExecutionUnit {
     void performControlAgentStep();
 
     void performAgentsStep();
+
+    void afterStepPerformed();
 }

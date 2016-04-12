@@ -1,7 +1,7 @@
 package org.hage.platform.component.runtime.init;
 
 import lombok.Data;
-import org.hage.platform.simulation.runtime.ControlAgent;
+import org.hage.platform.simulation.runtime.control.ControlAgent;
 
 import java.io.Serializable;
 

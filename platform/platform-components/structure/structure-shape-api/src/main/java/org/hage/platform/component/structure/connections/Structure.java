@@ -8,5 +8,5 @@ public interface Structure {
 
     boolean areNeighbors(Position first, Position second);
 
-    Neighborhood getNeighborhoodOf(Position position);
+    StructuralNeighborhood getNeighborhoodOf(Position position);
 }

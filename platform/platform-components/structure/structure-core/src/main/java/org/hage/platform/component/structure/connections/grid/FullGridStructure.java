@@ -38,15 +38,15 @@ class FullGridStructure implements Structure {
     }
 
     @Override
-    public Neighborhood getNeighborhoodOf(Position position) {
+    public StructuralNeighborhood getNeighborhoodOf(Position position) {
         if (!belongsToStructure(position) || neighborhoodType == NO_NEIGHBORS) {
-            return EmptyNeighborhood.INSTANCE;
+            return EmptyStructuralNeighborhood.INSTANCE;
         }
         return calculateFor(position);
     }
 
 
-    public Neighborhood calculateFor(Position position) {
+    public StructuralNeighborhood calculateFor(Position position) {
         NeighborhoodBuilder neighborhoodBuilder = neighborhoodBuilder();
 
         for (RelativePosition relativePosition : RelativePosition.values()) {

@@ -1,15 +1,10 @@
-package org.hage.platform.simulation.runtime;
-
+package org.hage.platform.simulation.runtime.context;
 
 import org.hage.platform.component.structure.connections.Neighbors;
 import org.hage.platform.component.structure.connections.UnitAddress;
 
-public interface CommonContext {
-
-    UnitAddress queryUnit();
+public interface LocationContext {
+    UnitAddress queryLocalUnit();
 
     Neighbors querySurroundingUnits();
-
-    void notifyStopConditionSatisfied();
-
 }

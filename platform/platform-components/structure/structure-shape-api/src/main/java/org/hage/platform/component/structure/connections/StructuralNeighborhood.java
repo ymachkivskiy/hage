@@ -5,7 +5,7 @@ import org.hage.platform.component.structure.Position;
 import java.util.List;
 import java.util.Set;
 
-public interface Neighborhood {
+public interface StructuralNeighborhood {
 
     List<Position> getNeighborsFor(RelativePosition relativePosition);
 

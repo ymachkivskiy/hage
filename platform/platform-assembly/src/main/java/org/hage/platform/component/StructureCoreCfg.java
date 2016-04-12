@@ -24,7 +24,7 @@ public class StructureCoreCfg {
     //endregion
 
     @Bean
-    public DistributedPositionsAddressingRegistry positionsRepo() {
+    public DistributedPositionsAddressingRegistry distributedPositionsAddressingRegistry() {
             return new DistributedPositionsAddressingRegistry();
     }
 

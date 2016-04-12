@@ -6,8 +6,9 @@ import org.hage.platform.component.container.MutableInstanceContainer;
 import org.hage.platform.component.runtime.init.AgentDefinition;
 import org.hage.platform.component.runtime.init.UnitPopulation;
 import org.hage.platform.component.runtime.util.StatefulPrototypeComponentsInitializer;
-import org.hage.platform.simulation.runtime.Agent;
+import org.hage.platform.simulation.runtime.agent.Agent;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
 import static java.util.Optional.empty;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.IntStream.range;
+import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
 
 @PrototypeComponent
 @RequiredArgsConstructor

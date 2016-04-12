@@ -2,8 +2,8 @@ package org.hage.example.agent;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.example.SomeFooComponent;
-import org.hage.platform.simulation.runtime.Agent;
-import org.hage.platform.simulation.runtime.Context;
+import org.hage.platform.simulation.runtime.agent.Agent;
+import org.hage.platform.simulation.runtime.agent.AgentManageContext;
 
 import javax.inject.Inject;
 
@@ -14,9 +14,10 @@ public class LightAgent implements Agent {
     private SomeFooComponent component;
 
     @Override
-    public void step(Context context) {
-        log.info("agent {} perform step", context.getAgentFriendlyName());
-        component.processMessage("hello from " + context.getAgentFriendlyName());
+    public void step(AgentManageContext context) {
+        log.info("agent {} perform step", context.queryAddress().getUniqueIdentifier());
+
+        component.processMessage("hello from " + context.queryAddress().getUniqueIdentifier());
 
         try {
             Thread.sleep(500);

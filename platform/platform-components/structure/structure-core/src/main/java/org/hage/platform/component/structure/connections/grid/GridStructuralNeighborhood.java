@@ -1,6 +1,6 @@
 package org.hage.platform.component.structure.connections.grid;
 
-import org.hage.platform.component.structure.connections.Neighborhood;
+import org.hage.platform.component.structure.connections.StructuralNeighborhood;
 import org.hage.platform.component.structure.Position;
 import org.hage.platform.component.structure.connections.RelativePosition;
 
@@ -13,11 +13,11 @@ import static java.util.Collections.emptyList;
 import static java.util.Collections.unmodifiableMap;
 import static java.util.stream.Collectors.toSet;
 
-class GridNeighborhood implements Neighborhood {
+class GridStructuralNeighborhood implements StructuralNeighborhood {
 
     private final Map<RelativePosition, List<Position>> neighborhoodMap;
 
-    GridNeighborhood(Map<RelativePosition, List<Position>> neighborhoodMap) {
+    GridStructuralNeighborhood(Map<RelativePosition, List<Position>> neighborhoodMap) {
         this.neighborhoodMap = unmodifiableMap(new EnumMap<>(neighborhoodMap));
     }
 

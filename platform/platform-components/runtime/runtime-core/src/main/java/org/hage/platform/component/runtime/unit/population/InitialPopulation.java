@@ -1,8 +1,8 @@
 package org.hage.platform.component.runtime.unit.population;
 
 import lombok.Data;
-import org.hage.platform.simulation.runtime.Agent;
-import org.hage.platform.simulation.runtime.ControlAgent;
+import org.hage.platform.simulation.runtime.agent.Agent;
+import org.hage.platform.simulation.runtime.control.ControlAgent;
 
 import java.util.List;
 import java.util.Optional;

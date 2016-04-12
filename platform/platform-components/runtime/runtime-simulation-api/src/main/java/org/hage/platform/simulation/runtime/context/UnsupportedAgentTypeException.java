@@ -1,7 +1,8 @@
-package org.hage.platform.simulation.runtime;
+package org.hage.platform.simulation.runtime.context;
 
 import lombok.Getter;
 import org.hage.platform.HageRuntimeException;
+import org.hage.platform.simulation.runtime.agent.Agent;
 
 public class UnsupportedAgentTypeException extends HageRuntimeException {
 

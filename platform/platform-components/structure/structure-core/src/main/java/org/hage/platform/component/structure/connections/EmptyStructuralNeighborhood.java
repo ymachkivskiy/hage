@@ -11,8 +11,8 @@ import static java.util.Collections.emptySet;
 import static lombok.AccessLevel.PRIVATE;
 
 @RequiredArgsConstructor(access = PRIVATE)
-public class EmptyNeighborhood implements Neighborhood {
-    public static final EmptyNeighborhood INSTANCE = new EmptyNeighborhood();
+public class EmptyStructuralNeighborhood implements StructuralNeighborhood {
+    public static final EmptyStructuralNeighborhood INSTANCE = new EmptyStructuralNeighborhood();
 
     @Override
     public List<Position> getNeighborsFor(RelativePosition relativePosition) {
