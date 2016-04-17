@@ -75,11 +75,11 @@ class ExecutionUnitStateController implements TasksChangeSupplier, ActiveExecuti
     }
 
     private PhasedRunnable translate(ExecutionUnit executionUnit) {
-        PhasedRunnable phasedRunnable = translationMap.get(executionUnit.getUnitId());
+        PhasedRunnable phasedRunnable = translationMap.get(executionUnit.getUniqueIdentifier());
 
         if (phasedRunnable == null) {
             phasedRunnable = new CellPhaseRunnableAdapter(executionUnit);
-            translationMap.put(executionUnit.getUnitId(), phasedRunnable);
+            translationMap.put(executionUnit.getUniqueIdentifier(), phasedRunnable);
         }
 
         return phasedRunnable;

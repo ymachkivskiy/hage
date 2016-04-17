@@ -17,6 +17,6 @@ class CellPhaseRunnableAdapter implements PhasedRunnable {
 
     @Override
     public String toString() {
-        return "Execution unit [" + executionUnit.getUnitId() + "] runnable";
+        return "Execution unit [" + executionUnit.getUniqueIdentifier() + "] runnable";
     }
 }

@@ -1,5 +1,6 @@
 package org.hage.example.agent;
 
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.example.SomeFooComponent;
 import org.hage.platform.simulation.runtime.agent.Agent;
@@ -13,11 +14,18 @@ public class HeavyAgent implements Agent {
     @Inject
     private SomeFooComponent component;
 
+    @Setter
+    private int age = 0;
+
     @Override
     public void step(AgentManageContext context) {
-        log.info("agent {} perform step", context.queryAddress().getUniqueIdentifier());
+        log.info("\nI AM HEAVY AGE OF {} agent {} perform step", age, context.queryAddress().getUniqueIdentifier());
 
         component.processMessage("hello from " + context.queryAddress().getUniqueIdentifier());
+
+        if(age > 20){
+            context.die();
+        }
 
         try {
             Thread.sleep(5000);
@@ -25,6 +33,7 @@ public class HeavyAgent implements Agent {
             e.printStackTrace();
         }
 
+        age++;
     }
 
     @Override

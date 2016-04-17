@@ -1,6 +1,7 @@
 package org.hage.platform.component.simulationconfig.load.generate;
 
 import org.hage.platform.annotation.di.SingletonComponent;
+import org.hage.platform.component.runtime.init.ContainerConfiguration;
 import org.hage.platform.component.runtime.init.Population;
 import org.hage.platform.component.simulationconfig.Common;
 import org.hage.platform.component.simulationconfig.Configuration;
@@ -21,11 +22,15 @@ public class ComputationConfigurationGenerator {
     public Configuration generate(InputConfiguration inputConfiguration) {
         return new Configuration(
             new Common(
+                new ContainerConfiguration(
+                    inputConfiguration.getSimulationDefinition().getAgentDefinitions(),
+                    inputConfiguration.getSimulationDefinition().getControlAgentDefinition(),
+                    inputConfiguration.getGlobalComponents()
+                ),
                 inputConfiguration.getComputationRatingConfig(),
-                inputConfiguration.getGlobalComponents(),
-                inputConfiguration.getHabitatConfiguration().getStructureDefinition()
+                inputConfiguration.getSimulationDefinition().getStructureDefinition()
             ),
-            new Specific(generateDistributionMap(inputConfiguration.getHabitatConfiguration()))
+            new Specific(generateDistributionMap(inputConfiguration.getSimulationDefinition()))
         );
     }
 

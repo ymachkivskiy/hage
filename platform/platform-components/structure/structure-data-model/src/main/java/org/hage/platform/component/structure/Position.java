@@ -7,7 +7,6 @@ import javax.annotation.concurrent.Immutable;
 import java.io.Serializable;
 
 @Immutable
-@ToString
 @EqualsAndHashCode(doNotUseGetters = true)
 public final class Position implements Serializable {
     public static final Position ZERO = position(0, 0, 0);
@@ -42,4 +41,8 @@ public final class Position implements Serializable {
         return new Position(depth, horizontal, vertical);
     }
 
+    @Override
+    public String toString() {
+        return "pos(d=" + depth + ",h=" + horizontal + ",v=" + vertical + ")";
+    }
 }

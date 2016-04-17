@@ -17,7 +17,7 @@ public interface AgentCreationContext {
      * supported by current simulation cell
      *
      * @param agentClazz class of agent to create
-     * @param <T>   agent clazz
+     * @param <T>        agent clazz
      * @throws UnsupportedAgentTypeException is thrown when given agent class is not supported by
      *                                       simulation cell controlled by current agent
      */
@@ -27,11 +27,37 @@ public interface AgentCreationContext {
      * Creates new agent instance in simulation call of given class if it is
      * supported by current simulation cell
      *
-     * @param agentClazz       class of agent to create
+     * @param agentClazz   class of agent to create
+     * @param agentsNumber number of agents to create
+     * @param <T>          agent clazz
+     * @throws UnsupportedAgentTypeException is thrown when given agent class is not supported by
+     *                                       simulation cell controlled by current agent
+     */
+    <T extends Agent> void newAgents(Class<T> agentClazz, int agentsNumber) throws UnsupportedAgentTypeException;
+
+    /**
+     * Creates new agent instance in simulation call of given class if it is
+     * supported by current simulation cell
+     *
+     * @param agentClazz  class of agent to create
      * @param initializer initializer for newly created agent instance
      * @param <T>         agent agentClazz
      * @throws UnsupportedAgentTypeException is thrown when given agent class is not supported by
      *                                       simulation cell controlled by current agent
      */
     <T extends Agent> void newAgent(Class<T> agentClazz, AgentInitializer<T> initializer) throws UnsupportedAgentTypeException;
+
+    /**
+     * Creates new agent instance in simulation call of given class if it is
+     * supported by current simulation cell
+     *
+     * @param agentClazz   class of agent to create
+     * @param initializer  initializer for newly created agent instance
+     * @param agentsNumber number of agents to create
+     * @param <T>          agent agentClazz
+     * @throws UnsupportedAgentTypeException is thrown when given agent class is not supported by
+     *                                       simulation cell controlled by current agent
+     */
+    <T extends Agent> void newAgents(Class<T> agentClazz, AgentInitializer<T> initializer, int agentsNumber) throws UnsupportedAgentTypeException;
+
 }

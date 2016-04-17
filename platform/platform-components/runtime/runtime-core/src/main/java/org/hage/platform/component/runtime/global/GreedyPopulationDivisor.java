@@ -1,8 +1,10 @@
-package org.hage.platform.component.runtime.init;
+package org.hage.platform.component.runtime.global;
 
 import lombok.Data;
 import lombok.Getter;
 import lombok.ToString;
+import org.hage.platform.component.runtime.init.Population;
+import org.hage.platform.component.runtime.init.UnitPopulation;
 import org.hage.platform.component.structure.Position;
 import org.hage.util.proportion.*;
 

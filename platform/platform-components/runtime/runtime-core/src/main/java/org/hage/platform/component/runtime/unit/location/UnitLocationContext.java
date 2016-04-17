@@ -1,9 +1,11 @@
-package org.hage.platform.component.runtime.unit.contextadapter.location;
+package org.hage.platform.component.runtime.unit.location;
 
 import com.google.common.base.Supplier;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.PrototypeComponent;
 import org.hage.platform.component.cluster.LocalNodeAddressSupplier;
+import org.hage.platform.component.runtime.unit.UnitStepCycleAware;
 import org.hage.platform.component.structure.Position;
 import org.hage.platform.component.structure.connections.Neighbors;
 import org.hage.platform.component.structure.connections.UnitAddress;
@@ -15,8 +17,9 @@ import javax.annotation.PostConstruct;
 import static com.google.common.base.Suppliers.memoize;
 
 @Slf4j
+@RequiredArgsConstructor
 @PrototypeComponent
-public class UnitLocationContext implements LocationContext {
+public class UnitLocationContext implements LocationContext, UnitStepCycleAware {
 
     private final Position position;
 
@@ -29,10 +32,6 @@ public class UnitLocationContext implements LocationContext {
     private Supplier<UnitAddress> unitAddressSupplier;
 
 
-    public UnitLocationContext(Position position) {
-        this.position = position;
-    }
-
     @Override
     public UnitAddress queryLocalUnit() {
         return unitAddressSupplier.get();
@@ -43,11 +42,13 @@ public class UnitLocationContext implements LocationContext {
         return neighborsSupplier.get();
     }
 
+    public String getUniqueIdentifier() {
+        return position.toString() + "[" + localNodeAddressSupplier.getLocalAddress().getUniqueIdentifier() + "]";
+    }
 
-    public void reset() {
-        log.debug("Reset location context for {}", position);
-        neighborsSupplier = memoize(() -> neighborsResolver.resolveForPosition(position));
-        unitAddressSupplier = memoize(() -> new AgentsUnitAddress(localNodeAddressSupplier.getLocalAddress(), position));
+    @Override
+    public void afterStepPerformed() {
+        reset();
     }
 
     @PostConstruct
@@ -55,4 +56,15 @@ public class UnitLocationContext implements LocationContext {
         reset();
     }
 
+    private void reset() {
+        log.debug("Reset location context for {}", position);
+        neighborsSupplier = memoize(() -> neighborsResolver.resolveForPosition(position));
+        unitAddressSupplier = memoize(() -> new AgentsUnitAddress(localNodeAddressSupplier.getLocalAddress(), position));
+    }
+
+
+    @Override
+    public String toString() {
+        return getUniqueIdentifier();
+    }
 }

@@ -19,10 +19,6 @@ public class PlatformConfigurationHub implements PlatformConfigurationValueProvi
     private ParsingEngine parsingEngine;
     private ParseResult argumentValues;
 
-    public PlatformConfigurationHub() {
-        boolean dupa = false;
-    }
-
     @Override
     public void parse(String[] arguments) throws InvalidRuntimeArgumentsException {
         argumentValues = parsingEngine.parse(arguments);

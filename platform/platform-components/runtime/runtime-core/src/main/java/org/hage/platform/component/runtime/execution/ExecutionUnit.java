@@ -1,7 +1,7 @@
 package org.hage.platform.component.runtime.execution;
 
 public interface ExecutionUnit {
-    String getUnitId();
+    String getUniqueIdentifier();
 
     void performControlAgentStep();
 

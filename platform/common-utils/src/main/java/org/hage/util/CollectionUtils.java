@@ -27,6 +27,10 @@ public class CollectionUtils {
         return ofNullable(original).map(ol -> (List<T>) new ArrayList<>(ol)).orElse(emptyList());
     }
 
+    public static <T> Collection<T> nullSafeCopy(Collection<T> original) {
+        return ofNullable(original).map(ol -> (List<T>) new ArrayList<>(ol)).orElse(emptyList());
+    }
+
     public static <T> Set<T> nullSafeCopy(Set<T> original) {
         return ofNullable(original).map(os -> (Set<T>) new HashSet<>(os)).orElse(emptySet());
     }

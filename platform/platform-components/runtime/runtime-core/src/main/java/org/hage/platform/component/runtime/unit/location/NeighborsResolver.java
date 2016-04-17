@@ -1,4 +1,4 @@
-package org.hage.platform.component.runtime.unit.contextadapter.location;
+package org.hage.platform.component.runtime.unit.location;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.SingletonComponent;
@@ -11,8 +11,8 @@ import org.hage.platform.component.structure.distribution.AddressingRegistry;
 import org.hage.platform.component.structure.distribution.PositionAddressState;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.hage.platform.component.runtime.unit.contextadapter.location.AgentsUnitAddress.offlineAddress;
-import static org.hage.platform.component.runtime.unit.contextadapter.location.AgentsUnitAddress.onlineAddress;
+import static org.hage.platform.component.runtime.unit.location.AgentsUnitAddress.offlineAddress;
+import static org.hage.platform.component.runtime.unit.location.AgentsUnitAddress.onlineAddress;
 
 @Slf4j
 @SingletonComponent

@@ -7,14 +7,15 @@ import org.hage.platform.component.runtime.execution.cycle.FixedPhaseOrderOrderC
 import org.hage.platform.component.runtime.execution.cycle.PostStepPhaseOrderClassifier;
 import org.hage.platform.component.runtime.execution.phase.ExecutionPhasesProvider;
 import org.hage.platform.component.runtime.execution.phase.FixedExecutionPhasesProvider;
-import org.hage.platform.component.runtime.init.BaseRuntimeInitializer;
-import org.hage.platform.component.runtime.init.GreedyPopulationDivisor;
+import org.hage.platform.component.runtime.global.BasePopulationInitializer;
+import org.hage.platform.component.runtime.global.GreedyPopulationDivisor;
 import org.hage.platform.component.runtime.init.Population;
-import org.hage.platform.component.runtime.init.RuntimeInitializer;
+import org.hage.platform.component.runtime.init.PopulationInitializer;
 import org.hage.platform.component.runtime.unit.AgentsUnitFactory;
-import org.hage.platform.component.runtime.unit.NodeAgentUnitsRepo;
-import org.hage.platform.component.runtime.unit.contextadapter.location.UnitLocationContext;
-import org.hage.platform.component.runtime.unit.population.UnitPopulationController;
+import org.hage.platform.component.runtime.unit.LocalAgentUnitsController;
+import org.hage.platform.component.runtime.unit.location.UnitLocationContext;
+import org.hage.platform.component.runtime.unit.population.UnitPopulationModificationContext;
+import org.hage.platform.component.runtime.unit.population.PopulationController;
 import org.hage.platform.component.runtime.util.SimpleStatefulPrototypeComponentsInitializer;
 import org.hage.platform.component.runtime.util.StatefulPrototypeComponentsInitializer;
 import org.hage.platform.component.structure.Position;
@@ -24,8 +25,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import static org.hage.platform.component.runtime.execution.ExecutionUnitPhase.CLEANUP;
 import static org.hage.platform.component.runtime.execution.ExecutionUnitPhase.AGENTS_STEP;
+import static org.hage.platform.component.runtime.execution.ExecutionUnitPhase.CLEANUP;
 import static org.hage.platform.component.runtime.execution.PostStepPhase.CLEAN_CACHE;
 import static org.hage.platform.component.runtime.execution.PostStepPhase.STRUCTURE_UPDATE;
 
@@ -41,8 +42,8 @@ public class RuntimeCoreCfg {
     }
 
     @Bean
-    public RuntimeInitializer runtimeInitializer() {
-        return new BaseRuntimeInitializer();
+    public PopulationInitializer runtimeInitializer() {
+        return new BasePopulationInitializer();
     }
 
     @Bean
@@ -72,8 +73,8 @@ public class RuntimeCoreCfg {
     }
 
     @Bean
-    public NodeAgentUnitsRepo nodeAgentUnitsRepo() {
-        return new NodeAgentUnitsRepo();
+    public LocalAgentUnitsController nodeAgentUnitsRepo() {
+        return new LocalAgentUnitsController();
     }
 
     @Bean
@@ -83,8 +84,8 @@ public class RuntimeCoreCfg {
         return new AgentsUnitFactory() {
 
             @Override
-            protected UnitPopulationController createPopulationController() {
-                return beanFactory.getBean(UnitPopulationController.class, instanceContainer.newChildContainer());
+            protected UnitPopulationModificationContext createUnitPopulationContext(PopulationController populationController) {
+                return beanFactory.getBean(UnitPopulationModificationContext.class, instanceContainer.newChildContainer(), populationController);
             }
 
             @Override

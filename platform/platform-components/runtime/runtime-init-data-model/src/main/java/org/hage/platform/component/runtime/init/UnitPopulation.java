@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import static java.util.Collections.*;
+import static java.util.stream.Collectors.toList;
 
 // TODO: split model and functionallity
 @Immutable
@@ -36,19 +37,27 @@ public class UnitPopulation implements Serializable {
         return new UnitPopulation(singletonMap(agentDefinition, agentCount));
     }
 
+    @Deprecated
     public List<AgentDefinition> getAgentDefinitions() {
         return new ArrayList<>(agentCountMap.keySet());
     }
 
+    @Deprecated
     public int getAgentCountForDefinition(AgentDefinition definition) {
         return agentCountMap.getOrDefault(definition, 0);
     }
 
+    public List<AgentDefinitionCount> getCountedAgents() {
+        return agentCountMap.entrySet().stream()
+            .map(e -> new AgentDefinitionCount(e.getKey(), e.getValue()))
+            .collect(toList());
+    }
+
     public int getAgentsCount() {
         return agentCountMap.values()
-                .stream()
-                .mapToInt(i -> i)
-                .sum();
+            .stream()
+            .mapToInt(i -> i)
+            .sum();
     }
 
     public UnitPopulation merge(UnitPopulation other) {

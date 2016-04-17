@@ -7,14 +7,12 @@ import org.hage.platform.component.rate.model.ComputationRatingConfig;
 
 import java.util.Collection;
 
-@Builder//TODO
+@Builder//TODO change
 public final class InputConfiguration {
     @Getter
     private final ComputationRatingConfig computationRatingConfig;
     @Getter
     private final Collection<IComponentDefinition> globalComponents;
     @Getter
-    private final Collection<IComponentDefinition> localComponents;
-    @Getter
-    private final SimulationOrganizationDefinition habitatConfiguration;
+    private final SimulationOrganizationDefinition simulationDefinition;
 }
