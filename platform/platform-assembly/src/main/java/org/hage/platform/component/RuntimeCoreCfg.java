@@ -13,11 +13,12 @@ import org.hage.platform.component.runtime.init.Population;
 import org.hage.platform.component.runtime.init.PopulationInitializer;
 import org.hage.platform.component.runtime.unit.AgentsUnitFactory;
 import org.hage.platform.component.runtime.unit.LocalAgentUnitsController;
+import org.hage.platform.component.runtime.unit.context.AgentLocalEnvironment;
 import org.hage.platform.component.runtime.unit.location.UnitLocationContext;
-import org.hage.platform.component.runtime.unit.population.UnitPopulationModificationContext;
-import org.hage.platform.component.runtime.unit.population.PopulationController;
-import org.hage.platform.component.runtime.util.SimpleStatefulPrototypeComponentsInitializer;
-import org.hage.platform.component.runtime.util.StatefulPrototypeComponentsInitializer;
+import org.hage.platform.component.runtime.unit.population.UnitAgentCreationContext;
+import org.hage.platform.component.runtime.unit.population.UnitPopulationController;
+import org.hage.platform.component.runtime.util.SimpleStatefulInitializerAndFinisher;
+import org.hage.platform.component.runtime.util.StatefulInitializer;
 import org.hage.platform.component.structure.Position;
 import org.hage.util.proportion.ProportionsDivisor;
 import org.springframework.beans.factory.BeanFactory;
@@ -27,6 +28,7 @@ import org.springframework.context.annotation.Configuration;
 
 import static org.hage.platform.component.runtime.execution.ExecutionUnitPhase.AGENTS_STEP;
 import static org.hage.platform.component.runtime.execution.ExecutionUnitPhase.CLEANUP;
+import static org.hage.platform.component.runtime.execution.ExecutionUnitPhase.CONTROL_AGENT_STEP;
 import static org.hage.platform.component.runtime.execution.PostStepPhase.CLEAN_CACHE;
 import static org.hage.platform.component.runtime.execution.PostStepPhase.STRUCTURE_UPDATE;
 
@@ -47,13 +49,14 @@ public class RuntimeCoreCfg {
     }
 
     @Bean
-    public StatefulPrototypeComponentsInitializer statefulComponentsInitializer() {
-        return new SimpleStatefulPrototypeComponentsInitializer();
+    public SimpleStatefulInitializerAndFinisher statefulComponentsInitializer() {
+        return new SimpleStatefulInitializerAndFinisher();
     }
 
     @Bean
     public ExecutionPhasesProvider coreExecutorPhasesProvider() {
         return new FixedExecutionPhasesProvider(
+            CONTROL_AGENT_STEP,
             AGENTS_STEP,
             CLEANUP
         );
@@ -84,14 +87,20 @@ public class RuntimeCoreCfg {
         return new AgentsUnitFactory() {
 
             @Override
-            protected UnitPopulationModificationContext createUnitPopulationContext(PopulationController populationController) {
-                return beanFactory.getBean(UnitPopulationModificationContext.class, instanceContainer.newChildContainer(), populationController);
+            protected UnitAgentCreationContext createUnitPopulationContext(UnitPopulationController unitPopulationController) {
+                return beanFactory.getBean(UnitAgentCreationContext.class, instanceContainer.newChildContainer(), unitPopulationController);
             }
 
             @Override
             protected UnitLocationContext createUnitLocationContext(Position position) {
                 return beanFactory.getBean(UnitLocationContext.class, position);
             }
+
+            @Override
+            protected UnitPopulationController createUnitPopulationController(AgentLocalEnvironment agentEnvironment) {
+                return beanFactory.getBean(UnitPopulationController.class, agentEnvironment);
+            }
+
         };
 
     }

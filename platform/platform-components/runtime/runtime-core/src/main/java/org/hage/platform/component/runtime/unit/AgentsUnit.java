@@ -9,8 +9,8 @@ import org.hage.platform.component.runtime.unit.context.ContextAdapter;
 import org.hage.platform.component.runtime.unit.context.ControlContextAdapter;
 import org.hage.platform.component.runtime.unit.location.UnitLocationContext;
 import org.hage.platform.component.runtime.unit.population.AgentAdapter;
-import org.hage.platform.component.runtime.unit.population.UnitPopulationModificationContext;
-import org.hage.platform.component.runtime.unit.population.PopulationController;
+import org.hage.platform.component.runtime.unit.population.UnitAgentCreationContext;
+import org.hage.platform.component.runtime.unit.population.UnitPopulationController;
 import org.hage.platform.simulation.runtime.agent.AgentManageContext;
 import org.hage.platform.simulation.runtime.control.ControlAgentManageContext;
 
@@ -25,11 +25,11 @@ import static org.hage.util.CollectionUtils.nullSafeCopy;
 public class AgentsUnit implements ExecutionUnit, AgentLocalEnvironment {
 
     @Setter(PACKAGE)
-    private UnitPopulationModificationContext unitPopulationModificationContext;
+    private UnitAgentCreationContext unitAgentCreationContext;
     @Setter(PACKAGE)
     private UnitLocationContext locationContext;
     @Setter(PACKAGE)
-    private PopulationController populationController;
+    private UnitPopulationController unitPopulationController;
 
     private List<UnitStepCycleAware> stepCycleAwares = emptyList();
 
@@ -43,12 +43,12 @@ public class AgentsUnit implements ExecutionUnit, AgentLocalEnvironment {
 
     @Override
     public void performControlAgentStep() {
-        populationController.runControlAgent();
+        unitPopulationController.runControlAgent();
     }
 
     @Override
     public void performAgentsStep() {
-        populationController.runAgents();
+        unitPopulationController.runAgents();
     }
 
     @Override
@@ -77,11 +77,11 @@ public class AgentsUnit implements ExecutionUnit, AgentLocalEnvironment {
     }
 
     public void loadPopulation(UnitPopulation population) {
-        unitPopulationModificationContext.loadPopulation(population);
+        unitAgentCreationContext.loadPopulation(population);
     }
 
     void initialize() {
-        agentContext = new ContextAdapter(locationContext, unitPopulationModificationContext);
-        controlAgentContext = new ControlContextAdapter(locationContext, unitPopulationModificationContext);
+        agentContext = new ContextAdapter(locationContext, unitAgentCreationContext, unitPopulationController);
+        controlAgentContext = new ControlContextAdapter(locationContext, unitAgentCreationContext, unitPopulationController);
     }
 }

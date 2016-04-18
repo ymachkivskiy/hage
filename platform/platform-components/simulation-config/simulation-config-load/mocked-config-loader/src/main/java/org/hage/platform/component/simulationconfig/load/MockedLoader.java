@@ -3,12 +3,14 @@ package org.hage.platform.component.simulationconfig.load;
 import org.hage.example.SomeFooComponent;
 import org.hage.example.agent.HeavyAgent;
 import org.hage.example.agent.LightAgent;
+import org.hage.example.agent.SimpleControlAgent;
 import org.hage.platform.component.container.definition.ComponentDefinition;
 import org.hage.platform.component.container.definition.ValueDefinition;
 import org.hage.platform.component.rate.model.ComputationRatingConfig;
 import org.hage.platform.component.rate.model.MeasurerRateConfig;
 import org.hage.platform.component.rate.model.MeasurerType;
 import org.hage.platform.component.runtime.init.AgentDefinition;
+import org.hage.platform.component.runtime.init.ControlAgentDefinition;
 import org.hage.platform.component.simulationconfig.load.definition.ChunkPopulationQualifier;
 import org.hage.platform.component.simulationconfig.load.definition.InputConfiguration;
 import org.hage.platform.component.simulationconfig.load.definition.SimulationOrganizationDefinition;
@@ -32,7 +34,7 @@ class MockedLoader implements ConfigurationLoader {
     private static final SimulationOrganizationDefinition SIMULATION_DEFINITION = new SimulationOrganizationDefinition(
         new StructureDefinition(CLOSED, Dimensions.definedBy(2, 2, 4), VON_NEUMANN_NEGIHBORHOOD),
         asList(new AgentDefinition(HeavyAgent.class), new AgentDefinition(LightAgent.class)),
-        null, // TODO: add control agent
+        new ControlAgentDefinition(SimpleControlAgent.class),
         singletonList(
             new ChunkPopulationQualifier(
                 new Chunk(ZERO, Dimensions.definedBy(2, 2, 3)),

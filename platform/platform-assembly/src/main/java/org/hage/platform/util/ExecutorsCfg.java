@@ -19,6 +19,6 @@ public class ExecutorsCfg {
 
     @Bean
     public CoreBatchExecutor coreBatchExecutor() {
-        return new ParallelCoreBatchExecutor();
+        return new SimpleSequentialSameThreadCoreBatchExecutor();
     }
 }

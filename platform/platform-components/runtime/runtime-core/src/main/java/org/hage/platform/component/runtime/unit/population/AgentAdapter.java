@@ -1,5 +1,6 @@
 package org.hage.platform.component.runtime.unit.population;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.hage.platform.component.runtime.unit.context.AgentLocalEnvironment;
 import org.hage.platform.simulation.runtime.agent.Agent;
@@ -8,16 +9,17 @@ import org.hage.platform.simulation.runtime.agent.AgentAddress;
 @RequiredArgsConstructor
 public class AgentAdapter implements AgentAddress {
 
-    private final AgentLocalEnvironment environment;
-    private final long address;
+    @Getter
     private final Agent agent;
+    private final long address;
+    private final AgentLocalEnvironment environment;
 
     public void performStep() {
         agent.step(environment.contextForAgent(this));
     }
 
     @Override
-    public String getUniqueIdentifier() {
+    public String getFriendlyIdentifier() {
         return "agent(" + address + ")@" + environment.getUniqueIdentifier();
     }
 

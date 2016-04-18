@@ -3,7 +3,8 @@ package org.hage.platform.component.runtime.unit.context;
 import lombok.Setter;
 import org.hage.platform.component.runtime.unit.location.UnitLocationContext;
 import org.hage.platform.component.runtime.unit.population.AgentAdapter;
-import org.hage.platform.component.runtime.unit.population.UnitPopulationModificationContext;
+import org.hage.platform.component.runtime.unit.population.UnitAgentCreationContext;
+import org.hage.platform.component.runtime.unit.population.UnitPopulationController;
 import org.hage.platform.simulation.runtime.agent.AgentAddress;
 import org.hage.platform.simulation.runtime.agent.AgentManageContext;
 
@@ -12,11 +13,13 @@ import java.util.Set;
 
 public class ContextAdapter extends CommonContextAdapter implements AgentManageContext {
 
+    private final UnitPopulationController unitPopulationController;
     @Setter
     private AgentAdapter agentAdapter;
 
-    public ContextAdapter(UnitLocationContext unitLocationContext, UnitPopulationModificationContext unitPopulationModificationContext) {
-        super(unitLocationContext, unitPopulationModificationContext);
+    public ContextAdapter(UnitLocationContext unitLocationContext, UnitAgentCreationContext unitAgentCreationContext, UnitPopulationController unitPopulationController) {
+        super(unitLocationContext, unitAgentCreationContext);
+        this.unitPopulationController = unitPopulationController;
     }
 
     @Override
@@ -32,8 +35,7 @@ public class ContextAdapter extends CommonContextAdapter implements AgentManageC
 
     @Override
     public void die() {
-        //todo : NOT IMPLEMENTED
-
+        unitPopulationController.scheduleRemoveWithKilling(agentAdapter);
     }
 
     @Override

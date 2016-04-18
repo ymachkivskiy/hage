@@ -7,7 +7,7 @@ import org.hage.platform.component.container.MutableInstanceContainer;
 import org.hage.platform.component.runtime.global.SimulationAgentDefinitionsSupplier;
 import org.hage.platform.component.runtime.init.AgentDefinitionCount;
 import org.hage.platform.component.runtime.init.UnitPopulation;
-import org.hage.platform.component.runtime.util.StatefulPrototypeComponentsInitializer;
+import org.hage.platform.component.runtime.util.StatefulInitializer;
 import org.hage.platform.simulation.runtime.agent.Agent;
 import org.hage.platform.simulation.runtime.context.AgentCreationContext;
 import org.hage.platform.simulation.runtime.context.AgentInitializer;
@@ -25,18 +25,18 @@ import static java.util.stream.IntStream.range;
 @Slf4j
 @PrototypeComponent
 @RequiredArgsConstructor
-public class UnitPopulationModificationContext implements AgentCreationContext {
+public class UnitAgentCreationContext implements AgentCreationContext {
 
     private static final AgentInitializer<?> EMPTY_INITIALIZER = agent -> {
     };
 
     @Autowired
-    private StatefulPrototypeComponentsInitializer statefulInitializer;
+    private StatefulInitializer statefulInitializer;
     @Autowired
     private SimulationAgentDefinitionsSupplier agentDefinitionsSupplier;
 
     private final MutableInstanceContainer instanceContainer;
-    private final PopulationController populationController;
+    private final UnitPopulationController unitPopulationController;
 
     @Override
     public Set<Class<? extends Agent>> getSupportedAgentsTypes() {
@@ -84,7 +84,7 @@ public class UnitPopulationModificationContext implements AgentCreationContext {
             .map(instanceContainer::getInstance)
             .ifPresent(controlAgent -> {
                 statefulInitializer.performInitialization(controlAgent);
-                populationController.setControlAgent(controlAgent);
+                unitPopulationController.setControlAgent(controlAgent);
             });
     }
 
@@ -109,9 +109,9 @@ public class UnitPopulationModificationContext implements AgentCreationContext {
     private <T extends Agent> void registerAgents(Collection<T> agents, boolean immediately) {
         statefulInitializer.performInitialization(agents);
         if (immediately) {
-            populationController.addAgents(agents);
+            unitPopulationController.addInstancesImmediately(agents);
         } else {
-            populationController.addAgentsToStepBuffer(agents);
+            unitPopulationController.scheduleAddInstances(agents);
         }
     }
 

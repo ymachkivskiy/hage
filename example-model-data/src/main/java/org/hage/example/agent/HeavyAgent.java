@@ -19,11 +19,11 @@ public class HeavyAgent implements Agent {
 
     @Override
     public void step(AgentManageContext context) {
-        log.info("\nI AM HEAVY AGE OF {} agent {} perform step", age, context.queryAddress().getUniqueIdentifier());
+        log.info("\nI AM HEAVY AGE OF {} agent {} perform step", age, context.queryAddress().getFriendlyIdentifier());
 
-        component.processMessage("hello from " + context.queryAddress().getUniqueIdentifier());
+        component.processMessage("hello from " + context.queryAddress().getFriendlyIdentifier());
 
-        if(age > 20){
+        if(age > 1){
             context.die();
         }
 
@@ -38,11 +38,12 @@ public class HeavyAgent implements Agent {
 
     @Override
     public void init() {
-
+        log.info("Initialization of agent");
     }
 
     @Override
     public boolean finish() {
+        log.info("Finishing agent");
         return false;
     }
 }

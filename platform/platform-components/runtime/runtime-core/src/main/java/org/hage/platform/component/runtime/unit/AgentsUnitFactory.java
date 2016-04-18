@@ -2,9 +2,10 @@ package org.hage.platform.component.runtime.unit;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.HageRuntimeException;
+import org.hage.platform.component.runtime.unit.context.AgentLocalEnvironment;
 import org.hage.platform.component.runtime.unit.location.UnitLocationContext;
-import org.hage.platform.component.runtime.unit.population.UnitPopulationModificationContext;
-import org.hage.platform.component.runtime.unit.population.PopulationController;
+import org.hage.platform.component.runtime.unit.population.UnitAgentCreationContext;
+import org.hage.platform.component.runtime.unit.population.UnitPopulationController;
 import org.hage.platform.component.structure.Position;
 import org.hage.platform.component.structure.connections.Structure;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,15 +25,15 @@ public abstract class AgentsUnitFactory {
 
         AgentsUnit unit = new AgentsUnit();
 
-        PopulationController populationController = new PopulationController(unit);
+        UnitPopulationController unitPopulationController = createUnitPopulationController(unit);
         UnitLocationContext locationContext = createUnitLocationContext(position);
-        UnitPopulationModificationContext unitPopulationModificationContext = createUnitPopulationContext(populationController);
+        UnitAgentCreationContext unitAgentCreationContext = createUnitPopulationContext(unitPopulationController);
 
         unit.setLocationContext(locationContext);
-        unit.setUnitPopulationModificationContext(unitPopulationModificationContext);
-        unit.setPopulationController(populationController);
+        unit.setUnitAgentCreationContext(unitAgentCreationContext);
+        unit.setUnitPopulationController(unitPopulationController);
 
-        unit.setStepCycleAwares(asList(locationContext, populationController));
+        unit.setStepCycleAwares(asList(locationContext, unitPopulationController));
 
         unit.initialize();
 
@@ -41,15 +42,16 @@ public abstract class AgentsUnitFactory {
 
     private void checkPosition(Position position) {
         if (!structure.belongsToStructure(position)) {
-            // TODO: create own hierarchy of exceptions to runtime module (maybe after it's name change)
             log.error("Illegal position {} given during creation of agents unit.");
             throw new HageRuntimeException("Illegal position " + position + " given during creation of agents unit.");
         }
     }
 
-    protected abstract UnitPopulationModificationContext createUnitPopulationContext(PopulationController populationController);
+    protected abstract UnitAgentCreationContext createUnitPopulationContext(UnitPopulationController unitPopulationController);
 
     protected abstract UnitLocationContext createUnitLocationContext(Position position);
+
+    protected abstract UnitPopulationController createUnitPopulationController(AgentLocalEnvironment agentEnvironment);
 
 
 }

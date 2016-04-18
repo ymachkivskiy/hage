@@ -20,13 +20,13 @@ public class LightAgent implements Agent {
 
     @Override
     public void step(AgentManageContext context) {
-        String agentUid = context.queryAddress().getUniqueIdentifier();
+        String agentUid = context.queryAddress().getFriendlyIdentifier();
 
         log.info("\nI am {}. My age is {}\nI leave in {} and I am surrounded by {}\nMy current neighbors are {}",
             agentUid,
             age,
-            context.queryLocalUnit().getUniqueIdentifier(),
-            context.querySurroundingUnits().getAll().stream().map(UnitAddress::getUniqueIdentifier).collect(toList()),
+            context.queryLocalUnit().getFriendlyIdentifier(),
+            context.querySurroundingUnits().getAll().stream().map(UnitAddress::getFriendlyIdentifier).collect(toList()),
             context.queryOtherLocalAgents()
         );
 
@@ -35,8 +35,8 @@ public class LightAgent implements Agent {
         component.processMessage("hello from " + agentUid);
 
         try {
-            if (age > 5) {
-                context.newAgent(HeavyAgent.class, hagent -> hagent.setAge(age - 3));
+            if (age > 3) {
+                context.newAgent(HeavyAgent.class, hagent -> hagent.setAge(age - 2));
             }
             Thread.sleep(500);
         } catch (Exception e) {
@@ -49,10 +49,12 @@ public class LightAgent implements Agent {
 
     @Override
     public void init() {
+        log.info("Initialization of agent");
     }
 
     @Override
     public boolean finish() {
+        log.info("Finishing agent");
         return false;
     }
 }

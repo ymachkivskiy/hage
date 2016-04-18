@@ -16,7 +16,7 @@ public interface ControlAgentManageContext extends AgentCreationContext, Locatio
      *
      * @param agentClazz class of agents
      * @param <T>        agent type
-     * @return list of agents instances of given class
+     * @return list of agents instances of given class with address
      * @throws UnsupportedAgentTypeException is thrown when given agent class is not supported by
      *                                       simulation cell controlled by current agent
      */

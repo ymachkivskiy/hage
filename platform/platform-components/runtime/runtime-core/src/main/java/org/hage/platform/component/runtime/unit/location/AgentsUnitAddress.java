@@ -44,8 +44,8 @@ public class AgentsUnitAddress implements UnitAddress {
     }
 
     @Override
-    public String getUniqueIdentifier() {
-        return "[" + (nodeAddress.isPresent() ? nodeAddress.get() : "OFFLINE") + "]::" + position;
+    public String getFriendlyIdentifier() {
+        return position + "::[" + (nodeAddress.isPresent() ? nodeAddress.get() : "OFFLINE") + "]";
     }
 
 }
