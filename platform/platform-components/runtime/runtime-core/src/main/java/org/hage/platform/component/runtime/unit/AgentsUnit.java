@@ -4,13 +4,12 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.component.runtime.execution.ExecutionUnit;
 import org.hage.platform.component.runtime.init.UnitPopulation;
-import org.hage.platform.component.runtime.unit.context.AgentLocalEnvironment;
-import org.hage.platform.component.runtime.unit.context.ContextAdapter;
-import org.hage.platform.component.runtime.unit.context.ControlContextAdapter;
+import org.hage.platform.component.runtime.unit.agentcontext.AgentLocalEnvironment;
+import org.hage.platform.component.runtime.unit.agentcontext.UnitAgentContextAdapter;
 import org.hage.platform.component.runtime.unit.location.UnitLocationContext;
 import org.hage.platform.component.runtime.unit.population.AgentAdapter;
 import org.hage.platform.component.runtime.unit.population.UnitAgentCreationContext;
-import org.hage.platform.component.runtime.unit.population.UnitPopulationController;
+import org.hage.platform.component.runtime.unit.population.UnitActivePopulationController;
 import org.hage.platform.simulation.runtime.agent.AgentManageContext;
 import org.hage.platform.simulation.runtime.control.ControlAgentManageContext;
 
@@ -29,12 +28,11 @@ public class AgentsUnit implements ExecutionUnit, AgentLocalEnvironment {
     @Setter(PACKAGE)
     private UnitLocationContext locationContext;
     @Setter(PACKAGE)
-    private UnitPopulationController unitPopulationController;
+    private UnitActivePopulationController unitActivePopulationController;
+    @Setter(PACKAGE)
+    private UnitAgentContextAdapter agentContextAdapter;
 
     private List<UnitStepCycleAware> stepCycleAwares = emptyList();
-
-    private ControlContextAdapter controlAgentContext;
-    private ContextAdapter agentContext;
 
     @Override
     public String getUniqueIdentifier() {
@@ -43,12 +41,12 @@ public class AgentsUnit implements ExecutionUnit, AgentLocalEnvironment {
 
     @Override
     public void performControlAgentStep() {
-        unitPopulationController.runControlAgent();
+        unitActivePopulationController.runControlAgent();
     }
 
     @Override
     public void performAgentsStep() {
-        unitPopulationController.runAgents();
+        unitActivePopulationController.runAgents();
     }
 
     @Override
@@ -60,16 +58,15 @@ public class AgentsUnit implements ExecutionUnit, AgentLocalEnvironment {
     @Override
     public AgentManageContext contextForAgent(AgentAdapter agentAdapter) {
         log.debug("Get context for agent {}", agentAdapter);
-
-        agentContext.setAgentAdapter(agentAdapter);
-        return agentContext;
+        agentContextAdapter.setCurrentAgentContext(agentAdapter);
+        return agentContextAdapter;
     }
 
     @Override
     public ControlAgentManageContext contextForControlAgent() {
         log.debug("Get context for control agent");
-
-        return controlAgentContext;
+        agentContextAdapter.setControlAgentContext();
+        return agentContextAdapter;
     }
 
     public void setStepCycleAwares(List<UnitStepCycleAware> stepCycleAwares) {
@@ -80,8 +77,4 @@ public class AgentsUnit implements ExecutionUnit, AgentLocalEnvironment {
         unitAgentCreationContext.loadPopulation(population);
     }
 
-    void initialize() {
-        agentContext = new ContextAdapter(locationContext, unitAgentCreationContext, unitPopulationController);
-        controlAgentContext = new ControlContextAdapter(locationContext, unitAgentCreationContext, unitPopulationController);
-    }
 }

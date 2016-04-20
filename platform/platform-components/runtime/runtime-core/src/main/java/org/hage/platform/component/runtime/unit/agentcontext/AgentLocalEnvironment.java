@@ -1,4 +1,4 @@
-package org.hage.platform.component.runtime.unit.context;
+package org.hage.platform.component.runtime.unit.agentcontext;
 
 import org.hage.platform.component.runtime.unit.population.AgentAdapter;
 import org.hage.platform.simulation.runtime.agent.AgentManageContext;

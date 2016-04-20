@@ -16,7 +16,7 @@ public class SimpleControlAgent implements ControlAgent {
 
     @Override
     public void step(ControlAgentManageContext ctxt) {
-      log.info("I am control agent of {} and I will kill some random agent, if I want to", ctxt.queryLocalUnit().getFriendlyIdentifier());
+        log.info("\n\n==========\nI am control agent of {} and I will kill some random agent, if I want to\n", ctxt.queryLocalUnit().getFriendlyIdentifier());
 
 
         if (random.nextBoolean()) {
@@ -24,9 +24,14 @@ public class SimpleControlAgent implements ControlAgent {
             if (!localAgents.isEmpty()) {
                 AgentAddress victim = localAgents.get(random.nextInt(localAgents.size()));
 
-                log.info("I choose to remove {}", victim);
+                log.info("\nxxxxxxxxxxx  I choose to remove {} xxxxxxxxxx\n", victim);
 
                 ctxt.killAgent(victim);
+            } else {
+                log.info("\n=)=) It seem like all dead, lets play God and create some new agents =)=)\n");
+
+                ctxt.newAgents(LightAgent.class, a -> a.setAge(random.nextInt(5) + 1), random.nextInt(10) + 1);
+                ctxt.newAgents(HeavyAgent.class, random.nextInt(2) + 1);
             }
         }
 
@@ -34,12 +39,12 @@ public class SimpleControlAgent implements ControlAgent {
 
     @Override
     public void init() {
-        log.info("Initialization of agent");
+        log.info("Initialization of agent {}", this);
     }
 
     @Override
     public boolean finish() {
-        log.info("Finishing agent");
+        log.info("Finishing agent {}", this);
         return false;
     }
 }

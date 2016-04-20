@@ -1,5 +1,6 @@
 package org.hage.example.agent;
 
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.example.SomeFooComponent;
 import org.hage.platform.component.structure.connections.UnitAddress;
@@ -16,6 +17,7 @@ public class LightAgent implements Agent {
     @Inject
     private SomeFooComponent component;
 
+    @Setter
     private int age = 0;
 
     @Override
@@ -49,12 +51,12 @@ public class LightAgent implements Agent {
 
     @Override
     public void init() {
-        log.info("Initialization of agent");
+        log.info("Initialization of agent {}", this);
     }
 
     @Override
     public boolean finish() {
-        log.info("Finishing agent");
+        log.info("Finishing agent {}", this);
         return false;
     }
 }

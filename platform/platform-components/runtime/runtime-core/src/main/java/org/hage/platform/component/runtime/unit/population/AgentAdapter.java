@@ -2,12 +2,13 @@ package org.hage.platform.component.runtime.unit.population;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.hage.platform.component.runtime.unit.context.AgentLocalEnvironment;
+import org.hage.platform.component.runtime.unit.agentcontext.AgentLocalEnvironment;
 import org.hage.platform.simulation.runtime.agent.Agent;
 import org.hage.platform.simulation.runtime.agent.AgentAddress;
+import org.hage.platform.simulation.runtime.control.AddressedAgent;
 
 @RequiredArgsConstructor
-public class AgentAdapter implements AgentAddress {
+public class AgentAdapter<T extends Agent> implements AgentAddress {
 
     @Getter
     private final Agent agent;

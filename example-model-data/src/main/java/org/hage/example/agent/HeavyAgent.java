@@ -18,13 +18,13 @@ public class HeavyAgent implements Agent {
     private int age = 0;
 
     @Override
-    public void step(AgentManageContext context) {
-        log.info("\nI AM HEAVY AGE OF {} agent {} perform step", age, context.queryAddress().getFriendlyIdentifier());
+    public void step(AgentManageContext ctxt) {
+        log.info("\nI AM HEAVY AGE OF {} agent {} perform step. \nI have neighbors of same type  {}", age, ctxt.queryAddress().getFriendlyIdentifier(), ctxt.queryOtherLocalAgentsOfSameType());
 
-        component.processMessage("hello from " + context.queryAddress().getFriendlyIdentifier());
+        component.processMessage("hello from " + ctxt.queryAddress().getFriendlyIdentifier());
 
-        if(age > 1){
-            context.die();
+        if(age > 2){
+            ctxt.die();
         }
 
         try {
@@ -38,12 +38,12 @@ public class HeavyAgent implements Agent {
 
     @Override
     public void init() {
-        log.info("Initialization of agent");
+        log.info("Initialization of agent {}", this);
     }
 
     @Override
     public boolean finish() {
-        log.info("Finishing agent");
+        log.info("Finishing agent {}", this);
         return false;
     }
 }

@@ -19,7 +19,7 @@ import static com.google.common.base.Suppliers.memoize;
 @Slf4j
 @RequiredArgsConstructor
 @PrototypeComponent
-public class UnitLocationContext implements LocationContext, UnitStepCycleAware {
+public class UnitLocationContext implements  UnitStepCycleAware {
 
     private final Position position;
 
@@ -32,12 +32,10 @@ public class UnitLocationContext implements LocationContext, UnitStepCycleAware 
     private Supplier<UnitAddress> unitAddressSupplier;
 
 
-    @Override
     public UnitAddress queryLocalUnit() {
         return unitAddressSupplier.get();
     }
 
-    @Override
     public Neighbors querySurroundingUnits() {
         return neighborsSupplier.get();
     }

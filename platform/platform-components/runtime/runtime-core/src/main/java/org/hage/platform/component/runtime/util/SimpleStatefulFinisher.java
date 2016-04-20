@@ -4,17 +4,7 @@ import org.hage.platform.simulation.container.Stateful;
 
 import java.util.Collection;
 
-public class SimpleStatefulInitializerAndFinisher implements StatefulInitializer, StatefulFinisher {
-
-    @Override
-    public void performInitialization(Collection<? extends Stateful> statefuls) {
-        statefuls.forEach(Stateful::init);
-    }
-
-    @Override
-    public void performInitialization(Stateful stateful) {
-        stateful.init();
-    }
+public class SimpleStatefulFinisher implements  StatefulFinisher {
 
     @Override
     public void finish(Collection<? extends Stateful> statefuls) {

@@ -1,7 +1,7 @@
 package org.hage.platform.component.runtime.unit.population;
 
 import lombok.RequiredArgsConstructor;
-import org.hage.platform.component.runtime.unit.context.AgentLocalEnvironment;
+import org.hage.platform.component.runtime.unit.agentcontext.AgentLocalEnvironment;
 import org.hage.platform.simulation.runtime.control.ControlAgent;
 
 @RequiredArgsConstructor

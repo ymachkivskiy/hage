@@ -3,7 +3,7 @@ package org.hage.platform.component.runtime.unit.population;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.PrototypeComponent;
 import org.hage.platform.component.runtime.unit.UnitStepCycleAware;
-import org.hage.platform.component.runtime.unit.context.AgentLocalEnvironment;
+import org.hage.platform.component.runtime.unit.agentcontext.AgentLocalEnvironment;
 import org.hage.platform.component.runtime.util.StatefulFinisher;
 import org.hage.platform.simulation.runtime.agent.Agent;
 import org.hage.platform.simulation.runtime.control.ControlAgent;
@@ -12,12 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
+import static java.util.Collections.unmodifiableSet;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
+import static java.util.stream.Collectors.toList;
 
 @Slf4j
 @PrototypeComponent
-public class UnitPopulationController implements UnitStepCycleAware {
+public class UnitActivePopulationController implements UnitStepCycleAware {
 
     private final AgentLocalEnvironment agentEnvironment;
     private final AtomicLong agentIdCounter = new AtomicLong();
@@ -33,7 +35,7 @@ public class UnitPopulationController implements UnitStepCycleAware {
     @Autowired
     private StatefulFinisher statefulFinisher;
 
-    public UnitPopulationController(AgentLocalEnvironment environment) {
+    public UnitActivePopulationController(AgentLocalEnvironment environment) {
         this.agentEnvironment = environment;
     }
 
@@ -90,7 +92,7 @@ public class UnitPopulationController implements UnitStepCycleAware {
     }
 
     public void scheduleRemoveWithKilling(Collection<AgentAdapter> agentAdapters) {
-        log.debug("Remove agents {} with killing", agentsAdapters);
+        log.debug("Remove agents {} with killing", agentAdapters);
 
         scheduleRemove(agentAdapters);
         agentAdapters.stream()
@@ -103,6 +105,16 @@ public class UnitPopulationController implements UnitStepCycleAware {
 
         toBeRemoved.add(agentAdapter);
         disposedAgents.add(agentAdapter.getAgent());
+    }
+
+    public <T extends Agent> List<AgentAdapter> getAdaptersForAgentsOfType(Class<? extends Agent> agentClazz) {
+        return agentsAdapters.stream()
+            .filter(agentAdapter -> agentAdapter.getAgent().getClass().equals(agentClazz))
+            .collect(toList());
+    }
+
+    public Set<AgentAdapter> getAllAdapters() {
+        return unmodifiableSet(agentsAdapters);
     }
 
     private void flushAgents() {
