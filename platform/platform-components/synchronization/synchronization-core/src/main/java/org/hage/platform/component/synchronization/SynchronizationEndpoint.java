@@ -22,7 +22,7 @@ public class SynchronizationEndpoint extends BaseRemoteEndpoint<SynchronizationM
     @Autowired
     private ClusterManager clusterManager;
 
-    private final AtomicInteger waitingCount = new AtomicInteger();
+    private final AtomicInteger waitingCount = new AtomicInteger(0);
 
     private final ReentrantLock lock = new ReentrantLock();
     private final Condition changeNotifier = lock.newCondition();
@@ -64,7 +64,7 @@ public class SynchronizationEndpoint extends BaseRemoteEndpoint<SynchronizationM
     }
 
     private void startSynchronization() {
-        waitingCount.set(clusterManager.getMembersCount());
+        waitingCount.updateAndGet(x -> clusterManager.getMembersCount() - x);
         sendToAll(new SynchronizationMessage());
     }
 
