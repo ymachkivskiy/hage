@@ -1,7 +1,10 @@
 package org.hage.platform.component.cluster;
 
 public interface ClusterMemberChangeCallback {
-    void onMemberAdd(NodeAddress newMember);
+    default void onMemberAdd(NodeAddress newMember) {
+    }
 
-    void onMemberRemoved(NodeAddress removedMember);
+    default void onMemberRemoved(NodeAddress removedMember) {
+
+    }
 }

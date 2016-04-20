@@ -4,7 +4,7 @@ import com.google.common.base.Supplier;
 import com.hazelcast.core.Cluster;
 import com.hazelcast.core.MembershipEvent;
 import com.hazelcast.core.MembershipListener;
-import org.hage.platform.component.cluster.ClusterAddressManager;
+import org.hage.platform.component.cluster.ClusterManager;
 import org.hage.platform.component.cluster.ClusterMemberChangeCallback;
 import org.hage.platform.component.cluster.NodeAddress;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import java.util.Set;
 import static com.google.common.base.Suppliers.memoize;
 import static java.util.stream.Collectors.toSet;
 
-public class HazelcastClusterAddressManager implements ClusterAddressManager {
+public class HazelcastClusterManager implements ClusterManager {
 
     @Autowired
     private HazelcastInstanceHolder hazelcastInstanceHolder;
@@ -52,6 +52,11 @@ public class HazelcastClusterAddressManager implements ClusterAddressManager {
         Set<NodeAddress> addresses = new HashSet<>(getOtherMembersAddresses());
         addresses.add(getLocalAddress());
         return addresses;
+    }
+
+    @Override
+    public int getMembersCount() {
+        return hazelcastInstanceHolder.getInstance().getCluster().getMembers().size();
     }
 
     @PostConstruct

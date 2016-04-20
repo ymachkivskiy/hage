@@ -1,7 +1,7 @@
 package org.hage.platform.component.lifecycle.remote;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.component.cluster.ClusterAddressManager;
+import org.hage.platform.component.cluster.ClusterManager;
 import org.hage.platform.component.cluster.ClusterMemberChangeCallback;
 import org.hage.platform.component.cluster.NodeAddress;
 import org.hage.platform.component.lifecycle.LifecycleEngine;
@@ -15,12 +15,9 @@ import static org.hage.platform.component.lifecycle.BaseLifecycleCommand.FAIL;
 public class ClusterConsistencyGuard implements ClusterMemberChangeCallback {
 
     @Autowired
-    private ClusterAddressManager addressManager;
+    private ClusterManager addressManager;
     @Autowired
     private LifecycleEngine lifecycleEngine;
-
-    @Override
-    public void onMemberAdd(NodeAddress newMember) { /* no-op */ }
 
     @Override
     public void onMemberRemoved(NodeAddress removedMember) {
