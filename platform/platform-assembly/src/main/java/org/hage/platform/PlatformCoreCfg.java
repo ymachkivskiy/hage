@@ -25,7 +25,8 @@ import org.springframework.context.annotation.Import;
     RateCoreCfg.class,
     RuntimeCoreCfg.class,
     SimulationConfigurationCoreCfg.class,
-    StructureCoreCfg.class
+    StructureCoreCfg.class,
+    SynchronizationCfg.class
 })
 @ComponentScan(
     basePackageClasses = PlatformCoreCfg.class,

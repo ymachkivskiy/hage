@@ -47,6 +47,12 @@
             <version>${project.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>synchronization-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
         <!--platform utils-->
 
         <dependency>

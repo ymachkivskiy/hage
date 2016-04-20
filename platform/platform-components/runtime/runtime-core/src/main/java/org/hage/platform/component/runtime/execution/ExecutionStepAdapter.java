@@ -7,6 +7,7 @@ import org.hage.platform.component.runtime.execution.change.TasksChangeSupplier;
 import org.hage.platform.component.runtime.execution.cycle.PostStepPhasesRunner;
 import org.hage.platform.component.runtime.execution.phase.ExecutionPhasesProvider;
 import org.hage.platform.component.runtime.execution.phase.PhasedExecutor;
+import org.hage.platform.component.synchronization.SynchronizationBarrier;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.hage.util.CollectionUtils.nullSafe;
@@ -23,6 +24,8 @@ public class ExecutionStepAdapter implements Runnable {
     private ExecutionPhasesProvider phasesProvider;
     @Autowired
     private PostStepPhasesRunner postStepPhasesRunner;
+    @Autowired
+    private SynchronizationBarrier barrier;
 
     private long stepsPerformed = 0;
 
@@ -35,6 +38,8 @@ public class ExecutionStepAdapter implements Runnable {
         performStep();
 
         notifyStepPerformed();
+
+        barrier.synchronize();
 
         log.info("Finish performing step: {}", stepsPerformed);
     }

@@ -24,6 +24,12 @@
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
+            <artifactId>synchronization-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
             <artifactId>runtime-execution-api</artifactId>
             <version>${project.version}</version>
         </dependency>
