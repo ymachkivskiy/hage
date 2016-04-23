@@ -1,4 +1,4 @@
-package org.hage.platform.component.runtime.execution;
+package org.hage.platform.component.execution;
 
 
 public interface ExecutionCore {

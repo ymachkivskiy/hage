@@ -22,6 +22,7 @@
         <module>structure</module>
         <module>cluster-api</module>
         <module>synchronization</module>
+        <module>execution</module>
     </modules>
 
     <dependencies>

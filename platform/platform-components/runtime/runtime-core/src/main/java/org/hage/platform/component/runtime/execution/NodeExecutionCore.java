@@ -1,6 +1,8 @@
 package org.hage.platform.component.runtime.execution;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hage.platform.component.execution.ExecutionCore;
+import org.hage.platform.component.execution.ExecutionInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.CustomizableThreadFactory;
 

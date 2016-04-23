@@ -1,7 +1,7 @@
 package org.hage.platform.component;
 
 import org.hage.platform.component.container.MutableInstanceContainer;
-import org.hage.platform.component.runtime.execution.ExecutionCore;
+import org.hage.platform.component.execution.ExecutionCore;
 import org.hage.platform.component.runtime.execution.NodeExecutionCore;
 import org.hage.platform.component.runtime.execution.cycle.FixedPhaseOrderOrderClassifier;
 import org.hage.platform.component.runtime.execution.cycle.PostStepPhaseOrderClassifier;
@@ -65,6 +65,7 @@ public class RuntimeCoreCfg {
     @Bean
     public PostStepPhaseOrderClassifier postStepPhaseOrderClassifier() {
         return new FixedPhaseOrderOrderClassifier(
+            CLEAN_CACHE,
             CLEAN_CACHE,
             STRUCTURE_UPDATE
         );

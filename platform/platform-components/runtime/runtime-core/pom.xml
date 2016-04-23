@@ -33,7 +33,7 @@
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
-            <artifactId>runtime-execution-api</artifactId>
+            <artifactId>execution-core-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 
