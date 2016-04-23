@@ -7,6 +7,7 @@ import org.hage.platform.simulation.runtime.agent.Agent;
 import org.junit.Test;
 
 import static org.fest.assertions.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 public class UnitPopulationTest {
 
@@ -231,6 +232,6 @@ public class UnitPopulationTest {
     }
 
     private static AgentDefinition dummyAgentDef() {
-        return new AgentDefinition(Agent.class);
+        return mock(AgentDefinition.class);
     }
 }

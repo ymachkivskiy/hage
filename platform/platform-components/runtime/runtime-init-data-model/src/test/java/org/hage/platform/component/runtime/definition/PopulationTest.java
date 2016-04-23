@@ -446,6 +446,6 @@ public class PopulationTest {
     }
 
     private static AgentDefinition dummyAgentDef() {
-        return new AgentDefinition(Agent.class);
+        return mock(AgentDefinition.class);
     }
 }
