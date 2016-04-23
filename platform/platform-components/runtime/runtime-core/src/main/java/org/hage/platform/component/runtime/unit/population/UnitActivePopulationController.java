@@ -2,8 +2,8 @@ package org.hage.platform.component.runtime.unit.population;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.PrototypeComponent;
-import org.hage.platform.component.runtime.unit.UnitStepCycleAware;
 import org.hage.platform.component.runtime.unit.agentcontext.AgentLocalEnvironment;
+import org.hage.platform.component.runtime.unit.api.AgentsRunner;
 import org.hage.platform.component.runtime.util.StatefulFinisher;
 import org.hage.platform.simulation.runtime.agent.Agent;
 import org.hage.platform.simulation.runtime.control.ControlAgent;
@@ -19,7 +19,7 @@ import static java.util.stream.Collectors.toList;
 
 @Slf4j
 @PrototypeComponent
-public class UnitActivePopulationController implements UnitStepCycleAware {
+public class UnitActivePopulationController implements AgentsRunner {
 
     private final AgentLocalEnvironment agentEnvironment;
     private final AtomicLong agentIdCounter = new AtomicLong();
@@ -39,17 +39,18 @@ public class UnitActivePopulationController implements UnitStepCycleAware {
         this.agentEnvironment = environment;
     }
 
-    @Override
-    public void afterStepPerformed() {
+    public void performPostProcessing() {
         flushAgents();
         finishDisposedAgents();
     }
 
+    @Override
     public void runControlAgent() {
         log.debug("Run control agent");
         controlAgent.ifPresent(ControlAgentAdapter::performStep);
     }
 
+    @Override
     public void runAgents() {
         log.debug("Run all agents");
         agentsAdapters.forEach(AgentAdapter::performStep);

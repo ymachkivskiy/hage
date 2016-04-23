@@ -5,13 +5,11 @@ import org.hage.platform.HageRuntimeException;
 import org.hage.platform.component.runtime.unit.agentcontext.AgentLocalEnvironment;
 import org.hage.platform.component.runtime.unit.agentcontext.UnitAgentContextAdapter;
 import org.hage.platform.component.runtime.unit.location.UnitLocationContext;
-import org.hage.platform.component.runtime.unit.population.UnitAgentCreationContext;
 import org.hage.platform.component.runtime.unit.population.UnitActivePopulationController;
+import org.hage.platform.component.runtime.unit.population.UnitAgentCreationContext;
 import org.hage.platform.component.structure.Position;
 import org.hage.platform.component.structure.connections.Structure;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import static java.util.Arrays.asList;
 
 @Slf4j
 public abstract class AgentsUnitFactory {
@@ -24,7 +22,7 @@ public abstract class AgentsUnitFactory {
 
         log.debug("Initialize agents unit for position {}", position);
 
-        AgentsUnit unit = new AgentsUnit();
+        AgentsUnit unit = new AgentsUnit(position);
 
         UnitActivePopulationController unitActivePopulationController = createUnitPopulationController(unit);
         UnitLocationContext locationContext = createUnitLocationContext(position);
@@ -35,8 +33,6 @@ public abstract class AgentsUnitFactory {
         unit.setUnitAgentCreationContext(unitAgentCreationContext);
         unit.setUnitActivePopulationController(unitActivePopulationController);
         unit.setAgentContextAdapter(agentContextAdapter);
-
-        unit.setStepCycleAwares(asList(locationContext, unitActivePopulationController));
 
         return unit;
     }

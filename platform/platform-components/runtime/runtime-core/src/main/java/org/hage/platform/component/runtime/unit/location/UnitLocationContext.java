@@ -5,11 +5,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.PrototypeComponent;
 import org.hage.platform.component.cluster.LocalNodeAddressSupplier;
-import org.hage.platform.component.runtime.unit.UnitStepCycleAware;
 import org.hage.platform.component.structure.Position;
 import org.hage.platform.component.structure.connections.Neighbors;
 import org.hage.platform.component.structure.connections.UnitAddress;
-import org.hage.platform.simulation.runtime.context.LocationContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
@@ -19,7 +17,7 @@ import static com.google.common.base.Suppliers.memoize;
 @Slf4j
 @RequiredArgsConstructor
 @PrototypeComponent
-public class UnitLocationContext implements  UnitStepCycleAware {
+public class UnitLocationContext {
 
     private final Position position;
 
@@ -44,8 +42,7 @@ public class UnitLocationContext implements  UnitStepCycleAware {
         return position.toString() + "[" + localNodeAddressSupplier.getLocalAddress().getUniqueIdentifier() + "]";
     }
 
-    @Override
-    public void afterStepPerformed() {
+    public void performPostProcessing() {
         reset();
     }
 

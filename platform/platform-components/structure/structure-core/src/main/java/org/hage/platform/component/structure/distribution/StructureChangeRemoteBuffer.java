@@ -2,7 +2,6 @@ package org.hage.platform.component.structure.distribution;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.SingletonComponent;
-import org.hage.platform.component.runtime.execution.BaseStaticExecutionStateAware;
 import org.hage.platform.component.structure.Position;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -11,11 +10,9 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.hage.platform.component.runtime.execution.PostStepPhase.STRUCTURE_UPDATE;
-
 @SingletonComponent
 @Slf4j
-class StructureChangeRemoteBuffer extends BaseStaticExecutionStateAware {
+public class StructureChangeRemoteBuffer  {
 
     @Autowired
     private StructureDistributionEndpoint distributionEndpoint;
@@ -23,12 +20,7 @@ class StructureChangeRemoteBuffer extends BaseStaticExecutionStateAware {
     private final List<Position> activated = new LinkedList<>();
     private final List<Position> deactivated = new LinkedList<>();
 
-    public StructureChangeRemoteBuffer() {
-        super(STRUCTURE_UPDATE);
-    }
-
-    @Override
-    public synchronized void onStepPerformed(long stepNumber) {
+    public synchronized void onStepPerformed() {
         if (isChangeStored()) {
             notifyRemotes();
             resetBuffer();
@@ -63,8 +55,4 @@ class StructureChangeRemoteBuffer extends BaseStaticExecutionStateAware {
         deactivated.clear();
     }
 
-    @Override
-    public String toString() {
-        return getPhase().toString() + "-phased " + this.getClass().getSimpleName();
-    }
 }

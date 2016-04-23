@@ -27,11 +27,11 @@ class ExecutionStepRunnable implements Runnable {
     @Override
     public void run() {
 
-        log.debug("Started performing step {}", getCurrentStepNumber());
+        log.debug("### Started performing step {}", getCurrentStepNumber());
 
         stepPhaseFactory.getFullCyclePhasesGroups().forEach(this::executePhasesGroup);
 
-        log.debug("Finished performing step {}", getCurrentStepNumber());
+        log.debug("### Finished performing step {}", getCurrentStepNumber());
 
         stepsPerformed.incrementAndGet();
     }
@@ -53,6 +53,8 @@ class ExecutionStepRunnable implements Runnable {
     private void executePhasesGroup(IndependentPhasesGroup group) {
         long currentStepNumber = getCurrentStepNumber();
 
+        log.debug("--- Start executing group of phases {} in step {} --- ", group, currentStepNumber);
+
         List<Runnable> a = group.getPhases()
             .stream()
             .map(p -> p.getRunnable(currentStepNumber))
@@ -60,6 +62,8 @@ class ExecutionStepRunnable implements Runnable {
             .collect(toList());
 
         coreBatchExecutor.executeAll(a);
+
+        log.debug("--- Finish executing group of phases {} in step {} ---", group, currentStepNumber);
     }
 
 }
