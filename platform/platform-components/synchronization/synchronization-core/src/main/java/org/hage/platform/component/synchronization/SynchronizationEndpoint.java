@@ -2,27 +2,25 @@ package org.hage.platform.component.synchronization;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.component.cluster.ClusterManager;
-import org.hage.platform.component.cluster.ClusterMemberChangeCallback;
-import org.hage.platform.component.cluster.NodeAddress;
 import org.hage.platform.util.connection.chanel.ConnectionDescriptor;
 import org.hage.platform.util.connection.remote.endpoint.BaseRemoteEndpoint;
 import org.hage.platform.util.connection.remote.endpoint.MessageEnvelope;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.PostConstruct;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 @Slf4j
-public class SynchronizationEndpoint extends BaseRemoteEndpoint<SynchronizationMessage> implements SynchronizationBarrier, ClusterMemberChangeCallback {
+public class SynchronizationEndpoint extends BaseRemoteEndpoint<SynchronizationMessage> implements SynchronizationBarrier {
 
     private static final String CHANEL_NAME = "synchronization-remote-chanel";
 
     @Autowired
     private ClusterManager clusterManager;
 
-    private final AtomicInteger waitingCount = new AtomicInteger(0);
+    private final Map<Long, Integer> stepParkedCounter = new ConcurrentHashMap<>();
 
     private final ReentrantLock lock = new ReentrantLock();
     private final Condition changeNotifier = lock.newCondition();
@@ -32,66 +30,48 @@ public class SynchronizationEndpoint extends BaseRemoteEndpoint<SynchronizationM
     }
 
     @Override
-    public void synchronize() {
+    public void synchronizeOnStep(long stepNumber) {
 
         log.debug("Start synchronization");
 
-        startSynchronization();
-        waitForAll();
+        startSynchronization(stepNumber);
+        waitForAll(stepNumber);
 
         log.debug("Finish synchronization");
     }
 
-    @Override
-    public void onMemberAdd(NodeAddress newMember) {
-        waitingCount.incrementAndGet();
-    }
-
-    @Override
-    public void onMemberRemoved(NodeAddress removedMember) {
-        waitingCount.decrementAndGet();
+    private void startSynchronization(long stepNumber) {
+        sendToAll(new SynchronizationMessage(stepNumber));
     }
 
     @Override
     protected void consumeMessage(MessageEnvelope<SynchronizationMessage> envelope) {
-        NodeAddress origin = envelope.getOrigin();
-        registerNodeThatReachedBarrier(origin);
-    }
-
-    @PostConstruct
-    private void init() {
-        clusterManager.addMembershipChangeCallback(this);
-    }
-
-    private void startSynchronization() {
-        waitingCount.updateAndGet(x -> clusterManager.getMembersCount() - x);
-        sendToAll(new SynchronizationMessage());
-    }
-
-    private void waitForAll() {
         try {
             lock.lock();
 
-            while (waitingCount.get() > 0) {
-                changeNotifier.await();
-            }
+            log.info("Node {} has reached synchronization point.", envelope.getOrigin());
 
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            stepParkedCounter.merge(envelope.getBody().getStepNumber(), 1, Math::addExact);
+
+            changeNotifier.signal();
+
         } finally {
             lock.unlock();
         }
     }
 
-    private void registerNodeThatReachedBarrier(NodeAddress origin) {
+    private void waitForAll(long stepNumber) {
         try {
             lock.lock();
 
-            log.info("Node {} has reached synchronization point.", origin);
+            while (stepParkedCounter.getOrDefault(stepNumber, 0) != clusterManager.getMembersCount()) {
+                changeNotifier.await();
+            }
 
-            waitingCount.decrementAndGet();
-            changeNotifier.signal();
+            stepParkedCounter.remove(stepNumber);
 
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         } finally {
             lock.unlock();
         }

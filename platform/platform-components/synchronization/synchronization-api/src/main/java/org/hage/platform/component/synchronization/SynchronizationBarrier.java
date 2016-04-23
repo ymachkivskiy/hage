@@ -1,5 +1,5 @@
 package org.hage.platform.component.synchronization;
 
 public interface SynchronizationBarrier {
-    void synchronize();
+    void synchronizeOnStep(long stepNumber);
 }
