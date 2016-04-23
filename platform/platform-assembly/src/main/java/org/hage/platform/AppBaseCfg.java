@@ -9,11 +9,6 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 @PropertySource("classpath:application.properties")
 class AppBaseCfg {
 
-//    @Bean
-//    AutowiredAnnotationBeanPostProcessor autowiredAnnotationBeanPostProcessor() {
-//        return new AutowiredAnnotationBeanPostProcessor();
-//    }
-
     @Bean
     public PropertySourcesPlaceholderConfigurer propertyPlaceholderConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();

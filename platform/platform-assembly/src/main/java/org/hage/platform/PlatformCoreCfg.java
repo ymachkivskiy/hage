@@ -4,6 +4,7 @@ import org.hage.platform.annotation.di.PlugableConfiguration;
 import org.hage.platform.annotation.di.PrototypeComponent;
 import org.hage.platform.annotation.di.SingletonComponent;
 import org.hage.platform.component.*;
+import org.hage.platform.component.execution.ExecutionCoreCfg;
 import org.hage.platform.util.ContainerShareCfg;
 import org.hage.platform.util.EventBusCfg;
 import org.hage.platform.util.ExecutorsCfg;
@@ -24,6 +25,7 @@ import org.springframework.context.annotation.Import;
     LifecycleCoreCfg.class,
     RateCoreCfg.class,
     RuntimeCoreCfg.class,
+    ExecutionCoreCfg.class,
     SimulationConfigurationCoreCfg.class,
     StructureCoreCfg.class,
     SynchronizationCfg.class

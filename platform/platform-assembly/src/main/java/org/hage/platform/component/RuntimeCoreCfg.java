@@ -49,9 +49,13 @@ public class RuntimeCoreCfg {
     }
 
     @Bean
-    public StatefulFinisher statefulComponentsInitializer() {
+    public StatefulFinisher statefulFinisher() {
         return new SimpleStatefulFinisher();
     }
+
+
+
+    //region TODO: remove this
 
     @Bean
     public ExecutionPhasesProvider coreExecutorPhasesProvider() {
@@ -66,11 +70,12 @@ public class RuntimeCoreCfg {
     public PostStepPhaseOrderClassifier postStepPhaseOrderClassifier() {
         return new FixedPhaseOrderOrderClassifier(
             CLEAN_CACHE,
-            CLEAN_CACHE,
             STRUCTURE_UPDATE
         );
     }
+    //endregion
 
+    // TODO: to be moved to execution config
     @Bean
     public ExecutionCore executionCore() {
         return new NodeExecutionCore();
