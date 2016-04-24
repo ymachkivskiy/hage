@@ -79,6 +79,17 @@ public final class Locks {
         }
     }
 
+    public static void withExceptionLock(final Lock lock, final RunnableWithException runnable) {
+        try {
+            withLock(lock, () -> {
+                runnable.run();
+                return null;
+            });
+        } catch (final Exception e) {
+            throw Throwables.propagate(e);
+        }
+    }
+
 
     public static <T, E extends Exception> T withReadLockThrowing(final ReadWriteLock lock, final Callable<T> callable,
                                                                   final Class<E> exceptionClass) throws E {

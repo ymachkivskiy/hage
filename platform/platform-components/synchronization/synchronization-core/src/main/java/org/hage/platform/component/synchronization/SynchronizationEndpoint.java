@@ -15,6 +15,9 @@ import java.util.Map;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
+import static org.hage.util.concurrency.Locks.withExceptionLock;
+import static org.hage.util.concurrency.Locks.withLock;
+
 @Slf4j
 public class SynchronizationEndpoint extends BaseRemoteEndpoint<SynchronizationMessage> implements SynchronizationBarrier, ClusterMemberChangeCallback {
 
@@ -52,59 +55,36 @@ public class SynchronizationEndpoint extends BaseRemoteEndpoint<SynchronizationM
 
     @Override
     protected void consumeMessage(MessageEnvelope<SynchronizationMessage> envelope) {
-        try {
-            lock.lock();
+        withLock(lock,
+            () -> {
+                log.info("Node {} has reached synchronization point.", envelope.getOrigin());
 
-            log.info("Node {} has reached synchronization point.", envelope.getOrigin());
-
-            stepPhaseParkingMap.merge(toPoint(envelope.getBody()), 1, Math::addExact);
-            changeNotifier.signal();
-
-        } finally {
-            lock.unlock();
-        }
+                stepPhaseParkingMap.merge(toPoint(envelope.getBody()), 1, Math::addExact);
+                changeNotifier.signal();
+            }
+        );
     }
 
     @Override
     public void onMemberRemoved(NodeAddress removedMember) {
-
-        try {
-            lock.lock();
-
-            clusterFailed = true;
-            changeNotifier.signalAll();
-
-        } finally {
-            lock.unlock();
-        }
+        withLock(lock,
+            () -> {
+                clusterFailed = true;
+                changeNotifier.signalAll();
+            }
+        );
     }
 
     private void waitForAll(SynchPoint point) {
-        try {
-            lock.lock();
+        withExceptionLock(lock,
+            () -> {
+                while (!clusterFailed && allHaveArrivedTo(point)) {
+                    changeNotifier.await();
+                }
 
-            while (!clusterFailed && allHaveArrivedTo(point)) {
-                changeNotifier.await();
+                stepPhaseParkingMap.remove(point);
             }
-
-            stepPhaseParkingMap.remove(point);
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } finally {
-            lock.unlock();
-        }
-    }
-
-    private void locking(Runnable runnable) {
-        try {
-            lock.lock();
-            runnable.run();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            lock.unlock();
-        }
+        );
     }
 
     private boolean allHaveArrivedTo(SynchPoint point) {
