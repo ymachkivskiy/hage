@@ -1,15 +1,15 @@
 package org.hage.platform.component;
 
 import org.hage.platform.component.container.MutableInstanceContainer;
-import org.hage.platform.component.runtime.global.BasePopulationInitializer;
-import org.hage.platform.component.runtime.global.GreedyPopulationDivisor;
+import org.hage.platform.component.runtime.activepopulation.UnitActivePopulationController;
+import org.hage.platform.component.runtime.container.UnitAgentCreationController;
 import org.hage.platform.component.runtime.init.Population;
 import org.hage.platform.component.runtime.init.PopulationInitializer;
+import org.hage.platform.component.runtime.location.UnitLocationController;
+import org.hage.platform.component.runtime.populationinit.BasePopulationInitializer;
+import org.hage.platform.component.runtime.populationinit.GreedyPopulationDivisor;
+import org.hage.platform.component.runtime.unit.AgentExecutionContextEnvironment;
 import org.hage.platform.component.runtime.unit.AgentsUnitFactory;
-import org.hage.platform.component.runtime.unit.agentcontext.AgentLocalEnvironment;
-import org.hage.platform.component.runtime.unit.location.UnitLocationContext;
-import org.hage.platform.component.runtime.unit.population.UnitActivePopulationController;
-import org.hage.platform.component.runtime.unit.population.UnitAgentCreationContext;
 import org.hage.platform.component.runtime.util.SimpleStatefulFinisher;
 import org.hage.platform.component.runtime.util.StatefulFinisher;
 import org.hage.platform.component.structure.Position;
@@ -47,17 +47,17 @@ public class RuntimeCoreCfg {
         return new AgentsUnitFactory() {
 
             @Override
-            protected UnitAgentCreationContext createUnitPopulationContext(UnitActivePopulationController unitActivePopulationController) {
-                return beanFactory.getBean(UnitAgentCreationContext.class, instanceContainer.newChildContainer(), unitActivePopulationController);
+            protected UnitAgentCreationController createUnitPopulationContext(UnitActivePopulationController unitActivePopulationController) {
+                return beanFactory.getBean(UnitAgentCreationController.class, instanceContainer.newChildContainer(), unitActivePopulationController);
             }
 
             @Override
-            protected UnitLocationContext createUnitLocationContext(Position position) {
-                return beanFactory.getBean(UnitLocationContext.class, position);
+            protected UnitLocationController createUnitLocationContext(Position position) {
+                return beanFactory.getBean(UnitLocationController.class, position);
             }
 
             @Override
-            protected UnitActivePopulationController createUnitPopulationController(AgentLocalEnvironment agentEnvironment) {
+            protected UnitActivePopulationController createUnitPopulationController(AgentExecutionContextEnvironment agentEnvironment) {
                 return beanFactory.getBean(UnitActivePopulationController.class, agentEnvironment);
             }
 

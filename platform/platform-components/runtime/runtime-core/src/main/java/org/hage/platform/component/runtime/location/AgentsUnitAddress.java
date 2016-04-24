@@ -1,4 +1,4 @@
-package org.hage.platform.component.runtime.unit.location;
+package org.hage.platform.component.runtime.location;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

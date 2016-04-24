@@ -4,47 +4,43 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.component.runtime.init.UnitPopulation;
-import org.hage.platform.component.runtime.unit.agentcontext.AgentLocalEnvironment;
-import org.hage.platform.component.runtime.unit.agentcontext.UnitAgentContextAdapter;
-import org.hage.platform.component.runtime.unit.api.AgentsExecutionUnit;
-import org.hage.platform.component.runtime.unit.api.AgentsRunner;
-import org.hage.platform.component.runtime.unit.location.UnitLocationContext;
-import org.hage.platform.component.runtime.unit.population.AgentAdapter;
-import org.hage.platform.component.runtime.unit.population.UnitActivePopulationController;
-import org.hage.platform.component.runtime.unit.population.UnitAgentCreationContext;
+import org.hage.platform.component.runtime.activepopulation.AgentAdapter;
+import org.hage.platform.component.runtime.activepopulation.AgentsRunner;
+import org.hage.platform.component.runtime.activepopulation.UnitActivePopulationController;
+import org.hage.platform.component.runtime.container.UnitAgentCreationController;
+import org.hage.platform.component.runtime.location.UnitLocationController;
+import org.hage.platform.component.runtime.populationinit.UnitPopulationLoader;
 import org.hage.platform.component.structure.Position;
 import org.hage.platform.simulation.runtime.agent.AgentManageContext;
 import org.hage.platform.simulation.runtime.control.ControlAgentManageContext;
 
 import static lombok.AccessLevel.PACKAGE;
-import static org.hage.util.CollectionUtils.nullSafeCopy;
 
 
 @Slf4j
 @RequiredArgsConstructor
-public class AgentsUnit implements AgentLocalEnvironment, AgentsExecutionUnit {
+class AgentsUnit implements AgentExecutionContextEnvironment, AgentsExecutionUnit {
 
     @Getter
     private final Position position;
 
     @Setter(PACKAGE)
-    private UnitAgentCreationContext unitAgentCreationContext;
+    private UnitAgentCreationController unitAgentCreationController;
     @Setter(PACKAGE)
-    private UnitLocationContext locationContext;
+    private UnitLocationController unitLocationController;
     @Setter(PACKAGE)
     private UnitActivePopulationController unitActivePopulationController;
     @Setter(PACKAGE)
-    private UnitAgentContextAdapter agentContextAdapter;
+    private AgentContextAdapter agentContextAdapter;
 
     @Override
     public String getUniqueIdentifier() {
-        return locationContext.getUniqueIdentifier();
+        return unitLocationController.getUniqueIdentifier();
     }
 
     @Override
     public void performPostProcessing() {
-        locationContext.performPostProcessing();
+        unitLocationController.performPostProcessing();
         unitActivePopulationController.performPostProcessing();
     }
 
@@ -67,8 +63,9 @@ public class AgentsUnit implements AgentLocalEnvironment, AgentsExecutionUnit {
         return unitActivePopulationController;
     }
 
-    public void loadPopulation(UnitPopulation population) {
-        unitAgentCreationContext.loadPopulation(population);
+    @Override
+    public UnitPopulationLoader getUnitPopulationLoader() {
+        return unitAgentCreationController;
     }
 
 }

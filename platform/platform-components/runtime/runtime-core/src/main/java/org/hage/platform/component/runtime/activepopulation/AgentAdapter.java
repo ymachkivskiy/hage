@@ -1,11 +1,10 @@
-package org.hage.platform.component.runtime.unit.population;
+package org.hage.platform.component.runtime.activepopulation;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.hage.platform.component.runtime.unit.agentcontext.AgentLocalEnvironment;
+import org.hage.platform.component.runtime.unit.AgentExecutionContextEnvironment;
 import org.hage.platform.simulation.runtime.agent.Agent;
 import org.hage.platform.simulation.runtime.agent.AgentAddress;
-import org.hage.platform.simulation.runtime.control.AddressedAgent;
 
 @RequiredArgsConstructor
 public class AgentAdapter<T extends Agent> implements AgentAddress {
@@ -13,7 +12,7 @@ public class AgentAdapter<T extends Agent> implements AgentAddress {
     @Getter
     private final Agent agent;
     private final long address;
-    private final AgentLocalEnvironment environment;
+    private final AgentExecutionContextEnvironment environment;
 
     public void performStep() {
         agent.step(environment.contextForAgent(this));

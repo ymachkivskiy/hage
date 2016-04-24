@@ -1,4 +1,4 @@
-package org.hage.platform.component.runtime.global;
+package org.hage.platform.component.runtime.container;
 
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;

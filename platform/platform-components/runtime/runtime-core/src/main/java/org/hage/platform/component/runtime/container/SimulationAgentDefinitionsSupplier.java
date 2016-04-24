@@ -1,4 +1,4 @@
-package org.hage.platform.component.runtime.global;
+package org.hage.platform.component.runtime.container;
 
 import org.hage.platform.simulation.runtime.agent.Agent;
 import org.hage.platform.simulation.runtime.control.ControlAgent;

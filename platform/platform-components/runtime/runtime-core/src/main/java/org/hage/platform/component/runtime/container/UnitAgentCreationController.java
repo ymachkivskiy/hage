@@ -1,12 +1,13 @@
-package org.hage.platform.component.runtime.unit.population;
+package org.hage.platform.component.runtime.container;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.PrototypeComponent;
 import org.hage.platform.component.container.MutableInstanceContainer;
-import org.hage.platform.component.runtime.global.SimulationAgentDefinitionsSupplier;
+import org.hage.platform.component.runtime.activepopulation.AgentsEnvironment;
 import org.hage.platform.component.runtime.init.AgentDefinitionCount;
 import org.hage.platform.component.runtime.init.UnitPopulation;
+import org.hage.platform.component.runtime.populationinit.UnitPopulationLoader;
 import org.hage.platform.simulation.runtime.agent.Agent;
 import org.hage.platform.simulation.runtime.context.AgentInitializer;
 import org.hage.platform.simulation.runtime.context.UnsupportedAgentTypeException;
@@ -24,33 +25,35 @@ import static java.util.stream.IntStream.range;
 @Slf4j
 @PrototypeComponent
 @RequiredArgsConstructor
-public class UnitAgentCreationContext {
-
-    private static final AgentInitializer<?> EMPTY_INITIALIZER = agent -> {
-    };
+public class UnitAgentCreationController implements UnitPopulationLoader, AgentsCreator {
 
     @Autowired
     private SimulationAgentDefinitionsSupplier agentDefinitionsSupplier;
 
     private final MutableInstanceContainer instanceContainer;
-    private final UnitActivePopulationController unitActivePopulationController;
+    private final AgentsEnvironment agentsEnvironment;
 
+    @Override
+    public void loadPopulation(UnitPopulation population) {
+        log.debug("Configure with initial population {}", population);
+
+        createControlAgent();
+        createInitialAgents(population);
+    }
+
+    @Override
     public Set<Class<? extends Agent>> getSupportedAgentsTypes() {
         return agentDefinitionsSupplier.getSupportedAgentTypes();
     }
 
-    public <T extends Agent> void newAgent(Class<T> agentClazz, boolean addImmediately) throws UnsupportedAgentTypeException {
-        newAgent(agentClazz, (AgentInitializer<T>) EMPTY_INITIALIZER, addImmediately);
+    @Override
+    public <T extends Agent> void checkAgentClazz(Class<T> agentClazz) throws UnsupportedAgentTypeException {
+        if (!agentDefinitionsSupplier.isSupportedAgent(agentClazz)) {
+            throw new UnsupportedAgentTypeException(agentClazz);
+        }
     }
 
-    public <T extends Agent> void newAgents(Class<T> agentClazz, int agentsNumber, boolean addImmediately) throws UnsupportedAgentTypeException {
-        newAgents(agentClazz, (AgentInitializer<T>) EMPTY_INITIALIZER, agentsNumber, addImmediately);
-    }
-
-    public <T extends Agent> void newAgent(Class<T> agentClazz, AgentInitializer<T> initializer, boolean addImmediately) throws UnsupportedAgentTypeException {
-        newAgents(agentClazz, initializer, 1, addImmediately);
-    }
-
+    @Override
     public <T extends Agent> void newAgents(Class<T> agentClazz, AgentInitializer<T> initializer, int agentsNumber, boolean addImmediately) throws UnsupportedAgentTypeException {
         checkAgentClazz(agentClazz);
         checkArgument(agentsNumber > 0, "Agent number must be positive integer greater than zero");
@@ -63,21 +66,14 @@ public class UnitAgentCreationContext {
         registerAgents(agents, addImmediately);
     }
 
-    public void loadPopulation(UnitPopulation population) {
-        log.debug("Configure with initial population {}", population);
-
-        createControlAgent();
-        createInitialAgents(population);
-    }
 
     private void createControlAgent() {
         log.debug("Create control agent");
 
         agentDefinitionsSupplier.getControlAgentType()
             .map(instanceContainer::getInstance)
-            .ifPresent(unitActivePopulationController::setControlAgent);
+            .ifPresent(agentsEnvironment::setControlAgent);
     }
-
 
     private void createInitialAgents(UnitPopulation population) {
         log.debug("Create initial agents");
@@ -90,17 +86,11 @@ public class UnitAgentCreationContext {
         registerAgents(agents, true);
     }
 
-    public <T extends Agent> void checkAgentClazz(Class<T> agentClazz) {
-        if (!agentDefinitionsSupplier.isSupportedAgent(agentClazz)) {
-            throw new UnsupportedAgentTypeException(agentClazz);
-        }
-    }
-
     private <T extends Agent> void registerAgents(Collection<T> agents, boolean immediately) {
         if (immediately) {
-            unitActivePopulationController.addInstancesImmediately(agents);
+            agentsEnvironment.addAgentsImmediately(agents);
         } else {
-            unitActivePopulationController.scheduleAddInstances(agents);
+            agentsEnvironment.scheduleAddAgents(agents);
         }
     }
 

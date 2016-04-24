@@ -1,10 +1,10 @@
-package org.hage.platform.component.runtime.unit.agentcontext;
+package org.hage.platform.component.runtime.unit;
 
-import org.hage.platform.component.runtime.unit.population.AgentAdapter;
+import org.hage.platform.component.runtime.activepopulation.AgentAdapter;
 import org.hage.platform.simulation.runtime.agent.AgentManageContext;
 import org.hage.platform.simulation.runtime.control.ControlAgentManageContext;
 
-public interface AgentLocalEnvironment {
+public interface AgentExecutionContextEnvironment {
     String getUniqueIdentifier();
 
     AgentManageContext contextForAgent(AgentAdapter agentAdapter);

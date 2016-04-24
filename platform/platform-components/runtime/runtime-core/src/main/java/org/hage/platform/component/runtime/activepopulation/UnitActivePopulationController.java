@@ -1,9 +1,8 @@
-package org.hage.platform.component.runtime.unit.population;
+package org.hage.platform.component.runtime.activepopulation;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.PrototypeComponent;
-import org.hage.platform.component.runtime.unit.agentcontext.AgentLocalEnvironment;
-import org.hage.platform.component.runtime.unit.api.AgentsRunner;
+import org.hage.platform.component.runtime.unit.AgentExecutionContextEnvironment;
 import org.hage.platform.component.runtime.util.StatefulFinisher;
 import org.hage.platform.simulation.runtime.agent.Agent;
 import org.hage.platform.simulation.runtime.control.ControlAgent;
@@ -19,9 +18,9 @@ import static java.util.stream.Collectors.toList;
 
 @Slf4j
 @PrototypeComponent
-public class UnitActivePopulationController implements AgentsRunner {
+public class UnitActivePopulationController implements AgentsRunner, AgentsEnvironment, AgentsController {
 
-    private final AgentLocalEnvironment agentEnvironment;
+    private final AgentExecutionContextEnvironment agentEnvironment;
     private final AtomicLong agentIdCounter = new AtomicLong();
 
     private final List<Agent> disposedAgents = new LinkedList<>();
@@ -35,7 +34,7 @@ public class UnitActivePopulationController implements AgentsRunner {
     @Autowired
     private StatefulFinisher statefulFinisher;
 
-    public UnitActivePopulationController(AgentLocalEnvironment environment) {
+    public UnitActivePopulationController(AgentExecutionContextEnvironment environment) {
         this.agentEnvironment = environment;
     }
 
@@ -56,19 +55,22 @@ public class UnitActivePopulationController implements AgentsRunner {
         agentsAdapters.forEach(AgentAdapter::performStep);
     }
 
-    void setControlAgent(ControlAgent controlAgent) {
+    @Override
+    public void setControlAgent(ControlAgent controlAgent) {
         log.debug("Set control agent to {}", controlAgent);
         this.controlAgent = of(new ControlAgentAdapter(agentEnvironment, controlAgent));
     }
 
-    void addInstancesImmediately(Collection<? extends Agent> agents) {
+    @Override
+    public void addAgentsImmediately(Collection<? extends Agent> agents) {
         log.debug("Add agents into local population {}", agents);
         agents.stream()
             .map(this::createAdapterFor)
             .forEach(agentsAdapters::add);
     }
 
-    public void scheduleAddInstances(Collection<? extends Agent> agents) {
+    @Override
+    public void scheduleAddAgents(Collection<? extends Agent> agents) {
         agents.stream()
             .map(this::createAdapterFor)
             .forEach(toBeAdded::add);
@@ -92,15 +94,7 @@ public class UnitActivePopulationController implements AgentsRunner {
         toBeRemoved.addAll(agentAdapters);
     }
 
-    public void scheduleRemoveWithKilling(Collection<AgentAdapter> agentAdapters) {
-        log.debug("Remove agents {} with killing", agentAdapters);
-
-        scheduleRemove(agentAdapters);
-        agentAdapters.stream()
-            .map(AgentAdapter::getAgent)
-            .forEach(disposedAgents::add);
-    }
-
+    @Override
     public void scheduleRemoveWithKilling(AgentAdapter agentAdapter) {
         log.debug("Remove agent {} with killing", agentAdapter);
 
@@ -108,13 +102,15 @@ public class UnitActivePopulationController implements AgentsRunner {
         disposedAgents.add(agentAdapter.getAgent());
     }
 
-    public <T extends Agent> List<AgentAdapter> getAdaptersForAgentsOfType(Class<? extends Agent> agentClazz) {
+    @Override
+    public <T extends Agent> List<AgentAdapter> getAdaptersForAgentsOfType(Class<T> agentClazz) {
         return agentsAdapters.stream()
             .filter(agentAdapter -> agentAdapter.getAgent().getClass().equals(agentClazz))
             .collect(toList());
     }
 
-    public Set<AgentAdapter> getAllAdapters() {
+    @Override
+    public Collection<AgentAdapter> getAllAdapters() {
         return unmodifiableSet(agentsAdapters);
     }
 

@@ -2,9 +2,9 @@ package org.hage.platform.component.runtime.stepphase;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.component.execution.step.StepPhase;
-import org.hage.platform.component.runtime.unit.api.AgentUnitActivationAware;
-import org.hage.platform.component.runtime.unit.api.AgentUnitDeactivationAware;
-import org.hage.platform.component.runtime.unit.api.AgentsExecutionUnit;
+import org.hage.platform.component.runtime.unit.AgentUnitActivationAware;
+import org.hage.platform.component.runtime.unit.AgentUnitDeactivationAware;
+import org.hage.platform.component.runtime.unit.AgentsExecutionUnit;
 import org.hage.platform.component.structure.Position;
 
 import java.util.Collection;

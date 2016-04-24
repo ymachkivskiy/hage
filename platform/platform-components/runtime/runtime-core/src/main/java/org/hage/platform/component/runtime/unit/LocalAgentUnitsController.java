@@ -2,8 +2,8 @@ package org.hage.platform.component.runtime.unit;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.SingletonComponent;
-import org.hage.platform.component.runtime.unit.api.AgentUnitActivationAware;
-import org.hage.platform.component.runtime.unit.api.AgentUnitDeactivationAware;
+import org.hage.platform.component.runtime.populationinit.PopulationLoaderRegistry;
+import org.hage.platform.component.runtime.populationinit.UnitPopulationLoader;
 import org.hage.platform.component.structure.Position;
 import org.hage.platform.component.structure.distribution.LocalPositionsController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import static java.util.Collections.emptyList;
 
 @Slf4j
 @SingletonComponent
-public class LocalAgentUnitsController {
+class LocalAgentUnitsController implements PopulationLoaderRegistry {
 
     @Autowired(required = false)
     private List<AgentUnitActivationAware> unitActivationAwares = emptyList();
@@ -34,6 +34,10 @@ public class LocalAgentUnitsController {
         return createdUnitsMap.computeIfAbsent(position, this::createNewUnit);
     }
 
+    @Override
+    public UnitPopulationLoader getPopulationLoaderFor(Position position) {
+        return acquireUnitForPosition(position).getUnitPopulationLoader();
+    }
 
     private AgentsUnit createNewUnit(Position position) {
         log.debug("Create new agents unit for position {}", position);

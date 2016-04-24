@@ -1,4 +1,4 @@
-package org.hage.platform.component.runtime.unit.location;
+package org.hage.platform.component.runtime.location;
 
 import com.google.common.base.Supplier;
 import org.hage.platform.component.structure.Position;

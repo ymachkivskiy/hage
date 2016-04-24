@@ -1,4 +1,4 @@
-package org.hage.platform.component.runtime.global;
+package org.hage.platform.component.runtime.populationinit;
 
 import lombok.Data;
 import lombok.Getter;

@@ -22,7 +22,7 @@ public interface ControlAgentManageContext extends AgentCreationContext, Locatio
      */
     <T extends Agent> List<AddressedAgent<T>> queryAgentsOfType(Class<T> agentClazz) throws UnsupportedAgentTypeException;
 
-    boolean killAgent(AgentAddress agentAddress);
+    void killAgent(AgentAddress agentAddress);
 
     List<AgentAddress> queryLocalAgentsAddresses();
 

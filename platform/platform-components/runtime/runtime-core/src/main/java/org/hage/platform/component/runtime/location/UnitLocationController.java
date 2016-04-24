@@ -1,4 +1,4 @@
-package org.hage.platform.component.runtime.unit.location;
+package org.hage.platform.component.runtime.location;
 
 import com.google.common.base.Supplier;
 import lombok.RequiredArgsConstructor;
@@ -7,7 +7,6 @@ import org.hage.platform.annotation.di.PrototypeComponent;
 import org.hage.platform.component.cluster.LocalNodeAddressSupplier;
 import org.hage.platform.component.structure.Position;
 import org.hage.platform.component.structure.connections.Neighbors;
-import org.hage.platform.component.structure.connections.UnitAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
@@ -17,7 +16,7 @@ import static com.google.common.base.Suppliers.memoize;
 @Slf4j
 @RequiredArgsConstructor
 @PrototypeComponent
-public class UnitLocationContext {
+public class UnitLocationController {
 
     private final Position position;
 
@@ -27,10 +26,10 @@ public class UnitLocationContext {
     private NeighborsResolver neighborsResolver;
 
     private Supplier<Neighbors> neighborsSupplier;
-    private Supplier<UnitAddress> unitAddressSupplier;
+    private Supplier<AgentsUnitAddress> unitAddressSupplier;
 
 
-    public UnitAddress queryLocalUnit() {
+    public AgentsUnitAddress queryLocalUnit() {
         return unitAddressSupplier.get();
     }
 

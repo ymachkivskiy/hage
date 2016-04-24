@@ -2,11 +2,9 @@ package org.hage.platform.component.runtime.unit;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.HageRuntimeException;
-import org.hage.platform.component.runtime.unit.agentcontext.AgentLocalEnvironment;
-import org.hage.platform.component.runtime.unit.agentcontext.UnitAgentContextAdapter;
-import org.hage.platform.component.runtime.unit.location.UnitLocationContext;
-import org.hage.platform.component.runtime.unit.population.UnitActivePopulationController;
-import org.hage.platform.component.runtime.unit.population.UnitAgentCreationContext;
+import org.hage.platform.component.runtime.activepopulation.UnitActivePopulationController;
+import org.hage.platform.component.runtime.container.UnitAgentCreationController;
+import org.hage.platform.component.runtime.location.UnitLocationController;
 import org.hage.platform.component.structure.Position;
 import org.hage.platform.component.structure.connections.Structure;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +23,12 @@ public abstract class AgentsUnitFactory {
         AgentsUnit unit = new AgentsUnit(position);
 
         UnitActivePopulationController unitActivePopulationController = createUnitPopulationController(unit);
-        UnitLocationContext locationContext = createUnitLocationContext(position);
-        UnitAgentCreationContext unitAgentCreationContext = createUnitPopulationContext(unitActivePopulationController);
-        UnitAgentContextAdapter agentContextAdapter = new UnitAgentContextAdapter(locationContext, unitAgentCreationContext, unitActivePopulationController);
+        UnitLocationController locationContext = createUnitLocationContext(position);
+        UnitAgentCreationController unitAgentCreationController = createUnitPopulationContext(unitActivePopulationController);
+        AgentContextAdapter agentContextAdapter = new AgentContextAdapter(locationContext, unitAgentCreationController, unitActivePopulationController);
 
-        unit.setLocationContext(locationContext);
-        unit.setUnitAgentCreationContext(unitAgentCreationContext);
+        unit.setUnitLocationController(locationContext);
+        unit.setUnitAgentCreationController(unitAgentCreationController);
         unit.setUnitActivePopulationController(unitActivePopulationController);
         unit.setAgentContextAdapter(agentContextAdapter);
 
@@ -44,11 +42,11 @@ public abstract class AgentsUnitFactory {
         }
     }
 
-    protected abstract UnitAgentCreationContext createUnitPopulationContext(UnitActivePopulationController unitActivePopulationController);
+    protected abstract UnitAgentCreationController createUnitPopulationContext(UnitActivePopulationController unitActivePopulationController);
 
-    protected abstract UnitLocationContext createUnitLocationContext(Position position);
+    protected abstract UnitLocationController createUnitLocationContext(Position position);
 
-    protected abstract UnitActivePopulationController createUnitPopulationController(AgentLocalEnvironment agentEnvironment);
+    protected abstract UnitActivePopulationController createUnitPopulationController(AgentExecutionContextEnvironment agentEnvironment);
 
 
 }

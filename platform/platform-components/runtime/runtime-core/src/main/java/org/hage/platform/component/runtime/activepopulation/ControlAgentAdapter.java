@@ -1,12 +1,12 @@
-package org.hage.platform.component.runtime.unit.population;
+package org.hage.platform.component.runtime.activepopulation;
 
 import lombok.RequiredArgsConstructor;
-import org.hage.platform.component.runtime.unit.agentcontext.AgentLocalEnvironment;
+import org.hage.platform.component.runtime.unit.AgentExecutionContextEnvironment;
 import org.hage.platform.simulation.runtime.control.ControlAgent;
 
 @RequiredArgsConstructor
 public class ControlAgentAdapter {
-    private final AgentLocalEnvironment environment;
+    private final AgentExecutionContextEnvironment environment;
     private final ControlAgent controlAgent;
 
     public void performStep() {
