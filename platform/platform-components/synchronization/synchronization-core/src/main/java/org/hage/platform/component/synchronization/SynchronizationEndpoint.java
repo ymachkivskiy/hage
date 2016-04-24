@@ -2,46 +2,52 @@ package org.hage.platform.component.synchronization;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.component.cluster.ClusterManager;
+import org.hage.platform.component.cluster.ClusterMemberChangeCallback;
+import org.hage.platform.component.cluster.NodeAddress;
 import org.hage.platform.util.connection.chanel.ConnectionDescriptor;
 import org.hage.platform.util.connection.remote.endpoint.BaseRemoteEndpoint;
 import org.hage.platform.util.connection.remote.endpoint.MessageEnvelope;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.PostConstruct;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 @Slf4j
-public class SynchronizationEndpoint extends BaseRemoteEndpoint<SynchronizationMessage> implements SynchronizationBarrier {
+public class SynchronizationEndpoint extends BaseRemoteEndpoint<SynchronizationMessage> implements SynchronizationBarrier, ClusterMemberChangeCallback {
 
     private static final String CHANEL_NAME = "synchronization-remote-chanel";
 
     @Autowired
     private ClusterManager clusterManager;
 
-    private final Map<Long, Integer> stepParkedCounter = new ConcurrentHashMap<>();
+    private final Map<SynchPoint, Integer> stepPhaseParkingMap = new HashMap<>();
 
     private final ReentrantLock lock = new ReentrantLock();
     private final Condition changeNotifier = lock.newCondition();
+
+    private boolean clusterFailed = false;
 
     public SynchronizationEndpoint() {
         super(new ConnectionDescriptor(CHANEL_NAME), SynchronizationMessage.class);
     }
 
+    @PostConstruct
+    private void init() {
+        clusterManager.addMembershipChangeCallback(this);
+    }
+
     @Override
-    public void synchronizeOnStep(long stepNumber) {
+    public void synchronizeOnStep(SynchPoint point) {
 
         log.debug("Start synchronization");
 
-        startSynchronization(stepNumber);
-        waitForAll(stepNumber);
+        sendToAll(toMessage(point));
+        waitForAll(point);
 
         log.debug("Finish synchronization");
-    }
-
-    private void startSynchronization(long stepNumber) {
-        sendToAll(new SynchronizationMessage(stepNumber));
     }
 
     @Override
@@ -51,8 +57,7 @@ public class SynchronizationEndpoint extends BaseRemoteEndpoint<SynchronizationM
 
             log.info("Node {} has reached synchronization point.", envelope.getOrigin());
 
-            stepParkedCounter.merge(envelope.getBody().getStepNumber(), 1, Math::addExact);
-
+            stepPhaseParkingMap.merge(toPoint(envelope.getBody()), 1, Math::addExact);
             changeNotifier.signal();
 
         } finally {
@@ -60,20 +65,57 @@ public class SynchronizationEndpoint extends BaseRemoteEndpoint<SynchronizationM
         }
     }
 
-    private void waitForAll(long stepNumber) {
+    @Override
+    public void onMemberRemoved(NodeAddress removedMember) {
+
         try {
             lock.lock();
 
-            while (stepParkedCounter.getOrDefault(stepNumber, 0) != clusterManager.getMembersCount()) {
+            clusterFailed = true;
+            changeNotifier.signalAll();
+
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    private void waitForAll(SynchPoint point) {
+        try {
+            lock.lock();
+
+            while (!clusterFailed && allHaveArrivedTo(point)) {
                 changeNotifier.await();
             }
 
-            stepParkedCounter.remove(stepNumber);
+            stepPhaseParkingMap.remove(point);
 
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
             lock.unlock();
         }
+    }
+
+    private void locking(Runnable runnable) {
+        try {
+            lock.lock();
+            runnable.run();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    private boolean allHaveArrivedTo(SynchPoint point) {
+        return stepPhaseParkingMap.getOrDefault(point, 0) != clusterManager.getMembersCount();
+    }
+
+    private static SynchronizationMessage toMessage(SynchPoint point) {
+        return new SynchronizationMessage(point.getStepNumber(), point.getSubPhase());
+    }
+
+    private static SynchPoint toPoint(SynchronizationMessage message) {
+        return new SynchPoint(message.getStepNumber(), message.getSubPhase());
     }
 }

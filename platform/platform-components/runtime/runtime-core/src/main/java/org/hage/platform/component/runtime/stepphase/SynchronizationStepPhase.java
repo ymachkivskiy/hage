@@ -1,24 +1,34 @@
 package org.hage.platform.component.runtime.stepphase;
 
-import org.hage.platform.annotation.di.SingletonComponent;
+import org.hage.platform.annotation.di.PrototypeComponent;
 import org.hage.platform.component.execution.step.SingleRunnableStepPhase;
+import org.hage.platform.component.synchronization.SynchPoint;
 import org.hage.platform.component.synchronization.SynchronizationBarrier;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@SingletonComponent
+import static com.google.common.base.Preconditions.checkArgument;
+
+@PrototypeComponent
 public class SynchronizationStepPhase extends SingleRunnableStepPhase {
+
+    private final String phase;
 
     @Autowired
     private SynchronizationBarrier barrier;
 
+    public SynchronizationStepPhase(String phase) {
+        checkArgument(phase != null && phase.length() > 0, "Illegal phase name " + phase);
+        this.phase = phase;
+    }
+
     @Override
     public String getPhaseName() {
-        return "Synchronization";
+        return "Synchronization on " + phase;
     }
 
     @Override
     protected void executePhase(long currentStep) {
-        barrier.synchronizeOnStep(currentStep);
+        barrier.synchronizeOnStep(new SynchPoint(currentStep, phase));
     }
 
 }

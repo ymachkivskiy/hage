@@ -50,20 +50,21 @@ class ExecutionStepRunnable implements Runnable {
         return stepsPerformed.get() + 1;
     }
 
-    private void executePhasesGroup(IndependentPhasesGroup group) {
-        long currentStepNumber = getCurrentStepNumber();
+    private void executePhasesGroup(IndependentPhasesGroup phasesGroup) {
+        log.info("--- Start executing group of phases {} in step {} --- ", phasesGroup, getCurrentStepNumber());
 
-        log.debug("--- Start executing group of phases {} in step {} --- ", group, currentStepNumber);
+        coreBatchExecutor.executeAll(toTasks(phasesGroup));
 
-        List<Runnable> a = group.getPhases()
-            .stream()
-            .map(p -> p.getRunnable(currentStepNumber))
-            .flatMap(Collection::stream)
-            .collect(toList());
+        log.info("--- Finish executing group of phases {} in step {} ---", phasesGroup, getCurrentStepNumber());
+    }
 
-        coreBatchExecutor.executeAll(a);
-
-        log.debug("--- Finish executing group of phases {} in step {} ---", group, currentStepNumber);
+    private List<Runnable> toTasks(IndependentPhasesGroup group) {
+        final long currentStep = getCurrentStepNumber();
+        return group.getPhases()
+                .stream()
+                .map(p -> p.getRunnable(currentStep))
+                .flatMap(Collection::stream)
+                .collect(toList());
     }
 
 }
