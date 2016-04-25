@@ -14,6 +14,7 @@ import org.hage.platform.simulation.runtime.context.UnsupportedAgentTypeExceptio
 import org.hage.platform.simulation.runtime.control.AddressedAgent;
 import org.hage.platform.simulation.runtime.control.ControlAgentManageContext;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -87,6 +88,30 @@ class AgentContextAdapter implements AgentManageContext, ControlAgentManageConte
         if (agentAddress instanceof AgentAdapter) {
             agentsController.scheduleRemoveWithKilling(((AgentAdapter) agentAddress));
         }
+    }
+
+    @Override
+    public boolean migrateAllAgentsTo(UnitAddress targetUnitAddress) {
+        //todo : NOT IMPLEMENTED
+        return false;
+    }
+
+    @Override
+    public boolean migrateAgentsTo(Collection<AgentAddress> agentAddresses, UnitAddress targetUnitAddress) {
+        //todo : NOT IMPLEMENTED
+        return false;
+    }
+
+    @Override
+    public boolean migrateAgentTo(AgentAddress agentAddress, UnitAddress targetUnitAddress) {
+        //todo : NOT IMPLEMENTED
+        return false;
+    }
+
+    @Override
+    public boolean migrateTo(UnitAddress targetUnitAddress) {
+        //todo : NOT IMPLEMENTED
+        return false;
     }
 
     @Override
