@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.simulation.container.Stateful;
 
 @Slf4j
-@ToString
+@ToString(callSuper = true)
 public class SomeFooComponent implements Stateful {
 
     private final String componentScope;

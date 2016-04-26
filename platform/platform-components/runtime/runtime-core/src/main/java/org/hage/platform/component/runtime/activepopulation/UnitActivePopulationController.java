@@ -33,6 +33,7 @@ public class UnitActivePopulationController implements AgentsRunner, AgentsEnvir
 
     @Autowired
     private StatefulFinisher statefulFinisher;
+    private boolean removeAllAdapters = false;
 
     public UnitActivePopulationController(AgentExecutionContextEnvironment environment) {
         this.agentEnvironment = environment;
@@ -89,9 +90,15 @@ public class UnitActivePopulationController implements AgentsRunner, AgentsEnvir
         return result;
     }
 
-    public void scheduleRemove(Collection<AgentAdapter> agentAdapters) {
-        log.debug("Insert agents to be removed {}", agentAdapters);
-        toBeRemoved.addAll(agentAdapters);
+    public void scheduleRemove(Collection<AgentAdapter> agentsAdapters) {
+        log.debug("Insert agents to be removed {}", agentsAdapters);
+        toBeRemoved.addAll(agentsAdapters);
+    }
+
+    @Override
+    public void scheduleRemoveAll() {
+        log.debug("Mark all existing agents to be removed");
+        removeAllAdapters = true;
     }
 
     @Override
@@ -114,14 +121,28 @@ public class UnitActivePopulationController implements AgentsRunner, AgentsEnvir
         return unmodifiableSet(agentsAdapters);
     }
 
-    private void flushAgents() {
-        log.debug("Append all created during step agents {}", toBeAdded);
-        log.debug("Remove all killed and dead agents {}", toBeRemoved);
+    @Override
+    public boolean isLocalAgentAdapter(AgentAdapter agentAdapter) {
+        return agentAdapter != null && agentsAdapters.contains(agentAdapter);
+    }
 
-        agentsAdapters.removeAll(toBeRemoved);
+    private void flushAgents() {
+
+        if (removeAllAdapters) {
+            log.debug("Remove all existing agents {}", agentsAdapters);
+            agentsAdapters.clear();
+        } else {
+            log.debug("Remove all killed and dead agents {}", toBeRemoved);
+            agentsAdapters.removeAll(toBeRemoved);
+        }
+
+        log.debug("Append all created during step agents {}", toBeAdded);
         agentsAdapters.addAll(toBeAdded);
+
         toBeRemoved.clear();
         toBeAdded.clear();
+
+        removeAllAdapters = false;
     }
 
     private void finishDisposedAgents() {

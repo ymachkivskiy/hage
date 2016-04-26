@@ -10,6 +10,12 @@ public interface AgentsController {
 
     void scheduleRemoveWithKilling(AgentAdapter agentAdapter);
 
+    void scheduleRemove(Collection<AgentAdapter> agentAdapters);
+
+    void scheduleRemoveAll();
+
+    boolean isLocalAgentAdapter(AgentAdapter agentAdapter);
+
     Collection<AgentAdapter> getAllAdapters();
 
 }

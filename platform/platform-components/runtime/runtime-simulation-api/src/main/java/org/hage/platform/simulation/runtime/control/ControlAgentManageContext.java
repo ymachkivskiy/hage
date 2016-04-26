@@ -29,8 +29,8 @@ public interface ControlAgentManageContext extends AgentCreationContext, Locatio
     List<AgentAddress> queryLocalAgentsAddresses();
 
     /**
-     * Request for migration all local agent to specified target unit. If migration succeeds, agents will be in target
-     * unit in next computation step.
+     * Request for migration all local agents <b>except those, which will be created in current computation step</b> to
+     * specified target unit. If migration succeeds, agents will be in target unit in next computation step.
      *
      * @param targetUnitAddress migration target unit address
      * @return true if targetUnitAddress is correct, is not address of current unit and migration is legal,

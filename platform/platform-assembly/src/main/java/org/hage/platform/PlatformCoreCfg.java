@@ -5,6 +5,7 @@ import org.hage.platform.annotation.di.PrototypeComponent;
 import org.hage.platform.annotation.di.SingletonComponent;
 import org.hage.platform.component.*;
 import org.hage.platform.component.execution.ExecutionCoreCfg;
+import org.hage.platform.component.runtime.RuntimeCoreCfg;
 import org.hage.platform.util.ContainerShareCfg;
 import org.hage.platform.util.EventBusCfg;
 import org.hage.platform.util.ExecutorsCfg;

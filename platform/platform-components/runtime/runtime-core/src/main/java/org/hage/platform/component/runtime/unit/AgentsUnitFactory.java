@@ -2,7 +2,9 @@ package org.hage.platform.component.runtime.unit;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.HageRuntimeException;
+import org.hage.platform.component.runtime.activepopulation.AgentsController;
 import org.hage.platform.component.runtime.activepopulation.UnitActivePopulationController;
+import org.hage.platform.component.runtime.container.AgentsCreator;
 import org.hage.platform.component.runtime.container.UnitAgentCreationController;
 import org.hage.platform.component.runtime.location.UnitLocationController;
 import org.hage.platform.component.structure.Position;
@@ -22,15 +24,14 @@ public abstract class AgentsUnitFactory {
 
         AgentsUnit unit = new AgentsUnit(position);
 
-        UnitActivePopulationController unitActivePopulationController = createUnitPopulationController(unit);
-        UnitLocationController locationContext = createUnitLocationContext(position);
-        UnitAgentCreationController unitAgentCreationController = createUnitPopulationContext(unitActivePopulationController);
-        AgentContextAdapter agentContextAdapter = new AgentContextAdapter(locationContext, unitAgentCreationController, unitActivePopulationController);
+        UnitActivePopulationController unitActivePopulationCtrl = createUnitPopulationController(unit);
+        UnitLocationController locationCtrl = createUnitLocationContext(position);
+        UnitAgentCreationController unitAgentCreationCtrl = createUnitPopulationContext(unitActivePopulationCtrl);
 
-        unit.setUnitLocationController(locationContext);
-        unit.setUnitAgentCreationController(unitAgentCreationController);
-        unit.setUnitActivePopulationController(unitActivePopulationController);
-        unit.setAgentContextAdapter(agentContextAdapter);
+        unit.setUnitLocationController(locationCtrl);
+        unit.setUnitAgentCreationController(unitAgentCreationCtrl);
+        unit.setUnitActivePopulationController(unitActivePopulationCtrl);
+        unit.setAgentContextAdapter(createAgentContextAdapter(locationCtrl, unitAgentCreationCtrl, unitActivePopulationCtrl));
 
         return unit;
     }
@@ -41,6 +42,8 @@ public abstract class AgentsUnitFactory {
             throw new HageRuntimeException("Illegal position " + position + " given during creation of agents unit.");
         }
     }
+
+    protected abstract AgentContextAdapter createAgentContextAdapter(UnitLocationController locationController, AgentsCreator agentsCreator, AgentsController agentsController);
 
     protected abstract UnitAgentCreationController createUnitPopulationContext(UnitActivePopulationController unitActivePopulationController);
 

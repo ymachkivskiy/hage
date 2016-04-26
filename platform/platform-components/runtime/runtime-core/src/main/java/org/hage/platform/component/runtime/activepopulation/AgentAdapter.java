@@ -7,7 +7,7 @@ import org.hage.platform.simulation.runtime.agent.Agent;
 import org.hage.platform.simulation.runtime.agent.AgentAddress;
 
 @RequiredArgsConstructor
-public class AgentAdapter<T extends Agent> implements AgentAddress {
+public class AgentAdapter implements AgentAddress {
 
     @Getter
     private final Agent agent;
@@ -20,7 +20,7 @@ public class AgentAdapter<T extends Agent> implements AgentAddress {
 
     @Override
     public String getFriendlyIdentifier() {
-        return "agent(" + address + ")@" + environment.getUniqueIdentifier();
+        return agent.getClass().getSimpleName() + "(" + address + ")@" + environment.getUniqueIdentifier();
     }
 
     @Override
@@ -40,6 +40,6 @@ public class AgentAdapter<T extends Agent> implements AgentAddress {
 
     @Override
     public String toString() {
-        return "agent(" + address + ")";
+        return agent.getClass().getSimpleName() + "(" + address + ")";
     }
 }
