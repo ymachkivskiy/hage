@@ -1,10 +1,9 @@
 package org.hage.platform.component.execution;
 
 import org.hage.platform.component.execution.step.StepPhaseFactory;
-import org.hage.platform.component.runtime.stepphase.AgentUnitPostProcessPhase;
-import org.hage.platform.component.runtime.stepphase.AgentsStepPhase;
-import org.hage.platform.component.runtime.stepphase.ControlAgentStepPhase;
-import org.hage.platform.component.runtime.stepphase.SynchronizationStepPhase;
+import org.hage.platform.component.runtime.migration.internal.InternalMigrationPerformingTask;
+import org.hage.platform.component.runtime.migration.internal.InternalMigrationTaskFactory;
+import org.hage.platform.component.runtime.stepphase.*;
 import org.hage.platform.component.structure.stepphase.StructureChangeDistributionStepPhase;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +17,9 @@ class StepPhaseOrderCfg {
 
     @Autowired
     private BeanFactory beanFactory;
+
+    @Autowired
+    private InternalMigrationProcessPhase internalMigrationsProcess;
     @Autowired
     private AgentsStepPhase agentsStep;
     @Autowired
@@ -27,9 +29,12 @@ class StepPhaseOrderCfg {
     @Autowired
     private StructureChangeDistributionStepPhase structureChangeDistribution;
 
+
+
     @Bean
     public StepPhaseFactory stepPhaseFactory() {
         return staticFactoryBuilder()
+            .addNextIndependentPhases(internalMigrationsProcess)
             .addNextIndependentPhases(synchronizationForSubPhase("initial"))
             .addNextIndependentPhases(agentsStep)
             .addNextIndependentPhases(controlAgentStep)
@@ -39,6 +44,11 @@ class StepPhaseOrderCfg {
 
     private SynchronizationStepPhase synchronizationForSubPhase(String subPhase) {
         return beanFactory.getBean(SynchronizationStepPhase.class, subPhase);
+    }
+
+    @Bean
+    public InternalMigrationTaskFactory groupMigrationPerformingTask() {
+        return internalMigrationGroup -> beanFactory.getBean(InternalMigrationPerformingTask.class, internalMigrationGroup);
     }
 
 }

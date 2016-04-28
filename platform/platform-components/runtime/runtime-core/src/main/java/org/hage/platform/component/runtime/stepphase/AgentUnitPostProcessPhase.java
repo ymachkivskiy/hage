@@ -1,10 +1,10 @@
 package org.hage.platform.component.runtime.stepphase;
 
 import org.hage.platform.annotation.di.SingletonComponent;
-import org.hage.platform.component.runtime.unit.AgentsExecutionUnit;
+import org.hage.platform.component.runtime.unit.Unit;
 
 @SingletonComponent
-public class AgentUnitPostProcessPhase extends AbstractAgentUnitPhase {
+public class AgentUnitPostProcessPhase extends AbstractUnitPhase {
 
     @Override
     public String getPhaseName() {
@@ -13,7 +13,7 @@ public class AgentUnitPostProcessPhase extends AbstractAgentUnitPhase {
 
 
     @Override
-    protected Runnable extractRunnable(AgentsExecutionUnit agentsExecutionUnit) {
-        return agentsExecutionUnit::performPostProcessing;
+    protected Runnable extractRunnable(Unit unit) {
+        return unit::postProcess;
     }
 }

@@ -23,7 +23,7 @@ public class SynchronizationStepPhase extends SingleRunnableStepPhase {
 
     @Override
     public String getPhaseName() {
-        return "Synchronization on " + phase;
+        return "Synchronization (" + phase + ")";
     }
 
     @Override

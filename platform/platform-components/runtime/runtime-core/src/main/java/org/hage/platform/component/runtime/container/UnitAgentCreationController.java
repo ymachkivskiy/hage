@@ -4,15 +4,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.PrototypeComponent;
 import org.hage.platform.component.container.MutableInstanceContainer;
-import org.hage.platform.component.runtime.activepopulation.AgentsEnvironment;
+import org.hage.platform.component.runtime.activepopulation.AgentsTargetEnvironment;
 import org.hage.platform.component.runtime.init.AgentDefinitionCount;
 import org.hage.platform.component.runtime.init.UnitPopulation;
-import org.hage.platform.component.runtime.populationinit.UnitPopulationLoader;
+import org.hage.platform.component.runtime.unit.faces.UnitPopulationLoader;
 import org.hage.platform.simulation.runtime.agent.Agent;
 import org.hage.platform.simulation.runtime.context.AgentInitializer;
 import org.hage.platform.simulation.runtime.context.UnsupportedAgentTypeException;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.PostConstruct;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -31,13 +32,20 @@ public class UnitAgentCreationController implements UnitPopulationLoader, Agents
     private SimulationAgentDefinitionsSupplier agentDefinitionsSupplier;
 
     private final MutableInstanceContainer instanceContainer;
-    private final AgentsEnvironment agentsEnvironment;
+    private final AgentsTargetEnvironment agentsTargetEnvironment;
+
+    @PostConstruct
+    private void createControlAgent() {
+        log.debug("Create control agent");
+
+        agentDefinitionsSupplier.getControlAgentType()
+            .map(instanceContainer::getInstance)
+            .ifPresent(agentsTargetEnvironment::setControlAgent);
+    }
 
     @Override
     public void loadPopulation(UnitPopulation population) {
         log.debug("Configure with initial population {}", population);
-
-        createControlAgent();
         createInitialAgents(population);
     }
 
@@ -66,13 +74,12 @@ public class UnitAgentCreationController implements UnitPopulationLoader, Agents
         registerAgents(agents, addImmediately);
     }
 
-
-    private void createControlAgent() {
-        log.debug("Create control agent");
-
-        agentDefinitionsSupplier.getControlAgentType()
-            .map(instanceContainer::getInstance)
-            .ifPresent(agentsEnvironment::setControlAgent);
+    private <T extends Agent> void registerAgents(Collection<T> agents, boolean immediately) {
+        if (immediately) {
+            agentsTargetEnvironment.addAgentsImmediately(agents);
+        } else {
+            agentsTargetEnvironment.scheduleAddAgents(agents);
+        }
     }
 
     private void createInitialAgents(UnitPopulation population) {
@@ -84,14 +91,6 @@ public class UnitAgentCreationController implements UnitPopulationLoader, Agents
             .collect(toList());
 
         registerAgents(agents, true);
-    }
-
-    private <T extends Agent> void registerAgents(Collection<T> agents, boolean immediately) {
-        if (immediately) {
-            agentsEnvironment.addAgentsImmediately(agents);
-        } else {
-            agentsEnvironment.scheduleAddAgents(agents);
-        }
     }
 
     private List<Agent> createNotInitializedAgents(AgentDefinitionCount definitionCount) {

@@ -2,11 +2,11 @@ package org.hage.platform.component.runtime.stepphase;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.SingletonComponent;
-import org.hage.platform.component.runtime.unit.AgentsExecutionUnit;
+import org.hage.platform.component.runtime.unit.Unit;
 
 @Slf4j
 @SingletonComponent
-public class AgentsStepPhase extends AbstractAgentUnitPhase {
+public class AgentsStepPhase extends AbstractUnitPhase {
 
     @Override
     public String getPhaseName() {
@@ -14,8 +14,8 @@ public class AgentsStepPhase extends AbstractAgentUnitPhase {
     }
 
     @Override
-    protected Runnable extractRunnable(AgentsExecutionUnit agentsExecutionUnit) {
-        return agentsExecutionUnit.getAgentsRunner()::runAgents;
+    protected Runnable extractRunnable(Unit unit) {
+        return unit.asAgentsRunner()::runAgents;
     }
 
 }

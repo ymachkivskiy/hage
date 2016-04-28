@@ -1,4 +1,4 @@
-package org.hage.platform.component.runtime.populationinit;
+package org.hage.platform.component.runtime.unit.faces;
 
 import org.hage.platform.component.runtime.init.UnitPopulation;
 

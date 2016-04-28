@@ -3,23 +3,29 @@ package org.hage.platform.component.runtime.unit;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.component.runtime.activepopulation.AgentAdapter;
-import org.hage.platform.component.runtime.activepopulation.AgentsRunner;
 import org.hage.platform.component.runtime.activepopulation.UnitActivePopulationController;
 import org.hage.platform.component.runtime.container.UnitAgentCreationController;
 import org.hage.platform.component.runtime.location.UnitLocationController;
-import org.hage.platform.component.runtime.populationinit.UnitPopulationLoader;
+import org.hage.platform.component.runtime.unit.context.AgentContextAdapter;
+import org.hage.platform.component.runtime.unit.context.AgentExecutionContextEnvironment;
+import org.hage.platform.component.runtime.unit.faces.AgentMigrationTarget;
+import org.hage.platform.component.runtime.unit.faces.AgentsRunner;
+import org.hage.platform.component.runtime.unit.faces.UnitPopulationLoader;
 import org.hage.platform.component.structure.Position;
 import org.hage.platform.simulation.runtime.agent.AgentManageContext;
 import org.hage.platform.simulation.runtime.control.ControlAgentManageContext;
 
 import static lombok.AccessLevel.PACKAGE;
+import static org.hage.util.ObjectUtils.allNotNull;
 
 
 @Slf4j
 @RequiredArgsConstructor
-class AgentsUnit implements AgentExecutionContextEnvironment, AgentsExecutionUnit {
+@ToString(doNotUseGetters = true, of = "position")
+class AgentsUnit implements AgentExecutionContextEnvironment, Unit {
 
     @Getter
     private final Position position;
@@ -39,7 +45,7 @@ class AgentsUnit implements AgentExecutionContextEnvironment, AgentsExecutionUni
     }
 
     @Override
-    public void performPostProcessing() {
+    public void postProcess() {
         unitLocationController.performPostProcessing();
         unitActivePopulationController.performPostProcessing();
     }
@@ -59,13 +65,25 @@ class AgentsUnit implements AgentExecutionContextEnvironment, AgentsExecutionUni
     }
 
     @Override
-    public AgentsRunner getAgentsRunner() {
+    public AgentsRunner asAgentsRunner() {
         return unitActivePopulationController;
     }
 
     @Override
-    public UnitPopulationLoader getUnitPopulationLoader() {
+    public UnitPopulationLoader asUnitPopulationLoader() {
         return unitAgentCreationController;
     }
 
+    @Override
+    public AgentMigrationTarget asAgentMigrationTarget() {
+        return unitActivePopulationController;
+    }
+
+    boolean isInitialized() {
+        return allNotNull(
+            unitActivePopulationController,
+            unitLocationController,
+            unitAgentCreationController,
+            agentContextAdapter);
+    }
 }

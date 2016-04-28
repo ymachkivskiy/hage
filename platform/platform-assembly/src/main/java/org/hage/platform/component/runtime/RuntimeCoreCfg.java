@@ -2,6 +2,7 @@ package org.hage.platform.component.runtime;
 
 import org.hage.platform.component.container.MutableInstanceContainer;
 import org.hage.platform.component.runtime.activepopulation.AgentsController;
+import org.hage.platform.component.runtime.activepopulation.AgentsTargetEnvironment;
 import org.hage.platform.component.runtime.activepopulation.UnitActivePopulationController;
 import org.hage.platform.component.runtime.container.AgentsCreator;
 import org.hage.platform.component.runtime.container.UnitAgentCreationController;
@@ -10,9 +11,9 @@ import org.hage.platform.component.runtime.init.PopulationInitializer;
 import org.hage.platform.component.runtime.location.UnitLocationController;
 import org.hage.platform.component.runtime.populationinit.BasePopulationInitializer;
 import org.hage.platform.component.runtime.populationinit.GreedyPopulationDivisor;
-import org.hage.platform.component.runtime.unit.AgentContextAdapter;
-import org.hage.platform.component.runtime.unit.AgentExecutionContextEnvironment;
-import org.hage.platform.component.runtime.unit.AgentsUnitFactory;
+import org.hage.platform.component.runtime.unit.UnitLifecycleProcessor;
+import org.hage.platform.component.runtime.unit.context.AgentContextAdapter;
+import org.hage.platform.component.runtime.unit.context.AgentExecutionContextEnvironment;
 import org.hage.platform.component.runtime.util.SimpleStatefulFinisher;
 import org.hage.platform.component.runtime.util.StatefulFinisher;
 import org.hage.platform.component.structure.Position;
@@ -47,12 +48,12 @@ public class RuntimeCoreCfg {
 
     @Bean
     @Autowired
-    public AgentsUnitFactory agentsUnitFactory(final MutableInstanceContainer instanceContainer) {
+    public UnitLifecycleProcessor agentsUnitFactory(final MutableInstanceContainer instanceContainer) {
 
-        return new AgentsUnitFactory() {
+        return new UnitLifecycleProcessor() {
 
             @Override
-            protected UnitAgentCreationController createUnitPopulationContext(UnitActivePopulationController unitActivePopulationController) {
+            protected UnitAgentCreationController createUnitPopulationContext(AgentsTargetEnvironment unitActivePopulationController) {
                 return beanFactory.getBean(UnitAgentCreationController.class, instanceContainer.newChildContainer(), unitActivePopulationController);
             }
 

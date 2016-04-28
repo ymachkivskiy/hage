@@ -1,14 +1,13 @@
 package org.hage.platform.component.runtime.activepopulation;
 
+import org.hage.platform.component.runtime.unit.faces.AgentMigrationTarget;
 import org.hage.platform.simulation.runtime.agent.Agent;
 import org.hage.platform.simulation.runtime.control.ControlAgent;
 
 import java.util.Collection;
 
-public interface AgentsEnvironment {
+public interface AgentsTargetEnvironment extends AgentMigrationTarget {
     void setControlAgent(ControlAgent controlAgent);
-
-    void addAgentsImmediately(Collection<? extends Agent> agents);
 
     void scheduleAddAgents(Collection<? extends Agent> agents);
 }

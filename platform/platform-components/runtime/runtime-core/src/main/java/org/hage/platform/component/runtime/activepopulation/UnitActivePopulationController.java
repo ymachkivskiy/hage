@@ -2,7 +2,8 @@ package org.hage.platform.component.runtime.activepopulation;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.PrototypeComponent;
-import org.hage.platform.component.runtime.unit.AgentExecutionContextEnvironment;
+import org.hage.platform.component.runtime.unit.context.AgentExecutionContextEnvironment;
+import org.hage.platform.component.runtime.unit.faces.AgentsRunner;
 import org.hage.platform.component.runtime.util.StatefulFinisher;
 import org.hage.platform.simulation.runtime.agent.Agent;
 import org.hage.platform.simulation.runtime.control.ControlAgent;
@@ -18,22 +19,24 @@ import static java.util.stream.Collectors.toList;
 
 @Slf4j
 @PrototypeComponent
-public class UnitActivePopulationController implements AgentsRunner, AgentsEnvironment, AgentsController {
+public class UnitActivePopulationController implements AgentsRunner, AgentsTargetEnvironment, AgentsController {
 
     private final AgentExecutionContextEnvironment agentEnvironment;
-    private final AtomicLong agentIdCounter = new AtomicLong();
 
-    private final List<Agent> disposedAgents = new LinkedList<>();
+    private final AtomicLong agentIdCounter = new AtomicLong();
 
     private final List<AgentAdapter> toBeRemoved = new LinkedList<>();
     private final List<AgentAdapter> toBeAdded = new LinkedList<>();
+    private final List<Agent> disposedAgents = new LinkedList<>();
+
     private final Set<AgentAdapter> agentsAdapters = new HashSet<>();
 
     private Optional<ControlAgentAdapter> controlAgent = empty();
 
+    private boolean removeAllAdapters = false;
+
     @Autowired
     private StatefulFinisher statefulFinisher;
-    private boolean removeAllAdapters = false;
 
     public UnitActivePopulationController(AgentExecutionContextEnvironment environment) {
         this.agentEnvironment = environment;
