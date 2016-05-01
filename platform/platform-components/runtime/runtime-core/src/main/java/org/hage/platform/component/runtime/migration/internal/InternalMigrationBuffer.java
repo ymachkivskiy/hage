@@ -14,7 +14,7 @@ import static java.util.stream.Collectors.*;
 @SingletonComponent
 class InternalMigrationBuffer implements InputMigrationQueue, InternalMigrationGroupsProvider {
 
-    private static final int INITIAL_CAPACITY = 256;
+    private static final int INITIAL_CAPACITY = 1024;
 
     private final ArrayList<InternalMigrationGroup> migrationGroups = new ArrayList<>(INITIAL_CAPACITY);
 

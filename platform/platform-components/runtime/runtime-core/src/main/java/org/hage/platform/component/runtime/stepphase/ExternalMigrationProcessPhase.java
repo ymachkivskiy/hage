@@ -2,33 +2,31 @@ package org.hage.platform.component.runtime.stepphase;
 
 import org.hage.platform.annotation.di.SingletonComponent;
 import org.hage.platform.component.execution.step.StepPhase;
-import org.hage.platform.component.runtime.migration.internal.InternalMigrationGroupsProvider;
-import org.hage.platform.component.runtime.migration.internal.InternalMigrationTaskFactory;
+import org.hage.platform.component.runtime.migration.external.ExternalMigrationGroupsProvider;
+import org.hage.platform.component.runtime.migration.external.ExternalMigrationTaskFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
 
 import static java.util.stream.Collectors.toList;
 
-
 @SingletonComponent
-public class InternalMigrationProcessPhase implements StepPhase {
+public class ExternalMigrationProcessPhase implements StepPhase {
 
     @Autowired
-    private InternalMigrationTaskFactory taskFactory;
+    private ExternalMigrationTaskFactory taskFactory;
     @Autowired
-    private InternalMigrationGroupsProvider migrationGroupsProvider;
+    private ExternalMigrationGroupsProvider migrationGroupsProvider;
 
     @Override
     public String getPhaseName() {
-        return "Internal migrations process";
+        return "External migration processing";
     }
 
     @Override
     public Collection<? extends Runnable> getRunnable(long currentStep) {
-        return migrationGroupsProvider.takeMigrationGroups().stream()
-            .map(taskFactory::migrationTaskFor)
+        return migrationGroupsProvider.takeExternalMigrationGroups().stream()
+            .map(taskFactory::taskForGroup)
             .collect(toList());
     }
-
 }

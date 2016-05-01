@@ -11,7 +11,7 @@ import java.util.Optional;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.Optional.ofNullable;
 
-@EqualsAndHashCode(doNotUseGetters = true)
+@EqualsAndHashCode(doNotUseGetters = true, of = "position")
 public class AgentsUnitAddress implements UnitAddress {
 
     private final Optional<NodeAddress> nodeAddress;
@@ -39,6 +39,14 @@ public class AgentsUnitAddress implements UnitAddress {
 
     public NodeAddress getNodeAddress() {
         return nodeAddress.get();
+    }
+
+    public AgentsUnitAddress activateWith(NodeAddress nodeAddress) {
+        if (isOnline()) {
+            return this;
+        } else {
+            return onlineAddress(position, nodeAddress);
+        }
     }
 
     @Override

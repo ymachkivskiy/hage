@@ -42,12 +42,12 @@ class AgentsUnitsController implements PopulationLoaderRegistry, UnitRegistry, M
 
     @Override
     public UnitPopulationLoader loaderForPosition(Position position) {
-        return unitFor(position).asUnitPopulationLoader();
+        return unitFor(position);
     }
 
     @Override
     public AgentMigrationTarget migrationTargetFor(Position position) {
-        return unitFor(position).asAgentMigrationTarget();
+        return unitFor(position);
     }
 
     // TODO: write destroy unit method

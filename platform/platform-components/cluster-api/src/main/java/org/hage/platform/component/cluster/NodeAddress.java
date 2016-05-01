@@ -4,5 +4,5 @@ import java.io.Serializable;
 
 
 public interface NodeAddress extends Serializable {
-    String getUniqueIdentifier();
+    String getFriendlyIdentifier();
 }

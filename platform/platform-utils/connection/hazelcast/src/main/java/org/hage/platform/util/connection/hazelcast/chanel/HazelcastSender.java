@@ -6,7 +6,7 @@ import com.hazelcast.core.ITopic;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.component.cluster.LocalNodeAddressSupplier;
+import org.hage.platform.component.cluster.LocalClusterNode;
 import org.hage.platform.component.cluster.NodeAddress;
 import org.hage.platform.util.connection.chanel.ConnectionDescriptor;
 import org.hage.platform.util.connection.chanel.FrameSender;
@@ -26,7 +26,7 @@ import static org.hage.platform.util.connection.frame.util.FrameUtil.isBroadcast
 class HazelcastSender implements FrameSender {
 
     private final ConnectionDescriptor descriptor;
-    private final LocalNodeAddressSupplier localNodeAddressSupplier;
+    private final LocalClusterNode localClusterNode;
     private final HazelcastInstance hazelcastInstance;
 
 
@@ -43,9 +43,9 @@ class HazelcastSender implements FrameSender {
         this.unicastMap = hazelcastInstance.getMap("node-unicast-map-" + descriptor.getChanelName());
 
         this.broadcastTopic.addMessageListener(new BroadcastFrameTopicListener(receiver));
-        this.unicastMap.addEntryListener(new UnicastFrameMapListener(receiver), localNodeAddressSupplier.getLocalAddress(), true);
+        this.unicastMap.addEntryListener(new UnicastFrameMapListener(receiver), localClusterNode.getLocalAddress(), true);
 
-        this.frameProcessor = new SenderProcessor(localNodeAddressSupplier.getLocalAddress());
+        this.frameProcessor = new SenderProcessor(localClusterNode.getLocalAddress());
     }
 
     @Override
@@ -73,7 +73,7 @@ class HazelcastSender implements FrameSender {
     private void unicastToNode(Frame frame, NodeAddress address) {
         log.debug("Sending frame {} with chanel {} to node {}", frame, descriptor, address);
 
-        if (localNodeAddressSupplier.getLocalAddress().equals(address)) {
+        if (localClusterNode.getLocalAddress().equals(address)) {
             log.debug("Send to loopback");
             receiver.receive(frame);
         } else {

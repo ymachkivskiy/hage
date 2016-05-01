@@ -15,7 +15,7 @@ public class AgentsStepPhase extends AbstractUnitPhase {
 
     @Override
     protected Runnable extractRunnable(Unit unit) {
-        return unit.asAgentsRunner()::runAgents;
+        return unit::runAgents;
     }
 
 }

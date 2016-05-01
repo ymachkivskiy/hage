@@ -1,7 +1,7 @@
 package org.hage.platform.util.connection.remote.endpoint;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.component.cluster.LocalNodeAddressSupplier;
+import org.hage.platform.component.cluster.LocalClusterNode;
 import org.hage.platform.util.connection.chanel.ConnectionDescriptor;
 import org.hage.platform.util.connection.chanel.ConnectionFactory;
 import org.hage.platform.util.connection.chanel.FrameReceiverAdapter;
@@ -15,7 +15,7 @@ public class EndpointInitializationPostProcessorBean implements BeanPostProcesso
     @Autowired
     private ConnectionFactory connectionFactory;
     @Autowired
-    private LocalNodeAddressSupplier localNodeAddressSupplier;
+    private LocalClusterNode localClusterNode;
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
@@ -56,7 +56,7 @@ public class EndpointInitializationPostProcessorBean implements BeanPostProcesso
         } else {
 
             @SuppressWarnings("unchecked")
-            FrameReceiverMessageAdapter forwardAdapter = new FrameReceiverMessageAdapter<>(subscriber, localNodeAddressSupplier);
+            FrameReceiverMessageAdapter forwardAdapter = new FrameReceiverMessageAdapter<>(subscriber, localClusterNode);
             FrameReceiverAdapter frameReceiverAdapter = connectionFactory.receiverAdapterFor(descriptor);
 
             frameReceiverAdapter.setReceiver(forwardAdapter);

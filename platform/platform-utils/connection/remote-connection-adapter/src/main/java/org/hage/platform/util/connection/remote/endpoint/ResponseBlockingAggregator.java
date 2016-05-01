@@ -1,11 +1,11 @@
 package org.hage.platform.util.connection.remote.endpoint;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.component.cluster.NodeAddress;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
@@ -13,7 +13,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.LinkedBlockingQueue;
 
 @Slf4j
-@RequiredArgsConstructor
 class ResponseBlockingAggregator<M extends Serializable, R> implements Callable<R> {
 
     private final MessageAggregator<M, R> messagesAggregator;
@@ -22,12 +21,17 @@ class ResponseBlockingAggregator<M extends Serializable, R> implements Callable<
     private final BlockingQueue<MessageEnvelope<M>> messagesBlockingQueue = new LinkedBlockingQueue<>();
     private final List<MessageEnvelope<M>> collectedMessages = new ArrayList<>();
 
+    public ResponseBlockingAggregator(MessageAggregator<M, R> messagesAggregator, Set<NodeAddress> expectedMessageSenders) {
+        this.messagesAggregator = messagesAggregator;
+        this.expectedMessageSenders = new HashSet<>(expectedMessageSenders);
+    }
+
     @Override
     public R call() throws Exception {
         log.debug("Started aggregating messages");
 
         while (!expectedMessageSenders.isEmpty()) {
-            log.debug("Not all messages has been received yet. Waiting for new message...");
+            log.debug("Not all messages has been received yet. Waiting for new message. Still wait for {} ...", expectedMessageSenders);
             MessageEnvelope<M> message = messagesBlockingQueue.take();
             log.debug("Got message {}", message);
 

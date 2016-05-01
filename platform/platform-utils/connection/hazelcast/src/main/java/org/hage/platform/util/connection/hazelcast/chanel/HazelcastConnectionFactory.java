@@ -3,7 +3,7 @@ package org.hage.platform.util.connection.hazelcast.chanel;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import lombok.Data;
-import org.hage.platform.component.cluster.LocalNodeAddressSupplier;
+import org.hage.platform.component.cluster.LocalClusterNode;
 import org.hage.platform.util.connection.chanel.ConnectionDescriptor;
 import org.hage.platform.util.connection.chanel.ConnectionFactory;
 import org.hage.platform.util.connection.chanel.FrameReceiverAdapter;
@@ -18,7 +18,7 @@ public class HazelcastConnectionFactory implements ConnectionFactory {
     @Autowired
     private HazelcastInstanceHolder hazelcastInstanceHolder;
     @Autowired
-    private LocalNodeAddressSupplier localNodeAddressSupplier;
+    private LocalClusterNode localClusterNode;
 
 
     private final LoadingCache<ConnectionDescriptor, ChanelPair> cache = newBuilder().build(new Loader());
@@ -45,7 +45,7 @@ public class HazelcastConnectionFactory implements ConnectionFactory {
         public ChanelPair load(ConnectionDescriptor descriptor) throws Exception {
 
             HazelcastReceiveAdapter receiveAdapter = new HazelcastReceiveAdapter(descriptor);
-            HazelcastSender sender = new HazelcastSender(descriptor, localNodeAddressSupplier, hazelcastInstanceHolder.getInstance());
+            HazelcastSender sender = new HazelcastSender(descriptor, localClusterNode, hazelcastInstanceHolder.getInstance());
 
             receiveAdapter.setHazelcastSender(sender);
             sender.setReceiver(receiveAdapter);

@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.PrototypeComponent;
-import org.hage.platform.component.cluster.LocalNodeAddressSupplier;
+import org.hage.platform.component.cluster.LocalClusterNode;
 import org.hage.platform.component.structure.Position;
 import org.hage.platform.component.structure.connections.Neighbors;
 import org.hage.platform.component.structure.connections.Structure;
@@ -25,7 +25,7 @@ public class UnitLocationController {
     private final Position position;
 
     @Autowired
-    private LocalNodeAddressSupplier localNodeAddressSupplier;
+    private LocalClusterNode localClusterNode;
     @Autowired
     private NeighborsResolver neighborsResolver;
     @Autowired
@@ -35,7 +35,7 @@ public class UnitLocationController {
     private Supplier<AgentsUnitAddress> unitAddressSupplier;
 
     public boolean isLegalMigrationTargetAddress(AgentsUnitAddress unitAddress) {
-        return queryLocalUnit().equals(unitAddress)
+        return !queryLocalUnit().equals(unitAddress)
             && structure.belongsToStructure(unitAddress.getPosition());
     }
 
@@ -48,7 +48,7 @@ public class UnitLocationController {
     }
 
     public String getUniqueIdentifier() {
-        return position.toString() + "[" + localNodeAddressSupplier.getLocalAddress().getUniqueIdentifier() + "]";
+        return position.toString() + "[" + localClusterNode.getLocalAddress().getFriendlyIdentifier() + "]";
     }
 
     public void performPostProcessing() {
@@ -63,7 +63,7 @@ public class UnitLocationController {
     private void reset() {
         log.debug("Reset location context for {}", position);
         neighborsSupplier = memoize(() -> neighborsResolver.resolveForPosition(position));
-        unitAddressSupplier = memoize(() -> onlineAddress(position, localNodeAddressSupplier.getLocalAddress()));
+        unitAddressSupplier = memoize(() -> onlineAddress(position, localClusterNode.getLocalAddress()));
     }
 
 

@@ -8,15 +8,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.component.runtime.activepopulation.AgentAdapter;
 import org.hage.platform.component.runtime.activepopulation.UnitActivePopulationController;
 import org.hage.platform.component.runtime.container.UnitAgentCreationController;
+import org.hage.platform.component.runtime.init.UnitPopulation;
 import org.hage.platform.component.runtime.location.UnitLocationController;
 import org.hage.platform.component.runtime.unit.context.AgentContextAdapter;
 import org.hage.platform.component.runtime.unit.context.AgentExecutionContextEnvironment;
-import org.hage.platform.component.runtime.unit.faces.AgentMigrationTarget;
-import org.hage.platform.component.runtime.unit.faces.AgentsRunner;
-import org.hage.platform.component.runtime.unit.faces.UnitPopulationLoader;
 import org.hage.platform.component.structure.Position;
+import org.hage.platform.simulation.runtime.agent.Agent;
 import org.hage.platform.simulation.runtime.agent.AgentManageContext;
 import org.hage.platform.simulation.runtime.control.ControlAgentManageContext;
+
+import java.util.Collection;
 
 import static lombok.AccessLevel.PACKAGE;
 import static org.hage.util.ObjectUtils.allNotNull;
@@ -65,18 +66,23 @@ class AgentsUnit implements AgentExecutionContextEnvironment, Unit {
     }
 
     @Override
-    public AgentsRunner asAgentsRunner() {
-        return unitActivePopulationController;
+    public void addAgentsImmediately(Collection<? extends Agent> agents) {
+        unitActivePopulationController.addAgentsImmediately(agents);
     }
 
     @Override
-    public UnitPopulationLoader asUnitPopulationLoader() {
-        return unitAgentCreationController;
+    public void runAgents() {
+        unitActivePopulationController.runAgents();
     }
 
     @Override
-    public AgentMigrationTarget asAgentMigrationTarget() {
-        return unitActivePopulationController;
+    public void runControlAgent() {
+        unitActivePopulationController.runControlAgent();
+    }
+
+    @Override
+    public void loadPopulation(UnitPopulation population) {
+        unitAgentCreationController.loadPopulation(population);
     }
 
     boolean isInitialized() {

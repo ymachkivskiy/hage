@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.component.cluster.ClusterManager;
+import org.hage.platform.component.cluster.ClusterAddressManager;
 import org.hage.platform.component.cluster.ConversationIdProvider;
 import org.hage.platform.component.cluster.NodeAddress;
 import org.hage.platform.util.connection.chanel.ConnectionDescriptor;
@@ -43,7 +43,7 @@ public abstract class BaseRemoteEndpoint<M extends Serializable> {
     @Autowired
     private ConversationIdProvider conversationIdProvider;
     @Autowired
-    private ClusterManager addressManager;
+    private ClusterAddressManager addressManager;
 
     protected final void sendToAll(M message) {
         log.debug("Send message '{}' to all", message);
@@ -80,6 +80,11 @@ public abstract class BaseRemoteEndpoint<M extends Serializable> {
         aggregatorsForConversation.remove(conversationId);
 
         return response;
+    }
+
+    protected final M sendAndWaitForResponse(M message, NodeAddress address) {
+        log.debug("Send message {} to {} and wait for response", message, address);
+        return sendToAndAggregateResponses(message, (col) -> col.iterator().next().getBody(), singleton(address));
     }
 
     final void consumeResponseMessageForConversation(MessageEnvelope<M> messageEnvelope, Long conversationId) {

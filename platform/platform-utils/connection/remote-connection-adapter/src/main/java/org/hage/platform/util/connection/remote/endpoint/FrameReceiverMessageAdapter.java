@@ -3,7 +3,7 @@ package org.hage.platform.util.connection.remote.endpoint;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.component.cluster.LocalNodeAddressSupplier;
+import org.hage.platform.component.cluster.LocalClusterNode;
 import org.hage.platform.component.cluster.NodeAddress;
 import org.hage.platform.util.connection.chanel.Receiver;
 import org.hage.platform.util.connection.chanel.RespondReceiver;
@@ -23,7 +23,7 @@ import static org.hage.platform.util.connection.frame.util.FrameUtil.*;
 class FrameReceiverMessageAdapter<M extends Serializable> implements Receiver, RespondReceiver {
 
     private final BaseRemoteEndpoint<M> endpoint;
-    private final LocalNodeAddressSupplier localNodeAddressSupplier;
+    private final LocalClusterNode localClusterNode;
 
     @Override
     public void receive(Frame frame) {
@@ -67,7 +67,7 @@ class FrameReceiverMessageAdapter<M extends Serializable> implements Receiver, R
         M message = frame.getPayload().getData(messageClazz);
         log.debug("Get remote message '{}' from node '{}'", message, sender);
 
-        return new MessageEnvelope<>(sender, message, localNodeAddressSupplier.getLocalAddress().equals(sender));
+        return new MessageEnvelope<>(sender, message, localClusterNode.getLocalAddress().equals(sender));
     }
 
 }

@@ -1,5 +1,6 @@
 package org.hage.platform.component.simulationconfig.load;
 
+import org.hage.example.MigrationCheckComponent;
 import org.hage.example.SomeFooComponent;
 import org.hage.example.agent.HeavyAgent;
 import org.hage.example.agent.LightAgent;
@@ -63,7 +64,10 @@ class MockedLoader implements ConfigurationLoader {
 
         return InputConfiguration
             .builder()
-            .globalComponents(singletonList(globalComponent))
+            .globalComponents(asList(
+                globalComponent,
+                new ComponentDefinition("migrationCheck", MigrationCheckComponent.class, true)
+            ))
             .simulationDefinition(SIMULATION_DEFINITION)
             .computationRatingConfig(
                 ComputationRatingConfig.builder()

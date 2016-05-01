@@ -1,13 +1,11 @@
 package org.hage.platform.component.cluster;
 
-import java.util.Set;
+import java.util.List;
 
-public interface ClusterManager extends LocalNodeAddressSupplier {
+public interface ClusterManager extends  ClusterAddressManager {
     void addMembershipChangeCallback(ClusterMemberChangeCallback callback);
 
-    Set<NodeAddress> getOtherMembersAddresses();
-
-    Set<NodeAddress> getAllAddresses();
+    List<ClusterMember> getClusterMembers();
 
     int getMembersCount();
 }

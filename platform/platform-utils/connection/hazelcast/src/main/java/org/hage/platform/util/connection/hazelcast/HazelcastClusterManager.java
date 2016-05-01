@@ -4,9 +4,7 @@ import com.google.common.base.Supplier;
 import com.hazelcast.core.Cluster;
 import com.hazelcast.core.MembershipEvent;
 import com.hazelcast.core.MembershipListener;
-import org.hage.platform.component.cluster.ClusterManager;
-import org.hage.platform.component.cluster.ClusterMemberChangeCallback;
-import org.hage.platform.component.cluster.NodeAddress;
+import org.hage.platform.component.cluster.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
@@ -14,11 +12,13 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.google.common.base.Suppliers.memoize;
+import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
-public class HazelcastClusterManager implements ClusterManager {
+public class HazelcastClusterManager implements ClusterManager, ClusterAddressManager {
 
     @Autowired
     private HazelcastInstanceHolder hazelcastInstanceHolder;
@@ -55,6 +55,15 @@ public class HazelcastClusterManager implements ClusterManager {
     }
 
     @Override
+    public List<ClusterMember> getClusterMembers() {
+        AtomicInteger counter = new AtomicInteger(1);
+        return hazelcastInstanceHolder.getInstance().getCluster().getMembers().stream()
+            .sorted((m1, m2) -> m1.getUuid().compareTo(m2.getUuid()))
+            .map(m -> new ClusterMember(m.localMember(), addressTranslator.translate(m), counter.getAndIncrement()))
+            .collect(toList());
+    }
+
+    @Override
     public int getMembersCount() {
         return hazelcastInstanceHolder.getInstance().getCluster().getMembers().size();
     }
@@ -84,7 +93,7 @@ public class HazelcastClusterManager implements ClusterManager {
         @Override
         public void memberRemoved(MembershipEvent membershipEvent) {
             HazelcastNodeAddress address = getAddress(membershipEvent);
-            memberChangeCallbacks.forEach(calback -> calback.onMemberRemoved(address));
+            memberChangeCallbacks.forEach(callback -> callback.onMemberRemoved(address));
         }
 
         private HazelcastNodeAddress getAddress(MembershipEvent membershipEvent) {

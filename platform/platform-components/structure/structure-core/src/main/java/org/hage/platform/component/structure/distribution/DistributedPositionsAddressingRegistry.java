@@ -1,7 +1,7 @@
 package org.hage.platform.component.structure.distribution;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.component.cluster.LocalNodeAddressSupplier;
+import org.hage.platform.component.cluster.LocalClusterNode;
 import org.hage.platform.component.cluster.NodeAddress;
 import org.hage.platform.component.structure.Position;
 import org.hage.platform.component.structure.connections.Structure;
@@ -26,7 +26,7 @@ public class DistributedPositionsAddressingRegistry implements LocalPositionsCon
     @Autowired
     private Structure structure;
     @Autowired
-    private LocalNodeAddressSupplier localNodeAddressSupplier;
+    private LocalClusterNode localClusterNode;
 
     private final ReadWriteLockObjectWrapper<Map<Position, NodeAddress>> lockedRemoteAddressing = wrap(new HashMap<>());
     private final ReadWriteLockObjectWrapper<Set<Position>> lockedLocalPositions = wrap(new HashSet<>());
@@ -42,7 +42,7 @@ public class DistributedPositionsAddressingRegistry implements LocalPositionsCon
 
         NodeAddress address =
             lockedLocalPositions.read(localPositions -> localPositions.contains(position))
-                ? localNodeAddressSupplier.getLocalAddress()
+                ? localClusterNode.getLocalAddress()
                 : lockedRemoteAddressing.read(addressingMap -> addressingMap.get(position));
 
         PositionAddressState positionState = new PositionAddressState(

@@ -17,7 +17,7 @@ public class HazelcastNodeAddress implements NodeAddress {
     }
 
     @Override
-    public String getUniqueIdentifier() {
+    public String getFriendlyIdentifier() {
         return uniqueAddress;
     }
 
