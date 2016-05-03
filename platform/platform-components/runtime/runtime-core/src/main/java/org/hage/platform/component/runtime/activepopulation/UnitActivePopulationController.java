@@ -1,7 +1,11 @@
 package org.hage.platform.component.runtime.activepopulation;
 
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.PrototypeComponent;
+import org.hage.platform.component.runtime.container.dependency.DependenciesEraser;
+import org.hage.platform.component.runtime.container.dependency.LocalDependenciesInjector;
 import org.hage.platform.component.runtime.unit.context.AgentExecutionContextEnvironment;
 import org.hage.platform.component.runtime.unit.faces.AgentsRunner;
 import org.hage.platform.component.runtime.util.StatefulFinisher;
@@ -19,6 +23,7 @@ import static java.util.stream.Collectors.toList;
 
 @Slf4j
 @PrototypeComponent
+@RequiredArgsConstructor
 public class UnitActivePopulationController implements AgentsRunner, AgentsTargetEnvironment, AgentsController {
 
     private final AgentExecutionContextEnvironment agentEnvironment;
@@ -35,16 +40,20 @@ public class UnitActivePopulationController implements AgentsRunner, AgentsTarge
 
     private boolean removeAllAdapters = false;
 
+    @Setter
+    private LocalDependenciesInjector localDependenciesInjector;
+
     @Autowired
     private StatefulFinisher statefulFinisher;
+    @Autowired
+    private DependenciesEraser dependenciesEraser;
 
-    public UnitActivePopulationController(AgentExecutionContextEnvironment environment) {
-        this.agentEnvironment = environment;
-    }
+    //region actions
 
     public void performPostProcessing() {
-        flushAgents();
+        removeQueriedAgents();
         finishDisposedAgents();
+        addQueriedAgents();
     }
 
     @Override
@@ -59,16 +68,21 @@ public class UnitActivePopulationController implements AgentsRunner, AgentsTarge
         agentsAdapters.forEach(AgentAdapter::performStep);
     }
 
+    //endregion
+
     @Override
     public void setControlAgent(ControlAgent controlAgent) {
         log.debug("Set control agent to {}", controlAgent);
         this.controlAgent = of(new ControlAgentAdapter(agentEnvironment, controlAgent));
     }
 
+    //region add/remove agents
+
     @Override
     public void addAgentsImmediately(Collection<? extends Agent> agents) {
         log.debug("Add agents into local population {}", agents);
         agents.stream()
+            .peek(localDependenciesInjector::injectDependencies)
             .map(this::createAdapterFor)
             .forEach(agentsAdapters::add);
     }
@@ -78,19 +92,6 @@ public class UnitActivePopulationController implements AgentsRunner, AgentsTarge
         agents.stream()
             .map(this::createAdapterFor)
             .forEach(toBeAdded::add);
-    }
-
-    public boolean remove(AgentAdapter agentAdapter) {
-        log.debug("Remove agent {} immediately", agentAdapter.getFriendlyIdentifier());
-        return agentsAdapters.remove(agentAdapter);
-    }
-
-    public boolean removeWithKilling(AgentAdapter agentAdapter) {
-        boolean result = remove(agentAdapter);
-        if (result) {
-            disposedAgents.add(agentAdapter.getAgent());
-        }
-        return result;
     }
 
     public void scheduleRemove(Collection<AgentAdapter> agentsAdapters) {
@@ -112,6 +113,8 @@ public class UnitActivePopulationController implements AgentsRunner, AgentsTarge
         disposedAgents.add(agentAdapter.getAgent());
     }
 
+    //endregion
+
     @Override
     public <T extends Agent> List<AgentAdapter> getAdaptersForAgentsOfType(Class<T> agentClazz) {
         return agentsAdapters.stream()
@@ -129,23 +132,27 @@ public class UnitActivePopulationController implements AgentsRunner, AgentsTarge
         return agentAdapter != null && agentsAdapters.contains(agentAdapter);
     }
 
-    private void flushAgents() {
+    private void removeQueriedAgents() {
 
         if (removeAllAdapters) {
             log.debug("Remove all existing agents {}", agentsAdapters);
+            toBeRemoved.addAll(agentsAdapters);
             agentsAdapters.clear();
         } else {
             log.debug("Remove all killed and dead agents {}", toBeRemoved);
             agentsAdapters.removeAll(toBeRemoved);
         }
 
+        clearDependencies(toBeRemoved);
+        toBeRemoved.clear();
+        removeAllAdapters = false;
+    }
+
+    private void addQueriedAgents() {
         log.debug("Append all created during step agents {}", toBeAdded);
         agentsAdapters.addAll(toBeAdded);
-
-        toBeRemoved.clear();
+        insertDependencies(toBeAdded);
         toBeAdded.clear();
-
-        removeAllAdapters = false;
     }
 
     private void finishDisposedAgents() {
@@ -157,6 +164,22 @@ public class UnitActivePopulationController implements AgentsRunner, AgentsTarge
 
     private AgentAdapter createAdapterFor(Agent agent) {
         return new AgentAdapter(agent, agentIdCounter.getAndIncrement(), agentEnvironment);
+    }
+
+    private void insertDependencies(List<AgentAdapter> toBeAdded) {
+        log.debug("Insert dependencies for all agents {}", toBeAdded);
+        toBeAdded
+            .stream()
+            .map(AgentAdapter::getAgent)
+            .forEach(localDependenciesInjector::injectDependencies);
+    }
+
+    private void clearDependencies(List<AgentAdapter> toBeRemoved) {
+        log.debug("Erase dependencies from all agents {}", toBeRemoved);
+        toBeRemoved
+            .stream()
+            .map(AgentAdapter::getAgent)
+            .forEach(dependenciesEraser::eraseDependencies);
     }
 
 }

@@ -1,8 +1,8 @@
 package org.hage.platform.util.connection.remote.endpoint;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 
 public interface MessageAggregator<M extends Serializable, R> {
-    R aggregate(Collection<MessageEnvelope<M>> messages);
+    R aggregate(List<MessageEnvelope<M>> messages);
 }

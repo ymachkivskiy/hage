@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.PrototypeComponent;
 import org.hage.platform.component.container.MutableInstanceContainer;
 import org.hage.platform.component.runtime.activepopulation.AgentsTargetEnvironment;
+import org.hage.platform.component.runtime.container.dependency.DependenciesInjector;
+import org.hage.platform.component.runtime.container.dependency.LocalDependenciesInjector;
 import org.hage.platform.component.runtime.init.AgentDefinitionCount;
 import org.hage.platform.component.runtime.init.UnitPopulation;
 import org.hage.platform.component.runtime.unit.faces.UnitPopulationLoader;
@@ -26,13 +28,15 @@ import static java.util.stream.IntStream.range;
 @Slf4j
 @PrototypeComponent
 @RequiredArgsConstructor
-public class UnitAgentCreationController implements UnitPopulationLoader, AgentsCreator {
-
-    @Autowired
-    private SimulationAgentDefinitionsSupplier agentDefinitionsSupplier;
+public class UnitAgentCreationController implements UnitPopulationLoader, AgentsCreator, LocalDependenciesInjector {
 
     private final MutableInstanceContainer instanceContainer;
     private final AgentsTargetEnvironment agentsTargetEnvironment;
+
+    @Autowired
+    private SimulationAgentDefinitionsSupplier agentDefinitionsSupplier;
+    @Autowired
+    private DependenciesInjector dependenciesInjector;
 
     @PostConstruct
     private void createControlAgent() {
@@ -72,6 +76,11 @@ public class UnitAgentCreationController implements UnitPopulationLoader, Agents
             .collect(toList());
 
         registerAgents(agents, addImmediately);
+    }
+
+    @Override
+    public void injectDependencies(Object object) {
+        dependenciesInjector.injectDependenciesUsing(object, instanceContainer);
     }
 
     private <T extends Agent> void registerAgents(Collection<T> agents, boolean immediately) {

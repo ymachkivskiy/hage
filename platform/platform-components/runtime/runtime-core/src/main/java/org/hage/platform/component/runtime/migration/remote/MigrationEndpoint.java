@@ -28,7 +28,7 @@ public class MigrationEndpoint extends BaseRemoteEndpoint<MigrationMessage> {
     public void sendMigrants(ExternalMigrationGroup migrationGroup) {
         log.debug("Send migration group {}", migrationGroup);
 
-        sendAndWaitForResponse(payloadMsg(migrationGroup.getMigrationGroups()), migrationGroup.getTargetNode());
+        sendToAndWaitForResponse(payloadMsg(migrationGroup.getMigrationGroups()), migrationGroup.getTargetNode());
     }
 
     @Override

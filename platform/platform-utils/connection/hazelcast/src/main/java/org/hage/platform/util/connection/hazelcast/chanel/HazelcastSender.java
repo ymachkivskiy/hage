@@ -18,8 +18,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import static lombok.AccessLevel.PACKAGE;
-import static org.hage.platform.util.connection.frame.util.FrameUtil.getReceiverAdresses;
-import static org.hage.platform.util.connection.frame.util.FrameUtil.isBroadcastFrame;
+import static org.hage.platform.util.connection.frame.util.FrameUtil.*;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -62,6 +61,7 @@ class HazelcastSender implements FrameSender {
             }
         }
 
+        log.debug("Frame sent.");
     }
 
     private void broadcast(Frame frame) {
@@ -71,11 +71,15 @@ class HazelcastSender implements FrameSender {
     }
 
     private void unicastToNode(Frame frame, NodeAddress address) {
-        log.debug("Sending frame {} with chanel {} to node {}", frame, descriptor, address);
+        log.debug("Sending unicast frame {} to node {} with chanel {} ", frame, address, descriptor);
 
         if (localClusterNode.getLocalAddress().equals(address)) {
-            log.debug("Send to loopback");
-            receiver.receive(frame);
+            if (isDeliverableToSender(frame)) {
+                log.debug("Send to loopback");
+                receiver.receive(frame);
+            } else {
+                log.debug("Frame is not supposed to be received by its sender");
+            }
         } else {
             unicastMap.putAsync(address, frame);
         }

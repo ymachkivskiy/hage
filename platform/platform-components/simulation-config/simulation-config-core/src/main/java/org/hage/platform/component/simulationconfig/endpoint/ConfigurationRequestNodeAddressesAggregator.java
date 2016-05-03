@@ -6,7 +6,7 @@ import org.hage.platform.component.simulationconfig.endpoint.message.Configurati
 import org.hage.platform.util.connection.remote.endpoint.MessageAggregator;
 import org.hage.platform.util.connection.remote.endpoint.MessageEnvelope;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import static java.util.stream.Collectors.toSet;
@@ -15,7 +15,7 @@ import static org.hage.platform.component.simulationconfig.endpoint.message.Mess
 class ConfigurationRequestNodeAddressesAggregator implements MessageAggregator<ConfigurationMessage, Set<NodeAddress>> {
 
     @Override
-    public Set<NodeAddress> aggregate(Collection<MessageEnvelope<ConfigurationMessage>> envelopes) {
+    public Set<NodeAddress> aggregate(List<MessageEnvelope<ConfigurationMessage>> envelopes) {
         return envelopes
             .stream()
             .filter(envelope -> isRequestMsg(envelope.getBody()))

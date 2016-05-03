@@ -44,9 +44,11 @@ public abstract class UnitLifecycleProcessor {
     }
 
     private void initUnitComponents(AgentsUnit unit) {
-        UnitActivePopulationController unitActivePopulationCtrl = createUnitPopulationController(unit);
         UnitLocationController locationCtrl = createUnitLocationContext(unit.getPosition());
+        UnitActivePopulationController unitActivePopulationCtrl = createUnitPopulationController(unit);
         UnitAgentCreationController unitAgentCreationCtrl = createUnitPopulationContext(unitActivePopulationCtrl);
+
+        unitActivePopulationCtrl.setLocalDependenciesInjector(unitAgentCreationCtrl);
 
         unit.setUnitLocationController(locationCtrl);
         unit.setUnitAgentCreationController(unitAgentCreationCtrl);
@@ -61,7 +63,7 @@ public abstract class UnitLifecycleProcessor {
 
     protected abstract AgentContextAdapter createAgentContextAdapter(UnitLocationController locationController, AgentsCreator agentsCreator, AgentsController agentsController);
 
-    protected abstract UnitAgentCreationController createUnitPopulationContext(AgentsTargetEnvironment unitActivePopulationController);
+    protected abstract UnitAgentCreationController createUnitPopulationContext(AgentsTargetEnvironment unitActivePopulationCtrl);
 
     protected abstract UnitLocationController createUnitLocationContext(Position position);
 

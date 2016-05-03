@@ -14,6 +14,7 @@ import java.util.Set;
 @Builder
 public class Header implements Serializable {
 
+    private final boolean includeSender;
     private final NodeAddress sender;
     private final Long conversationId;
     private final Responsiveness responsiveness;
@@ -23,6 +24,7 @@ public class Header implements Serializable {
 
     public HeaderBuilder mutableHeader() {
         return builder()
+            .includeSender(includeSender)
             .sender(sender)
             .conversationId(conversationId)
             .responsiveness(responsiveness)

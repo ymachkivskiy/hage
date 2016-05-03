@@ -47,8 +47,8 @@ class StepPhaseOrderCfg {
             .addNextIndependentPhases(synchForSubPhase("initial"))
             .addNextIndependentPhases(agentsStep)
             .addNextIndependentPhases(controlAgentStep)
+            .addNextIndependentPhases(agentUnitPostProcess)
             .addNextIndependentPhases(
-                agentUnitPostProcess,
                 structureChangeDistribution,
                 externalMigrationProcess)
             .build();

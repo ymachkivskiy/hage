@@ -1,6 +1,6 @@
 package org.hage.platform.util.executors.core;
 
-import org.springframework.scheduling.concurrent.CustomizableThreadFactory;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
 import java.util.Collection;
 import java.util.List;
@@ -17,12 +17,19 @@ public class ParallelCoreBatchExecutor implements CoreBatchExecutor {
     private final ExecutorService executor;
 
     public ParallelCoreBatchExecutor() {
+        ThreadFactory factory = new ThreadFactoryBuilder()
+            .setNameFormat(THREADS_PREFIX)
+            .setUncaughtExceptionHandler((t, e) -> {
+                System.err.print("Exception thrown by " + t);
+                e.printStackTrace();
+            }).build();
+
         this.executor = new ThreadPoolExecutor(
             getRuntime().availableProcessors(),
             Integer.MAX_VALUE, //unused when queue for tasks is unbounded
             10L, MILLISECONDS,
             new LinkedBlockingDeque<>(),
-            new CustomizableThreadFactory(THREADS_PREFIX)
+            factory
         );
     }
 

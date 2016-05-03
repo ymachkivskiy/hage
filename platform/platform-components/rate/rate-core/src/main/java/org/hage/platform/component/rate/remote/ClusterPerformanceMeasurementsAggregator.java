@@ -5,7 +5,7 @@ import org.hage.platform.component.rate.measure.PerformanceRate;
 import org.hage.platform.util.connection.remote.endpoint.MessageAggregator;
 import org.hage.platform.util.connection.remote.endpoint.MessageEnvelope;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import static java.util.stream.Collectors.toMap;
@@ -13,7 +13,7 @@ import static java.util.stream.Collectors.toMap;
 class ClusterPerformanceMeasurementsAggregator implements MessageAggregator<PerformanceRemoteMessage, ActiveClusterPerformance> {
 
     @Override
-    public ActiveClusterPerformance aggregate(Collection<MessageEnvelope<PerformanceRemoteMessage>> messages) {
+    public ActiveClusterPerformance aggregate(List<MessageEnvelope<PerformanceRemoteMessage>> messages) {
 
         Map<NodeAddress, PerformanceRate> clusterRateMap = messages.stream()
             .collect(toMap(

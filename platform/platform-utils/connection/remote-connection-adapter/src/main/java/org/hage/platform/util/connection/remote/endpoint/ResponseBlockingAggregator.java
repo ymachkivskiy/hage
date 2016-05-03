@@ -15,11 +15,10 @@ import java.util.concurrent.LinkedBlockingQueue;
 @Slf4j
 class ResponseBlockingAggregator<M extends Serializable, R> implements Callable<R> {
 
+    private final BlockingQueue<MessageEnvelope<M>> messagesBlockingQueue = new LinkedBlockingQueue<>();
+
     private final MessageAggregator<M, R> messagesAggregator;
     private final Set<NodeAddress> expectedMessageSenders;
-
-    private final BlockingQueue<MessageEnvelope<M>> messagesBlockingQueue = new LinkedBlockingQueue<>();
-    private final List<MessageEnvelope<M>> collectedMessages = new ArrayList<>();
 
     public ResponseBlockingAggregator(MessageAggregator<M, R> messagesAggregator, Set<NodeAddress> expectedMessageSenders) {
         this.messagesAggregator = messagesAggregator;
@@ -29,6 +28,8 @@ class ResponseBlockingAggregator<M extends Serializable, R> implements Callable<
     @Override
     public R call() throws Exception {
         log.debug("Started aggregating messages");
+
+        List<MessageEnvelope<M>> collectedMessages = new ArrayList<>();
 
         while (!expectedMessageSenders.isEmpty()) {
             log.debug("Not all messages has been received yet. Waiting for new message. Still wait for {} ...", expectedMessageSenders);

@@ -17,7 +17,7 @@ public class PayloadDataProcessor implements FrameProcessor {
 
     @Override
     public Frame process(Frame input) {
-        log.debug("Set data for frame {} to {}", input, data);
+        log.debug("Set data  to {} for frame {}",data, input);
 
         return new Frame(input.getHeader(), new Payload(data));
     }

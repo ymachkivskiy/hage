@@ -16,7 +16,7 @@ public class DiagnosticsProcessor extends AbstractHeaderProcessor {
 
     @Override
     protected void updateHeader(Header.HeaderBuilder mutableHeader) {
-        log.debug("Set diagnostics for header {} to {}", mutableHeader, diagnostics);
+        log.debug("Set diagnostics to {} for header {}", diagnostics, mutableHeader);
 
         mutableHeader.diagnostics(diagnostics);
     }

@@ -19,6 +19,9 @@ public class ExternalMigrationPerformingTask implements Runnable {
     @Override
     public void run() {
         log.debug("Sending migrants {}", migrationGroup);
+
         migrationEndpoint.sendMigrants(migrationGroup);
+
+        log.debug("Migrants sent.");
     }
 }

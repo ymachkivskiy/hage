@@ -12,13 +12,20 @@ import org.hage.platform.util.connection.frame.Result;
 import org.hage.platform.util.connection.frame.diagnostics.Diagnostics;
 import org.hage.platform.util.connection.frame.diagnostics.ResultType;
 
+import java.io.Serializable;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static lombok.AccessLevel.PACKAGE;
-import static org.hage.platform.util.connection.frame.util.FrameCreators.failedResponseWithDiagnostics;
-import static org.hage.platform.util.connection.frame.util.FrameCreators.successfulResponse;
-import static org.hage.platform.util.connection.frame.util.FrameUtil.requiresResponse;
-import static org.hage.platform.util.connection.frame.util.FrameUtil.successFrame;
+import static org.hage.platform.util.connection.frame.process.ConversationIdProcessor.sameConversation;
+import static org.hage.platform.util.connection.frame.process.DiagnosticsProcessor.successful;
+import static org.hage.platform.util.connection.frame.process.DiagnosticsProcessor.withDiagnostics;
+import static org.hage.platform.util.connection.frame.process.IncludeSenderProcessor.includingSender;
+import static org.hage.platform.util.connection.frame.process.PayloadDataProcessor.withData;
+import static org.hage.platform.util.connection.frame.process.PayloadDataProcessor.withoutData;
+import static org.hage.platform.util.connection.frame.process.ReceiversProcessor.responseFor;
+import static org.hage.platform.util.connection.frame.process.ResponsivenessProcessor.requiresNoResponse;
+import static org.hage.platform.util.connection.frame.util.FrameUtil.*;
 import static org.hage.platform.util.connection.frame.util.ResultUtil.isSuccessful;
 
 @RequiredArgsConstructor
@@ -91,6 +98,29 @@ class HazelcastReceiveAdapter implements Receiver, FrameReceiverAdapter {
         } else {
             receiver.receive(frame);
         }
+    }
+
+    public static Frame successfulResponse(Frame originalFrame, Serializable responseData) {
+        checkArgument(originalFrame.getPayload().checkDataType(responseData.getClass()), "Frame %s is not compatible with payload data %s", originalFrame, responseData.getClass());
+
+        return createFrame(
+            responseFor(originalFrame),
+            includingSender(),
+            requiresNoResponse(),
+            withData(responseData),
+            sameConversation(originalFrame),
+            successful()
+        );
+    }
+
+    public static Frame failedResponseWithDiagnostics(Frame originalFrame, Diagnostics diagnostics) {
+        return createFrame(
+            responseFor(originalFrame),
+            includingSender(),
+            requiresNoResponse(),
+            withoutData(),
+            sameConversation(originalFrame),
+            withDiagnostics(diagnostics));
     }
 
 }
