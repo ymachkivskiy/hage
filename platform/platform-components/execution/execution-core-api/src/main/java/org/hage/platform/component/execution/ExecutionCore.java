@@ -26,9 +26,4 @@ public interface ExecutionCore {
      */
     void stop();
 
-    /**
-     * @return  execution info for finished execution cycles.
-     */
-    ExecutionInfo getInfo();
-
 }

@@ -1,14 +1,11 @@
 package org.hage.platform.simulation.runtime.agent;
 
 import org.hage.platform.component.structure.connections.UnitAddress;
-import org.hage.platform.simulation.runtime.context.AgentCreationContext;
-import org.hage.platform.simulation.runtime.context.LocationContext;
-import org.hage.platform.simulation.runtime.context.StopConditionContext;
-import org.hage.platform.simulation.runtime.context.UnsupportedAgentTypeException;
+import org.hage.platform.simulation.runtime.context.*;
 
 import java.util.List;
 
-public interface AgentManageContext extends AgentCreationContext, LocationContext, StopConditionContext {
+public interface AgentManageContext extends AgentCreationContext, LocationContext, StopConditionContext, SimulationStateContext {
 
     AgentAddress queryAddress();
 

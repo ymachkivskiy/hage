@@ -23,15 +23,16 @@ public class LightAgent implements Agent {
     private MigrationCheckComponent migrationCheckComponent;
 
     @Setter
-    private int age = 0;
+    private int age = 1;
 
     @Override
     public void step(AgentManageContext context) {
         String agentUid = context.queryAddress().getFriendlyIdentifier();
 
-        log.info("\nI am {}. My age is {}\nI leave in {} and I am surrounded by {}\nMy current neighbors are {}",
+        log.info("\nI am {}. My age is {} (Current step is {})\nI leave in {} and I am surrounded by {}\nMy current neighbors are {}",
             agentUid,
             age,
+            context.getCurrentStep(),
             context.queryLocalUnit().getFriendlyIdentifier(),
             context.querySurroundingUnits().getAll().stream().map(UnitAddress::getFriendlyIdentifier).collect(toList()),
             context.queryOtherLocalAgents()

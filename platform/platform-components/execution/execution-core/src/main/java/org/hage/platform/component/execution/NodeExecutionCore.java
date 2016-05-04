@@ -10,7 +10,7 @@ import static java.util.Optional.empty;
 import static java.util.Optional.of;
 
 @Slf4j
-public class NodeExecutionCore implements ExecutionCore {
+public class NodeExecutionCore implements ExecutionCore, ExecutionStepProvider {
 
     private CancelableTaskScheduler scheduler = new CancelableTaskScheduler();
     private CoreState currentState = CoreState.STOPPED;
@@ -79,8 +79,13 @@ public class NodeExecutionCore implements ExecutionCore {
     }
 
     @Override
-    public ExecutionInfo getInfo() {
-        return new ExecutionInfo(stepRunnable.getPerformedStepsCount());
+    public long getCurrentStep() {
+        return stepRunnable.getCurrentStepNumber();
+    }
+
+    @Override
+    public long getFinishedSteps() {
+        return stepRunnable.getPerformedStepsCount();
     }
 
 }

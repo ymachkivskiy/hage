@@ -46,7 +46,7 @@ class ExecutionStepRunnable implements Runnable {
         stepsPerformed.set(0);
     }
 
-    private long getCurrentStepNumber() {
+    public long getCurrentStepNumber() {
         return stepsPerformed.get() + 1;
     }
 

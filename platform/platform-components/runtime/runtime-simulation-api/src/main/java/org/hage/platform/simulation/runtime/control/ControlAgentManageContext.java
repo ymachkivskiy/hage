@@ -3,15 +3,12 @@ package org.hage.platform.simulation.runtime.control;
 import org.hage.platform.component.structure.connections.UnitAddress;
 import org.hage.platform.simulation.runtime.agent.Agent;
 import org.hage.platform.simulation.runtime.agent.AgentAddress;
-import org.hage.platform.simulation.runtime.context.AgentCreationContext;
-import org.hage.platform.simulation.runtime.context.LocationContext;
-import org.hage.platform.simulation.runtime.context.StopConditionContext;
-import org.hage.platform.simulation.runtime.context.UnsupportedAgentTypeException;
+import org.hage.platform.simulation.runtime.context.*;
 
 import java.util.Collection;
 import java.util.List;
 
-public interface ControlAgentManageContext extends AgentCreationContext, LocationContext, StopConditionContext {
+public interface ControlAgentManageContext extends AgentCreationContext, LocationContext, StopConditionContext, SimulationStateContext {
 
     /**
      * Returns all agents of given agentClazz located in controlled simulation cell.

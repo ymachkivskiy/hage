@@ -2,6 +2,7 @@ package org.hage.platform.component.runtime.unit.context;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.PrototypeComponent;
+import org.hage.platform.component.execution.ExecutionStepProvider;
 import org.hage.platform.component.runtime.activepopulation.AgentAdapter;
 import org.hage.platform.component.runtime.activepopulation.AgentsController;
 import org.hage.platform.component.runtime.container.AgentsCreator;
@@ -44,6 +45,8 @@ public class AgentContextAdapter implements AgentManageContext, ControlAgentMana
 
     @Autowired
     private OutputMigrationQueue outputMigrationQueue;
+    @Autowired
+    private ExecutionStepProvider executionStepProvider;
 
     public AgentContextAdapter(UnitLocationController locationController, AgentsCreator agentsCreator, AgentsController agentsController) {
         this.locationController = locationController;
@@ -213,6 +216,11 @@ public class AgentContextAdapter implements AgentManageContext, ControlAgentMana
     public void die() {
         checkAgentContext();
         agentsController.scheduleRemoveWithKilling(currentAgentContext);
+    }
+
+    @Override
+    public long getCurrentStep() {
+        return executionStepProvider.getCurrentStep();
     }
 
     @Override

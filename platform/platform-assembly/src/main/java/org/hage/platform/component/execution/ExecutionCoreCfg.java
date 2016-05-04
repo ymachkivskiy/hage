@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Import;
 public class ExecutionCoreCfg {
 
     @Bean
-    public ExecutionCore executionCore() {
+    public NodeExecutionCore executionCore() {
         return new NodeExecutionCore();
     }
 
