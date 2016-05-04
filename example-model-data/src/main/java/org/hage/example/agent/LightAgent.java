@@ -11,6 +11,7 @@ import org.hage.platform.simulation.runtime.agent.AgentManageContext;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Random;
 
 import static java.util.stream.Collectors.toList;
 
@@ -25,6 +26,8 @@ public class LightAgent implements Agent {
     @Setter
     private int age = 1;
 
+    private Random random= new Random();
+
     @Override
     public void step(AgentManageContext context) {
         String agentUid = context.queryAddress().getFriendlyIdentifier();
@@ -38,6 +41,11 @@ public class LightAgent implements Agent {
             context.queryOtherLocalAgents()
         );
 
+
+        if (Math.abs(random.nextInt()) % 17 == 0) {
+            log.debug("I have found what I want!!");
+            context.notifyStopConditionSatisfied();
+        }
 
         component.processMessage("hello from " + agentUid);
 

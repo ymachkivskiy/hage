@@ -1,7 +1,7 @@
 package org.hage.platform.component.lifecycle.remote;
 
 
-import org.hage.platform.component.lifecycle.LifecycleEngine;
+import org.hage.platform.component.lifecycle.LifecycleCommandInvoker;
 import org.hage.platform.util.connection.chanel.ConnectionDescriptor;
 import org.hage.platform.util.connection.remote.endpoint.BaseRemoteEndpoint;
 import org.hage.platform.util.connection.remote.endpoint.MessageEnvelope;
@@ -13,7 +13,7 @@ public class LifecycleManagerEndpoint extends BaseRemoteEndpoint<LifecycleRemote
     private static final String CHANEL_NAME = "lifecycle-remote-chanel";
 
     @Autowired
-    private LifecycleEngine lifecycleEngine;
+    private LifecycleCommandInvoker lifecycleCommandInvoker;
 
     public LifecycleManagerEndpoint() {
         super(new ConnectionDescriptor(CHANEL_NAME), LifecycleRemoteMessage.class);
@@ -21,7 +21,7 @@ public class LifecycleManagerEndpoint extends BaseRemoteEndpoint<LifecycleRemote
 
     @Override
     protected void consumeMessage(MessageEnvelope<LifecycleRemoteMessage> envelope) {
-        lifecycleEngine.performCommand(envelope.getBody().getCommand());
+        lifecycleCommandInvoker.invokeCommand(envelope.getBody().getCommand());
     }
 
 }

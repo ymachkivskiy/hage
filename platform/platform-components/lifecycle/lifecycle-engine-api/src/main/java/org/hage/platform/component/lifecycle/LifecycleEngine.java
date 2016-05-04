@@ -12,7 +12,7 @@ import javax.annotation.PostConstruct;
 import static java.lang.Runtime.getRuntime;
 
 @Slf4j
-public class LifecycleEngine implements PlatformStarter {
+public class LifecycleEngine implements PlatformStarter, LifecycleCommandInvoker {
 
     @Autowired
     private BeanFactory beanFactory;
@@ -25,7 +25,8 @@ public class LifecycleEngine implements PlatformStarter {
         engineService.fire(lifecycleInitializer.getStartingEvent());
     }
 
-    public final void performCommand(LifecycleCommand command) {
+    @Override
+    public final void invokeCommand(LifecycleCommand command) {
         command.accept(engineService);
     }
 

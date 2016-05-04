@@ -9,6 +9,7 @@ import org.hage.platform.component.runtime.container.AgentsCreator;
 import org.hage.platform.component.runtime.location.AgentsUnitAddress;
 import org.hage.platform.component.runtime.location.UnitLocationController;
 import org.hage.platform.component.runtime.migration.OutputMigrationQueue;
+import org.hage.platform.component.runtime.stopcondition.agent.AgentStopConditionReporter;
 import org.hage.platform.component.structure.connections.Neighbors;
 import org.hage.platform.component.structure.connections.UnitAddress;
 import org.hage.platform.simulation.runtime.agent.Agent;
@@ -28,6 +29,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
+import static org.hage.platform.component.runtime.stopcondition.agent.AgentReport.reporterForAgentIn;
+import static org.hage.platform.component.runtime.stopcondition.agent.AgentReport.reporterForControlAgentOf;
 import static org.hage.util.CollectionUtils.nullSafe;
 
 @Slf4j
@@ -47,6 +50,8 @@ public class AgentContextAdapter implements AgentManageContext, ControlAgentMana
     private OutputMigrationQueue outputMigrationQueue;
     @Autowired
     private ExecutionStepProvider executionStepProvider;
+    @Autowired
+    private AgentStopConditionReporter stopConditionReporter;
 
     public AgentContextAdapter(UnitLocationController locationController, AgentsCreator agentsCreator, AgentsController agentsController) {
         this.locationController = locationController;
@@ -225,8 +230,12 @@ public class AgentContextAdapter implements AgentManageContext, ControlAgentMana
 
     @Override
     public void notifyStopConditionSatisfied() {
-        //todo : NOT IMPLEMENTED
-
+        if (isControlAgentContext()) {
+            stopConditionReporter.reportStopConditionReached(reporterForControlAgentOf(locationController.getPosition()));
+        } else {
+            checkAgentContext();
+            stopConditionReporter.reportStopConditionReached(reporterForAgentIn(locationController.getPosition(), currentAgentContext.getAgent()));
+        }
     }
 
     public void setControlAgentContext() {

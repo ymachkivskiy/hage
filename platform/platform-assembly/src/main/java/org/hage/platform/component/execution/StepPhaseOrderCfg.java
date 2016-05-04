@@ -36,7 +36,8 @@ class StepPhaseOrderCfg {
     private StructureChangeDistributionStepPhase structureChangeDistribution;
     @Autowired
     private ExternalMigrationProcessPhase externalMigrationProcess;
-
+    @Autowired
+    private StopConditionCheckPhase stopConditionCheck;
 
     @Bean
     public StepPhaseFactory stepPhaseFactory() {
@@ -48,6 +49,7 @@ class StepPhaseOrderCfg {
             .addNextIndependentPhases(agentsStep)
             .addNextIndependentPhases(controlAgentStep)
             .addNextIndependentPhases(agentUnitPostProcess)
+            .addNextIndependentPhases(stopConditionCheck)
             .addNextIndependentPhases(
                 structureChangeDistribution,
                 externalMigrationProcess)

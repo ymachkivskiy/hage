@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.component.cluster.ClusterManager;
 import org.hage.platform.component.cluster.ClusterMemberChangeCallback;
 import org.hage.platform.component.cluster.NodeAddress;
-import org.hage.platform.component.lifecycle.LifecycleEngine;
+import org.hage.platform.component.lifecycle.LifecycleCommandInvoker;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
@@ -17,12 +17,12 @@ public class ClusterConsistencyGuard implements ClusterMemberChangeCallback {
     @Autowired
     private ClusterManager addressManager;
     @Autowired
-    private LifecycleEngine lifecycleEngine;
+    private LifecycleCommandInvoker lifecycleCommandInvoker;
 
     @Override
     public void onMemberRemoved(NodeAddress removedMember) {
         log.error("Member '{}' removed from cluster", removedMember);
-        lifecycleEngine.performCommand(FAIL);
+        lifecycleCommandInvoker.invokeCommand(FAIL);
     }
 
     @PostConstruct
