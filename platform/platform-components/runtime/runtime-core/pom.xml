@@ -39,6 +39,12 @@
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
+            <artifactId>execution-monitoring-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
             <artifactId>structure-distribution-api</artifactId>
             <version>${project.version}</version>
         </dependency>

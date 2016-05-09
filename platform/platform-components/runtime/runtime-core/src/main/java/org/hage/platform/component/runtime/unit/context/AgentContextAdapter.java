@@ -2,7 +2,7 @@ package org.hage.platform.component.runtime.unit.context;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.PrototypeComponent;
-import org.hage.platform.component.execution.ExecutionStepProvider;
+import org.hage.platform.component.execution.monitor.ExecutionMonitor;
 import org.hage.platform.component.runtime.activepopulation.AgentAdapter;
 import org.hage.platform.component.runtime.activepopulation.AgentsController;
 import org.hage.platform.component.runtime.container.AgentsCreator;
@@ -49,7 +49,7 @@ public class AgentContextAdapter implements AgentManageContext, ControlAgentMana
     @Autowired
     private OutputMigrationQueue outputMigrationQueue;
     @Autowired
-    private ExecutionStepProvider executionStepProvider;
+    private ExecutionMonitor executionMonitor;
     @Autowired
     private AgentStopConditionReporter stopConditionReporter;
 
@@ -225,7 +225,7 @@ public class AgentContextAdapter implements AgentManageContext, ControlAgentMana
 
     @Override
     public long getCurrentStep() {
-        return executionStepProvider.getCurrentStep();
+        return executionMonitor.getCurrentStepNumber();
     }
 
     @Override

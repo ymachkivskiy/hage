@@ -42,7 +42,7 @@ public class LightAgent implements Agent {
         );
 
 
-        if (Math.abs(random.nextInt()) % 17 == 0) {
+        if (Math.abs(random.nextInt()) % 53 == 0) {
             log.debug("I have found what I want!!");
             context.notifyStopConditionSatisfied();
         }

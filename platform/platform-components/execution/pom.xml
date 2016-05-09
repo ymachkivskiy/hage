@@ -15,6 +15,7 @@
         <module>execution-core-api</module>
         <module>execution-core</module>
         <module>execution-step-api</module>
+        <module>execution-monitoring-api</module>
     </modules>
 
 

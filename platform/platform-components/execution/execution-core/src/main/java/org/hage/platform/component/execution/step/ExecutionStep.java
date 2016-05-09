@@ -1,9 +1,7 @@
-package org.hage.platform.component.execution;
+package org.hage.platform.component.execution.step;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.SingletonComponent;
-import org.hage.platform.component.execution.step.IndependentPhasesGroup;
-import org.hage.platform.component.execution.step.StepPhaseFactory;
 import org.hage.platform.util.executors.core.CoreBatchExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,7 +13,7 @@ import static java.util.stream.Collectors.toList;
 
 @Slf4j
 @SingletonComponent
-class ExecutionStepRunnable implements Runnable {
+public class ExecutionStep implements ExecutionStepRunnable, ResetableStepRunnable {
 
     @Autowired
     private StepPhaseFactory stepPhaseFactory;
@@ -36,18 +34,19 @@ class ExecutionStepRunnable implements Runnable {
         stepsPerformed.incrementAndGet();
     }
 
+    @Override
     public long getPerformedStepsCount() {
         return stepsPerformed.get();
     }
 
-    public void reset() {
-        log.debug("Perform reset of task");
-
-        stepsPerformed.set(0);
-    }
-
+    @Override
     public long getCurrentStepNumber() {
         return stepsPerformed.get() + 1;
+    }
+
+    public void reset() {
+        log.debug("Perform reset of task");
+        stepsPerformed.set(0);
     }
 
     private void executePhasesGroup(IndependentPhasesGroup phasesGroup) {
