@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @Slf4j
 public class BasePopulationInitializer implements PopulationInitializer {
-    // TODO: to be rewriten by migration input queue mechanism
+    // TODO: to be rewritten by migration input queue mechanism
     @Autowired
     private PopulationLoaderRegistry localAgentUnitsController;
 

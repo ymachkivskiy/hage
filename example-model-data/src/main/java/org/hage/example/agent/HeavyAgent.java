@@ -24,7 +24,7 @@ public class HeavyAgent implements Agent {
     public void step(AgentManageContext ctxt) {
         log.info("\nI AM HEAVY AGE OF {} agent {} perform step. \nI have neighbors of same type  {}", age, ctxt.queryAddress().getFriendlyIdentifier(), ctxt.queryOtherLocalAgentsOfSameType());
 
-        if (age == 4) {
+        if (age == 6) {
             log.info("I AM LUCKY alive, notifying about that miracle");
             ctxt.notifyStopConditionSatisfied();
         }

@@ -1,4 +1,4 @@
-package org.hage.platform.simulation.stop;
+package org.hage.platform.simulation.runtime.stopcondition;
 
 import lombok.Data;
 

@@ -13,12 +13,12 @@ import static java.util.Collections.emptyList;
 public class StopConditionsChain {
 
     @Autowired(required = false)
-    private List<StopCondition> stopConditions = emptyList();
+    private List<StopConditionChecker> stopConditionCheckers = emptyList();
 
     public boolean stopConditionSatisfied() {
         log.debug("Check whether if one of stop conditions was satisfied");
-        return stopConditions.stream()
-            .filter(StopCondition::isSatisfied)
+        return stopConditionCheckers.stream()
+            .filter(StopConditionChecker::isSatisfied)
             .findFirst()
             .isPresent();
     }

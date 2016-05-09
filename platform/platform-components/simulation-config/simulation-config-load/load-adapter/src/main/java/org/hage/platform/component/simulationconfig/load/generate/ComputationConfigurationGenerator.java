@@ -25,8 +25,8 @@ public class ComputationConfigurationGenerator {
                 new ContainerConfiguration(
                     inputConfiguration.getSimulationDefinition().getAgentDefinitions(),
                     inputConfiguration.getSimulationDefinition().getControlAgentDefinition(),
-                    inputConfiguration.getGlobalComponents()
-                ),
+                    inputConfiguration.getGlobalComponents(),
+                    inputConfiguration.getStopCondition()),
                 inputConfiguration.getComputationRatingConfig(),
                 inputConfiguration.getSimulationDefinition().getStructureDefinition()
             ),

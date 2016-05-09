@@ -1,5 +1,5 @@
 package org.hage.platform.component.runtime.stopcondition;
 
-public interface StopCondition {
+public interface StopConditionChecker {
     boolean isSatisfied();
 }

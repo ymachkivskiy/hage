@@ -2,6 +2,7 @@ package org.hage.platform.component.simulationconfig.load;
 
 import org.hage.example.MigrationCheckComponent;
 import org.hage.example.SomeFooComponent;
+import org.hage.example.StopConditionChecker;
 import org.hage.example.agent.HeavyAgent;
 import org.hage.example.agent.LightAgent;
 import org.hage.example.agent.SimpleControlAgent;
@@ -76,6 +77,7 @@ class MockedLoader implements ConfigurationLoader {
                         new MeasurerRateConfig(MeasurerType.RAM_MEMORY, 2, 5)
                     )).build()
             )
+            .stopCondition(StopConditionChecker.class)
             .build();
     }
 
