@@ -31,7 +31,7 @@ class StepPhaseOrderCfg {
     @Autowired
     private ControlAgentStepPhase controlAgentStep;
     @Autowired
-    private AgentUnitPostProcessPhase agentUnitPostProcess;
+    private StepPostProcessPhase stepPostProcess;
     @Autowired
     private StructureChangeDistributionStepPhase structureChangeDistribution;
     @Autowired
@@ -51,9 +51,9 @@ class StepPhaseOrderCfg {
             .addNextIndependentPhases(synchForSubPhase("initial"))
             .addNextIndependentPhases(agentsStep)
             .addNextIndependentPhases(controlAgentStep)
-            .addNextIndependentPhases(agentUnitPostProcess)
             .addNextIndependentPhases(stopConditionCheck)
             .addNextIndependentPhases(
+                stepPostProcess,
                 structureChangeDistribution,
                 externalMigrationProcess)
             .build();

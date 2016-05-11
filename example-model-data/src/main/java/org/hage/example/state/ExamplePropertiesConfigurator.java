@@ -1,9 +1,10 @@
 package org.hage.example.state;
 
 import org.hage.platform.component.structure.Position;
-import org.hage.platform.simulation.runtime.state.PropertyDescriptor;
-import org.hage.platform.simulation.runtime.state.ReadWriteUnitProperties;
 import org.hage.platform.simulation.runtime.state.UnitPropertiesStateComponent;
+import org.hage.platform.simulation.runtime.state.descriptor.PropertyDescriptor;
+import org.hage.platform.simulation.runtime.state.property.ReadWriteUnitProperties;
+import org.hage.platform.simulation.runtime.state.property.WriteUnitProperties;
 
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class ExamplePropertiesConfigurator implements UnitPropertiesStateCompone
         return asList(ALGAE, TEMPERATURE, STATE);
     }
 
-    private void initProperties(ReadWriteUnitProperties readWriteUnitProperties) {
+    private void initProperties(WriteUnitProperties readWriteUnitProperties) {
         CustomState state = new CustomState();
         state.setAlgaeAmount(1000);
 

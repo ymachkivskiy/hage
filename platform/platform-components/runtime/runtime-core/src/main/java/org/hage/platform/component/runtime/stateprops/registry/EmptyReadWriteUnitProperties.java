@@ -1,9 +1,8 @@
 package org.hage.platform.component.runtime.stateprops.registry;
 
 import lombok.RequiredArgsConstructor;
-import org.hage.platform.simulation.runtime.state.PropertyDescriptor;
-import org.hage.platform.simulation.runtime.state.PropertyValue;
-import org.hage.platform.simulation.runtime.state.ReadWriteUnitProperties;
+import org.hage.platform.simulation.runtime.state.descriptor.PropertyDescriptor;
+import org.hage.platform.simulation.runtime.state.property.PropertyValue;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -17,11 +16,11 @@ import static java.util.Optional.empty;
 import static lombok.AccessLevel.PRIVATE;
 
 @RequiredArgsConstructor(access = PRIVATE)
-class EmptyReadWriteUnitProperties implements ReadWriteUnitProperties {
+class EmptyReadWriteUnitProperties implements UnitProperties {
 
-    private static final ReadWriteUnitProperties INSTANCE = new EmptyReadWriteUnitProperties();
+    private static final UnitProperties INSTANCE = new EmptyReadWriteUnitProperties();
 
-    public static ReadWriteUnitProperties emptyProperties() {
+    public static UnitProperties emptyProperties() {
         return INSTANCE;
     }
 
@@ -60,4 +59,13 @@ class EmptyReadWriteUnitProperties implements ReadWriteUnitProperties {
         return false;
     }
 
+    @Override
+    public UnitProperties createCopy() {
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return "EmptyUnitProperties()";
+    }
 }

@@ -1,11 +1,12 @@
 package org.hage.example.state;
 
 import lombok.Data;
+import org.hage.platform.simulation.runtime.state.descriptor.CloneableValue;
 
 import java.io.Serializable;
 
 @Data
-public class CustomState implements Serializable {
+public class CustomState implements Serializable, CloneableValue<CustomState> {
     private int algaeAmount;
 
     public int reduceAmountAndGet(int algaeAmount) {
@@ -18,4 +19,10 @@ public class CustomState implements Serializable {
         return this;
     }
 
+    @Override
+    public CustomState createClone() {
+        CustomState customState = new CustomState();
+        customState.setAlgaeAmount(algaeAmount);
+        return customState;
+    }
 }

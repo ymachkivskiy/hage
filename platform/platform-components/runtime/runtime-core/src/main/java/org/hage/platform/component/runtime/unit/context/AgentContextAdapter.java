@@ -21,8 +21,8 @@ import org.hage.platform.simulation.runtime.context.AgentInitializer;
 import org.hage.platform.simulation.runtime.context.UnsupportedAgentTypeException;
 import org.hage.platform.simulation.runtime.control.AddressedAgent;
 import org.hage.platform.simulation.runtime.control.ControlAgentManageContext;
-import org.hage.platform.simulation.runtime.state.ReadUnitProperties;
-import org.hage.platform.simulation.runtime.state.ReadWriteUnitProperties;
+import org.hage.platform.simulation.runtime.state.property.ReadUnitProperties;
+import org.hage.platform.simulation.runtime.state.property.ReadWriteUnitProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
@@ -248,11 +248,11 @@ public class AgentContextAdapter implements AgentManageContext, ControlAgentMana
     }
 
     @Override
-    public ReadWriteUnitProperties queryPropertiesOf(UnitAddress unitAddress) {
+    public ReadUnitProperties queryPropertiesOf(UnitAddress unitAddress) {
         if (!(unitAddress instanceof AgentsUnitAddress)) {
-            return unitPropertiesRegistry.unitPropertiesFor(null);
+            return unitPropertiesRegistry.readUnitPropertiesFor(null);
         }
-        return unitPropertiesRegistry.unitPropertiesFor(((AgentsUnitAddress) unitAddress).getPosition());
+        return unitPropertiesRegistry.readUnitPropertiesFor(((AgentsUnitAddress) unitAddress).getPosition());
     }
 
     @Override

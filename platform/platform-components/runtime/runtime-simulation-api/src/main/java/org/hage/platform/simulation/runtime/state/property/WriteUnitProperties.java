@@ -1,11 +1,13 @@
-package org.hage.platform.simulation.runtime.state;
+package org.hage.platform.simulation.runtime.state.property;
+
+import org.hage.platform.simulation.runtime.state.descriptor.PropertyDescriptor;
 
 import java.io.Serializable;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
-public interface ReadWriteUnitProperties extends ReadUnitProperties {
+public interface WriteUnitProperties {
 
     <T extends Serializable> void setProperty(PropertyDescriptor<T> descriptor, T propertyValue);
 

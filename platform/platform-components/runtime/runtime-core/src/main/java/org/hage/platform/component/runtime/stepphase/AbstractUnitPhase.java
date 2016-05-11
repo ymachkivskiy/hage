@@ -22,7 +22,7 @@ abstract class AbstractUnitPhase implements StepPhase, UnitActivationAware, Unit
     private final Map<Position, Runnable> agentStepRunnableMap = new ConcurrentHashMap<>();
 
     @Override
-    public final Collection<? extends Runnable> getRunnable(long currentStep) {
+    public Collection<? extends Runnable> getRunnable(long currentStep) {
         return unmodifiableCollection(agentStepRunnableMap.values());
     }
 

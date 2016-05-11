@@ -1,6 +1,7 @@
 package org.hage.platform.simulation.runtime.state;
 
 import org.hage.platform.component.structure.Position;
+import org.hage.platform.simulation.runtime.state.property.ReadWriteUnitProperties;
 
 import java.io.Serializable;
 

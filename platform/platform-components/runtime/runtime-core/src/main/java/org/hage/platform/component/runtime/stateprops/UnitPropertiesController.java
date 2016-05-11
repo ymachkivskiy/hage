@@ -8,8 +8,8 @@ import org.hage.platform.component.runtime.container.UnitComponentCreationContro
 import org.hage.platform.component.runtime.stateprops.registry.UnitPropertiesRegistry;
 import org.hage.platform.component.runtime.unit.faces.StateChangePerformer;
 import org.hage.platform.component.structure.Position;
-import org.hage.platform.simulation.runtime.state.ReadWriteUnitProperties;
 import org.hage.platform.simulation.runtime.state.UnitPropertiesUpdater;
+import org.hage.platform.simulation.runtime.state.property.ReadWriteUnitProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
@@ -31,7 +31,7 @@ public class UnitPropertiesController implements StateChangePerformer, UnitPrope
 
     @Autowired
     public void setPropertiesRegistry(UnitPropertiesRegistry propertiesRegistry) {
-        this.cachedUnitProperties = memoize(() -> propertiesRegistry.unitPropertiesFor(position));
+        this.cachedUnitProperties = memoize(() -> propertiesRegistry.readWriteUnitPropertiesFor(position));
     }
 
     public UnitPropertiesController(Position position, UnitComponentCreationController creationController) {
@@ -46,6 +46,7 @@ public class UnitPropertiesController implements StateChangePerformer, UnitPrope
 
     @Override
     public ReadWriteUnitProperties getUnitProperties() {
+        log.debug("Get read/write unit properties for {}", position);
         return cachedUnitProperties.get();
     }
 

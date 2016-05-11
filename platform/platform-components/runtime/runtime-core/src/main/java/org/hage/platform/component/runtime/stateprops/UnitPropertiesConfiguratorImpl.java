@@ -4,9 +4,9 @@ import com.google.common.base.Supplier;
 import org.hage.platform.annotation.di.SingletonComponent;
 import org.hage.platform.component.container.MutableInstanceContainer;
 import org.hage.platform.component.runtime.init.UnitPropertiesConfigurator;
-import org.hage.platform.simulation.runtime.state.PropertyDescriptor;
 import org.hage.platform.simulation.runtime.state.UnitPropertiesStateComponent;
 import org.hage.platform.simulation.runtime.state.UnitRegisteredPropertiesProvider;
+import org.hage.platform.simulation.runtime.state.descriptor.PropertyDescriptor;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collections;

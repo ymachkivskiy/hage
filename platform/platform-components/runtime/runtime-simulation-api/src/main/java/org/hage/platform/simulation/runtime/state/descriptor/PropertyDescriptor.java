@@ -1,0 +1,70 @@
+package org.hage.platform.simulation.runtime.state.descriptor;
+
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+
+import java.io.Serializable;
+
+import static com.google.common.base.Preconditions.checkNotNull;
+
+public interface PropertyDescriptor<T extends Serializable> {
+
+    String getName();
+
+    Class<T> getType();
+
+    T getReadViewFor(T original);
+
+    static <T extends Serializable> PropertyDescriptor<T> primitiveProperty(String name, Class<T> type) {
+        return new ImmutablePropertyDescriptor<>(name, type);
+    }
+
+    static <T extends Serializable & CloneableValue<T>> PropertyDescriptor<T> readSafeProperty(String name, Class<T> type) {
+        return new MutablePropertyDescriptor<>(name, type);
+    }
+
+}
+
+
+@EqualsAndHashCode
+@Getter
+abstract class AbstractPropertyDescriptor<T extends Serializable> implements PropertyDescriptor<T> {
+    private final String name;
+    private final Class<T> type;
+
+    protected AbstractPropertyDescriptor(String name, Class<T> type) {
+        this.name = checkNotNull(name);
+        this.type = checkNotNull(type);
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "(name=" + name + ", type=" + type.getName() + ")";
+    }
+}
+
+
+class ImmutablePropertyDescriptor<T extends Serializable> extends AbstractPropertyDescriptor<T> {
+
+    public ImmutablePropertyDescriptor(String name, Class<T> type) {
+        super(name, type);
+    }
+
+    @Override
+    public T getReadViewFor(T original) {
+        return original;
+    }
+
+}
+
+class MutablePropertyDescriptor<T extends Serializable & CloneableValue<T>> extends AbstractPropertyDescriptor<T> {
+
+    public MutablePropertyDescriptor(String name, Class<T> type) {
+        super(name, type);
+    }
+
+    @Override
+    public T getReadViewFor(T original) {
+        return original.createClone();
+    }
+}

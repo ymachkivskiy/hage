@@ -1,8 +1,8 @@
 package org.hage.platform.simulation.runtime.context;
 
 import org.hage.platform.component.structure.connections.UnitAddress;
-import org.hage.platform.simulation.runtime.state.ReadUnitProperties;
-import org.hage.platform.simulation.runtime.state.ReadWriteUnitProperties;
+import org.hage.platform.simulation.runtime.state.property.ReadUnitProperties;
+import org.hage.platform.simulation.runtime.state.property.ReadWriteUnitProperties;
 
 import java.util.List;
 import java.util.function.Predicate;

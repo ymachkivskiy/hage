@@ -7,7 +7,7 @@ import org.hage.platform.component.structure.connections.RelativePosition;
 import org.hage.platform.component.structure.connections.UnitAddress;
 import org.hage.platform.simulation.runtime.agent.Agent;
 import org.hage.platform.simulation.runtime.agent.AgentManageContext;
-import org.hage.platform.simulation.runtime.state.ReadWriteUnitProperties;
+import org.hage.platform.simulation.runtime.state.property.ReadWriteUnitProperties;
 
 import javax.inject.Inject;
 import java.util.List;

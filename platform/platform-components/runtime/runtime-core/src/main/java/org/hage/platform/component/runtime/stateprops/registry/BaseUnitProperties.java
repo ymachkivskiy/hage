@@ -1,13 +1,13 @@
 package org.hage.platform.component.runtime.stateprops.registry;
 
-import org.hage.platform.simulation.runtime.state.PropertyDescriptor;
-import org.hage.platform.simulation.runtime.state.PropertyValue;
-import org.hage.platform.simulation.runtime.state.ReadWriteUnitProperties;
+import org.hage.platform.simulation.runtime.state.descriptor.PropertyDescriptor;
+import org.hage.platform.simulation.runtime.state.property.PropertyValue;
 
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
@@ -19,16 +19,27 @@ import static java.util.function.UnaryOperator.identity;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
-class BaseReadWriteUnitProperties implements ReadWriteUnitProperties {
+class BaseUnitProperties implements UnitProperties {
 
-    private final Map<PropertyDescriptor, Optional<Object>> propertyValues;
+    private final Map<PropertyDescriptor, Optional<Serializable>> propertyValues;
 
-    public BaseReadWriteUnitProperties(List<PropertyDescriptor> descriptors) {
+    public BaseUnitProperties(List<PropertyDescriptor> descriptors) {
         propertyValues = descriptors.stream()
             .collect(toMap(
                 identity(),
                 d -> empty()
             ));
+    }
+
+    private BaseUnitProperties(Map<PropertyDescriptor, Optional<Serializable>> propertyValues) {
+        this.propertyValues = propertyValues.entrySet()
+            .stream()
+            .collect(
+                toMap(
+                    Entry::getKey,
+                    e -> e.getValue().map(v -> e.getKey().getReadViewFor(v))
+                )
+            );
     }
 
     @Override
@@ -83,11 +94,21 @@ class BaseReadWriteUnitProperties implements ReadWriteUnitProperties {
         return false;
     }
 
+    @Override
+    public UnitProperties createCopy() {
+        return new BaseUnitProperties(propertyValues);
+    }
+
     private <T extends Serializable> PropertyDescriptor<T> checkedDescriptor(PropertyDescriptor<T> descriptor) {
         if (!propertyValues.containsKey(descriptor)) {
             throw new IllegalArgumentException("Illegal property \"" + descriptor.getName() + "\" with value of type: " + descriptor.getType() + ". Allowed properties: " + getDescriptors());
         }
 
         return descriptor;
+    }
+
+    @Override
+    public String toString() {
+        return "UnitProperties(" + getValues().toString() + ")";
     }
 }
