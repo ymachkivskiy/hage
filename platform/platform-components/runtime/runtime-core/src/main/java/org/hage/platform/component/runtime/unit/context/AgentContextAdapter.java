@@ -9,6 +9,8 @@ import org.hage.platform.component.runtime.container.AgentsCreator;
 import org.hage.platform.component.runtime.location.AgentsUnitAddress;
 import org.hage.platform.component.runtime.location.UnitLocationController;
 import org.hage.platform.component.runtime.migration.OutputMigrationQueue;
+import org.hage.platform.component.runtime.stateprops.UnitPropertiesProvider;
+import org.hage.platform.component.runtime.stateprops.registry.UnitPropertiesRegistry;
 import org.hage.platform.component.runtime.stopcondition.agent.AgentStopConditionReporter;
 import org.hage.platform.component.structure.connections.Neighbors;
 import org.hage.platform.component.structure.connections.UnitAddress;
@@ -19,11 +21,14 @@ import org.hage.platform.simulation.runtime.context.AgentInitializer;
 import org.hage.platform.simulation.runtime.context.UnsupportedAgentTypeException;
 import org.hage.platform.simulation.runtime.control.AddressedAgent;
 import org.hage.platform.simulation.runtime.control.ControlAgentManageContext;
+import org.hage.platform.simulation.runtime.state.ReadUnitProperties;
+import org.hage.platform.simulation.runtime.state.ReadWriteUnitProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
@@ -43,6 +48,7 @@ public class AgentContextAdapter implements AgentManageContext, ControlAgentMana
     private final UnitLocationController locationController;
     private final AgentsCreator agentsCreator;
     private final AgentsController agentsController;
+    private final UnitPropertiesProvider localPropertiesProvider;
 
     private AgentAdapter currentAgentContext;
 
@@ -52,11 +58,14 @@ public class AgentContextAdapter implements AgentManageContext, ControlAgentMana
     private ExecutionMonitor executionMonitor;
     @Autowired
     private AgentStopConditionReporter stopConditionReporter;
+    @Autowired
+    private UnitPropertiesRegistry unitPropertiesRegistry;
 
-    public AgentContextAdapter(UnitLocationController locationController, AgentsCreator agentsCreator, AgentsController agentsController) {
+    public AgentContextAdapter(UnitLocationController locationController, AgentsCreator agentsCreator, AgentsController agentsController, UnitPropertiesProvider localPropertiesProvider) {
         this.locationController = locationController;
         this.agentsCreator = agentsCreator;
         this.agentsController = agentsController;
+        this.localPropertiesProvider = localPropertiesProvider;
     }
 
     @Override
@@ -236,6 +245,27 @@ public class AgentContextAdapter implements AgentManageContext, ControlAgentMana
             checkAgentContext();
             stopConditionReporter.reportStopConditionReached(reporterForAgentIn(locationController.getPosition(), currentAgentContext.getAgent()));
         }
+    }
+
+    @Override
+    public ReadWriteUnitProperties queryPropertiesOf(UnitAddress unitAddress) {
+        if (!(unitAddress instanceof AgentsUnitAddress)) {
+            return unitPropertiesRegistry.unitPropertiesFor(null);
+        }
+        return unitPropertiesRegistry.unitPropertiesFor(((AgentsUnitAddress) unitAddress).getPosition());
+    }
+
+    @Override
+    public List<UnitAddress> queryNeighborsWithMatchingProperties(Predicate<ReadUnitProperties> predicate) {
+        return querySurroundingUnits()
+            .getAll().stream()
+            .filter(unitAddress -> predicate.test(queryPropertiesOf(unitAddress)))
+            .collect(toList());
+    }
+
+    @Override
+    public ReadWriteUnitProperties queryLocalProperties() {
+        return localPropertiesProvider.getUnitProperties();
     }
 
     public void setControlAgentContext() {

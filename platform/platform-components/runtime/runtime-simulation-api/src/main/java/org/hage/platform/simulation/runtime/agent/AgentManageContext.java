@@ -5,7 +5,7 @@ import org.hage.platform.simulation.runtime.context.*;
 
 import java.util.List;
 
-public interface AgentManageContext extends AgentCreationContext, LocationContext, StopConditionContext, SimulationStateContext {
+public interface AgentManageContext extends AgentCreationContext, LocationContext, StopConditionContext, SimulationStateContext, UnitPropertiesQueryingContext {
 
     AgentAddress queryAddress();
 

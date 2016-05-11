@@ -8,7 +8,7 @@ import org.hage.platform.simulation.runtime.context.*;
 import java.util.Collection;
 import java.util.List;
 
-public interface ControlAgentManageContext extends AgentCreationContext, LocationContext, StopConditionContext, SimulationStateContext {
+public interface ControlAgentManageContext extends AgentCreationContext, LocationContext, StopConditionContext, SimulationStateContext, UnitPropertiesQueryingContext {
 
     /**
      * Returns all agents of given agentClazz located in controlled simulation cell.

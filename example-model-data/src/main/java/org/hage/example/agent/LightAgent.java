@@ -8,12 +8,14 @@ import org.hage.platform.component.structure.connections.RelativePosition;
 import org.hage.platform.component.structure.connections.UnitAddress;
 import org.hage.platform.simulation.runtime.agent.Agent;
 import org.hage.platform.simulation.runtime.agent.AgentManageContext;
+import org.hage.platform.simulation.runtime.state.ReadWriteUnitProperties;
 
 import javax.inject.Inject;
 import java.util.List;
 import java.util.Random;
 
 import static java.util.stream.Collectors.toList;
+import static org.hage.example.state.Properties.ALGAE;
 
 @Slf4j
 public class LightAgent implements Agent {
@@ -26,7 +28,7 @@ public class LightAgent implements Agent {
     @Setter
     private int age = 1;
 
-    private Random random= new Random();
+    private Random random = new Random();
 
     @Override
     public void step(AgentManageContext context) {
@@ -42,7 +44,7 @@ public class LightAgent implements Agent {
         );
 
 
-        if (Math.abs(random.nextInt()) % 53 == 0) {
+        if (Math.abs(random.nextInt()) % 193 == 0) {
             log.debug("I have found what I want!!");
             context.notifyStopConditionSatisfied();
         }
@@ -54,25 +56,39 @@ public class LightAgent implements Agent {
                 context.newAgent(HeavyAgent.class, hagent -> hagent.setAge(age - 2));
             }
 
-            if (migrationCheckComponent.shouldPerformMigrationWithAge(age)) {
+            ReadWriteUnitProperties readWriteUnitProperties = context.queryLocalProperties();
 
-                RelativePosition chosenRelative = migrationCheckComponent.randomRelativePosition();
-                List<UnitAddress> located = context.querySurroundingUnits().getLocated(chosenRelative);
+            if (!readWriteUnitProperties.tryUpdateProperty(
+                ALGAE,
+                currAlgae -> currAlgae >= age,
+                currAlgae -> currAlgae - age)) {
 
-                log.info("\nI {} will try to migrate {} where are {}",
-                    context.queryAddress().getFriendlyIdentifier(),
-                    chosenRelative,
-                    located);
+                log.info("I have not enough food, will try to migrate or die...=(");
 
-                if (located.size() > 0) {
-                    log.info("\nI {} choose to migrate to {} - migration success is {}",
+                if (migrationCheckComponent.shouldPerformMigrationWithAge(age)) {
+
+                    RelativePosition chosenRelative = migrationCheckComponent.randomRelativePosition();
+                    List<UnitAddress> located = context.querySurroundingUnits().getLocated(chosenRelative);
+
+                    log.info("\nI {} will try to migrate {} where are {}",
                         context.queryAddress().getFriendlyIdentifier(),
-                        located.get(0),
-                        context.migrateTo(located.get(0))
-                    );
-                }
+                        chosenRelative,
+                        located);
 
+                    if (located.size() > 0) {
+                        log.info("\nI {} choose to migrate to {} - migration success is {}",
+                            context.queryAddress().getFriendlyIdentifier(),
+                            located.get(0),
+                            context.migrateTo(located.get(0))
+                        );
+                    }
+
+                } else {
+                    log.info("That is so sad, but I must pass away...");
+                    context.die();
+                }
             }
+
 
             Thread.sleep(500);
         } catch (Exception e) {

@@ -5,12 +5,14 @@ import org.hage.platform.component.runtime.activepopulation.AgentsController;
 import org.hage.platform.component.runtime.activepopulation.AgentsTargetEnvironment;
 import org.hage.platform.component.runtime.activepopulation.UnitActivePopulationController;
 import org.hage.platform.component.runtime.container.AgentsCreator;
-import org.hage.platform.component.runtime.container.UnitAgentCreationController;
+import org.hage.platform.component.runtime.container.UnitComponentCreationController;
 import org.hage.platform.component.runtime.init.Population;
 import org.hage.platform.component.runtime.init.PopulationInitializer;
 import org.hage.platform.component.runtime.location.UnitLocationController;
 import org.hage.platform.component.runtime.populationinit.BasePopulationInitializer;
 import org.hage.platform.component.runtime.populationinit.GreedyPopulationDivisor;
+import org.hage.platform.component.runtime.stateprops.UnitPropertiesController;
+import org.hage.platform.component.runtime.stateprops.UnitPropertiesProvider;
 import org.hage.platform.component.runtime.unit.UnitLifecycleProcessor;
 import org.hage.platform.component.runtime.unit.context.AgentContextAdapter;
 import org.hage.platform.component.runtime.unit.context.AgentExecutionContextEnvironment;
@@ -51,8 +53,8 @@ public class RuntimeCoreCfg {
         return new UnitLifecycleProcessor() {
 
             @Override
-            protected UnitAgentCreationController createUnitPopulationContext(AgentsTargetEnvironment unitActivePopulationController) {
-                return beanFactory.getBean(UnitAgentCreationController.class, instanceContainer.newChildContainer(), unitActivePopulationController);
+            protected UnitComponentCreationController createUnitComponentCreationController(AgentsTargetEnvironment unitActivePopulationController) {
+                return beanFactory.getBean(UnitComponentCreationController.class, instanceContainer.newChildContainer(), unitActivePopulationController);
             }
 
             @Override
@@ -66,8 +68,13 @@ public class RuntimeCoreCfg {
             }
 
             @Override
-            protected AgentContextAdapter createAgentContextAdapter(UnitLocationController locationController, AgentsCreator agentsCreator, AgentsController agentsController) {
-                return beanFactory.getBean(AgentContextAdapter.class, locationController, agentsCreator, agentsController);
+            protected AgentContextAdapter createAgentContextAdapter(UnitLocationController locationController, AgentsCreator agentsCreator, AgentsController agentsController, UnitPropertiesProvider localUnitPropertiesProvider) {
+                return beanFactory.getBean(AgentContextAdapter.class, locationController, agentsCreator, agentsController, localUnitPropertiesProvider);
+            }
+
+            @Override
+            protected UnitPropertiesController createUnitPropertiesController(Position position, UnitComponentCreationController componentCreationController) {
+                return beanFactory.getBean(UnitPropertiesController.class, position, componentCreationController);
             }
         };
 

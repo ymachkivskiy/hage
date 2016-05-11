@@ -11,7 +11,6 @@ import org.hage.platform.component.runtime.init.ContainerConfigurator;
 import org.hage.platform.component.runtime.init.ControlAgentDefinition;
 import org.hage.platform.simulation.runtime.agent.Agent;
 import org.hage.platform.simulation.runtime.control.ControlAgent;
-import org.hage.platform.simulation.runtime.stopcondition.StopCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
@@ -27,7 +26,7 @@ import static java.util.stream.Collectors.toSet;
 
 @SingletonComponent
 @Slf4j
-public class GlobalInstanceContainerController implements ContainerConfigurator, SimulationAgentDefinitionsSupplier, StopConditionSupplier {
+public class GlobalInstanceContainerController implements ContainerConfigurator, SimulationAgentDefinitionsSupplier {
 
     @Autowired
     private MutableInstanceContainer globalInstanceContainer;
@@ -42,7 +41,6 @@ public class GlobalInstanceContainerController implements ContainerConfigurator,
         registerGlobalComponents(configuration.getGlobalComponents());
         registerControlAgentType(configuration.getControlAgentDefinition());
         registerAgentsTypes(configuration.getAgentDefinitions());
-        registerStopCondition(configuration.getStopCondition());
     }
 
     @Override
@@ -60,16 +58,6 @@ public class GlobalInstanceContainerController implements ContainerConfigurator,
         return supportedAgentsTypes.get();
     }
 
-    @Override
-    public Optional<StopCondition> getStopCondition() {
-        return ofNullable(globalInstanceContainer.getInstance(StopCondition.class));
-    }
-
-    private void registerStopCondition(Class<? extends StopCondition> stopCondition) {
-        Optional<Class<? extends StopCondition>> oStopCond = ofNullable(stopCondition);
-        log.debug("Registering stop condition class {}", oStopCond);
-        oStopCond.ifPresent(globalInstanceContainer::addSingletonComponent);
-    }
 
     private void registerGlobalComponents(Collection<IComponentDefinition> globalComponents) {
         log.debug("Register global components {}", globalComponents);

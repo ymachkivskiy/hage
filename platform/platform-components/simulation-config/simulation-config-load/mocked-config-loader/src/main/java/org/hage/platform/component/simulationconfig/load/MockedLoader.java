@@ -6,6 +6,7 @@ import org.hage.example.StopConditionChecker;
 import org.hage.example.agent.HeavyAgent;
 import org.hage.example.agent.LightAgent;
 import org.hage.example.agent.SimpleControlAgent;
+import org.hage.example.state.ExamplePropertiesConfigurator;
 import org.hage.platform.component.container.definition.ComponentDefinition;
 import org.hage.platform.component.container.definition.ValueDefinition;
 import org.hage.platform.component.rate.model.ComputationRatingConfig;
@@ -77,7 +78,8 @@ class MockedLoader implements ConfigurationLoader {
                         new MeasurerRateConfig(MeasurerType.RAM_MEMORY, 2, 5)
                     )).build()
             )
-            .stopCondition(StopConditionChecker.class)
+            .stopConditionClazz(StopConditionChecker.class)
+            .propertiesConfiguratorClazz(ExamplePropertiesConfigurator.class)
             .build();
     }
 

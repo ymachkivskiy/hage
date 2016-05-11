@@ -19,18 +19,20 @@ public class ComputationConfigurationGenerator {
     @Autowired
     private PopulationDistributionMapCreator distributionMapCreator;
 
-    public Configuration generate(InputConfiguration inputConfiguration) {
+    public Configuration generate(InputConfiguration inConf) {
         return new Configuration(
             new Common(
                 new ContainerConfiguration(
-                    inputConfiguration.getSimulationDefinition().getAgentDefinitions(),
-                    inputConfiguration.getSimulationDefinition().getControlAgentDefinition(),
-                    inputConfiguration.getGlobalComponents(),
-                    inputConfiguration.getStopCondition()),
-                inputConfiguration.getComputationRatingConfig(),
-                inputConfiguration.getSimulationDefinition().getStructureDefinition()
+                    inConf.getSimulationDefinition().getAgentDefinitions(),
+                    inConf.getSimulationDefinition().getControlAgentDefinition(),
+                    inConf.getGlobalComponents()
+                ),
+                inConf.getComputationRatingConfig(),
+                inConf.getSimulationDefinition().getStructureDefinition(),
+                inConf.getStopConditionClazz(),
+                inConf.getPropertiesConfiguratorClazz()
             ),
-            new Specific(generateDistributionMap(inputConfiguration.getSimulationDefinition()))
+            new Specific(generateDistributionMap(inConf.getSimulationDefinition()))
         );
     }
 

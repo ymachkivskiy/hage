@@ -7,9 +7,10 @@ import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.component.runtime.activepopulation.AgentAdapter;
 import org.hage.platform.component.runtime.activepopulation.UnitActivePopulationController;
-import org.hage.platform.component.runtime.container.UnitAgentCreationController;
+import org.hage.platform.component.runtime.container.UnitComponentCreationController;
 import org.hage.platform.component.runtime.init.UnitPopulation;
 import org.hage.platform.component.runtime.location.UnitLocationController;
+import org.hage.platform.component.runtime.stateprops.UnitPropertiesController;
 import org.hage.platform.component.runtime.unit.context.AgentContextAdapter;
 import org.hage.platform.component.runtime.unit.context.AgentExecutionContextEnvironment;
 import org.hage.platform.component.structure.Position;
@@ -32,13 +33,15 @@ class AgentsUnit implements AgentExecutionContextEnvironment, Unit {
     private final Position position;
 
     @Setter(PACKAGE)
-    private UnitAgentCreationController unitAgentCreationController;
+    private UnitComponentCreationController unitComponentCreationController;
     @Setter(PACKAGE)
     private UnitLocationController unitLocationController;
     @Setter(PACKAGE)
     private UnitActivePopulationController unitActivePopulationController;
     @Setter(PACKAGE)
     private AgentContextAdapter agentContextAdapter;
+    @Setter(PACKAGE)
+    private UnitPropertiesController unitPropertiesController;
 
     @Override
     public String getUniqueIdentifier() {
@@ -82,14 +85,20 @@ class AgentsUnit implements AgentExecutionContextEnvironment, Unit {
 
     @Override
     public void loadPopulation(UnitPopulation population) {
-        unitAgentCreationController.loadPopulation(population);
+        unitComponentCreationController.loadPopulation(population);
+    }
+
+    @Override
+    public void performStateChange() {
+        unitPropertiesController.performStateChange();
     }
 
     boolean isInitialized() {
         return allNotNull(
             unitActivePopulationController,
             unitLocationController,
-            unitAgentCreationController,
-            agentContextAdapter);
+            unitComponentCreationController,
+            agentContextAdapter,
+            unitPropertiesController);
     }
 }

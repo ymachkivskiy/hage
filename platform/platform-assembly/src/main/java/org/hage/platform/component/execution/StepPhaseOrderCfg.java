@@ -38,11 +38,14 @@ class StepPhaseOrderCfg {
     private ExternalMigrationProcessPhase externalMigrationProcess;
     @Autowired
     private StopConditionCheckPhase stopConditionCheck;
+    @Autowired
+    private UnitPropertiesUpdatePhase unitPropertiesUpdate;
 
     @Bean
     public StepPhaseFactory stepPhaseFactory() {
         return staticFactoryBuilder()
             .addNextIndependentPhases(
+                unitPropertiesUpdate,
                 internalMigrationsProcess,
                 clusterMembersViewPrepare)
             .addNextIndependentPhases(synchForSubPhase("initial"))

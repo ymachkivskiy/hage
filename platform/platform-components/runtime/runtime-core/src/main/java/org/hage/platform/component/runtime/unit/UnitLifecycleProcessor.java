@@ -5,8 +5,10 @@ import org.hage.platform.component.runtime.activepopulation.AgentsController;
 import org.hage.platform.component.runtime.activepopulation.AgentsTargetEnvironment;
 import org.hage.platform.component.runtime.activepopulation.UnitActivePopulationController;
 import org.hage.platform.component.runtime.container.AgentsCreator;
-import org.hage.platform.component.runtime.container.UnitAgentCreationController;
+import org.hage.platform.component.runtime.container.UnitComponentCreationController;
 import org.hage.platform.component.runtime.location.UnitLocationController;
+import org.hage.platform.component.runtime.stateprops.UnitPropertiesController;
+import org.hage.platform.component.runtime.stateprops.UnitPropertiesProvider;
 import org.hage.platform.component.runtime.unit.context.AgentContextAdapter;
 import org.hage.platform.component.runtime.unit.context.AgentExecutionContextEnvironment;
 import org.hage.platform.component.structure.Position;
@@ -46,14 +48,16 @@ public abstract class UnitLifecycleProcessor {
     private void initUnitComponents(AgentsUnit unit) {
         UnitLocationController locationCtrl = createUnitLocationContext(unit.getPosition());
         UnitActivePopulationController unitActivePopulationCtrl = createUnitPopulationController(unit);
-        UnitAgentCreationController unitAgentCreationCtrl = createUnitPopulationContext(unitActivePopulationCtrl);
+        UnitComponentCreationController unitComponentCreationCtrl = createUnitComponentCreationController(unitActivePopulationCtrl);
+        UnitPropertiesController unitPropertiesController = createUnitPropertiesController(unit.getPosition(), unitComponentCreationCtrl);
 
-        unitActivePopulationCtrl.setLocalDependenciesInjector(unitAgentCreationCtrl);
+        unitActivePopulationCtrl.setLocalDependenciesInjector(unitComponentCreationCtrl);
 
+        unit.setUnitPropertiesController(unitPropertiesController);
         unit.setUnitLocationController(locationCtrl);
-        unit.setUnitAgentCreationController(unitAgentCreationCtrl);
+        unit.setUnitComponentCreationController(unitComponentCreationCtrl);
         unit.setUnitActivePopulationController(unitActivePopulationCtrl);
-        unit.setAgentContextAdapter(createAgentContextAdapter(locationCtrl, unitAgentCreationCtrl, unitActivePopulationCtrl));
+        unit.setAgentContextAdapter(createAgentContextAdapter(locationCtrl, unitComponentCreationCtrl, unitActivePopulationCtrl, unitPropertiesController));
     }
 
     private void notifyUnitCreated(AgentsUnit unit) {
@@ -61,13 +65,15 @@ public abstract class UnitLifecycleProcessor {
         localPositionsController.activateLocally(unit.getPosition());
     }
 
-    protected abstract AgentContextAdapter createAgentContextAdapter(UnitLocationController locationController, AgentsCreator agentsCreator, AgentsController agentsController);
+    protected abstract AgentContextAdapter createAgentContextAdapter(UnitLocationController locationController, AgentsCreator agentsCreator, AgentsController agentsController, UnitPropertiesProvider localUnitPropertiesProvider);
 
-    protected abstract UnitAgentCreationController createUnitPopulationContext(AgentsTargetEnvironment unitActivePopulationCtrl);
+    protected abstract UnitComponentCreationController createUnitComponentCreationController(AgentsTargetEnvironment unitActivePopulationCtrl);
 
     protected abstract UnitLocationController createUnitLocationContext(Position position);
 
     protected abstract UnitActivePopulationController createUnitPopulationController(AgentExecutionContextEnvironment agentEnvironment);
+
+    protected abstract UnitPropertiesController createUnitPropertiesController(Position position, UnitComponentCreationController componentCreationController);
 
 
 }
