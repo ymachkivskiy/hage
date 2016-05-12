@@ -32,7 +32,10 @@ public class UnitPropertiesSharingEndpoint extends BaseRemoteEndpoint<UnitProper
     @Override
     protected void consumeMessage(MessageEnvelope<UnitPropertiesMessage> envelope) {
         log.debug("Got shared properties from {}", envelope.getOrigin());
-        unitPropertiesUpdater.updatePropertiesUsing(envelope.getBody().getPositionUnitProperties());
+        if (!envelope.isLocalMessage()) {
+            log.debug("Update properties from other node");
+            unitPropertiesUpdater.updatePropertiesUsing(envelope.getBody().getPositionUnitProperties());
+        }
     }
 
 }

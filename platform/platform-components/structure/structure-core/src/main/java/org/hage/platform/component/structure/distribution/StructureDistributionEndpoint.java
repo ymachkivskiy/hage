@@ -23,19 +23,18 @@ public class StructureDistributionEndpoint extends BaseRemoteEndpoint<StructureM
         super(new ConnectionDescriptor(CHANEL_NAME), StructureMessage.class);
     }
 
-    @Override
-    protected void consumeMessage(MessageEnvelope<StructureMessage> envelope) {
-        StructureMessage msg = envelope.getBody();
-
-        if (!envelope.isLocalMessage()) {
-            registry.updatePositionsForNode(envelope.getOrigin(), msg.getActivatedPositions(), msg.getDeactivatedPositions());
-        }
-    }
-
     public void updatePositions(Collection<Position> activated, Collection<Position> deactivated) {
         log.debug("Notifying about activation of positions {}", activated);
         log.debug("Notifying about deactivation of positions {}", deactivated);
         sendToAll(new StructureMessage(activated, deactivated));
+    }
+
+    @Override
+    protected void consumeMessage(MessageEnvelope<StructureMessage> envelope) {
+        if (!envelope.isLocalMessage()) {
+            StructureMessage msg = envelope.getBody();
+            registry.updatePositionsForNode(envelope.getOrigin(), msg.getActivatedPositions(), msg.getDeactivatedPositions());
+        }
     }
 
 }
