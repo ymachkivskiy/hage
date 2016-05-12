@@ -58,7 +58,7 @@ public class LightAgent implements Agent {
 
             ReadWriteUnitProperties readWriteUnitProperties = context.queryLocalProperties();
 
-            if (!readWriteUnitProperties.tryUpdateProperty(
+            if (!readWriteUnitProperties.tryUpdate(
                 ALGAE,
                 currAlgae -> currAlgae >= age,
                 currAlgae -> currAlgae - age)) {

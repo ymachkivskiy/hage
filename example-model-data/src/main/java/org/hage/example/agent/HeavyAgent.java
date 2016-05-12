@@ -47,7 +47,7 @@ public class HeavyAgent implements Agent {
 
             log.info("\nLocal properties {}", localProperties.getValues());
 
-            if (localProperties.checkProperty(TEMPERATURE, t -> t >= 40)) {
+            if (localProperties.check(TEMPERATURE, t -> t >= 40)) {
 
                 log.info("\nIt is too hot for me, I will try to migrate to other place");
 
@@ -58,7 +58,7 @@ public class HeavyAgent implements Agent {
 
                 if (randomNeighbor
                     .map(ctxt::queryPropertiesOf)
-                    .flatMap(belowProps -> belowProps.getProperty(TEMPERATURE))
+                    .flatMap(belowProps -> belowProps.get(TEMPERATURE))
                     .map(t -> t < 40)
                     .orElse(false)) {
 
@@ -70,7 +70,7 @@ public class HeavyAgent implements Agent {
                     log.info("\nI will try to find unit with matching conditions");
 
                     List<UnitAddress> goodUnits = ctxt.queryNeighborsWithMatchingProperties(
-                        props -> props.checkProperty(TEMPERATURE, t -> t < 38) && props.checkProperty(ALGAE, a -> a >= 50)
+                        props -> props.check(TEMPERATURE, t -> t < 38) && props.check(ALGAE, a -> a >= 50)
                     );
 
                     goodUnits.stream().findFirst().ifPresent(

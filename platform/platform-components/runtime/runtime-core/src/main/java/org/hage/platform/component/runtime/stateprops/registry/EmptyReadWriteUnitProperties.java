@@ -35,27 +35,27 @@ class EmptyReadWriteUnitProperties implements UnitProperties {
     }
 
     @Override
-    public <T extends Serializable> Optional<T> getProperty(PropertyDescriptor<T> descriptor) {
+    public <T extends Serializable> Optional<T> get(PropertyDescriptor<T> descriptor) {
         return empty();
     }
 
     @Override
-    public <T extends Serializable> void setProperty(PropertyDescriptor<T> descriptor, T propertyValue) {
+    public <T extends Serializable> void set(PropertyDescriptor<T> descriptor, T value) {
         /* no-op */
     }
 
     @Override
-    public <T extends Serializable> boolean checkProperty(PropertyDescriptor<T> descriptor, Predicate<T> checkPredicate) {
+    public <T extends Serializable> boolean check(PropertyDescriptor<T> descriptor, Predicate<T> checkPredicate) {
         return false;
     }
 
     @Override
-    public <T extends Serializable> Optional<T> updateAndGetProperty(PropertyDescriptor<T> descriptor, UnaryOperator<T> updateFunction) {
+    public <T extends Serializable> Optional<T> updateAndGet(PropertyDescriptor<T> descriptor, UnaryOperator<T> updateFunction) {
         return empty();
     }
 
     @Override
-    public <T extends Serializable> boolean tryUpdateProperty(PropertyDescriptor<T> descriptor, Predicate<T> updateIsLegalPredicate, UnaryOperator<T> updateFunction) {
+    public <T extends Serializable> boolean tryUpdate(PropertyDescriptor<T> descriptor, Predicate<T> updateIsLegalPredicate, UnaryOperator<T> updateFunction) {
         return false;
     }
 

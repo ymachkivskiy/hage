@@ -22,14 +22,14 @@ public class ExamplePropertiesConfigurator implements UnitPropertiesStateCompone
         } else {
 
             if (stepNumber % 4 == 0) {
-                readWriteUnitProperties.updateAndGetProperty(STATE, cs -> cs.withIncreasedAmount(500));
+                readWriteUnitProperties.updateAndGet(STATE, cs -> cs.withIncreasedAmount(500));
             }
 
-            readWriteUnitProperties.updateAndGetProperty(
+            readWriteUnitProperties.updateAndGet(
                 TEMPERATURE,
                 oldTemp -> oldTemp + unitPosition.vertical * (1 + stepNumber));
 
-            readWriteUnitProperties.tryUpdateProperty(
+            readWriteUnitProperties.tryUpdate(
                 ALGAE,
                 currAlgae -> currAlgae < 100,
                 currAlgae -> currAlgae + 20);
@@ -46,9 +46,9 @@ public class ExamplePropertiesConfigurator implements UnitPropertiesStateCompone
         CustomState state = new CustomState();
         state.setAlgaeAmount(1000);
 
-        readWriteUnitProperties.setProperty(STATE, state);
-        readWriteUnitProperties.setProperty(TEMPERATURE, 36.6);
-        readWriteUnitProperties.setProperty(ALGAE, 200);
+        readWriteUnitProperties.set(STATE, state);
+        readWriteUnitProperties.set(TEMPERATURE, 36.6);
+        readWriteUnitProperties.set(ALGAE, 200);
     }
 
 }

@@ -13,7 +13,7 @@ public interface ReadUnitProperties extends Serializable {
 
     Collection<PropertyValue> getValues();
 
-    <T extends Serializable> Optional<T> getProperty(PropertyDescriptor<T> descriptor);
+    <T extends Serializable> Optional<T> get(PropertyDescriptor<T> descriptor);
 
-    <T extends Serializable> boolean checkProperty(PropertyDescriptor<T> descriptor, Predicate<T> checkPredicate);
+    <T extends Serializable> boolean check(PropertyDescriptor<T> descriptor, Predicate<T> checkPredicate);
 }

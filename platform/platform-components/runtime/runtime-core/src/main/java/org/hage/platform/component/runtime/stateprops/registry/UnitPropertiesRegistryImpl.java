@@ -55,22 +55,16 @@ class UnitPropertiesRegistryImpl implements UnitPropertiesRegistry, StepPostProc
     }
 
     private UnitProperties withCheckedPosition(Position position, Function<Position, UnitProperties> creationFunction) {
-        if (position == null) {
-            return emptyProperties();
-        } else {
+        if (position != null && structure.belongsToStructure(position)) {
             return creationFunction.apply(position);
+        } else {
+            return emptyProperties();
         }
     }
 
     private UnitProperties createNewProperties(Position position) {
         log.debug("Create new properties for position {}", position);
-        if (structure.belongsToStructure(position)) {
-            return new BaseUnitProperties(unitRegisteredPropertiesProvider.getRegisteredProperties());
-        } else {
-            log.warn("Query for unit properties for position which does not belong to computation structure {}", position);
-            return emptyProperties();
-        }
+        return new BaseUnitProperties(unitRegisteredPropertiesProvider.getRegisteredProperties());
     }
-
 
 }
