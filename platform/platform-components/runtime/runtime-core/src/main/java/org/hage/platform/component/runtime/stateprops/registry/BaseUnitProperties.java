@@ -37,7 +37,7 @@ class BaseUnitProperties implements UnitProperties {
             .collect(
                 toMap(
                     Entry::getKey,
-                    e -> e.getValue().readCopy(e.getKey())
+                    e -> e.getValue().createCopyUsing(e.getKey())
                 )
             );
     }
@@ -57,7 +57,7 @@ class BaseUnitProperties implements UnitProperties {
 
     @Override
     public <T extends Serializable> Optional<T> get(PropertyDescriptor<T> descriptor) {
-        return propertyValues.get(checkedDescriptor(descriptor)).castUsing(descriptor);
+        return propertyValues.get(checkedDescriptor(descriptor)).toOptionalUsing(descriptor);
     }
 
     @Override
@@ -79,7 +79,7 @@ class BaseUnitProperties implements UnitProperties {
             .compute(
                 checkedDescriptor(descriptor),
                 (d, oldVal) -> oldVal.mapped(descriptor, updateFunction))
-            .castUsing(descriptor);
+            .toOptionalUsing(descriptor);
     }
 
     @Override
@@ -101,7 +101,7 @@ class BaseUnitProperties implements UnitProperties {
 
     private <T extends Serializable> PropertyDescriptor<T> checkedDescriptor(PropertyDescriptor<T> descriptor) {
         if (!propertyValues.containsKey(descriptor)) {
-            throw new IllegalArgumentException("Illegal property \"" + descriptor.getName() + "\" with value of type: " + descriptor.getType() + ". Allowed properties: " + getDescriptors());
+            throw new IllegalArgumentException("Illegal property descriptor" + descriptor + ". Allowed property descriptors: " + getDescriptors());
         }
 
         return descriptor;

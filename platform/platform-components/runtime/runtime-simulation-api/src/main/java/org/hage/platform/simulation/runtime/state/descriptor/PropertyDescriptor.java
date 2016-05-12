@@ -7,10 +7,10 @@ import java.io.Serializable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-@Getter
 @EqualsAndHashCode
 public abstract class PropertyDescriptor<T extends Serializable> implements Serializable {
 
+    @Getter
     private final String name;
     private final Class<T> type;
 
@@ -26,6 +26,10 @@ public abstract class PropertyDescriptor<T extends Serializable> implements Seri
 
     public abstract T getReadViewFor(T original);
 
+    public T cast(Object object) {
+        return type.cast(object);
+    }
+
     public static <T extends Serializable> PropertyDescriptor<T> primitiveProperty(String name, Class<T> type) {
         return new ImmutablePropertyDescriptor<>(name, type);
     }
@@ -34,7 +38,7 @@ public abstract class PropertyDescriptor<T extends Serializable> implements Seri
         return new MutablePropertyDescriptor<>(name, type);
     }
 
-    private static class ImmutablePropertyDescriptor<T extends Serializable> extends PropertyDescriptor<T>  implements Serializable{
+    private static class ImmutablePropertyDescriptor<T extends Serializable> extends PropertyDescriptor<T> implements Serializable {
 
         public ImmutablePropertyDescriptor(String name, Class<T> type) {
             super(name, type);

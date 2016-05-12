@@ -40,6 +40,8 @@ class StepPhaseOrderCfg {
     private StopConditionCheckPhase stopConditionCheck;
     @Autowired
     private UnitPropertiesUpdatePhase unitPropertiesUpdate;
+    @Autowired
+    private UpdatedUnitPropertiesSharePhase updatedUnitPropertiesShare;
 
     @Bean
     public StepPhaseFactory stepPhaseFactory() {
@@ -48,13 +50,15 @@ class StepPhaseOrderCfg {
                 unitPropertiesUpdate,
                 internalMigrationsProcess,
                 clusterMembersViewPrepare)
+            .addNextIndependentPhases(
+                updatedUnitPropertiesShare,
+                structureChangeDistribution)
             .addNextIndependentPhases(synchForSubPhase("initial"))
             .addNextIndependentPhases(agentsStep)
             .addNextIndependentPhases(controlAgentStep)
             .addNextIndependentPhases(stopConditionCheck)
             .addNextIndependentPhases(
                 stepPostProcess,
-                structureChangeDistribution,
                 externalMigrationProcess)
             .build();
     }

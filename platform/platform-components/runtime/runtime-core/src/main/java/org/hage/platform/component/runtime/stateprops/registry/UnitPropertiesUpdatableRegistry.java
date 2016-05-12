@@ -10,15 +10,19 @@ import org.hage.platform.simulation.runtime.state.property.ReadUnitProperties;
 import org.hage.platform.simulation.runtime.state.property.ReadWriteUnitProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 import static org.hage.platform.component.runtime.stateprops.registry.EmptyReadWriteUnitProperties.emptyProperties;
 
 @SingletonComponent
 @Slf4j
-class UnitPropertiesRegistryImpl implements UnitPropertiesRegistry, StepPostProcessor {
+class UnitPropertiesUpdatableRegistry implements UnitPropertiesRegistry, StepPostProcessor, UnitPropertiesUpdater {
 
     private final Map<Position, UnitProperties> propertiesMap = new ConcurrentHashMap<>();
     private final Map<Position, ReadUnitProperties> readOnlyPropertiesCopies = new ConcurrentHashMap<>();
@@ -44,6 +48,30 @@ class UnitPropertiesRegistryImpl implements UnitPropertiesRegistry, StepPostProc
     public void afterStepPerformed() {
         log.debug("Clear all property copies");
         readOnlyPropertiesCopies.clear();
+    }
+
+    @Override
+    public List<PositionUnitProperties> getUnitProperties() {
+        log.debug("Get all unit properties");
+
+        return propertiesMap.entrySet().stream()
+            .map(e -> new PositionUnitProperties(e.getKey(), e.getValue()))
+            .collect(toList());
+    }
+
+    @Override
+    public void updatePropertiesUsing(Collection<PositionUnitProperties> newProperties) {
+        log.debug("Update unit properties with {}", newProperties);
+
+        Map<Position, UnitProperties> updatedProperties = newProperties.stream()
+            .collect(
+                toMap(
+                    PositionUnitProperties::getPosition,
+                    PositionUnitProperties::getProperties
+                )
+            );
+
+        propertiesMap.putAll(updatedProperties);
     }
 
     private UnitProperties getOrCreateUnitProperties(Position position) {

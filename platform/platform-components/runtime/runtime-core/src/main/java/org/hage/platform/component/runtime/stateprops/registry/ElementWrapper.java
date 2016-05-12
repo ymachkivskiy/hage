@@ -21,28 +21,19 @@ class ElementWrapper implements Serializable {
         this.element = element;
     }
 
-    public <T extends Serializable> Optional<T> castUsing(PropertyDescriptor<T> descriptor) {
-        if (descriptor.getType().isInstance(element)) {
-            return of(descriptor.getType().cast(element));
+    public <T extends Serializable> Optional<T> toOptionalUsing(PropertyDescriptor<T> descriptor) {
+        if (element != null) {
+            return of(descriptor.cast(element));
         } else {
             return empty();
         }
     }
 
-    public static <T extends Serializable> ElementWrapper fromOptional(Optional<T> optional) {
-        if (optional.isPresent()) {
-            return ofSerializable(optional.get());
-        } else {
-            return emptyWrapper();
-        }
-    }
-
-    public <T extends Serializable> ElementWrapper readCopy(PropertyDescriptor<T> descriptor) {
+    public <T extends Serializable> ElementWrapper createCopyUsing(PropertyDescriptor<T> descriptor) {
         if (element == null) {
             return this;
         } else {
-            T readViewFor = descriptor.getReadViewFor(descriptor.getType().cast(element));
-            return ofSerializable(readViewFor);
+            return ofSerializable(descriptor.getReadViewFor(descriptor.cast(element)));
         }
     }
 
@@ -50,11 +41,9 @@ class ElementWrapper implements Serializable {
         if (element == null) {
             return this;
         }else{
-            return ofSerializable(unaryOperator.apply(descriptor.getType().cast(element)));
+            return ofSerializable(unaryOperator.apply(descriptor.cast(element)));
         }
     }
-
-
 
     public static ElementWrapper ofSerializable(Serializable element) {
         return new ElementWrapper(checkNotNull(element));
