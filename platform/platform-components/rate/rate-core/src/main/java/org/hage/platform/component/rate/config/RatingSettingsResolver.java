@@ -1,10 +1,10 @@
 package org.hage.platform.component.rate.config;
 
 import org.hage.platform.annotation.di.SingletonComponent;
+import org.hage.platform.component.rate.cluster.PerformanceRate;
 import org.hage.platform.component.rate.config.data.GlobalRateSettings;
 import org.hage.platform.component.rate.config.data.MeasurerSettings;
 import org.hage.platform.component.rate.config.data.RatingSettings;
-import org.hage.platform.component.rate.measure.PerformanceRate;
 import org.hage.platform.component.rate.model.ComputationRatingConfig;
 import org.hage.platform.component.rate.model.MeasurerRateConfig;
 import org.hage.platform.component.rate.model.MeasurerType;

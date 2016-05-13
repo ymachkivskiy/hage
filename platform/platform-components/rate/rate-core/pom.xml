@@ -15,7 +15,7 @@
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
-            <artifactId>rate-internal-api</artifactId>
+            <artifactId>rate-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 

@@ -15,7 +15,7 @@
     <modules>
         <module>rate-data-model</module>
         <module>rate-core</module>
-        <module>rate-internal-api</module>
+        <module>rate-api</module>
     </modules>
 
 

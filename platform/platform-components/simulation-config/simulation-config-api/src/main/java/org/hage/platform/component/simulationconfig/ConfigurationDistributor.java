@@ -1,5 +1,7 @@
 package org.hage.platform.component.simulationconfig;
 
+import org.hage.platform.component.rate.model.ComputationRatingConfig;
+
 public interface ConfigurationDistributor {
-    void distribute(Configuration configuration);
+    void distributeUsingRatingConfiguration(Configuration configuration, ComputationRatingConfig ratingConfig);
 }

@@ -11,7 +11,6 @@ import org.hage.platform.component.container.definition.ComponentDefinition;
 import org.hage.platform.component.container.definition.ValueDefinition;
 import org.hage.platform.component.rate.model.ComputationRatingConfig;
 import org.hage.platform.component.rate.model.MeasurerRateConfig;
-import org.hage.platform.component.rate.model.MeasurerType;
 import org.hage.platform.component.runtime.init.AgentDefinition;
 import org.hage.platform.component.runtime.init.ControlAgentDefinition;
 import org.hage.platform.component.simulationconfig.load.definition.ChunkPopulationQualifier;
@@ -26,7 +25,9 @@ import java.util.EnumSet;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
-import static org.hage.platform.component.simulationconfig.load.definition.agent.AgentCountData.fixed;
+import static org.hage.platform.component.rate.model.MeasurerType.CONCURRENCY;
+import static org.hage.platform.component.rate.model.MeasurerType.RAM_MEMORY;
+import static org.hage.platform.component.simulationconfig.load.definition.agent.AgentCountData.atMost;
 import static org.hage.platform.component.simulationconfig.load.definition.agent.PositionsSelectionData.allPositions;
 import static org.hage.platform.component.structure.Position.ZERO;
 import static org.hage.platform.component.structure.grid.GridBoundaryConditions.CLOSED;
@@ -41,18 +42,12 @@ class MockedLoader implements ConfigurationLoader {
         singletonList(
             new ChunkPopulationQualifier(
                 new Chunk(ZERO, Dimensions.definedBy(2, 2, 3)),
-                asList(
+                singletonList(
                     new ChunkAgentDistribution(
                         new AgentDefinition(LightAgent.class),
-                        fixed(2),
+                        atMost(2),
                         allPositions()
                     )
-//                    ,
-//                    new ChunkAgentDistribution(
-//                        new AgentDefinition(HeavyAgent.class),
-//                        atMost(2),
-//                        randomPositions(2)
-//                    )
                 )
             )
         )
@@ -73,9 +68,9 @@ class MockedLoader implements ConfigurationLoader {
             .simulationDefinition(SIMULATION_DEFINITION)
             .computationRatingConfig(
                 ComputationRatingConfig.builder()
-                    .enabledRateMeasureTypes(EnumSet.of(MeasurerType.RAM_MEMORY))
+                    .enabledRateMeasureTypes(EnumSet.of(RAM_MEMORY, CONCURRENCY))
                     .measurerRateConfigs(singletonList(
-                        new MeasurerRateConfig(MeasurerType.RAM_MEMORY, 2, 5)
+                        new MeasurerRateConfig(RAM_MEMORY, 5, 128)
                     )).build()
             )
             .stopConditionClazz(StopConditionChecker.class)

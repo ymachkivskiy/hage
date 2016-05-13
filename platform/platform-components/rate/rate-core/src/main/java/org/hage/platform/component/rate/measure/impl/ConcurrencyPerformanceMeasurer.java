@@ -5,11 +5,10 @@ import org.hage.platform.component.rate.measure.PerformanceMeasurer;
 import org.hage.platform.component.rate.model.MeasurerType;
 
 @Slf4j
-public class ConcurrencyPerformanceMeasurer implements PerformanceMeasurer {
+public class ConcurrencyPerformanceMeasurer extends PerformanceMeasurer {
 
-    @Override
-    public MeasurerType getType() {
-        return MeasurerType.CONCURRENCY;
+    public ConcurrencyPerformanceMeasurer() {
+        super(MeasurerType.CONCURRENCY);
     }
 
     @Override

@@ -27,7 +27,6 @@ public class ComputationConfigurationGenerator {
                     inConf.getSimulationDefinition().getControlAgentDefinition(),
                     inConf.getGlobalComponents()
                 ),
-                inConf.getComputationRatingConfig(),
                 inConf.getSimulationDefinition().getStructureDefinition(),
                 inConf.getStopConditionClazz(),
                 inConf.getPropertiesConfiguratorClazz()

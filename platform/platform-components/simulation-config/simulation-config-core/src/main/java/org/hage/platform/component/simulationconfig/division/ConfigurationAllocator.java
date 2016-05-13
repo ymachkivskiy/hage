@@ -2,10 +2,11 @@ package org.hage.platform.component.simulationconfig.division;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.component.simulationconfig.ConfigurationDivisor;
-import org.hage.platform.component.rate.remote.ActiveClusterPerformance;
-import org.hage.platform.component.rate.remote.NodeAbsolutePerformance;
+import org.hage.platform.annotation.di.SingletonComponent;
+import org.hage.platform.component.rate.cluster.ActiveClusterPerformance;
+import org.hage.platform.component.rate.cluster.NodeAbsolutePerformance;
 import org.hage.platform.component.simulationconfig.Configuration;
+import org.hage.platform.component.simulationconfig.ConfigurationDivisor;
 import org.hage.platform.component.simulationconfig.endpoint.AllocationPart;
 import org.hage.util.proportion.Division;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 import static org.hage.util.proportion.Proportions.forCountable;
 
+@SingletonComponent
 @Slf4j
 public class ConfigurationAllocator {
 

@@ -1,4 +1,4 @@
-package org.hage.platform.component.rate.normalize;
+package org.hage.platform.component.rate.measure.normalize;
 
 
 import org.hage.platform.component.rate.config.data.NormalizationSettings;

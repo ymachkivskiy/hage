@@ -4,11 +4,11 @@ package org.hage.platform.component.simulationconfig.load;
 import com.google.common.eventbus.Subscribe;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.SingletonComponent;
-import org.hage.platform.component.simulationconfig.ConfigurationDistributor;
 import org.hage.platform.component.simulationconfig.Configuration;
+import org.hage.platform.component.simulationconfig.ConfigurationDistributor;
 import org.hage.platform.component.simulationconfig.event.ConfigurationLoadRequestEvent;
-import org.hage.platform.component.simulationconfig.load.generate.ComputationConfigurationGenerator;
 import org.hage.platform.component.simulationconfig.load.definition.InputConfiguration;
+import org.hage.platform.component.simulationconfig.load.generate.ComputationConfigurationGenerator;
 import org.hage.platform.util.bus.EventSubscriber;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -34,11 +34,7 @@ class ConfigurationLoadingAdapter implements EventSubscriber {
     public void onConfigurationLoadRequest(ConfigurationLoadRequestEvent event) {
         log.debug("Configuration load request event: {}", event);
 
-        loadConfiguration().ifPresent(this::notifyConfigurationLoaded);
-    }
-
-    private Optional<Configuration> loadConfiguration() {
-        return loadExternalConfiguration().map(configurationGenerator::generate);
+        loadExternalConfiguration().ifPresent(this::notifyConfigurationLoaded);
     }
 
     private Optional<InputConfiguration> loadExternalConfiguration() {
@@ -51,9 +47,12 @@ class ConfigurationLoadingAdapter implements EventSubscriber {
         }
     }
 
-    private void notifyConfigurationLoaded(Configuration configuration) {
-        log.info("Notify configuration has been loaded {}", configuration);
-        configurationDistributor.distribute(configuration);
+    private void notifyConfigurationLoaded(InputConfiguration inputConfiguration) {
+        log.debug("Got input configuration {}", inputConfiguration);
+        Configuration configuration = configurationGenerator.generate(inputConfiguration);
+
+        log.debug("Notify configuration has been loaded {}", configuration);
+        configurationDistributor.distributeUsingRatingConfiguration(configuration, inputConfiguration.getComputationRatingConfig());
     }
 
 }

@@ -1,11 +1,11 @@
-package org.hage.platform.component.rate.normalize.scaled;
+package org.hage.platform.component.rate.measure.normalize.scaled;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hage.platform.component.rate.cluster.PerformanceRate;
 import org.hage.platform.component.rate.config.data.GlobalRateSettings;
 import org.hage.platform.component.rate.config.data.MeasurerSettings;
-import org.hage.platform.component.rate.measure.PerformanceRate;
-import org.hage.platform.component.rate.normalize.RateNormalizer;
+import org.hage.platform.component.rate.measure.normalize.RateNormalizer;
 
 import java.math.BigDecimal;
 

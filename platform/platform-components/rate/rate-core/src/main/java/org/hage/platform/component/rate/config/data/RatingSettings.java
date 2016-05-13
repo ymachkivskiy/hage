@@ -2,8 +2,8 @@ package org.hage.platform.component.rate.config.data;
 
 import lombok.Builder;
 import lombok.Getter;
+import org.hage.platform.component.rate.cluster.PerformanceRate;
 import org.hage.platform.component.rate.measure.PerformanceMeasurer;
-import org.hage.platform.component.rate.measure.PerformanceRate;
 import org.hage.platform.component.rate.model.MeasurerType;
 
 import java.util.Map;

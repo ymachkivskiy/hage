@@ -1,8 +1,8 @@
-package org.hage.platform.component.rate.normalize.scaled;
+package org.hage.platform.component.rate.measure.normalize.scaled;
 
 import org.hage.platform.component.rate.config.data.NormalizationSettings;
-import org.hage.platform.component.rate.normalize.RateNormalizationProvider;
-import org.hage.platform.component.rate.normalize.RateNormalizer;
+import org.hage.platform.component.rate.measure.normalize.RateNormalizationProvider;
+import org.hage.platform.component.rate.measure.normalize.RateNormalizer;
 
 public class ScaledNormalizerProvider implements RateNormalizationProvider {
     @Override

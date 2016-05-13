@@ -2,8 +2,9 @@ package org.hage.platform.component.simulationconfig;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.component.cluster.NodeAddress;
-import org.hage.platform.component.rate.remote.ActiveClusterPerformance;
-import org.hage.platform.component.rate.remote.ClusterPerformanceManager;
+import org.hage.platform.component.rate.cluster.ActiveClusterPerformance;
+import org.hage.platform.component.rate.cluster.ClusterPerformanceManager;
+import org.hage.platform.component.rate.model.ComputationRatingConfig;
 import org.hage.platform.component.simulationconfig.division.Allocation;
 import org.hage.platform.component.simulationconfig.division.ConfigurationAllocator;
 import org.hage.platform.component.simulationconfig.endpoint.ConfigurationEndpoint;
@@ -12,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Set;
 
 @Slf4j
-public class ClusterPerformanceBasedConfigurationDistributor implements ConfigurationDistributor {
+public class PerformanceConfigurationDistributor implements ConfigurationDistributor {
 
     @Autowired
     private ConfigurationEndpoint endpoint;
@@ -21,9 +22,8 @@ public class ClusterPerformanceBasedConfigurationDistributor implements Configur
     @Autowired
     private ConfigurationAllocator allocator;
 
-
     @Override
-    public void distribute(Configuration configuration) {
+    public void distributeUsingRatingConfiguration(Configuration configuration, ComputationRatingConfig ratingConfig) {
 
         log.debug("Configuration has been loaded {}. Looking for nodes which require computation configuration", configuration);
 
@@ -31,7 +31,7 @@ public class ClusterPerformanceBasedConfigurationDistributor implements Configur
 
         log.debug("Nodes which require configuration '{}'", addresses);
 
-        ActiveClusterPerformance performance = performanceManager.getNodePerformances(addresses);
+        ActiveClusterPerformance performance = performanceManager.getNodePerformances(addresses, ratingConfig);
 
         log.debug("Active cluster performance '{}'", performance);
 
