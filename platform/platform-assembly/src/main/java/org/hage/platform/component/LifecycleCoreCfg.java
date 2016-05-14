@@ -4,7 +4,6 @@ import org.hage.platform.component.lifecycle.DefaultLifecycleInitializer;
 import org.hage.platform.component.lifecycle.LifecycleEngine;
 import org.hage.platform.component.lifecycle.LifecycleInitializer;
 import org.hage.platform.component.lifecycle.remote.ClusterConsistencyGuard;
-import org.hage.platform.component.lifecycle.remote.LifecycleManagerEndpoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 public class LifecycleCoreCfg {
 
     @Bean
-    public LifecycleEngine getLifecycleManager() {
+    public LifecycleEngine getLifecycleEngine() {
         LifecycleEngine lifecycleEngine = new LifecycleEngine();
 
         lifecycleEngine.setLifecycleInitializer(getLifecycleInitializer());
@@ -25,10 +24,6 @@ public class LifecycleCoreCfg {
         return new DefaultLifecycleInitializer();
     }
 
-    @Bean
-    public LifecycleManagerEndpoint lifecycleManagerRemoteChanel() {
-        return new LifecycleManagerEndpoint();
-    }
 
     @Bean
     public ClusterConsistencyGuard clusterConsistencyGuard() {

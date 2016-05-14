@@ -14,7 +14,7 @@ import static org.hage.platform.component.runtime.migration.remote.MigrationMess
 
 @SingletonComponent
 @Slf4j
-public class MigrationEndpoint extends BaseRemoteEndpoint<MigrationMessage> {
+public class MigrationEndpoint extends BaseRemoteEndpoint<MigrationMessage> implements ExternalMigrationSender {
 
     private static final String CHANEL_NAME = "migration-remote-chanel";
 
@@ -25,6 +25,7 @@ public class MigrationEndpoint extends BaseRemoteEndpoint<MigrationMessage> {
         super(new ConnectionDescriptor(CHANEL_NAME), MigrationMessage.class);
     }
 
+    @Override
     public void sendMigrants(ExternalMigrationGroup migrationGroup) {
         log.debug("Send migration group {}", migrationGroup);
 

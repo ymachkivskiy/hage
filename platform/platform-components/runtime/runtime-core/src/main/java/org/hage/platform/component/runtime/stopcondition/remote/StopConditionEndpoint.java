@@ -14,7 +14,7 @@ import static org.hage.platform.component.runtime.stopcondition.remote.StopCondi
 
 @SingletonComponent
 @Slf4j
-public class StopConditionEndpoint extends BaseRemoteEndpoint<StopConditionSatisfiedMessage> {
+class StopConditionEndpoint extends BaseRemoteEndpoint<StopConditionSatisfiedMessage> implements StopConditionReachedNotifier {
 
     private static final String CHANEL_NAME = "stop-condition-remote-chanel";
 
@@ -25,6 +25,7 @@ public class StopConditionEndpoint extends BaseRemoteEndpoint<StopConditionSatis
         super(new ConnectionDescriptor(CHANEL_NAME), StopConditionSatisfiedMessage.class);
     }
 
+    @Override
     public void notifyAllStopConditionReached() {
         sendToAllAndAggregateResponse(notification(), l -> "OK");
     }

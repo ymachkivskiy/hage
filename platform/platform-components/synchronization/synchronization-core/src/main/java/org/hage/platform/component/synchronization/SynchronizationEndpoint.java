@@ -1,6 +1,7 @@
 package org.hage.platform.component.synchronization;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hage.platform.annotation.di.SingletonComponent;
 import org.hage.platform.component.cluster.ClusterManager;
 import org.hage.platform.component.cluster.ClusterMemberChangeCallback;
 import org.hage.platform.component.cluster.NodeAddress;
@@ -18,8 +19,9 @@ import java.util.concurrent.locks.ReentrantLock;
 import static org.hage.util.concurrency.Locks.withExceptionLock;
 import static org.hage.util.concurrency.Locks.withLock;
 
+@SingletonComponent
 @Slf4j
-public class SynchronizationEndpoint extends BaseRemoteEndpoint<SynchronizationMessage> implements SynchronizationBarrier, ClusterMemberChangeCallback {
+class SynchronizationEndpoint extends BaseRemoteEndpoint<SynchronizationMessage> implements SynchronizationBarrier, ClusterMemberChangeCallback {
 
     private static final String CHANEL_NAME = "synchronization-remote-chanel";
 

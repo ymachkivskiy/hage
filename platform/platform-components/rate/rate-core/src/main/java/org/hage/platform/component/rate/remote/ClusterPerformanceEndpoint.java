@@ -23,14 +23,14 @@ import static org.hage.platform.component.rate.remote.PerformanceRemoteMessage.r
 
 @SingletonComponent
 @Slf4j
-public class ClusterPerformanceManagerEndpoint extends BaseRemoteEndpoint<PerformanceRemoteMessage> implements ClusterPerformanceManager {
+class ClusterPerformanceEndpoint extends BaseRemoteEndpoint<PerformanceRemoteMessage> implements ClusterPerformanceManager {
 
     private static final String CHANEL_NAME = "performance-remote-chanel";
 
     @Autowired
     private PerformanceManager performanceManager;
 
-    public ClusterPerformanceManagerEndpoint() {
+    public ClusterPerformanceEndpoint() {
         super(new ConnectionDescriptor(CHANEL_NAME), PerformanceRemoteMessage.class);
     }
 

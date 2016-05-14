@@ -13,7 +13,7 @@ import java.util.Collection;
 
 @Slf4j
 @SingletonComponent
-public class StructureDistributionEndpoint extends BaseRemoteEndpoint<StructureMessage> {
+class StructureDistributionEndpoint extends BaseRemoteEndpoint<StructureMessage> implements StructureChangedDistributor {
     private static final String CHANEL_NAME = "structure-distribution-remote-chanel";
 
     @Autowired
@@ -23,6 +23,7 @@ public class StructureDistributionEndpoint extends BaseRemoteEndpoint<StructureM
         super(new ConnectionDescriptor(CHANEL_NAME), StructureMessage.class);
     }
 
+    @Override
     public void updatePositions(Collection<Position> activated, Collection<Position> deactivated) {
         log.debug("Notifying about activation of positions {}", activated);
         log.debug("Notifying about deactivation of positions {}", deactivated);

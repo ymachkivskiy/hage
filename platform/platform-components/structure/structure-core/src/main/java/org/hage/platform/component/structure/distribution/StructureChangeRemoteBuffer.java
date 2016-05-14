@@ -15,7 +15,7 @@ import java.util.List;
 public class StructureChangeRemoteBuffer  {
 
     @Autowired
-    private StructureDistributionEndpoint distributionEndpoint;
+    private StructureChangedDistributor distributionEndpoint;
 
     private final List<Position> activated = new LinkedList<>();
     private final List<Position> deactivated = new LinkedList<>();

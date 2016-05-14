@@ -7,7 +7,7 @@ import org.hage.platform.component.rate.cluster.ClusterPerformanceManager;
 import org.hage.platform.component.rate.model.ComputationRatingConfig;
 import org.hage.platform.component.simulationconfig.division.Allocation;
 import org.hage.platform.component.simulationconfig.division.ConfigurationAllocator;
-import org.hage.platform.component.simulationconfig.endpoint.ConfigurationEndpoint;
+import org.hage.platform.component.simulationconfig.endpoint.ClusterSimulationConfigurator;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Set;
@@ -16,7 +16,7 @@ import java.util.Set;
 public class PerformanceConfigurationDistributor implements ConfigurationDistributor {
 
     @Autowired
-    private ConfigurationEndpoint endpoint;
+    private ClusterSimulationConfigurator simulationConfigurator;
     @Autowired
     private ClusterPerformanceManager performanceManager;
     @Autowired
@@ -27,7 +27,7 @@ public class PerformanceConfigurationDistributor implements ConfigurationDistrib
 
         log.debug("Configuration has been loaded {}. Looking for nodes which require computation configuration", configuration);
 
-        Set<NodeAddress> addresses = endpoint.getNodesAvailableForComputations();
+        Set<NodeAddress> addresses = simulationConfigurator.getNodesAvailableForComputations();
 
         log.debug("Nodes which require configuration '{}'", addresses);
 
@@ -37,7 +37,7 @@ public class PerformanceConfigurationDistributor implements ConfigurationDistrib
 
         Allocation allocation = allocator.byPerformance(configuration, performance);
 
-        endpoint.distribute(allocation);
+        simulationConfigurator.distribute(allocation);
     }
 
 }

@@ -13,7 +13,7 @@ import java.util.List;
 
 @SingletonComponent
 @Slf4j
-public class UnitPropertiesSharingEndpoint extends BaseRemoteEndpoint<UnitPropertiesMessage> {
+class UnitPropertiesSharingEndpoint extends BaseRemoteEndpoint<UnitPropertiesMessage> implements UnitPropertiesSharer {
 
     private static final String CHANEL_NAME = "unit-properties-remote-chanel";
 
@@ -24,6 +24,7 @@ public class UnitPropertiesSharingEndpoint extends BaseRemoteEndpoint<UnitProper
         super(new ConnectionDescriptor(CHANEL_NAME), UnitPropertiesMessage.class);
     }
 
+    @Override
     public void shareUpdatedProperties(List<PositionUnitProperties> unitProperties) {
         log.debug("Share updated properties with all");
         sendToAll(new UnitPropertiesMessage(unitProperties));
