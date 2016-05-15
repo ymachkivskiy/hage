@@ -18,6 +18,7 @@
         <module>runtime-simulation-api</module>
         <module>runtime-init-api</module>
         <module>runtime-event-data</module>
+        <module>runtime-migration-api</module>
     </modules>
 
 </project>
