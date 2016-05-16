@@ -1,4 +1,4 @@
-package org.hage.platform.component.runtime.event;
+package org.hage.platform.component.execution.event;
 
 public enum CoreEventType {
 

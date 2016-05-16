@@ -2,7 +2,7 @@ package org.hage.platform.component.simulationconfig;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.SingletonComponent;
-import org.hage.platform.component.runtime.event.CoreReadyEvent;
+import org.hage.platform.component.execution.event.CoreReadyEvent;
 import org.hage.platform.component.runtime.init.ContainerConfigurator;
 import org.hage.platform.component.runtime.init.PopulationInitializer;
 import org.hage.platform.component.runtime.init.StopConditionConfigurator;

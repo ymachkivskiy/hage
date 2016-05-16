@@ -2,7 +2,7 @@ package org.hage.platform.component.lifecycle;
 
 import static org.hage.platform.component.lifecycle.LifecycleEvent.ERROR;
 
-public enum BaseLifecycleCommand implements LifecycleCommand {
+public enum AsynchronousLifecycleCommand implements LifecycleCommand {
 
     START {
         @Override

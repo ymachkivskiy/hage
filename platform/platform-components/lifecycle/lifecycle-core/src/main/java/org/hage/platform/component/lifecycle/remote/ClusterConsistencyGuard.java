@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 
-import static org.hage.platform.component.lifecycle.BaseLifecycleCommand.FAIL;
+import static org.hage.platform.component.lifecycle.AsynchronousLifecycleCommand.FAIL;
 
 @Slf4j
 public class ClusterConsistencyGuard implements ClusterMemberChangeCallback {

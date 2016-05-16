@@ -1,4 +1,4 @@
-package org.hage.platform.component.runtime.event;
+package org.hage.platform.component.execution.event;
 
 
 import lombok.Getter;
@@ -12,7 +12,7 @@ import javax.annotation.concurrent.Immutable;
 @Immutable
 @ToString
 @RequiredArgsConstructor
-public abstract class BaseCoreComponentEvent implements Event {
+public abstract class CoreComponentEvent implements Event {
     @Getter
     private final CoreEventType type;
 }

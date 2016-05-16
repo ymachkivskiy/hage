@@ -15,6 +15,12 @@
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
+            <artifactId>load-balance-config-data</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
             <artifactId>monitoring-api</artifactId>
             <version>${project.version}</version>
         </dependency>
