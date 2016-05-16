@@ -2,7 +2,7 @@ package org.hage.platform.component.runtime.stepphase;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.SingletonComponent;
-import org.hage.platform.component.execution.step.SingleRunnableStepPhase;
+import org.hage.platform.component.execution.step.phase.SingleRunnableStepPhase;
 import org.hage.platform.component.runtime.stopcondition.StopConditionsChain;
 import org.hage.platform.component.runtime.stopcondition.remote.StopConditionReachedNotifier;
 import org.springframework.beans.factory.annotation.Autowired;

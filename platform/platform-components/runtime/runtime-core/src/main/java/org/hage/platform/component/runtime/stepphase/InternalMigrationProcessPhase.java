@@ -1,7 +1,7 @@
 package org.hage.platform.component.runtime.stepphase;
 
 import org.hage.platform.annotation.di.SingletonComponent;
-import org.hage.platform.component.execution.step.StepPhase;
+import org.hage.platform.component.execution.step.phase.StepPhase;
 import org.hage.platform.component.runtime.migration.internal.InternalMigrationGroupsProvider;
 import org.hage.platform.component.runtime.migration.internal.InternalMigrationTaskFactory;
 import org.springframework.beans.factory.annotation.Autowired;

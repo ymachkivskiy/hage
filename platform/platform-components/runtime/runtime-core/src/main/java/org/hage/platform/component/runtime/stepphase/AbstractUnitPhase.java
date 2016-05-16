@@ -1,6 +1,6 @@
 package org.hage.platform.component.runtime.stepphase;
 
-import org.hage.platform.component.execution.step.StepPhase;
+import org.hage.platform.component.execution.step.phase.StepPhase;
 import org.hage.platform.component.runtime.unit.Unit;
 import org.hage.platform.component.runtime.unit.UnitActivationAware;
 import org.hage.platform.component.runtime.unit.UnitDeactivationAware;

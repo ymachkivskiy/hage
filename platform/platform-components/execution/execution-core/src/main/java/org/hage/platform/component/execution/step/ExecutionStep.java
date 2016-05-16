@@ -2,6 +2,8 @@ package org.hage.platform.component.execution.step;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.SingletonComponent;
+import org.hage.platform.component.execution.step.phase.IndependentPhasesGroup;
+import org.hage.platform.component.execution.step.phase.StepPhaseFactory;
 import org.hage.platform.util.executors.core.CoreBatchExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
 

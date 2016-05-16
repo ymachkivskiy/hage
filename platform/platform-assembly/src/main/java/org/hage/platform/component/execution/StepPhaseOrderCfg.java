@@ -1,6 +1,6 @@
 package org.hage.platform.component.execution;
 
-import org.hage.platform.component.execution.step.StepPhaseFactory;
+import org.hage.platform.component.execution.step.phase.StepPhaseFactory;
 import org.hage.platform.component.runtime.migration.external.ExternalMigrationPerformingTask;
 import org.hage.platform.component.runtime.migration.external.ExternalMigrationTaskFactory;
 import org.hage.platform.component.runtime.migration.internal.InternalMigrationPerformingTask;
@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
-import static org.hage.platform.component.execution.step.StaticFactoryBuilder.staticFactoryBuilder;
+import static org.hage.platform.component.execution.step.phase.StaticFactoryBuilder.staticFactoryBuilder;
 import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
 
 @Configuration
@@ -22,8 +22,6 @@ class StepPhaseOrderCfg {
     @Autowired
     private BeanFactory beanFactory;
 
-    @Autowired
-    private ClusterMembersViewPreparePhase clusterMembersViewPrepare;
     @Autowired
     private InternalMigrationProcessPhase internalMigrationsProcess;
     @Autowired
@@ -48,8 +46,7 @@ class StepPhaseOrderCfg {
         return staticFactoryBuilder()
             .addNextIndependentPhases(
                 unitPropertiesUpdate,
-                internalMigrationsProcess,
-                clusterMembersViewPrepare)
+                internalMigrationsProcess)
             .addNextIndependentPhases(
                 updatedUnitPropertiesShare,
                 structureChangeDistribution)

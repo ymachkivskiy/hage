@@ -5,6 +5,8 @@ import org.hage.platform.annotation.di.SingletonComponent;
 import org.hage.platform.component.cluster.ClusterManager;
 import org.hage.platform.component.cluster.ClusterMember;
 import org.hage.platform.component.cluster.NodeAddress;
+import org.hage.platform.component.cluster.OrderedClusterMembersStepView;
+import org.hage.platform.component.execution.step.calback.StepPreProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -14,7 +16,7 @@ import static java.util.stream.Collectors.toList;
 
 @SingletonComponent
 @Slf4j
-class CachedMembersStepView implements ClusterMembersStepView, ClusterMembersStepViewPreparer {
+class CachedMembersStepView implements OrderedClusterMembersStepView, StepPreProcessor {
 
     private List<NodeAddress> orderedMembers = emptyList();
 
@@ -34,7 +36,7 @@ class CachedMembersStepView implements ClusterMembersStepView, ClusterMembersSte
     }
 
     @Override
-    public void prepareView() {
+    public void beforeStepExecuted(long stepNumber) {
         List<ClusterMember> members = clusterManager.getClusterMembers();
 
         log.debug("Preparing view with members {}", members);
@@ -44,5 +46,4 @@ class CachedMembersStepView implements ClusterMembersStepView, ClusterMembersSte
             .map(ClusterMember::getNodeAddress)
             .collect(toList());
     }
-
 }

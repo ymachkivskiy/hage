@@ -46,6 +46,4 @@ import org.springframework.context.annotation.Import;
             })
     }
 )
-public class PlatformCoreCfg {
-
-}
+public class PlatformCoreCfg {}

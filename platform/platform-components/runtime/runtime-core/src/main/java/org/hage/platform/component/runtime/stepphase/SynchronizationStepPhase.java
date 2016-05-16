@@ -1,6 +1,6 @@
 package org.hage.platform.component.runtime.stepphase;
 
-import org.hage.platform.component.execution.step.SingleRunnableStepPhase;
+import org.hage.platform.component.execution.step.phase.SingleRunnableStepPhase;
 import org.hage.platform.component.synchronization.SynchPoint;
 import org.hage.platform.component.synchronization.SynchronizationBarrier;
 import org.springframework.beans.factory.annotation.Autowired;

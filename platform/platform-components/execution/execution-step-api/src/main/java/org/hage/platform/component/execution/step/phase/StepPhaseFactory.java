@@ -1,4 +1,4 @@
-package org.hage.platform.component.execution.step;
+package org.hage.platform.component.execution.step.phase;
 
 import java.util.List;
 

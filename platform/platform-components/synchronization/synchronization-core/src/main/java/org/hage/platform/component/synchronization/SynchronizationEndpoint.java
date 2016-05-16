@@ -5,12 +5,12 @@ import org.hage.platform.annotation.di.SingletonComponent;
 import org.hage.platform.component.cluster.ClusterManager;
 import org.hage.platform.component.cluster.ClusterMemberChangeCallback;
 import org.hage.platform.component.cluster.NodeAddress;
+import org.hage.platform.component.cluster.OrderedClusterMembersStepView;
 import org.hage.platform.util.connection.chanel.ConnectionDescriptor;
 import org.hage.platform.util.connection.remote.endpoint.BaseRemoteEndpoint;
 import org.hage.platform.util.connection.remote.endpoint.MessageEnvelope;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.locks.Condition;
@@ -26,7 +26,7 @@ class SynchronizationEndpoint extends BaseRemoteEndpoint<SynchronizationMessage>
     private static final String CHANEL_NAME = "synchronization-remote-chanel";
 
     @Autowired
-    private ClusterManager clusterManager;
+    private OrderedClusterMembersStepView clusterMembersStepView;
 
     private final Map<SynchPoint, Integer> stepPhaseParkingMap = new HashMap<>();
 
@@ -39,8 +39,8 @@ class SynchronizationEndpoint extends BaseRemoteEndpoint<SynchronizationMessage>
         super(new ConnectionDescriptor(CHANEL_NAME), SynchronizationMessage.class);
     }
 
-    @PostConstruct
-    private void init() {
+    @Autowired
+    private void setClusterManager(ClusterManager clusterManager) {
         clusterManager.addMembershipChangeCallback(this);
     }
 
@@ -90,7 +90,7 @@ class SynchronizationEndpoint extends BaseRemoteEndpoint<SynchronizationMessage>
     }
 
     private boolean allHaveArrivedTo(SynchPoint point) {
-        return stepPhaseParkingMap.getOrDefault(point, 0) != clusterManager.getMembersCount();
+        return stepPhaseParkingMap.getOrDefault(point, 0) != clusterMembersStepView.membersCount();
     }
 
     private static SynchronizationMessage toMessage(SynchPoint point) {
