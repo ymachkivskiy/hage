@@ -3,7 +3,7 @@ package org.hage.platform.component.lifecycle;
 import com.google.common.eventbus.Subscribe;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.SingletonComponent;
-import org.hage.platform.component.execution.event.CoreReadyEvent;
+import org.hage.platform.component.execution.event.CoreConfiguredEvent;
 import org.hage.platform.component.lifecycle.event.ExitRequestedEvent;
 import org.hage.platform.component.simulationconfig.event.ConfigurationUpdatedEvent;
 import org.hage.platform.util.bus.EventSubscriber;
@@ -29,7 +29,7 @@ public class EventDrivenCommandInvoker implements EventSubscriber {
 
     @Subscribe
     @SuppressWarnings("unused")
-    public void onCoreReady(CoreReadyEvent event) {
+    public void onCoreReady(CoreConfiguredEvent event) {
         log.debug("On core configured event: {}", event);
         lifecycleCommandInvoker.invokeCommand(START);
     }

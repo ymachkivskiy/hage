@@ -4,7 +4,7 @@ import com.google.common.base.Supplier;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.SingletonComponent;
 import org.hage.platform.component.execution.monitor.ExecutionMonitor;
-import org.hage.platform.component.runtime.container.StopConditionSupplier;
+import org.hage.platform.component.runtime.container.StopConditionProvider;
 import org.hage.platform.component.runtime.stopcondition.StopConditionChecker;
 import org.hage.platform.simulation.runtime.stopcondition.SimulationState;
 import org.hage.platform.simulation.runtime.stopcondition.StopCondition;
@@ -24,13 +24,13 @@ class ConfigurationBaseStopCondition implements StopConditionChecker {
     @Autowired
     private ExecutionMonitor executionMonitor;
     @Autowired
-    private StopConditionSupplier stopConditionSupplier;
+    private StopConditionProvider stopConditionProvider;
 
     private Supplier<Optional<StopCondition>> cachedStopCondition;
 
     @PostConstruct
     private void initCache() {
-        cachedStopCondition = memoize(stopConditionSupplier::getStopCondition);
+        cachedStopCondition = memoize(stopConditionProvider::getStopCondition);
     }
 
     @Override

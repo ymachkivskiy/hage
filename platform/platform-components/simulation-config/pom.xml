@@ -17,6 +17,7 @@
         <module>simulation-config-load</module>
         <module>simulation-config-core</module>
         <module>simulation-config-api</module>
+        <module>simulation-config-client-api</module>
     </modules>
 
 </project>

@@ -3,7 +3,6 @@ package org.hage.platform.component.runtime.stateprops;
 import com.google.common.base.Supplier;
 import org.hage.platform.annotation.di.SingletonComponent;
 import org.hage.platform.component.container.MutableInstanceContainer;
-import org.hage.platform.component.runtime.init.UnitPropertiesConfigurator;
 import org.hage.platform.simulation.runtime.state.UnitPropertiesStateComponent;
 import org.hage.platform.simulation.runtime.state.UnitRegisteredPropertiesProvider;
 import org.hage.platform.simulation.runtime.state.descriptor.PropertyDescriptor;
@@ -18,7 +17,7 @@ import static java.util.Optional.ofNullable;
 
 
 @SingletonComponent
-class UnitPropertiesConfiguratorImpl implements UnitPropertiesConfigurator, UnitRegisteredPropertiesProvider {
+class UnitPropertiesContainerProvider implements UnitRegisteredPropertiesProvider {
 
     private final Supplier<List<PropertyDescriptor>> propertyDescriptorsSupplier = memoize(this::getPropertyDescriptorsInternal);
 
@@ -26,13 +25,12 @@ class UnitPropertiesConfiguratorImpl implements UnitPropertiesConfigurator, Unit
     private MutableInstanceContainer globalInstanceContainer;
 
     @Override
-    public void configureWith(Class<? extends UnitPropertiesStateComponent> unitPropertiesStateComponentClazz) {
-        ofNullable(unitPropertiesStateComponentClazz).ifPresent(globalInstanceContainer::addPrototypeComponent);
-    }
-
-    @Override
     public List<PropertyDescriptor> getRegisteredProperties() {
         return propertyDescriptorsSupplier.get();
+    }
+
+    void configure(Class<? extends UnitPropertiesStateComponent> unitPropertiesStateComponentClazz) {
+        ofNullable(unitPropertiesStateComponentClazz).ifPresent(globalInstanceContainer::addPrototypeComponent);
     }
 
     private List<PropertyDescriptor> getPropertyDescriptorsInternal() {

@@ -3,20 +3,24 @@ package org.hage.platform.component.runtime.populationinit;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.component.runtime.init.Population;
-import org.hage.platform.component.runtime.init.PopulationInitializer;
 import org.hage.platform.component.runtime.unit.faces.UnitPopulationLoader;
 import org.hage.platform.component.runtime.unit.registry.PopulationLoaderRegistry;
+import org.hage.platform.component.simulationconfig.CoreConfigurerAdapter;
 import org.hage.platform.component.structure.Position;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Slf4j
-public class BasePopulationInitializer implements PopulationInitializer {
-    // TODO: to be rewritten by migration input queue mechanism
+public class PopulationCoreConfigurer extends CoreConfigurerAdapter<Population> {
+
     @Autowired
     private PopulationLoaderRegistry localAgentUnitsController;
 
+    public PopulationCoreConfigurer(int order) {
+        super(config -> config.getSpecific().getPopulation(), order);
+    }
+
     @Override
-    public void initializeWith(Population population) {
+    protected void configureWithNarrow(Population population) {
         log.debug("Configure local runtime with population '{}'", population);
 
         for (Position position : population.getInternalPositions()) {

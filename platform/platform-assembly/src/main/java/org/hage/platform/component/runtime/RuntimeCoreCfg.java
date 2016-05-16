@@ -7,9 +7,7 @@ import org.hage.platform.component.runtime.activepopulation.UnitActivePopulation
 import org.hage.platform.component.runtime.container.AgentsCreator;
 import org.hage.platform.component.runtime.container.UnitComponentCreationController;
 import org.hage.platform.component.runtime.init.Population;
-import org.hage.platform.component.runtime.init.PopulationInitializer;
 import org.hage.platform.component.runtime.location.UnitLocationController;
-import org.hage.platform.component.runtime.populationinit.BasePopulationInitializer;
 import org.hage.platform.component.runtime.populationinit.GreedyPopulationDivisor;
 import org.hage.platform.component.runtime.stateprops.UnitPropertiesController;
 import org.hage.platform.component.runtime.stateprops.UnitPropertiesProvider;
@@ -24,8 +22,10 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 @Configuration
+@Import(CoreConfigurersCfg.class)
 public class RuntimeCoreCfg {
 
     @Autowired
@@ -34,11 +34,6 @@ public class RuntimeCoreCfg {
     @Bean
     public ProportionsDivisor<Population> populationProportionsDivisor() {
         return new GreedyPopulationDivisor();
-    }
-
-    @Bean
-    public PopulationInitializer runtimeInitializer() {
-        return new BasePopulationInitializer();
     }
 
     @Bean

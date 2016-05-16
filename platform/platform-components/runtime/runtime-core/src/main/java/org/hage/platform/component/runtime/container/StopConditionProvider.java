@@ -4,6 +4,6 @@ import org.hage.platform.simulation.runtime.stopcondition.StopCondition;
 
 import java.util.Optional;
 
-public interface StopConditionSupplier {
+public interface StopConditionProvider {
     Optional<StopCondition> getStopCondition();
 }

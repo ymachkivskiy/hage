@@ -22,6 +22,7 @@ public class ComputationConfigurationGenerator {
     public Configuration generate(InputConfiguration inConf) {
         return new Configuration(
             new Common(
+                inConf.getLoadBalanceConfig(),
                 new ContainerConfiguration(
                     inConf.getSimulationDefinition().getAgentDefinitions(),
                     inConf.getSimulationDefinition().getControlAgentDefinition(),

@@ -7,7 +7,6 @@ import org.hage.platform.component.container.MutableInstanceContainer;
 import org.hage.platform.component.container.definition.IComponentDefinition;
 import org.hage.platform.component.runtime.init.AgentDefinition;
 import org.hage.platform.component.runtime.init.ContainerConfiguration;
-import org.hage.platform.component.runtime.init.ContainerConfigurator;
 import org.hage.platform.component.runtime.init.ControlAgentDefinition;
 import org.hage.platform.simulation.runtime.agent.Agent;
 import org.hage.platform.simulation.runtime.control.ControlAgent;
@@ -26,22 +25,13 @@ import static java.util.stream.Collectors.toSet;
 
 @SingletonComponent
 @Slf4j
-public class GlobalInstanceContainerController implements ContainerConfigurator, SimulationAgentDefinitionsSupplier {
+public class GlobalInstanceContainerController implements SimulationAgentDefinitionsSupplier {
 
     @Autowired
     private MutableInstanceContainer globalInstanceContainer;
 
     private final AtomicReference<Optional<Class<? extends ControlAgent>>> controlAgentType = new AtomicReference<>(empty());
     private final AtomicReference<Set<Class<? extends Agent>>> supportedAgentsTypes = new AtomicReference<>(emptySet());
-
-    @Override
-    public void setupConfiguration(ContainerConfiguration configuration) {
-        log.debug("Setup container configuration {}", configuration);
-
-        registerGlobalComponents(configuration.getGlobalComponents());
-        registerControlAgentType(configuration.getControlAgentDefinition());
-        registerAgentsTypes(configuration.getAgentDefinitions());
-    }
 
     @Override
     public boolean isSupportedAgent(Class<? extends Agent> agentClazz) {
@@ -56,6 +46,14 @@ public class GlobalInstanceContainerController implements ContainerConfigurator,
     @Override
     public Set<Class<? extends Agent>> getSupportedAgentTypes() {
         return supportedAgentsTypes.get();
+    }
+
+    void configure(ContainerConfiguration configuration) {
+        log.debug("Setup container configuration {}", configuration);
+
+        registerGlobalComponents(configuration.getGlobalComponents());
+        registerControlAgentType(configuration.getControlAgentDefinition());
+        registerAgentsTypes(configuration.getAgentDefinitions());
     }
 
 

@@ -9,6 +9,7 @@ import org.hage.example.agent.SimpleControlAgent;
 import org.hage.example.state.ExamplePropertiesConfigurator;
 import org.hage.platform.component.container.definition.ComponentDefinition;
 import org.hage.platform.component.container.definition.ValueDefinition;
+import org.hage.platform.component.loadbalance.config.LoadBalanceConfig;
 import org.hage.platform.component.rate.model.ComputationRatingConfig;
 import org.hage.platform.component.rate.model.MeasurerRateConfig;
 import org.hage.platform.component.runtime.init.AgentDefinition;
@@ -25,6 +26,7 @@ import java.util.EnumSet;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
+import static org.hage.platform.component.loadbalance.config.BalanceMode.AFTER_STEP_COUNT;
 import static org.hage.platform.component.rate.model.MeasurerType.CONCURRENCY;
 import static org.hage.platform.component.rate.model.MeasurerType.RAM_MEMORY;
 import static org.hage.platform.component.simulationconfig.load.definition.agent.AgentCountData.atMost;
@@ -61,6 +63,7 @@ class MockedLoader implements ConfigurationLoader {
 
         return InputConfiguration
             .builder()
+            .loadBalanceConfig(new LoadBalanceConfig(AFTER_STEP_COUNT, 1))
             .globalComponents(asList(
                 globalComponent,
                 new ComponentDefinition("migrationCheck", MigrationCheckComponent.class, true)
