@@ -14,6 +14,8 @@ import org.springframework.core.annotation.Order;
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static com.google.common.base.Stopwatch.createUnstarted;
+import static java.time.Duration.ZERO;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
 @Slf4j
@@ -22,8 +24,8 @@ import static java.util.concurrent.TimeUnit.NANOSECONDS;
 @Order(0)
 public class ExecutionMonitoringAspect implements ExecutionMonitor {
 
-    private final AtomicReference<Duration> accumulatedDuration = new AtomicReference<>(Duration.ZERO);
-    private final Stopwatch stopwatch = Stopwatch.createUnstarted();
+    private final AtomicReference<Duration> accumulatedDuration = new AtomicReference<>(ZERO);
+    private final Stopwatch stopwatch = createUnstarted();
 
     @Autowired
     private ExecutionStepRunnable stepRunnable;

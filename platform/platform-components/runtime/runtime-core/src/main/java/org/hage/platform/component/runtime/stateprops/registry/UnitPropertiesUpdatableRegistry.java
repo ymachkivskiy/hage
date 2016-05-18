@@ -2,7 +2,7 @@ package org.hage.platform.component.runtime.stateprops.registry;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.SingletonComponent;
-import org.hage.platform.component.runtime.stepphase.StepPostProcessor;
+import org.hage.platform.component.runtime.step.phase.StepPostProcessor;
 import org.hage.platform.component.structure.Position;
 import org.hage.platform.component.structure.connections.Structure;
 import org.hage.platform.simulation.runtime.state.UnitRegisteredPropertiesProvider;

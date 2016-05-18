@@ -5,7 +5,7 @@ import org.hage.platform.component.runtime.migration.external.ExternalMigrationP
 import org.hage.platform.component.runtime.migration.external.ExternalMigrationTaskFactory;
 import org.hage.platform.component.runtime.migration.internal.InternalMigrationPerformingTask;
 import org.hage.platform.component.runtime.migration.internal.InternalMigrationTaskFactory;
-import org.hage.platform.component.runtime.stepphase.*;
+import org.hage.platform.component.runtime.step.phase.*;
 import org.hage.platform.component.structure.stepphase.StructureChangeDistributionStepPhase;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +50,7 @@ class StepPhaseOrderCfg {
             .addNextIndependentPhases(
                 updatedUnitPropertiesShare,
                 structureChangeDistribution)
-            .addNextIndependentPhases(synchForSubPhase("initial"))
+            .addNextIndependentPhases(synchForSubPhase("before-agents-run"))
             .addNextIndependentPhases(agentsStep)
             .addNextIndependentPhases(controlAgentStep)
             .addNextIndependentPhases(stopConditionCheck)

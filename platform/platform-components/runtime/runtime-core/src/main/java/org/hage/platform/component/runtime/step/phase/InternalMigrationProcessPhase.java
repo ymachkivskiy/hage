@@ -1,4 +1,4 @@
-package org.hage.platform.component.runtime.stepphase;
+package org.hage.platform.component.runtime.step.phase;
 
 import org.hage.platform.annotation.di.SingletonComponent;
 import org.hage.platform.component.execution.step.phase.StepPhase;

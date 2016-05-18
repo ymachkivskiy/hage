@@ -1,4 +1,4 @@
-package org.hage.platform.component.runtime.stepphase;
+package org.hage.platform.component.runtime.step.phase;
 
 import org.hage.platform.component.execution.step.phase.SingleRunnableStepPhase;
 import org.hage.platform.component.synchronization.SynchPoint;

@@ -1,4 +1,4 @@
-package org.hage.platform.component.runtime.stepphase;
+package org.hage.platform.component.runtime.step.phase;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.SingletonComponent;
