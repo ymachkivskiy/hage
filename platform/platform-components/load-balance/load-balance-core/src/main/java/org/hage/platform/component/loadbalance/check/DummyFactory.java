@@ -10,7 +10,7 @@ import org.hage.platform.component.loadbalance.config.LoadBalanceConfig;
 class DummyFactory implements BalanceCheckStrategyFactory {
 
     @Override
-    public BalancePreCheckStrategy buildStrategyForConfig(LoadBalanceConfig config) {
+    public BalanceCheckStrategy buildStrategyForConfig(LoadBalanceConfig config) {
         log.debug("Building dummy strategy");
         return () -> false;
     }

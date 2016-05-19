@@ -10,7 +10,7 @@ public enum LifecycleEvent {
 
     CORE_STARTING,
 
-    PAUSE_SIMULATION,
+    PAUSE_FOR_RE_BALANCE,
 
     RESUME_SIMULATION,
 

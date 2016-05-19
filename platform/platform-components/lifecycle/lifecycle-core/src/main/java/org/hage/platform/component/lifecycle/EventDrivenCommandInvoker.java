@@ -9,8 +9,8 @@ import org.hage.platform.component.simulationconfig.event.ConfigurationUpdatedEv
 import org.hage.platform.util.bus.EventSubscriber;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.hage.platform.component.lifecycle.AsynchronousLifecycleCommand.EXIT;
-import static org.hage.platform.component.lifecycle.AsynchronousLifecycleCommand.START;
+import static org.hage.platform.component.lifecycle.BaseLifecycleCommand.A_SYNC_EXIT;
+import static org.hage.platform.component.lifecycle.BaseLifecycleCommand.A_SYNC_START;
 import static org.hage.platform.component.lifecycle.LifecycleEvent.CONFIGURE;
 
 @SingletonComponent
@@ -31,7 +31,7 @@ public class EventDrivenCommandInvoker implements EventSubscriber {
     @SuppressWarnings("unused")
     public void onCoreReady(CoreConfiguredEvent event) {
         log.debug("On core configured event: {}", event);
-        lifecycleCommandInvoker.invokeCommand(START);
+        lifecycleCommandInvoker.invokeCommand(A_SYNC_START);
     }
 
 
@@ -39,7 +39,7 @@ public class EventDrivenCommandInvoker implements EventSubscriber {
     @SuppressWarnings("unused")
     public void onExitRequestedEvent(ExitRequestedEvent event) {
         log.debug("Exit requested by event: {}.", event);
-        lifecycleCommandInvoker.invokeCommand(EXIT);
+        lifecycleCommandInvoker.invokeCommand(A_SYNC_EXIT);
     }
 
 }

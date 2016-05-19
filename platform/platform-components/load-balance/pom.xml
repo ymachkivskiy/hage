@@ -13,6 +13,7 @@
     <modules>
         <module>load-balance-core</module>
         <module>load-balance-config-data</module>
+        <module>load-balance-algorithm</module>
     </modules>
 
 </project>

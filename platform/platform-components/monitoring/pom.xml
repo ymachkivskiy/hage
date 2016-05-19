@@ -9,6 +9,7 @@
     <modules>
         <module>monitoring-api</module>
         <module>monitoring-core</module>
+        <module>monitoring-data</module>
     </modules>
     <modelVersion>4.0.0</modelVersion>
 

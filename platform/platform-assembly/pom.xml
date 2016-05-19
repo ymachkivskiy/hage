@@ -111,6 +111,12 @@
             <version>${project.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>load-balance-algorithm-knapsack</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
     </dependencies>
 
 </project>

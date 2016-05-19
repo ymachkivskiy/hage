@@ -8,7 +8,7 @@ import org.hage.platform.util.connection.remote.endpoint.BaseRemoteEndpoint;
 import org.hage.platform.util.connection.remote.endpoint.MessageEnvelope;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.hage.platform.component.lifecycle.AsynchronousLifecycleCommand.STOP;
+import static org.hage.platform.component.lifecycle.BaseLifecycleCommand.A_SYNC_STOP;
 import static org.hage.platform.component.runtime.stopcondition.remote.StopConditionSatisfiedMessage.ack;
 import static org.hage.platform.component.runtime.stopcondition.remote.StopConditionSatisfiedMessage.notification;
 
@@ -34,7 +34,7 @@ class StopConditionEndpoint extends BaseRemoteEndpoint<StopConditionSatisfiedMes
     protected StopConditionSatisfiedMessage consumeMessageAndRespond(MessageEnvelope<StopConditionSatisfiedMessage> envelope) {
         log.debug("Stop condition has been satisfied by node {}", envelope.getOrigin());
 
-        lifecycleCommandInvoker.invokeCommand(STOP);
+        lifecycleCommandInvoker.invokeCommand(A_SYNC_STOP);
 
         return ack();
     }

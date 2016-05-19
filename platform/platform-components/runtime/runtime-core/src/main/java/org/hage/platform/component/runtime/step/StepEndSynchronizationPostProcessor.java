@@ -19,7 +19,7 @@ class StepEndSynchronizationPostProcessor implements StepPostProcessor {
 
     @Override
     public void afterStepPerformed(long stepNumber) {
-        log.debug("Synchronization at the step {} end", stepNumber);
+        log.debug("Synchronization at the end of step {}", stepNumber);
         barrier.synchronizeOnStep(new SynchPoint(stepNumber, "finalization"));
     }
 

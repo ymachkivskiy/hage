@@ -13,9 +13,10 @@
 
     <dependencies>
 
+
         <dependency>
             <groupId>org.hage.platform.component</groupId>
-            <artifactId>structure-simulation-api</artifactId>
+            <artifactId>monitoring-data</artifactId>
             <version>${project.version}</version>
         </dependency>
 

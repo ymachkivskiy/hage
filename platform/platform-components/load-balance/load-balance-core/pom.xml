@@ -21,6 +21,12 @@
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
+            <artifactId>load-balance-algorithm-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
             <artifactId>monitoring-api</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -40,6 +46,12 @@
         <dependency>
             <groupId>org.hage.platform.component</groupId>
             <artifactId>execution-step-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>execution-event-data</artifactId>
             <version>${project.version}</version>
         </dependency>
 

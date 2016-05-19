@@ -40,7 +40,7 @@ public class DefaultLifecycleInitializer implements LifecycleInitializer {
                 .on(LifecycleEvent.CORE_STARTING)
                     .goTo(RUNNING)
                 .and()
-                .on(PAUSE_SIMULATION)
+                .on(PAUSE_FOR_RE_BALANCE)
                     .execute(PauseLifecycleAction.class)
                     .goTo(PAUSED)
                 .and()
