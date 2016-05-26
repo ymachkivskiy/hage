@@ -59,7 +59,7 @@ class SynchronizationEndpoint extends BaseRemoteEndpoint<SynchronizationMessage>
     protected void consumeMessage(MessageEnvelope<SynchronizationMessage> envelope) {
         withLock(lock,
             () -> {
-                log.info("Node {} has reached synchronization point.", envelope.getOrigin());
+                log.debug("Node {} has reached synchronization point.", envelope.getOrigin());
 
                 stepPhaseParkingMap.merge(toPoint(envelope.getBody()), 1, Math::addExact);
                 changeNotifier.signal();

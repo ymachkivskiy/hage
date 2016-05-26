@@ -4,12 +4,10 @@ import com.google.common.eventbus.Subscribe;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.SingletonComponent;
 import org.hage.platform.component.execution.event.CoreConfiguredEvent;
-import org.hage.platform.component.lifecycle.event.ExitRequestedEvent;
 import org.hage.platform.component.simulationconfig.event.ConfigurationUpdatedEvent;
 import org.hage.platform.util.bus.EventSubscriber;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.hage.platform.component.lifecycle.BaseLifecycleCommand.A_SYNC_EXIT;
 import static org.hage.platform.component.lifecycle.BaseLifecycleCommand.A_SYNC_START;
 import static org.hage.platform.component.lifecycle.LifecycleEvent.CONFIGURE;
 
@@ -32,14 +30,6 @@ public class EventDrivenCommandInvoker implements EventSubscriber {
     public void onCoreReady(CoreConfiguredEvent event) {
         log.debug("On core configured event: {}", event);
         lifecycleCommandInvoker.invokeCommand(A_SYNC_START);
-    }
-
-
-    @Subscribe
-    @SuppressWarnings("unused")
-    public void onExitRequestedEvent(ExitRequestedEvent event) {
-        log.debug("Exit requested by event: {}.", event);
-        lifecycleCommandInvoker.invokeCommand(A_SYNC_EXIT);
     }
 
 }

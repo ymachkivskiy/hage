@@ -1,4 +1,4 @@
-package org.hage.platform.component.loadbalance.master;
+package org.hage.platform.component.loadbalance;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.component.loadbalance.check.BalanceCheckStrategy;

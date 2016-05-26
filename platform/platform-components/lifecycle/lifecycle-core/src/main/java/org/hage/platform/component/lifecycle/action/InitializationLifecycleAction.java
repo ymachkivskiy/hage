@@ -20,11 +20,9 @@ public class InitializationLifecycleAction implements LifecycleAction {
 
     @Override
     public void execute() {
-        log.debug("Initializing LifecycleEngine.");
+        log.info("Initializing LifecycleEngine.");
 
         eventBus.post(new ConfigurationLoadRequestEvent());
-
-        log.debug("Node has finished initialization.");
     }
 
 

@@ -10,8 +10,8 @@ import org.hage.platform.util.connection.remote.endpoint.BaseRemoteEndpoint;
 import org.hage.platform.util.connection.remote.endpoint.MessageEnvelope;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.hage.platform.component.lifecycle.BaseLifecycleCommand.A_SYNC_PAUSE;
-import static org.hage.platform.component.lifecycle.BaseLifecycleCommand.A_SYNC_START;
+import static org.hage.platform.component.lifecycle.BaseLifecycleCommand.A_SYNC_PAUSE_FOR_RE_BALANCE;
+import static org.hage.platform.component.lifecycle.BaseLifecycleCommand.A_SYNC_RESUME_AFTER_RE_BALANCE;
 
 
 @Slf4j
@@ -28,15 +28,15 @@ class LifecycleManagerEndpoint extends BaseRemoteEndpoint<LifecycleRemoteMessage
     }
 
     @Override
-    public void schedulePauseCluster() {
-        log.debug("Pausing cluster");
-        sendToAllAndAggregateResponse(new LifecycleRemoteMessage(A_SYNC_PAUSE), messages -> "OK");
+    public void pauseForReBalance() {
+        log.info("Pausing cluster for re-balancing");
+        sendToAllAndAggregateResponse(new LifecycleRemoteMessage(A_SYNC_PAUSE_FOR_RE_BALANCE), messages -> "OK");
     }
 
     @Override
-    public void scheduleStartCluster() {
-        log.debug("Starting cluster");
-        sendToAll(new LifecycleRemoteMessage(A_SYNC_START));
+    public void resumeAfterReBalance() {
+        log.info("Starting cluster for re-balancing");
+        sendToAll(new LifecycleRemoteMessage(A_SYNC_RESUME_AFTER_RE_BALANCE));
     }
 
     @Override

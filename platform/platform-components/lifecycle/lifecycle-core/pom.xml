@@ -30,6 +30,12 @@
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
+            <artifactId>load-balance-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
             <artifactId>simulation-config-api</artifactId>
             <version>${project.version}</version>
         </dependency>

@@ -12,7 +12,7 @@ public enum LifecycleState {
 
     RUNNING,
 
-    PAUSED,
+    RE_BALANCING,
 
     STOPPED,
 

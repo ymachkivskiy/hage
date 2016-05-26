@@ -1,21 +1,19 @@
-package org.hage.platform.component.loadbalance.master;
+package org.hage.platform.component.loadbalance;
 
-import com.google.common.eventbus.Subscribe;
 import org.hage.platform.annotation.di.SingletonComponent;
-import org.hage.platform.component.execution.event.CorePausedEvent;
 import org.hage.platform.component.lifecycle.ClusterLifecycleManager;
+import org.hage.platform.component.loadbalance.master.BalanceManager;
 import org.hage.platform.component.loadbalance.precondition.ClusterBalanceChecker;
 import org.hage.platform.component.loadbalance.precondition.DynamicNodeStats;
 import org.hage.platform.component.loadbalance.precondition.LocalNodeLoadBalancerActivityChecker;
 import org.hage.platform.component.loadbalance.rebalance.BalanceOrder;
 import org.hage.platform.component.loadbalance.rebalance.ClusterBalanceCalculator;
-import org.hage.platform.util.bus.EventSubscriber;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 @SingletonComponent
-class LoadBalancer implements EventSubscriber {
+class GenericLoadBalancer implements LoadBalancer {
 
     @Autowired
     private ClusterLifecycleManager clusterLifecycleManager;
@@ -28,10 +26,8 @@ class LoadBalancer implements EventSubscriber {
     @Autowired
     private LocalNodeLoadBalancerActivityChecker activityChecker;
 
-
-    @SuppressWarnings("unused")
-    @Subscribe
-    private void performLoadBalancing(CorePausedEvent corePausedEvent) {
+    @Override
+    public void performReBalancing() {
 
         if (activityChecker.isActiveInBalancing()) {
 
@@ -43,7 +39,7 @@ class LoadBalancer implements EventSubscriber {
             }
 
 
-            clusterLifecycleManager.scheduleStartCluster();
+            clusterLifecycleManager.resumeAfterReBalance();
         }
 
     }

@@ -1,4 +1,4 @@
-package org.hage.platform.component.loadbalance.master;
+package org.hage.platform.component.loadbalance;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.SingletonComponent;
@@ -26,7 +26,7 @@ class LoadBalancerInvoker implements StepPostProcessor {
     public void afterStepPerformed(long stepNumber) {
         log.info("Check if load balancer should be invoked in step {}", stepNumber);
         if (activityChecker.isActiveInBalancing() && checkStrategy.shouldCheckBalance()) {
-            clusterLifecycleManager.schedulePauseCluster();
+            clusterLifecycleManager.pauseForReBalance();
         }
     }
 

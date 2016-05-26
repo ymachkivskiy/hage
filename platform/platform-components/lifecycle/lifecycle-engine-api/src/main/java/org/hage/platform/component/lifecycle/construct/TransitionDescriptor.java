@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.hage.platform.component.lifecycle.LifecycleAction;
 import org.hage.platform.component.lifecycle.LifecycleEvent;
 import org.hage.platform.component.lifecycle.LifecycleState;
-import org.hage.platform.component.lifecycle.event.LifecycleStateChangedEvent;
+import org.hage.platform.component.lifecycle.LifecycleStateChangedEvent;
 
 import static java.lang.String.format;
 

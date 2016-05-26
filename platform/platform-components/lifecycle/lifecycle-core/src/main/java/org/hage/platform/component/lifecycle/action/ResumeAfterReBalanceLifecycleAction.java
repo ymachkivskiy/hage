@@ -12,15 +12,15 @@ import static lombok.AccessLevel.PRIVATE;
 @SingletonComponent
 @Slf4j
 @RequiredArgsConstructor(access = PRIVATE)
-public class ResumeLifecycleAction implements LifecycleAction {
+public class ResumeAfterReBalanceLifecycleAction implements LifecycleAction {
 
     @Autowired
     private ExecutionCore executionCore;
 
     @Override
     public void execute() {
-        log.info("Computation is resuming.");
+        log.info("Computation is resuming after re-balancing.");
 
-//        executionCore.resume();
+        executionCore.start();
     }
 }

@@ -11,10 +11,17 @@ public enum BaseLifecycleCommand implements LifecycleCommand {
         }
     },
 
-    A_SYNC_PAUSE {
+    A_SYNC_PAUSE_FOR_RE_BALANCE {
         @Override
         public void accept(LifecycleStateMachine lifecycleStateMachine) {
             lifecycleStateMachine.fire(PAUSE_FOR_RE_BALANCE);
+        }
+    },
+
+    A_SYNC_RESUME_AFTER_RE_BALANCE {
+        @Override
+        public void accept(LifecycleStateMachine lifecycleStateMachine) {
+            lifecycleStateMachine.fire(RESUME_SIMULATION);
         }
     },
 
