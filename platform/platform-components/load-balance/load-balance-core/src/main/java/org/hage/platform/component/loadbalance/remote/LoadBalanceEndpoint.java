@@ -2,7 +2,6 @@ package org.hage.platform.component.loadbalance.remote;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.SingletonComponent;
-import org.hage.platform.component.loadbalance.master.BalanceManager;
 import org.hage.platform.component.loadbalance.precondition.DynamicNodeStats;
 import org.hage.platform.component.loadbalance.rebalance.BalanceOrder;
 import org.hage.platform.component.loadbalance.remote.message.LoadBalancerRemoteMessage;

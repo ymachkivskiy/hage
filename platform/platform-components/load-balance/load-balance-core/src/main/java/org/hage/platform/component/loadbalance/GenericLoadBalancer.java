@@ -2,12 +2,12 @@ package org.hage.platform.component.loadbalance;
 
 import org.hage.platform.annotation.di.SingletonComponent;
 import org.hage.platform.component.lifecycle.ClusterLifecycleManager;
-import org.hage.platform.component.loadbalance.master.BalanceManager;
 import org.hage.platform.component.loadbalance.precondition.ClusterBalanceChecker;
 import org.hage.platform.component.loadbalance.precondition.DynamicNodeStats;
 import org.hage.platform.component.loadbalance.precondition.LocalNodeLoadBalancerActivityChecker;
 import org.hage.platform.component.loadbalance.rebalance.BalanceOrder;
 import org.hage.platform.component.loadbalance.rebalance.ClusterBalanceCalculator;
+import org.hage.platform.component.loadbalance.remote.BalanceManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;

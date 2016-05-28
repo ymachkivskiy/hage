@@ -40,8 +40,14 @@ class LifecycleManagerEndpoint extends BaseRemoteEndpoint<LifecycleRemoteMessage
     }
 
     @Override
-    protected void consumeMessage(MessageEnvelope<LifecycleRemoteMessage> envelope) {
+    protected final void consumeMessage(MessageEnvelope<LifecycleRemoteMessage> envelope) {
         lifecycleCommandInvoker.invokeCommand(envelope.getBody().getCommand());
+    }
+
+    @Override
+    protected final LifecycleRemoteMessage consumeMessageAndRespond(MessageEnvelope<LifecycleRemoteMessage> envelope) {
+        lifecycleCommandInvoker.invokeCommand(envelope.getBody().getCommand());
+        return envelope.getBody();
     }
 
 }

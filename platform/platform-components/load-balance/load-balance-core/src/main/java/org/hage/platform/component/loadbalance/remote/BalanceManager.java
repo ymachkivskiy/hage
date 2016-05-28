@@ -1,4 +1,4 @@
-package org.hage.platform.component.loadbalance.master;
+package org.hage.platform.component.loadbalance.remote;
 
 import org.hage.platform.component.loadbalance.precondition.DynamicNodeStats;
 import org.hage.platform.component.loadbalance.rebalance.BalanceOrder;

@@ -11,7 +11,7 @@ class KnapsackModuleCfg {
 
     @Bean
     public LocalNodeLoadBalancerActivityChecker firstClusterNodeMasterResolver() {
-        return new FirstClusterNodeOrchestratorResolver();
+        return new FirstClusterNodeActivityChecker();
     }
 
     @Bean
