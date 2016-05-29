@@ -21,7 +21,6 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import static com.google.common.base.Objects.toStringHelper;
-import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Iterables.consumingIterable;
 import static com.google.common.collect.Queues.newPriorityBlockingQueue;
 import static com.google.common.util.concurrent.Futures.addCallback;
@@ -62,7 +61,7 @@ class LifecycleStateMachineService implements LifecycleStateMachine {
         shutdownAfterTerminalState = builder.isShutdownWhenTerminated();
         failureEvent = builder.getFailureBehaviorBuilder().getEvent();
         transitionsTable = buildTransitionsTable(builder);
-        dispatcherFuture = service.scheduleAtFixedRate(new Dispatcher(), 0, 1, TimeUnit.MILLISECONDS);
+        dispatcherFuture = service.scheduleAtFixedRate(new Dispatcher(), 0, 1, TimeUnit.MICROSECONDS);
     }
 
     public void fire(LifecycleEvent event) {
@@ -83,24 +82,6 @@ class LifecycleStateMachineService implements LifecycleStateMachine {
         log.debug("{} transition completed.", event);
     }
 
-    public void fireAndWaitForStableState(final LifecycleEvent event) {
-        log.debug("{} fired. I will be waiting for the stable state.", event);
-        EventHolder holder = new EventHolder(event);
-        eventQueue.add(holder);
-        holder.getSemaphore().acquireUninterruptibly();
-
-        boolean stable = false;
-        while (!stable) {
-            stable = readLock(() -> eventQueue.isEmpty() && currentEvent == null);
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                log.debug("Interrupted when waiting.", e);
-            }
-        }
-        log.debug("{} transition completed.", event);
-    }
-
     public boolean terminated() {
         return readLock(() -> terminalStates.contains(currentState));
     }
@@ -115,25 +96,9 @@ class LifecycleStateMachineService implements LifecycleStateMachine {
         });
     }
 
-    public void shutdown() {
-        readLock(() -> checkState(terminated(), "Service has not terminated yet. Current state: %s.", getCurrentState()));
-        internalShutdown();
-        try {
-            service.awaitTermination(2, TimeUnit.SECONDS);
-            log.info("Service has been shut down properly.");
-        } catch (final InterruptedException e) {
-            log.warn("Interrupted during shutdown.");
-            Thread.currentThread().interrupt();
-        }
-    }
-
     @Override
     public String toString() {
         return readLock(() -> toStringHelper(this).addValue(currentState).addValue(currentEvent).toString());
-    }
-
-    private LifecycleState getCurrentState() {
-        return readLock(() -> currentState);
     }
 
     private void drainEvents() {
@@ -176,15 +141,6 @@ class LifecycleStateMachineService implements LifecycleStateMachine {
             }
 
             assert currentEvent == null : "There is an event still running.";
-
-            try {
-                while (eventQueue.isEmpty()) {
-                    Thread.sleep(10);
-                }
-            } catch (final InterruptedException e) {
-                log.debug("Interrupted when waiting for event. Returning.", e);
-                return;
-            }
 
             final EventHolder holder;
             final LifecycleEvent event;
@@ -270,6 +226,7 @@ class LifecycleStateMachineService implements LifecycleStateMachine {
         @Getter
         @Nullable
         private final Object parameters;
+
         public EventHolder(final LifecycleEvent event) {
             this(event, null);
         }

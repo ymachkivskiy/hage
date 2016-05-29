@@ -3,10 +3,11 @@ package org.hage.platform.component.runtime.step;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.SingletonComponent;
 import org.hage.platform.component.execution.step.calback.StepPostProcessor;
-import org.hage.platform.component.synchronization.SynchPoint;
 import org.hage.platform.component.synchronization.SynchronizationBarrier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
+
+import static org.hage.platform.component.synchronization.SynchPoint.stepPointSubphase;
 
 
 @Slf4j
@@ -20,7 +21,7 @@ class StepEndSynchronizationPostProcessor implements StepPostProcessor {
     @Override
     public void afterStepPerformed(long stepNumber) {
         log.debug("Synchronization at the end of step {}", stepNumber);
-        barrier.synchronizeOnStep(new SynchPoint(stepNumber, "finalization"));
+        barrier.synchronize(stepPointSubphase(stepNumber, "finalization"));
     }
 
 }

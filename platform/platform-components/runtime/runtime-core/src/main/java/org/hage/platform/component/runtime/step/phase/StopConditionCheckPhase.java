@@ -3,8 +3,8 @@ package org.hage.platform.component.runtime.step.phase;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.SingletonComponent;
 import org.hage.platform.component.execution.step.phase.SingleRunnableStepPhase;
-import org.hage.platform.component.runtime.stopcondition.StopConditionsChain;
-import org.hage.platform.component.runtime.stopcondition.remote.StopConditionReachedNotifier;
+import org.hage.platform.component.runtime.stopcondition.StopConditionSatisfiedChecker;
+import org.hage.platform.component.runtime.stopcondition.remote.ClusterStopConditionReachedNotifier;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @SingletonComponent
@@ -12,9 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class StopConditionCheckPhase extends SingleRunnableStepPhase {
 
     @Autowired
-    private StopConditionReachedNotifier conditionReachedNotifier;
+    private ClusterStopConditionReachedNotifier conditionReachedNotifier;
     @Autowired
-    private StopConditionsChain stopConditionsChain;
+    private StopConditionSatisfiedChecker stopConditionSatisfiedChecker;
 
     @Override
     public String getPhaseName() {
@@ -25,7 +25,7 @@ public class StopConditionCheckPhase extends SingleRunnableStepPhase {
     protected void executePhase(long currentStep) {
         log.debug("Checking if stop condition has been satisfied");
 
-        if (stopConditionsChain.stopConditionSatisfied()) {
+        if (stopConditionSatisfiedChecker.stopConditionSatisfied()) {
             conditionReachedNotifier.notifyAllStopConditionReached();
         }
 

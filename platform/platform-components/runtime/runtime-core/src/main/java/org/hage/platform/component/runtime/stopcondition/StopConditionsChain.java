@@ -10,11 +10,12 @@ import static java.util.Collections.emptyList;
 
 @SingletonComponent
 @Slf4j
-public class StopConditionsChain {
+class StopConditionsChain implements StopConditionSatisfiedChecker {
 
     @Autowired(required = false)
     private List<StopConditionChecker> stopConditionCheckers = emptyList();
 
+    @Override
     public boolean stopConditionSatisfied() {
         log.debug("Check whether if one of stop conditions was satisfied");
         return stopConditionCheckers.stream()

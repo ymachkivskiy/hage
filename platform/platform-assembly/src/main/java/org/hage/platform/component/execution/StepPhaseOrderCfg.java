@@ -29,7 +29,7 @@ class StepPhaseOrderCfg {
     @Autowired
     private ControlAgentStepPhase controlAgentStep;
     @Autowired
-    private StepPostProcessPhase stepPostProcess;
+    private StepFinalizationPhase stepPostProcess;
     @Autowired
     private StructureChangeDistributionStepPhase structureChangeDistribution;
     @Autowired

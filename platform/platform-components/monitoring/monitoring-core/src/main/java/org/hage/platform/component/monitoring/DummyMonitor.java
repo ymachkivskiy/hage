@@ -11,8 +11,8 @@ import static java.time.Duration.ofNanos;
 public class DummyMonitor implements NodeDynamicStatsMonitor {
 
     @Override
-    public NodeDynamicStats provideStats() {
-        return new NodeDynamicStats(dummyExecutionTimeStats(), dummySimulationStats());
+    public DynamicStats provideStats() {
+        return new DynamicStats(dummyExecutionTimeStats(), dummySimulationStats());
     }
 
     private ExecutionTimeStats dummyExecutionTimeStats() {

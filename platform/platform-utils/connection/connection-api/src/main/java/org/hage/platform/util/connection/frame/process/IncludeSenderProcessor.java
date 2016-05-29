@@ -14,7 +14,7 @@ public class IncludeSenderProcessor extends AbstractHeaderProcessor {
 
     @Override
     protected void updateHeader(HeaderBuilder mutableHeader) {
-        log.debug("Set include sender to {} for header {}", includeSender, mutableHeader);
+        log.trace("Set include sender to {} for header {}", includeSender, mutableHeader);
 
         mutableHeader.includeSender(includeSender);
     }

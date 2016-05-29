@@ -39,7 +39,7 @@
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
-            <artifactId>runtime-migration-api</artifactId>
+            <artifactId>runtime-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -70,6 +70,12 @@
         <dependency>
             <groupId>org.hage.platform.util</groupId>
             <artifactId>remote-connection-adapter</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>synchronization-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 

@@ -25,7 +25,7 @@ public class ReceiversProcessor extends AbstractHeaderProcessor {
 
     @Override
     protected void updateHeader(Header.HeaderBuilder mutableHeader) {
-        log.debug("Set receivers to {} ({}) for header {} ", receivers, addressingType, mutableHeader);
+        log.trace("Set receivers to {} ({}) for header {} ", receivers, addressingType, mutableHeader);
 
         mutableHeader
             .receivers(receivers)

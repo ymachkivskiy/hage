@@ -17,7 +17,7 @@ public class ResponsivenessProcessor extends AbstractHeaderProcessor {
 
     @Override
     protected void updateHeader(Header.HeaderBuilder mutableHeader) {
-        log.debug("Set responsiveness for header {} to {}", mutableHeader, responsiveness);
+        log.trace("Set responsiveness for header {} to {}", mutableHeader, responsiveness);
 
         mutableHeader.responsiveness(responsiveness);
     }

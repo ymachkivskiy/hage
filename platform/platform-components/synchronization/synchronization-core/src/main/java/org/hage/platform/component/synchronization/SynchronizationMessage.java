@@ -6,6 +6,5 @@ import java.io.Serializable;
 
 @Data
 public class SynchronizationMessage implements Serializable {
-    private final long stepNumber;
-    private final String subPhase;
+    private final String synchronizationPoint;
 }

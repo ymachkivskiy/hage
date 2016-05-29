@@ -26,7 +26,7 @@ public class SynchronizationStepPhase extends SingleRunnableStepPhase {
 
     @Override
     protected void executePhase(long currentStep) {
-        barrier.synchronizeOnStep(new SynchPoint(currentStep, phase));
+        barrier.synchronize(SynchPoint.stepPointSubphase(currentStep, phase));
     }
 
 }

@@ -1,19 +1,20 @@
 package org.hage.platform.component.loadbalance.check;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.function.Supplier;
+import org.hage.platform.annotation.di.SingletonComponent;
+import org.hage.platform.component.cluster.OrderedClusterMembersStepView;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Slf4j
-@RequiredArgsConstructor
+@SingletonComponent
 class ClusterSizeCheckStrategy implements BalanceCheckStrategy {
 
-    private final Supplier<Integer> clusterSizeSupplier;
+    @Autowired
+    private OrderedClusterMembersStepView clusterMembersStepView;
 
     @Override
     public boolean shouldCheckBalance() {
-        boolean containsMoreThanOneNode = clusterSizeSupplier.get() > 1;
+        boolean containsMoreThanOneNode = clusterMembersStepView.membersCount() > 1;
 
         log.info("Check if cluster contains more than one node: {}", containsMoreThanOneNode);
 

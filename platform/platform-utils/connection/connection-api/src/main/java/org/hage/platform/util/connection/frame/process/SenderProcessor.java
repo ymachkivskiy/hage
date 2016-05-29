@@ -12,7 +12,7 @@ public class SenderProcessor extends AbstractHeaderProcessor {
 
     @Override
     protected void updateHeader(HeaderBuilder mutableHeader) {
-        log.debug("Set sender for mutable header {} to {}", mutableHeader, sender);
+        log.trace("Set sender for mutable header {} to {}", mutableHeader, sender);
 
         mutableHeader.sender(sender);
     }

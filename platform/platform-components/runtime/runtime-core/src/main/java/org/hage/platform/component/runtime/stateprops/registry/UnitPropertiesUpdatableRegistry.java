@@ -2,7 +2,7 @@ package org.hage.platform.component.runtime.stateprops.registry;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.SingletonComponent;
-import org.hage.platform.component.runtime.step.phase.StepPostProcessor;
+import org.hage.platform.component.runtime.step.StepFinalizer;
 import org.hage.platform.component.structure.Position;
 import org.hage.platform.component.structure.connections.Structure;
 import org.hage.platform.simulation.runtime.state.UnitRegisteredPropertiesProvider;
@@ -22,7 +22,7 @@ import static org.hage.platform.component.runtime.stateprops.registry.EmptyReadW
 
 @SingletonComponent
 @Slf4j
-class UnitPropertiesUpdatableRegistry implements UnitPropertiesRegistry, StepPostProcessor, UnitPropertiesUpdater {
+class UnitPropertiesUpdatableRegistry implements UnitPropertiesRegistry, StepFinalizer, UnitPropertiesUpdater {
 
     private final Map<Position, UnitProperties> propertiesMap = new ConcurrentHashMap<>();
     private final Map<Position, ReadUnitProperties> readOnlyPropertiesCopies = new ConcurrentHashMap<>();
@@ -45,7 +45,7 @@ class UnitPropertiesUpdatableRegistry implements UnitPropertiesRegistry, StepPos
     }
 
     @Override
-    public void afterStepPerformed() {
+    public void finalizeStep() {
         log.debug("Clear all property copies");
         readOnlyPropertiesCopies.clear();
     }

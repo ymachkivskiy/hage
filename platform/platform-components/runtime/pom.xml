@@ -16,7 +16,7 @@
         <module>runtime-core</module>
         <module>runtime-init-data-model</module>
         <module>runtime-simulation-api</module>
-        <module>runtime-migration-api</module>
+        <module>runtime-api</module>
     </modules>
 
 </project>

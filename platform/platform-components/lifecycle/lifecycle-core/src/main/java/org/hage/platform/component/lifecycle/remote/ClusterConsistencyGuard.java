@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 
-import static org.hage.platform.component.lifecycle.BaseLifecycleCommand.A_SYNC_FAIL;
+import static org.hage.platform.component.lifecycle.BaseLifecycleCommand.ASYNC_FAIL;
 
 @Slf4j
 public class ClusterConsistencyGuard implements ClusterMemberChangeCallback {
@@ -22,7 +22,7 @@ public class ClusterConsistencyGuard implements ClusterMemberChangeCallback {
     @Override
     public void onMemberRemoved(NodeAddress removedMember) {
         log.error("Member '{}' removed from cluster", removedMember);
-        lifecycleCommandInvoker.invokeCommand(A_SYNC_FAIL);
+        lifecycleCommandInvoker.invokeCommand(ASYNC_FAIL);
     }
 
     @PostConstruct

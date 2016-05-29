@@ -15,7 +15,7 @@ public class ConversationIdProcessor extends AbstractHeaderProcessor {
 
     @Override
     protected void updateHeader(Header.HeaderBuilder mutableHeader) {
-        log.debug("Set conversation id to {} for header {}", conversationId, mutableHeader);
+        log.trace("Set conversation id to {} for header {}", conversationId, mutableHeader);
 
         mutableHeader.conversationId(conversationId);
     }

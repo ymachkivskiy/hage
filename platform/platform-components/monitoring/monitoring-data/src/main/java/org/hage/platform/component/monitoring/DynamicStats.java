@@ -5,7 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class NodeDynamicStats implements Serializable {
+public class DynamicStats implements Serializable {
     private final ExecutionTimeStats executionTimeStats;
     private final SummaryAgentsStats summaryAgentsStats;
 }

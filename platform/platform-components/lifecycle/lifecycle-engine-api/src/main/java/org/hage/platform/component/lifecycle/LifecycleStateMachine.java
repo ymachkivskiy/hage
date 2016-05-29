@@ -8,8 +8,6 @@ public interface LifecycleStateMachine {
 
     void fireAndWaitForTransitionToComplete(final LifecycleEvent event);
 
-    void fireAndWaitForStableState(final LifecycleEvent event);
-
     boolean terminated();
 
     boolean isTerminating();

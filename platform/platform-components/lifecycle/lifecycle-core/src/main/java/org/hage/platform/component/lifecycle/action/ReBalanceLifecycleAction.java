@@ -26,5 +26,6 @@ public class ReBalanceLifecycleAction implements LifecycleAction {
 
         executionCore.pause();
         loadBalancer.performReBalancing();
+
     }
 }

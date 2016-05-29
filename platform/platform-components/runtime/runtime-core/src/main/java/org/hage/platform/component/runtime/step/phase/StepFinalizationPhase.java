@@ -1,6 +1,7 @@
 package org.hage.platform.component.runtime.step.phase;
 
 import org.hage.platform.annotation.di.SingletonComponent;
+import org.hage.platform.component.runtime.step.StepFinalizer;
 import org.hage.platform.component.runtime.unit.Unit;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -13,10 +14,10 @@ import static java.util.stream.Collectors.toList;
 
 
 @SingletonComponent
-public class StepPostProcessPhase extends AbstractUnitPhase {
+public class StepFinalizationPhase extends AbstractUnitPhase {
 
     @Autowired(required = false)
-    private List<StepPostProcessor> stepPostProcessors = emptyList();
+    private List<StepFinalizer> stepFinalizers = emptyList();
 
     @Override
     public String getPhaseName() {
@@ -38,8 +39,8 @@ public class StepPostProcessPhase extends AbstractUnitPhase {
     }
 
     private List<Runnable> getExtraRunnable() {
-        return stepPostProcessors.stream()
-            .map(stepPostProcessor -> (Runnable) stepPostProcessor::afterStepPerformed)
+        return stepFinalizers.stream()
+            .map(stepPostProcessor -> (Runnable) stepPostProcessor::finalizeStep)
             .collect(toList());
     }
 }

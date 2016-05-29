@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface ClusterBalanceChecker {
     // TODO: document
-    boolean isBalanced(List<DynamicNodeStats> dynamicNodeStats);
+    boolean isBalanced(List<NodeDynamicStats> nodeDynamicStats);
 }

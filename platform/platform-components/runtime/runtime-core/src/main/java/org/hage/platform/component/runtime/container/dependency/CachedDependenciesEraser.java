@@ -54,10 +54,10 @@ class CachedDependenciesEraser implements DependenciesEraser, DependenciesInject
 
         @Override
         public void eraseDependencies(Object object) {
-            log.debug("Erase dependencies for {}", object);
+            log.trace("Erase dependencies for {}", object);
             for (Field field : fieldsWithDependencies) {
                 try {
-                    log.debug("Erasing '{}'", field.getName());
+                    log.trace("Erasing '{}'", field.getName());
 
                     field.set(object, null);
                 } catch (IllegalAccessException e) {
@@ -70,11 +70,11 @@ class CachedDependenciesEraser implements DependenciesEraser, DependenciesInject
         public void injectDependenciesUsing(Object object, InstanceContainer container) {
             checkNotNull(container);
 
-            log.debug("Inject dependencies for {}", object);
+            log.trace("Inject dependencies for {}", object);
 
             for (Field field : fieldsWithDependencies) {
 
-                log.debug("Injecting to '{}' of type {}", field.getName(), field.getType());
+                log.trace("Injecting to '{}' of type {}", field.getName(), field.getType());
                 Object dependency = container.getInstance(field.getType());
 
                 if (dependency == null) {

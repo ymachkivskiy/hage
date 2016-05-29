@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
+import static org.hage.platform.component.synchronization.SynchPoint.pointForName;
 import static org.hage.util.concurrency.Locks.withExceptionLock;
 import static org.hage.util.concurrency.Locks.withLock;
 
@@ -45,7 +46,7 @@ class SynchronizationEndpoint extends BaseRemoteEndpoint<SynchronizationMessage>
     }
 
     @Override
-    public void synchronizeOnStep(SynchPoint point) {
+    public void synchronize(SynchPoint point) {
 
         log.debug("Start synchronization");
 
@@ -59,7 +60,7 @@ class SynchronizationEndpoint extends BaseRemoteEndpoint<SynchronizationMessage>
     protected void consumeMessage(MessageEnvelope<SynchronizationMessage> envelope) {
         withLock(lock,
             () -> {
-                log.debug("Node {} has reached synchronization point.", envelope.getOrigin());
+                log.debug("Node {} has reached synchronization point {}.", envelope.getOrigin(), envelope.getBody().getSynchronizationPoint());
 
                 stepPhaseParkingMap.merge(toPoint(envelope.getBody()), 1, Math::addExact);
                 changeNotifier.signal();
@@ -94,10 +95,10 @@ class SynchronizationEndpoint extends BaseRemoteEndpoint<SynchronizationMessage>
     }
 
     private static SynchronizationMessage toMessage(SynchPoint point) {
-        return new SynchronizationMessage(point.getStepNumber(), point.getSubPhase());
+        return new SynchronizationMessage(point.getName());
     }
 
     private static SynchPoint toPoint(SynchronizationMessage message) {
-        return new SynchPoint(message.getStepNumber(), message.getSubPhase());
+        return pointForName(message.getSynchronizationPoint());
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 import static java.util.Collections.emptyList;
+import static java.util.Collections.unmodifiableList;
 import static java.util.stream.Collectors.toList;
 
 @SingletonComponent
@@ -33,6 +34,11 @@ class CachedMembersStepView implements OrderedClusterMembersStepView, StepPrePro
     public NodeAddress getMember(int number) {
         log.debug("Get member {} from all members {}", number, orderedMembers);
         return orderedMembers.get(number);
+    }
+
+    @Override
+    public List<NodeAddress> getOrderedMembers() {
+        return unmodifiableList(orderedMembers);
     }
 
     @Override
