@@ -1,7 +1,7 @@
 package org.hage.platform.component.loadbalance.remote;
 
-import org.hage.platform.component.loadbalance.precondition.NodeDynamicStats;
 import org.hage.platform.component.loadbalance.rebalance.BalanceOrder;
+import org.hage.platform.component.loadbalance.rebalance.NodeDynamicStats;
 
 import java.util.List;
 

@@ -4,10 +4,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.component.cluster.LocalClusterNode;
 import org.hage.platform.component.cluster.NodeAddress;
 import org.hage.platform.component.cluster.OrderedClusterMembersStepView;
-import org.hage.platform.component.loadbalance.precondition.LocalNodeLoadBalancerActivityChecker;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @Slf4j
+@Component
 public class FirstClusterNodeActivityChecker implements LocalNodeLoadBalancerActivityChecker {
 
     @Autowired
@@ -21,7 +22,7 @@ public class FirstClusterNodeActivityChecker implements LocalNodeLoadBalancerAct
         NodeAddress firstNode = clusterMembersStepView.getMember(0);
         boolean isFirstNode = firstNode.equals(localAddress);
 
-        log.debug("Local node is {} active must be first node of cluster {}. Local node is active : {}", localAddress, firstNode, isFirstNode);
+        log.debug("Local node is \"{}\" active must be first node of cluster \"{}\". Local node is active : {}", localAddress, firstNode, isFirstNode);
 
         return isFirstNode;
     }

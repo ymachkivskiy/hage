@@ -34,7 +34,7 @@ class ConjunctiveStrategiesFactory implements BalanceCheckStrategyFactory {
     private BalanceCheckStrategy buildCompositeForConfig(LoadBalanceConfig config) {
         return new ConjunctionCheckStrategyComposite(
             asList(
-                clusterSizeCheckStrategy,
+//                clusterSizeCheckStrategy,
                 stopConditionNotSatisfiedCheckStrategy,
                 buildStrategy(config)
             )

@@ -1,4 +1,4 @@
-package org.hage.platform.component.loadbalance.precondition;
+package org.hage.platform.component.loadbalance.rebalance;
 
 import lombok.Data;
 import org.hage.platform.component.cluster.NodeAddress;
