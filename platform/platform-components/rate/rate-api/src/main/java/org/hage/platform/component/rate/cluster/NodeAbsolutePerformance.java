@@ -13,8 +13,7 @@ public class NodeAbsolutePerformance implements Countable {
     private final NodeAddress nodeAddress;
     private final PerformanceRate performanceRate;
 
-    @Override
-    public UnsignedInteger getCount() {
+    public UnsignedInteger getNormalizedCapacity() {
         return valueOf(performanceRate.getRate());
     }
 

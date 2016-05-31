@@ -145,7 +145,7 @@ public class ProportionsTest {
 
         // when
 
-        Proportions tested = forCountable(countableList);
+        Proportions<Countable> tested = forCountable(countableList);
 
         // then
 
@@ -186,7 +186,7 @@ public class ProportionsTest {
 
         // when
 
-        Proportions tested = forCountable(countableList);
+        Proportions<Countable> tested = forCountable(countableList);
 
         // then
 
@@ -201,7 +201,7 @@ public class ProportionsTest {
 
     private static Countable createCountableWithNumber(UnsignedInteger number) {
         final Countable firstCountable = mock(Countable.class);
-        when(firstCountable.getCount()).thenReturn(number);
+        when(firstCountable.getNormalizedCapacity()).thenReturn(number);
         return firstCountable;
     }
 

@@ -16,10 +16,10 @@ import static java.math.BigDecimal.ROUND_CEILING;
 import static java.util.stream.Collector.of;
 import static java.util.stream.Collectors.toList;
 
-public class GreedyPopulationDivisor implements ProportionsDivisor<Population> {
+public class GreedyPopulationDivisor implements ProportionsDivisor<Population, Countable> {
 
     @Override
-    public Division<Population> divideUsingProportions(Population source, Proportions proportions) {
+    public Division<Population> divideUsingProportions(Population source, Proportions<Countable> proportions) {
 
         BigDecimal numberOfAgents = BigDecimal.valueOf(source.getNumberOfAgents());
 

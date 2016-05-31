@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.toList;
 
 @Component
 public class KnapsackBalanceCalculator implements ClusterBalanceCalculator {
@@ -25,6 +25,8 @@ public class KnapsackBalanceCalculator implements ClusterBalanceCalculator {
     private PartitionCreator partitionCreator;
     @Autowired
     private PartitionBalancer partitionBalancer;
+    @Autowired
+    private KnapsackTransfersToBalanceOrdersMapper transfersToOrdersMapper;
 
     @Override
     public List<BalanceOrder> calculateBalanceOrders(List<NodeDynamicStats> stats) {
@@ -33,29 +35,13 @@ public class KnapsackBalanceCalculator implements ClusterBalanceCalculator {
         Partition partition = partitionCreator.createPartition(knapsacks);
         List<KnapsackTransfer> knapsackTransfers = partitionBalancer.balancePartition(partition);
 
-        return toOrders(knapsackTransfers);
+        return transfersToOrdersMapper.mapTransfersToOrders(knapsackTransfers);
     }
 
     private List<Knapsack> createKnapsacks(List<NodeDynamicStats> stats) {
         return stats.stream()
             .map(knapsackCreator::createFromStats)
             .collect(toList());
-    }
-
-    private List<BalanceOrder> toOrders(List<KnapsackTransfer> knapsackTransfers) {
-        return knapsackTransfers.stream()
-            .collect(
-                collectingAndThen(
-                    groupingBy(
-                        KnapsackTransfer::getOriginNode,
-                        mapping(
-                            KnapsackTransfer::toRelocationOrder,
-                            toList()
-                        )
-                    ),
-                    m -> m.entrySet().stream().map(e -> new BalanceOrder(e.getKey(), e.getValue())).collect(toList())
-                )
-            );
     }
 
 }
