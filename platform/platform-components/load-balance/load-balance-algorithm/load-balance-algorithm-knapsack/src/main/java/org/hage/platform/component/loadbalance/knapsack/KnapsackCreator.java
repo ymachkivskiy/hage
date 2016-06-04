@@ -17,19 +17,20 @@ public class KnapsackCreator {
     @Autowired
     private DynamicStatsRateCalculator rateAnalyser;
 
-    public Knapsack createFromStats(NodeDynamicStats nodeStats) {
-        Knapsack knapsack = new Knapsack(nodeStats.getNodeAddress(), rateAnalyser.calculateRate(nodeStats.getDynamicStats()));
+    public Knapsack createFromStats(NodeDynamicStats nodeStats, MappingContext mappingContext) {
+        KnapsackContext knapsackContext = new KnapsackContext(nodeStats.getNodeAddress(), rateAnalyser.calculateRate(nodeStats.getDynamicStats()));
+        Knapsack knapsack = mappingContext.newKnapsack(knapsackContext);
 
-        createItems(nodeStats.getDynamicStats()).forEach(knapsack::addItem);
+        createItems(nodeStats.getDynamicStats(), mappingContext).forEach(knapsack::addItem);
 
         log.info("Knapsack {} created for {}", knapsack, nodeStats);
 
         return knapsack;
     }
 
-    private List<PositionItem> createItems(DynamicStats summaryAgentsStats) {
+    private List<Item> createItems(DynamicStats summaryAgentsStats, MappingContext mapping) {
         return summaryAgentsStats.getUnitSpecificAgentsStats().stream()
-            .map(stats -> new PositionItem(stats.getUnitPosition(), stats.getAgentsNumber()))
+            .map(mapping::itemForStats)
             .collect(toList());
     }
 

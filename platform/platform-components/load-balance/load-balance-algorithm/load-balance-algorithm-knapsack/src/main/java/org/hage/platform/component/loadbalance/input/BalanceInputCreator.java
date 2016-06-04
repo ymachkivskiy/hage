@@ -1,7 +1,9 @@
-package org.hage.platform.component.loadbalance.partition;
+package org.hage.platform.component.loadbalance.input;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hage.platform.component.loadbalance.balancing.BalancingInput;
 import org.hage.platform.component.loadbalance.knapsack.Knapsack;
+import org.hage.platform.component.loadbalance.knapsack.MappingContext;
 import org.hage.util.proportion.Proportions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,7 +15,7 @@ import static java.util.stream.Collectors.toList;
 
 @Slf4j
 @Component
-public class PartitionCreator {
+public class BalanceInputCreator {
 
 
     @Autowired
@@ -21,20 +23,20 @@ public class PartitionCreator {
     @Autowired
     private KnapsackProportionsCalculator proportionsCalculator;
 
-    public Partition createPartition(List<Knapsack> knapsacks) {
+    public BalancingInput createForKnapsacks(List<Knapsack> knapsacks, MappingContext mappingContext) {
 
-        log.debug("Create partition for knapsacks {}", knapsacks);
+        log.debug("Create balancing input for knapsacks {}", knapsacks);
 
         final long summarySize = calculateSummarySize(knapsacks);
 
-        Proportions<KnapsackNormalizedCapacity> proportions = proportionsCalculator.calculateProportions(knapsacks);
+        Proportions<KnapsackNormalizedCapacity> proportions = proportionsCalculator.calculateProportions(knapsacks, mappingContext);
         List<KnapsackAllocation> unbalancedKnapsacks = filterUnbalanced(allocationsCreator.createAllocations(summarySize, proportions));
 
-        Partition partition = new Partition(unbalancedKnapsacks);
+        BalancingInput balancingInput = new BalancingInput(unbalancedKnapsacks);
 
-        log.info("Partition {} created for knapsacks {}", partition, knapsacks);
+        log.info("Balancing input {} created for knapsacks {}", balancingInput, knapsacks);
 
-        return partition;
+        return balancingInput;
     }
 
     private long calculateSummarySize(List<Knapsack> knapsacks) {

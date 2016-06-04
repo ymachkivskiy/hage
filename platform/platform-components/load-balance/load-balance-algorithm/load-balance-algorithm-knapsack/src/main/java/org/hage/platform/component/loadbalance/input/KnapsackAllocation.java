@@ -1,4 +1,4 @@
-package org.hage.platform.component.loadbalance.partition;
+package org.hage.platform.component.loadbalance.input;
 
 import lombok.Data;
 import org.hage.platform.component.loadbalance.knapsack.Knapsack;
