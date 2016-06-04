@@ -4,6 +4,10 @@ import org.hage.platform.component.loadbalance.input.KnapsackAllocation;
 import org.hage.platform.component.loadbalance.knapsack.Knapsack;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Collection;
 
@@ -13,9 +17,12 @@ import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-public class BalancerTest {
+@ContextConfiguration(locations = "classpath:load-balance-algorithm-knapsack.test.xml")
+@RunWith(SpringJUnit4ClassRunner.class)
+public class BaseBalancerTest {
 
-    private Balancer balancer = new Balancer();
+    @Autowired
+    private Balancer balancer;
 
     @Test
     public void shouldNotProduceTransfersForEmptyInput() {

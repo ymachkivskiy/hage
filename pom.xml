@@ -26,6 +26,7 @@
         <aspectj.version>1.6.11</aspectj.version>
         <lombok.version>1.16.6</lombok.version>
         <guava.version>19.0</guava.version>
+        <springockito.version>1.0.9</springockito.version>
     </properties>
 
     <!-- plugin repositories -->
@@ -381,7 +382,6 @@
             </dependency>
 
 
-
             <!-- testing -->
 
             <dependency>
@@ -437,6 +437,14 @@
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-test</artifactId>
                 <version>${spring.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.kubek2k</groupId>
+                <artifactId>springockito</artifactId>
+                <version>${springockito.version}</version>
+                <scope>test</scope>
             </dependency>
 
         </dependencies>
@@ -536,6 +544,13 @@
             <artifactId>spring-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.kubek2k</groupId>
+            <artifactId>springockito</artifactId>
+            <scope>test</scope>
+        </dependency>
+
 
         <dependency>
             <groupId>org.easytesting</groupId>
