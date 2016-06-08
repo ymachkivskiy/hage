@@ -10,13 +10,13 @@ import org.hage.platform.component.loadbalance.remote.message.LoadBalanceMessage
 import org.hage.platform.component.loadbalance.remote.message.LoadBalancerRemoteMessage;
 import org.hage.platform.component.runtime.migration.UnitMigrationPerformer;
 import org.hage.platform.component.structure.Position;
-import org.hage.platform.util.executors.core.CoreBatchExecutor;
+import org.hage.platform.util.executors.simple.WorkerExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
+import static java.util.stream.Collectors.*;
 import static org.hage.platform.component.loadbalance.remote.message.LoadBalanceMessageType.RQ__UNITS_RELOCATION_ORDER;
 import static org.hage.platform.component.loadbalance.remote.message.MessageUtils.ackMessage;
 import static org.hage.util.CollectionUtils.nullSafe;
@@ -28,7 +28,7 @@ class UnitsRelocationOrdersProcessingStrategy implements ProcessingStrategy {
     @Autowired
     private UnitMigrationPerformer migrationPerformer;
     @Autowired
-    private CoreBatchExecutor coreBatchExecutor;
+    private WorkerExecutor workerExecutor;
 
     @Override
     public LoadBalanceMessageType getMessageType() {
@@ -38,19 +38,28 @@ class UnitsRelocationOrdersProcessingStrategy implements ProcessingStrategy {
     @Override
     public LoadBalancerRemoteMessage process(LoadBalanceData message) {
 
-        Collection<MigrationTask> migrationTasks = createMigrationTasksForOrders(nullSafe(message.getRelocationOrders()));
-        coreBatchExecutor.executeAll(migrationTasks);
+        Collection<MigrationTask> migrationTasks = groupByTargetNode(nullSafe(message.getRelocationOrders()));
+        workerExecutor.executeAll(migrationTasks);
 
         return ackMessage();
     }
 
-    private Collection<MigrationTask> createMigrationTasksForOrders(List<UnitRelocationOrder> unitRelocationOrders) {
-        log.info("Got unit relocation orders {}", unitRelocationOrders);
-        //todo : NOT IMPLEMENTED
+    private Collection<MigrationTask> groupByTargetNode(List<UnitRelocationOrder> unitRelocationOrders) {
+        log.debug("Got unit relocation orders {}", unitRelocationOrders);
 
+        List<MigrationTask> ordersGroupedToTasks = unitRelocationOrders.stream()
+            .collect(
+                groupingBy(
+                    UnitRelocationOrder::getRelocationTarget,
+                    mapping(UnitRelocationOrder::getUnitToRelocate, toList())
+                )
+            ).entrySet().stream()
+            .map(e -> new MigrationTask(e.getKey(), e.getValue()))
+            .collect(toList());
 
+        log.info("Final migration tasks are : {}", ordersGroupedToTasks);
 
-        return Collections.emptyList();
+        return ordersGroupedToTasks;
     }
 
 

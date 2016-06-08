@@ -1,14 +1,16 @@
 package org.hage.platform.util.executors.core;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import org.hage.platform.util.executors.ExecutorUtils;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import static java.lang.Runtime.getRuntime;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
-import static java.util.stream.Collectors.toList;
 
 // TODO: 09.03.16 move all executors to one place executors module
 public class ParallelCoreBatchExecutor implements CoreBatchExecutor {
@@ -36,16 +38,10 @@ public class ParallelCoreBatchExecutor implements CoreBatchExecutor {
     @Override
     public void executeAll(Collection<? extends Runnable> tasks) {
         try {
-            executor.invokeAll(toCallable(tasks));
+            executor.invokeAll(ExecutorUtils.toCallable(tasks));
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }
-
-    private List<Callable<Object>> toCallable(Collection<? extends Runnable> tasks) {
-        return tasks.stream()
-            .map(Executors::callable)
-            .collect(toList());
     }
 
 

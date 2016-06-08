@@ -2,12 +2,14 @@ package org.hage.platform.util.executors.simple;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
+import java.util.Collection;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 
 import static java.util.concurrent.Executors.newCachedThreadPool;
+import static org.hage.platform.util.executors.ExecutorUtils.toCallable;
 
 public class Worker implements WorkerExecutor {
 
@@ -33,4 +35,12 @@ public class Worker implements WorkerExecutor {
         return executorService.submit(task);
     }
 
+    @Override
+    public void executeAll(Collection<? extends Runnable> tasks) {
+        try {
+            executorService.invokeAll(toCallable(tasks));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 }

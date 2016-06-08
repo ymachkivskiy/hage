@@ -1,5 +1,6 @@
 package org.hage.platform.component.loadbalance.remote;
 
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.SingletonComponent;
 import org.hage.platform.component.cluster.OrderedClusterMembersStepView;
@@ -11,12 +12,14 @@ import org.hage.platform.component.loadbalance.remote.response.LoadBalanceMessag
 import org.hage.platform.util.connection.chanel.ConnectionDescriptor;
 import org.hage.platform.util.connection.remote.endpoint.BaseRemoteEndpoint;
 import org.hage.platform.util.connection.remote.endpoint.MessageEnvelope;
+import org.hage.platform.util.executors.simple.WorkerExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashSet;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
+import static org.hage.platform.component.loadbalance.remote.message.MessageUtils.requestForStatsMsg;
 
 @Slf4j
 @SingletonComponent
@@ -26,6 +29,8 @@ public class LoadBalanceEndpoint extends BaseRemoteEndpoint<LoadBalancerRemoteMe
     private LoadBalanceMessageResponseProcessor messageProcessingStrategy;
     @Autowired
     private OrderedClusterMembersStepView orderedClusterMembersStepView;
+    @Autowired
+    private WorkerExecutor executor;
 
     protected LoadBalanceEndpoint() {
         super(new ConnectionDescriptor("load-balancer-remote-chanel"), LoadBalancerRemoteMessage.class);
@@ -33,13 +38,17 @@ public class LoadBalanceEndpoint extends BaseRemoteEndpoint<LoadBalancerRemoteMe
 
     @Override
     public List<NodeDynamicStats> getClusterDynamicStats() {
-        return sendToAndAggregateResponses(MessageUtils.requestForStatsMsg(), this::aggregateDynamicStats, new HashSet<>(orderedClusterMembersStepView.getOrderedMembers()));
+        return sendToAndAggregateResponses(requestForStatsMsg(), this::aggregateDynamicStats, new HashSet<>(orderedClusterMembersStepView.getOrderedMembers()));
     }
 
     @Override
     public void executeBalanceOrders(List<BalanceOrder> orders) {
-        //todo : NOT IMPLEMENTED
+        List<NodeBalanceOrderTask> balanceOrderTasks = orders
+            .stream()
+            .map(NodeBalanceOrderTask::new)
+            .collect(toList());
 
+        executor.executeAll(balanceOrderTasks);
     }
 
     @Override
@@ -57,6 +66,17 @@ public class LoadBalanceEndpoint extends BaseRemoteEndpoint<LoadBalancerRemoteMe
         return messageEnvelopes.stream()
             .map(e -> new NodeDynamicStats(e.getOrigin(), e.getBody().getData().getDynamicStats()))
             .collect(toList());
+    }
+
+    @Data
+    private class NodeBalanceOrderTask implements Runnable {
+        private final BalanceOrder balanceOrder;
+
+        @Override
+        public void run() {
+            log.debug("Sending order");
+            sendToAndWaitForResponse(MessageUtils.unitsRelocationOrderMsg(balanceOrder.getRelocationOrders()), balanceOrder.getOrderNode());
+        }
     }
 
 }
