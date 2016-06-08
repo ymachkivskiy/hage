@@ -36,6 +36,12 @@ public class Knapsack {
         }
     }
 
+    public void removeItem(Item item) {
+        if (items.remove(item)) {
+            size -= item.getSize();
+        }
+    }
+
     public Collection<Item> getItems() {
         return unmodifiableCollection(items);
     }

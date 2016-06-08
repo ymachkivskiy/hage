@@ -74,24 +74,6 @@ public class SimpleSpreadBasedAllocationPackerTest {
 
 
     @Test
-    public void shouldRepackIdeallyBalancingAllocationsToZeroSpreadAllocations() {
-        // given
-        List<KnapsackAllocation> inputAllocations = asList(
-            new KnapsackAllocation(25, knapsackWithItems(1, 9)),
-            new KnapsackAllocation(54, knapsackWithItems(23, 31, 15)),
-            new KnapsackAllocation(13, knapsackWithItems(2)),
-            new KnapsackAllocation(24, knapsackWithItems(11, 7, 17))
-        );
-
-        // when
-        Collection<KnapsackAllocation> repacked = packer.repack(inputAllocations);
-
-        // then
-        assertThat(calculateAllocationsSpread(repacked)).isZero();
-    }
-
-
-    @Test
     public void shouldPerformBalancingWhichOptimizeInputBalance() {
         // given
         List<KnapsackAllocation> inputAllocations = asList(
@@ -105,8 +87,7 @@ public class SimpleSpreadBasedAllocationPackerTest {
 
         // then
         assertThat(calculateAllocationsSpread(repacked))
-            .isLessThan(calculateAllocationsSpread(inputAllocations))
-            .isGreaterThanOrEqualTo(6);
+            .isLessThanOrEqualTo(6);
     }
 
     private static Knapsack knapsackWithItems(int... itemSizes) {

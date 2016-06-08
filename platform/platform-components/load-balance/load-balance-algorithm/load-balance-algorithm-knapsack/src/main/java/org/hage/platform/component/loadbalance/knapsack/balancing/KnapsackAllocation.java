@@ -26,4 +26,8 @@ public class KnapsackAllocation {
         return abs(knapsack.getSize() - capacity);
     }
 
+    public KnapsackAllocation copy() {
+        return new KnapsackAllocation(capacity, knapsack.copy());
+    }
+
 }
