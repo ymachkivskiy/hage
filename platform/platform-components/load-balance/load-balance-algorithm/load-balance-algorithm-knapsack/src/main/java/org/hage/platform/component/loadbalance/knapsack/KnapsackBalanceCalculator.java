@@ -1,12 +1,8 @@
-package org.hage.platform.component.loadbalance;
+package org.hage.platform.component.loadbalance.knapsack;
 
-import org.hage.platform.component.loadbalance.balancing.Balancer;
-import org.hage.platform.component.loadbalance.balancing.BalancingInput;
-import org.hage.platform.component.loadbalance.balancing.KnapsackTransfer;
-import org.hage.platform.component.loadbalance.input.BalanceInputCreator;
-import org.hage.platform.component.loadbalance.knapsack.Knapsack;
-import org.hage.platform.component.loadbalance.knapsack.KnapsackCreator;
-import org.hage.platform.component.loadbalance.knapsack.MappingContext;
+import org.hage.platform.component.loadbalance.knapsack.balancing.*;
+import org.hage.platform.component.loadbalance.knapsack.model.Knapsack;
+import org.hage.platform.component.loadbalance.knapsack.model.MappingContext;
 import org.hage.platform.component.loadbalance.rebalance.BalanceOrder;
 import org.hage.platform.component.loadbalance.rebalance.ClusterBalanceCalculator;
 import org.hage.platform.component.loadbalance.rebalance.NodeDynamicStats;
@@ -24,9 +20,9 @@ public class KnapsackBalanceCalculator implements ClusterBalanceCalculator {
     @Autowired
     private KnapsackCreator knapsackCreator;
     @Autowired
-    private BalanceInputCreator balanceInputCreator;
+    private KnapsackAllocationsCreator balanceInputCreator;
     @Autowired
-    private Balancer balancer;
+    private BalancingTransfersCalculator balancingTransfersCalculator;
     @Autowired
     private KnapsackTransfersToBalanceOrdersMapper transfersToOrdersMapper;
 
@@ -35,8 +31,8 @@ public class KnapsackBalanceCalculator implements ClusterBalanceCalculator {
         MappingContext mappingContext = new MappingContext();
 
         List<Knapsack> knapsacks = createKnapsacks(stats, mappingContext);
-        BalancingInput balancingInput = balanceInputCreator.createForKnapsacks(knapsacks, mappingContext);
-        Collection<KnapsackTransfer> knapsackTransfers = balancer.balance(balancingInput);
+        Collection<KnapsackAllocation> knapsackAllocations = balanceInputCreator.createForKnapsacks(knapsacks, mappingContext);
+        Collection<KnapsackTransfer> knapsackTransfers = balancingTransfersCalculator.calculateTransfers(knapsackAllocations);
 
         return transfersToOrdersMapper.mapTransfersToOrders(knapsackTransfers, mappingContext);
     }

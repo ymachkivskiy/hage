@@ -1,6 +1,10 @@
-package org.hage.platform.component.loadbalance.knapsack;
+package org.hage.platform.component.loadbalance.knapsack.balancing;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hage.platform.component.loadbalance.knapsack.model.Item;
+import org.hage.platform.component.loadbalance.knapsack.model.Knapsack;
+import org.hage.platform.component.loadbalance.knapsack.model.KnapsackContext;
+import org.hage.platform.component.loadbalance.knapsack.model.MappingContext;
 import org.hage.platform.component.loadbalance.rebalance.NodeDynamicStats;
 import org.hage.platform.component.monitoring.DynamicStats;
 import org.springframework.beans.factory.annotation.Autowired;

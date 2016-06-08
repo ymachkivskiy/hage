@@ -1,7 +1,7 @@
-package org.hage.platform.component.loadbalance.input;
+package org.hage.platform.component.loadbalance.knapsack.balancing;
 
 import lombok.Data;
-import org.hage.platform.component.loadbalance.knapsack.Knapsack;
+import org.hage.platform.component.loadbalance.knapsack.model.Knapsack;
 
 import static java.lang.Math.abs;
 

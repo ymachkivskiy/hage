@@ -1,7 +1,7 @@
-package org.hage.platform.component.loadbalance.input;
+package org.hage.platform.component.loadbalance.knapsack.balancing;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.component.loadbalance.knapsack.Knapsack;
+import org.hage.platform.component.loadbalance.knapsack.model.Knapsack;
 import org.hage.util.proportion.Proportions;
 import org.springframework.stereotype.Component;
 
@@ -13,9 +13,9 @@ import static java.util.stream.Collectors.toSet;
 
 @Slf4j
 @Component
-class KnapsackAllocationsCreator {
+class ProportionalKnapsackAllocationsCreator {
 
-    public Set<KnapsackAllocation> createAllocations(long summarySize, Proportions<KnapsackNormalizedCapacity> proportions) {
+    public Set<KnapsackAllocation> createProportionalAllocations(long summarySize, Proportions<KnapsackNormalizedCapacity> proportions) {
 
         log.debug("Create allocations of size {} for knapsacks proportions {}", summarySize, proportions);
 

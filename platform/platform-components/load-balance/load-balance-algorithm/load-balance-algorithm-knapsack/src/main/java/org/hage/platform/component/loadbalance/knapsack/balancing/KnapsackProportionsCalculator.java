@@ -1,9 +1,9 @@
-package org.hage.platform.component.loadbalance.input;
+package org.hage.platform.component.loadbalance.knapsack.balancing;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.component.loadbalance.knapsack.Knapsack;
-import org.hage.platform.component.loadbalance.knapsack.KnapsackContext;
-import org.hage.platform.component.loadbalance.knapsack.MappingContext;
+import org.hage.platform.component.loadbalance.knapsack.model.Knapsack;
+import org.hage.platform.component.loadbalance.knapsack.model.KnapsackContext;
+import org.hage.platform.component.loadbalance.knapsack.model.MappingContext;
 import org.hage.util.proportion.Proportions;
 import org.springframework.stereotype.Component;
 

@@ -1,4 +1,4 @@
-package org.hage.platform.component.loadbalance.knapsack;
+package org.hage.platform.component.loadbalance.knapsack.model;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package org.hage.platform.component.loadbalance.knapsack;
+package org.hage.platform.component.loadbalance.knapsack.model;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;

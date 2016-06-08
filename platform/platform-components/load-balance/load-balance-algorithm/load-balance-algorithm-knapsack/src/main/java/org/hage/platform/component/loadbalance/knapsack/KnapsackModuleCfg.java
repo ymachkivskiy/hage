@@ -1,11 +1,12 @@
-package org.hage.platform.component.loadbalance;
+package org.hage.platform.component.loadbalance.knapsack;
 
 import org.hage.platform.annotation.di.PlugableConfiguration;
-import org.hage.platform.component.loadbalance.balancing.Balancer;
-import org.hage.platform.component.loadbalance.balancing.GreedyBalancer;
+import org.hage.platform.component.loadbalance.knapsack.balancing.pack.AllocationsPacker;
+import org.hage.platform.component.loadbalance.knapsack.balancing.pack.GreedyAllocationsPacker;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Component;
 
 @PlugableConfiguration
@@ -14,11 +15,12 @@ import org.springframework.stereotype.Component;
     useDefaultFilters = false,
     includeFilters = @Filter(classes = Component.class)
 )
+@EnableAspectJAutoProxy
 public class KnapsackModuleCfg {
 
     @Bean
-    public Balancer balancer() {
-        return new GreedyBalancer();
+    public AllocationsPacker balancer() {
+        return new GreedyAllocationsPacker();
     }
 
 }

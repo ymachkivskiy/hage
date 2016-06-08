@@ -1,9 +1,9 @@
-package org.hage.platform.component.loadbalance.input;
+package org.hage.platform.component.loadbalance.knapsack.balancing;
 
 import com.google.common.primitives.UnsignedInteger;
 import lombok.Getter;
 import lombok.ToString;
-import org.hage.platform.component.loadbalance.knapsack.Knapsack;
+import org.hage.platform.component.loadbalance.knapsack.model.Knapsack;
 import org.hage.util.proportion.Countable;
 
 import java.math.BigDecimal;

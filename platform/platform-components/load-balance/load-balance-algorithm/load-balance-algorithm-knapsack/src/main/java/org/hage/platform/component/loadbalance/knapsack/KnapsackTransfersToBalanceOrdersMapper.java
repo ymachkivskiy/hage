@@ -1,9 +1,9 @@
-package org.hage.platform.component.loadbalance;
+package org.hage.platform.component.loadbalance.knapsack;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.component.cluster.NodeAddress;
-import org.hage.platform.component.loadbalance.balancing.KnapsackTransfer;
-import org.hage.platform.component.loadbalance.knapsack.MappingContext;
+import org.hage.platform.component.loadbalance.knapsack.balancing.KnapsackTransfer;
+import org.hage.platform.component.loadbalance.knapsack.model.MappingContext;
 import org.hage.platform.component.loadbalance.rebalance.BalanceOrder;
 import org.hage.platform.component.loadbalance.rebalance.UnitRelocationOrder;
 import org.hage.platform.component.structure.Position;

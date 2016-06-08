@@ -1,9 +1,10 @@
-package org.hage.platform.component.loadbalance;
+package org.hage.platform.component.loadbalance.knapsack;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.component.cluster.LocalClusterNode;
 import org.hage.platform.component.cluster.NodeAddress;
 import org.hage.platform.component.cluster.OrderedClusterMembersStepView;
+import org.hage.platform.component.loadbalance.LocalNodeLoadBalancerActivityChecker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -1,4 +1,4 @@
-package org.hage.platform.component.loadbalance.knapsack;
+package org.hage.platform.component.loadbalance.knapsack.balancing;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.component.monitoring.DynamicStats;
