@@ -2,7 +2,7 @@ package org.hage.platform.component.loadbalance;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.SingletonComponent;
-import org.hage.platform.component.execution.step.calback.StepPostProcessor;
+import org.hage.platform.component.execution.phase.PhasesPostProcessor;
 import org.hage.platform.component.lifecycle.LifecycleCommandInvoker;
 import org.hage.platform.component.loadbalance.check.BalanceCheckStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import static org.hage.platform.component.lifecycle.BaseLifecycleCommand.ASYNC__
 @Order(0)
 @Slf4j
 @SingletonComponent
-class LoadBalancerInvoker implements StepPostProcessor {
+class LoadBalancerInvoker implements PhasesPostProcessor {
 
     private BalanceCheckStrategy checkStrategy;
 
@@ -22,7 +22,7 @@ class LoadBalancerInvoker implements StepPostProcessor {
     private LifecycleCommandInvoker lifecycleCommandInvoker;
 
     @Override
-    public void afterStepPerformed(long stepNumber) {
+    public void afterAllPhasesExecuted(long stepNumber) {
         log.info("Check if load balancer should be invoked in step {}", stepNumber);
 
         if (checkStrategy.shouldCheckBalance()) {

@@ -1,6 +1,6 @@
 package org.hage.platform.component.runtime.step.phase;
 
-import org.hage.platform.component.execution.step.phase.StepPhase;
+import org.hage.platform.component.execution.phase.ExecutionPhase;
 import org.hage.platform.component.runtime.unit.Unit;
 import org.hage.platform.component.runtime.unit.UnitActivationAware;
 import org.hage.platform.component.runtime.unit.UnitDeactivationAware;
@@ -15,14 +15,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import static java.util.Collections.unmodifiableCollection;
 
 
-abstract class AbstractUnitPhase implements StepPhase, UnitActivationAware, UnitDeactivationAware {
+abstract class AbstractUnitPhase implements ExecutionPhase, UnitActivationAware, UnitDeactivationAware {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final Map<Position, Runnable> agentStepRunnableMap = new ConcurrentHashMap<>();
 
     @Override
-    public Collection<? extends Runnable> getRunnable(long currentStep) {
+    public Collection<? extends Runnable> getTasks(long currentStep) {
         return unmodifiableCollection(agentStepRunnableMap.values());
     }
 

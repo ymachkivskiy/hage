@@ -18,7 +18,7 @@ public class DummyMonitor implements NodeDynamicStatsMonitor {
     @Override
     public DynamicStats provideStats() {
         return new DynamicStats(dummyExecutionTimeStats(),
-            range(0, random.nextInt(10) + 1)
+            range(0, random.nextInt(15) + 1)
                 .mapToObj(i -> randomUnitStats())
                 .collect(toList())
         );

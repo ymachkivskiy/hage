@@ -51,13 +51,13 @@
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
-            <artifactId>execution-step-api</artifactId>
+            <artifactId>execution-monitoring-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
-            <artifactId>execution-monitoring-api</artifactId>
+            <artifactId>execution-phase-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 

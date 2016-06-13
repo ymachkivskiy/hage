@@ -2,23 +2,19 @@ package org.hage.platform.component.execution.step;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.SingletonComponent;
-import org.hage.platform.component.execution.step.phase.IndependentPhasesGroup;
-import org.hage.platform.component.execution.step.phase.StepPhaseFactory;
+import org.hage.platform.component.execution.phase.ExecutionPhase;
+import org.hage.platform.component.execution.phase.ExecutionPhaseFactory;
 import org.hage.platform.util.executors.core.CoreBatchExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
-
-import static java.util.stream.Collectors.toList;
 
 @Slf4j
 @SingletonComponent
 public class ExecutionStep implements ExecutionStepRunnable, ResetableStepRunnable {
 
     @Autowired
-    private StepPhaseFactory stepPhaseFactory;
+    private ExecutionPhaseFactory stepPhaseFactory;
     @Autowired
     private CoreBatchExecutor coreBatchExecutor;
 
@@ -27,11 +23,11 @@ public class ExecutionStep implements ExecutionStepRunnable, ResetableStepRunnab
     @Override
     public void run() {
 
-        log.debug("### Started performing step {}", getCurrentStepNumber());
+        log.info("############# Started performing step {} #############", getCurrentStepNumber());
 
-        stepPhaseFactory.getFullCyclePhasesGroups().forEach(this::executePhasesGroup);
+        stepPhaseFactory.getFullCyclePhases().forEach(this::executePhase);
 
-        log.debug("### Finished performing step {}", getCurrentStepNumber());
+        log.info("############# Finished performing step {} #############", getCurrentStepNumber());
 
         stepsPerformed.incrementAndGet();
     }
@@ -51,21 +47,12 @@ public class ExecutionStep implements ExecutionStepRunnable, ResetableStepRunnab
         stepsPerformed.set(0);
     }
 
-    private void executePhasesGroup(IndependentPhasesGroup phasesGroup) {
-        log.info("--- Start executing group of phases {} in step {} --- ", phasesGroup, getCurrentStepNumber());
+    private void executePhase(ExecutionPhase executionPhase) {
+        log.info("   ------ Start executing phase \"{}\" in step [{}] -------   ", executionPhase.getType().getDescription(), getCurrentStepNumber());
 
-        coreBatchExecutor.executeAll(toTasks(phasesGroup));
+        coreBatchExecutor.executeAll(executionPhase.getTasks(getCurrentStepNumber()));
 
-        log.info("--- Finish executing group of phases {} in step {} ---", phasesGroup, getCurrentStepNumber());
-    }
-
-    private List<Runnable> toTasks(IndependentPhasesGroup group) {
-        final long currentStep = getCurrentStepNumber();
-        return group.getPhases()
-                .stream()
-                .map(p -> p.getRunnable(currentStep))
-                .flatMap(Collection::stream)
-                .collect(toList());
+        log.info("   ------ Finish executing phase \"{}\" in step [{}] ------   ", executionPhase.getType().getDescription(), getCurrentStepNumber());
     }
 
 }

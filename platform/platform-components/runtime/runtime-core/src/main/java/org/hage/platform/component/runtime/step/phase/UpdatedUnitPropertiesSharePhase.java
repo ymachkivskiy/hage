@@ -1,13 +1,16 @@
 package org.hage.platform.component.runtime.step.phase;
 
 import org.hage.platform.annotation.di.SingletonComponent;
-import org.hage.platform.component.execution.step.phase.SingleRunnableStepPhase;
+import org.hage.platform.component.execution.phase.ExecutionPhaseType;
+import org.hage.platform.component.execution.phase.SingleTaskExecutionPhase;
 import org.hage.platform.component.runtime.stateprops.registry.UnitPropertiesRegistry;
 import org.hage.platform.component.runtime.stateprops.remote.UnitPropertiesSharer;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static org.hage.platform.component.execution.phase.ExecutionPhaseType.PRE__SHARE_UPDATED_UNIT_PROPERTIES;
+
 @SingletonComponent
-public class UpdatedUnitPropertiesSharePhase extends SingleRunnableStepPhase {
+public class UpdatedUnitPropertiesSharePhase extends SingleTaskExecutionPhase {
 
     @Autowired
     private UnitPropertiesSharer propertiesSharer;
@@ -15,12 +18,12 @@ public class UpdatedUnitPropertiesSharePhase extends SingleRunnableStepPhase {
     private UnitPropertiesRegistry unitPropertiesRegistry;
 
     @Override
-    public String getPhaseName() {
-        return "Share updated unit properties";
+    public ExecutionPhaseType getType() {
+        return PRE__SHARE_UPDATED_UNIT_PROPERTIES;
     }
 
     @Override
-    protected void executePhase(long currentStep) {
+    protected void execute(long currentStep) {
         propertiesSharer.shareUpdatedProperties(unitPropertiesRegistry.getUnitProperties());
     }
 }

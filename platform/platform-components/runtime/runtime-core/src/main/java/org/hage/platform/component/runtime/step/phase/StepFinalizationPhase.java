@@ -1,6 +1,7 @@
 package org.hage.platform.component.runtime.step.phase;
 
 import org.hage.platform.annotation.di.SingletonComponent;
+import org.hage.platform.component.execution.phase.ExecutionPhaseType;
 import org.hage.platform.component.runtime.step.StepFinalizer;
 import org.hage.platform.component.runtime.unit.Unit;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import java.util.List;
 
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
+import static org.hage.platform.component.execution.phase.ExecutionPhaseType.POST__FINALIZATION;
 
 
 @SingletonComponent
@@ -20,8 +22,8 @@ public class StepFinalizationPhase extends AbstractUnitPhase {
     private List<StepFinalizer> stepFinalizers = emptyList();
 
     @Override
-    public String getPhaseName() {
-        return "Step post process";
+    public ExecutionPhaseType getType() {
+        return POST__FINALIZATION;
     }
 
     @Override
@@ -30,8 +32,8 @@ public class StepFinalizationPhase extends AbstractUnitPhase {
     }
 
     @Override
-    public Collection<? extends Runnable> getRunnable(long currentStep) {
-        ArrayList<Runnable> resultRunnable = new ArrayList<>(super.getRunnable(currentStep));
+    public Collection<? extends Runnable> getTasks(long currentStep) {
+        ArrayList<Runnable> resultRunnable = new ArrayList<>(super.getTasks(currentStep));
 
         resultRunnable.addAll(getExtraRunnable());
 

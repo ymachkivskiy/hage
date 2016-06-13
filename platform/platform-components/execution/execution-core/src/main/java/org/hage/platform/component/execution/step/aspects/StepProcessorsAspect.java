@@ -6,8 +6,8 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.hage.platform.annotation.di.SingletonComponent;
 import org.hage.platform.component.execution.monitor.ExecutionMonitor;
-import org.hage.platform.component.execution.step.calback.StepPostProcessor;
-import org.hage.platform.component.execution.step.calback.StepPreProcessor;
+import org.hage.platform.component.execution.phase.PhasesPostProcessor;
+import org.hage.platform.component.execution.phase.PhasesPreProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 
@@ -22,9 +22,9 @@ import static java.util.Collections.emptyList;
 public class StepProcessorsAspect {
 
     @Autowired(required = false)
-    private List<StepPreProcessor> preProcessors = emptyList();
+    private List<PhasesPreProcessor> preProcessors = emptyList();
     @Autowired(required = false)
-    private List<StepPostProcessor> postProcessors = emptyList();
+    private List<PhasesPostProcessor> postProcessors = emptyList();
     @Autowired
     private ExecutionMonitor monitor;
 
@@ -33,8 +33,8 @@ public class StepProcessorsAspect {
         long stepNumber = monitor.getCurrentStepNumber();
         log.debug("Run {} step pre processors before step {} started", preProcessors.size(), stepNumber);
 
-        for (StepPreProcessor preProcessor : preProcessors) {
-            preProcessor.beforeStepExecuted(stepNumber);
+        for (PhasesPreProcessor preProcessor : preProcessors) {
+            preProcessor.beforeAllPhasesExecuted(stepNumber);
         }
     }
 
@@ -44,8 +44,8 @@ public class StepProcessorsAspect {
         long stepNumber = monitor.getPerformedStepsCount();
         log.debug("Run {} step post processors after step {} finished", postProcessors.size(), stepNumber);
 
-        for (StepPostProcessor postProcessor : postProcessors) {
-            postProcessor.afterStepPerformed(stepNumber);
+        for (PhasesPostProcessor postProcessor : postProcessors) {
+            postProcessor.afterAllPhasesExecuted(stepNumber);
         }
     }
 }
