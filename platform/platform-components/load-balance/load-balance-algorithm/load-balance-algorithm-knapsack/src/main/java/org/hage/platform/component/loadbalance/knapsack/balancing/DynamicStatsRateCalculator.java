@@ -11,6 +11,8 @@ import java.time.Duration;
 import static java.lang.Math.max;
 import static java.math.BigDecimal.ROUND_CEILING;
 import static java.math.BigDecimal.valueOf;
+import static org.hage.platform.component.execution.phase.ExecutionPhaseType.MAIN__AGENTS_STEP;
+import static org.hage.platform.component.execution.phase.ExecutionPhaseType.MAIN___CONTROL_AGENT_STEP;
 
 @Slf4j
 @Component
@@ -37,9 +39,10 @@ public class DynamicStatsRateCalculator {
 
     private Duration getExecutionTime(DynamicExecutionInfo dynamicExecutionInfo) {
 
-        Duration agentsTime = dynamicExecutionInfo.getExecutionTimeStats().getAgentsTime();
-        Duration controlAgentsTime = dynamicExecutionInfo.getExecutionTimeStats().getControlAgentsDuration();
-        Duration summaryTime = agentsTime.plus(controlAgentsTime);
+        Duration summaryTime = dynamicExecutionInfo.getExecutionTimeStats().getDurationOf(
+            MAIN___CONTROL_AGENT_STEP,
+            MAIN__AGENTS_STEP
+        );
 
         log.debug("Summary execution time is : {}", summaryTime);
 

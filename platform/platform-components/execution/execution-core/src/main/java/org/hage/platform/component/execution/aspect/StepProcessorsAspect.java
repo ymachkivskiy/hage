@@ -1,4 +1,4 @@
-package org.hage.platform.component.execution.step.aspects;
+package org.hage.platform.component.execution.aspect;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.annotation.After;
@@ -19,7 +19,7 @@ import static java.util.Collections.emptyList;
 @Aspect
 @Slf4j
 @Order(1)
-public class StepProcessorsAspect {
+class StepProcessorsAspect {
 
     @Autowired(required = false)
     private List<PhasesPreProcessor> preProcessors = emptyList();

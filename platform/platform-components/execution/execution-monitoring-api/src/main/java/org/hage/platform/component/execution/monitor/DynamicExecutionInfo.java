@@ -7,6 +7,6 @@ import java.util.List;
 
 @Data
 public class DynamicExecutionInfo implements Serializable {
-    private final ExecutionTimeStats executionTimeStats;
+    private final StepExecutionDurationInfo executionTimeStats;
     private final List<UnitSpecificAgentsStats> unitSpecificAgentsStats;
 }

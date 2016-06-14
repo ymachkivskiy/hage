@@ -1,6 +1,6 @@
 package org.hage.platform.component.execution.step;
 
-public interface ExecutionStepRunnable extends Runnable {
+public interface ExecutionStepInfoProvider {
     long getPerformedStepsCount();
 
     long getCurrentStepNumber();
