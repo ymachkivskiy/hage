@@ -6,7 +6,7 @@ import org.hage.platform.annotation.di.PrototypeComponent;
 import org.hage.platform.component.execution.monitor.SimulationExecutionMonitor;
 import org.hage.platform.component.runtime.container.UnitComponentCreationController;
 import org.hage.platform.component.runtime.stateprops.registry.UnitPropertiesRegistry;
-import org.hage.platform.component.runtime.unit.faces.StateChangePerformer;
+import org.hage.platform.component.runtime.unit.StateChangePerformer;
 import org.hage.platform.component.structure.Position;
 import org.hage.platform.simulation.runtime.state.UnitPropertiesUpdater;
 import org.hage.platform.simulation.runtime.state.property.ReadWriteUnitProperties;

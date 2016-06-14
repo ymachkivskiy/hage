@@ -4,10 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.PrototypeComponent;
+import org.hage.platform.component.execution.monitor.AgentsInfo;
 import org.hage.platform.component.runtime.container.dependency.DependenciesEraser;
 import org.hage.platform.component.runtime.container.dependency.LocalDependenciesInjector;
+import org.hage.platform.component.runtime.unit.AgentsRunner;
 import org.hage.platform.component.runtime.unit.context.AgentExecutionContextEnvironment;
-import org.hage.platform.component.runtime.unit.faces.AgentsRunner;
 import org.hage.platform.component.runtime.util.StatefulFinisher;
 import org.hage.platform.simulation.runtime.agent.Agent;
 import org.hage.platform.simulation.runtime.control.ControlAgent;
@@ -40,6 +41,8 @@ public class UnitActivePopulationController implements AgentsRunner, AgentsTarge
 
     private boolean removeAllAdapters = false;
 
+    private AgentsInfo agentsInfo = new AgentsInfo(0, 0, 0);
+
     @Setter
     private LocalDependenciesInjector localDependenciesInjector;
 
@@ -51,6 +54,7 @@ public class UnitActivePopulationController implements AgentsRunner, AgentsTarge
     //region actions
 
     public void performPostProcessing() {
+        calculateAgentsInfo();
         removeQueriedAgents();
         finishDisposedAgents();
         addQueriedAgents();
@@ -66,6 +70,11 @@ public class UnitActivePopulationController implements AgentsRunner, AgentsTarge
     public void runAgents() {
         log.debug("Run all agents");
         agentsAdapters.forEach(AgentAdapter::performStep);
+    }
+
+    @Override
+    public AgentsInfo getInfo() {
+        return agentsInfo;
     }
 
     //endregion
@@ -130,6 +139,14 @@ public class UnitActivePopulationController implements AgentsRunner, AgentsTarge
     @Override
     public boolean isLocalAgentAdapter(AgentAdapter agentAdapter) {
         return agentAdapter != null && agentsAdapters.contains(agentAdapter);
+    }
+
+    private void calculateAgentsInfo() {
+        agentsInfo = new AgentsInfo(
+            agentsAdapters.size(),
+            toBeAdded.size(),
+            removeAllAdapters ? agentsAdapters.size() : toBeRemoved.size()
+        );
     }
 
     private void removeQueriedAgents() {

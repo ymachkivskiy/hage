@@ -1,5 +1,5 @@
 package org.hage.platform.component.execution.step;
 
-public interface ResetableStepRunnable extends Runnable {
+public interface StepTask extends Runnable {
     void reset();
 }

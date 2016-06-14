@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
+import org.hage.platform.component.execution.monitor.AgentsInfo;
 import org.hage.platform.component.runtime.activepopulation.AgentAdapter;
 import org.hage.platform.component.runtime.activepopulation.UnitActivePopulationController;
 import org.hage.platform.component.runtime.container.UnitComponentCreationController;
@@ -81,6 +82,11 @@ class AgentsUnit implements AgentExecutionContextEnvironment, Unit {
     @Override
     public void runControlAgent() {
         unitActivePopulationController.runControlAgent();
+    }
+
+    @Override
+    public AgentsInfo getInfo() {
+        return unitActivePopulationController.getInfo();
     }
 
     @Override

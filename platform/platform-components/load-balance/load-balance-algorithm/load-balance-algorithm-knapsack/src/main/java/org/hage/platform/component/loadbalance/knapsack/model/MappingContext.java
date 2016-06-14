@@ -2,10 +2,11 @@ package org.hage.platform.component.loadbalance.knapsack.model;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import org.hage.platform.component.execution.monitor.UnitSpecificAgentsStats;
+import org.hage.platform.component.execution.monitor.UnitAgentsNumberInfo;
 import org.hage.platform.component.structure.Position;
 
 import static java.util.Optional.ofNullable;
+import static org.hage.platform.component.loadbalance.knapsack.util.CalculationUtils.rateAgentsInfo;
 
 public class MappingContext {
 
@@ -22,8 +23,8 @@ public class MappingContext {
             .orElseThrow(() -> new IllegalArgumentException("Knapsack " + knapsack + " is not registered in mapping context"));
     }
 
-    public Item itemForStats(UnitSpecificAgentsStats unitStats) {
-        return itemMapping.computeIfAbsent(unitStats.getUnitPosition(), pos -> new Item(unitStats.getAgentsNumber()));
+    public Item itemForStats(UnitAgentsNumberInfo unitAgentsNumberInfo) {
+        return itemMapping.computeIfAbsent(unitAgentsNumberInfo.getUnitPosition(), pos -> new Item(rateAgentsInfo(unitAgentsNumberInfo)));
     }
 
     public Position getPositionOfItem(Item item) {

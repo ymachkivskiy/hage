@@ -2,7 +2,7 @@ package org.hage.platform.component.loadbalance.knapsack.balancing;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.component.execution.monitor.DynamicExecutionInfo;
-import org.hage.platform.component.execution.monitor.UnitSpecificAgentsStats;
+import org.hage.platform.component.loadbalance.knapsack.util.CalculationUtils;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -28,8 +28,9 @@ public class DynamicStatsRateCalculator {
     }
 
     private long getAgentsNumber(DynamicExecutionInfo dynamicExecutionInfo) {
-        long agentsNumber = dynamicExecutionInfo.getUnitSpecificAgentsStats().stream()
-            .mapToLong(UnitSpecificAgentsStats::getAgentsNumber)
+        long agentsNumber = dynamicExecutionInfo.getUnitAgentsNumberInfos()
+            .stream()
+            .mapToLong(CalculationUtils::rateAgentsInfo)
             .sum();
 
         log.debug("Agents number is : {}", agentsNumber);

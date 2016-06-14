@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 @Slf4j
 @SingletonComponent
-public class ExecutionStepTask implements ExecutionStepInfoProvider, ResetableStepRunnable {
+class ExecutionStepTask implements ExecutionStepInfoProvider, StepTask {
 
     @Autowired
     private ExecutionPhaseFactory stepPhaseFactory;

@@ -10,7 +10,7 @@ import org.hage.platform.component.runtime.container.dependency.DependenciesInje
 import org.hage.platform.component.runtime.container.dependency.LocalDependenciesInjector;
 import org.hage.platform.component.runtime.init.AgentDefinitionCount;
 import org.hage.platform.component.runtime.init.UnitPopulation;
-import org.hage.platform.component.runtime.unit.faces.UnitPopulationLoader;
+import org.hage.platform.component.runtime.unit.UnitPopulationLoader;
 import org.hage.platform.simulation.runtime.agent.Agent;
 import org.hage.platform.simulation.runtime.context.AgentInitializer;
 import org.hage.platform.simulation.runtime.context.UnsupportedAgentTypeException;

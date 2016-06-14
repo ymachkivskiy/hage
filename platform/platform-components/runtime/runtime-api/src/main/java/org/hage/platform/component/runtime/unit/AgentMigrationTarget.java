@@ -1,4 +1,4 @@
-package org.hage.platform.component.runtime.unit.faces;
+package org.hage.platform.component.runtime.unit;
 
 import org.hage.platform.simulation.runtime.agent.Agent;
 

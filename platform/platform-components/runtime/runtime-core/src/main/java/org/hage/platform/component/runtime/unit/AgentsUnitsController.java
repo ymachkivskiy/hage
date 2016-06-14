@@ -3,8 +3,6 @@ package org.hage.platform.component.runtime.unit;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.HageRuntimeException;
 import org.hage.platform.annotation.di.SingletonComponent;
-import org.hage.platform.component.runtime.unit.faces.AgentMigrationTarget;
-import org.hage.platform.component.runtime.unit.faces.UnitPopulationLoader;
 import org.hage.platform.component.runtime.unit.registry.MigrationTargetRegistry;
 import org.hage.platform.component.runtime.unit.registry.PopulationLoaderRegistry;
 import org.hage.platform.component.runtime.unit.registry.UnitRegistry;
@@ -12,8 +10,11 @@ import org.hage.platform.component.structure.Position;
 import org.hage.platform.component.structure.connections.Structure;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+
+import static java.util.Collections.unmodifiableCollection;
 
 @Slf4j
 @SingletonComponent
@@ -38,6 +39,11 @@ class AgentsUnitsController implements PopulationLoaderRegistry, UnitRegistry, M
         }
 
         return unit;
+    }
+
+    @Override
+    public Collection<? extends Unit> getAllUnits() {
+        return unmodifiableCollection(createdUnitsConcurrentMap.values());
     }
 
     @Override

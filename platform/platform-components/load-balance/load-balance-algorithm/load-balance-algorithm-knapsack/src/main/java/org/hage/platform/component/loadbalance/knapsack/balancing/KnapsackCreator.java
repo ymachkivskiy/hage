@@ -6,6 +6,7 @@ import org.hage.platform.component.loadbalance.knapsack.model.Item;
 import org.hage.platform.component.loadbalance.knapsack.model.Knapsack;
 import org.hage.platform.component.loadbalance.knapsack.model.KnapsackContext;
 import org.hage.platform.component.loadbalance.knapsack.model.MappingContext;
+import org.hage.platform.component.loadbalance.knapsack.util.CalculationUtils;
 import org.hage.platform.component.loadbalance.rebalance.NodeDynamicExecutionInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -32,8 +33,10 @@ public class KnapsackCreator {
         return knapsack;
     }
 
-    private List<Item> createItems(DynamicExecutionInfo summaryAgentsStats, MappingContext mapping) {
-        return summaryAgentsStats.getUnitSpecificAgentsStats().stream()
+    private List<Item> createItems(DynamicExecutionInfo dynamicExecutionInfo, MappingContext mapping) {
+        return dynamicExecutionInfo.getUnitAgentsNumberInfos()
+            .stream()
+            .filter(CalculationUtils::validForComputation)
             .map(mapping::itemForStats)
             .collect(toList());
     }

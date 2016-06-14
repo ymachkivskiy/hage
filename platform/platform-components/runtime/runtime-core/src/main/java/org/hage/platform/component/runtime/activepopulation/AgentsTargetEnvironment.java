@@ -1,6 +1,6 @@
 package org.hage.platform.component.runtime.activepopulation;
 
-import org.hage.platform.component.runtime.unit.faces.AgentMigrationTarget;
+import org.hage.platform.component.runtime.unit.AgentMigrationTarget;
 import org.hage.platform.simulation.runtime.agent.Agent;
 import org.hage.platform.simulation.runtime.control.ControlAgent;
 

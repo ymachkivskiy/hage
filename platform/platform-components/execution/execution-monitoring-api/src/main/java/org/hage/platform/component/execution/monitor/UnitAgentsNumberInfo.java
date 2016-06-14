@@ -5,9 +5,8 @@ import org.hage.platform.component.structure.Position;
 
 import java.io.Serializable;
 
-// TODO: rename
 @Data
-public class UnitSpecificAgentsStats implements Serializable {
+public class UnitAgentsNumberInfo implements Serializable {
     private final Position unitPosition;
-    private final int agentsNumber;
+    private final AgentsInfo agentsInfo;
 }

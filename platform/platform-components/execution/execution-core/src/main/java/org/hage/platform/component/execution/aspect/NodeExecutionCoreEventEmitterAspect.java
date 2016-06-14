@@ -1,4 +1,4 @@
-package org.hage.platform.component.execution;
+package org.hage.platform.component.execution.aspect;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.annotation.After;
@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @SingletonComponent
 @Aspect
 @Slf4j
-public class NodeExecutionCoreEventEmitterAspect {
+class NodeExecutionCoreEventEmitterAspect {
 
     @Autowired
     private EventBus eventBus;

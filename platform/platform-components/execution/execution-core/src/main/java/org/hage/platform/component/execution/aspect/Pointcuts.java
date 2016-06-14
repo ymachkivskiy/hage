@@ -4,7 +4,7 @@ import org.aspectj.lang.annotation.Pointcut;
 
 class Pointcuts {
 
-    @Pointcut("execution(public void org.hage.platform.component.execution.step.ResetableStepRunnable.run())")
+    @Pointcut("execution(public void org.hage.platform.component.execution.step.StepTask.run())")
     void stepPerforming() {
     }
 

@@ -3,7 +3,7 @@ package org.hage.platform.component.runtime.populationinit;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.component.runtime.init.Population;
-import org.hage.platform.component.runtime.unit.faces.UnitPopulationLoader;
+import org.hage.platform.component.runtime.unit.UnitPopulationLoader;
 import org.hage.platform.component.runtime.unit.registry.PopulationLoaderRegistry;
 import org.hage.platform.component.simulationconfig.CoreConfigurerAdapter;
 import org.hage.platform.component.structure.Position;

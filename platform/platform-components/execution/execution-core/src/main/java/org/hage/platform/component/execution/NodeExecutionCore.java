@@ -2,7 +2,7 @@ package org.hage.platform.component.execution;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.component.execution.CancelableTaskScheduler.TaskCancelHandle;
-import org.hage.platform.component.execution.step.ResetableStepRunnable;
+import org.hage.platform.component.execution.step.StepTask;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
@@ -19,7 +19,7 @@ public class NodeExecutionCore implements ExecutionCore {
     private Optional<TaskCancelHandle> stepTaskCancelHandle = empty();
 
     @Autowired
-    private ResetableStepRunnable stepRunnable;
+    private StepTask stepTask;
 
 
     @Override
@@ -56,7 +56,7 @@ public class NodeExecutionCore implements ExecutionCore {
     }
 
     private void doStart() {
-        stepTaskCancelHandle = of(scheduler.scheduleContinuously(stepRunnable));
+        stepTaskCancelHandle = of(scheduler.scheduleContinuously(stepTask));
         currentState = CoreState.RUNNING;
 
         log.info("Core started");
@@ -73,7 +73,7 @@ public class NodeExecutionCore implements ExecutionCore {
     private void doStop() {
         stepTaskCancelHandle.ifPresent(TaskCancelHandle::cancelAndWaitToComplete);
         stepTaskCancelHandle = empty();
-        stepRunnable.reset();
+        stepTask.reset();
         currentState = CoreState.STOPPED;
 
         log.info("Core stopped");

@@ -4,7 +4,7 @@ package org.hage.platform.component.runtime.migration.internal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.PrototypeComponent;
-import org.hage.platform.component.runtime.unit.faces.AgentMigrationTarget;
+import org.hage.platform.component.runtime.unit.AgentMigrationTarget;
 import org.hage.platform.component.runtime.unit.registry.MigrationTargetRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 
