@@ -1,4 +1,4 @@
-package org.hage.platform.component.monitoring;
+package org.hage.platform.component.execution.monitor;
 
 import org.hage.platform.annotation.di.SingletonComponent;
 import org.hage.platform.component.structure.Position;
@@ -11,18 +11,20 @@ import static java.util.stream.Collectors.toList;
 import static java.util.stream.IntStream.range;
 
 @SingletonComponent
-public class DummyMonitor implements NodeDynamicStatsMonitor {
+public class DummyNodeDynamicExecutionMonitor implements NodeDynamicExecutionMonitor {
 
     private Random random = new Random();
 
+
     @Override
-    public DynamicStats provideStats() {
-        return new DynamicStats(dummyExecutionTimeStats(),
+    public DynamicExecutionInfo provideExecutionInfo() {
+        return new DynamicExecutionInfo(dummyExecutionTimeStats(),
             range(0, random.nextInt(15) + 1)
                 .mapToObj(i -> randomUnitStats())
                 .collect(toList())
         );
     }
+
 
     private UnitSpecificAgentsStats randomUnitStats() {
         return new UnitSpecificAgentsStats(randomPosition(), random.nextInt(150));

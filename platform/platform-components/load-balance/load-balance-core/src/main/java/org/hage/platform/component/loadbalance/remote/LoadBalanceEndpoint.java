@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.SingletonComponent;
 import org.hage.platform.component.cluster.OrderedClusterMembersStepView;
 import org.hage.platform.component.loadbalance.rebalance.BalanceOrder;
-import org.hage.platform.component.loadbalance.rebalance.NodeDynamicStats;
+import org.hage.platform.component.loadbalance.rebalance.NodeDynamicExecutionInfo;
 import org.hage.platform.component.loadbalance.remote.message.LoadBalancerRemoteMessage;
 import org.hage.platform.component.loadbalance.remote.message.MessageUtils;
 import org.hage.platform.component.loadbalance.remote.response.LoadBalanceMessageResponseProcessor;
@@ -37,7 +37,7 @@ public class LoadBalanceEndpoint extends BaseRemoteEndpoint<LoadBalancerRemoteMe
     }
 
     @Override
-    public List<NodeDynamicStats> getClusterDynamicStats() {
+    public List<NodeDynamicExecutionInfo> getClusterDynamicStats() {
         return sendToAndAggregateResponses(requestForStatsMsg(), this::aggregateDynamicStats, new HashSet<>(orderedClusterMembersStepView.getOrderedMembers()));
     }
 
@@ -62,9 +62,9 @@ public class LoadBalanceEndpoint extends BaseRemoteEndpoint<LoadBalancerRemoteMe
         return messageProcessingStrategy.processAndAnswer(envelope.getBody());
     }
 
-    private List<NodeDynamicStats> aggregateDynamicStats(List<MessageEnvelope<LoadBalancerRemoteMessage>> messageEnvelopes) {
+    private List<NodeDynamicExecutionInfo> aggregateDynamicStats(List<MessageEnvelope<LoadBalancerRemoteMessage>> messageEnvelopes) {
         return messageEnvelopes.stream()
-            .map(e -> new NodeDynamicStats(e.getOrigin(), e.getBody().getData().getDynamicStats()))
+            .map(e -> new NodeDynamicExecutionInfo(e.getOrigin(), e.getBody().getData().getDynamicExecutionInfo()))
             .collect(toList());
     }
 

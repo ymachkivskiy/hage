@@ -1,4 +1,4 @@
-package org.hage.platform.component.monitoring;
+package org.hage.platform.component.execution.monitor;
 
 import lombok.Data;
 
@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Data
-public class DynamicStats implements Serializable {
+public class DynamicExecutionInfo implements Serializable {
     private final ExecutionTimeStats executionTimeStats;
     private final List<UnitSpecificAgentsStats> unitSpecificAgentsStats;
 }

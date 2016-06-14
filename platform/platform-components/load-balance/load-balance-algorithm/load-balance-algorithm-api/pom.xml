@@ -15,7 +15,7 @@
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
-            <artifactId>monitoring-data</artifactId>
+            <artifactId>execution-monitoring-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 

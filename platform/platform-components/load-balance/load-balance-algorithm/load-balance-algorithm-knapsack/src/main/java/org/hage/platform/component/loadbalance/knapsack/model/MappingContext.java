@@ -2,7 +2,7 @@ package org.hage.platform.component.loadbalance.knapsack.model;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import org.hage.platform.component.monitoring.UnitSpecificAgentsStats;
+import org.hage.platform.component.execution.monitor.UnitSpecificAgentsStats;
 import org.hage.platform.component.structure.Position;
 
 import static java.util.Optional.ofNullable;

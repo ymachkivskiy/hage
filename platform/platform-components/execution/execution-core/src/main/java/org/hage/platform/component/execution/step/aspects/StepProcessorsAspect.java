@@ -5,7 +5,7 @@ import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.hage.platform.annotation.di.SingletonComponent;
-import org.hage.platform.component.execution.monitor.ExecutionMonitor;
+import org.hage.platform.component.execution.monitor.SimulationExecutionMonitor;
 import org.hage.platform.component.execution.phase.PhasesPostProcessor;
 import org.hage.platform.component.execution.phase.PhasesPreProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class StepProcessorsAspect {
     @Autowired(required = false)
     private List<PhasesPostProcessor> postProcessors = emptyList();
     @Autowired
-    private ExecutionMonitor monitor;
+    private SimulationExecutionMonitor monitor;
 
     @Before("Pointcuts.stepPerforming()")
     private void beforeStep() {

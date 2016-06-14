@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface ClusterBalanceCalculator {
     // TODO: document
-    List<BalanceOrder> calculateBalanceOrders(List<NodeDynamicStats> stats);
+    List<BalanceOrder> calculateBalanceOrders(List<NodeDynamicExecutionInfo> stats);
 }

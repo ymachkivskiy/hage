@@ -3,7 +3,7 @@ package org.hage.platform.component.runtime.stateprops;
 import com.google.common.base.Supplier;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.PrototypeComponent;
-import org.hage.platform.component.execution.monitor.ExecutionMonitor;
+import org.hage.platform.component.execution.monitor.SimulationExecutionMonitor;
 import org.hage.platform.component.runtime.container.UnitComponentCreationController;
 import org.hage.platform.component.runtime.stateprops.registry.UnitPropertiesRegistry;
 import org.hage.platform.component.runtime.unit.faces.StateChangePerformer;
@@ -27,7 +27,7 @@ public class UnitPropertiesController implements StateChangePerformer, UnitPrope
     private Supplier<ReadWriteUnitProperties> cachedUnitProperties;
 
     @Autowired
-    private ExecutionMonitor executionMonitor;
+    private SimulationExecutionMonitor simulationExecutionMonitor;
 
     @Autowired
     public void setPropertiesRegistry(UnitPropertiesRegistry propertiesRegistry) {
@@ -52,7 +52,7 @@ public class UnitPropertiesController implements StateChangePerformer, UnitPrope
 
     private void updateStateUsing(UnitPropertiesUpdater controller) {
         log.debug("Update properties for position {}", position);
-        controller.updateProperties(getUnitProperties(), position, executionMonitor.getCurrentStepNumber());
+        controller.updateProperties(getUnitProperties(), position, simulationExecutionMonitor.getCurrentStepNumber());
     }
 
 }

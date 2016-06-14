@@ -3,7 +3,7 @@ package org.hage.platform.component.loadbalance.check;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.NotImplementedException;
 import org.hage.platform.annotation.di.SingletonComponent;
-import org.hage.platform.component.execution.monitor.ExecutionMonitor;
+import org.hage.platform.component.execution.monitor.SimulationExecutionMonitor;
 import org.hage.platform.component.loadbalance.config.LoadBalanceConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -14,7 +14,7 @@ import static java.util.Arrays.asList;
 class ConjunctiveStrategiesFactory implements BalanceCheckStrategyFactory {
 
     @Autowired
-    private ExecutionMonitor executionMonitor;
+    private SimulationExecutionMonitor simulationExecutionMonitor;
     @Autowired
     private ClusterSizeCheckStrategy clusterSizeCheckStrategy;
     @Autowired
@@ -45,9 +45,9 @@ class ConjunctiveStrategiesFactory implements BalanceCheckStrategyFactory {
 
         switch (config.getMode()) {
             case AFTER_STEP_COUNT:
-                return new StepNumberCheckStrategy(config.getAmount(), executionMonitor::getPerformedStepsCount);
+                return new StepNumberCheckStrategy(config.getAmount(), simulationExecutionMonitor::getPerformedStepsCount);
             case AFTER_SECONDS_PASSED:
-                return new ExecutionDurationCheckStrategy(config.getAmount(), executionMonitor::getExecutionDuration);
+                return new ExecutionDurationCheckStrategy(config.getAmount(), simulationExecutionMonitor::getSimulationExecutionDuration);
             default:
                 throw new NotImplementedException("Strategy for " + config.getMode() + " not implemented");
         }

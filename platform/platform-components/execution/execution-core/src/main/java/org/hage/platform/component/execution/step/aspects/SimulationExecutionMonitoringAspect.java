@@ -6,7 +6,7 @@ import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.hage.platform.annotation.di.SingletonComponent;
-import org.hage.platform.component.execution.monitor.ExecutionMonitor;
+import org.hage.platform.component.execution.monitor.SimulationExecutionMonitor;
 import org.hage.platform.component.execution.step.ExecutionStepRunnable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
@@ -22,7 +22,7 @@ import static java.util.concurrent.TimeUnit.NANOSECONDS;
 @SingletonComponent
 @Aspect
 @Order(0)
-public class ExecutionMonitoringAspect implements ExecutionMonitor {
+public class SimulationExecutionMonitoringAspect implements SimulationExecutionMonitor {
 
     private final AtomicReference<Duration> accumulatedDuration = new AtomicReference<>(ZERO);
     private final Stopwatch stopwatch = createUnstarted();
@@ -58,7 +58,7 @@ public class ExecutionMonitoringAspect implements ExecutionMonitor {
     }
 
     @Override
-    public Duration getExecutionDuration() {
+    public Duration getSimulationExecutionDuration() {
         return accumulatedDuration.get().plusNanos(stopwatch.elapsed(NANOSECONDS));
     }
 

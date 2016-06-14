@@ -4,7 +4,7 @@ import org.hage.platform.annotation.di.SingletonComponent;
 import org.hage.platform.component.lifecycle.ClusterResumer;
 import org.hage.platform.component.loadbalance.rebalance.BalanceOrder;
 import org.hage.platform.component.loadbalance.rebalance.ClusterBalanceCalculator;
-import org.hage.platform.component.loadbalance.rebalance.NodeDynamicStats;
+import org.hage.platform.component.loadbalance.rebalance.NodeDynamicExecutionInfo;
 import org.hage.platform.component.loadbalance.remote.BalanceManager;
 import org.hage.platform.component.synchronization.SynchronizationBarrier;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ class GenericLoadBalancer implements LoadBalancer {
 
         if (activityChecker.isActiveInBalancing()) {
 
-            List<NodeDynamicStats> clusterDynamicStats = balanceManager.getClusterDynamicStats();
+            List<NodeDynamicExecutionInfo> clusterDynamicStats = balanceManager.getClusterDynamicStats();
             List<BalanceOrder> balanceOrders = balanceCalculator.calculateBalanceOrders(clusterDynamicStats);
             balanceManager.executeBalanceOrders(balanceOrders);
 

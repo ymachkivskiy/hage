@@ -23,7 +23,6 @@
         <module>cluster-api</module>
         <module>synchronization</module>
         <module>execution</module>
-        <module>monitoring</module>
         <module>load-balance</module>
     </modules>
 

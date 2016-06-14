@@ -3,7 +3,7 @@ package org.hage.platform.component.runtime.stopcondition.configured;
 import com.google.common.base.Supplier;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.SingletonComponent;
-import org.hage.platform.component.execution.monitor.ExecutionMonitor;
+import org.hage.platform.component.execution.monitor.SimulationExecutionMonitor;
 import org.hage.platform.component.runtime.container.StopConditionProvider;
 import org.hage.platform.component.runtime.stopcondition.StopConditionChecker;
 import org.hage.platform.simulation.runtime.stopcondition.SimulationState;
@@ -22,7 +22,7 @@ import static com.google.common.base.Suppliers.memoize;
 class ConfigurationBaseStopCondition implements StopConditionChecker {
 
     @Autowired
-    private ExecutionMonitor executionMonitor;
+    private SimulationExecutionMonitor simulationExecutionMonitor;
     @Autowired
     private StopConditionProvider stopConditionProvider;
 
@@ -47,8 +47,8 @@ class ConfigurationBaseStopCondition implements StopConditionChecker {
     private boolean isSatisfied(StopCondition sc) {
 
         SimulationState currentState = new SimulationState(
-            executionMonitor.getCurrentStepNumber(),
-            executionMonitor.getExecutionDuration());
+            simulationExecutionMonitor.getCurrentStepNumber(),
+            simulationExecutionMonitor.getSimulationExecutionDuration());
 
         log.debug("Checking current execution state {}", currentState);
 

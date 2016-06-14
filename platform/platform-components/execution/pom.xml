@@ -15,10 +15,9 @@
         <module>execution-core-api</module>
         <module>execution-event-data</module>
         <module>execution-core</module>
-        <module>execution-monitoring-api</module>
         <module>execution-phase-api</module>
+        <module>execution-monitoring-api</module>
     </modules>
-
 
 
 </project>

@@ -61,12 +61,6 @@
 
         <dependency>
             <groupId>org.hage.platform.component</groupId>
-            <artifactId>monitoring-core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hage.platform.component</groupId>
             <artifactId>load-balance-core</artifactId>
             <version>${project.version}</version>
         </dependency>
