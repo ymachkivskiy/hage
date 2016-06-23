@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.PrototypeComponent;
 import org.hage.platform.component.execution.monitor.SimulationExecutionMonitor;
 import org.hage.platform.component.runtime.container.UnitComponentCreationController;
+import org.hage.platform.component.runtime.container.dependency.DependenciesEraser;
 import org.hage.platform.component.runtime.stateprops.registry.UnitPropertiesRegistry;
 import org.hage.platform.component.runtime.unit.StateChangePerformer;
 import org.hage.platform.component.structure.Position;
@@ -28,6 +29,8 @@ public class UnitPropertiesController implements StateChangePerformer, UnitPrope
 
     @Autowired
     private SimulationExecutionMonitor simulationExecutionMonitor;
+    @Autowired
+    private DependenciesEraser dependenciesEraser;
 
     @Autowired
     public void setPropertiesRegistry(UnitPropertiesRegistry propertiesRegistry) {
@@ -50,8 +53,12 @@ public class UnitPropertiesController implements StateChangePerformer, UnitPrope
         return cachedUnitProperties.get();
     }
 
-    public Optional<UnitPropertiesUpdater> getUnitPropertiesUpdater() {
-        return cachedUpdater.get();
+    public Optional<UnitPropertiesUpdater> serializeUnitPropertiesUpdater() {
+        log.debug("Serializing unit properties updater");
+
+        Optional<UnitPropertiesUpdater> updater = cachedUpdater.get();
+        updater.ifPresent(dependenciesEraser::eraseDependencies);
+        return updater;
     }
 
     private void updateStateUsing(UnitPropertiesUpdater controller) {

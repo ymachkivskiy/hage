@@ -17,7 +17,7 @@ public class Worker implements WorkerExecutor {
 
     public Worker() {
 
-        ThreadFactory factory = new ThreadFactoryBuilder().setNameFormat("worker-t").setUncaughtExceptionHandler((t, e) -> {
+        ThreadFactory factory = new ThreadFactoryBuilder().setNameFormat("worker-t-%d").setUncaughtExceptionHandler((t, e) -> {
             System.err.print("Exception thrown by " + t);
             e.printStackTrace();
         }).build();

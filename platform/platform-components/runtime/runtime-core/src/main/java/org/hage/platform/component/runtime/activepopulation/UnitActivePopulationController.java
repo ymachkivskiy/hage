@@ -136,7 +136,23 @@ public class UnitActivePopulationController implements AgentsRunner, AgentsTarge
         return unmodifiableSet(agentsAdapters);
     }
 
-    public Optional<ControlAgentAdapter> getControlAgentAdapter() {
+    public List<Agent> serializeAgents() {
+        log.debug("Serializing agents");
+
+        clearDependencies(agentsAdapters);
+
+        return agentsAdapters
+            .stream()
+            .map(AgentAdapter::getAgent)
+            .collect(toList());
+    }
+
+    public Optional<ControlAgent> serializeControlAgent() {
+        log.debug("Serializing control agent");
+
+        Optional<ControlAgent> controlAgent = this.controlAgent.map(ControlAgentAdapter::getControlAgent);
+        controlAgent.ifPresent(dependenciesEraser::eraseDependencies);
+
         return controlAgent;
     }
 
@@ -195,7 +211,7 @@ public class UnitActivePopulationController implements AgentsRunner, AgentsTarge
             .forEach(localDependenciesInjector::injectDependencies);
     }
 
-    private void clearDependencies(List<AgentAdapter> toBeRemoved) {
+    private void clearDependencies(Collection<AgentAdapter> toBeRemoved) {
         log.debug("Erase dependencies from all agents {}", toBeRemoved);
         toBeRemoved
             .stream()

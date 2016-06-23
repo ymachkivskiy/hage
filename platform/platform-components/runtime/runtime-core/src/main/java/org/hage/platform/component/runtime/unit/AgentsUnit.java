@@ -7,7 +7,6 @@ import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.component.execution.monitor.AgentsInfo;
 import org.hage.platform.component.runtime.activepopulation.AgentAdapter;
-import org.hage.platform.component.runtime.activepopulation.ControlAgentAdapter;
 import org.hage.platform.component.runtime.activepopulation.UnitActivePopulationController;
 import org.hage.platform.component.runtime.container.UnitComponentCreationController;
 import org.hage.platform.component.runtime.init.UnitPopulation;
@@ -25,7 +24,6 @@ import org.hage.platform.simulation.runtime.state.UnitPropertiesUpdater;
 import java.util.Collection;
 import java.util.List;
 
-import static java.util.stream.Collectors.toList;
 import static lombok.AccessLevel.PACKAGE;
 import static org.hage.util.ObjectUtils.allNotNull;
 
@@ -107,23 +105,9 @@ public class AgentsUnit implements AgentExecutionContextEnvironment, Unit {
     PackedUnit pack() {
         log.debug("Pack unit on position {}", position);
 
-        List<Agent> agents = unitActivePopulationController.getAllAdapters()
-            .stream()
-            .map(AgentAdapter::getAgent)
-            .collect(toList());
-
-        log.debug("Agents of {} are {}", position, agents);
-
-        ControlAgent controlAgent = unitActivePopulationController.getControlAgentAdapter()
-            .map(ControlAgentAdapter::getControlAgent)
-            .orElse(null);
-
-        log.debug("Control agent of {} is {}", position, controlAgent);
-
-        UnitPropertiesUpdater unitPropertiesUpdater = unitPropertiesController.getUnitPropertiesUpdater()
-            .orElse(null);
-
-        log.debug("Unit properties updater of {} is {}", position, unitPropertiesUpdater);
+        List<Agent> agents = unitActivePopulationController.serializeAgents();
+        ControlAgent controlAgent = unitActivePopulationController.serializeControlAgent().orElse(null);
+        UnitPropertiesUpdater unitPropertiesUpdater = unitPropertiesController.serializeUnitPropertiesUpdater().orElse(null);
 
         UnitConfiguration config = new UnitConfiguration(controlAgent, unitPropertiesUpdater);
 
