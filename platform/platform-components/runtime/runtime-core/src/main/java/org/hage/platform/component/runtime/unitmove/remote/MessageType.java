@@ -1,5 +1,7 @@
 package org.hage.platform.component.runtime.unitmove.remote;
 
-enum MessageType {
+import java.io.Serializable;
+
+enum MessageType implements Serializable {
     SEND, ACK
 }

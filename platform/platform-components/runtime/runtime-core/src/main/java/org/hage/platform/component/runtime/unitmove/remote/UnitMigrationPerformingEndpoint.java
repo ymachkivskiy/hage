@@ -48,8 +48,7 @@ public class UnitMigrationPerformingEndpoint extends BaseRemoteEndpoint<UnitMove
 
         if (unitMoveMessage.getType() == MessageType.SEND) {
             log.debug("Accept units from {} : {}", envelope.getOrigin(), unitMoveMessage.getPackedUnits());
-
-            unitMoveMessage.getPackedUnits().forEach(unitUnpackingQueue::scheduleUnpackAndActivation);
+            unitUnpackingQueue.scheduleUnpackAndActivation(unitMoveMessage.getPackedUnits());
         }
 
         return ack();

@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.SingletonComponent;
 import org.hage.platform.component.execution.phase.ExecutionPhaseType;
 import org.hage.platform.component.execution.phase.PhasesPreProcessor;
+import org.hage.platform.component.runtime.migration.InternalMigrantsInformationProvider;
+import org.hage.platform.component.runtime.unit.Unit;
 import org.hage.platform.component.runtime.unit.registry.UnitRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -23,7 +25,8 @@ class DynamicExecutionMonitorImpl implements NodeDynamicExecutionMonitor, Execut
 
     @Autowired
     private UnitRegistry unitRegistry;
-
+    @Autowired
+    private InternalMigrantsInformationProvider migrantsInformationProvider;
 
     @Override
     public void beforeAllPhasesExecuted(long stepNumber) {
@@ -53,8 +56,14 @@ class DynamicExecutionMonitorImpl implements NodeDynamicExecutionMonitor, Execut
     private List<UnitAgentsNumberInfo> getAgentsInfo() {
         return unitRegistry.getAllUnits()
             .stream()
-            .map(unit -> new UnitAgentsNumberInfo(unit.getPosition(), unit.getInfo()))
+            .map(unit -> new UnitAgentsNumberInfo(unit.getPosition(), createAgentsInfoForUnit(unit)))
             .collect(toList());
+    }
+
+    private AgentsInfo createAgentsInfoForUnit(Unit unit) {
+        log.debug("Create agents info for unit on {}", unit.getPosition());
+        int numberOfMigrantsToUnit = migrantsInformationProvider.getNumberOfMigrantsTo(unit.getPosition());
+        return unit.getInfo().addNumberOfAgentsToAdd(numberOfMigrantsToUnit);
     }
 
 

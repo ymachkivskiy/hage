@@ -3,6 +3,7 @@ package org.hage.platform.component.runtime.migration.internal;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.SingletonComponent;
 import org.hage.platform.component.runtime.migration.InputMigrationQueue;
+import org.hage.platform.component.runtime.migration.InternalMigrantsInformationProvider;
 import org.hage.platform.component.structure.Position;
 
 import java.util.*;
@@ -12,30 +13,25 @@ import static java.util.stream.Collectors.*;
 
 @Slf4j
 @SingletonComponent
-class InternalMigrationBuffer implements InputMigrationQueue, InternalMigrantsProvider {
+class InternalMigrationBuffer implements InputMigrationQueue, InternalMigrantsProvider, InternalMigrantsInformationProvider {
 
     private final List<InternalMigrationGroup> migrationGroups = new LinkedList<>();
 
     @Override
-    public void acceptMigrants(Collection<InternalMigrationGroup> migrationGroups) {
+    public synchronized void acceptMigrants(Collection<InternalMigrationGroup> migrationGroups) {
         log.debug("Accept migration groups {}", migrationGroups);
 
-        synchronized (this.migrationGroups) {
-            this.migrationGroups.addAll(migrationGroups);
-        }
+        this.migrationGroups.addAll(migrationGroups);
     }
 
     @Override
-    public List<InternalMigrationGroup> takeMigrationGroups() {
+    public synchronized List<InternalMigrationGroup> takeMigrationGroups() {
         log.debug("Take migrations groups");
 
-        List<InternalMigrationGroup> tmpMigrationGroups;
+        compactGroups();
 
-        synchronized (migrationGroups) {
-            compactGroups();
-            tmpMigrationGroups = new ArrayList<>(migrationGroups);
-            migrationGroups.clear();
-        }
+        List<InternalMigrationGroup> tmpMigrationGroups = new ArrayList<>(migrationGroups);
+        migrationGroups.clear();
 
         log.debug("Got migration groups {}", tmpMigrationGroups);
 
@@ -43,20 +39,29 @@ class InternalMigrationBuffer implements InputMigrationQueue, InternalMigrantsPr
     }
 
     @Override
-    public List<InternalMigrationGroup> takeMigrantsTo(Position position) {
+    public synchronized List<InternalMigrationGroup> takeMigrantsTo(Position position) {
         log.debug("Take all migrants to {}", position);
 
-        List<InternalMigrationGroup> positionGroups = new ArrayList<>();
+        compactGroups();
 
-        synchronized (migrationGroups) {
-            compactGroups();
-            positionGroups.addAll(takeMatching(group -> group.getTargetPosition().equals(position)));
-        }
+        return takeMatching(group -> group.getTargetPosition().equals(position));
+    }
 
-        return positionGroups;
+    @Override
+    public synchronized int getNumberOfMigrantsTo(Position position) {
+
+        int targetMigrantsNumber = migrationGroups.stream()
+            .filter(group -> group.getTargetPosition().equals(position))
+            .mapToInt(group -> group.getMigrants().size())
+            .sum();
+
+        log.debug("Number of migrants to {} is {}", position, targetMigrantsNumber);
+
+        return targetMigrantsNumber;
     }
 
     private List<InternalMigrationGroup> takeMatching(Predicate<InternalMigrationGroup> matchingPredicate) {
+
         List<InternalMigrationGroup> matching = new ArrayList<>();
 
         for (Iterator<InternalMigrationGroup> it = migrationGroups.iterator(); it.hasNext(); ) {
@@ -71,6 +76,7 @@ class InternalMigrationBuffer implements InputMigrationQueue, InternalMigrantsPr
     }
 
     private void compactGroups() {
+
         ArrayList<InternalMigrationGroup> tmpMigrationGroups = new ArrayList<>(migrationGroups);
 
         migrationGroups.clear();
@@ -85,6 +91,7 @@ class InternalMigrationBuffer implements InputMigrationQueue, InternalMigrantsPr
             ).entrySet().stream()
             .map(e -> new InternalMigrationGroup(e.getKey(), e.getValue()))
             .collect(toCollection(() -> migrationGroups));
+
     }
 
 }

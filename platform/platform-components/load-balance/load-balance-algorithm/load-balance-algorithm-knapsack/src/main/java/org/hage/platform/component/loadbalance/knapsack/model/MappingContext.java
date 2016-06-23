@@ -6,7 +6,7 @@ import org.hage.platform.component.execution.monitor.UnitAgentsNumberInfo;
 import org.hage.platform.component.structure.Position;
 
 import static java.util.Optional.ofNullable;
-import static org.hage.platform.component.loadbalance.knapsack.util.CalculationUtils.rateAgentsInfo;
+import static org.hage.platform.component.loadbalance.knapsack.util.CalculationUtils.measureAgentsInfo;
 
 public class MappingContext {
 
@@ -24,7 +24,7 @@ public class MappingContext {
     }
 
     public Item itemForStats(UnitAgentsNumberInfo unitAgentsNumberInfo) {
-        return itemMapping.computeIfAbsent(unitAgentsNumberInfo.getUnitPosition(), pos -> new Item(rateAgentsInfo(unitAgentsNumberInfo)));
+        return itemMapping.computeIfAbsent(unitAgentsNumberInfo.getUnitPosition(), pos -> new Item(measureAgentsInfo(unitAgentsNumberInfo)));
     }
 
     public Position getPositionOfItem(Item item) {

@@ -15,14 +15,10 @@ class PackedUnitsBuffer implements UnitUnpackingQueue, PackedUnitsProvider {
     private final List<PackedUnit> innerBuffer = new LinkedList<>();
 
     @Override
-    public Collection<PackedUnit> takePackedUnits() {
+    public synchronized Collection<PackedUnit> takePackedUnits() {
 
-        List<PackedUnit> packedUnits;
-
-        synchronized (innerBuffer) {
-            packedUnits = new ArrayList<>(innerBuffer);
-            innerBuffer.clear();
-        }
+        List<PackedUnit> packedUnits = new ArrayList<>(innerBuffer);
+        innerBuffer.clear();
 
         log.debug("Take packed units : {}", packedUnits);
 
@@ -30,13 +26,10 @@ class PackedUnitsBuffer implements UnitUnpackingQueue, PackedUnitsProvider {
     }
 
     @Override
-    public void scheduleUnpackAndActivation(PackedUnit packedUnit) {
-        log.debug("Schedule unpack and activation of {}", packedUnit);
+    public synchronized void scheduleUnpackAndActivation(Collection<PackedUnit> packedUnits) {
+        log.debug("Schedule unpack and activation of {}", packedUnits);
 
-        synchronized (innerBuffer) {
-            innerBuffer.add(packedUnit);
-        }
-
+        innerBuffer.addAll(packedUnits);
     }
 
 }
