@@ -3,6 +3,7 @@ package org.hage.platform.component.execution.aspect;
 import com.google.common.base.Stopwatch;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.hage.platform.annotation.di.SingletonComponent;
@@ -29,6 +30,11 @@ class ExecutionPhaseDurationMeasureAspect {
     private void startStopWatch() {
         stopwatch.reset();
         stopwatch.start();
+    }
+
+    @AfterThrowing(value = "Pointcuts.stepPhaseExecution() && args(phase,..)", throwing = "exception")
+    private void logExceptionDuringPhaseExecution(ExecutionPhase phase, Throwable exception) {
+        log.error("Error during phase " + phase.getType() + " execution", exception);
     }
 
     @After("Pointcuts.stepPhaseExecution() && args(phase,..)")

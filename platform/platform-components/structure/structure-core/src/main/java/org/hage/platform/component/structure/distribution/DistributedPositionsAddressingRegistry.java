@@ -78,24 +78,19 @@ public class DistributedPositionsAddressingRegistry implements LocalPositionsCon
     }
 
     @Override
-    public void activateLocally(Collection<Position> positions) {
-        log.debug("Activating locally positions {}", positions);
-
-        lockedLocalPositions.write(localPositions -> localPositions.addAll(nullSafe(positions)));
-        structureChangeRemoteBuffer.addActivated(positions);
-    }
-
-    @Override
     public void activateLocally(Position position) {
-        activateLocally(singletonList(position));
+        log.debug("Activating locally position {}", position);
+
+        lockedLocalPositions.write(localPositions -> localPositions.add(position));
+        structureChangeRemoteBuffer.addActivated(singletonList(position));
     }
 
     @Override
-    public void deactivateLocally(List<Position> positions) {
-        log.debug("Deactivating locally positions {}", positions);
+    public void deactivateLocally(Position position) {
+        log.debug("Deactivating locally position {}", position);
 
-        lockedLocalPositions.write(localPositions -> localPositions.removeAll(nullSafe(positions)));
-        structureChangeRemoteBuffer.addDeactivated(positions);
+        lockedLocalPositions.write(localPositions -> localPositions.remove(position));
+        structureChangeRemoteBuffer.addDeactivated(singletonList(position));
     }
 
     void updatePositionsForNode(NodeAddress nodeAddress, Collection<Position> activatedPositions, Collection<Position> deactivatedPositions) {

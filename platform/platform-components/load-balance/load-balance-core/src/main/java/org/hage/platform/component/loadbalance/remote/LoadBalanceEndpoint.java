@@ -7,7 +7,6 @@ import org.hage.platform.component.cluster.OrderedClusterMembersStepView;
 import org.hage.platform.component.loadbalance.rebalance.BalanceOrder;
 import org.hage.platform.component.loadbalance.rebalance.NodeDynamicExecutionInfo;
 import org.hage.platform.component.loadbalance.remote.message.LoadBalancerRemoteMessage;
-import org.hage.platform.component.loadbalance.remote.message.MessageUtils;
 import org.hage.platform.component.loadbalance.remote.response.LoadBalanceMessageResponseProcessor;
 import org.hage.platform.util.connection.chanel.ConnectionDescriptor;
 import org.hage.platform.util.connection.remote.endpoint.BaseRemoteEndpoint;
@@ -20,6 +19,7 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 import static org.hage.platform.component.loadbalance.remote.message.MessageUtils.requestForStatsMsg;
+import static org.hage.platform.component.loadbalance.remote.message.MessageUtils.unitsRelocationOrderMsg;
 
 @Slf4j
 @SingletonComponent
@@ -75,7 +75,7 @@ public class LoadBalanceEndpoint extends BaseRemoteEndpoint<LoadBalancerRemoteMe
         @Override
         public void run() {
             log.debug("Sending order");
-            sendToAndWaitForResponse(MessageUtils.unitsRelocationOrderMsg(balanceOrder.getRelocationOrders()), balanceOrder.getOrderNode());
+            sendToAndWaitForResponse(unitsRelocationOrderMsg(balanceOrder.getRelocationOrders()), balanceOrder.getOrderNode());
         }
     }
 

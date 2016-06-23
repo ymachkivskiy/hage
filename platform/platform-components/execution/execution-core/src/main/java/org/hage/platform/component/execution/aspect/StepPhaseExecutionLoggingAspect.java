@@ -1,6 +1,6 @@
 package org.hage.platform.component.execution.aspect;
 
-import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.hage.platform.annotation.di.SingletonComponent;
@@ -22,7 +22,7 @@ class StepPhaseExecutionLoggingAspect {
 
     }
 
-    @After(value = "Pointcuts.stepPhaseExecution() && target(executor) && args(phase, step)", argNames = "executor,phase,step")
+    @AfterReturning(value = "Pointcuts.stepPhaseExecution() && target(executor) && args(phase, step)", argNames = "executor,phase,step")
     private void logPhaseExecutionFinish(StepPhaseExecutor executor, ExecutionPhase phase, long step) {
 
         getLogger(executor.getClass()).info("   ------ Finish executing phase \"{}\" in step [{}] ------   ", phase.getType().getDescription(), step);

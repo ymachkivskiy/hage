@@ -9,8 +9,6 @@ import org.hage.platform.component.runtime.container.UnitComponentCreationContro
 import org.hage.platform.component.runtime.location.UnitLocationController;
 import org.hage.platform.component.runtime.stateprops.UnitPropertiesController;
 import org.hage.platform.component.runtime.stateprops.UnitPropertiesProvider;
-import org.hage.platform.component.runtime.unit.context.AgentContextAdapter;
-import org.hage.platform.component.runtime.unit.context.AgentExecutionContextEnvironment;
 import org.hage.platform.component.structure.Position;
 import org.hage.platform.component.structure.distribution.LocalPositionsController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +21,9 @@ import static java.util.Collections.emptyList;
 public abstract class UnitLifecycleProcessor {
 
     @Autowired(required = false)
-    private List<UnitActivationAware> unitActivationAwares = emptyList();
+    private List<UnitActivationCallback> unitActivationCallbacks = emptyList();
     @Autowired(required = false)
-    private List<UnitDeactivationAware> unitDeactivationAwares = emptyList();
+    private List<UnitDeactivationCallback> unitDeactivationCallbacks = emptyList();
     @Autowired
     private LocalPositionsController localPositionsController;
 
@@ -41,8 +39,7 @@ public abstract class UnitLifecycleProcessor {
     }
 
     public final void performDestruction(AgentsUnit unit) {
-        //todo : NOT IMPLEMENTED
-
+        notifyUnitDestroyed(unit);
     }
 
     private void initUnitComponents(AgentsUnit unit) {
@@ -61,8 +58,13 @@ public abstract class UnitLifecycleProcessor {
     }
 
     private void notifyUnitCreated(AgentsUnit unit) {
-        unitActivationAwares.forEach(activationAware -> activationAware.onUnitActivated(unit));
+        unitActivationCallbacks.forEach(activationAware -> activationAware.onUnitActivated(unit));
         localPositionsController.activateLocally(unit.getPosition());
+    }
+
+    private void notifyUnitDestroyed(AgentsUnit unit) {
+        unitDeactivationCallbacks.forEach(deactivationAware -> deactivationAware.onAgentsUnitDeactivated(unit));
+        localPositionsController.deactivateLocally(unit.getPosition());
     }
 
     protected abstract AgentContextAdapter createAgentContextAdapter(UnitLocationController locationController, AgentsCreator agentsCreator, AgentsController agentsController, UnitPropertiesProvider localUnitPropertiesProvider);

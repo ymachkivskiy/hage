@@ -2,7 +2,7 @@ package org.hage.platform.component.runtime.activepopulation;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.hage.platform.component.runtime.unit.context.AgentExecutionContextEnvironment;
+import org.hage.platform.component.runtime.unit.AgentExecutionContextEnvironment;
 import org.hage.platform.simulation.runtime.agent.Agent;
 import org.hage.platform.simulation.runtime.agent.AgentAddress;
 

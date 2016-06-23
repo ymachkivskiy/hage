@@ -8,6 +8,7 @@ public enum ExecutionPhaseType {
     POST__FINALIZATION("Step finalization"),
     PRE__STRUCTURE_DISTRIBUTION("Structure distribution"),
     PRE__UNIT_PROPERTIES_UPDATE("Unit properties update"),
+    PRE__UNITS_UNPACKING("Units unpacking"),
     SYNC("Synchronization"),
     PRE__SHARE_UPDATED_UNIT_PROPERTIES("Unit properties sharing"),
     MAIN__CONDITION_CHECK("Stop condition check"),;

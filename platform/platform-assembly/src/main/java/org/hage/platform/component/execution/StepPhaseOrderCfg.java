@@ -6,6 +6,8 @@ import org.hage.platform.component.runtime.migration.external.ExternalMigrationP
 import org.hage.platform.component.runtime.migration.external.ExternalMigrationTaskFactory;
 import org.hage.platform.component.runtime.migration.internal.InternalMigrationPerformingTask;
 import org.hage.platform.component.runtime.migration.internal.InternalMigrationTaskFactory;
+import org.hage.platform.component.runtime.unitmove.UnitUnpackTask;
+import org.hage.platform.component.runtime.unitmove.UnitUnpackTaskFactory;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -30,9 +32,16 @@ class StepPhaseOrderCfg {
     }
 
     @Bean
+    @Autowired
+    public UnitUnpackTaskFactory unitUnpackTaskFactory(BeanFactory beanFactory) {
+        return packedUnit -> beanFactory.getBean(UnitUnpackTask.class, packedUnit);
+    }
+
+    @Bean
     public ExecutionPhaseFactory stepPhaseFactory() {
         return new OrderedPhasesFactory(
             asList(
+                PRE__UNITS_UNPACKING,
                 PRE__UNIT_PROPERTIES_UPDATE,
                 PRE__INTERNAL_MIGRATION_PROCESSING,
                 PRE__SHARE_UPDATED_UNIT_PROPERTIES,

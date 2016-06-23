@@ -1,5 +1,5 @@
 package org.hage.platform.component.runtime.unit;
 
-public interface UnitActivationAware {
+public interface UnitActivationCallback {
     void onUnitActivated(Unit unit);
 }

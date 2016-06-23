@@ -1,6 +1,8 @@
 package org.hage.platform.util.connection.hazelcast;
 
+import com.google.common.collect.ImmutableMap;
 import com.hazelcast.config.Config;
+import com.hazelcast.config.ExecutorConfig;
 import com.hazelcast.config.InterfacesConfig;
 import com.hazelcast.core.HazelcastInstance;
 import lombok.Getter;
@@ -8,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.util.connection.config.ConnectionConfiguration;
 import org.hage.platform.util.connection.config.ConnectionConfigurationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -36,11 +37,22 @@ public class HazelcastInstanceHolder {
         config.setProperty(HAZELCAST_LOGGING_TYPE_PROP, "slf4j");
 
         updateNetworkConfig(config);
+        updateExecutorsConfig(config);
 
         instance = newHazelcastInstance(config);
 
         log.debug("Hazelcast instance has been initialized");
 
+    }
+
+    private void updateExecutorsConfig(Config config) {
+        // fixme: this is workaround, actual solution not depend on hazelcast threads pool is to  process responses in separate thread
+        config.setExecutorConfigs(
+            ImmutableMap.of(
+                "default",
+                new ExecutorConfig("default", 16)
+            )
+        );
     }
 
     @PreDestroy

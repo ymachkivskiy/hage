@@ -3,7 +3,7 @@ package org.hage.platform.component.runtime.stateprops.remote;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.SingletonComponent;
 import org.hage.platform.component.runtime.stateprops.registry.PositionUnitProperties;
-import org.hage.platform.component.runtime.stateprops.registry.UnitPropertiesUpdater;
+import org.hage.platform.component.runtime.stateprops.registry.UnitPropertiesRefresher;
 import org.hage.platform.util.connection.chanel.ConnectionDescriptor;
 import org.hage.platform.util.connection.remote.endpoint.BaseRemoteEndpoint;
 import org.hage.platform.util.connection.remote.endpoint.MessageEnvelope;
@@ -18,7 +18,7 @@ class UnitPropertiesSharingEndpoint extends BaseRemoteEndpoint<UnitPropertiesMes
     private static final String CHANEL_NAME = "unit-properties-remote-chanel";
 
     @Autowired
-    private UnitPropertiesUpdater unitPropertiesUpdater;
+    private UnitPropertiesRefresher unitPropertiesRefresher;
 
     protected UnitPropertiesSharingEndpoint() {
         super(new ConnectionDescriptor(CHANEL_NAME), UnitPropertiesMessage.class);
@@ -35,7 +35,7 @@ class UnitPropertiesSharingEndpoint extends BaseRemoteEndpoint<UnitPropertiesMes
         log.debug("Got shared properties from {}", envelope.getOrigin());
         if (!envelope.isLocalMessage()) {
             log.debug("Update properties from other node");
-            unitPropertiesUpdater.updatePropertiesUsing(envelope.getBody().getPositionUnitProperties());
+            unitPropertiesRefresher.updatePropertiesUsing(envelope.getBody().getPositionUnitProperties());
         }
     }
 

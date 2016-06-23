@@ -1,7 +1,7 @@
 package org.hage.platform.component.execution.aspect;
 
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.hage.platform.annotation.di.SingletonComponent;
@@ -39,7 +39,7 @@ class StepProcessorsAspect {
     }
 
 
-    @After("Pointcuts.stepPerforming()")
+    @AfterReturning("Pointcuts.stepPerforming()")
     private void afterStep() {
         long stepNumber = monitor.getPerformedStepsCount();
         log.debug("Run {} step post processors after step {} finished", postProcessors.size(), stepNumber);

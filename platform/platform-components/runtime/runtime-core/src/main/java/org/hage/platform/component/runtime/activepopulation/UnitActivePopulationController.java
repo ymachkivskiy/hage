@@ -7,8 +7,8 @@ import org.hage.platform.annotation.di.PrototypeComponent;
 import org.hage.platform.component.execution.monitor.AgentsInfo;
 import org.hage.platform.component.runtime.container.dependency.DependenciesEraser;
 import org.hage.platform.component.runtime.container.dependency.LocalDependenciesInjector;
+import org.hage.platform.component.runtime.unit.AgentExecutionContextEnvironment;
 import org.hage.platform.component.runtime.unit.AgentsRunner;
-import org.hage.platform.component.runtime.unit.context.AgentExecutionContextEnvironment;
 import org.hage.platform.component.runtime.util.StatefulFinisher;
 import org.hage.platform.simulation.runtime.agent.Agent;
 import org.hage.platform.simulation.runtime.control.ControlAgent;
@@ -134,6 +134,10 @@ public class UnitActivePopulationController implements AgentsRunner, AgentsTarge
     @Override
     public Collection<AgentAdapter> getAllAdapters() {
         return unmodifiableSet(agentsAdapters);
+    }
+
+    public Optional<ControlAgentAdapter> getControlAgentAdapter() {
+        return controlAgent;
     }
 
     @Override

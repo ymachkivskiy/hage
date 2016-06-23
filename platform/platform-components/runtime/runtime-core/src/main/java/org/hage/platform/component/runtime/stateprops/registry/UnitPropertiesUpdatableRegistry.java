@@ -22,7 +22,7 @@ import static org.hage.platform.component.runtime.stateprops.registry.EmptyReadW
 
 @SingletonComponent
 @Slf4j
-class UnitPropertiesUpdatableRegistry implements UnitPropertiesRegistry, StepFinalizer, UnitPropertiesUpdater {
+class UnitPropertiesUpdatableRegistry implements UnitPropertiesRegistry, StepFinalizer, UnitPropertiesRefresher {
 
     private final Map<Position, UnitProperties> propertiesMap = new ConcurrentHashMap<>();
     private final Map<Position, ReadUnitProperties> readOnlyPropertiesCopies = new ConcurrentHashMap<>();

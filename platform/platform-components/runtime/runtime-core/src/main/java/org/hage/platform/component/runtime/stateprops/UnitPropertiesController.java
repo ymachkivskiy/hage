@@ -50,6 +50,10 @@ public class UnitPropertiesController implements StateChangePerformer, UnitPrope
         return cachedUnitProperties.get();
     }
 
+    public Optional<UnitPropertiesUpdater> getUnitPropertiesUpdater() {
+        return cachedUpdater.get();
+    }
+
     private void updateStateUsing(UnitPropertiesUpdater controller) {
         log.debug("Update properties for position {}", position);
         controller.updateProperties(getUnitProperties(), position, simulationExecutionMonitor.getCurrentStepNumber());
