@@ -9,6 +9,7 @@ import org.hage.platform.util.connection.chanel.ConnectionFactory;
 import org.hage.platform.util.connection.chanel.FrameReceiverAdapter;
 import org.hage.platform.util.connection.chanel.FrameSender;
 import org.hage.platform.util.connection.hazelcast.HazelcastInstanceHolder;
+import org.hage.platform.util.executors.simple.WorkerExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static com.google.common.cache.CacheBuilder.newBuilder;
@@ -19,7 +20,8 @@ public class HazelcastConnectionFactory implements ConnectionFactory {
     private HazelcastInstanceHolder hazelcastInstanceHolder;
     @Autowired
     private LocalClusterNode localClusterNode;
-
+    @Autowired
+    private WorkerExecutor executor;
 
     private final LoadingCache<ConnectionDescriptor, ChanelPair> cache = newBuilder().build(new Loader());
 
@@ -48,6 +50,7 @@ public class HazelcastConnectionFactory implements ConnectionFactory {
             HazelcastSender sender = new HazelcastSender(descriptor, localClusterNode, hazelcastInstanceHolder.getInstance());
 
             receiveAdapter.setHazelcastSender(sender);
+            receiveAdapter.setExecutor(executor);
             sender.setReceiver(receiveAdapter);
 
             sender.initialize();

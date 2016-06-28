@@ -25,6 +25,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.hage.platform.util</groupId>
+            <artifactId>executors</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.hazelcast</groupId>
             <artifactId>hazelcast</artifactId>
             <version>${hazzelcast.version}</version>

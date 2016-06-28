@@ -11,6 +11,7 @@ import org.hage.platform.util.connection.frame.Frame;
 import org.hage.platform.util.connection.frame.Result;
 import org.hage.platform.util.connection.frame.diagnostics.Diagnostics;
 import org.hage.platform.util.connection.frame.diagnostics.ResultType;
+import org.hage.platform.util.executors.simple.WorkerExecutor;
 
 import java.io.Serializable;
 import java.util.concurrent.atomic.AtomicReference;
@@ -36,6 +37,8 @@ class HazelcastReceiveAdapter implements Receiver, FrameReceiverAdapter {
 
     @Setter(PACKAGE)
     private HazelcastSender hazelcastSender;
+    @Setter(PACKAGE)
+    private WorkerExecutor executor;
 
     private AtomicReference<Receiver> receiverHolder = new AtomicReference<>();
     private AtomicReference<RespondReceiver> respondReceiverHolder = new AtomicReference<>();
@@ -56,6 +59,11 @@ class HazelcastReceiveAdapter implements Receiver, FrameReceiverAdapter {
 
     @Override
     public void receive(Frame frame) {
+        executor.submit(() -> processFrame(frame));
+    }
+
+    private void processFrame(Frame frame) {
+
         log.debug("Frame received {} with chanel {}", frame, descriptor);
 
         if (successFrame(frame)) {

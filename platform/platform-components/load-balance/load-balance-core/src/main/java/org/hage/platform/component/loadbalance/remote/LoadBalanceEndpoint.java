@@ -74,7 +74,7 @@ public class LoadBalanceEndpoint extends BaseRemoteEndpoint<LoadBalancerRemoteMe
 
         @Override
         public void run() {
-            log.debug("Sending order");
+            log.debug("Sending balance order : {}", balanceOrder);
             sendToAndWaitForResponse(unitsRelocationOrderMsg(balanceOrder.getRelocationOrders()), balanceOrder.getOrderNode());
         }
     }

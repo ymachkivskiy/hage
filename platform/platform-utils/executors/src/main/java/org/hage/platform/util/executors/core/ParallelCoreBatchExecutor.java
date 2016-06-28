@@ -14,7 +14,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 // TODO: 09.03.16 move all executors to one place executors module
 public class ParallelCoreBatchExecutor implements CoreBatchExecutor {
-    private static final String THREADS_PREFIX = "exec-core-t-";
+    private static final String THREADS_PREFIX = "exec-core-t-%d";
 
     private final ExecutorService executor;
 
