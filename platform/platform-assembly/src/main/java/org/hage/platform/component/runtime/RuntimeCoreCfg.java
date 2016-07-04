@@ -1,21 +1,20 @@
 package org.hage.platform.component.runtime;
 
 import org.hage.platform.component.container.MutableInstanceContainer;
-import org.hage.platform.component.runtime.activepopulation.AgentsController;
 import org.hage.platform.component.runtime.activepopulation.AgentsTargetEnvironment;
 import org.hage.platform.component.runtime.activepopulation.UnitActivePopulationController;
-import org.hage.platform.component.runtime.container.AgentsCreator;
+import org.hage.platform.component.runtime.activepopulation.UnitActivePopulationControllerFactory;
 import org.hage.platform.component.runtime.container.UnitComponentCreationController;
+import org.hage.platform.component.runtime.container.UnitComponentCreationControllerFactory;
 import org.hage.platform.component.runtime.location.UnitLocationController;
+import org.hage.platform.component.runtime.location.UnitLocationControllerFactory;
 import org.hage.platform.component.runtime.populationinit.GreedyPopulationDivisor;
 import org.hage.platform.component.runtime.stateprops.UnitPropertiesController;
-import org.hage.platform.component.runtime.stateprops.UnitPropertiesProvider;
+import org.hage.platform.component.runtime.stateprops.UnitPropertiesControllerFactory;
 import org.hage.platform.component.runtime.unit.AgentContextAdapter;
-import org.hage.platform.component.runtime.unit.AgentExecutionContextEnvironment;
-import org.hage.platform.component.runtime.unit.UnitLifecycleProcessor;
+import org.hage.platform.component.runtime.unit.AgentContextAdapterFactory;
 import org.hage.platform.component.runtime.util.SimpleStatefulFinisher;
 import org.hage.platform.component.runtime.util.StatefulFinisher;
-import org.hage.platform.component.structure.Position;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -25,9 +24,6 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @Import(CoreConfigurersCfg.class)
 public class RuntimeCoreCfg {
-
-    @Autowired
-    private BeanFactory beanFactory;
 
     @Bean
     public GreedyPopulationDivisor populationProportionsDivisor() {
@@ -41,36 +37,37 @@ public class RuntimeCoreCfg {
 
     @Bean
     @Autowired
-    public UnitLifecycleProcessor agentsUnitFactory(final MutableInstanceContainer instanceContainer) {
-
-        return new UnitLifecycleProcessor() {
-
+    public UnitComponentCreationControllerFactory unitComponentCreationControllerFactory(MutableInstanceContainer instanceContainer, BeanFactory beanFactory) {
+        return new UnitComponentCreationControllerFactory() {
             @Override
-            protected UnitComponentCreationController createUnitComponentCreationController(AgentsTargetEnvironment unitActivePopulationController) {
-                return beanFactory.getBean(UnitComponentCreationController.class, instanceContainer.newChildContainer(), unitActivePopulationController);
-            }
-
-            @Override
-            protected UnitLocationController createUnitLocationContext(Position position) {
-                return beanFactory.getBean(UnitLocationController.class, position);
-            }
-
-            @Override
-            protected UnitActivePopulationController createUnitPopulationController(AgentExecutionContextEnvironment agentEnvironment) {
-                return beanFactory.getBean(UnitActivePopulationController.class, agentEnvironment);
-            }
-
-            @Override
-            protected AgentContextAdapter createAgentContextAdapter(UnitLocationController locationController, AgentsCreator agentsCreator, AgentsController agentsController, UnitPropertiesProvider localUnitPropertiesProvider) {
-                return beanFactory.getBean(AgentContextAdapter.class, locationController, agentsCreator, agentsController, localUnitPropertiesProvider);
-            }
-
-            @Override
-            protected UnitPropertiesController createUnitPropertiesController(Position position, UnitComponentCreationController componentCreationController) {
-                return beanFactory.getBean(UnitPropertiesController.class, position, componentCreationController);
+            public UnitComponentCreationController createControllerWithTargetEnv(AgentsTargetEnvironment agentTargetEnvironment) {
+                return beanFactory.getBean(UnitComponentCreationController.class, instanceContainer.newChildContainer(), agentTargetEnvironment);
             }
         };
+    }
 
+    @Autowired
+    @Bean
+    public UnitLocationControllerFactory unitLocationControllerFactory(BeanFactory beanFactory) {
+        return position -> beanFactory.getBean(UnitLocationController.class, position);
+    }
+
+    @Autowired
+    @Bean
+    public UnitActivePopulationControllerFactory unitActivePopulationControllerFactory(BeanFactory beanFactory) {
+        return agentEnvironment -> beanFactory.getBean(UnitActivePopulationController.class, agentEnvironment);
+    }
+
+    @Autowired
+    @Bean
+    public AgentContextAdapterFactory agentContextAdapterFactory(BeanFactory beanFactory) {
+        return (locationController, agentsCreator, agentsController, localUnitPropertiesProvider) -> beanFactory.getBean(AgentContextAdapter.class, locationController, agentsCreator, agentsController, localUnitPropertiesProvider);
+    }
+
+    @Autowired
+    @Bean
+    public UnitPropertiesControllerFactory unitPropertiesControllerFactory(BeanFactory beanFactory) {
+        return (position, componentCreationController) -> beanFactory.getBean(UnitPropertiesController.class, position, componentCreationController);
     }
 
 }
