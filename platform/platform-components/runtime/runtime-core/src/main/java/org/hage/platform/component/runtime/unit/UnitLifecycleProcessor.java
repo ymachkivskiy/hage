@@ -2,7 +2,6 @@ package org.hage.platform.component.runtime.unit;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.SingletonComponent;
-import org.hage.platform.component.runtime.activepopulation.PopulationControllerInitialState;
 import org.hage.platform.component.runtime.activepopulation.UnitActivePopulationController;
 import org.hage.platform.component.runtime.activepopulation.UnitActivePopulationControllerFactory;
 import org.hage.platform.component.runtime.container.UnitComponentCreationController;
@@ -21,6 +20,7 @@ import java.util.Optional;
 
 import static java.util.Collections.emptyList;
 import static java.util.Optional.*;
+import static org.hage.platform.component.runtime.activepopulation.PopulationControllerInitialState.initialStateWithControlAgentAndAgents;
 import static org.hage.platform.component.runtime.unit.UnitAssembler.unitAssembler;
 
 @Slf4j
@@ -101,8 +101,7 @@ class UnitLifecycleProcessor {
 
     private UnitActivePopulationController createActivePopulationController(AgentExecutionContextEnvironment agentsExecEnvironment, Optional<UnitConfiguration> optionalConfiguration) {
         return optionalConfiguration
-            .flatMap(conf -> ofNullable(conf.getControlAgent()))
-            .map(PopulationControllerInitialState::initialStateWith)
+            .map(conf -> initialStateWithControlAgentAndAgents(conf.getControlAgent(), conf.getAgents()))
             .map(initialState -> activePopulationControllerFactory.createControllerWithExecutionEnvironmentAndInitialState(agentsExecEnvironment, initialState))
             .orElse(activePopulationControllerFactory.createControllerWithExecutionEnvironment(agentsExecEnvironment));
     }

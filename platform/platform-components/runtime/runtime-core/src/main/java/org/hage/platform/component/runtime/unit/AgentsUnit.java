@@ -109,9 +109,7 @@ public class AgentsUnit implements AgentExecutionContextEnvironment, Unit {
         ControlAgent controlAgent = unitActivePopulationController.serializeControlAgent().orElse(null);
         UnitPropertiesUpdater unitPropertiesUpdater = unitPropertiesController.serializeUnitPropertiesUpdater().orElse(null);
 
-        UnitConfiguration config = new UnitConfiguration(controlAgent, unitPropertiesUpdater);
-
-        return new PackedUnit(position, config, agents);
+        return new PackedUnit(position, new UnitConfiguration(controlAgent, unitPropertiesUpdater, agents));
     }
 
     boolean isInitialized() {

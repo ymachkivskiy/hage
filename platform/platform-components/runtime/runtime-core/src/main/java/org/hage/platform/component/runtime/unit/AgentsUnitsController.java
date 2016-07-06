@@ -104,7 +104,7 @@ class AgentsUnitsController implements PopulationLoaderRegistry, UnitRegistry, M
             .flatMap(List::stream)
             .collect(toList());
 
-        packedUnit.getAgents().addAll(migrants);
+        packedUnit.getConfiguration().getAgents().addAll(migrants);
     }
 
     private AgentsUnit deactivateUnit(Position position) {

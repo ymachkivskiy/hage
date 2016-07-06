@@ -1,23 +1,32 @@
 package org.hage.platform.component.runtime.activepopulation;
 
 import lombok.Getter;
+import org.hage.platform.simulation.runtime.agent.Agent;
 import org.hage.platform.simulation.runtime.control.ControlAgent;
 
+import java.util.List;
 import java.util.Optional;
 
 import static java.util.Optional.ofNullable;
+import static org.hage.util.CollectionUtils.nullSafe;
 
-// TODO: change it to support agents
+@Getter
 public class PopulationControllerInitialState {
-    @Getter
     private final Optional<ControlAgent> controlAgent;
+    private final List<Agent> agents;
 
-    private PopulationControllerInitialState(Optional<ControlAgent> controlAgent) {
+    private PopulationControllerInitialState(Optional<ControlAgent> controlAgent, List<Agent> agents) {
         this.controlAgent = controlAgent;
+        this.agents = agents;
     }
 
-    public static PopulationControllerInitialState initialStateWith(ControlAgent controlAgent) {
-        return new PopulationControllerInitialState(ofNullable(controlAgent));
+    public static PopulationControllerInitialState initialStateWithControlAgentAndAgents(ControlAgent controlAgent, List<Agent> agents) {
+        return new PopulationControllerInitialState(ofNullable(controlAgent), nullSafe(agents));
     }
+
+    public static PopulationControllerInitialState initialStateWithControlAgent(ControlAgent controlAgent) {
+        return initialStateWithControlAgentAndAgents(controlAgent, null);
+    }
+
 
 }

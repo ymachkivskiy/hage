@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import static java.util.Collections.unmodifiableSet;
 import static java.util.Optional.*;
 import static java.util.stream.Collectors.toList;
-import static org.hage.platform.component.runtime.activepopulation.PopulationControllerInitialState.initialStateWith;
+import static org.hage.platform.component.runtime.activepopulation.PopulationControllerInitialState.initialStateWithControlAgent;
 
 @Slf4j
 @PrototypeComponent
@@ -103,7 +103,7 @@ public class UnitActivePopulationController implements AgentsRunner, AgentsTarge
     }
 
     private PopulationControllerInitialState createInitialState() {
-        return initialStateWith(unitContainer.getControlAgentInstance().orElse(null));
+        return initialStateWithControlAgent(unitContainer.getControlAgentInstance().orElse(null));
     }
 
     private void applyInitialState(PopulationControllerInitialState state) {
@@ -113,6 +113,7 @@ public class UnitActivePopulationController implements AgentsRunner, AgentsTarge
                 setControlAgent(ca);
             }
         );
+        addAgentsImmediately(state.getAgents());
     }
 
     //region add/remove agents
