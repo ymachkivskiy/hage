@@ -1,14 +1,14 @@
 package org.hage.platform.component.runtime.activepopulation;
 
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.PrototypeComponent;
 import org.hage.platform.component.execution.monitor.AgentsInfo;
 import org.hage.platform.component.runtime.container.dependency.DependenciesEraser;
-import org.hage.platform.component.runtime.container.dependency.LocalDependenciesInjector;
 import org.hage.platform.component.runtime.unit.AgentExecutionContextEnvironment;
 import org.hage.platform.component.runtime.unit.AgentsRunner;
+import org.hage.platform.component.runtime.unit.UnitComponent;
+import org.hage.platform.component.runtime.unit.UnitContainer;
 import org.hage.platform.component.runtime.util.StatefulFinisher;
 import org.hage.platform.simulation.runtime.agent.Agent;
 import org.hage.platform.simulation.runtime.control.ControlAgent;
@@ -18,18 +18,19 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static java.util.Collections.unmodifiableSet;
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
+import static java.util.Optional.*;
 import static java.util.stream.Collectors.toList;
+import static org.hage.platform.component.runtime.activepopulation.PopulationControllerInitialState.initialStateWith;
 
 @Slf4j
 @PrototypeComponent
-@RequiredArgsConstructor
-public class UnitActivePopulationController implements AgentsRunner, AgentsTargetEnvironment, AgentsController {
+public class UnitActivePopulationController implements AgentsRunner, AgentsTargetEnvironment, AgentsController, UnitComponent {
+
+    private final AtomicLong agentIdCounter = new AtomicLong();
 
     private final AgentExecutionContextEnvironment agentEnvironment;
 
-    private final AtomicLong agentIdCounter = new AtomicLong();
+    private Optional<PopulationControllerInitialState> initialState;
 
     private final List<AgentAdapter> toBeRemoved = new LinkedList<>();
     private final List<AgentAdapter> toBeAdded = new LinkedList<>();
@@ -44,12 +45,22 @@ public class UnitActivePopulationController implements AgentsRunner, AgentsTarge
     private AgentsInfo agentsInfo = new AgentsInfo(0, 0, 0);
 
     @Setter
-    private LocalDependenciesInjector localDependenciesInjector;
+    private UnitContainer unitContainer;
 
     @Autowired
     private StatefulFinisher statefulFinisher;
     @Autowired
     private DependenciesEraser dependenciesEraser;
+
+    public UnitActivePopulationController(AgentExecutionContextEnvironment agentExecutionEnv) {
+        this(agentExecutionEnv, null);
+    }
+
+    public UnitActivePopulationController(AgentExecutionContextEnvironment agentExecutionEnv, PopulationControllerInitialState initialState) {
+        this.agentEnvironment = agentExecutionEnv;
+        this.initialState = ofNullable(initialState);
+    }
+
 
     //region actions
 
@@ -79,10 +90,29 @@ public class UnitActivePopulationController implements AgentsRunner, AgentsTarge
 
     //endregion
 
-    @Override
+
     public void setControlAgent(ControlAgent controlAgent) {
         log.debug("Set control agent to {}", controlAgent);
         this.controlAgent = of(new ControlAgentAdapter(agentEnvironment, controlAgent));
+    }
+
+    @Override
+    public void performPostConstruction() {
+        applyInitialState(initialState.orElse(createInitialState()));
+        initialState = empty();
+    }
+
+    private PopulationControllerInitialState createInitialState() {
+        return initialStateWith(unitContainer.getControlAgentInstance().orElse(null));
+    }
+
+    private void applyInitialState(PopulationControllerInitialState state) {
+        state.getControlAgent().ifPresent(
+            ca -> {
+                unitContainer.injectDependencies(ca);
+                setControlAgent(ca);
+            }
+        );
     }
 
     //region add/remove agents
@@ -91,7 +121,7 @@ public class UnitActivePopulationController implements AgentsRunner, AgentsTarge
     public void addAgentsImmediately(Collection<? extends Agent> agents) {
         log.debug("Add agents into local population {}", agents);
         agents.stream()
-            .peek(localDependenciesInjector::injectDependencies)
+            .peek(unitContainer::injectDependencies)
             .map(this::createAdapterFor)
             .forEach(agentsAdapters::add);
     }
@@ -208,7 +238,7 @@ public class UnitActivePopulationController implements AgentsRunner, AgentsTarge
         toBeAdded
             .stream()
             .map(AgentAdapter::getAgent)
-            .forEach(localDependenciesInjector::injectDependencies);
+            .forEach(unitContainer::injectDependencies);
     }
 
     private void clearDependencies(Collection<AgentAdapter> toBeRemoved) {

@@ -12,7 +12,7 @@ import java.util.Random;
 public class SimpleControlAgent implements ControlAgent {
 
     private final Random random = new Random();
-
+    private int age;
 
     @Override
     public void step(ControlAgentManageContext ctxt) {
@@ -34,6 +34,8 @@ public class SimpleControlAgent implements ControlAgent {
                 ctxt.newAgents(HeavyAgent.class, random.nextInt(2) + 1);
             }
         }
+
+        age++;
 
     }
 

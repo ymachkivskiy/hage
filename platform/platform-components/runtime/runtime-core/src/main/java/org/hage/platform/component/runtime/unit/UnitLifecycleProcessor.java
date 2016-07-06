@@ -2,20 +2,26 @@ package org.hage.platform.component.runtime.unit;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.SingletonComponent;
+import org.hage.platform.component.runtime.activepopulation.PopulationControllerInitialState;
 import org.hage.platform.component.runtime.activepopulation.UnitActivePopulationController;
 import org.hage.platform.component.runtime.activepopulation.UnitActivePopulationControllerFactory;
 import org.hage.platform.component.runtime.container.UnitComponentCreationController;
 import org.hage.platform.component.runtime.container.UnitComponentCreationControllerFactory;
 import org.hage.platform.component.runtime.location.UnitLocationController;
 import org.hage.platform.component.runtime.location.UnitLocationControllerFactory;
+import org.hage.platform.component.runtime.stateprops.PropertiesControllerInitialState;
 import org.hage.platform.component.runtime.stateprops.UnitPropertiesController;
 import org.hage.platform.component.runtime.stateprops.UnitPropertiesControllerFactory;
+import org.hage.platform.component.runtime.unitmove.UnitConfiguration;
 import org.hage.platform.component.structure.distribution.LocalPositionsController;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.Collections.emptyList;
+import static java.util.Optional.*;
+import static org.hage.platform.component.runtime.unit.UnitAssembler.unitAssembler;
 
 @Slf4j
 @SingletonComponent
@@ -38,36 +44,67 @@ class UnitLifecycleProcessor {
     private UnitPropertiesControllerFactory propertiesControllerFactory;
     @Autowired
     private AgentContextAdapterFactory agentContextAdapterFactory;
+    @Autowired
+    private UnitContainerFactory unitContainerFactory;
 
-    public final void performPostConstruction(AgentsUnit unit) {
+    public void performPostConstruction(AgentsUnit unit) {
 
         if (!unit.isInitialized()) {
-            log.debug("Initializing agents unit in position {}", unit);
+            log.debug("Initializing agents unit in position {}", unit.getPosition());
 
-            initUnitComponents(unit);
+            initUnitComponents(unit, empty());
             notifyUnitCreated(unit);
         }
 
+    }
+
+    public void performPostConstruction(AgentsUnit unit, UnitConfiguration unitConfiguration) {
+        if (!unit.isInitialized()) {
+            log.debug("Initializing agents unit after migration in position {}", unit.getPosition());
+
+            initUnitComponents(unit, of(unitConfiguration));
+            notifyUnitCreated(unit);
+        } else {
+            log.error("Trying to initialize already initialized unit on {} using configuration", unit.getPosition());
+        }
     }
 
     public final void performDestruction(AgentsUnit unit) {
         notifyUnitDestroyed(unit);
     }
 
-    private void initUnitComponents(AgentsUnit unit) {
+    private void initUnitComponents(AgentsUnit unit, Optional<UnitConfiguration> optionalConfiguration) {
         UnitLocationController locationCtrl = locationControllerFactory.createForPosition(unit.getPosition());
-        UnitActivePopulationController unitActivePopulationCtrl = activePopulationControllerFactory.createActivePopulationControllerForExecutionEnvironment(unit);
+        UnitActivePopulationController unitActivePopulationCtrl = createActivePopulationController(unit, optionalConfiguration);
         UnitComponentCreationController unitComponentCreationCtrl = componentCreationControllerFactory.createControllerWithTargetEnv(unitActivePopulationCtrl);
-        UnitPropertiesController unitPropertiesController = propertiesControllerFactory.createUnitPropertiesController(unit.getPosition(), unitComponentCreationCtrl);
-        AgentContextAdapter agentContextAdapter = agentContextAdapterFactory.createAgentContextAdapter(locationCtrl, unitComponentCreationCtrl, unitActivePopulationCtrl, unitPropertiesController);
+        UnitPropertiesController unitPropertiesController = createUnitPropertiesController(unit, optionalConfiguration);
 
-        unitActivePopulationCtrl.setLocalDependenciesInjector(unitComponentCreationCtrl);
+        unitAssembler()
+            .withLocationCtrl(locationCtrl)
+            .withUnitActivePopulationCtrl(unitActivePopulationCtrl)
+            .withUnitComponentCreationCtrl(unitComponentCreationCtrl)
+            .withUnitPropertiesController(unitPropertiesController)
+            .withUnitContainer(unitContainerFactory.newUnitContainer())
+            // TODO: is generic, move to assembler
+            .withAgentContextAdapter(agentContextAdapterFactory.createAgentContextAdapter(locationCtrl, unitComponentCreationCtrl, unitActivePopulationCtrl, unitPropertiesController))
 
-        unit.setUnitPropertiesController(unitPropertiesController);
-        unit.setUnitLocationController(locationCtrl);
-        unit.setUnitComponentCreationController(unitComponentCreationCtrl);
-        unit.setUnitActivePopulationController(unitActivePopulationCtrl);
-        unit.setAgentContextAdapter(agentContextAdapter);
+            .assemble(unit);
+    }
+
+    private UnitPropertiesController createUnitPropertiesController(AgentsUnit unit, Optional<UnitConfiguration> optionalConfiguration) {
+        return optionalConfiguration
+            .flatMap(conf -> ofNullable(conf.getPropertiesUpdater()))
+            .map(PropertiesControllerInitialState::initialStateWith)
+            .map(initialState -> propertiesControllerFactory.createPropertiesControllerWithInitialState(unit.getPosition(), initialState))
+            .orElse(propertiesControllerFactory.createUnitPropertiesController(unit.getPosition()));
+    }
+
+    private UnitActivePopulationController createActivePopulationController(AgentExecutionContextEnvironment agentsExecEnvironment, Optional<UnitConfiguration> optionalConfiguration) {
+        return optionalConfiguration
+            .flatMap(conf -> ofNullable(conf.getControlAgent()))
+            .map(PopulationControllerInitialState::initialStateWith)
+            .map(initialState -> activePopulationControllerFactory.createControllerWithExecutionEnvironmentAndInitialState(agentsExecEnvironment, initialState))
+            .orElse(activePopulationControllerFactory.createControllerWithExecutionEnvironment(agentsExecEnvironment));
     }
 
     private void notifyUnitCreated(AgentsUnit unit) {

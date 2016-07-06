@@ -1,22 +1,20 @@
 package org.hage.platform.component.runtime.container;
 
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.PrototypeComponent;
-import org.hage.platform.component.container.InstanceContainer;
-import org.hage.platform.component.container.MutableInstanceContainer;
 import org.hage.platform.component.runtime.activepopulation.AgentsTargetEnvironment;
-import org.hage.platform.component.runtime.container.dependency.DependenciesInjector;
-import org.hage.platform.component.runtime.container.dependency.LocalDependenciesInjector;
 import org.hage.platform.component.runtime.init.AgentDefinitionCount;
 import org.hage.platform.component.runtime.init.UnitPopulation;
+import org.hage.platform.component.runtime.unit.UnitComponent;
+import org.hage.platform.component.runtime.unit.UnitContainer;
 import org.hage.platform.component.runtime.unit.UnitPopulationLoader;
 import org.hage.platform.simulation.runtime.agent.Agent;
 import org.hage.platform.simulation.runtime.context.AgentInitializer;
 import org.hage.platform.simulation.runtime.context.UnsupportedAgentTypeException;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.PostConstruct;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -29,24 +27,15 @@ import static java.util.stream.IntStream.range;
 @Slf4j
 @PrototypeComponent
 @RequiredArgsConstructor
-public class UnitComponentCreationController implements UnitPopulationLoader, AgentsCreator, LocalDependenciesInjector {
+public class UnitComponentCreationController implements UnitPopulationLoader, AgentsCreator, UnitComponent {
 
-    private final MutableInstanceContainer instanceContainer;
     private final AgentsTargetEnvironment agentsTargetEnvironment;
+
+    @Setter
+    private UnitContainer unitContainer;
 
     @Autowired
     private SimulationAgentDefinitionsSupplier agentDefinitionsSupplier;
-    @Autowired
-    private DependenciesInjector dependenciesInjector;
-
-    @PostConstruct
-    private void createControlAgent() {
-        log.debug("Create control agent");
-
-        agentDefinitionsSupplier.getControlAgentType()
-            .map(instanceContainer::getInstance)
-            .ifPresent(agentsTargetEnvironment::setControlAgent);
-    }
 
     @Override
     public void loadPopulation(UnitPopulation population) {
@@ -72,7 +61,7 @@ public class UnitComponentCreationController implements UnitPopulationLoader, Ag
         checkArgument(agentsNumber > 0, "Agent number must be positive integer greater than zero");
 
         Collection<T> agents = IntStream.range(0, agentsNumber)
-            .mapToObj(i -> instanceContainer.getInstance(agentClazz))
+            .mapToObj(i -> unitContainer.newAgentInstance(agentClazz))
             .peek(initializer::initAgent)
             .collect(toList());
 
@@ -80,12 +69,9 @@ public class UnitComponentCreationController implements UnitPopulationLoader, Ag
     }
 
     @Override
-    public void injectDependencies(Object object) {
-        dependenciesInjector.injectDependenciesUsing(object, instanceContainer);
-    }
+    public void performPostConstruction() {
+        //todo : NOT IMPLEMENTED
 
-    public InstanceContainer getInstanceContainer() {
-        return instanceContainer;
     }
 
     private <T extends Agent> void registerAgents(Collection<T> agents, boolean immediately) {
@@ -100,19 +86,19 @@ public class UnitComponentCreationController implements UnitPopulationLoader, Ag
         log.debug("Create initial agents");
 
         List<Agent> agents = population.getCountedAgents().stream()
-            .map(this::createNotInitializedAgents)
+            .map(this::createAgentsForDefinition)
             .flatMap(List::stream)
             .collect(toList());
 
         registerAgents(agents, true);
     }
 
-    private List<Agent> createNotInitializedAgents(AgentDefinitionCount definitionCount) {
+    private List<Agent> createAgentsForDefinition(AgentDefinitionCount definitionCount) {
         Class<? extends Agent> agentClazz = definitionCount.getAgentDefinition().getAgentClass();
         checkAgentClazz(agentClazz);
 
         return range(0, definitionCount.getCount())
-            .mapToObj(i -> instanceContainer.getInstance(agentClazz))
+            .mapToObj(i -> unitContainer.newAgentInstance(agentClazz))
             .collect(toList());
     }
 

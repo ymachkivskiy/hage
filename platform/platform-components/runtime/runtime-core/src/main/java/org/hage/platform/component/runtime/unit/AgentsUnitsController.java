@@ -53,6 +53,21 @@ class AgentsUnitsController implements PopulationLoaderRegistry, UnitRegistry, M
     }
 
     @Override
+    public void activateConfigurationOnPosition(Position position, UnitConfiguration unitConfiguration) {
+        log.debug("Activate unit configuration on position {}", position);
+
+        AgentsUnit unit = createdUnitsConcurrentMap.merge(position, createUnit(position), (u1, u2) -> {
+            log.error("Error while activating unit configuration on position {} - unit already was at node", position);
+            throw new HageRuntimeException("Error while activating unit configuration on position " + position);
+        });
+
+        synchronized (unit) {
+            unitLifecycleProcessor.performPostConstruction(unit, unitConfiguration);
+        }
+
+    }
+
+    @Override
     public Collection<? extends Unit> getAllUnits() {
         return unmodifiableCollection(createdUnitsConcurrentMap.values());
     }
@@ -65,12 +80,6 @@ class AgentsUnitsController implements PopulationLoaderRegistry, UnitRegistry, M
     @Override
     public AgentMigrationTarget migrationTargetFor(Position position) {
         return unitFor(position);
-    }
-
-    @Override
-    public void activateConfigurationOnPosition(Position position, UnitConfiguration unitConfiguration) {
-        //todo : NOT IMPLEMENTED
-
     }
 
     @Override

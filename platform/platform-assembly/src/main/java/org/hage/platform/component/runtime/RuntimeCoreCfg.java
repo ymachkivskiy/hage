@@ -1,20 +1,23 @@
 package org.hage.platform.component.runtime;
 
-import org.hage.platform.component.container.MutableInstanceContainer;
-import org.hage.platform.component.runtime.activepopulation.AgentsTargetEnvironment;
+import org.hage.platform.component.runtime.activepopulation.PopulationControllerInitialState;
 import org.hage.platform.component.runtime.activepopulation.UnitActivePopulationController;
 import org.hage.platform.component.runtime.activepopulation.UnitActivePopulationControllerFactory;
 import org.hage.platform.component.runtime.container.UnitComponentCreationController;
 import org.hage.platform.component.runtime.container.UnitComponentCreationControllerFactory;
+import org.hage.platform.component.runtime.init.Population;
 import org.hage.platform.component.runtime.location.UnitLocationController;
 import org.hage.platform.component.runtime.location.UnitLocationControllerFactory;
 import org.hage.platform.component.runtime.populationinit.GreedyPopulationDivisor;
+import org.hage.platform.component.runtime.stateprops.PropertiesControllerInitialState;
 import org.hage.platform.component.runtime.stateprops.UnitPropertiesController;
 import org.hage.platform.component.runtime.stateprops.UnitPropertiesControllerFactory;
-import org.hage.platform.component.runtime.unit.AgentContextAdapter;
-import org.hage.platform.component.runtime.unit.AgentContextAdapterFactory;
+import org.hage.platform.component.runtime.unit.*;
 import org.hage.platform.component.runtime.util.SimpleStatefulFinisher;
 import org.hage.platform.component.runtime.util.StatefulFinisher;
+import org.hage.platform.component.structure.Position;
+import org.hage.util.proportion.Countable;
+import org.hage.util.proportion.ProportionsDivisor;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -26,7 +29,7 @@ import org.springframework.context.annotation.Import;
 public class RuntimeCoreCfg {
 
     @Bean
-    public GreedyPopulationDivisor populationProportionsDivisor() {
+    public ProportionsDivisor<Population, Countable> populationProportionsDivisor() {
         return new GreedyPopulationDivisor();
     }
 
@@ -37,13 +40,8 @@ public class RuntimeCoreCfg {
 
     @Bean
     @Autowired
-    public UnitComponentCreationControllerFactory unitComponentCreationControllerFactory(MutableInstanceContainer instanceContainer, BeanFactory beanFactory) {
-        return new UnitComponentCreationControllerFactory() {
-            @Override
-            public UnitComponentCreationController createControllerWithTargetEnv(AgentsTargetEnvironment agentTargetEnvironment) {
-                return beanFactory.getBean(UnitComponentCreationController.class, instanceContainer.newChildContainer(), agentTargetEnvironment);
-            }
-        };
+    public UnitComponentCreationControllerFactory unitComponentCreationControllerFactory(BeanFactory beanFactory) {
+        return agentTargetEnvironment -> beanFactory.getBean(UnitComponentCreationController.class, agentTargetEnvironment);
     }
 
     @Autowired
@@ -55,7 +53,19 @@ public class RuntimeCoreCfg {
     @Autowired
     @Bean
     public UnitActivePopulationControllerFactory unitActivePopulationControllerFactory(BeanFactory beanFactory) {
-        return agentEnvironment -> beanFactory.getBean(UnitActivePopulationController.class, agentEnvironment);
+        return new UnitActivePopulationControllerFactory() {
+
+            @Override
+            public UnitActivePopulationController createControllerWithExecutionEnvironment(AgentExecutionContextEnvironment agentEnvironment) {
+                return beanFactory.getBean(UnitActivePopulationController.class, agentEnvironment);
+            }
+
+            @Override
+            public UnitActivePopulationController createControllerWithExecutionEnvironmentAndInitialState(AgentExecutionContextEnvironment execEnv, PopulationControllerInitialState initialState) {
+                return beanFactory.getBean(UnitActivePopulationController.class, execEnv, initialState);
+            }
+
+        };
     }
 
     @Autowired
@@ -67,7 +77,23 @@ public class RuntimeCoreCfg {
     @Autowired
     @Bean
     public UnitPropertiesControllerFactory unitPropertiesControllerFactory(BeanFactory beanFactory) {
-        return (position, componentCreationController) -> beanFactory.getBean(UnitPropertiesController.class, position, componentCreationController);
+        return new UnitPropertiesControllerFactory() {
+            @Override
+            public UnitPropertiesController createUnitPropertiesController(Position position) {
+                return beanFactory.getBean(UnitPropertiesController.class, position);
+            }
+
+            @Override
+            public UnitPropertiesController createPropertiesControllerWithInitialState(Position position, PropertiesControllerInitialState initialState) {
+                return beanFactory.getBean(UnitPropertiesController.class, position, initialState);
+            }
+        };
+    }
+
+    @Autowired
+    @Bean
+    public UnitContainerFactory unitContainerFactory(BeanFactory beanFactory) {
+        return () -> beanFactory.getBean(UnitContainer.class);
     }
 
 }

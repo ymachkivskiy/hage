@@ -3,15 +3,16 @@ package org.hage.platform.component.runtime.location;
 import com.google.common.base.Supplier;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.PrototypeComponent;
 import org.hage.platform.component.cluster.LocalClusterNode;
+import org.hage.platform.component.runtime.unit.UnitComponent;
+import org.hage.platform.component.runtime.unit.UnitContainer;
 import org.hage.platform.component.structure.Position;
 import org.hage.platform.component.structure.connections.Neighbors;
 import org.hage.platform.component.structure.connections.Structure;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.annotation.PostConstruct;
 
 import static com.google.common.base.Suppliers.memoize;
 import static org.hage.platform.component.runtime.location.AgentsUnitAddress.onlineAddress;
@@ -19,10 +20,12 @@ import static org.hage.platform.component.runtime.location.AgentsUnitAddress.onl
 @Slf4j
 @RequiredArgsConstructor
 @PrototypeComponent
-public class UnitLocationController {
+public class UnitLocationController implements UnitComponent {
 
     @Getter
     private final Position position;
+    @Setter
+    private UnitContainer unitContainer;
 
     @Autowired
     private LocalClusterNode localClusterNode;
@@ -55,8 +58,8 @@ public class UnitLocationController {
         reset();
     }
 
-    @PostConstruct
-    private void init() {
+    @Override
+    public void performPostConstruction() {
         reset();
     }
 

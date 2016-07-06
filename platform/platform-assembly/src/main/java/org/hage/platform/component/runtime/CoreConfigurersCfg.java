@@ -23,8 +23,8 @@ class CoreConfigurersCfg {
     }
 
     @Bean
-    public PopulationCoreConfigurer populationCoreConfigurer() {
-        return new PopulationCoreConfigurer(2);
+    public UnitPropertiesCoreConfigurer unitPropertiesCoreConfigurer() {
+        return new UnitPropertiesCoreConfigurer(2);
     }
 
     @Bean
@@ -33,8 +33,8 @@ class CoreConfigurersCfg {
     }
 
     @Bean
-    public UnitPropertiesCoreConfigurer unitPropertiesCoreConfigurer() {
-        return new UnitPropertiesCoreConfigurer(4);
+    public PopulationCoreConfigurer populationCoreConfigurer() {
+        return new PopulationCoreConfigurer(4);
     }
 
     @Bean

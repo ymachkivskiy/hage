@@ -13,6 +13,7 @@ import static org.hage.example.state.Properties.*;
 
 public class ExamplePropertiesConfigurator implements UnitPropertiesStateComponent {
 
+    private int age;
 
     @Override
     public void updateProperties(ReadWriteUnitProperties readWriteUnitProperties, Position unitPosition, long stepNumber) {
@@ -35,6 +36,7 @@ public class ExamplePropertiesConfigurator implements UnitPropertiesStateCompone
                 currAlgae -> currAlgae + 20);
         }
 
+        age++;
     }
 
     @Override
