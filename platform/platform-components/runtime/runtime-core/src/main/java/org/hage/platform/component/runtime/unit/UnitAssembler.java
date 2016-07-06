@@ -1,66 +1,51 @@
 package org.hage.platform.component.runtime.unit;
 
+import lombok.extern.slf4j.Slf4j;
+import org.hage.platform.annotation.di.SingletonComponent;
 import org.hage.platform.component.runtime.activepopulation.UnitActivePopulationController;
+import org.hage.platform.component.runtime.activepopulation.UnitActivePopulationControllerFactory;
 import org.hage.platform.component.runtime.container.UnitComponentCreationController;
+import org.hage.platform.component.runtime.container.UnitComponentCreationControllerFactory;
 import org.hage.platform.component.runtime.location.UnitLocationController;
+import org.hage.platform.component.runtime.location.UnitLocationControllerFactory;
+import org.hage.platform.component.runtime.stateprops.PropertiesControllerInitialState;
 import org.hage.platform.component.runtime.stateprops.UnitPropertiesController;
+import org.hage.platform.component.runtime.stateprops.UnitPropertiesControllerFactory;
+import org.hage.platform.component.runtime.unitmove.UnitConfiguration;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import java.util.Optional;
 
+import static java.util.Optional.ofNullable;
+import static org.hage.platform.component.runtime.activepopulation.PopulationControllerInitialState.initialStateWithControlAgentAndAgents;
+
+@SingletonComponent
+@Slf4j
 class UnitAssembler {
 
-    private UnitLocationController locationCtrl;
-    private UnitActivePopulationController unitActivePopulationCtrl;
-    private UnitComponentCreationController unitComponentCreationCtrl;
-    private UnitPropertiesController unitPropertiesController;
-    private AgentContextAdapter agentContextAdapter;
-    private UnitContainer componentsCommon;
+    @Autowired
+    private UnitComponentCreationControllerFactory componentCreationControllerFactory;
+    @Autowired
+    private UnitLocationControllerFactory locationControllerFactory;
+    @Autowired
+    private UnitActivePopulationControllerFactory activePopulationControllerFactory;
+    @Autowired
+    private UnitPropertiesControllerFactory propertiesControllerFactory;
+    @Autowired
+    private AgentContextAdapterFactory agentContextAdapterFactory;
+    @Autowired
+    private UnitContainerFactory unitContainerFactory;
 
-    private UnitAssembler() {
-    }
+    public void assembleUnit(AgentsUnit unit, Optional<UnitConfiguration> optionalConfiguration) {
+        log.debug("Assembling unit {} using optional configuration {}", unit, optionalConfiguration);
 
-    public static UnitAssembler unitAssembler() {
-        return new UnitAssembler();
-    }
+        UnitLocationController locationCtrl = locationControllerFactory.createForPosition(unit.getPosition());
+        UnitActivePopulationController unitActivePopulationCtrl = createActivePopulationController(unit, optionalConfiguration);
+        UnitComponentCreationController unitComponentCreationCtrl = componentCreationControllerFactory.createControllerWithTargetEnv(unitActivePopulationCtrl);
+        UnitPropertiesController unitPropertiesController = createUnitPropertiesController(unit, optionalConfiguration);
+        UnitContainer componentsCommon = unitContainerFactory.newUnitContainer();
 
-    public UnitAssembler withLocationCtrl(UnitLocationController locationCtrl) {
-        this.locationCtrl = locationCtrl;
-        return this;
-    }
-
-    public UnitAssembler withUnitActivePopulationCtrl(UnitActivePopulationController unitActivePopulationCtrl) {
-        this.unitActivePopulationCtrl = unitActivePopulationCtrl;
-        return this;
-    }
-
-    public UnitAssembler withUnitComponentCreationCtrl(UnitComponentCreationController unitComponentCreationCtrl) {
-        this.unitComponentCreationCtrl = unitComponentCreationCtrl;
-        return this;
-    }
-
-    public UnitAssembler withUnitPropertiesController(UnitPropertiesController unitPropertiesController) {
-        this.unitPropertiesController = unitPropertiesController;
-        return this;
-    }
-
-    public UnitAssembler withAgentContextAdapter(AgentContextAdapter agentContextAdapter) {
-        this.agentContextAdapter = agentContextAdapter;
-        return this;
-    }
-
-    public UnitAssembler withUnitContainer(UnitContainer componentsCommon) {
-        this.componentsCommon = componentsCommon;
-        return this;
-    }
-
-    public void assemble(AgentsUnit unit) {
-
-        UnitLocationController locationCtrl = checkNotNull(this.locationCtrl, "Location controller not specified");
-        UnitActivePopulationController unitActivePopulationCtrl = checkNotNull(this.unitActivePopulationCtrl, "Active population controller not specified");
-        UnitComponentCreationController unitComponentCreationCtrl = checkNotNull(this.unitComponentCreationCtrl, "Component creation controller not specified");
-        UnitPropertiesController unitPropertiesController = checkNotNull(this.unitPropertiesController, "Unit properties controller not specified");
-        AgentContextAdapter agentContextAdapter = checkNotNull(this.agentContextAdapter, "Agent context adapter not specified");
-        UnitContainer componentsCommon = checkNotNull(this.componentsCommon, "Unit components common not specified");
+        AgentContextAdapter agentContextAdapter = agentContextAdapterFactory.createAgentContextAdapter(locationCtrl, unitComponentCreationCtrl, unitActivePopulationCtrl, unitPropertiesController);
 
         unit.setUnitPropertiesController(unitPropertiesController);
         unit.setUnitLocationController(locationCtrl);
@@ -68,9 +53,6 @@ class UnitAssembler {
         unit.setUnitActivePopulationController(unitActivePopulationCtrl);
         unit.setAgentContextAdapter(agentContextAdapter);
 
-        // TODO: generify & loop
-
-        unitActivePopulationCtrl.setUnitContainer(componentsCommon);
         locationCtrl.setUnitContainer(componentsCommon);
         unitActivePopulationCtrl.setUnitContainer(componentsCommon);
         unitComponentCreationCtrl.setUnitContainer(componentsCommon);
@@ -80,5 +62,20 @@ class UnitAssembler {
         unitActivePopulationCtrl.performPostConstruction();
         unitComponentCreationCtrl.performPostConstruction();
         unitPropertiesController.performPostConstruction();
+    }
+
+    private UnitPropertiesController createUnitPropertiesController(AgentsUnit unit, Optional<UnitConfiguration> optionalConfiguration) {
+        return optionalConfiguration
+            .flatMap(conf -> ofNullable(conf.getPropertiesUpdater()))
+            .map(PropertiesControllerInitialState::initialStateWith)
+            .map(initialState -> propertiesControllerFactory.createPropertiesControllerWithInitialState(unit.getPosition(), initialState))
+            .orElse(propertiesControllerFactory.createUnitPropertiesController(unit.getPosition()));
+    }
+
+    private UnitActivePopulationController createActivePopulationController(AgentExecutionContextEnvironment agentsExecEnvironment, Optional<UnitConfiguration> optionalConfiguration) {
+        return optionalConfiguration
+            .map(conf -> initialStateWithControlAgentAndAgents(conf.getControlAgent(), conf.getAgents()))
+            .map(initialState -> activePopulationControllerFactory.createControllerWithExecutionEnvironmentAndInitialState(agentsExecEnvironment, initialState))
+            .orElse(activePopulationControllerFactory.createControllerWithExecutionEnvironment(agentsExecEnvironment));
     }
 }

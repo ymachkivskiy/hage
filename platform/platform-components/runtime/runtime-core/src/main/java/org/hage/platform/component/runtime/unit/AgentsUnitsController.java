@@ -23,6 +23,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import static java.util.Collections.unmodifiableCollection;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 import static java.util.stream.Collectors.toList;
 
 @Slf4j
@@ -46,7 +48,7 @@ class AgentsUnitsController implements PopulationLoaderRegistry, UnitRegistry, M
         AgentsUnit unit = createdUnitsConcurrentMap.computeIfAbsent(position, this::createUnit);
 
         synchronized (unit) {
-            unitLifecycleProcessor.performPostConstruction(unit);
+            unitLifecycleProcessor.performConstruction(unit, empty());
         }
 
         return unit;
@@ -62,7 +64,7 @@ class AgentsUnitsController implements PopulationLoaderRegistry, UnitRegistry, M
         });
 
         synchronized (unit) {
-            unitLifecycleProcessor.performPostConstruction(unit, unitConfiguration);
+            unitLifecycleProcessor.performConstruction(unit, of(unitConfiguration));
         }
 
     }
