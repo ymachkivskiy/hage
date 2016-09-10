@@ -11,22 +11,6 @@
 
     <artifactId>cli-node</artifactId>
 
-    <profiles>
-        <profile>
-            <id>master</id>
-            <dependencies>
-
-                <!-- simulation configuration loader -->
-                <dependency>
-                    <groupId>org.hage.platform.component.configload</groupId>
-                    <artifactId>mocked-config-loader</artifactId>
-                    <version>${project.version}</version>
-                </dependency>
-
-            </dependencies>
-        </profile>
-    </profiles>
-
     <dependencies>
 
         <!-- boot utils -->
@@ -49,11 +33,11 @@
             <version>${project.version}</version>
         </dependency>
 
-        <!--TODO this is temporary dependency, to be removed-->
+        <!--mocked parts-->
 
         <dependency>
-            <groupId>org.hage.example</groupId>
-            <artifactId>example-model-data</artifactId>
+            <groupId>org.hage.mocked</groupId>
+            <artifactId>mocked-config-loader</artifactId>
             <version>${project.version}</version>
         </dependency>
 

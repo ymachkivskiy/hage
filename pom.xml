@@ -16,7 +16,7 @@
     <modules>
         <module>platform</module>
         <module>cli-node</module>
-        <module>example-model-data</module>
+        <module>mocked-parts</module>
     </modules>
 
     <properties>

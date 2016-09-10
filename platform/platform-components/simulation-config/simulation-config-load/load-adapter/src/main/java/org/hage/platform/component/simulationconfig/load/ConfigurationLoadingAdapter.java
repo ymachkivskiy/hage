@@ -7,6 +7,7 @@ import org.hage.platform.annotation.di.SingletonComponent;
 import org.hage.platform.component.simulationconfig.Configuration;
 import org.hage.platform.component.simulationconfig.ConfigurationDistributor;
 import org.hage.platform.component.simulationconfig.event.ConfigurationLoadRequestEvent;
+import org.hage.platform.component.simulationconfig.load.config.LoadingConfiguration;
 import org.hage.platform.component.simulationconfig.load.definition.InputConfiguration;
 import org.hage.platform.component.simulationconfig.load.generate.ComputationConfigurationGenerator;
 import org.hage.platform.util.bus.EventSubscriber;
@@ -28,13 +29,18 @@ class ConfigurationLoadingAdapter implements EventSubscriber {
     private ComputationConfigurationGenerator configurationGenerator;
     @Autowired
     private ConfigurationDistributor configurationDistributor;
+    @Autowired
+    private LoadingConfiguration loadingConfiguration;
 
     @Subscribe
     @SuppressWarnings("unused")
     public void onConfigurationLoadRequest(ConfigurationLoadRequestEvent event) {
         log.debug("Configuration load request event: {}", event);
 
-        loadExternalConfiguration().ifPresent(this::notifyConfigurationLoaded);
+        if (loadingConfiguration.shouldLoadSimulationConfiguration()) {
+            log.info("Will try to load simulation configuration");
+            loadExternalConfiguration().ifPresent(this::notifyConfigurationLoaded);
+        }
     }
 
     private Optional<InputConfiguration> loadExternalConfiguration() {

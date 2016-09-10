@@ -1,5 +1,6 @@
 package org.hage.platform;
 
+import org.hage.platform.component.simulationconfig.load.config.LoadConfigurationProvider;
 import org.hage.platform.config.PlatformConfigurationHub;
 import org.hage.platform.config.parse.Args4JParsingEngine;
 import org.hage.platform.config.parse.ParsingEngine;
@@ -28,5 +29,11 @@ public class PlatformCliCfg {
     public RemoteConnectionConfigurationProvider remoteConnectionConfigurationProvider() {
         return new RemoteConnectionConfigurationProvider();
     }
+
+    @Bean
+    public LoadConfigurationProvider loadConfigurationProvider() {
+        return new LoadConfigurationProvider();
+    }
+
     //endregion
 }
