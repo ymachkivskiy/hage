@@ -3,7 +3,7 @@
     <parent>
         <artifactId>platform-components</artifactId>
         <groupId>org.hage.platform.component</groupId>
-        <version>0.2.0-SNAPSHOT</version>
+        <version>0.2.0-alpha</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
