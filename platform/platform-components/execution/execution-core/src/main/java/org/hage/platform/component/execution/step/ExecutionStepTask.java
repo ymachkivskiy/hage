@@ -31,7 +31,7 @@ class ExecutionStepTask implements ExecutionStepInfoProvider, StepTask {
     }
 
     @Override
-    public void run() {
+    public boolean perform() {
 
         long currentStepNumber = currentStep.get();
 
@@ -44,6 +44,8 @@ class ExecutionStepTask implements ExecutionStepInfoProvider, StepTask {
         log.info("############# Finished performing step {} #############", currentStepNumber);
 
         currentStep.incrementAndGet();
+
+        return true;
     }
 
     @Override

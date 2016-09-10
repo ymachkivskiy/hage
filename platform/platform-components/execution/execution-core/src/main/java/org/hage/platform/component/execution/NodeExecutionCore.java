@@ -1,26 +1,29 @@
 package org.hage.platform.component.execution;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.component.execution.CancelableTaskScheduler.TaskCancelHandle;
 import org.hage.platform.component.execution.step.StepTask;
+import org.hage.platform.util.executors.schedule.ContinuousSerialScheduler;
+import org.hage.platform.util.executors.schedule.ScheduledTaskHandle;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Optional;
-
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
+import javax.annotation.PostConstruct;
 
 @Slf4j
 public class NodeExecutionCore implements ExecutionCore {
 
-    private CancelableTaskScheduler scheduler = new CancelableTaskScheduler();
     private CoreState currentState = CoreState.STOPPED;
 
-    private Optional<TaskCancelHandle> stepTaskCancelHandle = empty();
+    private ScheduledTaskHandle stepTaskHandle;
 
     @Autowired
     private StepTask stepTask;
+    @Autowired
+    private ContinuousSerialScheduler continuousSerialScheduler;
 
+    @PostConstruct
+    private void initScheduledTask() {
+        stepTaskHandle = continuousSerialScheduler.registerTask(stepTask);
+    }
 
     @Override
     public synchronized void start() {
@@ -56,23 +59,21 @@ public class NodeExecutionCore implements ExecutionCore {
     }
 
     private void doStart() {
-        stepTaskCancelHandle = of(scheduler.scheduleContinuously(stepTask));
+        stepTaskHandle.resumeIfNotRunning();
         currentState = CoreState.RUNNING;
 
         log.info("Core started");
     }
 
     private void doPause() {
-        stepTaskCancelHandle.ifPresent(TaskCancelHandle::cancelAndWaitToComplete);
-        stepTaskCancelHandle = empty();
+        stepTaskHandle.cancelAndWaitToComplete();
         currentState = CoreState.PAUSED;
 
         log.info("Core paused");
     }
 
     private void doStop() {
-        stepTaskCancelHandle.ifPresent(TaskCancelHandle::cancelAndWaitToComplete);
-        stepTaskCancelHandle = empty();
+        stepTaskHandle.cancelAndWaitToComplete();
         stepTask.reset();
         currentState = CoreState.STOPPED;
 

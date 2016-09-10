@@ -3,7 +3,9 @@ package org.hage.platform.component.lifecycle.construct;
 
 import com.google.common.collect.ImmutableTable;
 import com.google.common.collect.Table;
-import com.google.common.util.concurrent.*;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListeningExecutorService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,11 +14,16 @@ import org.hage.platform.component.lifecycle.LifecycleEvent;
 import org.hage.platform.component.lifecycle.LifecycleState;
 import org.hage.platform.component.lifecycle.LifecycleStateMachine;
 import org.hage.platform.util.bus.EventBus;
+import org.hage.platform.util.executors.schedule.ContinuousSerialScheduler;
+import org.hage.platform.util.executors.schedule.ScheduleTask;
+import org.hage.platform.util.executors.schedule.ScheduledTaskHandle;
 
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.GuardedBy;
 import java.util.Set;
-import java.util.concurrent.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -24,18 +31,12 @@ import static com.google.common.base.Objects.toStringHelper;
 import static com.google.common.collect.Iterables.consumingIterable;
 import static com.google.common.collect.Queues.newPriorityBlockingQueue;
 import static com.google.common.util.concurrent.Futures.addCallback;
-import static com.google.common.util.concurrent.MoreExecutors.listeningDecorator;
 import static com.google.common.util.concurrent.MoreExecutors.newDirectExecutorService;
-import static java.util.concurrent.Executors.newSingleThreadScheduledExecutor;
 import static org.hage.util.concurrency.Locks.withReadLock;
 import static org.hage.util.concurrency.Locks.withWriteLock;
 
 @Slf4j
 class LifecycleStateMachineService implements LifecycleStateMachine {
-
-    private final ListeningScheduledExecutorService service = listeningDecorator(
-        newSingleThreadScheduledExecutor(new ThreadFactoryBuilder().setNameFormat("fsm-srv-%d").build()));
-    private final ScheduledFuture<?> dispatcherFuture;
 
     private final PriorityBlockingQueue<EventHolder> eventQueue = newPriorityBlockingQueue();
     private final Table<LifecycleState, LifecycleEvent, TransitionDescriptor> transitionsTable;
@@ -48,36 +49,43 @@ class LifecycleStateMachineService implements LifecycleStateMachine {
 
     private final ReadWriteLock stateLock = new ReentrantReadWriteLock();
 
+    private final ContinuousSerialScheduler schedulerService;
+    private final ScheduledTaskHandle dispatchTaskHandle;
+
     @GuardedBy("stateLock")
     private LifecycleState currentState;
 
     @GuardedBy("stateLock")
     private LifecycleEvent currentEvent;
 
-    LifecycleStateMachineService(LifecycleStateMachineBuilder builder) {
+    LifecycleStateMachineService(LifecycleStateMachineBuilder builder, ContinuousSerialScheduler continuousSerialScheduler) {
         currentState = builder.getInitialState();
         eventBus = builder.getEventBus();
         terminalStates = builder.getTerminalStates();
         shutdownAfterTerminalState = builder.isShutdownWhenTerminated();
         failureEvent = builder.getFailureBehaviorBuilder().getEvent();
         transitionsTable = buildTransitionsTable(builder);
-        dispatcherFuture = service.scheduleAtFixedRate(new Dispatcher(), 0, 1, TimeUnit.MICROSECONDS);
+        this.schedulerService = continuousSerialScheduler;
+        this.dispatchTaskHandle = schedulerService.registerTask(new Dispatcher());
     }
 
     public void fire(LifecycleEvent event) {
         log.debug("{} fired.", event);
         eventQueue.add(new EventHolder(event));
+        dispatchTaskHandle.resumeIfNotRunning();
     }
 
     public void fire(final LifecycleEvent event, final Object parameter) {
         log.debug("{} fired with parameters: {}.", event, parameter);
         eventQueue.add(new EventHolder(event, parameter));
+        dispatchTaskHandle.resumeIfNotRunning();
     }
 
     public void fireAndWaitForTransitionToComplete(final LifecycleEvent event) {
         log.debug("{} fired. I will be waiting for the transition to complete.", event);
         EventHolder holder = new EventHolder(event);
         eventQueue.add(holder);
+        dispatchTaskHandle.resumeIfNotRunning();
         holder.getSemaphore().acquireUninterruptibly();
         log.debug("{} transition completed.", event);
     }
@@ -118,39 +126,44 @@ class LifecycleStateMachineService implements LifecycleStateMachine {
 
     private void internalShutdown() {
         log.debug("Service is shutting down.");
-        dispatcherFuture.cancel(false);
-        service.shutdown();
+        schedulerService.shutdown();
     }
 
-    private class Dispatcher implements Runnable {
+    private class Dispatcher implements ScheduleTask {
 
         private ListeningExecutorService localExecutor = newDirectExecutorService();
 
         @Override
-        public void run() {
+        public boolean perform() {
             if (terminated()) {
                 if (!eventQueue.isEmpty()) {
                     log.warn("Service already terminated ({}).", currentState);
                     drainEvents();
                 }
 
-                if (!service.isShutdown() && shutdownAfterTerminalState) {
+                if (shutdownAfterTerminalState) {
                     internalShutdown();
                 }
-                return;
+                return false;
             }
 
             assert currentEvent == null : "There is an event still running.";
 
             final EventHolder holder;
             final LifecycleEvent event;
+
             try {
                 stateLock.writeLock().lock();
+
+                if (eventQueue.isEmpty()) {
+                    return false;
+                }
+
                 try {
                     holder = eventQueue.take();
                 } catch (final InterruptedException e) {
                     log.debug("Interrupted when waiting for event. Returning.", e);
-                    return;
+                    return false;
                 }
                 event = holder.getEvent();
                 setCurrentEvent(event);
@@ -166,13 +179,15 @@ class LifecycleStateMachineService implements LifecycleStateMachine {
                 fire(failureEvent);
                 setCurrentEvent(null);
                 holder.getSemaphore().release();
-                return;
+                return false;
             }
             log.debug("Planned transition: {}.", transitionDescriptor);
 
             LifecycleAction lifecycleAction = transitionDescriptor.getLifecycleAction();
             ListenableFuture<?> future = localExecutor.submit(lifecycleAction::execute);
             addCallback(future, new TransitionFinalizer(transitionDescriptor, holder.getSemaphore()));
+
+            return true;
         }
 
     }
@@ -186,7 +201,7 @@ class LifecycleStateMachineService implements LifecycleStateMachine {
 
         @Override
         public void onSuccess(final Object result) {
-            log.debug("Transition from {} on {} to {} was successful.", logData());
+            log.debug("Transition from {} on {} to {} was successful.", descriptor.getInitial(), descriptor.getEvent(), descriptor.getTarget());
             writeLock(() -> {
                 setCurrentState(descriptor.getTarget());
                 setCurrentEvent(null);
@@ -197,20 +212,12 @@ class LifecycleStateMachineService implements LifecycleStateMachine {
             completionSemaphore.release();
         }
 
-        private Object[] logData() {
-            return new Object[]{descriptor.getInitial(), descriptor.getEvent(), descriptor.getTarget()};
-        }
-
         @Override
         public void onFailure(final Throwable t) {
-            log.error("Transition from {} on {} to {} failed with exception.", logData(t));
+            log.error("Transition from {} on {} to {} failed with exception {}.", descriptor.getInitial(), descriptor.getEvent(), descriptor.getTarget(), t);
             setCurrentEvent(null);
             fire(failureEvent, t);
             completionSemaphore.release();
-        }
-
-        private Object[] logData(final Throwable t) {
-            return new Object[]{descriptor.getInitial(), descriptor.getEvent(), descriptor.getTarget(), t};
         }
 
     }

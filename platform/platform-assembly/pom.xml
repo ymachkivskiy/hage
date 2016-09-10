@@ -98,6 +98,12 @@
             <version>${project.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.hage.platform.util</groupId>
+            <artifactId>executors-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
         <!-- specific implementations -->
 
         <dependency>

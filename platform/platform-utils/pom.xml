@@ -16,9 +16,9 @@
         <module>reflection</module>
         <module>container-share</module>
         <module>connection</module>
-        <module>executors</module>
         <module>platform-configuration</module>
         <module>platform-boot</module>
+        <module>executors</module>
     </modules>
 
     <dependencies>

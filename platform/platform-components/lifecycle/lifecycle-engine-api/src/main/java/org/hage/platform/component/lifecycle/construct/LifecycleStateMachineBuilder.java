@@ -12,10 +12,9 @@ import org.hage.platform.component.lifecycle.LifecycleEvent;
 import org.hage.platform.component.lifecycle.LifecycleState;
 import org.hage.platform.component.lifecycle.LifecycleStateMachine;
 import org.hage.platform.util.bus.EventBus;
+import org.hage.platform.util.executors.schedule.ContinuousSerialScheduler;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
 
 import java.util.EnumMap;
 import java.util.EnumSet;
@@ -37,6 +36,8 @@ public class LifecycleStateMachineBuilder {
     private BeanFactory beanFactory;
     @Autowired
     private EventBus eventBus;
+    @Autowired
+    private ContinuousSerialScheduler continuousSerialScheduler;
 
     private final Table<LifecycleState, LifecycleEvent, Class<? extends LifecycleAction>> actions;
     private final Table<LifecycleState, LifecycleEvent, LifecycleState> transitions;
@@ -90,7 +91,7 @@ public class LifecycleStateMachineBuilder {
         checkState(initialState != null);
         checkState(failureBehaviorBuilder.getEvent() != null);
 
-        return new LifecycleStateMachineService(this);
+        return new LifecycleStateMachineService(this, continuousSerialScheduler);
     }
 
     TransitionDescriptor transitionFor(LifecycleState state, LifecycleEvent event) {
