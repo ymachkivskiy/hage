@@ -9,16 +9,16 @@ import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 
-import static java.lang.Runtime.getRuntime;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 // TODO: 09.03.16 move all executors to one place executors module
-public class ParallelCoreBatchExecutor implements CoreBatchExecutor {
+class FixedThreadsNumberExecutorEngine implements ExecutionEngine {
     private static final String THREADS_PREFIX = "exec-core-t-%d";
 
     private final ExecutorService executor;
 
-    public ParallelCoreBatchExecutor() {
+    public FixedThreadsNumberExecutorEngine(int threadsNumber) {
+
         ThreadFactory factory = new ThreadFactoryBuilder()
             .setNameFormat(THREADS_PREFIX)
             .setUncaughtExceptionHandler((t, e) -> {
@@ -27,7 +27,7 @@ public class ParallelCoreBatchExecutor implements CoreBatchExecutor {
             }).build();
 
         this.executor = new ThreadPoolExecutor(
-            getRuntime().availableProcessors(),
+            threadsNumber,
             Integer.MAX_VALUE, //unused when queue for tasks is unbounded
             10L, MILLISECONDS,
             new LinkedBlockingDeque<>(),

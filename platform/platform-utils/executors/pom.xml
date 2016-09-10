@@ -12,5 +12,14 @@
     <groupId>org.hage.platform.util</groupId>
     <artifactId>executors</artifactId>
 
+    <dependencies>
+
+        <dependency>
+            <groupId>org.hage.platform.util.conf</groupId>
+            <artifactId>internal-config-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+    </dependencies>
 
 </project>
