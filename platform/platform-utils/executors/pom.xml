@@ -1,0 +1,18 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>platform-utils</artifactId>
+        <groupId>org.hage.platform.util</groupId>
+        <version>0.2.0-alpha</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>pom</packaging>
+
+    <artifactId>executors</artifactId>
+
+    <modules>
+        <module>executors-core</module>
+        <module>executors-api</module>
+    </modules>
+
+</project>

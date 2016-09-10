@@ -3,58 +3,30 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- Maven project information -->
-    <groupId>org.jage</groupId>
-    <artifactId>jage</artifactId>
+    <groupId>org.hage</groupId>
+    <artifactId>hage</artifactId>
     <packaging>pom</packaging>
-    <version>2.7.0-SNAPSHOT</version>
+    <version>0.2.0-alpha</version>
 
-    <!-- basic project information -->
-    <name>AgE</name>
+    <name>HAgE</name>
     <description>
-        Agent platform for evolution algorithms - AgE
+        Habitat Agent platform for evolution algorithms - HAgE (Based on AgE)
     </description>
-    <url>http://age.iisg.agh.edu.pl/jage/</url>
-    <inceptionYear>2006</inceptionYear>
-    <organization>
-        <name>AGH University of Science and Technology</name>
-        <url>http://www.agh.edu.pl</url>
-    </organization>
 
-    <licenses>
-        <license>
-            <name>GNU General Public License Version 3</name>
-            <url>LICENSE.txt</url>
-        </license>
-    </licenses>
-
-    <!-- system components -->
     <modules>
         <module>platform</module>
-        <module>services</module>
-        <module>monitoring</module>
-        <module>examples</module>
-        <module>algorithms</module>
-        <module>archetypes</module>
-        <module>cli</module>
+        <module>cli-node</module>
+        <module>mocked-parts</module>
     </modules>
-
-    <!-- minimal required Maven version set to 3.0.0 because of maven-site-plugin-3.0 requirements -->
-    <prerequisites>
-        <maven>3.0.0</maven>
-    </prerequisites>
-
-
-    <!-- Continuous Integration Management -->
-    <ciManagement>
-        <system>bamboo</system>
-        <url>https://age.iisg.agh.edu.pl/bamboo/browse/AGE</url>
-    </ciManagement>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <scm.base-url>https://github.com/ymachkivskiy/hage.git</scm.base-url>
-        <scm.base-public-url>https://github.com/ymachkivskiy/hage.git</scm.base-public-url>
+        <!-- Library versions -->
+        <spring.version>4.2.1.RELEASE</spring.version>
+        <aspectj.version>1.6.11</aspectj.version>
+        <lombok.version>1.16.6</lombok.version>
+        <guava.version>19.0</guava.version>
+        <springockito.version>1.0.9</springockito.version>
     </properties>
 
     <!-- plugin repositories -->
@@ -145,13 +117,6 @@
                 <enabled>true</enabled>
             </releases>
         </pluginRepository>
-
-        <!-- for confluence plugin for doxia developed by AGH -->
-        <pluginRepository>
-            <id>herman dev</id>
-            <url>http://herman.iisg.agh.edu.pl/proj/dev/maven2</url>
-            <layout>default</layout>
-        </pluginRepository>
     </pluginRepositories>
 
     <build>
@@ -188,11 +153,6 @@
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-release-plugin</artifactId>
-                    <version>2.4.2</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
                     <version>2.4</version>
                 </plugin>
@@ -215,6 +175,11 @@
                     <artifactId>maven-enforcer-plugin</artifactId>
                     <version>1.4.1</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>versions-maven-plugin</artifactId>
+                    <version>2.2</version>
+                </plugin>
             </plugins>
         </pluginManagement>
 
@@ -230,7 +195,7 @@
                 </configuration>
             </plugin>
 
-            <!-- unit tests -->
+            <!-- executionUnit tests -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -252,15 +217,6 @@
                 </executions>
             </plugin>
 
-            <!-- release manager -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <configuration>
-                    <branchBase>${scm.base-url}/branches/releases/</branchBase>
-                    <autoVersionSubmodules>true</autoVersionSubmodules>
-                </configuration>
-            </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -272,6 +228,11 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
             </plugin>
 
             <plugin>
@@ -307,62 +268,99 @@
         </plugins>
     </build>
 
-    <distributionManagement>
-        <repository>
-            <id>age</id>
-            <name>AgE IISG Maven Repository</name>
-            <url>scp://age.iisg.agh.edu.pl/home/proj/age/public_html/maven2/</url>
-        </repository>
-        <site>
-            <id>age-site</id>
-            <name>AgE IISG Website</name>
-            <url>scp://age.iisg.agh.edu.pl/home/proj/age/public_html/jage/</url>
-        </site>
-    </distributionManagement>
-
     <dependencyManagement>
         <dependencies>
             <!-- utilities -->
             <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-core</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-aop</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.aspectj</groupId>
+                <artifactId>aspectjrt</artifactId>
+                <version>${aspectj.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.aspectj</groupId>
+                <artifactId>aspectjweaver</artifactId>
+                <version>${aspectj.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
-                <version>16.0.1</version>
+                <version>${guava.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>com.google.code.findbugs</groupId>
                 <artifactId>jsr305</artifactId>
                 <version>2.0.3</version>
             </dependency>
+
             <dependency>
                 <groupId>commons-beanutils</groupId>
                 <artifactId>commons-beanutils</artifactId>
                 <version>1.9.1</version>
             </dependency>
+
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>3.4</version>
             </dependency>
+
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-collections4</artifactId>
                 <version>4.0</version>
             </dependency>
+
+            <dependency>
+                <groupId>net.sourceforge.argparse4j</groupId>
+                <artifactId>argparse4j</artifactId>
+                <version>0.7.0</version>
+            </dependency>
+
             <dependency>
                 <groupId>commons-cli</groupId>
                 <artifactId>commons-cli</artifactId>
-                <version>1.2</version>
+                <version>1.3.1</version>
             </dependency>
+
             <dependency>
                 <groupId>org.picocontainer</groupId>
                 <artifactId>picocontainer</artifactId>
                 <version>2.14.3</version>
             </dependency>
+
             <dependency>
                 <groupId>dom4j</groupId>
                 <artifactId>dom4j</artifactId>
                 <version>1.6.1</version>
             </dependency>
+
             <dependency>
                 <groupId>org.jetbrains</groupId>
                 <artifactId>annotations</artifactId>
@@ -370,75 +368,85 @@
             </dependency>
 
             <!-- logging -->
+
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
-                <version>1.7.6</version>
+                <version>1.7.5</version>
             </dependency>
+
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-log4j12</artifactId>
-                <version>1.7.6</version>
+                <version>1.7.5</version>
             </dependency>
 
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>jcl-over-slf4j</artifactId>
-                <version>1.7.6</version>
-            </dependency>
 
             <!-- testing -->
+
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>4.11</version>
                 <scope>test</scope>
             </dependency>
+
+            <dependency>
+                <groupId>org.easytesting</groupId>
+                <artifactId>fest-assert</artifactId>
+                <version>1.4</version>
+                <scope>test</scope>
+            </dependency>
+
             <dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-core</artifactId>
                 <version>1.9.5</version>
                 <scope>test</scope>
             </dependency>
+
             <dependency>
                 <groupId>org.hamcrest</groupId>
                 <artifactId>hamcrest-all</artifactId>
                 <version>1.3</version>
                 <scope>test</scope>
             </dependency>
+
             <dependency>
                 <groupId>org.hamcrest</groupId>
                 <artifactId>hamcrest-core</artifactId>
                 <version>1.3</version>
                 <scope>test</scope>
             </dependency>
+
             <dependency>
                 <groupId>org.powermock</groupId>
                 <artifactId>powermock-module-junit4</artifactId>
                 <version>1.5.5</version>
                 <scope>test</scope>
             </dependency>
+
             <dependency>
                 <groupId>org.powermock</groupId>
                 <artifactId>powermock-api-mockito</artifactId>
                 <version>1.5.5</version>
                 <scope>test</scope>
             </dependency>
+
             <dependency>
                 <groupId>org.springframework</groupId>
-                <artifactId>spring-context</artifactId>
-                <version>4.2.1.RELEASE</version>
+                <artifactId>spring-test</artifactId>
+                <version>${spring.version}</version>
+                <scope>test</scope>
             </dependency>
+
             <dependency>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-                <version>1.16.6</version>
+                <groupId>org.kubek2k</groupId>
+                <artifactId>springockito</artifactId>
+                <version>${springockito.version}</version>
+                <scope>test</scope>
             </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-core</artifactId>
-                <version>4.2.1.RELEASE</version>
-            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -446,38 +454,73 @@
     <dependencies>
         <!-- utilities -->
         <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
         </dependency>
+
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections4</artifactId>
         </dependency>
 
-        <!-- logging -->
+        <!--logging-->
+
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
 
-        <!-- testing -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
-            <scope>test</scope>
         </dependency>
+
+        <!-- testing -->
         <dependency>
             <groupId>junit</groupId>
             <!-- junit-dep, because it does not contain hamcrest. -->
@@ -498,17 +541,21 @@
 
         <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
+            <artifactId>spring-test</artifactId>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
+            <groupId>org.kubek2k</groupId>
+            <artifactId>springockito</artifactId>
+            <scope>test</scope>
         </dependency>
 
+
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
+            <groupId>org.easytesting</groupId>
+            <artifactId>fest-assert</artifactId>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>

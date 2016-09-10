@@ -4,6 +4,7 @@ target/
 .classpath
 bin/
 /monitoring/monitoring-consumers/graphite/src/vagrant/.vagrant
-.idea
+.idea/
 *.iml
 out/
+pom.xml.versionsBackup

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mockito="http://www.mockito.org/spring/mockito"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.mockito.org/spring/mockito http://www.mockito.org/spring/mockito.xsd">
+
+
+    <!-- configuration class -->
+    <bean class="org.hage.platform.component.loadbalance.knapsack.KnapsackModuleCfg"/>
+
+
+    <mockito:mock id="OrderedClusterMembersStepView.mock" class="org.hage.platform.component.cluster.OrderedClusterMembersStepView"/>
+
+    <mockito:mock id="LocalClusterNode.mock" class="org.hage.platform.component.cluster.LocalClusterNode"/>
+
+</beans>

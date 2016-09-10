@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>execution</artifactId>
+        <groupId>org.hage.platform.component</groupId>
+        <version>0.2.0-alpha</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>execution-core</artifactId>
+
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>execution-core-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>execution-event-data</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>execution-monitoring-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>execution-phase-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>runtime-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hage.platform.util</groupId>
+            <artifactId>executors-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+    </dependencies>
+
+</project>
