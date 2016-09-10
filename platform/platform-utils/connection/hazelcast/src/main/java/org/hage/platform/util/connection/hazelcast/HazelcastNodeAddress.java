@@ -13,7 +13,7 @@ public class HazelcastNodeAddress implements NodeAddress {
 
     public HazelcastNodeAddress(Member clusterMember) {
         InetSocketAddress memberSocketAddress = clusterMember.getInetSocketAddress();
-        this.uniqueAddress = memberSocketAddress.getHostName() + ":" + memberSocketAddress.getPort();
+        this.uniqueAddress = memberSocketAddress.getAddress().getHostAddress() + ":" + memberSocketAddress.getPort();
     }
 
     @Override
