@@ -62,6 +62,11 @@ public class PlatformCliCfg {
     }
 
     @Bean
+    public Config1b_HeavyNotRepNotMigrAgentsConfigSupplier config1b_heavyNotRepNotMigrAgentsConfigSupplier() {
+        return new Config1b_HeavyNotRepNotMigrAgentsConfigSupplier();
+    }
+
+    @Bean
     public Config1c_LightNotRepNotMigrAgentsConfigSupplier config1c_lightNotRepNotMigrAgentsConfigSupplier() {
         return new Config1c_LightNotRepNotMigrAgentsConfigSupplier();
     }
