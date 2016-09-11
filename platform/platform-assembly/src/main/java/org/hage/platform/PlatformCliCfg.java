@@ -1,5 +1,6 @@
 package org.hage.platform;
 
+import org.hage.platform.component.simulationconfig.load.*;
 import org.hage.platform.component.simulationconfig.load.config.LoadConfigurationProvider;
 import org.hage.platform.config.PlatformConfigurationHub;
 import org.hage.platform.config.parse.Args4JParsingEngine;
@@ -42,4 +43,36 @@ public class PlatformCliCfg {
     }
 
     //endregion
+
+
+    @Bean
+    public Config2a_LightNotRepNotMigrAgentsConfigSupplier lightNotReproducibleNotMigratingAgent() {
+        return new Config2a_LightNotRepNotMigrAgentsConfigSupplier();
+    }
+
+
+    @Bean
+    public Config2b_LightReprNotMigrAgentsConfigSupplier config2b_lightReprNotMigrAgentsConfigSupplier() {
+        return new Config2b_LightReprNotMigrAgentsConfigSupplier();
+    }
+
+    @Bean
+    public Config1b_LightNotRepNotMigrAgentsConfigSupplier config1b_lightNotRepNotMigrAgentsConfigSupplier() {
+        return new Config1b_LightNotRepNotMigrAgentsConfigSupplier();
+    }
+
+    @Bean
+    public Config1c_LightNotRepNotMigrAgentsConfigSupplier config1c_lightNotRepNotMigrAgentsConfigSupplier() {
+        return new Config1c_LightNotRepNotMigrAgentsConfigSupplier();
+    }
+
+    @Bean
+    public Config1a_LoadBalancedMigrAgents config1a_loadBalancedMigrAgents() {
+        return new Config1a_LoadBalancedMigrAgents();
+    }
+
+    @Bean
+    public Config1a_NoLoadBalancedMigrAgents config1a_noLoadBalancedMigrAgents() {
+        return new Config1a_NoLoadBalancedMigrAgents();
+    }
 }

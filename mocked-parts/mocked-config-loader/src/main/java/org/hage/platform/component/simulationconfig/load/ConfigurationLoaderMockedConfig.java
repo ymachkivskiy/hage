@@ -11,4 +11,5 @@ public class ConfigurationLoaderMockedConfig {
         return new MockedLoader();
     }
 
+
 }

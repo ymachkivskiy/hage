@@ -18,6 +18,11 @@
             <artifactId>simulation-api</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.hage.platform.component</groupId>
+            <artifactId>structure-data-model</artifactId>
+            <version>0.2.0-alpha</version>
+        </dependency>
 
     </dependencies>
 

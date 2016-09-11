@@ -123,6 +123,11 @@
             <artifactId>load-balance-algorithm-knapsack</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.hage.mocked</groupId>
+            <artifactId>mocked-config-loader</artifactId>
+            <version>0.2.0-alpha</version>
+        </dependency>
 
     </dependencies>
 
