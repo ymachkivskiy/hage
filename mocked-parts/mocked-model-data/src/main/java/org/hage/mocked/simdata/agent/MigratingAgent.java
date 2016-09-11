@@ -14,12 +14,12 @@ import static org.hage.mocked.simdata.state.Properties.FOOD;
 public class MigratingAgent implements Agent {
 
     private int age = 1;
-    private int energy = 100;
+    private int energy = 40;
 
-    private static final int foodPortion = 10;
+    private static final int foodPortion = 6;
     private static final int migrationCost = 10;
-    private static final int cycleCost = 5;
-    private static final int hungerStartThreshold = 30;
+    private static final int cycleCost = 3;
+    private static final int hungerStartThreshold = 25;
     private static final int reproductionCost = 20;
 
 

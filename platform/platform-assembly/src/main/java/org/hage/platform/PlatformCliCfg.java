@@ -75,4 +75,14 @@ public class PlatformCliCfg {
     public Config1a_NoLoadBalancedMigrAgents config1a_noLoadBalancedMigrAgents() {
         return new Config1a_NoLoadBalancedMigrAgents();
     }
+
+    @Bean
+    public SimulationConfigChooseConfigurationProvider simulationConfigChooseConfigurationProvider() {
+        return new SimulationConfigChooseConfigurationProvider();
+    }
+
+    @Bean
+    public SimulationChooseConfigItem simulationChooseConfigItem() {
+        return new SimulationChooseConfigItem();
+    }
 }

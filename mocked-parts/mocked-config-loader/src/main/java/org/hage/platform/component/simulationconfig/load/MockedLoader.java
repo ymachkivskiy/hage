@@ -6,12 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 class MockedLoader implements ConfigurationLoader {
 
     @Autowired
-    private Config1a_NoLoadBalancedMigrAgents supplier;
+    private TestConfigurationSupplier supplier;
 
 
     @Override
     public InputConfiguration load() throws ConfigurationNotFoundException {
-        return supplier.getConfiguration();
+        return supplier.getInputConfiguration();
     }
 
 
