@@ -43,7 +43,7 @@ public class DenceProvokingPropertiesConfigurator implements UnitPropertiesState
             initProperties(readWriteUnitProperties);
         } else {
 
-            if (stepNumber % 3 == 0) {
+            if (stepNumber % 2 == 0) {
                 if (isPoorPosition(unitPosition)) {
                     readWriteUnitProperties.set(FOOD, 0L);
                 } else {

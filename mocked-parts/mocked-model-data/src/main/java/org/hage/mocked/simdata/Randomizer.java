@@ -17,7 +17,7 @@ public class Randomizer {
     private final Random random = new Random();
 
     public UnitAddress chooseRandom(List<UnitAddress> idealDesired, List<UnitAddress> allNeibs) {
-        if (random.nextDouble() <= randomWalkProbability) {
+        if (random.nextDouble() <= randomWalkProbability || idealDesired.isEmpty()) {
             return randomElement(allNeibs);
         } else {
             return randomElement(idealDesired);

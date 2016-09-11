@@ -1,8 +1,10 @@
 package org.hage.platform.component.simulationconfig.load;
 
-import org.hage.mocked.simdata.agent.LightReproducibleNotMigratingAgent;
+import org.hage.mocked.simdata.Randomizer;
+import org.hage.mocked.simdata.agent.MigratingAgent;
 import org.hage.mocked.simdata.state.DenceProvokingPropertiesConfigurator;
 import org.hage.mocked.simdata.stopcond.FixedSteps100;
+import org.hage.platform.component.container.definition.ComponentDefinition;
 import org.hage.platform.component.loadbalance.config.BalanceMode;
 import org.hage.platform.component.loadbalance.config.LoadBalanceConfig;
 import org.hage.platform.component.rate.model.ComputationRatingConfig;
@@ -18,6 +20,7 @@ import org.hage.platform.component.structure.grid.Dimensions;
 
 import java.util.EnumSet;
 
+import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.hage.platform.component.rate.model.MeasurerType.CONCURRENCY;
 import static org.hage.platform.component.rate.model.MeasurerType.RAM_MEMORY;
@@ -30,7 +33,7 @@ import static org.hage.platform.component.structure.grid.GridNeighborhoodType.VO
 
 public class Config1a_LoadBalancedMigrAgents implements ConfigurationSupplier {
 
-    private static final Dimensions gridDims = definedBy(10, 10, 10);
+    private static final Dimensions gridDims = definedBy(15, 15, 15);
     public static final int BALANCE_STEPS_GAP = 20;
 
 
@@ -46,15 +49,17 @@ public class Config1a_LoadBalancedMigrAgents implements ConfigurationSupplier {
 
             .loadBalanceConfig(new LoadBalanceConfig(BalanceMode.AFTER_STEP_COUNT, BALANCE_STEPS_GAP))
 
+            .globalComponents(asList(new ComponentDefinition("randomizer", Randomizer.class, true)))
+
             .simulationDefinition(new SimulationOrganizationDefinition(
                 new StructureDefinition(FULL__TORUS, gridDims, VON_NEUMANN_NEGIHBORHOOD),
-                singletonList(new AgentDefinition(LightReproducibleNotMigratingAgent.class)),
+                singletonList(new AgentDefinition(MigratingAgent.class)),
                 null,
                 singletonList(
                     new ChunkPopulationQualifier(
                         new Chunk(ZERO, gridDims),
                         singletonList(
-                            new ChunkAgentDistribution(new AgentDefinition(LightReproducibleNotMigratingAgent.class),
+                            new ChunkAgentDistribution(new AgentDefinition(MigratingAgent.class),
                                 fixed(5),
                                 allPositions()
                             )

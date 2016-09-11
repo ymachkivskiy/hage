@@ -32,4 +32,23 @@ public class StepExecutionDurationInfo implements Serializable {
             .reduce(ZERO, Duration::plus);
     }
 
+    public String toJson() {
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("{")
+            .append("\"stepDurationNanos\":").append(summaryStepDuration.toNanos()).append(",")
+            .append("\"phasesDurationsNanosMap\":{");
+
+        for (Map.Entry<ExecutionPhaseType, Duration> e : phaseDurationMap.entrySet()) {
+            sb.append("\"").append(e.getKey()).append("\":").append(e.getValue().toNanos()).append(",");
+        }
+
+        sb.deleteCharAt(sb.length() - 1);
+
+        sb.append("}}");
+
+        return sb.toString();
+    }
+
 }

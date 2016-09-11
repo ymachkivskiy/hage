@@ -11,7 +11,7 @@ import static org.hage.platform.component.synchronization.SynchPoint.stepPointSu
 
 
 @Slf4j
-@Order(Integer.MAX_VALUE)
+@Order(1000)
 @SingletonComponent
 class StepEndSynchronizationPostProcessor implements PhasesPostProcessor {
 

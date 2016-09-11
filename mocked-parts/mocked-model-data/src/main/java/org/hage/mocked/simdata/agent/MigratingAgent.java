@@ -14,13 +14,13 @@ import static org.hage.mocked.simdata.state.Properties.FOOD;
 public class MigratingAgent implements Agent {
 
     private int age = 1;
-    private int energy = 40;
+    private int energy = 50;
 
-    private static final int foodPortion = 6;
+    private static final int foodPortion = 15;
     private static final int migrationCost = 10;
     private static final int cycleCost = 3;
     private static final int hungerStartThreshold = 25;
-    private static final int reproductionCost = 20;
+    private static final int reproductionCost = 15;
 
 
     private static final int idealFoodAmountThreshold = 500;
@@ -43,7 +43,7 @@ public class MigratingAgent implements Agent {
 
             if (atePortion) {
                 energy += foodPortion;
-            } else {
+            } else if(energy <= 4 * cycleCost) {
                 //should find better place to live with food
                 if (energy >= migrationCost) {
                     energy -= migrationCost;
@@ -62,7 +62,7 @@ public class MigratingAgent implements Agent {
                 context.newAgent(MigratingAgent.class, agent -> agent.energy = 30);
                 energy -= reproductionCost;
             } else if (age >= 5 && age <= 15) {
-                context.newAgents(MigratingAgent.class, agent -> agent.energy = 40, age);
+                context.newAgents(MigratingAgent.class, agent -> agent.energy = 55, age);
                 energy -= reproductionCost * 2;
             } else {
                 context.newAgent(MigratingAgent.class, agent -> agent.energy = 100);
