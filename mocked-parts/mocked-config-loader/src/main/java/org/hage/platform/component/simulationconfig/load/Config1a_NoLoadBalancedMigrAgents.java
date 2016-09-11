@@ -3,7 +3,7 @@ package org.hage.platform.component.simulationconfig.load;
 import org.hage.mocked.simdata.Randomizer;
 import org.hage.mocked.simdata.agent.MigratingAgent;
 import org.hage.mocked.simdata.state.DenceProvokingPropertiesConfigurator;
-import org.hage.mocked.simdata.stopcond.FixedSteps100;
+import org.hage.mocked.simdata.stopcond.FixedSteps105;
 import org.hage.platform.component.container.definition.ComponentDefinition;
 import org.hage.platform.component.loadbalance.config.BalanceMode;
 import org.hage.platform.component.loadbalance.config.LoadBalanceConfig;
@@ -78,7 +78,7 @@ public class Config1a_NoLoadBalancedMigrAgents implements ConfigurationSupplier 
 
             .propertiesConfiguratorClazz(DenceProvokingPropertiesConfigurator.class)
 
-            .stopConditionClazz(FixedSteps100.class)
+            .stopConditionClazz(FixedSteps105.class)
 
             .build();
     }
