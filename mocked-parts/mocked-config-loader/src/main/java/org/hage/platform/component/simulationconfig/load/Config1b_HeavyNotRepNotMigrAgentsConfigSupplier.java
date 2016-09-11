@@ -1,7 +1,7 @@
 package org.hage.platform.component.simulationconfig.load;
 
 import org.hage.mocked.simdata.agent.HeavyNotReproducibleNotMigratingAgent;
-import org.hage.mocked.simdata.stopcond.FixedSteps1000;
+import org.hage.mocked.simdata.stopcond.FixedSteps25;
 import org.hage.platform.component.loadbalance.config.BalanceMode;
 import org.hage.platform.component.loadbalance.config.LoadBalanceConfig;
 import org.hage.platform.component.rate.model.ComputationRatingConfig;
@@ -72,7 +72,7 @@ public class Config1b_HeavyNotRepNotMigrAgentsConfigSupplier implements Configur
                     )).build()
             )
 
-            .stopConditionClazz(FixedSteps1000.class)
+            .stopConditionClazz(FixedSteps25.class)
 
             .build();
     }

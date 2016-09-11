@@ -8,7 +8,7 @@ public class HeavyNotReproducibleNotMigratingAgent extends LightNotReproducibleN
     public void step(AgentManageContext context) {
         super.step(context);
         try {
-            Thread.sleep(10);
+            Thread.sleep(3);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
