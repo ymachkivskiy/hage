@@ -7,10 +7,10 @@ public class HeavyNotReproducibleNotMigratingAgent extends LightNotReproducibleN
     @Override
     public void step(AgentManageContext context) {
         super.step(context);
-        try {
-            Thread.sleep(3);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+
+        int si = 0;
+        for (int i = 0; i < 1000; i++) {
+           si += i;
         }
     }
 }
