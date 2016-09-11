@@ -1,7 +1,7 @@
 package org.hage.platform.component.simulationconfig.load;
 
 import org.hage.mocked.simdata.agent.LightNotReproducibleNotMigratingAgent;
-import org.hage.mocked.simdata.stopcond.FixedSteps10;
+import org.hage.mocked.simdata.stopcond.FixedSteps25;
 import org.hage.platform.component.loadbalance.config.BalanceMode;
 import org.hage.platform.component.loadbalance.config.LoadBalanceConfig;
 import org.hage.platform.component.rate.model.ComputationRatingConfig;
@@ -14,6 +14,7 @@ import org.hage.platform.component.simulationconfig.load.definition.agent.ChunkA
 import org.hage.platform.component.structure.Position;
 import org.hage.platform.component.structure.StructureDefinition;
 import org.hage.platform.component.structure.grid.Chunk;
+import org.hage.platform.component.structure.grid.Dimensions;
 import org.hage.platform.component.structure.grid.GridBoundaryConditions;
 
 import java.util.EnumSet;
@@ -28,6 +29,8 @@ import static org.hage.platform.component.structure.grid.GridNeighborhoodType.MO
 
 public class Config2a_LightNotRepNotMigrAgentsConfigSupplier implements ConfigurationSupplier {
 
+    private static final Dimensions gridDims = definedBy(25, 25, 25);
+
     @Override
     public String configurationName() {
         return "2a";
@@ -41,15 +44,15 @@ public class Config2a_LightNotRepNotMigrAgentsConfigSupplier implements Configur
             .loadBalanceConfig(new LoadBalanceConfig(BalanceMode.DISABLED, 0))
 
             .simulationDefinition(new SimulationOrganizationDefinition(
-                new StructureDefinition(GridBoundaryConditions.CLOSED, definedBy(25, 25, 25), MOORE_NEIGHBORHOOD),
+                new StructureDefinition(GridBoundaryConditions.CLOSED, gridDims, MOORE_NEIGHBORHOOD),
                 singletonList(new AgentDefinition(LightNotReproducibleNotMigratingAgent.class)),
                 null,
                 singletonList(
                     new ChunkPopulationQualifier(
-                        new Chunk(Position.position(0, 0, 0), definedBy(25, 25, 25)),
+                        new Chunk(Position.position(0, 0, 0), gridDims),
                         singletonList(
                             new ChunkAgentDistribution(new AgentDefinition(LightNotReproducibleNotMigratingAgent.class),
-                                fixed(70),
+                                fixed(50),
                                 allPositions()
                             )
                         )
@@ -67,7 +70,7 @@ public class Config2a_LightNotRepNotMigrAgentsConfigSupplier implements Configur
                     )).build()
             )
 
-            .stopConditionClazz(FixedSteps10.class)
+            .stopConditionClazz(FixedSteps25.class)
 
             .build();
     }
