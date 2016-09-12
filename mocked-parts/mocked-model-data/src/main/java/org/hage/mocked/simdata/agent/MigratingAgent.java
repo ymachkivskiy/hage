@@ -16,11 +16,11 @@ public class MigratingAgent implements Agent {
     private int age = 1;
     private int energy = 50;
 
-    private static final int foodPortion = 15;
+    private static final int foodPortion = 25;
     private static final int migrationCost = 10;
-    private static final int cycleCost = 3;
+    private static final int cycleCost = 5;
     private static final int hungerStartThreshold = 25;
-    private static final int reproductionCost = 20;
+    private static final int reproductionCost = 13;
 
 
     private static final int idealFoodAmountThreshold = 500;

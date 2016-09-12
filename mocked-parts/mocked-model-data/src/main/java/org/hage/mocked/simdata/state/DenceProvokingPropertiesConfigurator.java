@@ -18,15 +18,13 @@ import static org.hage.platform.component.structure.grid.Dimensions.definedBy;
 public class DenceProvokingPropertiesConfigurator implements UnitPropertiesStateComponent {
 
 
-    private static final int PROFIT_PLUS = 1000;
+    private static final int PROFIT_PLUS = 10000;
     private static final int SIMPLE_PLUS = 50;
-    private static final int BAD_SEASON_MINUS = 100;
+    private static final int BAD_SEASON_MINUS = 1500;
 
     private static final List<Chunk> profitChunks = asList(
-        new Chunk(position(0, 0, 1), definedBy(2, 2, 1)),
-        new Chunk(position(5, 5, 8), definedBy(1, 1, 1)),
-        new Chunk(position(2, 3, 4), definedBy(1, 2, 1)),
-        new Chunk(position(3, 7, 0), definedBy(1, 1, 1))
+        new Chunk(position(0, 0, 1), definedBy(1, 1, 3)),
+        new Chunk(position(5, 5, 5), definedBy(1, 1, 1))
     );
 
 
@@ -46,7 +44,7 @@ public class DenceProvokingPropertiesConfigurator implements UnitPropertiesState
 
             long month = stepNumber % 12;
 
-            if (month == 2 || month == 5 || month >= 10) {
+            if (month == 2 || month == 5 || month == 10) {
 
                 readWriteUnitProperties.updateAndGet(FOOD,
                     currentFood -> currentFood >= BAD_SEASON_MINUS ? currentFood - BAD_SEASON_MINUS : 0L
