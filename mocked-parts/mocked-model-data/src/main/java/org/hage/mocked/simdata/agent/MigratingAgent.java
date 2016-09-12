@@ -20,7 +20,7 @@ public class MigratingAgent implements Agent {
     private static final int migrationCost = 10;
     private static final int cycleCost = 3;
     private static final int hungerStartThreshold = 25;
-    private static final int reproductionCost = 15;
+    private static final int reproductionCost = 20;
 
 
     private static final int idealFoodAmountThreshold = 500;
@@ -42,8 +42,8 @@ public class MigratingAgent implements Agent {
             );
 
             if (atePortion) {
-                energy += foodPortion;
-            } else if(energy <= 4 * cycleCost) {
+                energy += foodPortion / 2;
+            } else if (energy <= 4 * cycleCost) {
                 //should find better place to live with food
                 if (energy >= migrationCost) {
                     energy -= migrationCost;

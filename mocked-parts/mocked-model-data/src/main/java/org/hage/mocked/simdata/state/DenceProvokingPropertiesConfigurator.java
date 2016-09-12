@@ -19,13 +19,14 @@ public class DenceProvokingPropertiesConfigurator implements UnitPropertiesState
 
 
     private static final int PROFIT_PLUS = 1000;
-    private static final int SIMPLE_PLUS = 100;
+    private static final int SIMPLE_PLUS = 50;
+    private static final int BAD_SEASON_MINUS = 100;
 
     private static final List<Chunk> profitChunks = asList(
         new Chunk(position(0, 0, 1), definedBy(2, 2, 1)),
-        new Chunk(position(5, 5, 8), definedBy(1, 3, 3)),
-        new Chunk(position(2, 3, 4), definedBy(1, 1, 2)),
-        new Chunk(position(3, 7, 0), definedBy(4, 3, 1))
+        new Chunk(position(5, 5, 8), definedBy(1, 1, 1)),
+        new Chunk(position(2, 3, 4), definedBy(1, 2, 1)),
+        new Chunk(position(3, 7, 0), definedBy(1, 1, 1))
     );
 
 
@@ -43,20 +44,27 @@ public class DenceProvokingPropertiesConfigurator implements UnitPropertiesState
             initProperties(readWriteUnitProperties);
         } else {
 
-            if (stepNumber % 2 == 0) {
-                if (isPoorPosition(unitPosition)) {
-                    readWriteUnitProperties.set(FOOD, 0L);
-                } else {
-                    readWriteUnitProperties.updateAndGet(FOOD, f -> f + SIMPLE_PLUS);
-                }
+            long month = stepNumber % 12;
+
+            if (month == 2 || month == 5 || month >= 10) {
+
+                readWriteUnitProperties.updateAndGet(FOOD,
+                    currentFood -> currentFood >= BAD_SEASON_MINUS ? currentFood - BAD_SEASON_MINUS : 0L
+                );
 
             } else {
-                if (isProfitPosition(unitPosition)) {
+
+                if (stepNumber % 5 == 0 || (stepNumber % 3 == 0 && isPoorPosition(unitPosition))) {
+                    readWriteUnitProperties.set(FOOD, 0L);
+                } else if (isProfitPosition(unitPosition)) {
                     readWriteUnitProperties.updateAndGet(FOOD, f -> f + PROFIT_PLUS);
                 } else {
                     readWriteUnitProperties.updateAndGet(FOOD, f -> f + SIMPLE_PLUS);
                 }
+
             }
+
+
         }
 
     }
