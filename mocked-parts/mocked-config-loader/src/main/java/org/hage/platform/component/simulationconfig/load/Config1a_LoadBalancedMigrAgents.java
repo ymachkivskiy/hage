@@ -34,7 +34,7 @@ import static org.hage.platform.component.structure.grid.GridNeighborhoodType.VO
 public class Config1a_LoadBalancedMigrAgents implements ConfigurationSupplier {
 
     private static final Dimensions gridDims = definedBy(15, 15, 15);
-    public static final int BALANCE_STEPS_GAP = 20;
+    public static final int BALANCE_STEPS_GAP = 50;
 
 
     @Override
