@@ -87,6 +87,16 @@ public class PlatformCliCfg {
     }
 
     @Bean
+    public Config1d_LoadBalancedUndeadMigrAgentsConfigSupplier config1d_loadBalancedUndeadMigrAgentsConfigSupplier() {
+        return new Config1d_LoadBalancedUndeadMigrAgentsConfigSupplier();
+    }
+
+    @Bean
+    public Config1d_NoLoadBalancedUndeadMigrAgentsConfigSupplier config1d_noLoadBalancedUndeadMigrAgentsConfigSupplier() {
+        return new Config1d_NoLoadBalancedUndeadMigrAgentsConfigSupplier();
+    }
+
+    @Bean
     public SimulationChooseConfigItem simulationChooseConfigItem() {
         return new SimulationChooseConfigItem();
     }
