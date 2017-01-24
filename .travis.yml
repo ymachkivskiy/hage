@@ -15,6 +15,7 @@ addons:
       secure: "IrU78wlbvdl90cs8BrcVbM/HbN54m5WxVES0tE9xYwize4IMFe0H43zUP/XxoQKXySqqSUVxEh51EetQL52Lme91bDO749YkvOhWqgc2ftVRBAAVwLJyKlhoLE1NWDbGwGbaN7SViSwGNqwRMAbHaOLoBDYjhIeOO+cGLxsJSmjcNTE3kJu2YlFU2wUJZ9+Xa4lLW19aPoNQ01gF0A5CIe61UDzGXiuNBBUWIaXsdwVFMFv4aVYFWjPPP0/5Y5irwWQoTUIhYGDDHKjAUzpl9fO5Ror2fY41a/6qJ6abPk6yj7f7U5yTTS5NoUX8BcD6IIQ2SBhOmOMrEdkwiWuBi89EXOz/QGRiHP1S0TWD3udsLJqidZa0CfAtz/HYKH+diQ4cXRvOP1iX3dec8Lhj3s5rVfcdLAn+9ufqEPVtegUqzBvQeZ1OP4DqauoXPPcoczyyLkJ7Lagq4SJwDOAbzDMPu0k/9cC2Rv+bdOnivqTM4n7MPRMFaWXD4imVoR/ovBOjByrfA3HNHvHUmI2lQxnphHljIQmFy+XOEmvyzpRISf2FlUkZiFE0/ezwtDLD3TINOABWTttezCYFzbx5SWSGlOWCoMIpY7HdTyBU8UkO+1rLeLtTxPnQEgELkP89Wby4ysi7xxwAlCNNvnkf1Gyx+siuNV40vq6/AOI5sqU="
     branches:
       - dev
+      - release
 
 after_success:
   - mvn clean test jacoco:report coveralls:report sonar:sonar
