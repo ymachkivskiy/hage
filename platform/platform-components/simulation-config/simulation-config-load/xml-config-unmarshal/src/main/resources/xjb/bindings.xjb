@@ -1,0 +1,25 @@
+<jaxb:bindings
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+        jaxb:extensionBindingPrefixes="xjb"
+        version="2.1">
+    <jaxb:globalBindings generateIsSetMethod="true" fixedAttributeAsConstantProperty="true">
+    </jaxb:globalBindings>
+    <jaxb:bindings schemaLocation="../xsd/sim-config.xsd" node="//xs:schema">
+        <jaxb:bindings node="//xs:element[@name='balanceMode']/xs:simpleType">
+            <jaxb:typesafeEnumClass name="BalanceMode" />
+        </jaxb:bindings>
+        <jaxb:bindings node="//xs:simpleType[@name='MeasurerTypeType']">
+            <jaxb:typesafeEnumClass  name="MeasurerType" />
+        </jaxb:bindings>
+        <jaxb:bindings node="//xs:element[@name='graphDef']//xs:element[@name='edge']">
+            <jaxb:property name="edges" />
+        </jaxb:bindings>
+        <jaxb:bindings node="//xs:element[@name='graphDef']//xs:element[@name='position']">
+            <jaxb:property name="positions" />
+        </jaxb:bindings>
+        <jaxb:bindings node="//xs:element[@name='population']">
+            <jaxb:class name="Population"/>
+        </jaxb:bindings>
+    </jaxb:bindings>
+</jaxb:bindings>
