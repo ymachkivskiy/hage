@@ -13,7 +13,6 @@
 
     <modules>
         <module>mocked-model-data</module>
-        <module>mocked-config-loader</module>
     </modules>
 
 </project>

@@ -22,6 +22,12 @@
             <version>${project.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.hage.platform.component.configload</groupId>
+            <artifactId>xml-config-loader</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
         <!--platform core -->
 
         <dependency>

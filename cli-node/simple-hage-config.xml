@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<conf:hageConfiguration xmlns:conf="http://hage.platform.org/config">
+
+
+    <conf:platformConfig xmlns="http://hage.platform.org/config/platform">
+
+        <balanceConfig>
+            <amountType mode="AFTER_STEP_COUNT">1</amountType>
+        </balanceConfig>
+
+        <computationRateConfig>
+            <enabledRateMeasurers>RAM_MEMORY</enabledRateMeasurers>
+            <enabledRateMeasurers>CONCURRENCY</enabledRateMeasurers>
+            <measurerRateConfigs>
+                <measuredType>RAM_MEMORY</measuredType>
+                <rateWeight>5</rateWeight>
+                <maxRate>128</maxRate>
+            </measurerRateConfigs>
+        </computationRateConfig>
+
+    </conf:platformConfig>
+
+
+    <conf:simulationConfig xmlns="http://hage.platform.org/config/simulation-base">
+
+        <environmentStructure>
+            <grid neighborhood-type="VON_NEUMANN_NEIGHBORHOOD" boundary-conditions-type="FULL_TORUS">
+                <gridDimensions>
+                    <depthSize>2</depthSize>
+                    <horizontalSize>2</horizontalSize>
+                    <verticalSize>4</verticalSize>
+                </gridDimensions>
+            </grid>
+        </environmentStructure>
+
+        <environmentPopulationConfig>
+
+            <definitions>
+                <controlAgentDefinition agentClass="org.hage.mocked.simdata.agent.SimpleControlAgent"/>
+                <agentDefinition id="agent-heavyType" agentClass="org.hage.mocked.simdata.agent.HeavyAgent"/>
+                <agentDefinition id="agent-lightType" agentClass="org.hage.mocked.simdata.agent.LightAgent"/>
+                <populationRegion id="reg-1">
+                    <dimensions>
+                        <depthSize>2</depthSize>
+                        <horizontalSize>2</horizontalSize>
+                        <verticalSize>3</verticalSize>
+                    </dimensions>
+                    <position depth="0" horizontal="0" vertical="0"/>
+                </populationRegion>
+            </definitions>
+
+            <regionPopulationQualifier region="reg-1" agents="agent-lightType">
+                <cellSelector>
+                    <allCells/>
+                </cellSelector>
+                <agentCellPopulator>
+                    <rangeNumber at-least="5" at-most="20"/>
+                </agentCellPopulator>
+            </regionPopulationQualifier>
+
+        </environmentPopulationConfig>
+
+        <stopCondition stopConditionClass="org.hage.mocked.simdata.StopConditionChecker"/>
+
+        <propertiesConfigurator configuratorClass="org.hage.mocked.simdata.state.ExamplePropertiesConfigurator"/>
+
+    </conf:simulationConfig>
+
+</conf:hageConfiguration>

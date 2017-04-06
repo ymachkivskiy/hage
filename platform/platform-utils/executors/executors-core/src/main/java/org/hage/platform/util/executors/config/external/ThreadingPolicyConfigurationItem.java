@@ -49,9 +49,9 @@ class ThreadingPolicyConfigurationItem extends ConfigurationItem {
     }
 
     @Override
-    public void checkValue(Object defaultValue) throws ConfigurationValueCheckException {
-        if (!(defaultValue instanceof String) || !compile(ADJUSTED_POLICY_NAME + "|" + DIRECT_POLICY_NAME + "|" + FIXED_POLICY_PATTERN).matcher(((String) defaultValue)).matches()) {
-            throw new ConfigurationValueCheckException("Threading policy " + Objects.toString(defaultValue) + " is not correct");
+    public void checkValue(Object value) throws ConfigurationValueCheckException {
+        if (!(value instanceof String) || !compile(ADJUSTED_POLICY_NAME + "|" + DIRECT_POLICY_NAME + "|" + FIXED_POLICY_PATTERN).matcher(((String) value)).matches()) {
+            throw new ConfigurationValueCheckException("Threading policy " + Objects.toString(value) + " is not correct");
         }
     }
 }

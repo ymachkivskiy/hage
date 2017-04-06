@@ -15,6 +15,7 @@
     <modules>
         <module>load-adapter</module>
         <module>xml-config-unmarshal</module>
+        <module>xml-config-loader</module>
     </modules>
 
 </project>

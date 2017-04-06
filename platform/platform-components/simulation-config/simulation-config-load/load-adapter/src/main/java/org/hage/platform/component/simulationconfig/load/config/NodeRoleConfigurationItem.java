@@ -33,9 +33,9 @@ class NodeRoleConfigurationItem extends ConfigurationItem {
     }
 
     @Override
-    public void checkValue(Object defaultValue) throws ConfigurationValueCheckException {
-        if (!(defaultValue instanceof String) || !allowedValues.contains(defaultValue)) {
-            throw new ConfigurationValueCheckException("Illegal value of simulation role : '" + Objects.toString(defaultValue) + "'. Allowed values are: " + allowedValues);
+    public void checkValue(Object value) throws ConfigurationValueCheckException {
+        if (!(value instanceof String) || !allowedValues.contains(value)) {
+            throw new ConfigurationValueCheckException("Illegal value of simulation role : '" + Objects.toString(value) + "'. Allowed values are: " + allowedValues);
         }
     }
 }

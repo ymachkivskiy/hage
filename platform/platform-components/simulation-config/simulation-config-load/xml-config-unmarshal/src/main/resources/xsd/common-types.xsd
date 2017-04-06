@@ -28,6 +28,13 @@
         </xs:restriction>
     </xs:simpleType>
 
+    <xs:simpleType name="PositionSizeType">
+        <xs:restriction base="xs:int">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="9999"/>
+        </xs:restriction>
+    </xs:simpleType>
+
     <xs:simpleType name="EmptyMarkerTag">
         <xs:restriction base="xs:string">
             <xs:maxLength value="0"/>

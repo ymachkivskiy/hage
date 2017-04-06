@@ -18,8 +18,8 @@ import java.util.Random;
 @Slf4j
 public class HeavyAgent implements Agent {
 
-    @Inject
-    private SomeFooComponent component;
+//    @Inject
+//    private SomeFooComponent component;
 
     private Random rand = new Random();
 
@@ -35,7 +35,7 @@ public class HeavyAgent implements Agent {
             ctxt.notifyStopConditionSatisfied();
         }
 
-        component.processMessage("hello from " + ctxt.queryAddress().getFriendlyIdentifier());
+//        component.processMessage("hello from " + ctxt.queryAddress().getFriendlyIdentifier());
 
 
         if (age > 2 && rand.nextBoolean() && rand.nextBoolean()) {

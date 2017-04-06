@@ -21,7 +21,7 @@ class NetworkInterfaceConfigurationItem extends ConfigurationItem {
     }
 
     @Override
-    public void checkValue(Object defaultValue) throws ConfigurationValueCheckException {
+    public void checkValue(Object value) throws ConfigurationValueCheckException {
         //todo : NOT IMPLEMENTED
         // TODO: throw exception for not correct value
     }

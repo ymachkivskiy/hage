@@ -1,6 +1,7 @@
 package org.hage.platform;
 
 import org.hage.platform.component.simulationconfig.load.config.LoadConfigurationProvider;
+import org.hage.platform.component.simulationconfig.load.xml.config.XmlConfigurationLoaderConfigurationProvider;
 import org.hage.platform.config.PlatformConfigurationHub;
 import org.hage.platform.config.parse.Args4JParsingEngine;
 import org.hage.platform.config.parse.ParsingEngine;
@@ -39,6 +40,11 @@ public class PlatformCliCfg {
     @Bean
     public ThreadingPolicyConfigurationProvider threadingPolicyConfigurationProvider() {
         return new ThreadingPolicyConfigurationProvider();
+    }
+
+    @Bean
+    public XmlConfigurationLoaderConfigurationProvider xmlConfigurationLoaderConfigurationProvider() {
+        return new XmlConfigurationLoaderConfigurationProvider();
     }
 
     //endregion

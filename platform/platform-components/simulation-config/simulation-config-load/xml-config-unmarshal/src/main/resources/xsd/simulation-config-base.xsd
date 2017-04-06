@@ -30,33 +30,33 @@
                     <xs:sequence>
                         <xs:element name="gridDimensions" type="sbconf:Dimensions"/>
                     </xs:sequence>
-                    <xs:attribute name="neighborhood-type"  use="required">
-                        <xs:simpleType>
-                            <xs:restriction base="xs:NMTOKEN">
-                                <xs:enumeration value="NO_NEIGHBORS"/>
-                                <xs:enumeration value="VON_NEUMANN_NEIGHBORHOOD"/>
-                                <xs:enumeration value="MOORE_NEIGHBORHOOD"/>
-                            </xs:restriction>
-                        </xs:simpleType>
-                    </xs:attribute>
-                    <xs:attribute name="boundary-conditions-type" use="required">
-                        <xs:simpleType>
-                            <xs:restriction base="xs:NMTOKEN">
-                                <xs:enumeration value="CLOSED"/>
-                                <xs:enumeration value="DEPTH_TORUS"/>
-                                <xs:enumeration value="HORIZONTAL_TORUS"/>
-                                <xs:enumeration value="VERTICAL_TORUS"/>
-                                <xs:enumeration value="DEPTH_AND_HORIZONTAL_TORUS"/>
-                                <xs:enumeration value="DEPTH_AND_VERTICAL_TORUS"/>
-                                <xs:enumeration value="HORIZONTAL_AND_VERTICAL_TORUS"/>
-                                <xs:enumeration value="FULL_TORUS"/>
-                            </xs:restriction>
-                        </xs:simpleType>
-                    </xs:attribute>
+                    <xs:attribute name="neighborhood-type" type="sbconf:NeighborhoodType" use="required"/>
+                    <xs:attribute name="boundary-conditions-type" type="sbconf:BoundaryConditionsType" use="required"/>
                 </xs:complexType>
             </xs:element>
         </xs:choice>
     </xs:complexType>
+
+    <xs:simpleType name="BoundaryConditionsType">
+        <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="CLOSED"/>
+            <xs:enumeration value="DEPTH_TORUS"/>
+            <xs:enumeration value="HORIZONTAL_TORUS"/>
+            <xs:enumeration value="VERTICAL_TORUS"/>
+            <xs:enumeration value="DEPTH_AND_HORIZONTAL_TORUS"/>
+            <xs:enumeration value="DEPTH_AND_VERTICAL_TORUS"/>
+            <xs:enumeration value="HORIZONTAL_AND_VERTICAL_TORUS"/>
+            <xs:enumeration value="FULL_TORUS"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="NeighborhoodType">
+        <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="NO_NEIGHBORS"/>
+            <xs:enumeration value="VON_NEUMANN_NEIGHBORHOOD"/>
+            <xs:enumeration value="MOORE_NEIGHBORHOOD"/>
+        </xs:restriction>
+    </xs:simpleType>
 
     <xs:complexType name="Dimensions">
         <xs:sequence>
@@ -67,9 +67,9 @@
     </xs:complexType>
 
     <xs:complexType name="Position">
-        <xs:attribute name="depth" type="cmn:DimensionSizeType" use="required"/>
-        <xs:attribute name="horizontal" type="cmn:DimensionSizeType" use="required"/>
-        <xs:attribute name="vertical" type="cmn:DimensionSizeType" use="required"/>
+        <xs:attribute name="depth" type="cmn:PositionSizeType" use="required"/>
+        <xs:attribute name="horizontal" type="cmn:PositionSizeType" use="required"/>
+        <xs:attribute name="vertical" type="cmn:PositionSizeType" use="required"/>
     </xs:complexType>
 
     <xs:complexType name="EnvironmentPopulationConfigType">
@@ -141,8 +141,8 @@
                         <xs:element name="fixedNumber" type="cmn:PositiveInt"/>
                         <xs:element name="rangeNumber">
                             <xs:complexType>
-                                <xs:attribute name="at-least" type="cmn:PositiveInt" use="optional" default="1"/>
-                                <xs:attribute name="at-most" type="cmn:PositiveInt" use="optional" default="1000000" />
+                                <xs:attribute name="at-least" type="cmn:PositiveInt" default="1" use="optional"/>
+                                <xs:attribute name="at-most" type="cmn:PositiveInt" default="100000" use="optional" />
                             </xs:complexType>
                         </xs:element>
                         <xs:element name="randomNumber" type="cmn:EmptyMarkerTag"/>

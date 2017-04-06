@@ -20,10 +20,10 @@ import static java.util.stream.Collectors.toList;
 @Slf4j
 public class LightAgent implements Agent {
 
-    @Inject
-    private SomeFooComponent component;
-    @Inject
-    private MigrationCheckComponent migrationCheckComponent;
+//    @Inject
+//    private SomeFooComponent component;
+//    @Inject
+//    private MigrationCheckComponent migrationCheckComponent;
 
     @Setter
     private int age = 1;
@@ -49,7 +49,7 @@ public class LightAgent implements Agent {
             context.notifyStopConditionSatisfied();
         }
 
-        component.processMessage("hello from " + agentUid);
+//        component.processMessage("hello from " + agentUid);
 
         try {
             if (age > 3) {
@@ -65,9 +65,10 @@ public class LightAgent implements Agent {
 
                 log.info("I have not enough food, will try to migrate or die...=(");
 
-                if (migrationCheckComponent.shouldPerformMigrationWithAge(age)) {
+                if (age % 2 == 0) {
 
-                    RelativePosition chosenRelative = migrationCheckComponent.randomRelativePosition();
+                    RelativePosition chosenRelative = RelativePosition.ABOVE;
+//                    RelativePosition chosenRelative = migrationCheckComponent.randomRelativePosition();
                     List<UnitAddress> located = context.querySurroundingUnits().getLocated(chosenRelative);
 
                     log.info("\nI {} will try to migrate {} where are {}",

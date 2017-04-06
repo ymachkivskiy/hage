@@ -37,7 +37,7 @@
 
         <dependency>
             <groupId>org.hage.mocked</groupId>
-            <artifactId>mocked-config-loader</artifactId>
+            <artifactId>mocked-model-data</artifactId>
             <version>${project.version}</version>
         </dependency>
 

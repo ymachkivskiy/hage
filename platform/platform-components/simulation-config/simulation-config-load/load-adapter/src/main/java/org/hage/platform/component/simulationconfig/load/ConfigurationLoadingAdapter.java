@@ -17,6 +17,7 @@ import java.util.Optional;
 
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
+import static java.util.Optional.ofNullable;
 
 
 @SingletonComponent
@@ -46,7 +47,8 @@ class ConfigurationLoadingAdapter implements EventSubscriber {
     private Optional<InputConfiguration> loadExternalConfiguration() {
         try {
             log.info("Loading computation configuration.");
-            return of(configurationLoader.load());
+            // TODO: 05.04.17 temporary solution
+            return ofNullable(configurationLoader.load());
         } catch (ConfigurationNotFoundException e) {
             log.warn("Configuration can not be loaded");
             return empty();
