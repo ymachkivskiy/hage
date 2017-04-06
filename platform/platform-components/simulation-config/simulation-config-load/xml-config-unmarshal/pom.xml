@@ -8,20 +8,19 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>xml-loader</artifactId>
-
     <name>xml-loader</name>
 
     <properties>
-        <xsd.source.location>${basedir}/src/main/resources/xsd/sim-config.xsd</xsd.source.location>
-        <xjb.source.location>${basedir}/src/main/resources/xjb/bindings.xjb</xjb.source.location>
+        <xsd.source.dir>${basedir}/src/main/resources/xsd</xsd.source.dir>
+        <xjb.source.dir>${basedir}/src/main/resources/xjb</xjb.source.dir>
         <config.binding.packagename>org.hage.platform.component.simulationconfig.load.xml</config.binding.packagename>
     </properties>
 
 
     <build>
         <plugins>
-            <plugin>
 
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>jaxb2-maven-plugin</artifactId>
                 <version>2.3</version>
@@ -38,16 +37,15 @@
 
                 <configuration>
                     <xjbSources>
-                        <xjbSource>${xjb.source.location}</xjbSource>
+                        <xjbSource>${xjb.source.dir}/simulation-config.xjb</xjbSource>
                     </xjbSources>
                     <packageName>${config.binding.packagename}</packageName>
                     <sources>
-                        <source>${xsd.source.location}</source>
+                        <source>${xsd.source.dir}/hage-config.xsd</source>
                     </sources>
                 </configuration>
-
-
             </plugin>
+
         </plugins>
     </build>
 

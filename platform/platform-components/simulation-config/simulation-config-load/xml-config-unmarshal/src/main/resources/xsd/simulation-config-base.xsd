@@ -1,0 +1,170 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+           targetNamespace="http://hage.platform.org/config/simulation-base"
+           xmlns:sbconf="http://hage.platform.org/config/simulation-base"
+           xmlns:cmn="http://hage.platform.org/config/common-types"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:import schemaLocation="common-types.xsd" namespace="http://hage.platform.org/config/common-types"/>
+
+    <xs:complexType name="SimulationConfigurationType">
+        <xs:sequence>
+            <xs:element name="environmentStructure" type="sbconf:StructureDefinition"/>
+            <xs:element name="environmentPopulationConfig" type="sbconf:EnvironmentPopulationConfigType"/>
+            <xs:element name="stopCondition">
+                <xs:complexType>
+                    <xs:attribute name="stopConditionClass" type="cmn:ClassNameType"/>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="propertiesConfigurator" minOccurs="0">
+                <xs:complexType>
+                    <xs:attribute name="configuratorClass" type="cmn:ClassNameType"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="StructureDefinition">
+        <xs:choice>
+            <xs:element name="grid">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="gridDimensions" type="sbconf:Dimensions"/>
+                    </xs:sequence>
+                    <xs:attribute name="neighborhood-type"  use="required">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:NMTOKEN">
+                                <xs:enumeration value="NO_NEIGHBORS"/>
+                                <xs:enumeration value="VON_NEUMANN_NEIGHBORHOOD"/>
+                                <xs:enumeration value="MOORE_NEIGHBORHOOD"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:attribute>
+                    <xs:attribute name="boundary-conditions-type" use="required">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:NMTOKEN">
+                                <xs:enumeration value="CLOSED"/>
+                                <xs:enumeration value="DEPTH_TORUS"/>
+                                <xs:enumeration value="HORIZONTAL_TORUS"/>
+                                <xs:enumeration value="VERTICAL_TORUS"/>
+                                <xs:enumeration value="DEPTH_AND_HORIZONTAL_TORUS"/>
+                                <xs:enumeration value="DEPTH_AND_VERTICAL_TORUS"/>
+                                <xs:enumeration value="HORIZONTAL_AND_VERTICAL_TORUS"/>
+                                <xs:enumeration value="FULL_TORUS"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:attribute>
+                </xs:complexType>
+            </xs:element>
+        </xs:choice>
+    </xs:complexType>
+
+    <xs:complexType name="Dimensions">
+        <xs:sequence>
+            <xs:element name="depthSize" type="cmn:DimensionSizeType"/>
+            <xs:element name="horizontalSize" type="cmn:DimensionSizeType"/>
+            <xs:element name="verticalSize" type="cmn:DimensionSizeType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Position">
+        <xs:attribute name="depth" type="cmn:DimensionSizeType" use="required"/>
+        <xs:attribute name="horizontal" type="cmn:DimensionSizeType" use="required"/>
+        <xs:attribute name="vertical" type="cmn:DimensionSizeType" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="EnvironmentPopulationConfigType">
+        <xs:sequence>
+            <xs:element name="definitions">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="controlAgentDefinition" type="sbconf:ControlAgentDefinitionType" minOccurs="0"/>
+                        <xs:element name="agentDefinition" type="sbconf:AgentDefinitionType" maxOccurs="unbounded"/>
+                        <xs:element name="populationRegion" type="sbconf:PopulationRegionDescriptorType" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="regionPopulationQualifier" type="sbconf:RegionPopulationQualifierType" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ControlAgentDefinitionType">
+        <xs:attribute name="agentClass" type="cmn:ClassNameType"/>
+    </xs:complexType>
+
+    <xs:complexType name="AgentDefinitionType">
+        <xs:attribute name="id"  use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:ID">
+                    <xs:pattern value="agent-\w+"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute use="required" name="agentClass" type="cmn:ClassNameType"/>
+    </xs:complexType>
+
+    <xs:complexType name="PopulationRegionDescriptorType">
+        <xs:choice>
+            <xs:sequence>
+                <xs:sequence>
+                    <xs:element name="dimensions" type="sbconf:Dimensions"/>
+                    <xs:element name="position" type="sbconf:Position"/>
+                </xs:sequence>
+            </xs:sequence>
+            <xs:element name="fullGridArea" type="cmn:EmptyMarkerTag"/>
+        </xs:choice>
+        <xs:attribute name="id" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:ID">
+                    <xs:pattern value="reg-\w+"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="RegionPopulationQualifierType">
+        <xs:sequence>
+            <xs:element name="cellSelector">
+                <xs:complexType>
+                    <xs:choice>
+                        <xs:element name="allCells" type="cmn:EmptyMarkerTag"/>
+                        <xs:element name="random">
+                            <xs:complexType>
+                                <xs:attribute name="count" use="optional" type="cmn:PositiveInt"/>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:choice>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="agentCellPopulator">
+                <xs:complexType>
+                    <xs:choice>
+                        <xs:element name="fixedNumber" type="cmn:PositiveInt"/>
+                        <xs:element name="rangeNumber">
+                            <xs:complexType>
+                                <xs:attribute name="at-least" type="cmn:PositiveInt" use="optional" default="1"/>
+                                <xs:attribute name="at-most" type="cmn:PositiveInt" use="optional" default="1000000" />
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="randomNumber" type="cmn:EmptyMarkerTag"/>
+                    </xs:choice>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="region" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:IDREF">
+                    <xs:pattern value="reg-\w+"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="agents" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:IDREFS">
+                    <xs:pattern value="agent-\w+(\s+agent-\w+)*"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+
+
+</xs:schema>

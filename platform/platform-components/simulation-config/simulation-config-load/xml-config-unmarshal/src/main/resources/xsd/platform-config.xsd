@@ -1,0 +1,70 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+           targetNamespace="http://hage.platform.org/config/platform"
+           xmlns:plconf="http://hage.platform.org/config/platform"
+           xmlns:cmn="http://hage.platform.org/config/common-types"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:import schemaLocation="common-types.xsd" namespace="http://hage.platform.org/config/common-types"/>
+
+
+    <xs:complexType name="PlatformConfigType">
+        <xs:sequence>
+            <xs:element name="balanceConfig" type="plconf:LoadBalanceConfig" minOccurs="0"/>
+            <xs:element name="computationRateConfig" type="plconf:ComputationRatingConfig" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="LoadBalanceConfig">
+        <xs:choice>
+            <xs:element name="disabled" type="cmn:EmptyMarkerTag"/>
+            <xs:element name="amountType">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="cmn:PositiveInt">
+                            <xs:attribute name="mode" type="plconf:BalanceMode" use="required"/>
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+
+        </xs:choice>
+    </xs:complexType>
+
+    <xs:simpleType name="BalanceMode">
+        <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="AFTER_STEP_COUNT"/>
+            <xs:enumeration value="AFTER_SECONDS_PASSED"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:complexType name="ComputationRatingConfig">
+        <xs:sequence>
+            <xs:element name="enabledRateMeasurers" type="plconf:MeasurerTypeType" maxOccurs="unbounded"/>
+            <xs:element name="measurerRateConfigs" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="measuredType" type="plconf:MeasurerTypeType"/>
+                        <xs:element name="rateWeight">
+                            <xs:simpleType>
+                                <xs:restriction base="xs:int">
+                                    <xs:minInclusive value="1"/>
+                                    <xs:maxInclusive value="10"/>
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:element>
+                        <xs:element name="maxRate" type="cmn:PositiveInt"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="MeasurerTypeType">
+        <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="CONCURRENCY"/>
+            <xs:enumeration value="RAM_MEMORY"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>

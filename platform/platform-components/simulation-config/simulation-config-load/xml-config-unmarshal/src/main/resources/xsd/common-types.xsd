@@ -1,6 +1,6 @@
 <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
-           targetNamespace="http://hage.org/simulation_config/commonTypes"
-           xmlns:hbconf="http://hage.org/simulation_config/commonTypes"
+           targetNamespace="http://hage.platform.org/config/common-types"
+           xmlns:cmn="http://hage.platform.org/config/common-types"
            xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
     <xs:simpleType name="PositiveInt">
@@ -18,6 +18,19 @@
     <xs:simpleType name="ClassNameType">
         <xs:restriction base="xs:string">
             <xs:pattern value="(\w+\.)*\w+"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="DimensionSizeType">
+        <xs:restriction base="xs:int">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="10000"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="EmptyMarkerTag">
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="0"/>
         </xs:restriction>
     </xs:simpleType>
 

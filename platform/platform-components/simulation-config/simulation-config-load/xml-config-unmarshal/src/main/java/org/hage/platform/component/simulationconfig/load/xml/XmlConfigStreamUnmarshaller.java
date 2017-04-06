@@ -2,7 +2,6 @@ package org.hage.platform.component.simulationconfig.load.xml;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.component.simulationconfig.load.xml.Config;
 import org.xml.sax.SAXException;
 
 import javax.xml.XMLConstants;
@@ -17,11 +16,11 @@ import java.net.URL;
 @Slf4j
 public class XmlConfigStreamUnmarshaller {
 
-    private static final String SCHEMA_LOCATION = "xsd/sim-config.xsd";
+    private static final String SCHEMA_LOCATION = "xsd/hage-config.xsd";
 
     private final SchemaFactory SCHEMA_FACTORY = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
-    public Config unmarshalConfiguration(InputStream inputStream) {
+    public HageConfiguration unmarshalConfiguration(InputStream inputStream) {
 
         try {
 
@@ -30,7 +29,7 @@ public class XmlConfigStreamUnmarshaller {
 
             Unmarshaller jaxbUnmarshaller = unmarshallerForSchema(schema);
 
-            return (Config) jaxbUnmarshaller.unmarshal(inputStream);
+            return (HageConfiguration) jaxbUnmarshaller.unmarshal(inputStream);
 
         } catch (JAXBException | SAXException e) {
             log.error("Xml configuration unmarshalling failed", e);
@@ -39,7 +38,7 @@ public class XmlConfigStreamUnmarshaller {
     }
 
     private Unmarshaller unmarshallerForSchema(Schema schema) throws JAXBException {
-        JAXBContext jaxbContext = JAXBContext.newInstance(Config.class);
+        JAXBContext jaxbContext = JAXBContext.newInstance(HageConfiguration.class);
         Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
         jaxbUnmarshaller.setSchema(schema);
         return jaxbUnmarshaller;

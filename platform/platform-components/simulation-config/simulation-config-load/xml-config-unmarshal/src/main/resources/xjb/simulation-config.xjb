@@ -1,0 +1,22 @@
+<jaxb:bindings
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+        jaxb:extensionBindingPrefixes="xjb"
+        version="2.1">
+    <jaxb:globalBindings generateIsSetMethod="true" fixedAttributeAsConstantProperty="true">
+    </jaxb:globalBindings>
+    <jaxb:bindings schemaLocation="../xsd/simulation-config-base.xsd" node="//xs:schema">
+        <jaxb:bindings node="//xs:complexType[@name='RegionPopulationQualifierType']">
+            <jaxb:bindings node="xs:attribute[@name='agents']">
+                <jaxb:property>
+                    <jaxb:baseType name="AgentDefinitionType"/>
+                </jaxb:property>
+            </jaxb:bindings>
+            <jaxb:bindings node="xs:attribute[@name='region']">
+                <jaxb:property>
+                    <jaxb:baseType name="PopulationRegionDescriptorType"/>
+                </jaxb:property>
+            </jaxb:bindings>
+        </jaxb:bindings>
+    </jaxb:bindings>
+</jaxb:bindings>

@@ -1,0 +1,20 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+           targetNamespace="http://hage.platform.org/config"
+           xmlns:hconf="http://hage.platform.org/config"
+           xmlns:plconf="http://hage.platform.org/config/platform"
+           xmlns:sbconf="http://hage.platform.org/config/simulation-base"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:import schemaLocation="platform-config.xsd" namespace="http://hage.platform.org/config/platform"/>
+    <xs:import schemaLocation="simulation-config-base.xsd" namespace="http://hage.platform.org/config/simulation-base"/>
+
+    <xs:element name="hageConfiguration">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="platformConfig" type="plconf:PlatformConfigType" minOccurs="0"/>
+                <xs:element name="simulationConfig" type="sbconf:SimulationConfigurationType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>
