@@ -13,7 +13,6 @@
 
     <modules>
         <module>event-bus</module>
-        <module>reflection</module>
         <module>container-share</module>
         <module>connection</module>
         <module>platform-configuration</module>

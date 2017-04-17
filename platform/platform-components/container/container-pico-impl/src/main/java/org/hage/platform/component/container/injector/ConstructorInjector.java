@@ -23,9 +23,9 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.newArrayListWithCapacity;
 import static java.util.Arrays.asList;
 import static org.hage.platform.component.container.injector.Parameters.fromList;
-import static org.hage.platform.util.reflect.Classes.getDeclaredConstructors;
-import static org.hage.platform.util.reflect.predicates.ConstructorPredicates.matchingActualParameters;
-import static org.hage.platform.util.reflect.predicates.ConstructorPredicates.withAnnotation;
+import static org.hage.util.reflect.Classes.getDeclaredConstructors;
+import static org.hage.util.reflect.predicates.ConstructorPredicates.matchingActualParameters;
+import static org.hage.util.reflect.predicates.ConstructorPredicates.withAnnotation;
 
 
 public final class ConstructorInjector<T> extends AbstractInjector<T> {

@@ -17,13 +17,20 @@
     <description>HAgE platform</description>
 
     <modules>
-        <module>common-utils</module>
         <module>common</module>
         <module>platform-utils</module>
         <module>platform-components</module>
         <module>simulation-api</module>
         <module>platform-assembly</module>
     </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.hage</groupId>
+            <artifactId>lib</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 
 
 </project>

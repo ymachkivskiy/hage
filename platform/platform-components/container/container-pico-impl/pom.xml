@@ -16,12 +16,6 @@
     <dependencies>
 
         <dependency>
-            <groupId>org.hage.platform.util</groupId>
-            <artifactId>reflection</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.hage.platform.component</groupId>
             <artifactId>container-internal-api</artifactId>
             <version>${project.version}</version>

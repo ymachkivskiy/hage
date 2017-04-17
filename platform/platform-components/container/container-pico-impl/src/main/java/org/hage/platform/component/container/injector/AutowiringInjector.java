@@ -6,7 +6,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import org.hage.platform.component.container.definition.ComponentDefinition;
-import org.hage.platform.util.reflect.predicates.MethodPredicates;
+import org.hage.util.reflect.predicates.MethodPredicates;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
@@ -30,8 +30,8 @@ import static java.lang.String.format;
 import static java.lang.reflect.Modifier.isAbstract;
 import static java.lang.reflect.Modifier.isFinal;
 import static java.util.Collections.emptyList;
-import static org.hage.platform.util.reflect.Methods.getSetterName;
-import static org.hage.platform.util.reflect.Methods.isSetter;
+import static org.hage.util.reflect.Methods.getSetterName;
+import static org.hage.util.reflect.Methods.isSetter;
 
 
 public final class AutowiringInjector<T> extends AbstractInjector<T> {
