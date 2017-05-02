@@ -12,12 +12,9 @@
     <artifactId>platform-utils</artifactId>
 
     <modules>
-        <module>event-bus</module>
-        <module>container-share</module>
         <module>connection</module>
         <module>platform-configuration</module>
         <module>platform-boot</module>
-        <module>executors</module>
     </modules>
 
     <dependencies>

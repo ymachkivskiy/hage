@@ -32,25 +32,25 @@
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.component</groupId>
+            <groupId>org.hage.platform.node.execution</groupId>
             <artifactId>execution-monitoring-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.component</groupId>
+            <groupId>org.hage.platform.node.runtime</groupId>
             <artifactId>runtime-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.component</groupId>
+            <groupId>org.hage.platform.node.lifecycle</groupId>
             <artifactId>lifecycle-engine-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.component</groupId>
+            <groupId>org.hage.platform.node.execution</groupId>
             <artifactId>execution-phase-api</artifactId>
             <version>${project.version}</version>
         </dependency>

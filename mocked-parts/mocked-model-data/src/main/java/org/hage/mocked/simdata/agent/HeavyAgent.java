@@ -2,7 +2,6 @@ package org.hage.mocked.simdata.agent;
 
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.hage.mocked.simdata.SomeFooComponent;
 import org.hage.mocked.simdata.state.Properties;
 import org.hage.platform.component.structure.connections.RelativePosition;
 import org.hage.platform.component.structure.connections.UnitAddress;
@@ -10,7 +9,6 @@ import org.hage.platform.simulation.runtime.agent.Agent;
 import org.hage.platform.simulation.runtime.agent.AgentManageContext;
 import org.hage.platform.simulation.runtime.state.property.ReadWriteUnitProperties;
 
-import javax.inject.Inject;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;

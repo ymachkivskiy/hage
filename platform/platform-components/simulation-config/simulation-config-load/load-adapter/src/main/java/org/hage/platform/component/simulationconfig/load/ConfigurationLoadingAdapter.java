@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Optional;
 
 import static java.util.Optional.empty;
-import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
 
 

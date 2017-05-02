@@ -48,19 +48,19 @@
         <!--platform core -->
 
         <dependency>
-            <groupId>org.hage.platform.component</groupId>
+            <groupId>org.hage.platform.node.structure</groupId>
             <artifactId>structure-core</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.component</groupId>
+            <groupId>org.hage.platform.node.execution</groupId>
             <artifactId>execution-core</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.component</groupId>
+            <groupId>org.hage.platform.node.runtime</groupId>
             <artifactId>runtime-core</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -72,13 +72,13 @@
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.component</groupId>
+            <groupId>org.hage.platform.node.lifecycle</groupId>
             <artifactId>lifecycle-core</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.component</groupId>
+            <groupId>org.hage.platform.node.rate</groupId>
             <artifactId>rate-core</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -104,13 +104,13 @@
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.util</groupId>
+            <groupId>org.hage.platform.node.container</groupId>
             <artifactId>container-share</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.util</groupId>
+            <groupId>org.hage.platform.node</groupId>
             <artifactId>event-bus-core</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -136,7 +136,7 @@
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.component</groupId>
+            <groupId>org.hage.platform.node.container</groupId>
             <artifactId>pico-impl</artifactId>
             <version>${project.version}</version>
         </dependency>

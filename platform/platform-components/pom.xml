@@ -14,15 +14,9 @@
     <artifactId>platform-components</artifactId>
 
     <modules>
-        <module>container</module>
-        <module>runtime</module>
         <module>simulation-config</module>
-        <module>rate</module>
-        <module>lifecycle</module>
-        <module>structure</module>
         <module>cluster-api</module>
         <module>synchronization</module>
-        <module>execution</module>
         <module>load-balance</module>
     </modules>
 

@@ -20,7 +20,7 @@
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.util</groupId>
+            <groupId>org.hage.platform.node.execution</groupId>
             <artifactId>executors-api</artifactId>
             <version>${project.version}</version>
         </dependency>
