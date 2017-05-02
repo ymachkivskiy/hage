@@ -23,6 +23,7 @@
         <module>simulation-api</module>
         <module>node</module>
         <module>simulation-config</module>
+        <module>config</module>
     </modules>
 
     <dependencies>

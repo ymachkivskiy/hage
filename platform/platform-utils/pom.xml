@@ -13,7 +13,6 @@
 
     <modules>
         <module>connection</module>
-        <module>platform-configuration</module>
         <module>platform-boot</module>
     </modules>
 

@@ -116,7 +116,7 @@
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.util.conf</groupId>
+            <groupId>org.hage.platform.conf</groupId>
             <artifactId>cli-config-core</artifactId>
             <version>${project.version}</version>
         </dependency>

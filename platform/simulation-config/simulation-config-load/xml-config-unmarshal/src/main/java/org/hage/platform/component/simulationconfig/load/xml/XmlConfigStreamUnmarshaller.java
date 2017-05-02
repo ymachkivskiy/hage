@@ -29,7 +29,10 @@ public class XmlConfigStreamUnmarshaller {
 
             return (HageConfiguration) jaxbUnmarshaller.unmarshal(inputStream);
 
-        } catch (JAXBException | SAXException e) {
+        } catch (JAXBException e) {
+            // TODO: 03.05.17 temporary
+            throw new XmlConfigurationUnmarshalException(e);
+        } catch (SAXException e) {
             throw new XmlConfigurationUnmarshalException(e);
         }
     }

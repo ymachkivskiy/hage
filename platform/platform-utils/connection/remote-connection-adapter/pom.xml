@@ -26,7 +26,7 @@
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.util.conf</groupId>
+            <groupId>org.hage.platform.conf</groupId>
             <artifactId>internal-config-api</artifactId>
             <version>${project.version}</version>
         </dependency>
