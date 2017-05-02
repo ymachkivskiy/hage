@@ -14,7 +14,6 @@
     <artifactId>platform-components</artifactId>
 
     <modules>
-        <module>simulation-config</module>
         <module>cluster-api</module>
         <module>synchronization</module>
         <module>load-balance</module>

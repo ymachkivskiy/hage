@@ -34,13 +34,13 @@
         <!-- configuration loading -->
 
         <dependency>
-            <groupId>org.hage.platform.component.configload</groupId>
+            <groupId>org.hage.platform.simconf</groupId>
             <artifactId>load-adapter</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.component.configload</groupId>
+            <groupId>org.hage.platform.simconf</groupId>
             <artifactId>xml-config-loader</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -66,7 +66,7 @@
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.component</groupId>
+            <groupId>org.hage.platform.simconf</groupId>
             <artifactId>simulation-config-core</artifactId>
             <version>${project.version}</version>
         </dependency>

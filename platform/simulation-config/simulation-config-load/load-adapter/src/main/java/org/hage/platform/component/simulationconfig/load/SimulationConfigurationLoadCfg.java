@@ -6,7 +6,6 @@ import org.hage.platform.component.simulationconfig.load.generate.PopulationDist
 import org.hage.platform.component.simulationconfig.load.generate.count.*;
 import org.hage.platform.component.simulationconfig.load.generate.select.*;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 @PlugableConfiguration
 public class SimulationConfigurationLoadCfg {

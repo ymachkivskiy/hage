@@ -1,13 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>simulation-config-load</artifactId>
-        <groupId>org.hage.platform.component.configload</groupId>
-        <version>1.0-SNAPSHOT</version>
-    </parent>
+
     <modelVersion>4.0.0</modelVersion>
 
+    <!--todo: temporary removed parent-->
+    <groupId>org.hage.platform.simconf</groupId>
     <artifactId>xml-config-unmarshal</artifactId>
+    <version>1.0-SNAPSHOT</version>
 
     <properties>
         <xsd.source.dir>${basedir}/src/main/resources/xsd</xsd.source.dir>

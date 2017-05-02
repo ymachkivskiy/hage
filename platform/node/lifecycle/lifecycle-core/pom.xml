@@ -35,7 +35,7 @@
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.component</groupId>
+            <groupId>org.hage.platform.simconf</groupId>
             <artifactId>simulation-config-api</artifactId>
             <version>${project.version}</version>
         </dependency>
