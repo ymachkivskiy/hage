@@ -29,7 +29,7 @@
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.component</groupId>
+            <groupId>org.hage.platform.cluster</groupId>
             <artifactId>load-balance-api</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -41,7 +41,7 @@
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.util</groupId>
+            <groupId>org.hage.platform.cluster</groupId>
             <artifactId>remote-connection-adapter</artifactId>
             <version>${project.version}</version>
         </dependency>

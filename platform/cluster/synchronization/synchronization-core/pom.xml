@@ -3,19 +3,19 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>rate-parent</artifactId>
-        <groupId>org.hage.platform.node.rate</groupId>
+        <artifactId>synchronization</artifactId>
+        <groupId>org.hage.platform.cluster</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>rate-core</artifactId>
+    <artifactId>synchronization-core</artifactId>
 
     <dependencies>
 
         <dependency>
-            <groupId>org.hage.platform.node.rate</groupId>
-            <artifactId>rate-api</artifactId>
+            <groupId>org.hage.platform.cluster</groupId>
+            <artifactId>synchronization-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 

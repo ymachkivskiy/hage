@@ -26,7 +26,7 @@
         <!-- boot utils -->
 
         <dependency>
-            <groupId>org.hage.platform.util</groupId>
+            <groupId>org.hage.platform.cluster</groupId>
             <artifactId>platform-boot</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -84,13 +84,13 @@
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.component</groupId>
+            <groupId>org.hage.platform.cluster</groupId>
             <artifactId>synchronization-core</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.component</groupId>
+            <groupId>org.hage.platform.cluster</groupId>
             <artifactId>load-balance-core</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -98,7 +98,7 @@
         <!--platform utils-->
 
         <dependency>
-            <groupId>org.hage.platform.util</groupId>
+            <groupId>org.hage.platform.cluster</groupId>
             <artifactId>remote-connection-adapter</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -130,7 +130,7 @@
         <!-- specific implementations -->
 
         <dependency>
-            <groupId>org.hage.platform.util</groupId>
+            <groupId>org.hage.platform.cluster</groupId>
             <artifactId>connection-hazelcast</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -142,7 +142,7 @@
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.component</groupId>
+            <groupId>org.hage.platform.cluster</groupId>
             <artifactId>load-balance-algorithm-knapsack</artifactId>
             <version>${project.version}</version>
         </dependency>

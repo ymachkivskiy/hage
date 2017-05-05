@@ -20,7 +20,7 @@
         </dependency>
 
         <dependency>
-            <groupId>org.hage.platform.component</groupId>
+            <groupId>org.hage.platform.cluster</groupId>
             <artifactId>cluster-api</artifactId>
             <version>${project.version}</version>
         </dependency>
