@@ -1,4 +1,4 @@
-package org.hage.platform.component;
+package org.hage.platform.node;
 
 import org.hage.platform.node.structure.connections.ConfigurableStructure;
 import org.hage.platform.node.structure.connections.grid.FullGridStructureCreationStrategy;

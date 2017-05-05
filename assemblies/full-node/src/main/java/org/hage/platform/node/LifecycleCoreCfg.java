@@ -1,4 +1,4 @@
-package org.hage.platform.component;
+package org.hage.platform.node;
 
 import org.hage.platform.node.lifecycle.DefaultLifecycleInitializer;
 import org.hage.platform.node.lifecycle.LifecycleEngine;
