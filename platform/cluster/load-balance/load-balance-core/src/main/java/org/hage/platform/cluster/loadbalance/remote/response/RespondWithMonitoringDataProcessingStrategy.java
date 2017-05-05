@@ -6,7 +6,7 @@ import org.hage.platform.cluster.loadbalance.remote.message.LoadBalanceData;
 import org.hage.platform.cluster.loadbalance.remote.message.LoadBalanceMessageType;
 import org.hage.platform.cluster.loadbalance.remote.message.LoadBalancerRemoteMessage;
 import org.hage.platform.cluster.loadbalance.remote.message.MessageUtils;
-import org.hage.platform.component.execution.monitor.NodeDynamicExecutionMonitor;
+import org.hage.platform.node.execution.monitor.NodeDynamicExecutionMonitor;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Slf4j

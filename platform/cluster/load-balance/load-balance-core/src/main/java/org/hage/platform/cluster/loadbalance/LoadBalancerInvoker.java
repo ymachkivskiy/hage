@@ -2,13 +2,13 @@ package org.hage.platform.cluster.loadbalance;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.SingletonComponent;
-import org.hage.platform.component.execution.phase.PhasesPostProcessor;
-import org.hage.platform.component.lifecycle.LifecycleCommandInvoker;
+import org.hage.platform.node.execution.phase.PhasesPostProcessor;
+import org.hage.platform.node.lifecycle.LifecycleCommandInvoker;
 import org.hage.platform.cluster.loadbalance.check.BalanceCheckStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 
-import static org.hage.platform.component.lifecycle.BaseLifecycleCommand.ASYNC__PAUSE_FOR_RE_BALANCE;
+import static org.hage.platform.node.lifecycle.BaseLifecycleCommand.ASYNC__PAUSE_FOR_RE_BALANCE;
 
 
 @Order(0)

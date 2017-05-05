@@ -1,6 +1,6 @@
 package org.hage.platform.simulation.runtime.control;
 
-import org.hage.platform.component.structure.connections.UnitAddress;
+import org.hage.platform.node.structure.connections.UnitAddress;
 import org.hage.platform.simulation.runtime.agent.Agent;
 import org.hage.platform.simulation.runtime.agent.AgentAddress;
 import org.hage.platform.simulation.runtime.context.*;

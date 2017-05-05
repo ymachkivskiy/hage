@@ -9,9 +9,9 @@ import org.hage.platform.cluster.loadbalance.remote.message.LoadBalanceData;
 import org.hage.platform.cluster.loadbalance.remote.message.LoadBalanceMessageType;
 import org.hage.platform.cluster.loadbalance.remote.message.LoadBalancerRemoteMessage;
 import org.hage.platform.cluster.loadbalance.remote.message.MessageUtils;
-import org.hage.platform.component.runtime.migration.UnitMigrationPerformer;
-import org.hage.platform.component.structure.Position;
-import org.hage.platform.util.executors.simple.WorkerExecutor;
+import org.hage.platform.node.runtime.migration.UnitMigrationPerformer;
+import org.hage.platform.node.structure.Position;
+import org.hage.platform.node.executors.simple.WorkerExecutor;
 import org.hage.util.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 

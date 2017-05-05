@@ -3,19 +3,19 @@ package org.hage.platform.component.simulationconfig.load.xml;
 import org.hage.platform.annotation.di.SingletonComponent;
 import org.hage.platform.cluster.loadbalance.config.BalanceMode;
 import org.hage.platform.cluster.loadbalance.config.LoadBalanceConfig;
-import org.hage.platform.component.rate.model.MeasurerRateConfig;
-import org.hage.platform.component.rate.model.MeasurerType;
-import org.hage.platform.component.runtime.init.AgentDefinition;
-import org.hage.platform.component.runtime.init.ControlAgentDefinition;
+import org.hage.platform.node.rate.model.MeasurerRateConfig;
+import org.hage.platform.node.rate.model.MeasurerType;
+import org.hage.platform.node.runtime.init.AgentDefinition;
+import org.hage.platform.node.runtime.init.ControlAgentDefinition;
 import org.hage.platform.component.simulationconfig.load.definition.ChunkPopulationQualifier;
 import org.hage.platform.component.simulationconfig.load.definition.InputConfiguration;
 import org.hage.platform.component.simulationconfig.load.definition.SimulationOrganizationDefinition;
 import org.hage.platform.component.simulationconfig.load.definition.agent.AgentCountData;
 import org.hage.platform.component.simulationconfig.load.definition.agent.ChunkAgentDistribution;
 import org.hage.platform.component.simulationconfig.load.definition.agent.PositionsSelectionData;
-import org.hage.platform.component.structure.grid.Chunk;
-import org.hage.platform.component.structure.grid.GridBoundaryConditions;
-import org.hage.platform.component.structure.grid.GridNeighborhoodType;
+import org.hage.platform.node.structure.grid.Chunk;
+import org.hage.platform.node.structure.grid.GridBoundaryConditions;
+import org.hage.platform.node.structure.grid.GridNeighborhoodType;
 import org.hage.platform.simulation.runtime.agent.Agent;
 import org.hage.platform.simulation.runtime.control.ControlAgent;
 import org.hage.platform.simulation.runtime.state.UnitPropertiesStateComponent;
@@ -84,7 +84,7 @@ public class ConfigurationTranslator {
 
     private Chunk mapRegion(PopulationRegionDescriptorType regionDescriptorType, Dimensions gridDimensions) {
         if (regionDescriptorType.getFullGridArea() != null) {
-            return new Chunk(org.hage.platform.component.structure.Position.ZERO, mapDimensions(gridDimensions));
+            return new Chunk(org.hage.platform.node.structure.Position.ZERO, mapDimensions(gridDimensions));
         }else
         {
             return new Chunk(mapPosition(regionDescriptorType.getPosition()), mapDimensions(regionDescriptorType.getDimensions()));
@@ -118,8 +118,8 @@ public class ConfigurationTranslator {
     }
 
 
-    private org.hage.platform.component.structure.Position mapPosition(Position position) {
-        return org.hage.platform.component.structure.Position.position(position.getDepth(), position.getHorizontal(), position.getVertical());
+    private org.hage.platform.node.structure.Position mapPosition(Position position) {
+        return org.hage.platform.node.structure.Position.position(position.getDepth(), position.getHorizontal(), position.getVertical());
     }
 
     private ControlAgentDefinition mapControlAgentDefinition(EnvironmentPopulationConfigType environmentPopulationConfig) {
@@ -166,8 +166,8 @@ public class ConfigurationTranslator {
         return null;
     }
 
-    private org.hage.platform.component.structure.StructureDefinition mapStructureDefinition(StructureDefinition environmentStructure) {
-        return new org.hage.platform.component.structure.StructureDefinition(
+    private org.hage.platform.node.structure.StructureDefinition mapStructureDefinition(StructureDefinition environmentStructure) {
+        return new org.hage.platform.node.structure.StructureDefinition(
                 mapBoundaryConditions(environmentStructure.getGrid().getBoundaryConditionsType()),
                 mapDimensions(environmentStructure.getGrid().getGridDimensions()),
                 mapNeighborhoodType(environmentStructure.getGrid().getNeighborhoodType())
@@ -213,16 +213,16 @@ public class ConfigurationTranslator {
         }
     }
 
-    private org.hage.platform.component.structure.grid.Dimensions mapDimensions(Dimensions dimensions) {
-        return org.hage.platform.component.structure.grid.Dimensions.definedBy(dimensions.getDepthSize(), dimensions.getHorizontalSize(), dimensions.getVerticalSize());
+    private org.hage.platform.node.structure.grid.Dimensions mapDimensions(Dimensions dimensions) {
+        return org.hage.platform.node.structure.grid.Dimensions.definedBy(dimensions.getDepthSize(), dimensions.getHorizontalSize(), dimensions.getVerticalSize());
     }
 
-    private org.hage.platform.component.rate.model.ComputationRatingConfig getComputationRatingConfig(HageConfiguration configuration) {
+    private org.hage.platform.node.rate.model.ComputationRatingConfig getComputationRatingConfig(HageConfiguration configuration) {
         return ofNullable(configuration.getPlatformConfig())
                     .map(PlatformConfigType::getComputationRateConfig)
                     .map(this::mapComputationRateConfig)
                     // default value
-                    .orElseGet(() -> org.hage.platform.component.rate.model.ComputationRatingConfig.builder().enabledRateMeasureTypes(emptySet()).measurerRateConfigs(emptyList()).build());
+                    .orElseGet(() -> org.hage.platform.node.rate.model.ComputationRatingConfig.builder().enabledRateMeasureTypes(emptySet()).measurerRateConfigs(emptyList()).build());
     }
 
     private LoadBalanceConfig getLoadBalanceConfig(HageConfiguration configuration) {
@@ -249,7 +249,7 @@ public class ConfigurationTranslator {
 
     }
 
-    private org.hage.platform.component.rate.model.ComputationRatingConfig mapComputationRateConfig(ComputationRatingConfig computationRatingConfig) {
+    private org.hage.platform.node.rate.model.ComputationRatingConfig mapComputationRateConfig(ComputationRatingConfig computationRatingConfig) {
         Set<MeasurerType> enabledMeasurers = computationRatingConfig.getEnabledRateMeasurers()
                 .stream()
                 .map(this::mapMeasurerType)
@@ -260,7 +260,7 @@ public class ConfigurationTranslator {
                 .map(c -> new MeasurerRateConfig(mapMeasurerType(c.getMeasuredType()), c.getRateWeight(), c.getMaxRate()))
                 .collect(toList());
 
-        return org.hage.platform.component.rate.model.ComputationRatingConfig
+        return org.hage.platform.node.rate.model.ComputationRatingConfig
                 .builder()
                 .enabledRateMeasureTypes(enabledMeasurers)
                 .measurerRateConfigs(measurerRateConfigs)

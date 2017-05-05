@@ -1,9 +1,9 @@
 package org.hage.platform.component;
 
-import org.hage.platform.component.lifecycle.DefaultLifecycleInitializer;
-import org.hage.platform.component.lifecycle.LifecycleEngine;
-import org.hage.platform.component.lifecycle.LifecycleInitializer;
-import org.hage.platform.component.lifecycle.remote.ClusterConsistencyGuard;
+import org.hage.platform.node.lifecycle.DefaultLifecycleInitializer;
+import org.hage.platform.node.lifecycle.LifecycleEngine;
+import org.hage.platform.node.lifecycle.LifecycleInitializer;
+import org.hage.platform.node.lifecycle.remote.ClusterConsistencyGuard;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

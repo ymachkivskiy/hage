@@ -2,7 +2,7 @@ package org.hage.platform.cluster.loadbalance.knapsack.balancing;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.cluster.loadbalance.rebalance.NodeDynamicExecutionInfo;
-import org.hage.platform.component.execution.monitor.DynamicExecutionInfo;
+import org.hage.platform.node.execution.monitor.DynamicExecutionInfo;
 import org.hage.platform.cluster.loadbalance.knapsack.model.Item;
 import org.hage.platform.cluster.loadbalance.knapsack.model.Knapsack;
 import org.hage.platform.cluster.loadbalance.knapsack.model.KnapsackContext;

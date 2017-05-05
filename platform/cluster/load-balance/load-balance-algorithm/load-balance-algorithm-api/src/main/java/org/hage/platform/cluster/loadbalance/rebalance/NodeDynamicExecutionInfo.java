@@ -2,7 +2,7 @@ package org.hage.platform.cluster.loadbalance.rebalance;
 
 import lombok.Data;
 import org.hage.platform.cluster.api.NodeAddress;
-import org.hage.platform.component.execution.monitor.DynamicExecutionInfo;
+import org.hage.platform.node.execution.monitor.DynamicExecutionInfo;
 
 @Data
 public class NodeDynamicExecutionInfo {

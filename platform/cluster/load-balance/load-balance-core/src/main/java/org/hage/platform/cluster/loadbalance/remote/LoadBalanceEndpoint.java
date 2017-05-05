@@ -12,7 +12,7 @@ import org.hage.platform.cluster.loadbalance.remote.response.LoadBalanceMessageR
 import org.hage.platform.cluster.connection.chanel.ConnectionDescriptor;
 import org.hage.platform.cluster.connection.remote.endpoint.BaseRemoteEndpoint;
 import org.hage.platform.cluster.connection.remote.endpoint.MessageEnvelope;
-import org.hage.platform.util.executors.simple.WorkerExecutor;
+import org.hage.platform.node.executors.simple.WorkerExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashSet;

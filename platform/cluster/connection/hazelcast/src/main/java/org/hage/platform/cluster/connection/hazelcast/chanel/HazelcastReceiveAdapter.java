@@ -12,7 +12,7 @@ import org.hage.platform.cluster.connection.chanel.RespondReceiver;
 import org.hage.platform.cluster.connection.frame.Frame;
 import org.hage.platform.cluster.connection.frame.Result;
 import org.hage.platform.cluster.connection.frame.diagnostics.ResultType;
-import org.hage.platform.util.executors.simple.WorkerExecutor;
+import org.hage.platform.node.executors.simple.WorkerExecutor;
 
 import java.io.Serializable;
 import java.util.concurrent.atomic.AtomicReference;
@@ -26,6 +26,7 @@ import static org.hage.platform.cluster.connection.frame.process.IncludeSenderPr
 import static org.hage.platform.cluster.connection.frame.process.PayloadDataProcessor.withData;
 import static org.hage.platform.cluster.connection.frame.process.PayloadDataProcessor.withoutData;
 import static org.hage.platform.cluster.connection.frame.process.ReceiversProcessor.responseFor;
+import static org.hage.platform.cluster.connection.frame.util.FrameUtil.*;
 import static org.hage.platform.cluster.connection.frame.util.ResultUtil.isSuccessful;
 
 @RequiredArgsConstructor

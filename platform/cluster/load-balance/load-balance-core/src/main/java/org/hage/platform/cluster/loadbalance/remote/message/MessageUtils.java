@@ -1,11 +1,12 @@
 package org.hage.platform.cluster.loadbalance.remote.message;
 
-import org.hage.platform.component.execution.monitor.DynamicExecutionInfo;
+import org.hage.platform.node.execution.monitor.DynamicExecutionInfo;
 import org.hage.platform.cluster.loadbalance.rebalance.UnitRelocationOrder;
 
 import java.util.List;
 
 import static java.util.Collections.emptyList;
+import static org.hage.platform.cluster.loadbalance.remote.message.LoadBalanceMessageType.*;
 
 public class MessageUtils {
 

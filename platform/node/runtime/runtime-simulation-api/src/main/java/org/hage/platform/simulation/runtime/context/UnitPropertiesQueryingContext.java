@@ -1,6 +1,6 @@
 package org.hage.platform.simulation.runtime.context;
 
-import org.hage.platform.component.structure.connections.UnitAddress;
+import org.hage.platform.node.structure.connections.UnitAddress;
 import org.hage.platform.simulation.runtime.state.property.ReadUnitProperties;
 import org.hage.platform.simulation.runtime.state.property.ReadWriteUnitProperties;
 

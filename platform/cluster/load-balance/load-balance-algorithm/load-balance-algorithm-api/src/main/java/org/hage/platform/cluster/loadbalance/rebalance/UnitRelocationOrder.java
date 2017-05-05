@@ -2,7 +2,7 @@ package org.hage.platform.cluster.loadbalance.rebalance;
 
 import lombok.Data;
 import org.hage.platform.cluster.api.NodeAddress;
-import org.hage.platform.component.structure.Position;
+import org.hage.platform.node.structure.Position;
 
 import java.io.Serializable;
 

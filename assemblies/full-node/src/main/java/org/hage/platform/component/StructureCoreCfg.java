@@ -1,8 +1,8 @@
 package org.hage.platform.component;
 
-import org.hage.platform.component.structure.connections.ConfigurableStructure;
-import org.hage.platform.component.structure.connections.grid.FullGridStructureCreationStrategy;
-import org.hage.platform.component.structure.distribution.DistributedPositionsAddressingRegistry;
+import org.hage.platform.node.structure.connections.ConfigurableStructure;
+import org.hage.platform.node.structure.connections.grid.FullGridStructureCreationStrategy;
+import org.hage.platform.node.structure.distribution.DistributedPositionsAddressingRegistry;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

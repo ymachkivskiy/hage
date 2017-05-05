@@ -5,7 +5,6 @@ import com.hazelcast.core.Cluster;
 import com.hazelcast.core.MembershipEvent;
 import com.hazelcast.core.MembershipListener;
 import org.hage.platform.cluster.api.*;
-import org.hage.platform.component.cluster.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;

@@ -1,7 +1,7 @@
 package org.hage.platform.component.simulationconfig;
 
 import lombok.Data;
-import org.hage.platform.component.runtime.init.Population;
+import org.hage.platform.node.runtime.init.Population;
 
 import java.io.Serializable;
 

@@ -2,7 +2,7 @@ package org.hage.platform.cluster.loadbalance.knapsack.balancing;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.cluster.loadbalance.knapsack.util.CalculationUtils;
-import org.hage.platform.component.execution.monitor.DynamicExecutionInfo;
+import org.hage.platform.node.execution.monitor.DynamicExecutionInfo;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -11,8 +11,8 @@ import java.time.Duration;
 import static java.lang.Math.max;
 import static java.math.BigDecimal.ROUND_CEILING;
 import static java.math.BigDecimal.valueOf;
-import static org.hage.platform.component.execution.phase.ExecutionPhaseType.MAIN__AGENTS_STEP;
-import static org.hage.platform.component.execution.phase.ExecutionPhaseType.MAIN___CONTROL_AGENT_STEP;
+import static org.hage.platform.node.execution.phase.ExecutionPhaseType.MAIN__AGENTS_STEP;
+import static org.hage.platform.node.execution.phase.ExecutionPhaseType.MAIN___CONTROL_AGENT_STEP;
 
 @Slf4j
 @Component

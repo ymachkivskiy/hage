@@ -1,8 +1,8 @@
 package org.hage.platform.component.simulationconfig.load.generate;
 
 import org.hage.platform.annotation.di.SingletonComponent;
-import org.hage.platform.component.runtime.init.ContainerConfiguration;
-import org.hage.platform.component.runtime.init.Population;
+import org.hage.platform.node.runtime.init.ContainerConfiguration;
+import org.hage.platform.node.runtime.init.Population;
 import org.hage.platform.component.simulationconfig.Common;
 import org.hage.platform.component.simulationconfig.Configuration;
 import org.hage.platform.component.simulationconfig.Specific;
@@ -10,7 +10,7 @@ import org.hage.platform.component.simulationconfig.load.definition.InputConfigu
 import org.hage.platform.component.simulationconfig.load.definition.SimulationOrganizationDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.hage.platform.component.runtime.init.Population.emptyPopulation;
+import static org.hage.platform.node.runtime.init.Population.emptyPopulation;
 
 
 @SingletonComponent

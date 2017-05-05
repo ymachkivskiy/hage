@@ -9,7 +9,7 @@ import org.hage.platform.cluster.connection.chanel.ConnectionDescriptor;
 import org.hage.platform.cluster.connection.chanel.FrameReceiverAdapter;
 import org.hage.platform.cluster.connection.chanel.FrameSender;
 import org.hage.platform.cluster.connection.hazelcast.HazelcastInstanceHolder;
-import org.hage.platform.util.executors.simple.WorkerExecutor;
+import org.hage.platform.node.executors.simple.WorkerExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static com.google.common.cache.CacheBuilder.newBuilder;

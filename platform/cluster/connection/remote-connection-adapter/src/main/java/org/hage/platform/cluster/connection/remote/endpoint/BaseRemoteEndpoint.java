@@ -13,7 +13,7 @@ import org.hage.platform.cluster.connection.frame.Frame;
 import org.hage.platform.cluster.connection.frame.process.DiagnosticsProcessor;
 import org.hage.platform.cluster.connection.frame.process.ResponsivenessProcessor;
 import org.hage.platform.cluster.connection.frame.util.FrameUtil;
-import org.hage.platform.util.executors.simple.WorkerExecutor;
+import org.hage.platform.node.executors.simple.WorkerExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
@@ -28,6 +28,7 @@ import static org.hage.platform.cluster.connection.frame.process.ConversationIdP
 import static org.hage.platform.cluster.connection.frame.process.ConversationIdProcessor.withoutConversation;
 import static org.hage.platform.cluster.connection.frame.process.IncludeSenderProcessor.includingSender;
 import static org.hage.platform.cluster.connection.frame.process.PayloadDataProcessor.withData;
+import static org.hage.platform.cluster.connection.frame.process.ReceiversProcessor.*;
 import static org.hage.util.concurrency.Utils.getWithBlocking;
 
 @Slf4j

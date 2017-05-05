@@ -6,7 +6,7 @@ import org.hage.platform.cluster.loadbalance.knapsack.balancing.KnapsackTransfer
 import org.hage.platform.cluster.loadbalance.knapsack.model.MappingContext;
 import org.hage.platform.cluster.loadbalance.rebalance.BalanceOrder;
 import org.hage.platform.cluster.loadbalance.rebalance.UnitRelocationOrder;
-import org.hage.platform.component.structure.Position;
+import org.hage.platform.node.structure.Position;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;

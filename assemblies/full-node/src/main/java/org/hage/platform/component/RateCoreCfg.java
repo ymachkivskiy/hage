@@ -1,10 +1,10 @@
 package org.hage.platform.component;
 
-import org.hage.platform.component.rate.measure.PerformanceMeasurer;
-import org.hage.platform.component.rate.measure.impl.ConcurrencyPerformanceMeasurer;
-import org.hage.platform.component.rate.measure.impl.MaxMemoryPerformanceMeasurer;
-import org.hage.platform.component.rate.measure.normalize.RateNormalizationProvider;
-import org.hage.platform.component.rate.measure.normalize.scaled.ScaledNormalizerProvider;
+import org.hage.platform.node.rate.measure.PerformanceMeasurer;
+import org.hage.platform.node.rate.measure.impl.ConcurrencyPerformanceMeasurer;
+import org.hage.platform.node.rate.measure.impl.MaxMemoryPerformanceMeasurer;
+import org.hage.platform.node.rate.measure.normalize.RateNormalizationProvider;
+import org.hage.platform.node.rate.measure.normalize.scaled.ScaledNormalizerProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

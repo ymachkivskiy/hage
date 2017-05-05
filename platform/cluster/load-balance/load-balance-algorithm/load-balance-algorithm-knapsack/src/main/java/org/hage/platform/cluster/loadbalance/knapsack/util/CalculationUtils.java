@@ -1,7 +1,7 @@
 package org.hage.platform.cluster.loadbalance.knapsack.util;
 
-import org.hage.platform.component.execution.monitor.AgentsInfo;
-import org.hage.platform.component.execution.monitor.UnitAgentsNumberInfo;
+import org.hage.platform.node.execution.monitor.AgentsInfo;
+import org.hage.platform.node.execution.monitor.UnitAgentsNumberInfo;
 
 public abstract class CalculationUtils {
 

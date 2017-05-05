@@ -1,6 +1,6 @@
 package org.hage.platform.simulation.runtime.agent;
 
-import org.hage.platform.component.structure.connections.UnitAddress;
+import org.hage.platform.node.structure.connections.UnitAddress;
 import org.hage.platform.simulation.runtime.context.*;
 
 import java.util.List;

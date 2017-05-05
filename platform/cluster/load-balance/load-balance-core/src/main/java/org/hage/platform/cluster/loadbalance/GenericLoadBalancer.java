@@ -2,7 +2,7 @@ package org.hage.platform.cluster.loadbalance;
 
 import org.hage.platform.annotation.di.SingletonComponent;
 import org.hage.platform.cluster.loadbalance.rebalance.NodeDynamicExecutionInfo;
-import org.hage.platform.component.lifecycle.ClusterResumer;
+import org.hage.platform.node.lifecycle.ClusterResumer;
 import org.hage.platform.cluster.loadbalance.rebalance.BalanceOrder;
 import org.hage.platform.cluster.loadbalance.rebalance.ClusterBalanceCalculator;
 import org.hage.platform.cluster.loadbalance.remote.BalanceManager;

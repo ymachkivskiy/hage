@@ -3,7 +3,7 @@ package org.hage.platform.component.simulationconfig;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.component.simulationconfig.event.ConfigurationUpdatedEvent;
-import org.hage.platform.util.bus.EventBus;
+import org.hage.platform.node.bus.EventBus;
 import org.hage.util.concurrency.BlockingElementHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 

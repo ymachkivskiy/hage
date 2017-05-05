@@ -1,7 +1,7 @@
 package org.hage.platform.cluster.loadbalance.remote.message;
 
 import lombok.Data;
-import org.hage.platform.component.execution.monitor.DynamicExecutionInfo;
+import org.hage.platform.node.execution.monitor.DynamicExecutionInfo;
 import org.hage.platform.cluster.loadbalance.rebalance.UnitRelocationOrder;
 
 import java.io.Serializable;

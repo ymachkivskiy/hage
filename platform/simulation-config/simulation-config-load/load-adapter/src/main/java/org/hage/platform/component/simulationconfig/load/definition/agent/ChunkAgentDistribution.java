@@ -1,7 +1,7 @@
 package org.hage.platform.component.simulationconfig.load.definition.agent;
 
 import lombok.Data;
-import org.hage.platform.component.runtime.init.AgentDefinition;
+import org.hage.platform.node.runtime.init.AgentDefinition;
 
 @Data
 public final class ChunkAgentDistribution {

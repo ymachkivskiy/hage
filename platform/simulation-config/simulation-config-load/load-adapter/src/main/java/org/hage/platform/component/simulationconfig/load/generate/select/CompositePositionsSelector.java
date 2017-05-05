@@ -2,8 +2,8 @@ package org.hage.platform.component.simulationconfig.load.generate.select;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.NotImplementedException;
-import org.hage.platform.component.structure.Position;
-import org.hage.platform.component.structure.grid.Chunk;
+import org.hage.platform.node.structure.Position;
+import org.hage.platform.node.structure.grid.Chunk;
 import org.hage.platform.component.simulationconfig.load.definition.agent.PositionsSelectionData;
 import org.hage.platform.component.simulationconfig.load.definition.agent.SelectionMode;
 

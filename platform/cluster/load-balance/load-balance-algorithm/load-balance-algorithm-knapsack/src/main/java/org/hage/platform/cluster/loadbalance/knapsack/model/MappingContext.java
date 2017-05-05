@@ -3,8 +3,8 @@ package org.hage.platform.cluster.loadbalance.knapsack.model;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import org.hage.platform.cluster.loadbalance.knapsack.util.CalculationUtils;
-import org.hage.platform.component.execution.monitor.UnitAgentsNumberInfo;
-import org.hage.platform.component.structure.Position;
+import org.hage.platform.node.execution.monitor.UnitAgentsNumberInfo;
+import org.hage.platform.node.structure.Position;
 
 import static java.util.Optional.ofNullable;
 

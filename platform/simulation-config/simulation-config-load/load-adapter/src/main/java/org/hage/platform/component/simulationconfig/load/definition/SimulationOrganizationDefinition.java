@@ -1,9 +1,9 @@
 package org.hage.platform.component.simulationconfig.load.definition;
 
 import lombok.Data;
-import org.hage.platform.component.runtime.init.AgentDefinition;
-import org.hage.platform.component.runtime.init.ControlAgentDefinition;
-import org.hage.platform.component.structure.StructureDefinition;
+import org.hage.platform.node.runtime.init.AgentDefinition;
+import org.hage.platform.node.runtime.init.ControlAgentDefinition;
+import org.hage.platform.node.structure.StructureDefinition;
 
 import java.util.List;
 

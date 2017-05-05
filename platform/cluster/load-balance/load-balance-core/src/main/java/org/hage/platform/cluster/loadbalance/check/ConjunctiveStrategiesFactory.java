@@ -3,7 +3,7 @@ package org.hage.platform.cluster.loadbalance.check;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.NotImplementedException;
 import org.hage.platform.annotation.di.SingletonComponent;
-import org.hage.platform.component.execution.monitor.SimulationExecutionMonitor;
+import org.hage.platform.node.execution.monitor.SimulationExecutionMonitor;
 import org.hage.platform.cluster.loadbalance.config.LoadBalanceConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 

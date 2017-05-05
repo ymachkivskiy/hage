@@ -2,8 +2,8 @@ package org.hage.platform.component.simulationconfig;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.SingletonComponent;
-import org.hage.platform.component.execution.event.CoreConfiguredEvent;
-import org.hage.platform.util.bus.EventBus;
+import org.hage.platform.node.execution.event.CoreConfiguredEvent;
+import org.hage.platform.node.bus.EventBus;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;

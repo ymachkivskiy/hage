@@ -1,6 +1,6 @@
 package org.hage.mocked.simdata;
 
-import org.hage.platform.component.structure.connections.RelativePosition;
+import org.hage.platform.node.structure.connections.RelativePosition;
 
 import java.util.Random;
 

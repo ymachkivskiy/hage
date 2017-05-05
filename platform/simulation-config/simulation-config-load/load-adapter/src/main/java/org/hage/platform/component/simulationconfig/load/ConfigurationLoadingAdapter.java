@@ -10,7 +10,7 @@ import org.hage.platform.component.simulationconfig.event.ConfigurationLoadReque
 import org.hage.platform.component.simulationconfig.load.config.LoadingConfiguration;
 import org.hage.platform.component.simulationconfig.load.definition.InputConfiguration;
 import org.hage.platform.component.simulationconfig.load.generate.ComputationConfigurationGenerator;
-import org.hage.platform.util.bus.EventSubscriber;
+import org.hage.platform.node.bus.EventSubscriber;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
