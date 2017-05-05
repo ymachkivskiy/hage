@@ -3,14 +3,14 @@ package org.hage.platform.component.simulationconfig.endpoint;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.SingletonComponent;
-import org.hage.platform.component.cluster.NodeAddress;
+import org.hage.platform.cluster.api.NodeAddress;
 import org.hage.platform.component.simulationconfig.Configuration;
 import org.hage.platform.component.simulationconfig.ConfigurationStorage;
 import org.hage.platform.component.simulationconfig.division.Allocation;
 import org.hage.platform.component.simulationconfig.endpoint.message.ConfigurationMessage;
-import org.hage.platform.util.connection.chanel.ConnectionDescriptor;
-import org.hage.platform.util.connection.remote.endpoint.BaseRemoteEndpoint;
-import org.hage.platform.util.connection.remote.endpoint.MessageEnvelope;
+import org.hage.platform.cluster.connection.chanel.ConnectionDescriptor;
+import org.hage.platform.cluster.connection.remote.endpoint.BaseRemoteEndpoint;
+import org.hage.platform.cluster.connection.remote.endpoint.MessageEnvelope;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;

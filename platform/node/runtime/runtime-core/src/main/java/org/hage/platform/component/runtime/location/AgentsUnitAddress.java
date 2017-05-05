@@ -2,7 +2,7 @@ package org.hage.platform.component.runtime.location;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import org.hage.platform.component.cluster.NodeAddress;
+import org.hage.platform.cluster.api.NodeAddress;
 import org.hage.platform.component.structure.Position;
 import org.hage.platform.component.structure.connections.UnitAddress;
 

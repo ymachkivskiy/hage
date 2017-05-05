@@ -3,7 +3,7 @@ package org.hage.platform.component.runtime.migration.external;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.SingletonComponent;
-import org.hage.platform.component.cluster.NodeAddress;
+import org.hage.platform.cluster.api.NodeAddress;
 import org.hage.platform.component.runtime.location.AgentsUnitAddress;
 import org.hage.platform.component.runtime.migration.OutputMigrationQueue;
 import org.hage.platform.component.runtime.migration.internal.InternalMigrationGroup;

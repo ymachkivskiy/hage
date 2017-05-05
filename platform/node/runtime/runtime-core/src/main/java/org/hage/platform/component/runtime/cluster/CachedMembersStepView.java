@@ -2,10 +2,10 @@ package org.hage.platform.component.runtime.cluster;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.SingletonComponent;
-import org.hage.platform.component.cluster.ClusterManager;
-import org.hage.platform.component.cluster.ClusterMember;
-import org.hage.platform.component.cluster.NodeAddress;
-import org.hage.platform.component.cluster.OrderedClusterMembersStepView;
+import org.hage.platform.cluster.api.ClusterManager;
+import org.hage.platform.cluster.api.ClusterMember;
+import org.hage.platform.cluster.api.NodeAddress;
+import org.hage.platform.cluster.api.OrderedClusterMembersStepView;
 import org.hage.platform.component.execution.phase.PhasesPreProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 

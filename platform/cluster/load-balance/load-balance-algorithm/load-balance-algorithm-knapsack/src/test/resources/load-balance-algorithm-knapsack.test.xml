@@ -5,11 +5,11 @@
 
 
     <!-- configuration class -->
-    <bean class="org.hage.platform.component.loadbalance.knapsack.KnapsackModuleCfg"/>
+    <bean class="org.hage.platform.cluster.loadbalance.knapsack.KnapsackModuleCfg"/>
 
 
-    <mockito:mock id="OrderedClusterMembersStepView.mock" class="org.hage.platform.component.cluster.OrderedClusterMembersStepView"/>
+    <mockito:mock id="OrderedClusterMembersStepView.mock" class="org.hage.platform.cluster.api.OrderedClusterMembersStepView"/>
 
-    <mockito:mock id="LocalClusterNode.mock" class="org.hage.platform.component.cluster.LocalClusterNode"/>
+    <mockito:mock id="LocalClusterNode.mock" class="org.hage.platform.cluster.api.LocalClusterNode"/>
 
 </beans>

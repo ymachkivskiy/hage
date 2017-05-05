@@ -1,9 +1,9 @@
 package org.hage.platform.component.lifecycle.remote;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.component.cluster.ClusterManager;
-import org.hage.platform.component.cluster.ClusterMemberChangeCallback;
-import org.hage.platform.component.cluster.NodeAddress;
+import org.hage.platform.cluster.api.ClusterManager;
+import org.hage.platform.cluster.api.ClusterMemberChangeCallback;
+import org.hage.platform.cluster.api.NodeAddress;
 import org.hage.platform.component.lifecycle.LifecycleCommandInvoker;
 import org.springframework.beans.factory.annotation.Autowired;
 

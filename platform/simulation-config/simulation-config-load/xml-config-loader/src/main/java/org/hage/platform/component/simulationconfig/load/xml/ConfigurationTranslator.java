@@ -1,8 +1,8 @@
 package org.hage.platform.component.simulationconfig.load.xml;
 
 import org.hage.platform.annotation.di.SingletonComponent;
-import org.hage.platform.component.loadbalance.config.BalanceMode;
-import org.hage.platform.component.loadbalance.config.LoadBalanceConfig;
+import org.hage.platform.cluster.loadbalance.config.BalanceMode;
+import org.hage.platform.cluster.loadbalance.config.LoadBalanceConfig;
 import org.hage.platform.component.rate.model.MeasurerRateConfig;
 import org.hage.platform.component.rate.model.MeasurerType;
 import org.hage.platform.component.runtime.init.AgentDefinition;

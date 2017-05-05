@@ -1,8 +1,8 @@
 package org.hage.platform.component.runtime.migration.external;
 
 import org.hage.platform.annotation.di.SingletonComponent;
-import org.hage.platform.component.cluster.NodeAddress;
-import org.hage.platform.component.cluster.OrderedClusterMembersStepView;
+import org.hage.platform.cluster.api.NodeAddress;
+import org.hage.platform.cluster.api.OrderedClusterMembersStepView;
 import org.hage.platform.component.runtime.location.AgentsUnitAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 

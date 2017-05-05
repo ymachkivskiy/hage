@@ -1,8 +1,8 @@
 package org.hage.platform.component.structure.distribution;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.component.cluster.LocalClusterNode;
-import org.hage.platform.component.cluster.NodeAddress;
+import org.hage.platform.cluster.api.LocalClusterNode;
+import org.hage.platform.cluster.api.NodeAddress;
 import org.hage.platform.component.structure.Position;
 import org.hage.platform.component.structure.connections.Structure;
 import org.hage.util.concurrency.ReadWriteLockObjectWrapper;

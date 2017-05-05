@@ -2,7 +2,7 @@ package org.hage.platform.component.structure.distribution;
 
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import org.hage.platform.component.cluster.NodeAddress;
+import org.hage.platform.cluster.api.NodeAddress;
 
 import static org.hage.platform.component.structure.distribution.PositionState.*;
 

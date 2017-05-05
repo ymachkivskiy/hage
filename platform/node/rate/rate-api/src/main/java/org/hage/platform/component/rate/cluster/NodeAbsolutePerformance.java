@@ -2,7 +2,7 @@ package org.hage.platform.component.rate.cluster;
 
 import com.google.common.primitives.UnsignedInteger;
 import lombok.Data;
-import org.hage.platform.component.cluster.NodeAddress;
+import org.hage.platform.cluster.api.NodeAddress;
 import org.hage.util.proportion.Countable;
 
 import static com.google.common.primitives.UnsignedInteger.valueOf;

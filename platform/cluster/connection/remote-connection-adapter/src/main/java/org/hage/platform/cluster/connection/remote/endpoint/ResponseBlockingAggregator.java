@@ -1,0 +1,56 @@
+package org.hage.platform.cluster.connection.remote.endpoint;
+
+import lombok.extern.slf4j.Slf4j;
+import org.hage.platform.cluster.api.NodeAddress;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Callable;
+import java.util.concurrent.LinkedBlockingQueue;
+
+@Slf4j
+class ResponseBlockingAggregator<M extends Serializable, R> implements Callable<R> {
+
+    private final BlockingQueue<MessageEnvelope<M>> messagesBlockingQueue = new LinkedBlockingQueue<>();
+
+    private final MessageAggregator<M, R> messagesAggregator;
+    private final Set<NodeAddress> expectedMessageSenders;
+
+    public ResponseBlockingAggregator(MessageAggregator<M, R> messagesAggregator, Set<NodeAddress> expectedMessageSenders) {
+        this.messagesAggregator = messagesAggregator;
+        this.expectedMessageSenders = new HashSet<>(expectedMessageSenders);
+    }
+
+    @Override
+    public R call() throws Exception {
+        log.debug("Started aggregating messages");
+
+        List<MessageEnvelope<M>> collectedMessages = new ArrayList<>();
+
+        while (!expectedMessageSenders.isEmpty()) {
+            log.debug("Not all messages has been received yet. Waiting for new message. Still wait for {} ...", expectedMessageSenders);
+            MessageEnvelope<M> message = messagesBlockingQueue.take();
+            log.debug("Got message {}", message);
+
+            expectedMessageSenders.remove(message.getOrigin());
+            collectedMessages.add(message);
+        }
+
+        log.debug("Got all messages, aggregating...");
+        R result = messagesAggregator.aggregate(collectedMessages);
+        log.debug("Finished aggregating messages into '{}'", result);
+
+        return result;
+    }
+
+
+    public void addMessage(MessageEnvelope<M> message) {
+        log.debug("Get message {} adding it to inner queue", message);
+        messagesBlockingQueue.offer(message);
+    }
+
+}

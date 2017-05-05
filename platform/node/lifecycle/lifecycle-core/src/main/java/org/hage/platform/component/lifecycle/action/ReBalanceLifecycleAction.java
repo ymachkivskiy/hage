@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.SingletonComponent;
 import org.hage.platform.component.execution.ExecutionCore;
 import org.hage.platform.component.lifecycle.LifecycleAction;
-import org.hage.platform.component.loadbalance.LoadBalancer;
+import org.hage.platform.cluster.loadbalance.LoadBalancer;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static lombok.AccessLevel.PRIVATE;

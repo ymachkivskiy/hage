@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.PrototypeComponent;
-import org.hage.platform.component.cluster.LocalClusterNode;
+import org.hage.platform.cluster.api.LocalClusterNode;
 import org.hage.platform.component.runtime.unit.UnitComponent;
 import org.hage.platform.component.runtime.unit.UnitContainer;
 import org.hage.platform.component.structure.Position;

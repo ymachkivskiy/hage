@@ -1,7 +1,7 @@
 package org.hage.platform.component.simulationconfig.endpoint;
 
 import lombok.Data;
-import org.hage.platform.component.cluster.NodeAddress;
+import org.hage.platform.cluster.api.NodeAddress;
 import org.hage.platform.component.simulationconfig.Configuration;
 
 @Data

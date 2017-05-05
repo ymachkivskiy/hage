@@ -2,7 +2,7 @@ package org.hage.platform.component.rate.cluster;
 
 import lombok.Getter;
 import lombok.ToString;
-import org.hage.platform.component.cluster.NodeAddress;
+import org.hage.platform.cluster.api.NodeAddress;
 
 import java.util.Collection;
 import java.util.List;

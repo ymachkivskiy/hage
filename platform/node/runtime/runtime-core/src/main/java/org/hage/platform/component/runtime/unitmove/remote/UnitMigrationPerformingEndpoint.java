@@ -2,15 +2,15 @@ package org.hage.platform.component.runtime.unitmove.remote;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.SingletonComponent;
-import org.hage.platform.component.cluster.NodeAddress;
+import org.hage.platform.cluster.api.NodeAddress;
 import org.hage.platform.component.runtime.migration.UnitMigrationPerformer;
 import org.hage.platform.component.runtime.unitmove.PackedUnit;
 import org.hage.platform.component.runtime.unitmove.UnitDeactivationPacker;
 import org.hage.platform.component.runtime.unitmove.UnitUnpackingQueue;
 import org.hage.platform.component.structure.Position;
-import org.hage.platform.util.connection.chanel.ConnectionDescriptor;
-import org.hage.platform.util.connection.remote.endpoint.BaseRemoteEndpoint;
-import org.hage.platform.util.connection.remote.endpoint.MessageEnvelope;
+import org.hage.platform.cluster.connection.chanel.ConnectionDescriptor;
+import org.hage.platform.cluster.connection.remote.endpoint.BaseRemoteEndpoint;
+import org.hage.platform.cluster.connection.remote.endpoint.MessageEnvelope;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;

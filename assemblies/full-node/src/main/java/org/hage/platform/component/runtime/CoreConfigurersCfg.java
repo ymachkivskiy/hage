@@ -1,6 +1,6 @@
 package org.hage.platform.component.runtime;
 
-import org.hage.platform.component.loadbalance.LoadBalanceCoreConfigurer;
+import org.hage.platform.cluster.loadbalance.LoadBalanceCoreConfigurer;
 import org.hage.platform.component.runtime.container.ContainerCoreConfigurer;
 import org.hage.platform.component.runtime.populationinit.PopulationCoreConfigurer;
 import org.hage.platform.component.runtime.stateprops.UnitPropertiesCoreConfigurer;

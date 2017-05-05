@@ -5,7 +5,7 @@ import org.hage.platform.component.simulationconfig.load.xml.config.XmlConfigura
 import org.hage.platform.config.PlatformConfigurationHub;
 import org.hage.platform.config.parse.Args4JParsingEngine;
 import org.hage.platform.config.parse.ParsingEngine;
-import org.hage.platform.util.connection.remote.config.RemoteConnectionConfigurationProvider;
+import org.hage.platform.cluster.connection.remote.config.RemoteConnectionConfigurationProvider;
 import org.hage.platform.util.executors.config.external.ThreadingPolicyConfigurationProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

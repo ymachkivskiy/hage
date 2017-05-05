@@ -1,7 +1,7 @@
 package org.hage.platform.component.simulationconfig;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.component.cluster.NodeAddress;
+import org.hage.platform.cluster.api.NodeAddress;
 import org.hage.platform.component.rate.cluster.ActiveClusterPerformance;
 import org.hage.platform.component.rate.cluster.ClusterPerformanceManager;
 import org.hage.platform.component.rate.model.ComputationRatingConfig;
