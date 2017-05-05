@@ -4,7 +4,7 @@ import com.google.common.eventbus.Subscribe;
 import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.annotation.di.SingletonComponent;
 import org.hage.platform.node.execution.event.CoreConfiguredEvent;
-import org.hage.platform.component.simulationconfig.event.ConfigurationUpdatedEvent;
+import org.hage.platform.simconf.event.ConfigurationUpdatedEvent;
 import org.hage.platform.node.bus.EventSubscriber;
 import org.springframework.beans.factory.annotation.Autowired;
 

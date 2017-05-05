@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.cluster.loadbalance.check.BalanceCheckStrategy;
 import org.hage.platform.cluster.loadbalance.check.BalanceCheckStrategyFactory;
 import org.hage.platform.cluster.loadbalance.config.LoadBalanceConfig;
-import org.hage.platform.component.simulationconfig.CoreConfigurerAdapter;
+import org.hage.platform.simconf.CoreConfigurerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Slf4j

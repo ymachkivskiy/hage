@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.hage.platform.node.runtime.init.Population;
 import org.hage.platform.node.runtime.unit.UnitPopulationLoader;
 import org.hage.platform.node.runtime.unit.registry.PopulationLoaderRegistry;
-import org.hage.platform.component.simulationconfig.CoreConfigurerAdapter;
+import org.hage.platform.simconf.CoreConfigurerAdapter;
 import org.hage.platform.node.structure.Position;
 import org.springframework.beans.factory.annotation.Autowired;
 

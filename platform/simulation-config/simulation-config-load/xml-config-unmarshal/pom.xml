@@ -11,7 +11,7 @@
     <properties>
         <xsd.source.dir>${basedir}/src/main/resources/xsd</xsd.source.dir>
         <xjb.source.dir>${basedir}/src/main/resources/xjb</xjb.source.dir>
-        <config.binding.packagename>org.hage.platform.component.simulationconfig.load.xml</config.binding.packagename>
+        <config.binding.packagename>org.hage.platform.simconf.load.xml</config.binding.packagename>
     </properties>
 
 

@@ -1,7 +1,7 @@
 package org.hage.platform;
 
-import org.hage.platform.component.simulationconfig.load.config.LoadConfigurationProvider;
-import org.hage.platform.component.simulationconfig.load.xml.config.XmlConfigurationLoaderConfigurationProvider;
+import org.hage.platform.simconf.load.config.LoadConfigurationProvider;
+import org.hage.platform.simconf.load.xml.config.XmlConfigurationLoaderConfigurationProvider;
 import org.hage.platform.config.PlatformConfigurationHub;
 import org.hage.platform.config.parse.Args4JParsingEngine;
 import org.hage.platform.config.parse.ParsingEngine;

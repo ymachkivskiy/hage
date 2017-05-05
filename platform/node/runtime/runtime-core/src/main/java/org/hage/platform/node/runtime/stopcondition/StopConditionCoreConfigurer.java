@@ -1,7 +1,7 @@
 package org.hage.platform.node.runtime.stopcondition;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hage.platform.component.simulationconfig.CoreConfigurerAdapter;
+import org.hage.platform.simconf.CoreConfigurerAdapter;
 import org.hage.platform.simulation.runtime.stopcondition.StopCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 
