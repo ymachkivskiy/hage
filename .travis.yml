@@ -6,7 +6,7 @@ cache:
   - $HOME/.sonar
 
 before_install:
- - sudo apt-get update && sudo apt-get install oracle-java8-installer
+ - sudo apt-get update && sudo apt-get install oracle-java8-installer && sudo apt install oracle-java8-set-default
  - java -version
 
 addons:
